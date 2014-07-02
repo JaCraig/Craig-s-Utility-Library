@@ -19,25 +19,35 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System.Collections.Generic;
 using System.Configuration;
 using System.Web;
 using System.Web.Configuration;
 using Utilities.Configuration.Manager.Interfaces;
 
-#endregion Usings
-
 namespace Utilities.Configuration.Manager.Default
 {
+    /// <summary>
+    /// Connection string class
+    /// </summary>
+    public class ConnectionString
+    {
+        /// <summary>
+        /// Actual connection string
+        /// </summary>
+        public string Connection { get; set; }
+
+        /// <summary>
+        /// Provider name
+        /// </summary>
+        public string ProviderName { get; set; }
+    }
+
     /// <summary>
     /// Default config class for web.config and app.config
     /// </summary>
     public class SystemConfig : IConfig
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -68,10 +78,6 @@ namespace Utilities.Configuration.Manager.Default
                 }
             }
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Application settings
@@ -108,10 +114,6 @@ namespace Utilities.Configuration.Manager.Default
             }
         }
 
-        #endregion Properties
-
-        #region Functions
-
         /// <summary>
         /// Loads the config
         /// </summary>
@@ -125,27 +127,5 @@ namespace Utilities.Configuration.Manager.Default
         public void Save()
         {
         }
-
-        #endregion Functions
     }
-
-    #region Classes
-
-    /// <summary>
-    /// Connection string class
-    /// </summary>
-    public class ConnectionString
-    {
-        /// <summary>
-        /// Actual connection string
-        /// </summary>
-        public string Connection { get; set; }
-
-        /// <summary>
-        /// Provider name
-        /// </summary>
-        public string ProviderName { get; set; }
-    }
-
-    #endregion Classes
 }

@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -30,8 +28,6 @@ using System.Text;
 using Utilities.DataTypes.AOP.Interfaces;
 using Utilities.DataTypes.CodeGen;
 
-#endregion Usings
-
 namespace Utilities.DataTypes.AOP
 {
     /// <summary>
@@ -39,7 +35,15 @@ namespace Utilities.DataTypes.AOP
     /// </summary>
     public class Manager
     {
-        #region Constructor
+        /// <summary>
+        /// The list of aspects that are being used
+        /// </summary>
+        private static ICollection<IAspect> Aspects = new List<IAspect>();
+
+        /// <summary>
+        /// Dictionary containing generated types and associates it with original type
+        /// </summary>
+        private static IDictionary<Type, Type> Classes = new Dictionary<Type, Type>();
 
         /// <summary>
         /// Constructor
@@ -60,28 +64,10 @@ namespace Utilities.DataTypes.AOP
             Modules.ForEach(x => x.Setup(this));
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// Gets the system's compiler
         /// </summary>
         protected static Compiler Compiler { get; private set; }
-
-        /// <summary>
-        /// The list of aspects that are being used
-        /// </summary>
-        private static ICollection<IAspect> Aspects = new List<IAspect>();
-
-        /// <summary>
-        /// Dictionary containing generated types and associates it with original type
-        /// </summary>
-        private static IDictionary<Type, Type> Classes = new Dictionary<Type, Type>();
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Creates an object of the specified base type, registering the type if necessary
@@ -393,7 +379,5 @@ namespace {1}
                 Aspects.ForEach(x => x.SetupExceptionMethod(MethodInfo, Type)).ToString(x => x, "\r\n"));
             return Builder.ToString();
         }
-
-        #endregion Functions
     }
 }

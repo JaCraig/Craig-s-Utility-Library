@@ -19,17 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Diagnostics.Contracts;
 using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes;
 using Utilities.IO;
-
-#endregion Usings
 
 namespace Utilities.Web.Streams
 {
@@ -38,26 +33,6 @@ namespace Utilities.Web.Streams
     /// </summary>
     public class UglyStream : Stream
     {
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="StreamUsing">The stream for the page</param>
-        /// <param name="Compression">The compression we're using (gzip or deflate)</param>
-        /// <param name="Type">Minification type to use (defaults to HTML)</param>
-        public UglyStream(Stream StreamUsing, CompressionType Compression, MinificationType Type = MinificationType.HTML)
-            : base()
-        {
-            this.Compression = Compression;
-            this.StreamUsing = StreamUsing;
-            this.Type = Type;
-        }
-
-        #endregion Constructor
-
-        #region Variables
-
         /// <summary>
         /// Compression using
         /// </summary>
@@ -75,11 +50,19 @@ namespace Utilities.Web.Streams
 
         private MinificationType Type;
 
-        #endregion Variables
-
-        #region Properties
-
-        #region CanRead
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="StreamUsing">The stream for the page</param>
+        /// <param name="Compression">The compression we're using (gzip or deflate)</param>
+        /// <param name="Type">Minification type to use (defaults to HTML)</param>
+        public UglyStream(Stream StreamUsing, CompressionType Compression, MinificationType Type = MinificationType.HTML)
+            : base()
+        {
+            this.Compression = Compression;
+            this.StreamUsing = StreamUsing;
+            this.Type = Type;
+        }
 
         /// <summary>
         /// Doesn't deal with reading
@@ -89,10 +72,6 @@ namespace Utilities.Web.Streams
             get { return false; }
         }
 
-        #endregion CanRead
-
-        #region CanSeek
-
         /// <summary>
         /// No seeking
         /// </summary>
@@ -100,10 +79,6 @@ namespace Utilities.Web.Streams
         {
             get { return false; }
         }
-
-        #endregion CanSeek
-
-        #region CanWrite
 
         /// <summary>
         /// Can write out though
@@ -113,10 +88,6 @@ namespace Utilities.Web.Streams
             get { return true; }
         }
 
-        #endregion CanWrite
-
-        #region Length
-
         /// <summary>
         /// Don't worry about
         /// </summary>
@@ -124,10 +95,6 @@ namespace Utilities.Web.Streams
         {
             get { throw new NotImplementedException(); }
         }
-
-        #endregion Length
-
-        #region Position
 
         /// <summary>
         /// No position to take care of
@@ -144,14 +111,6 @@ namespace Utilities.Web.Streams
             }
         }
 
-        #endregion Position
-
-        #endregion Properties
-
-        #region Functions
-
-        #region Flush
-
         /// <summary>
         /// Nothing to flush
         /// </summary>
@@ -166,10 +125,6 @@ namespace Utilities.Web.Streams
             FinalString = "";
         }
 
-        #endregion Flush
-
-        #region Read
-
         /// <summary>
         /// Don't worry about
         /// </summary>
@@ -182,10 +137,6 @@ namespace Utilities.Web.Streams
             throw new NotImplementedException();
         }
 
-        #endregion Read
-
-        #region Seek
-
         /// <summary>
         /// Once again not implemented
         /// </summary>
@@ -197,10 +148,6 @@ namespace Utilities.Web.Streams
             throw new NotImplementedException();
         }
 
-        #endregion Seek
-
-        #region SetLength
-
         /// <summary>
         /// Don't worry about
         /// </summary>
@@ -209,10 +156,6 @@ namespace Utilities.Web.Streams
         {
             throw new NotImplementedException();
         }
-
-        #endregion SetLength
-
-        #region Write
 
         /// <summary>
         /// Actually writes out the data
@@ -228,10 +171,6 @@ namespace Utilities.Web.Streams
             FinalString += inputstring;
         }
 
-        #endregion Write
-
-        #region Evaluate
-
         /// <summary>
         /// Evaluates whether the text has spaces, page breaks, etc. and removes them.
         /// </summary>
@@ -244,9 +183,5 @@ namespace Utilities.Web.Streams
             MyString = Regex.Replace(MyString, @"\r\n\s*", "");
             return MyString;
         }
-
-        #endregion Evaluate
-
-        #endregion Functions
     }
 }

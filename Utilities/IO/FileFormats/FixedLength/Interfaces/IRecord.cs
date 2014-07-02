@@ -19,10 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
-#endregion Usings
-
 namespace Utilities.IO.FileFormats.FixedLength.Interfaces
 {
     /// <summary>
@@ -30,7 +26,10 @@ namespace Utilities.IO.FileFormats.FixedLength.Interfaces
     /// </summary>
     public interface IRecord<T>
     {
-        #region Functions
+        /// <summary>
+        /// Length of the record
+        /// </summary>
+        int Length { get; set; }
 
         /// <summary>
         /// Parses the string into fields
@@ -38,16 +37,5 @@ namespace Utilities.IO.FileFormats.FixedLength.Interfaces
         /// <param name="Value">The string value</param>
         /// <param name="Length">Max length of the value</param>
         void Parse(string Value, int Length = -1);
-
-        #endregion Functions
-
-        #region Properties
-
-        /// <summary>
-        /// Length of the record
-        /// </summary>
-        int Length { get; set; }
-
-        #endregion Properties
     }
 }

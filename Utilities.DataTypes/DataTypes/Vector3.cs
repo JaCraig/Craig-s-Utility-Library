@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Diagnostics.Contracts;
 using System.Xml.Serialization;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -35,8 +31,6 @@ namespace Utilities.DataTypes
     [Serializable()]
     public class Vector3
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -49,62 +43,6 @@ namespace Utilities.DataTypes
             this.Y = Y;
             this.Z = Z;
         }
-
-        #endregion Constructor
-
-        #region Public Functions
-
-        /// <summary>
-        /// Normalizes the vector
-        /// </summary>
-        public virtual void Normalize()
-        {
-            double Normal = Magnitude;
-            if (Normal > 0)
-            {
-                Normal = 1 / Normal;
-                X *= Normal;
-                Y *= Normal;
-                Z *= Normal;
-            }
-        }
-
-        #endregion Public Functions
-
-        #region Public Overridden Functions
-
-        /// <summary>
-        /// Determines if the items are equal
-        /// </summary>
-        /// <param name="obj">Object to compare</param>
-        /// <returns>true if they are, false otherwise</returns>
-        public override bool Equals(object obj)
-        {
-            Vector3 Tempobj = obj as Vector3;
-            return (object)Tempobj != null && this == Tempobj;
-        }
-
-        /// <summary>
-        /// Gets the hash code
-        /// </summary>
-        /// <returns>The hash code</returns>
-        public override int GetHashCode()
-        {
-            return (int)(X + Y + Z) % Int32.MaxValue;
-        }
-
-        /// <summary>
-        /// To string function
-        /// </summary>
-        /// <returns>String representation of the vector</returns>
-        public override string ToString()
-        {
-            return "(" + X + "," + Y + "," + Z + ")";
-        }
-
-        #endregion Public Overridden Functions
-
-        #region Public Properties
 
         /// <summary>
         /// Used for converting this to an array and back
@@ -149,10 +87,6 @@ namespace Utilities.DataTypes
         /// </summary>
         [XmlElement]
         public virtual double Z { get; set; }
-
-        #endregion Public Properties
-
-        #region Public Static Functions
 
         /// <summary>
         /// Determines the angle between the vectors
@@ -381,6 +315,48 @@ namespace Utilities.DataTypes
             return V1.Magnitude >= V2.Magnitude;
         }
 
-        #endregion Public Static Functions
+        /// <summary>
+        /// Determines if the items are equal
+        /// </summary>
+        /// <param name="obj">Object to compare</param>
+        /// <returns>true if they are, false otherwise</returns>
+        public override bool Equals(object obj)
+        {
+            Vector3 Tempobj = obj as Vector3;
+            return (object)Tempobj != null && this == Tempobj;
+        }
+
+        /// <summary>
+        /// Gets the hash code
+        /// </summary>
+        /// <returns>The hash code</returns>
+        public override int GetHashCode()
+        {
+            return (int)(X + Y + Z) % Int32.MaxValue;
+        }
+
+        /// <summary>
+        /// Normalizes the vector
+        /// </summary>
+        public virtual void Normalize()
+        {
+            double Normal = Magnitude;
+            if (Normal > 0)
+            {
+                Normal = 1 / Normal;
+                X *= Normal;
+                Y *= Normal;
+                Z *= Normal;
+            }
+        }
+
+        /// <summary>
+        /// To string function
+        /// </summary>
+        /// <returns>String representation of the vector</returns>
+        public override string ToString()
+        {
+            return "(" + X + "," + Y + "," + Z + ")";
+        }
     }
 }

@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.ComponentModel;
 using System.Text;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -35,8 +31,6 @@ namespace Utilities.DataTypes
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ExceptionExtensions
     {
-        #region ToString
-
         /// <summary>
         /// Converts the exception to a string and appends the specified prefix/suffix (used for logging)
         /// </summary>
@@ -68,7 +62,5 @@ namespace Utilities.DataTypes
             Builder.AppendLine(Suffix);
             return Builder.ToString();
         }
-
-        #endregion ToString
     }
 }

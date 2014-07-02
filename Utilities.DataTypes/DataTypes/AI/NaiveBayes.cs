@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
-
-#endregion Usings
 
 namespace Utilities.DataTypes.AI
 {
@@ -37,8 +33,6 @@ namespace Utilities.DataTypes.AI
     /// <typeparam name="T">The type of the individual tokens</typeparam>
     public class NaiveBayes<T>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -71,10 +65,6 @@ namespace Utilities.DataTypes.AI
             this.MaxTokenProbability = MaxTokenProbability;
             this.MaxInterestingTokenCount = MaxInterestingTokenCount;
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Weight to give to the probabilities in set A
@@ -137,10 +127,6 @@ namespace Utilities.DataTypes.AI
         /// </summary>
         protected double TotalB { get; set; }
 
-        #endregion Properties
-
-        #region Public Functions
-
         /// <summary>
         /// Calculates the probability of the list of tokens being in set A
         /// </summary>
@@ -201,10 +187,6 @@ namespace Utilities.DataTypes.AI
                     Probabilities.Add(Token, CalculateProbabilityOfToken(Token));
         }
 
-        #endregion Public Functions
-
-        #region Protected Functions
-
         /// <summary>
         /// Calculates a single items probability of being in set A
         /// </summary>
@@ -224,7 +206,5 @@ namespace Utilities.DataTypes.AI
             }
             return Probability;
         }
-
-        #endregion Protected Functions
     }
 }

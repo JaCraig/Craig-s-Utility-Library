@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Text.RegularExpressions;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -37,10 +33,6 @@ namespace Utilities.DataTypes
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class MatchCollectionExtensions
     {
-        #region Functions
-
-        #region Where
-
         /// <summary>
         /// Gets a list of items that satisfy the predicate from the collection
         /// </summary>
@@ -58,9 +50,5 @@ namespace Utilities.DataTypes
                     Matches.Add(Item);
             return Matches;
         }
-
-        #endregion Where
-
-        #endregion Functions
     }
 }

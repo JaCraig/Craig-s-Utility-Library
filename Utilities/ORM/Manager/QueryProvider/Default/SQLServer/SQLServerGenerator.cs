@@ -19,25 +19,18 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using Utilities.DataTypes;
-using Utilities.DataTypes.Caching.Interfaces;
 using Utilities.DataTypes.Comparison;
-using Utilities.IoC.Interfaces;
 using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
 using Utilities.ORM.Parameters;
-
-#endregion Usings
 
 namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
 {

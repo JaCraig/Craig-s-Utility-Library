@@ -19,16 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.Configuration.Manager.Interfaces;
-using Utilities.DataTypes;
-
-#endregion Usings
 
 namespace Utilities.Configuration.Manager.Default
 {
@@ -37,8 +32,6 @@ namespace Utilities.Configuration.Manager.Default
     /// </summary>
     public class ConfigSystem : IConfigSystem
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -49,10 +42,6 @@ namespace Utilities.Configuration.Manager.Default
             ConfigFiles = Configs.ToDictionary(x => x.Name, x => (IConfig)x);
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// Name of the Config system
         /// </summary>
@@ -62,10 +51,6 @@ namespace Utilities.Configuration.Manager.Default
         /// Config files
         /// </summary>
         protected Dictionary<string, IConfig> ConfigFiles { get; private set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Gets the config object specified
@@ -90,7 +75,5 @@ namespace Utilities.Configuration.Manager.Default
         {
             return ConfigFiles.ContainsKey(Name) && ConfigFiles[Name] is T;
         }
-
-        #endregion Functions
     }
 }

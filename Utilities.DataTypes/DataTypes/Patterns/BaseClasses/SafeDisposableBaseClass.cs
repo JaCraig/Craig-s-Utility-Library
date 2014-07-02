@@ -19,11 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
-
-#endregion Usings
 
 namespace Utilities.DataTypes.Patterns.BaseClasses
 {
@@ -32,8 +28,6 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
     /// </summary>
     public abstract class SafeDisposableBaseClass : IDisposable
     {
-        #region Constructor
-
         /// <summary>
         /// Construct
         /// </summary>
@@ -41,9 +35,13 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
         {
         }
 
-        #endregion Constructor
-
-        #region IDisposable Related Functions
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        ~SafeDisposableBaseClass()
+        {
+            Dispose(false);
+        }
 
         /// <summary>
         /// Dispose function
@@ -61,19 +59,5 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
         /// If true, managed and unmanaged objects should be disposed. Otherwise unmanaged objects only.
         /// </param>
         protected abstract void Dispose(bool Managed);
-
-        #endregion IDisposable Related Functions
-
-        #region Finalizer
-
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        ~SafeDisposableBaseClass()
-        {
-            Dispose(false);
-        }
-
-        #endregion Finalizer
     }
 }

@@ -19,12 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Diagnostics.Contracts;
-
-#endregion Usings
 
 namespace Utilities.IO.FileFormats.BaseClasses
 {
@@ -34,8 +30,6 @@ namespace Utilities.IO.FileFormats.BaseClasses
     public abstract class StringFormatBase<FormatType> : FormatBase<FormatType, string>
         where FormatType : StringFormatBase<FormatType>, new()
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -44,9 +38,28 @@ namespace Utilities.IO.FileFormats.BaseClasses
         {
         }
 
-        #endregion Constructor
+        /// <summary>
+        /// Converts the format to a string
+        /// </summary>
+        /// <param name="Value">Value to convert</param>
+        /// <returns>The value as a string</returns>
+        public static implicit operator string(StringFormatBase<FormatType> Value)
+        {
+            Contract.Requires<ArgumentNullException>(Value != null, "Value");
+            return Value.ToString();
+        }
 
-        #region Functions
+        /// <summary>
+        /// Converts the string to the format specified
+        /// </summary>
+        /// <param name="Value">Value to convert</param>
+        /// <returns>The string as an object</returns>
+        public static implicit operator StringFormatBase<FormatType>(string Value)
+        {
+            FormatType ReturnValue = new FormatType();
+            ReturnValue.LoadFromData(Value);
+            return ReturnValue;
+        }
 
         /// <summary>
         /// Clones the object
@@ -104,34 +117,5 @@ namespace Utilities.IO.FileFormats.BaseClasses
         /// </summary>
         /// <param name="Data">Data to load into the object</param>
         protected abstract void LoadFromData(string Data);
-
-        #endregion Functions
-
-        #region Operators
-
-        /// <summary>
-        /// Converts the format to a string
-        /// </summary>
-        /// <param name="Value">Value to convert</param>
-        /// <returns>The value as a string</returns>
-        public static implicit operator string(StringFormatBase<FormatType> Value)
-        {
-            Contract.Requires<ArgumentNullException>(Value != null, "Value");
-            return Value.ToString();
-        }
-
-        /// <summary>
-        /// Converts the string to the format specified
-        /// </summary>
-        /// <param name="Value">Value to convert</param>
-        /// <returns>The string as an object</returns>
-        public static implicit operator StringFormatBase<FormatType>(string Value)
-        {
-            FormatType ReturnValue = new FormatType();
-            ReturnValue.LoadFromData(Value);
-            return ReturnValue;
-        }
-
-        #endregion Operators
     }
 }

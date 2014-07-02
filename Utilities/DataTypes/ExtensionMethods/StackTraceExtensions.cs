@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,8 +26,6 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -39,10 +35,6 @@ namespace Utilities.DataTypes
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class StackTraceExtensions
     {
-        #region Functions
-
-        #region GetMethods
-
         /// <summary>
         /// Gets the methods involved in the stack trace
         /// </summary>
@@ -78,9 +70,5 @@ namespace Utilities.DataTypes
             }
             return Methods;
         }
-
-        #endregion GetMethods
-
-        #endregion Functions
     }
 }

@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
 using Utilities.Random.NameGenerators;
-
-#endregion Usings
 
 namespace Utilities.Random.ContactInfoGenerators
 {
@@ -34,7 +30,15 @@ namespace Utilities.Random.ContactInfoGenerators
     /// </summary>
     public class CityGenerator : GeneratorAttributeBase, IGenerator<string>
     {
-        #region Constructors
+        private string[] CityEndings = { "deen", "town", "ville", "berg", "view", "bury", "ton", "land", "mouth", "haven",
+                                           "shire", "don", "creek", "worth", "son", "mont", "wood", "dale","cliff","bridge" };
+
+        private string[] CityPrefix = { "North", "South", "East", "West", "New", "Lake", "Old", "Port", "Fort", "Mount" };
+
+        private string[] CitySuffix = { "Cove", "Manor", "City", "Park", "Springs", "Canyon", "Fork", "Center", "Mill",
+                                          "Beach","Glen", "Valley","Heights", "Harbor","Grove","Haven","Island", "Pass",
+                                          "Hills", "Creek", "Crest", "Dale", "Falls","Flats","Gardens","Landing","Meadows",
+                                          "Pines" };
 
         /// <summary>
         /// Constructor
@@ -43,10 +47,6 @@ namespace Utilities.Random.ContactInfoGenerators
             : base("", "")
         {
         }
-
-        #endregion Constructors
-
-        #region Functions
 
         /// <summary>
         /// Generates a random value of the specified type
@@ -82,21 +82,5 @@ namespace Utilities.Random.ContactInfoGenerators
         {
             return Next(Rand);
         }
-
-        #endregion Functions
-
-        #region Private Variables
-
-        private string[] CityEndings = { "deen", "town", "ville", "berg", "view", "bury", "ton", "land", "mouth", "haven",
-                                           "shire", "don", "creek", "worth", "son", "mont", "wood", "dale","cliff","bridge" };
-
-        private string[] CityPrefix = { "North", "South", "East", "West", "New", "Lake", "Old", "Port", "Fort", "Mount" };
-
-        private string[] CitySuffix = { "Cove", "Manor", "City", "Park", "Springs", "Canyon", "Fork", "Center", "Mill",
-                                          "Beach","Glen", "Valley","Heights", "Harbor","Grove","Haven","Island", "Pass",
-                                          "Hills", "Creek", "Crest", "Dale", "Falls","Flats","Gardens","Landing","Meadows",
-                                          "Pines" };
-
-        #endregion Private Variables
     }
 }

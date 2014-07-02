@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System.Text;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.Random.StringGenerators
 {
@@ -34,8 +30,6 @@ namespace Utilities.Random.StringGenerators
     /// </summary>
     public class PatternGenerator : GeneratorAttributeBase, IGenerator<string>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -46,18 +40,10 @@ namespace Utilities.Random.StringGenerators
             this.Pattern = Pattern;
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// Pattern to use
         /// </summary>
         public virtual string Pattern { get; protected set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Generates a random value of the specified type
@@ -108,7 +94,5 @@ namespace Utilities.Random.StringGenerators
         {
             return Next(Rand);
         }
-
-        #endregion Functions
     }
 }

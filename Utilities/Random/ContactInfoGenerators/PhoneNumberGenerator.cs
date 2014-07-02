@@ -19,11 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using Utilities.Random.StringGenerators;
-
-#endregion Usings
 
 namespace Utilities.Random.ContactInfoGenerators
 {
@@ -32,15 +28,6 @@ namespace Utilities.Random.ContactInfoGenerators
     /// </summary>
     public class PhoneNumberGenerator : PatternGenerator
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public PhoneNumberGenerator()
-            : base("")
-        {
-            this.Pattern = new System.Random().Next(Formats);
-        }
-
         private string[] Formats = { "x###","x####","x#####",
                                     "###-###-####","(###)###-####","1-###-###-####",
                                     "###.###.####","(###)###.####","1.###.###.####",
@@ -50,5 +37,14 @@ namespace Utilities.Random.ContactInfoGenerators
                                     "###.###.#### x####","(###)###.#### x####","1.###.###.#### x####",
                                     "###-###-#### x#####","(###)###-#### x#####","1-###-###-#### x#####",
                                     "###.###.#### x#####","(###)###.#### x#####","1.###.###.#### x#####" };
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public PhoneNumberGenerator()
+            : base("")
+        {
+            this.Pattern = new System.Random().Next(Formats);
+        }
     }
 }

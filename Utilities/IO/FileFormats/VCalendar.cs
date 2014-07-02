@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -30,8 +28,6 @@ using System.Text.RegularExpressions;
 using Utilities.DataTypes;
 using Utilities.IO.FileFormats.BaseClasses;
 
-#endregion Usings
-
 namespace Utilities.IO.FileFormats
 {
     /// <summary>
@@ -39,7 +35,7 @@ namespace Utilities.IO.FileFormats
     /// </summary>
     public class VCalendar : StringFormatBase<VCalendar>
     {
-        #region Constructors
+        private static readonly Regex STRIP_HTML_REGEX = new Regex("<[^>]*>", RegexOptions.Compiled);
 
         /// <summary>
         /// Constructor
@@ -50,10 +46,6 @@ namespace Utilities.IO.FileFormats
             Status = "BUSY";
             CurrentTimeZone = TimeZone.CurrentTimeZone;
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         /// <summary>
         /// List of attendees
@@ -104,65 +96,6 @@ namespace Utilities.IO.FileFormats
         /// The subject of the item to send
         /// </summary>
         public string Subject { get; set; }
-
-        private static readonly Regex STRIP_HTML_REGEX = new Regex("<[^>]*>", RegexOptions.Compiled);
-
-        #endregion Properties
-
-        #region Private Functions
-
-        /// <summary>
-        /// Loads the object from the data specified
-        /// </summary>
-        /// <param name="Data">Data to load into the object</param>
-        protected override void LoadFromData(string Data)
-        {
-            foreach (Match TempMatch in Regex.Matches(Data, "(?<Title>[^\r\n:]+):(?<Value>[^\r\n]*)"))
-            {
-                if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "DTSTART")
-                {
-                    StartTime = CurrentTimeZone.ToLocalTime(DateTime.Parse(TempMatch.Groups["Value"].Value.ToString(@"####/##/## ##:##"), CultureInfo.CurrentCulture));
-                }
-                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "DTEND")
-                {
-                    EndTime = CurrentTimeZone.ToLocalTime(DateTime.Parse(TempMatch.Groups["Value"].Value.ToString(@"####/##/## ##:##"), CultureInfo.CurrentCulture));
-                }
-                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "LOCATION")
-                {
-                    this.Location = TempMatch.Groups["Value"].Value;
-                }
-                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "SUMMARY;LANGUAGE=EN-US")
-                {
-                    Subject = TempMatch.Groups["Value"].Value;
-                }
-                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "DESCRIPTION" && string.IsNullOrEmpty(Description))
-                {
-                    Description = TempMatch.Groups["Value"].Value;
-                }
-            }
-        }
-
-        private static bool ContainsHTML(string Input)
-        {
-            if (string.IsNullOrEmpty(Input))
-                return false;
-
-            return STRIP_HTML_REGEX.IsMatch(Input);
-        }
-
-        private static string StripHTML(string HTML)
-        {
-            if (string.IsNullOrEmpty(HTML))
-                return string.Empty;
-
-            HTML = STRIP_HTML_REGEX.Replace(HTML, string.Empty);
-            HTML = HTML.Replace("&nbsp;", " ");
-            return HTML.Replace("&#160;", string.Empty);
-        }
-
-        #endregion Private Functions
-
-        #region Public Functions
 
         /// <summary>
         /// Returns the HCalendar item
@@ -306,6 +239,53 @@ namespace Utilities.IO.FileFormats
             return GetICalendar();
         }
 
-        #endregion Public Functions
+        /// <summary>
+        /// Loads the object from the data specified
+        /// </summary>
+        /// <param name="Data">Data to load into the object</param>
+        protected override void LoadFromData(string Data)
+        {
+            foreach (Match TempMatch in Regex.Matches(Data, "(?<Title>[^\r\n:]+):(?<Value>[^\r\n]*)"))
+            {
+                if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "DTSTART")
+                {
+                    StartTime = CurrentTimeZone.ToLocalTime(DateTime.Parse(TempMatch.Groups["Value"].Value.ToString(@"####/##/## ##:##"), CultureInfo.CurrentCulture));
+                }
+                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "DTEND")
+                {
+                    EndTime = CurrentTimeZone.ToLocalTime(DateTime.Parse(TempMatch.Groups["Value"].Value.ToString(@"####/##/## ##:##"), CultureInfo.CurrentCulture));
+                }
+                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "LOCATION")
+                {
+                    this.Location = TempMatch.Groups["Value"].Value;
+                }
+                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "SUMMARY;LANGUAGE=EN-US")
+                {
+                    Subject = TempMatch.Groups["Value"].Value;
+                }
+                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "DESCRIPTION" && string.IsNullOrEmpty(Description))
+                {
+                    Description = TempMatch.Groups["Value"].Value;
+                }
+            }
+        }
+
+        private static bool ContainsHTML(string Input)
+        {
+            if (string.IsNullOrEmpty(Input))
+                return false;
+
+            return STRIP_HTML_REGEX.IsMatch(Input);
+        }
+
+        private static string StripHTML(string HTML)
+        {
+            if (string.IsNullOrEmpty(HTML))
+                return string.Empty;
+
+            HTML = STRIP_HTML_REGEX.Replace(HTML, string.Empty);
+            HTML = HTML.Replace("&nbsp;", " ");
+            return HTML.Replace("&#160;", string.Empty);
+        }
     }
 }

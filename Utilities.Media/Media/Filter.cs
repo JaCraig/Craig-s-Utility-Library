@@ -19,16 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Threading.Tasks;
 using Utilities.DataTypes;
-
-#endregion Usings
 
 namespace Utilities.Media
 {
@@ -37,8 +33,6 @@ namespace Utilities.Media
     /// </summary>
     public class Filter
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -52,10 +46,6 @@ namespace Utilities.Media
             Offset = 0;
             Absolute = false;
         }
-
-        #endregion Constructor
-
-        #region Public Properties
 
         /// <summary>
         /// Determines if we should take the absolute value prior to clamping
@@ -82,10 +72,6 @@ namespace Utilities.Media
         /// Width of the filter box
         /// </summary>
         public virtual int Width { get; set; }
-
-        #endregion Public Properties
-
-        #region Public Functions
 
         /// <summary>
         /// Applies the filter to the input image
@@ -158,7 +144,5 @@ namespace Utilities.Media
             Input.UnlockImage(OldData);
             return NewBitmap;
         }
-
-        #endregion Public Functions
     }
 }

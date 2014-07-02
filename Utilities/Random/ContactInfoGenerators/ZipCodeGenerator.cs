@@ -19,11 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using Utilities.Random.StringGenerators;
-
-#endregion Usings
 
 namespace Utilities.Random.ContactInfoGenerators
 {
@@ -32,6 +28,8 @@ namespace Utilities.Random.ContactInfoGenerators
     /// </summary>
     public class ZipCodeGenerator : PatternGenerator
     {
+        private string[] ZipCodeFormats = { "#####", "#####-####" };
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -40,7 +38,5 @@ namespace Utilities.Random.ContactInfoGenerators
         {
             this.Pattern = new System.Random().Next(ZipCodeFormats);
         }
-
-        private string[] ZipCodeFormats = { "#####", "#####-####" };
     }
 }

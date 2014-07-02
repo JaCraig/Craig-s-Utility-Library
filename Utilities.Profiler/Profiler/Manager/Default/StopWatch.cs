@@ -19,10 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
-#endregion Usings
-
 namespace Utilities.Profiler.Manager.Default
 {
     /// <summary>
@@ -30,8 +26,6 @@ namespace Utilities.Profiler.Manager.Default
     /// </summary>
     public class StopWatch
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -41,9 +35,15 @@ namespace Utilities.Profiler.Manager.Default
             Reset();
         }
 
-        #endregion Constructor
+        /// <summary>
+        /// Returns the elapsed time
+        /// </summary>
+        public virtual long ElapsedTime { get { return Watch.ElapsedMilliseconds; } }
 
-        #region Functions
+        /// <summary>
+        /// Internal stop watch
+        /// </summary>
+        protected System.Diagnostics.Stopwatch Watch { get; set; }
 
         /// <summary>
         /// Resets the watch
@@ -69,21 +69,5 @@ namespace Utilities.Profiler.Manager.Default
         {
             Watch.Stop();
         }
-
-        #endregion Functions
-
-        #region Properties
-
-        /// <summary>
-        /// Returns the elapsed time
-        /// </summary>
-        public virtual long ElapsedTime { get { return Watch.ElapsedMilliseconds; } }
-
-        /// <summary>
-        /// Internal stop watch
-        /// </summary>
-        protected System.Diagnostics.Stopwatch Watch { get; set; }
-
-        #endregion Properties
     }
 }

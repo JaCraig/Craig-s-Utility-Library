@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,8 +26,6 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading;
 using Utilities.DataTypes.Comparison;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -39,10 +35,6 @@ namespace Utilities.DataTypes
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class GenericObjectExtensions
     {
-        #region Functions
-
-        #region Chain
-
         /// <summary>
         /// Allows actions to be chained together with the caveat that if Object is null, it is
         /// replaced with the DefaultObjectValue specified. If the Action or Object (once replaced
@@ -85,9 +77,63 @@ namespace Utilities.DataTypes
             return Function(Object).Check(DefaultReturnValue);
         }
 
-        #endregion Chain
+        /// <summary>
+        /// Checks to see if the object meets all the criteria. If it does, it returns the object.
+        /// If it does not, it returns the default object
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="Object">Object to check</param>
+        /// <param name="DefaultValue">The default value to return</param>
+        /// <param name="Predicate">Predicate to check the object against</param>
+        /// <returns>The default object if it fails the criteria, the object otherwise</returns>
+        public static T Check<T>(this T Object, Predicate<T> Predicate, T DefaultValue = default(T))
+        {
+            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            return Predicate(Object) ? Object : DefaultValue;
+        }
 
-        #region Execute
+        /// <summary>
+        /// Checks to see if the object meets all the criteria. If it does, it returns the object.
+        /// If it does not, it returns the default object
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="Object">Object to check</param>
+        /// <param name="DefaultValue">The default value to return</param>
+        /// <param name="Predicate">Predicate to check the object against</param>
+        /// <returns>The default object if it fails the criteria, the object otherwise</returns>
+        public static T Check<T>(this T Object, Predicate<T> Predicate, Func<T> DefaultValue)
+        {
+            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            Contract.Requires<ArgumentNullException>(DefaultValue != null, "DefaultValue");
+            return Predicate(Object) ? Object : DefaultValue();
+        }
+
+        /// <summary>
+        /// Checks to see if the object is null. If it is, it returns the default object, otherwise
+        /// the object is returned.
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="Object">Object to check</param>
+        /// <param name="DefaultValue">The default value to return</param>
+        /// <returns>The default object if it is null, the object otherwise</returns>
+        public static T Check<T>(this T Object, T DefaultValue = default(T))
+        {
+            return Object.Check(x => x != null, DefaultValue);
+        }
+
+        /// <summary>
+        /// Checks to see if the object is null. If it is, it returns the default object, otherwise
+        /// the object is returned.
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="Object">Object to check</param>
+        /// <param name="DefaultValue">The default value to return</param>
+        /// <returns>The default object if it is null, the object otherwise</returns>
+        public static T Check<T>(this T Object, Func<T> DefaultValue)
+        {
+            Contract.Requires<ArgumentNullException>(DefaultValue != null, "DefaultValue");
+            return Object.Check(x => x != null, DefaultValue);
+        }
 
         /// <summary>
         /// Executes a function, repeating it a number of times in case it fails
@@ -152,72 +198,6 @@ namespace Utilities.DataTypes
                 throw Holder;
         }
 
-        #endregion Execute
-
-        #region Check
-
-        /// <summary>
-        /// Checks to see if the object meets all the criteria. If it does, it returns the object.
-        /// If it does not, it returns the default object
-        /// </summary>
-        /// <typeparam name="T">Object type</typeparam>
-        /// <param name="Object">Object to check</param>
-        /// <param name="DefaultValue">The default value to return</param>
-        /// <param name="Predicate">Predicate to check the object against</param>
-        /// <returns>The default object if it fails the criteria, the object otherwise</returns>
-        public static T Check<T>(this T Object, Predicate<T> Predicate, T DefaultValue = default(T))
-        {
-            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
-            return Predicate(Object) ? Object : DefaultValue;
-        }
-
-        /// <summary>
-        /// Checks to see if the object meets all the criteria. If it does, it returns the object.
-        /// If it does not, it returns the default object
-        /// </summary>
-        /// <typeparam name="T">Object type</typeparam>
-        /// <param name="Object">Object to check</param>
-        /// <param name="DefaultValue">The default value to return</param>
-        /// <param name="Predicate">Predicate to check the object against</param>
-        /// <returns>The default object if it fails the criteria, the object otherwise</returns>
-        public static T Check<T>(this T Object, Predicate<T> Predicate, Func<T> DefaultValue)
-        {
-            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
-            Contract.Requires<ArgumentNullException>(DefaultValue != null, "DefaultValue");
-            return Predicate(Object) ? Object : DefaultValue();
-        }
-
-        /// <summary>
-        /// Checks to see if the object is null. If it is, it returns the default object, otherwise
-        /// the object is returned.
-        /// </summary>
-        /// <typeparam name="T">Object type</typeparam>
-        /// <param name="Object">Object to check</param>
-        /// <param name="DefaultValue">The default value to return</param>
-        /// <returns>The default object if it is null, the object otherwise</returns>
-        public static T Check<T>(this T Object, T DefaultValue = default(T))
-        {
-            return Object.Check(x => x != null, DefaultValue);
-        }
-
-        /// <summary>
-        /// Checks to see if the object is null. If it is, it returns the default object, otherwise
-        /// the object is returned.
-        /// </summary>
-        /// <typeparam name="T">Object type</typeparam>
-        /// <param name="Object">Object to check</param>
-        /// <param name="DefaultValue">The default value to return</param>
-        /// <returns>The default object if it is null, the object otherwise</returns>
-        public static T Check<T>(this T Object, Func<T> DefaultValue)
-        {
-            Contract.Requires<ArgumentNullException>(DefaultValue != null, "DefaultValue");
-            return Object.Check(x => x != null, DefaultValue);
-        }
-
-        #endregion Check
-
-        #region Is
-
         /// <summary>
         /// Determines if the object passes the predicate passed in
         /// </summary>
@@ -244,10 +224,6 @@ namespace Utilities.DataTypes
             Comparer = Comparer.Check(() => new GenericEqualityComparer<T>());
             return Comparer.Equals(Object, ComparisonObject);
         }
-
-        #endregion Is
-
-        #region ThrowIf
 
         /// <summary>
         /// Throws the specified exception if the predicate is true for the item
@@ -281,10 +257,6 @@ namespace Utilities.DataTypes
             return Item;
         }
 
-        #endregion ThrowIf
-
-        #region ThrowIfDefault
-
         /// <summary>
         /// Determines if the object is equal to default value and throws an ArgumentNullException
         /// if it is
@@ -315,9 +287,18 @@ namespace Utilities.DataTypes
             return Item.ThrowIf(x => EqualityComparer.Check(() => new GenericEqualityComparer<T>()).Equals(x, default(T)), Exception);
         }
 
-        #endregion ThrowIfDefault
-
-        #region ThrowIfNotDefault
+        /// <summary>
+        /// Throws the specified exception if the predicate is false for the item
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="Item">The item</param>
+        /// <param name="Predicate">Predicate to check</param>
+        /// <param name="Exception">Exception to throw if predicate is false</param>
+        /// <returns>the original Item</returns>
+        public static T ThrowIfNot<T>(this T Item, Predicate<T> Predicate, Exception Exception)
+        {
+            return Item.ThrowIf(x => !Predicate(x), Exception);
+        }
 
         /// <summary>
         /// Determines if the object is not equal to default value and throws an ArgumentException
@@ -349,27 +330,6 @@ namespace Utilities.DataTypes
             return Item.ThrowIf(x => !EqualityComparer.Check(() => new GenericEqualityComparer<T>()).Equals(x, default(T)), Exception);
         }
 
-        #endregion ThrowIfNotDefault
-
-        #region ThrowIfNot
-
-        /// <summary>
-        /// Throws the specified exception if the predicate is false for the item
-        /// </summary>
-        /// <typeparam name="T">Item type</typeparam>
-        /// <param name="Item">The item</param>
-        /// <param name="Predicate">Predicate to check</param>
-        /// <param name="Exception">Exception to throw if predicate is false</param>
-        /// <returns>the original Item</returns>
-        public static T ThrowIfNot<T>(this T Item, Predicate<T> Predicate, Exception Exception)
-        {
-            return Item.ThrowIf(x => !Predicate(x), Exception);
-        }
-
-        #endregion ThrowIfNot
-
-        #region ThrowIfNotNull
-
         /// <summary>
         /// Determines if the object is not null and throws an ArgumentException if it is
         /// </summary>
@@ -391,36 +351,6 @@ namespace Utilities.DataTypes
         {
             return Item.ThrowIf(x => x != null && !Convert.IsDBNull(x), Exception);
         }
-
-        #endregion ThrowIfNotNull
-
-        #region ThrowIfNull
-
-        /// <summary>
-        /// Determines if the object is null and throws an ArgumentNullException if it is
-        /// </summary>
-        /// <param name="Item">The object to check</param>
-        /// <param name="Name">Name of the argument</param>
-        /// <returns>Returns Item</returns>
-        public static T ThrowIfNull<T>(this T Item, string Name)
-        {
-            return Item.ThrowIfNull(new ArgumentNullException(Name));
-        }
-
-        /// <summary>
-        /// Determines if the object is null and throws the exception passed in if it is
-        /// </summary>
-        /// <param name="Item">The object to check</param>
-        /// <param name="Exception">Exception to throw</param>
-        /// <returns>Returns Item</returns>
-        public static T ThrowIfNull<T>(this T Item, Exception Exception)
-        {
-            return Item.ThrowIf(x => x == null || Convert.IsDBNull(x), Exception);
-        }
-
-        #endregion ThrowIfNull
-
-        #region ThrowIfNotNullOrEmpty
 
         /// <summary>
         /// Determines if the IEnumerable is not null or empty and throws an ArgumentException if it is
@@ -447,9 +377,27 @@ namespace Utilities.DataTypes
             return Item.ThrowIf(x => x != null && x.Count() > 0, Exception);
         }
 
-        #endregion ThrowIfNotNullOrEmpty
+        /// <summary>
+        /// Determines if the object is null and throws an ArgumentNullException if it is
+        /// </summary>
+        /// <param name="Item">The object to check</param>
+        /// <param name="Name">Name of the argument</param>
+        /// <returns>Returns Item</returns>
+        public static T ThrowIfNull<T>(this T Item, string Name)
+        {
+            return Item.ThrowIfNull(new ArgumentNullException(Name));
+        }
 
-        #region ThrowIfNullOrEmpty
+        /// <summary>
+        /// Determines if the object is null and throws the exception passed in if it is
+        /// </summary>
+        /// <param name="Item">The object to check</param>
+        /// <param name="Exception">Exception to throw</param>
+        /// <returns>Returns Item</returns>
+        public static T ThrowIfNull<T>(this T Item, Exception Exception)
+        {
+            return Item.ThrowIf(x => x == null || Convert.IsDBNull(x), Exception);
+        }
 
         /// <summary>
         /// Determines if the IEnumerable is null or empty and throws an ArgumentNullException if it is
@@ -474,10 +422,6 @@ namespace Utilities.DataTypes
         {
             return Item.ThrowIf(x => x == null || x.Count() == 0, Exception);
         }
-
-        #endregion ThrowIfNullOrEmpty
-
-        #region Times
 
         /// <summary>
         /// Runs a function based on the number of times specified and returns the results
@@ -504,9 +448,5 @@ namespace Utilities.DataTypes
             for (int x = 0; x < Count; ++x)
                 Action(x);
         }
-
-        #endregion Times
-
-        #endregion Functions
     }
 }

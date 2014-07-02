@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.IO;
 using System.Text;
-
-#endregion Usings
 
 namespace Utilities.IO.FileSystem.Interfaces
 {
@@ -34,8 +30,6 @@ namespace Utilities.IO.FileSystem.Interfaces
     /// </summary>
     public interface IFile : IComparable<IFile>, IComparable, IEquatable<IFile>, ICloneable
     {
-        #region Properties
-
         /// <summary>
         /// Last time the file was accessed
         /// </summary>
@@ -80,10 +74,6 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// File name
         /// </summary>
         string Name { get; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Copies the file to another directory
@@ -141,7 +131,5 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// <param name="Mode">File mode</param>
         /// <returns>The result of the write or original content</returns>
         byte[] Write(byte[] Content, FileMode Mode = FileMode.Create);
-
-        #endregion Functions
     }
 }

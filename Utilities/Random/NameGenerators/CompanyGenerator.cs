@@ -19,12 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.Random.NameGenerators
 {
@@ -33,7 +29,20 @@ namespace Utilities.Random.NameGenerators
     /// </summary>
     public class CompanyGenerator : GeneratorAttributeBase, IGenerator<string>
     {
-        #region Constructors
+        private string[] CompanyNames = { "Ankh-Sto Associates", "Conglom-O","Cyberdyne Systems Corporation","Globex Corporation","LexCorp",
+                                            "Stark Industries","Sto Plains Holdings","Tri-Optimum Corporation","Umbrella Corporation",
+                                            "Wayne Enterprises","Acme Corp","Weyland-Yutani","ZiffCorp","Grand Trunk Semaphore Company",
+                                            "Monsters, Inc.","SewerCom","Strickland Propane","The Dysk Theatre","The Muppet Theatre",
+                                            "Phillips Broadcasting","Spaceland","Wally World","Ankh Futures","Big Apple Bank",
+                                            "Nakatomi Trading Corporation","Extensive Enterprises","Fronty's Meat Market",
+                                            "PlayTronics","Transworld Consortium","DivaDroid International","Genesis Android Company",
+                                            "Mom's Friendly Robot Company","Tyrell Corporation","Incom Corporation","Kuat Drive Yards",
+                                            "Hudsucker Industries","Videlectrix","Nirvana Corp.","Omni Consumer Products",
+                                            "Spishak","Cogswell Cogs","Duff Brewing Corporation","Paper Street Soap Company",
+                                            "Soylent Corporation","Oscorp Industries","Jupiter Mining Corporation",
+                                            "Le Fin","Moe's","Quark's","Starfishbucks Coffee","S-Mart","Milliways",
+                                            "Sebben & Sebben","Planet Express","Applied Cryogenics","Initech","Rekall, Inc.",
+                                            "Zorg Industries","Blue Sun Corporation","Venture Industries" };
 
         /// <summary>
         /// Constructor
@@ -42,10 +51,6 @@ namespace Utilities.Random.NameGenerators
             : base("", "")
         {
         }
-
-        #endregion Constructors
-
-        #region Functions
 
         /// <summary>
         /// Generates a random value of the specified type
@@ -78,26 +83,5 @@ namespace Utilities.Random.NameGenerators
         {
             return Next(Rand);
         }
-
-        #endregion Functions
-
-        #region Private Variables
-
-        private string[] CompanyNames = { "Ankh-Sto Associates", "Conglom-O","Cyberdyne Systems Corporation","Globex Corporation","LexCorp",
-                                            "Stark Industries","Sto Plains Holdings","Tri-Optimum Corporation","Umbrella Corporation",
-                                            "Wayne Enterprises","Acme Corp","Weyland-Yutani","ZiffCorp","Grand Trunk Semaphore Company",
-                                            "Monsters, Inc.","SewerCom","Strickland Propane","The Dysk Theatre","The Muppet Theatre",
-                                            "Phillips Broadcasting","Spaceland","Wally World","Ankh Futures","Big Apple Bank",
-                                            "Nakatomi Trading Corporation","Extensive Enterprises","Fronty's Meat Market",
-                                            "PlayTronics","Transworld Consortium","DivaDroid International","Genesis Android Company",
-                                            "Mom's Friendly Robot Company","Tyrell Corporation","Incom Corporation","Kuat Drive Yards",
-                                            "Hudsucker Industries","Videlectrix","Nirvana Corp.","Omni Consumer Products",
-                                            "Spishak","Cogswell Cogs","Duff Brewing Corporation","Paper Street Soap Company",
-                                            "Soylent Corporation","Oscorp Industries","Jupiter Mining Corporation",
-                                            "Le Fin","Moe's","Quark's","Starfishbucks Coffee","S-Mart","Milliways",
-                                            "Sebben & Sebben","Planet Express","Applied Cryogenics","Initech","Rekall, Inc.",
-                                            "Zorg Industries","Blue Sun Corporation","Venture Industries" };
-
-        #endregion Private Variables
     }
 }

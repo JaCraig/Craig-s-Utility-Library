@@ -19,14 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -36,9 +32,16 @@ namespace Utilities.DataTypes
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class TimeSpanExtensions
     {
-        #region Extension Methods
-
-        #region DaysRemainder
+        /// <summary>
+        /// Averages a list of TimeSpans
+        /// </summary>
+        /// <param name="List">List of TimeSpans</param>
+        /// <returns>The average value</returns>
+        public static TimeSpan Average(this IEnumerable<TimeSpan> List)
+        {
+            List = List.Check(new List<TimeSpan>());
+            return List.Any() ? new TimeSpan((long)List.Average(x => x.Ticks)) : new TimeSpan(0);
+        }
 
         /// <summary>
         /// Days in the TimeSpan minus the months and years
@@ -50,10 +53,6 @@ namespace Utilities.DataTypes
             return (DateTime.MinValue + Span).Day - 1;
         }
 
-        #endregion DaysRemainder
-
-        #region Months
-
         /// <summary>
         /// Months in the TimeSpan
         /// </summary>
@@ -63,24 +62,6 @@ namespace Utilities.DataTypes
         {
             return (DateTime.MinValue + Span).Month - 1;
         }
-
-        #endregion Months
-
-        #region Years
-
-        /// <summary>
-        /// Years in the TimeSpan
-        /// </summary>
-        /// <param name="Span">TimeSpan to get the years from</param>
-        /// <returns>The number of years that the TimeSpan has</returns>
-        public static int Years(this TimeSpan Span)
-        {
-            return (DateTime.MinValue + Span).Year - 1;
-        }
-
-        #endregion Years
-
-        #region ToStringFull
 
         /// <summary>
         /// Converts the input to a string in this format: (Years) years, (Months) months,
@@ -101,23 +82,14 @@ namespace Utilities.DataTypes
             return Result;
         }
 
-        #endregion ToStringFull
-
-        #region Average
-
         /// <summary>
-        /// Averages a list of TimeSpans
+        /// Years in the TimeSpan
         /// </summary>
-        /// <param name="List">List of TimeSpans</param>
-        /// <returns>The average value</returns>
-        public static TimeSpan Average(this IEnumerable<TimeSpan> List)
+        /// <param name="Span">TimeSpan to get the years from</param>
+        /// <returns>The number of years that the TimeSpan has</returns>
+        public static int Years(this TimeSpan Span)
         {
-            List = List.Check(new List<TimeSpan>());
-            return List.Any() ? new TimeSpan((long)List.Average(x => x.Ticks)) : new TimeSpan(0);
+            return (DateTime.MinValue + Span).Year - 1;
         }
-
-        #endregion Average
-
-        #endregion Extension Methods
     }
 }

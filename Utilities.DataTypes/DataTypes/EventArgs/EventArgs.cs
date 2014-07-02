@@ -19,14 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
-#endregion Usings
-
 namespace Utilities.DataTypes.EventArgs
 {
-    #region Event Args
-
     /// <summary>
     /// Base event args for the events used in the system
     /// </summary>
@@ -112,6 +106,4 @@ namespace Utilities.DataTypes.EventArgs
     public class SavingEventArgs : BaseEventArgs
     {
     }
-
-    #endregion Event Args
 }

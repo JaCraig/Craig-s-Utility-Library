@@ -19,10 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
-#endregion Usings
-
 namespace Utilities.ORM.Interfaces
 {
     /// <summary>
@@ -30,8 +26,6 @@ namespace Utilities.ORM.Interfaces
     /// </summary>
     public interface IDatabase
     {
-        #region Properties
-
         /// <summary>
         /// Determines if audit tables are generated
         /// </summary>
@@ -61,7 +55,5 @@ namespace Utilities.ORM.Interfaces
         /// Should this database be used to write data?
         /// </summary>
         bool Writable { get; }
-
-        #endregion Properties
     }
 }

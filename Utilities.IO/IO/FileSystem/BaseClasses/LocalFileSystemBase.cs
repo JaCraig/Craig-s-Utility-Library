@@ -19,12 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using Utilities.IO.FileSystem.Default;
 using Utilities.IO.FileSystem.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.IO.FileSystem.BaseClasses
 {
@@ -33,8 +29,6 @@ namespace Utilities.IO.FileSystem.BaseClasses
     /// </summary>
     public abstract class LocalFileSystemBase : FileSystemBase, IFileSystem
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -42,10 +36,6 @@ namespace Utilities.IO.FileSystem.BaseClasses
             : base()
         {
         }
-
-        #endregion Constructor
-
-        #region Functions
 
         /// <summary>
         /// Gets the directory representation for the directory
@@ -84,7 +74,5 @@ namespace Utilities.IO.FileSystem.BaseClasses
         protected override void Dispose(bool Managed)
         {
         }
-
-        #endregion Functions
     }
 }

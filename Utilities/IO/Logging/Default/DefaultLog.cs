@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Globalization;
 using System.Web;
 using Utilities.IO.Logging.BaseClasses;
 using Utilities.IO.Logging.Enums;
-
-#endregion Usings
 
 namespace Utilities.IO.Logging.Default
 {
@@ -37,6 +33,8 @@ namespace Utilities.IO.Logging.Default
     /// </summary>
     public class DefaultLog : LogBase<DefaultLog>
     {
+        private string _FileName = "";
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -79,7 +77,5 @@ namespace Utilities.IO.Logging.Default
         /// File object that the log uses
         /// </summary>
         protected FileInfo File { get; private set; }
-
-        private string _FileName = "";
     }
 }

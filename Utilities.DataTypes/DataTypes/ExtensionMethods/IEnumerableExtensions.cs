@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,8 +32,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Utilities.DataTypes.Comparison;
 
-#endregion Usings
-
 namespace Utilities.DataTypes
 {
     /// <summary>
@@ -44,10 +40,6 @@ namespace Utilities.DataTypes
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class IEnumerableExtensions
     {
-        #region Functions
-
-        #region Concat
-
         /// <summary>
         /// Combines multiple IEnumerables together and returns a new IEnumerable containing all of
         /// the values
@@ -72,10 +64,6 @@ namespace Utilities.DataTypes
                 Results.AddRange(Additions[x]);
             return Results;
         }
-
-        #endregion Concat
-
-        #region Distinct
 
         /// <summary>
         /// Returns only distinct items from the IEnumerable based on the predicate
@@ -109,10 +97,6 @@ namespace Utilities.DataTypes
             return Results;
         }
 
-        #endregion Distinct
-
-        #region ElementsBetween
-
         /// <summary>
         /// Returns elements starting at the index and ending at the end index
         /// </summary>
@@ -135,10 +119,6 @@ namespace Utilities.DataTypes
             return ReturnList;
         }
 
-        #endregion ElementsBetween
-
-        #region Except
-
         /// <summary>
         /// Removes values from a list that meet the criteria set forth by the predicate
         /// </summary>
@@ -153,10 +133,6 @@ namespace Utilities.DataTypes
                 return Value;
             return Value.Where(x => !Predicate(x));
         }
-
-        #endregion Except
-
-        #region For
 
         /// <summary>
         /// Does an action for each item in the IEnumerable between the start and end indexes
@@ -198,10 +174,6 @@ namespace Utilities.DataTypes
                 ReturnValues.Add(Function(Item));
             return ReturnValues;
         }
-
-        #endregion For
-
-        #region ForEach
 
         /// <summary>
         /// Does an action for each item in the IEnumerable
@@ -287,52 +259,6 @@ namespace Utilities.DataTypes
             return ReturnValues;
         }
 
-        #endregion ForEach
-
-        #region ForParallel
-
-        /// <summary>
-        /// Does an action for each item in the IEnumerable between the start and end indexes in parallel
-        /// </summary>
-        /// <typeparam name="T">Object type</typeparam>
-        /// <param name="List">IEnumerable to iterate over</param>
-        /// <param name="Start">Item to start with</param>
-        /// <param name="End">Item to end with</param>
-        /// <param name="Action">Action to do</param>
-        /// <returns>The original list</returns>
-        public static IEnumerable<T> ForParallel<T>(this IEnumerable<T> List, int Start, int End, Action<T> Action)
-        {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Action != null, "Action");
-            Contract.Requires<ArgumentException>(End + 1 - Start >= 0, "End must be greater than start");
-            Parallel.For(Start, End + 1, new Action<int>(x => Action(List.ElementAt(x))));
-            return List;
-        }
-
-        /// <summary>
-        /// Does an action for each item in the IEnumerable between the start and end indexes in parallel
-        /// </summary>
-        /// <typeparam name="T">Object type</typeparam>
-        /// <typeparam name="R">Results type</typeparam>
-        /// <param name="List">IEnumerable to iterate over</param>
-        /// <param name="Start">Item to start with</param>
-        /// <param name="End">Item to end with</param>
-        /// <param name="Function">Function to do</param>
-        /// <returns>The resulting list</returns>
-        public static IEnumerable<R> ForParallel<T, R>(this IEnumerable<T> List, int Start, int End, Func<T, R> Function)
-        {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Function != null, "Function");
-            Contract.Requires<ArgumentException>(End + 1 - Start >= 0, "End must be greater than start");
-            R[] Results = new R[(End + 1) - Start];
-            Parallel.For(Start, End + 1, new Action<int>(x => Results[x - Start] = Function(List.ElementAt(x))));
-            return Results;
-        }
-
-        #endregion ForParallel
-
-        #region ForEachParallel
-
         /// <summary>
         /// Does an action for each item in the IEnumerable in parallel
         /// </summary>
@@ -413,9 +339,43 @@ namespace Utilities.DataTypes
             return ReturnValues;
         }
 
-        #endregion ForEachParallel
+        /// <summary>
+        /// Does an action for each item in the IEnumerable between the start and end indexes in parallel
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="List">IEnumerable to iterate over</param>
+        /// <param name="Start">Item to start with</param>
+        /// <param name="End">Item to end with</param>
+        /// <param name="Action">Action to do</param>
+        /// <returns>The original list</returns>
+        public static IEnumerable<T> ForParallel<T>(this IEnumerable<T> List, int Start, int End, Action<T> Action)
+        {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Action != null, "Action");
+            Contract.Requires<ArgumentException>(End + 1 - Start >= 0, "End must be greater than start");
+            Parallel.For(Start, End + 1, new Action<int>(x => Action(List.ElementAt(x))));
+            return List;
+        }
 
-        #region Last
+        /// <summary>
+        /// Does an action for each item in the IEnumerable between the start and end indexes in parallel
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <typeparam name="R">Results type</typeparam>
+        /// <param name="List">IEnumerable to iterate over</param>
+        /// <param name="Start">Item to start with</param>
+        /// <param name="End">Item to end with</param>
+        /// <param name="Function">Function to do</param>
+        /// <returns>The resulting list</returns>
+        public static IEnumerable<R> ForParallel<T, R>(this IEnumerable<T> List, int Start, int End, Func<T, R> Function)
+        {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Function != null, "Function");
+            Contract.Requires<ArgumentException>(End + 1 - Start >= 0, "End must be greater than start");
+            R[] Results = new R[(End + 1) - Start];
+            Parallel.For(Start, End + 1, new Action<int>(x => Results[x - Start] = Function(List.ElementAt(x))));
+            return Results;
+        }
 
         /// <summary>
         /// Returns the last X number of items from the list
@@ -429,10 +389,6 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(List != null, "List");
             return List.ElementsBetween(List.Count() - Count, List.Count());
         }
-
-        #endregion Last
-
-        #region PositionOf
 
         /// <summary>
         /// Determines the position of an object if it is present, otherwise it returns -1
@@ -458,28 +414,89 @@ namespace Utilities.DataTypes
             return -1;
         }
 
-        #endregion PositionOf
-
-        #region ToArray
-
         /// <summary>
-        /// Converts a list to an array
+        /// Throws the specified exception if the predicate is true for all items
         /// </summary>
-        /// <typeparam name="Source">Source type</typeparam>
-        /// <typeparam name="Target">Target type</typeparam>
-        /// <param name="List">List to convert</param>
-        /// <param name="ConvertingFunction">Function used to convert each item</param>
-        /// <returns>The array containing the items from the list</returns>
-        public static Target[] ToArray<Source, Target>(this IEnumerable<Source> List, Func<Source, Target> ConvertingFunction)
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="List">The item</param>
+        /// <param name="Predicate">Predicate to check</param>
+        /// <param name="Exception">Exception to throw if predicate is true</param>
+        /// <returns>the original Item</returns>
+        public static IEnumerable<T> ThrowIfAll<T>(this IEnumerable<T> List, Predicate<T> Predicate, Func<Exception> Exception)
         {
             Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(ConvertingFunction != null, "ConvertingFunction");
-            return List.ForEach(ConvertingFunction).ToArray();
+            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
+            foreach (T Item in List)
+            {
+                if (!Predicate(Item))
+                    return List;
+            }
+            throw Exception();
         }
 
-        #endregion ToArray
+        /// <summary>
+        /// Throws the specified exception if the predicate is true for all items
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="List">The item</param>
+        /// <param name="Predicate">Predicate to check</param>
+        /// <param name="Exception">Exception to throw if predicate is true</param>
+        /// <returns>the original Item</returns>
+        public static IEnumerable<T> ThrowIfAll<T>(this IEnumerable<T> List, Predicate<T> Predicate, Exception Exception)
+        {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
+            foreach (T Item in List)
+            {
+                if (!Predicate(Item))
+                    return List;
+            }
+            throw Exception;
+        }
 
-        #region To
+        /// <summary>
+        /// Throws the specified exception if the predicate is true for any items
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="List">The item</param>
+        /// <param name="Predicate">Predicate to check</param>
+        /// <param name="Exception">Exception to throw if predicate is true</param>
+        /// <returns>the original Item</returns>
+        public static IEnumerable<T> ThrowIfAny<T>(this IEnumerable<T> List, Predicate<T> Predicate, Func<Exception> Exception)
+        {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
+            foreach (T Item in List)
+            {
+                if (Predicate(Item))
+                    throw Exception();
+            }
+            return List;
+        }
+
+        /// <summary>
+        /// Throws the specified exception if the predicate is true for any items
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="List">The item</param>
+        /// <param name="Predicate">Predicate to check</param>
+        /// <param name="Exception">Exception to throw if predicate is true</param>
+        /// <returns>the original Item</returns>
+        public static IEnumerable<T> ThrowIfAny<T>(this IEnumerable<T> List, Predicate<T> Predicate, Exception Exception)
+        {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
+            foreach (T Item in List)
+            {
+                if (Predicate(Item))
+                    throw Exception;
+            }
+            return List;
+        }
 
         /// <summary>
         /// Converts the IEnumerable to a DataTable
@@ -546,9 +563,20 @@ namespace Utilities.DataTypes
             return ReturnValue;
         }
 
-        #endregion To
-
-        #region ToList
+        /// <summary>
+        /// Converts a list to an array
+        /// </summary>
+        /// <typeparam name="Source">Source type</typeparam>
+        /// <typeparam name="Target">Target type</typeparam>
+        /// <param name="List">List to convert</param>
+        /// <param name="ConvertingFunction">Function used to convert each item</param>
+        /// <returns>The array containing the items from the list</returns>
+        public static Target[] ToArray<Source, Target>(this IEnumerable<Source> List, Func<Source, Target> ConvertingFunction)
+        {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(ConvertingFunction != null, "ConvertingFunction");
+            return List.ForEach(ConvertingFunction).ToArray();
+        }
 
         /// <summary>
         /// Converts an IEnumerable to a list
@@ -564,10 +592,6 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(ConvertingFunction != null, "ConvertingFunction");
             return List.ForEach(ConvertingFunction).ToList();
         }
-
-        #endregion ToList
-
-        #region ToString
 
         /// <summary>
         /// Converts the list to a string where each item is seperated by the Seperator
@@ -593,102 +617,6 @@ namespace Utilities.DataTypes
             });
             return Builder.ToString();
         }
-
-        #endregion ToString
-
-        #region ThrowIfAll
-
-        /// <summary>
-        /// Throws the specified exception if the predicate is true for all items
-        /// </summary>
-        /// <typeparam name="T">Item type</typeparam>
-        /// <param name="List">The item</param>
-        /// <param name="Predicate">Predicate to check</param>
-        /// <param name="Exception">Exception to throw if predicate is true</param>
-        /// <returns>the original Item</returns>
-        public static IEnumerable<T> ThrowIfAll<T>(this IEnumerable<T> List, Predicate<T> Predicate, Func<Exception> Exception)
-        {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
-            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
-            foreach (T Item in List)
-            {
-                if (!Predicate(Item))
-                    return List;
-            }
-            throw Exception();
-        }
-
-        /// <summary>
-        /// Throws the specified exception if the predicate is true for all items
-        /// </summary>
-        /// <typeparam name="T">Item type</typeparam>
-        /// <param name="List">The item</param>
-        /// <param name="Predicate">Predicate to check</param>
-        /// <param name="Exception">Exception to throw if predicate is true</param>
-        /// <returns>the original Item</returns>
-        public static IEnumerable<T> ThrowIfAll<T>(this IEnumerable<T> List, Predicate<T> Predicate, Exception Exception)
-        {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
-            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
-            foreach (T Item in List)
-            {
-                if (!Predicate(Item))
-                    return List;
-            }
-            throw Exception;
-        }
-
-        #endregion ThrowIfAll
-
-        #region ThrowIfAny
-
-        /// <summary>
-        /// Throws the specified exception if the predicate is true for any items
-        /// </summary>
-        /// <typeparam name="T">Item type</typeparam>
-        /// <param name="List">The item</param>
-        /// <param name="Predicate">Predicate to check</param>
-        /// <param name="Exception">Exception to throw if predicate is true</param>
-        /// <returns>the original Item</returns>
-        public static IEnumerable<T> ThrowIfAny<T>(this IEnumerable<T> List, Predicate<T> Predicate, Func<Exception> Exception)
-        {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
-            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
-            foreach (T Item in List)
-            {
-                if (Predicate(Item))
-                    throw Exception();
-            }
-            return List;
-        }
-
-        /// <summary>
-        /// Throws the specified exception if the predicate is true for any items
-        /// </summary>
-        /// <typeparam name="T">Item type</typeparam>
-        /// <param name="List">The item</param>
-        /// <param name="Predicate">Predicate to check</param>
-        /// <param name="Exception">Exception to throw if predicate is true</param>
-        /// <returns>the original Item</returns>
-        public static IEnumerable<T> ThrowIfAny<T>(this IEnumerable<T> List, Predicate<T> Predicate, Exception Exception)
-        {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
-            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
-            foreach (T Item in List)
-            {
-                if (Predicate(Item))
-                    throw Exception;
-            }
-            return List;
-        }
-
-        #endregion ThrowIfAny
-
-        #region Transverse
 
         /// <summary>
         /// Transverses a hierarchy given the child elements getter.
@@ -728,9 +656,5 @@ namespace Utilities.DataTypes
             foreach (T inner in Transverse(property(item), property))
                 yield return inner;
         }
-
-        #endregion Transverse
-
-        #endregion Functions
     }
 }

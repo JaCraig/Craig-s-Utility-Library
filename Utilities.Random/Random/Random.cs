@@ -19,12 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Diagnostics.Contracts;
-
-#endregion Usings
 
 namespace Utilities.Random
 {
@@ -33,7 +29,10 @@ namespace Utilities.Random
     /// </summary>
     public class Random : System.Random
     {
-        #region Constructors
+        private static Random GlobalSeed = new Random();
+
+        [ThreadStatic]
+        private static Random Local;
 
         /// <summary>
         /// Constructor
@@ -51,21 +50,6 @@ namespace Utilities.Random
             : base(Seed)
         {
         }
-
-        #endregion Constructors
-
-        #region Private Variables
-
-        private static Random GlobalSeed = new Random();
-
-        [ThreadStatic]
-        private static Random Local;
-
-        #endregion Private Variables
-
-        #region Static Functions
-
-        #region ThreadSafeNext
 
         /// <summary>
         /// A thread safe version of a random number generation
@@ -85,9 +69,5 @@ namespace Utilities.Random
             }
             return Local.Next(Min, Max);
         }
-
-        #endregion ThreadSafeNext
-
-        #endregion Static Functions
     }
 }

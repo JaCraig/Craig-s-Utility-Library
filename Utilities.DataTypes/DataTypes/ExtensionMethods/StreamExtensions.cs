@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -37,9 +33,19 @@ namespace Utilities.DataTypes
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class StreamExtensions
     {
-        #region Functions
-
-        #region ReadAllBinary
+        /// <summary>
+        /// Takes all of the data in the stream and returns it as a string
+        /// </summary>
+        /// <param name="Input">Input stream</param>
+        /// <param name="EncodingUsing">
+        /// Encoding that the string should be in (defaults to UTF8)
+        /// </param>
+        /// <returns>A string containing the content of the stream</returns>
+        public static string ReadAll(this Stream Input, Encoding EncodingUsing = null)
+        {
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
+            return Input.ReadAllBinary().ToString(EncodingUsing);
+        }
 
         /// <summary>
         /// Takes all of the data in the stream and returns it as an array of bytes
@@ -69,27 +75,5 @@ namespace Utilities.DataTypes
             }
             return ReturnValue;
         }
-
-        #endregion ReadAllBinary
-
-        #region ReadAll
-
-        /// <summary>
-        /// Takes all of the data in the stream and returns it as a string
-        /// </summary>
-        /// <param name="Input">Input stream</param>
-        /// <param name="EncodingUsing">
-        /// Encoding that the string should be in (defaults to UTF8)
-        /// </param>
-        /// <returns>A string containing the content of the stream</returns>
-        public static string ReadAll(this Stream Input, Encoding EncodingUsing = null)
-        {
-            Contract.Requires<ArgumentNullException>(Input != null, "Input");
-            return Input.ReadAllBinary().ToString(EncodingUsing);
-        }
-
-        #endregion ReadAll
-
-        #endregion Functions
     }
 }

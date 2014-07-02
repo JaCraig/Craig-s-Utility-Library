@@ -19,14 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Utilities.IO.Enums;
-
-#endregion Usings
 
 namespace Utilities.IO.FileSystem.Interfaces
 {
@@ -35,8 +31,6 @@ namespace Utilities.IO.FileSystem.Interfaces
     /// </summary>
     public interface IDirectory : IComparable<IDirectory>, IEnumerable<IFile>, IComparable, IEquatable<IDirectory>, ICloneable
     {
-        #region Properties
-
         /// <summary>
         /// Last time it was accessed
         /// </summary>
@@ -81,10 +75,6 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// Size of the contents of the directory in bytes
         /// </summary>
         long Size { get; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Copies the directory to the specified parent directory
@@ -146,7 +136,5 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// </summary>
         /// <param name="Name">The new name of the directory</param>
         void Rename(string Name);
-
-        #endregion Functions
     }
 }

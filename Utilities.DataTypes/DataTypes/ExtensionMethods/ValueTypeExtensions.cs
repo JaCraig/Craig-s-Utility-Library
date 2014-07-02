@@ -19,130 +19,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Text;
 
-#endregion Usings
-
 namespace Utilities.DataTypes
 {
-    /// <summary>
-    /// Value type extension methods
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public static class ValueTypeExtensions
-    {
-        #region Functions
-
-        #region ToString
-
-        /// <summary>
-        /// Converts a byte array into a base 64 string
-        /// </summary>
-        /// <param name="Input">Input array</param>
-        /// <param name="Count">
-        /// Number of bytes starting at the index to convert (use -1 for the entire array starting
-        /// at the index)
-        /// </param>
-        /// <param name="Index">Index to start at</param>
-        /// <param name="Options">Base 64 formatting options</param>
-        /// <returns>The equivalent byte array in a base 64 string</returns>
-        public static string ToString(this byte[] Input, Base64FormattingOptions Options, int Index = 0, int Count = -1)
-        {
-            Contract.Requires<ArgumentException>(Index >= 0, "Index");
-            if (Count == -1)
-                Count = Input.Length - Index;
-            return Input == null ? "" : Convert.ToBase64String(Input, Index, Count, Options);
-        }
-
-        /// <summary>
-        /// Converts a byte array to a string
-        /// </summary>
-        /// <param name="Input">input array</param>
-        /// <param name="EncodingUsing">
-        /// The type of encoding the string is using (defaults to UTF8)
-        /// </param>
-        /// <param name="Count">
-        /// Number of bytes starting at the index to convert (use -1 for the entire array starting
-        /// at the index)
-        /// </param>
-        /// <param name="Index">Index to start at</param>
-        /// <returns>string of the byte array</returns>
-        public static string ToString(this byte[] Input, Encoding EncodingUsing, int Index = 0, int Count = -1)
-        {
-            if (Input == null)
-                return "";
-            if (Count == -1)
-                Count = Input.Length - Index;
-            return EncodingUsing.Check(new UTF8Encoding()).GetString(Input, Index, Count);
-        }
-
-        #endregion ToString
-
-        #region Is
-
-        /// <summary>
-        /// Is the character of a specific type
-        /// </summary>
-        /// <param name="Value">Value to check</param>
-        /// <param name="CharacterType">Character type</param>
-        /// <returns>True if it is, false otherwise</returns>
-        public static bool Is(this char Value, CharIs CharacterType)
-        {
-            if (CharacterType.HasFlag(CharIs.WhiteSpace))
-                return char.IsWhiteSpace(Value);
-            if (CharacterType.HasFlag(CharIs.Upper))
-                return char.IsUpper(Value);
-            if (CharacterType.HasFlag(CharIs.Symbol))
-                return char.IsSymbol(Value);
-            if (CharacterType.HasFlag(CharIs.Surrogate))
-                return char.IsSurrogate(Value);
-            if (CharacterType.HasFlag(CharIs.Punctuation))
-                return char.IsPunctuation(Value);
-            if (CharacterType.HasFlag(CharIs.Number))
-                return char.IsNumber(Value);
-            if (CharacterType.HasFlag(CharIs.LowSurrogate))
-                return char.IsLowSurrogate(Value);
-            if (CharacterType.HasFlag(CharIs.Lower))
-                return char.IsLower(Value);
-            if (CharacterType.HasFlag(CharIs.LetterOrDigit))
-                return char.IsLetterOrDigit(Value);
-            if (CharacterType.HasFlag(CharIs.Letter))
-                return char.IsLetter(Value);
-            if (CharacterType.HasFlag(CharIs.HighSurrogate))
-                return char.IsHighSurrogate(Value);
-            if (CharacterType.HasFlag(CharIs.Digit))
-                return char.IsDigit(Value);
-            if (CharacterType.HasFlag(CharIs.Control))
-                return char.IsControl(Value);
-            return false;
-        }
-
-        #endregion Is
-
-        #region IsUnicode
-
-        /// <summary>
-        /// Determines if a byte array is unicode
-        /// </summary>
-        /// <param name="Input">Input array</param>
-        /// <returns>True if it's unicode, false otherwise</returns>
-        public static bool IsUnicode(this byte[] Input)
-        {
-            return Input == null ? true : Input.ToString(new UnicodeEncoding()).Is(StringCompare.Unicode);
-        }
-
-        #endregion IsUnicode
-
-        #endregion Functions
-    }
-
-    #region Enums
-
     /// <summary>
     /// What type of character is this
     /// </summary>
@@ -215,5 +98,98 @@ namespace Utilities.DataTypes
         Control = 4096
     }
 
-    #endregion Enums
+    /// <summary>
+    /// Value type extension methods
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public static class ValueTypeExtensions
+    {
+        /// <summary>
+        /// Is the character of a specific type
+        /// </summary>
+        /// <param name="Value">Value to check</param>
+        /// <param name="CharacterType">Character type</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool Is(this char Value, CharIs CharacterType)
+        {
+            if (CharacterType.HasFlag(CharIs.WhiteSpace))
+                return char.IsWhiteSpace(Value);
+            if (CharacterType.HasFlag(CharIs.Upper))
+                return char.IsUpper(Value);
+            if (CharacterType.HasFlag(CharIs.Symbol))
+                return char.IsSymbol(Value);
+            if (CharacterType.HasFlag(CharIs.Surrogate))
+                return char.IsSurrogate(Value);
+            if (CharacterType.HasFlag(CharIs.Punctuation))
+                return char.IsPunctuation(Value);
+            if (CharacterType.HasFlag(CharIs.Number))
+                return char.IsNumber(Value);
+            if (CharacterType.HasFlag(CharIs.LowSurrogate))
+                return char.IsLowSurrogate(Value);
+            if (CharacterType.HasFlag(CharIs.Lower))
+                return char.IsLower(Value);
+            if (CharacterType.HasFlag(CharIs.LetterOrDigit))
+                return char.IsLetterOrDigit(Value);
+            if (CharacterType.HasFlag(CharIs.Letter))
+                return char.IsLetter(Value);
+            if (CharacterType.HasFlag(CharIs.HighSurrogate))
+                return char.IsHighSurrogate(Value);
+            if (CharacterType.HasFlag(CharIs.Digit))
+                return char.IsDigit(Value);
+            if (CharacterType.HasFlag(CharIs.Control))
+                return char.IsControl(Value);
+            return false;
+        }
+
+        /// <summary>
+        /// Determines if a byte array is unicode
+        /// </summary>
+        /// <param name="Input">Input array</param>
+        /// <returns>True if it's unicode, false otherwise</returns>
+        public static bool IsUnicode(this byte[] Input)
+        {
+            return Input == null ? true : Input.ToString(new UnicodeEncoding()).Is(StringCompare.Unicode);
+        }
+
+        /// <summary>
+        /// Converts a byte array into a base 64 string
+        /// </summary>
+        /// <param name="Input">Input array</param>
+        /// <param name="Count">
+        /// Number of bytes starting at the index to convert (use -1 for the entire array starting
+        /// at the index)
+        /// </param>
+        /// <param name="Index">Index to start at</param>
+        /// <param name="Options">Base 64 formatting options</param>
+        /// <returns>The equivalent byte array in a base 64 string</returns>
+        public static string ToString(this byte[] Input, Base64FormattingOptions Options, int Index = 0, int Count = -1)
+        {
+            Contract.Requires<ArgumentException>(Index >= 0, "Index");
+            if (Count == -1)
+                Count = Input.Length - Index;
+            return Input == null ? "" : Convert.ToBase64String(Input, Index, Count, Options);
+        }
+
+        /// <summary>
+        /// Converts a byte array to a string
+        /// </summary>
+        /// <param name="Input">input array</param>
+        /// <param name="EncodingUsing">
+        /// The type of encoding the string is using (defaults to UTF8)
+        /// </param>
+        /// <param name="Count">
+        /// Number of bytes starting at the index to convert (use -1 for the entire array starting
+        /// at the index)
+        /// </param>
+        /// <param name="Index">Index to start at</param>
+        /// <returns>string of the byte array</returns>
+        public static string ToString(this byte[] Input, Encoding EncodingUsing, int Index = 0, int Count = -1)
+        {
+            if (Input == null)
+                return "";
+            if (Count == -1)
+                Count = Input.Length - Index;
+            return EncodingUsing.Check(new UTF8Encoding()).GetString(Input, Index, Count);
+        }
+    }
 }

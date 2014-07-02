@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-
-#endregion Usings
 
 namespace Utilities.Validation
 {
@@ -35,8 +31,6 @@ namespace Utilities.Validation
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ObjectExtensions
     {
-        #region TryValidate
-
         /// <summary>
         /// Determines if the object is valid
         /// </summary>
@@ -51,10 +45,6 @@ namespace Utilities.Validation
             return Validator.TryValidateObject(Object, new ValidationContext(Object, null, null), Results, true);
         }
 
-        #endregion TryValidate
-
-        #region Validate
-
         /// <summary>
         /// Determines if the object is valid
         /// </summary>
@@ -67,7 +57,5 @@ namespace Utilities.Validation
                 return;
             Validator.ValidateObject(Object, new ValidationContext(Object, null, null), true);
         }
-
-        #endregion Validate
     }
 }

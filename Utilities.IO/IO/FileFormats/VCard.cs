@@ -19,24 +19,116 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.IO.FileFormats.BaseClasses;
 
-#endregion Usings
-
 namespace Utilities.IO.FileFormats
 {
+    /// <summary>
+    /// Enum defining relationships (used for XFN markup)
+    /// </summary>
+    public enum Relationship
+    {
+        /// <summary>
+        /// Friend
+        /// </summary>
+        Friend,
+
+        /// <summary>
+        /// Acquaintance
+        /// </summary>
+        Acquaintance,
+
+        /// <summary>
+        /// Contact
+        /// </summary>
+        Contact,
+
+        /// <summary>
+        /// Met
+        /// </summary>
+        Met,
+
+        /// <summary>
+        /// Coworker
+        /// </summary>
+        CoWorker,
+
+        /// <summary>
+        /// Colleague
+        /// </summary>
+        Colleague,
+
+        /// <summary>
+        /// Coresident
+        /// </summary>
+        CoResident,
+
+        /// <summary>
+        /// Neighbor
+        /// </summary>
+        Neighbor,
+
+        /// <summary>
+        /// Child
+        /// </summary>
+        Child,
+
+        /// <summary>
+        /// Parent
+        /// </summary>
+        Parent,
+
+        /// <summary>
+        /// Sibling
+        /// </summary>
+        Sibling,
+
+        /// <summary>
+        /// Spouse
+        /// </summary>
+        Spouse,
+
+        /// <summary>
+        /// Kin
+        /// </summary>
+        Kin,
+
+        /// <summary>
+        /// Muse
+        /// </summary>
+        Muse,
+
+        /// <summary>
+        /// Crush
+        /// </summary>
+        Crush,
+
+        /// <summary>
+        /// Date
+        /// </summary>
+        Date,
+
+        /// <summary>
+        /// Sweetheart
+        /// </summary>
+        Sweetheart,
+
+        /// <summary>
+        /// Me
+        /// </summary>
+        Me
+    }
+
     /// <summary>
     /// VCard class
     /// </summary>
     public class VCard : StringFormatBase<VCard>
     {
-        #region Constructor
+        private static readonly Regex STRIP_HTML_REGEX = new Regex("<[^>]*>", RegexOptions.Compiled);
 
         /// <summary>
         /// Constructor
@@ -46,10 +138,6 @@ namespace Utilities.IO.FileFormats
         {
             Relationships = new List<Relationship>();
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Work phone number of the individual
@@ -142,12 +230,6 @@ namespace Utilities.IO.FileFormats
                 return new StringBuilder().AppendFormat(CultureInfo.CurrentCulture, "{0};{1};{2};{3};{4}", LastName, FirstName, MiddleName, Prefix, Suffix).ToString();
             }
         }
-
-        #endregion Properties
-
-        #region Public Functions
-
-        private static readonly Regex STRIP_HTML_REGEX = new Regex("<[^>]*>", RegexOptions.Compiled);
 
         /// <summary>
         /// Gets the hCard version of the vCard
@@ -266,107 +348,5 @@ namespace Utilities.IO.FileFormats
             HTML = HTML.Replace("&nbsp;", " ");
             return HTML.Replace("&#160;", string.Empty);
         }
-
-        #endregion Public Functions
     }
-
-    #region Enums
-
-    /// <summary>
-    /// Enum defining relationships (used for XFN markup)
-    /// </summary>
-    public enum Relationship
-    {
-        /// <summary>
-        /// Friend
-        /// </summary>
-        Friend,
-
-        /// <summary>
-        /// Acquaintance
-        /// </summary>
-        Acquaintance,
-
-        /// <summary>
-        /// Contact
-        /// </summary>
-        Contact,
-
-        /// <summary>
-        /// Met
-        /// </summary>
-        Met,
-
-        /// <summary>
-        /// Coworker
-        /// </summary>
-        CoWorker,
-
-        /// <summary>
-        /// Colleague
-        /// </summary>
-        Colleague,
-
-        /// <summary>
-        /// Coresident
-        /// </summary>
-        CoResident,
-
-        /// <summary>
-        /// Neighbor
-        /// </summary>
-        Neighbor,
-
-        /// <summary>
-        /// Child
-        /// </summary>
-        Child,
-
-        /// <summary>
-        /// Parent
-        /// </summary>
-        Parent,
-
-        /// <summary>
-        /// Sibling
-        /// </summary>
-        Sibling,
-
-        /// <summary>
-        /// Spouse
-        /// </summary>
-        Spouse,
-
-        /// <summary>
-        /// Kin
-        /// </summary>
-        Kin,
-
-        /// <summary>
-        /// Muse
-        /// </summary>
-        Muse,
-
-        /// <summary>
-        /// Crush
-        /// </summary>
-        Crush,
-
-        /// <summary>
-        /// Date
-        /// </summary>
-        Date,
-
-        /// <summary>
-        /// Sweetheart
-        /// </summary>
-        Sweetheart,
-
-        /// <summary>
-        /// Me
-        /// </summary>
-        Me
-    }
-
-    #endregion Enums
 }

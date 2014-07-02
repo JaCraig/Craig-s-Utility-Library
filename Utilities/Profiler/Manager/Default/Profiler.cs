@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,8 +27,6 @@ using System.Reflection;
 using System.Text;
 using Utilities.DataTypes;
 using Utilities.Profiler.Manager.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.Profiler.Manager.Default
 {
@@ -41,8 +37,6 @@ namespace Utilities.Profiler.Manager.Default
     /// </summary>
     public class Profiler : IProfiler, IResult
     {
-        #region Constructors
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -82,9 +76,13 @@ namespace Utilities.Profiler.Manager.Default
             Start();
         }
 
-        #endregion Constructors
-
-        #region Properties
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        ~Profiler()
+        {
+            Dispose(false);
+        }
 
         /// <summary>
         /// Contains the current profiler
@@ -172,10 +170,6 @@ namespace Utilities.Profiler.Manager.Default
         /// Stop watch
         /// </summary>
         protected StopWatch StopWatch { get; set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Compares the profilers and determines if they are not equal
@@ -330,15 +324,5 @@ namespace Utilities.Profiler.Manager.Default
             if (Disposing)
                 Stop();
         }
-
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        ~Profiler()
-        {
-            Dispose(false);
-        }
-
-        #endregion Functions
     }
 }

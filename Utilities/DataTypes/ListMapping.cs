@@ -19,12 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -36,8 +32,6 @@ namespace Utilities.DataTypes
     [Serializable]
     public class ListMapping<T1, T2> : IDictionary<T1, ICollection<T2>>
     {
-        #region Constructors
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -46,20 +40,59 @@ namespace Utilities.DataTypes
             Items = new Dictionary<T1, ICollection<T2>>();
         }
 
-        #endregion Constructors
+        /// <summary>
+        /// The number of items in the listing
+        /// </summary>
+        public virtual int Count
+        {
+            get { return Items.Count; }
+        }
 
-        #region Private Variables
+        /// <summary>
+        /// Not read only
+        /// </summary>
+        public bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// The list of keys within the mapping
+        /// </summary>
+        public virtual ICollection<T1> Keys
+        {
+            get { return Items.Keys; }
+        }
+
+        /// <summary>
+        /// List that contains the list of values
+        /// </summary>
+        public ICollection<ICollection<T2>> Values
+        {
+            get
+            {
+                List<ICollection<T2>> Lists = new List<ICollection<T2>>();
+                foreach (T1 Key in Keys)
+                    Lists.Add(this[Key]);
+                return Lists;
+            }
+        }
 
         /// <summary>
         /// Container holding the data
         /// </summary>
         protected Dictionary<T1, ICollection<T2>> Items { get; private set; }
 
-        #endregion Private Variables
-
-        #region Public Functions
-
-        #region Add
+        /// <summary>
+        /// Gets a list of values associated with a key
+        /// </summary>
+        /// <param name="key">Key to look for</param>
+        /// <returns>The list of values</returns>
+        public virtual ICollection<T2> this[T1 key]
+        {
+            get { return Items[key]; }
+            set { Items[key] = value; }
+        }
 
         /// <summary>
         /// Adds an item to the mapping
@@ -100,69 +133,6 @@ namespace Utilities.DataTypes
             Items[Key].Add(Value);
         }
 
-        #endregion Add
-
-        #region ContainsKey
-
-        /// <summary>
-        /// Determines if a key exists
-        /// </summary>
-        /// <param name="key">Key to check on</param>
-        /// <returns>True if it exists, false otherwise</returns>
-        public virtual bool ContainsKey(T1 key)
-        {
-            return Items.ContainsKey(key);
-        }
-
-        #endregion ContainsKey
-
-        #region Remove
-
-        /// <summary>
-        /// Remove a list of items associated with a key
-        /// </summary>
-        /// <param name="key">Key to use</param>
-        /// <returns>True if the key is found, false otherwise</returns>
-        public virtual bool Remove(T1 key)
-        {
-            return Items.Remove(key);
-        }
-
-        /// <summary>
-        /// Removes a key value pair from the list mapping
-        /// </summary>
-        /// <param name="item">items to remove</param>
-        /// <returns>True if it is removed, false otherwise</returns>
-        public virtual bool Remove(KeyValuePair<T1, ICollection<T2>> item)
-        {
-            if (!Contains(item))
-                return false;
-            foreach (T2 Value in item.Value)
-                if (!Remove(item.Key, Value))
-                    return false;
-            return true;
-        }
-
-        /// <summary>
-        /// Removes a key value pair from the list mapping
-        /// </summary>
-        /// <param name="Key">Key to remove</param>
-        /// <param name="Value">Value to remove</param>
-        /// <returns>True if it is removed, false otherwise</returns>
-        public virtual bool Remove(T1 Key, T2 Value)
-        {
-            if (!Contains(Key, Value))
-                return false;
-            this[Key].Remove(Value);
-            if (this[Key].Count == 0)
-                Remove(Key);
-            return true;
-        }
-
-        #endregion Remove
-
-        #region Clear
-
         /// <summary>
         /// Clears all items from the listing
         /// </summary>
@@ -170,31 +140,6 @@ namespace Utilities.DataTypes
         {
             Items.Clear();
         }
-
-        #endregion Clear
-
-        #region TryGetValue
-
-        /// <summary>
-        /// Tries to get the value associated with the key
-        /// </summary>
-        /// <param name="Key">Key value</param>
-        /// <param name="Value">The values getting</param>
-        /// <returns>True if it was able to get the value, false otherwise</returns>
-        public virtual bool TryGetValue(T1 Key, out ICollection<T2> Value)
-        {
-            if (ContainsKey(Key))
-            {
-                Value = this[Key];
-                return true;
-            }
-            Value = new List<T2>();
-            return false;
-        }
-
-        #endregion TryGetValue
-
-        #region Contains
 
         /// <summary>
         /// Does this contain the key value pairs?
@@ -241,9 +186,15 @@ namespace Utilities.DataTypes
             return true;
         }
 
-        #endregion Contains
-
-        #region CopyTo
+        /// <summary>
+        /// Determines if a key exists
+        /// </summary>
+        /// <param name="key">Key to check on</param>
+        /// <returns>True if it exists, false otherwise</returns>
+        public virtual bool ContainsKey(T1 key)
+        {
+            return Items.ContainsKey(key);
+        }
 
         /// <summary>
         /// Not implemented
@@ -254,10 +205,6 @@ namespace Utilities.DataTypes
         {
             throw new NotImplementedException();
         }
-
-        #endregion CopyTo
-
-        #region GetEnumerator
 
         /// <summary>
         /// Gets the enumerator
@@ -270,6 +217,47 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
+        /// Remove a list of items associated with a key
+        /// </summary>
+        /// <param name="key">Key to use</param>
+        /// <returns>True if the key is found, false otherwise</returns>
+        public virtual bool Remove(T1 key)
+        {
+            return Items.Remove(key);
+        }
+
+        /// <summary>
+        /// Removes a key value pair from the list mapping
+        /// </summary>
+        /// <param name="item">items to remove</param>
+        /// <returns>True if it is removed, false otherwise</returns>
+        public virtual bool Remove(KeyValuePair<T1, ICollection<T2>> item)
+        {
+            if (!Contains(item))
+                return false;
+            foreach (T2 Value in item.Value)
+                if (!Remove(item.Key, Value))
+                    return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Removes a key value pair from the list mapping
+        /// </summary>
+        /// <param name="Key">Key to remove</param>
+        /// <param name="Value">Value to remove</param>
+        /// <returns>True if it is removed, false otherwise</returns>
+        public virtual bool Remove(T1 Key, T2 Value)
+        {
+            if (!Contains(Key, Value))
+                return false;
+            this[Key].Remove(Value);
+            if (this[Key].Count == 0)
+                Remove(Key);
+            return true;
+        }
+
+        /// <summary>
         /// Gets the enumerator
         /// </summary>
         /// <returns>The enumerator for this object</returns>
@@ -279,61 +267,21 @@ namespace Utilities.DataTypes
                 yield return this[Key];
         }
 
-        #endregion GetEnumerator
-
-        #endregion Public Functions
-
-        #region Properties
-
         /// <summary>
-        /// The number of items in the listing
+        /// Tries to get the value associated with the key
         /// </summary>
-        public virtual int Count
+        /// <param name="Key">Key value</param>
+        /// <param name="Value">The values getting</param>
+        /// <returns>True if it was able to get the value, false otherwise</returns>
+        public virtual bool TryGetValue(T1 Key, out ICollection<T2> Value)
         {
-            get { return Items.Count; }
-        }
-
-        /// <summary>
-        /// Not read only
-        /// </summary>
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// The list of keys within the mapping
-        /// </summary>
-        public virtual ICollection<T1> Keys
-        {
-            get { return Items.Keys; }
-        }
-
-        /// <summary>
-        /// List that contains the list of values
-        /// </summary>
-        public ICollection<ICollection<T2>> Values
-        {
-            get
+            if (ContainsKey(Key))
             {
-                List<ICollection<T2>> Lists = new List<ICollection<T2>>();
-                foreach (T1 Key in Keys)
-                    Lists.Add(this[Key]);
-                return Lists;
+                Value = this[Key];
+                return true;
             }
+            Value = new List<T2>();
+            return false;
         }
-
-        /// <summary>
-        /// Gets a list of values associated with a key
-        /// </summary>
-        /// <param name="key">Key to look for</param>
-        /// <returns>The list of values</returns>
-        public virtual ICollection<T2> this[T1 key]
-        {
-            get { return Items[key]; }
-            set { Items[key] = value; }
-        }
-
-        #endregion Properties
     }
 }

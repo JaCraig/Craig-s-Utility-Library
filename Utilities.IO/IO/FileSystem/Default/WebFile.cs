@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -31,8 +29,6 @@ using Utilities.DataTypes;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
 
-#endregion Usings
-
 namespace Utilities.IO.FileSystem.Default
 {
     /// <summary>
@@ -40,8 +36,6 @@ namespace Utilities.IO.FileSystem.Default
     /// </summary>
     public class WebFile : FileBase<Uri, WebFile>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -73,10 +67,6 @@ namespace Utilities.IO.FileSystem.Default
             : base(File, UserName, Password, Domain)
         {
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Time accessed (Just returns now)
@@ -149,10 +139,6 @@ namespace Utilities.IO.FileSystem.Default
         {
             get { return InternalFile == null ? "" : InternalFile.AbsolutePath; }
         }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Copies the file to another directory
@@ -321,7 +307,5 @@ namespace Utilities.IO.FileSystem.Default
                 Request.Credentials = new NetworkCredential(UserName, Password);
             }
         }
-
-        #endregion Functions
     }
 }

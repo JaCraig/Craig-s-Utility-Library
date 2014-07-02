@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,8 +29,6 @@ using System.Text;
 using Utilities.IoC.BaseClasses;
 using Utilities.IoC.Default.Interfaces;
 
-#endregion Usings
-
 namespace Utilities.IoC.Default
 {
     /// <summary>
@@ -40,6 +36,8 @@ namespace Utilities.IoC.Default
     /// </summary>
     public class DefaultBootstrapper : BootstrapperBase<IDictionary<Tuple<Type, string>, ITypeBuilder>>
     {
+        private IDictionary<Tuple<Type, string>, ITypeBuilder> _AppContainer = null;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -65,8 +63,6 @@ namespace Utilities.IoC.Default
         {
             get { return _AppContainer; }
         }
-
-        private IDictionary<Tuple<Type, string>, ITypeBuilder> _AppContainer = null;
 
         /// <summary>
         /// Registers an object

@@ -19,12 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System.Collections.Generic;
 using System.Linq;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -34,8 +30,6 @@ namespace Utilities.DataTypes
     /// <typeparam name="T">The type of the values placed in the queue</typeparam>
     public class PriorityQueue<T> : ListMapping<int, T>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -45,9 +39,10 @@ namespace Utilities.DataTypes
             HighestKey = int.MinValue;
         }
 
-        #endregion Constructor
-
-        #region Public Functions
+        /// <summary>
+        /// Highest value key
+        /// </summary>
+        protected virtual int HighestKey { get; set; }
 
         /// <summary>
         /// Adds an item to the queue
@@ -116,16 +111,5 @@ namespace Utilities.DataTypes
             }
             return ReturnValue;
         }
-
-        #endregion Public Functions
-
-        #region Protected Variables
-
-        /// <summary>
-        /// Highest value key
-        /// </summary>
-        protected virtual int HighestKey { get; set; }
-
-        #endregion Protected Variables
     }
 }

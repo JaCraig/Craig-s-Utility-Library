@@ -19,14 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using Utilities.IO.Logging.Enums;
 using Utilities.IO.Logging.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.IO.Logging.BaseClasses
 {
@@ -46,8 +42,6 @@ namespace Utilities.IO.Logging.BaseClasses
     public abstract class LogBase<LogType> : ILog
         where LogType : LogBase<LogType>
     {
-        #region Constructors
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -58,9 +52,13 @@ namespace Utilities.IO.Logging.BaseClasses
             this.Log = new Dictionary<MessageType, Action<string>>();
         }
 
-        #endregion Constructors
-
-        #region Properties
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        ~LogBase()
+        {
+            Dispose(false);
+        }
 
         /// <summary>
         /// Name of the log
@@ -86,10 +84,6 @@ namespace Utilities.IO.Logging.BaseClasses
         /// Called when the log is "opened"
         /// </summary>
         protected Action<LogType> Start { get; set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Disposes the object
@@ -133,15 +127,5 @@ namespace Utilities.IO.Logging.BaseClasses
             if (Disposing)
                 End((LogType)this);
         }
-
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        ~LogBase()
-        {
-            Dispose(false);
-        }
-
-        #endregion Functions
     }
 }

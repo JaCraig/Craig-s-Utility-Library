@@ -19,20 +19,15 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics.CodeAnalysis;
 using Utilities.DataTypes;
 using Utilities.DataTypes.EventArgs;
 using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.Random.DefaultClasses;
 using Utilities.Validation;
-
-#endregion Usings
 
 namespace Utilities.ORM
 {
@@ -46,6 +41,11 @@ namespace Utilities.ORM
         where ObjectType : ObjectBaseClass<ObjectType, IDType>, new()
         where IDType : IComparable
     {
+        /// <summary>
+        /// Called prior to an object is loading
+        /// </summary>
+        public static EventHandler<LoadingEventArgs> Loading;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -105,11 +105,6 @@ namespace Utilities.ORM
         /// Called prior to an object is saving
         /// </summary>
         public EventHandler<SavingEventArgs> Saving { get; set; }
-
-        /// <summary>
-        /// Called prior to an object is loading
-        /// </summary>
-        public static EventHandler<LoadingEventArgs> Loading;
 
         /// <summary>
         /// Loads the items based on type

@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-#endregion Usings
 
 namespace Utilities.DataTypes.AOP.Interfaces
 {
@@ -34,7 +30,20 @@ namespace Utilities.DataTypes.AOP.Interfaces
     /// </summary>
     public interface IAspect
     {
-        #region Functions
+        /// <summary>
+        /// Set of assemblies that the aspect requires
+        /// </summary>
+        ICollection<Assembly> AssembliesUsing { get; }
+
+        /// <summary>
+        /// List of interfaces that need to be injected by this aspect
+        /// </summary>
+        ICollection<Type> InterfacesUsing { get; }
+
+        /// <summary>
+        /// Using statements that the aspect requires
+        /// </summary>
+        ICollection<string> Usings { get; }
 
         /// <summary>
         /// Used to hook into the object once it has been created
@@ -80,26 +89,5 @@ namespace Utilities.DataTypes.AOP.Interfaces
         /// <param name="BaseType">Base type</param>
         /// <returns>The code to insert</returns>
         string SetupStartMethod(MethodInfo Method, Type BaseType);
-
-        #endregion Functions
-
-        #region Properties
-
-        /// <summary>
-        /// Set of assemblies that the aspect requires
-        /// </summary>
-        ICollection<Assembly> AssembliesUsing { get; }
-
-        /// <summary>
-        /// List of interfaces that need to be injected by this aspect
-        /// </summary>
-        ICollection<Type> InterfacesUsing { get; }
-
-        /// <summary>
-        /// Using statements that the aspect requires
-        /// </summary>
-        ICollection<string> Usings { get; }
-
-        #endregion Properties
     }
 }

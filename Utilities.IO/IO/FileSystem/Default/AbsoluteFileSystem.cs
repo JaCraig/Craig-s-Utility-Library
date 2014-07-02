@@ -19,11 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using Utilities.IO.FileSystem.BaseClasses;
-
-#endregion Usings
 
 namespace Utilities.IO.FileSystem.Default
 {
@@ -32,8 +28,6 @@ namespace Utilities.IO.FileSystem.Default
     /// </summary>
     public class AbsoluteLocalFileSystem : LocalFileSystemBase
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -41,10 +35,6 @@ namespace Utilities.IO.FileSystem.Default
             : base()
         {
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Name of the file system
@@ -55,10 +45,6 @@ namespace Utilities.IO.FileSystem.Default
         /// Relative starter
         /// </summary>
         protected override string HandleRegexString { get { return @"^\w:"; } }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Gets the absolute path of the variable passed in
@@ -80,7 +66,5 @@ namespace Utilities.IO.FileSystem.Default
         {
             base.Dispose(Managed);
         }
-
-        #endregion Functions
     }
 }

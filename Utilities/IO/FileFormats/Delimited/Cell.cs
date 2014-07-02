@@ -19,10 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
-#endregion Usings
-
 using System;
 using System.Diagnostics.Contracts;
 
@@ -33,8 +29,6 @@ namespace Utilities.IO.FileFormats.Delimited
     /// </summary>
     public class Cell
     {
-        #region Constructors
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -53,18 +47,10 @@ namespace Utilities.IO.FileFormats.Delimited
             Value = Content.Replace("\"", "");
         }
 
-        #endregion Constructors
-
-        #region Properties
-
         /// <summary>
         /// Value within the cell
         /// </summary>
         public string Value { get; set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Converts the string to a cell
@@ -96,7 +82,5 @@ namespace Utilities.IO.FileFormats.Delimited
         {
             return "\"" + Value + "\"";
         }
-
-        #endregion Functions
     }
 }

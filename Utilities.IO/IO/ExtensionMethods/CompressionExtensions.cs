@@ -19,16 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Text;
 using Utilities.DataTypes;
 using Utilities.IO.Compression;
-
-#endregion Usings
 
 namespace Utilities.IO
 {
@@ -54,10 +50,6 @@ namespace Utilities.IO
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class CompressionExtensions
     {
-        #region Functions
-
-        #region Compress
-
         /// <summary>
         /// Compresses the data using the specified compression type
         /// </summary>
@@ -108,10 +100,6 @@ namespace Utilities.IO
             return Data.ToByteArray(EncodingUsing).Compress(CompressionType).ToString(Base64FormattingOptions.None);
         }
 
-        #endregion Compress
-
-        #region Decompress
-
         /// <summary>
         /// Decompresses the byte array that is sent in
         /// </summary>
@@ -161,9 +149,5 @@ namespace Utilities.IO
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(CompressionType), "CompressionType");
             return Data.FromBase64().Decompress(CompressionType).ToString(EncodingUsing);
         }
-
-        #endregion Decompress
-
-        #endregion Functions
     }
 }

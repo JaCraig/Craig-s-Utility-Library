@@ -19,14 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using Utilities.DataTypes.DataMapper.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.DataTypes.DataMapper.BaseClasses
 {
@@ -35,8 +30,6 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
     /// </summary>
     public abstract class DataMapperBase : IDataMapper
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -44,10 +37,6 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         {
             this.Mappings = new ConcurrentDictionary<Tuple<Type, Type>, ITypeMapping>();
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// The name of the data mapper
@@ -58,10 +47,6 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// Mappings
         /// </summary>
         protected ConcurrentDictionary<Tuple<Type, Type>, ITypeMapping> Mappings { get; private set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Adds or returns a mapping between two types
@@ -117,7 +102,5 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <param name="Right">Right type</param>
         /// <returns>A mapping object for the two types specified</returns>
         protected abstract ITypeMapping CreateTypeMapping(Type Left, Type Right);
-
-        #endregion Functions
     }
 }

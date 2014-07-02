@@ -19,14 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Imaging;
-
-#endregion Usings
 
 namespace Utilities.Media
 {
@@ -35,8 +31,6 @@ namespace Utilities.Media
     /// </summary>
     public class ColorMatrix
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -44,19 +38,11 @@ namespace Utilities.Media
         {
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// Matrix containing the values of the ColorMatrix
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         public virtual float[][] Matrix { get; set; }
-
-        #endregion Properties
-
-        #region Public Functions
 
         /// <summary>
         /// Applies the color matrix
@@ -83,7 +69,5 @@ namespace Utilities.Media
             }
             return NewBitmap;
         }
-
-        #endregion Public Functions
     }
 }

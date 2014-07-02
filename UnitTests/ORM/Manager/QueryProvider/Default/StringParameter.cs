@@ -27,6 +27,11 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
 {
     public class StringParameter
     {
+        public StringParameter()
+        {
+            var Bootstrapper = Utilities.IoC.Manager.Bootstrapper;
+        }
+
         [Fact]
         public void Create()
         {

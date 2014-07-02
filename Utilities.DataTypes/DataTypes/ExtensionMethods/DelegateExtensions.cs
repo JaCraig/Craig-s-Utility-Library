@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.ComponentModel;
 using System.Threading;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -35,10 +31,6 @@ namespace Utilities.DataTypes
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class DelegateExtensions
     {
-        #region Functions
-
-        #region Async
-
         /// <summary>
         /// Runs an action async
         /// </summary>
@@ -47,10 +39,6 @@ namespace Utilities.DataTypes
         {
             new Thread(Action.Invoke).Start();
         }
-
-        #endregion Async
-
-        #region Raise
 
         /// <summary>
         /// Safely calls the specified action
@@ -93,9 +81,5 @@ namespace Utilities.DataTypes
                 return Delegate(EventArgs);
             return default(T2);
         }
-
-        #endregion Raise
-
-        #endregion Functions
     }
 }

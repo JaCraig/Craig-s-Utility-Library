@@ -19,16 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.IO;
 using System.Text;
 using Utilities.DataTypes;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.IO.FileSystem.Default
 {
@@ -37,8 +33,6 @@ namespace Utilities.IO.FileSystem.Default
     /// </summary>
     public class LocalFile : FileBase<System.IO.FileInfo, LocalFile>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -64,10 +58,6 @@ namespace Utilities.IO.FileSystem.Default
             : base(File)
         {
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Last time accessed (UTC time)
@@ -140,10 +130,6 @@ namespace Utilities.IO.FileSystem.Default
         {
             get { return InternalFile == null ? "" : InternalFile.Name; }
         }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Copies the file to another directory
@@ -270,7 +256,5 @@ namespace Utilities.IO.FileSystem.Default
             InternalFile.Refresh();
             return Content;
         }
-
-        #endregion Functions
     }
 }

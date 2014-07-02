@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,18 +28,35 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes;
 
-#endregion Usings
-
 namespace Utilities.IO
 {
+    /// <summary>
+    /// Defines the type of data that is being minified
+    /// </summary>
+    public enum MinificationType
+    {
+        /// <summary>
+        /// CSS
+        /// </summary>
+        CSS,
+
+        /// <summary>
+        /// Javascript
+        /// </summary>
+        JavaScript,
+
+        /// <summary>
+        /// HTML
+        /// </summary>
+        HTML
+    }
+
     /// <summary>
     /// Extensions dealing with minification of data
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class HTMLExtensions
     {
-        #region Minify
-
         /// <summary>
         /// Combines and minifies various files
         /// </summary>
@@ -95,10 +110,6 @@ namespace Utilities.IO
             Contract.Requires<System.IO.FileNotFoundException>(Input.Exists, "Input file does not exist");
             return Input.Read().Minify(Type);
         }
-
-        #endregion Minify
-
-        #region Private Functions
 
         private static string CSSMinify(string Input)
         {
@@ -173,32 +184,5 @@ namespace Utilities.IO
 
             return Input;
         }
-
-        #endregion Private Functions
     }
-
-    #region Enums
-
-    /// <summary>
-    /// Defines the type of data that is being minified
-    /// </summary>
-    public enum MinificationType
-    {
-        /// <summary>
-        /// CSS
-        /// </summary>
-        CSS,
-
-        /// <summary>
-        /// Javascript
-        /// </summary>
-        JavaScript,
-
-        /// <summary>
-        /// HTML
-        /// </summary>
-        HTML
-    }
-
-    #endregion Enums
 }

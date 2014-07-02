@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,8 +26,6 @@ using System.Security.Cryptography;
 using Utilities.Configuration.Manager.Interfaces;
 using Utilities.DataTypes;
 using Utilities.IO;
-
-#endregion Usings
 
 namespace Utilities.Configuration.Manager.BaseClasses
 {
@@ -41,8 +37,6 @@ namespace Utilities.Configuration.Manager.BaseClasses
     public abstract class Config<ConfigClassType> : Dynamo<ConfigClassType>, IConfig
         where ConfigClassType : Config<ConfigClassType>, new()
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -53,10 +47,6 @@ namespace Utilities.Configuration.Manager.BaseClasses
             this.ObjectToString = ObjectToString.Check(x => x.Serialize<string, ConfigClassType>(SerializationType.XML));
             this.StringToObject = StringToObject.Check(x => x.Deserialize<ConfigClassType, string>(SerializationType.XML));
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Name of the Config object
@@ -83,10 +73,6 @@ namespace Utilities.Configuration.Manager.BaseClasses
         /// Gets the object
         /// </summary>
         private Func<string, ConfigClassType> StringToObject { get; set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Loads the config
@@ -152,7 +138,5 @@ namespace Utilities.Configuration.Manager.BaseClasses
                 SetValue(Item.Key, Item.Value);
             }
         }
-
-        #endregion Functions
     }
 }

@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -37,10 +33,6 @@ namespace Utilities.DataTypes
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class MathExtensions
     {
-        #region Public Static Functions
-
-        #region Absolute
-
         /// <summary>
         /// Returns the absolute value
         /// </summary>
@@ -104,10 +96,6 @@ namespace Utilities.DataTypes
             return System.Math.Abs(Value);
         }
 
-        #endregion Absolute
-
-        #region Exp
-
         /// <summary>
         /// Returns E raised to the specified power
         /// </summary>
@@ -117,10 +105,6 @@ namespace Utilities.DataTypes
         {
             return System.Math.Exp(Value);
         }
-
-        #endregion Exp
-
-        #region Factorial
 
         /// <summary>
         /// Calculates the factorial for a number
@@ -134,10 +118,6 @@ namespace Utilities.DataTypes
                 Value1 = Value1 * x;
             return Value1;
         }
-
-        #endregion Factorial
-
-        #region GreatestCommonDenominator
 
         /// <summary>
         /// Returns the greatest common denominator between value1 and value2
@@ -189,10 +169,6 @@ namespace Utilities.DataTypes
             return ((int)Value1).GreatestCommonDenominator((int)Value2);
         }
 
-        #endregion GreatestCommonDenominator
-
-        #region Log
-
         /// <summary>
         /// Returns the natural (base e) logarithm of a specified number
         /// </summary>
@@ -214,10 +190,6 @@ namespace Utilities.DataTypes
             return System.Math.Log(Value, Base);
         }
 
-        #endregion Log
-
-        #region Log10
-
         /// <summary>
         /// Returns the base 10 logarithm of a specified number
         /// </summary>
@@ -227,10 +199,6 @@ namespace Utilities.DataTypes
         {
             return System.Math.Log10(Value);
         }
-
-        #endregion Log10
-
-        #region Median
 
         /// <summary>
         /// Gets the median from the list
@@ -247,10 +215,6 @@ namespace Utilities.DataTypes
             Values = Values.OrderBy(x => x);
             return Values.ElementAt((Values.Count() / 2));
         }
-
-        #endregion Median
-
-        #region Mode
 
         /// <summary>
         /// Gets the mode (item that occurs the most) from the list
@@ -280,10 +244,6 @@ namespace Utilities.DataTypes
             return MaxIndex;
         }
 
-        #endregion Mode
-
-        #region Pow
-
         /// <summary>
         /// Raises Value to the power of Power
         /// </summary>
@@ -294,10 +254,6 @@ namespace Utilities.DataTypes
         {
             return System.Math.Pow(Value, Power);
         }
-
-        #endregion Pow
-
-        #region Round
 
         /// <summary>
         /// Rounds the value to the number of digits
@@ -313,24 +269,6 @@ namespace Utilities.DataTypes
             return System.Math.Round(Value, Digits, Rounding);
         }
 
-        #endregion Round
-
-        #region StandardDeviation
-
-        /// <summary>
-        /// Gets the standard deviation
-        /// </summary>
-        /// <param name="Values">List of values</param>
-        /// <returns>The standard deviation</returns>
-        public static double StandardDeviation(this IEnumerable<double> Values)
-        {
-            return Values.Variance().Sqrt();
-        }
-
-        #endregion StandardDeviation
-
-        #region Sqrt
-
         /// <summary>
         /// Returns the square root of a value
         /// </summary>
@@ -341,9 +279,15 @@ namespace Utilities.DataTypes
             return System.Math.Sqrt(Value);
         }
 
-        #endregion Sqrt
-
-        #region Variance
+        /// <summary>
+        /// Gets the standard deviation
+        /// </summary>
+        /// <param name="Values">List of values</param>
+        /// <returns>The standard deviation</returns>
+        public static double StandardDeviation(this IEnumerable<double> Values)
+        {
+            return Values.Variance().Sqrt();
+        }
 
         /// <summary>
         /// Calculates the variance of a list of values
@@ -392,9 +336,5 @@ namespace Utilities.DataTypes
                 Sum += (Value - MeanValue).Pow(2);
             return Sum / (double)Values.Count();
         }
-
-        #endregion Variance
-
-        #endregion Public Static Functions
     }
 }

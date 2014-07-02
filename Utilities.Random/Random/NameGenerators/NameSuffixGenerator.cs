@@ -19,12 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.Random.NameGenerators
 {
@@ -33,7 +29,7 @@ namespace Utilities.Random.NameGenerators
     /// </summary>
     public class NameSuffixGenerator : GeneratorAttributeBase, IGenerator<string>
     {
-        #region Constructors
+        private string[] NameSuffixes = { "Jr.", "Sr.", "II", "III", "IV", "M.D.", "Ph.D." };
 
         /// <summary>
         /// Constructor
@@ -42,10 +38,6 @@ namespace Utilities.Random.NameGenerators
             : base("", "")
         {
         }
-
-        #endregion Constructors
-
-        #region Functions
 
         /// <summary>
         /// Generates a random value of the specified type
@@ -78,13 +70,5 @@ namespace Utilities.Random.NameGenerators
         {
             return Next(Rand);
         }
-
-        #endregion Functions
-
-        #region Private Variables
-
-        private string[] NameSuffixes = { "Jr.", "Sr.", "II", "III", "IV", "M.D.", "Ph.D." };
-
-        #endregion Private Variables
     }
 }

@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using Utilities.DataTypes;
-
-#endregion Usings
 
 namespace Utilities.Validation
 {
@@ -37,8 +33,6 @@ namespace Utilities.Validation
     [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     public class CascadeAttribute : ValidationAttribute
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -47,10 +41,6 @@ namespace Utilities.Validation
             : base(string.IsNullOrEmpty(ErrorMessage) ? "The following errors have occurred on property {0}:" + System.Environment.NewLine + "{1}" : ErrorMessage)
         {
         }
-
-        #endregion Constructor
-
-        #region Functions
 
         /// <summary>
         /// Determines if the property is valid
@@ -67,7 +57,5 @@ namespace Utilities.Validation
             }
             return ValidationResult.Success;
         }
-
-        #endregion Functions
     }
 }

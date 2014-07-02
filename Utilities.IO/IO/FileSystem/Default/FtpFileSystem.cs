@@ -19,12 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.IO.FileSystem.Default
 {
@@ -33,8 +29,6 @@ namespace Utilities.IO.FileSystem.Default
     /// </summary>
     public class FtpFileSystem : FileSystemBase
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -42,10 +36,6 @@ namespace Utilities.IO.FileSystem.Default
             : base()
         {
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Name of the file system
@@ -56,10 +46,6 @@ namespace Utilities.IO.FileSystem.Default
         /// Relative starter
         /// </summary>
         protected override string HandleRegexString { get { return @"^ftps?://"; } }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Gets the directory representation for the directory
@@ -106,7 +92,5 @@ namespace Utilities.IO.FileSystem.Default
         protected override void Dispose(bool Managed)
         {
         }
-
-        #endregion Functions
     }
 }

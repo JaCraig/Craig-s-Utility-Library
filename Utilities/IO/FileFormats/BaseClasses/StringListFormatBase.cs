@@ -19,11 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System.Collections.Generic;
-
-#endregion Usings
 
 namespace Utilities.IO.FileFormats.BaseClasses
 {
@@ -33,8 +29,6 @@ namespace Utilities.IO.FileFormats.BaseClasses
     public abstract class StringListFormatBase<FormatType, RecordType> : StringFormatBase<FormatType>, IList<RecordType>
         where FormatType : StringListFormatBase<FormatType, RecordType>, new()
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -43,10 +37,6 @@ namespace Utilities.IO.FileFormats.BaseClasses
         {
             Records = new List<RecordType>();
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Count of records
@@ -79,10 +69,6 @@ namespace Utilities.IO.FileFormats.BaseClasses
             get { return Records[Position]; }
             set { Records[Position] = value; }
         }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Adds a Record to the file
@@ -177,7 +163,5 @@ namespace Utilities.IO.FileFormats.BaseClasses
         {
             return Records.GetEnumerator();
         }
-
-        #endregion Functions
     }
 }

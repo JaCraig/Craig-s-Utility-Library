@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -35,8 +31,6 @@ namespace Utilities.DataTypes
     /// <typeparam name="T">Type of data within the bag</typeparam>
     public class Bag<T> : ICollection<T>
     {
-        #region Constructors
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -44,10 +38,6 @@ namespace Utilities.DataTypes
         {
             Items = new Dictionary<T, int>();
         }
-
-        #endregion Constructors
-
-        #region ICollection<T> Members
 
         /// <summary>
         /// Number of items in the bag
@@ -63,6 +53,22 @@ namespace Utilities.DataTypes
         public virtual bool IsReadOnly
         {
             get { return false; }
+        }
+
+        /// <summary>
+        /// Actual internal container
+        /// </summary>
+        protected Dictionary<T, int> Items { get; private set; }
+
+        /// <summary>
+        /// Gets a specified item
+        /// </summary>
+        /// <param name="index">Item to get</param>
+        /// <returns>The number of this item in the bag</returns>
+        public virtual int this[T index]
+        {
+            get { return Items[index]; }
+            set { Items[index] = value; }
         }
 
         /// <summary>
@@ -106,20 +112,6 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Removes an item from the bag
-        /// </summary>
-        /// <param name="item">Item to remove</param>
-        /// <returns>True if it is removed, false otherwise</returns>
-        public virtual bool Remove(T item)
-        {
-            return Items.Remove(item);
-        }
-
-        #endregion ICollection<T> Members
-
-        #region IEnumerable<T> Members
-
-        /// <summary>
         /// Gets the enumerator
         /// </summary>
         /// <returns>The enumerator</returns>
@@ -129,9 +121,15 @@ namespace Utilities.DataTypes
                 yield return Key;
         }
 
-        #endregion IEnumerable<T> Members
-
-        #region IEnumerable Members
+        /// <summary>
+        /// Removes an item from the bag
+        /// </summary>
+        /// <param name="item">Item to remove</param>
+        /// <returns>True if it is removed, false otherwise</returns>
+        public virtual bool Remove(T item)
+        {
+            return Items.Remove(item);
+        }
 
         /// <summary>
         /// Gets the enumerator
@@ -142,27 +140,5 @@ namespace Utilities.DataTypes
             foreach (T Key in this.Items.Keys)
                 yield return Key;
         }
-
-        #endregion IEnumerable Members
-
-        #region Properties
-
-        /// <summary>
-        /// Actual internal container
-        /// </summary>
-        protected Dictionary<T, int> Items { get; private set; }
-
-        /// <summary>
-        /// Gets a specified item
-        /// </summary>
-        /// <param name="index">Item to get</param>
-        /// <returns>The number of this item in the bag</returns>
-        public virtual int this[T index]
-        {
-            get { return Items[index]; }
-            set { Items[index] = value; }
-        }
-
-        #endregion Properties
     }
 }

@@ -19,14 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.IO;
 using System.IO.Compression;
 using Utilities.IO.Compression.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.IO.Compression.BaseClasses
 {
@@ -35,8 +31,6 @@ namespace Utilities.IO.Compression.BaseClasses
     /// </summary>
     public abstract class CompressorBase : ICompressor
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -44,18 +38,10 @@ namespace Utilities.IO.Compression.BaseClasses
         {
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// Compressor name
         /// </summary>
         public abstract string Name { get; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Compresses the byte array
@@ -119,7 +105,5 @@ namespace Utilities.IO.Compression.BaseClasses
         /// <param name="compressionMode">Compression mode</param>
         /// <returns>The stream used to compress/decompress the data</returns>
         protected abstract Stream GetStream(MemoryStream Stream, CompressionMode compressionMode);
-
-        #endregion Functions
     }
 }

@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,8 +28,6 @@ using System.Text;
 using System.Web;
 using Utilities.DataTypes;
 
-#endregion Usings
-
 namespace Utilities.Web
 {
     /// <summary>
@@ -40,10 +36,6 @@ namespace Utilities.Web
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class HTTPContextExtensions
     {
-        #region Functions
-
-        #region DumpAllInformation
-
         /// <summary>
         /// Dumps a lot of information about the request to a string (Request, Response, Session,
         /// Cookies, Cache, and Application state)
@@ -66,10 +58,6 @@ namespace Utilities.Web
                     new KeyValuePair<string,string>("{Application}",Context.Application.DumpApplicationState(HTMLOutput))};
             return HTMLOutput ? HTMLTemplate.ToString(Values) : NormalTemplate.ToString(Values);
         }
-
-        #endregion DumpAllInformation
-
-        #region DumpApplicationState
 
         /// <summary>
         /// Dumps the values found in the Application State
@@ -105,10 +93,6 @@ namespace Utilities.Web
             return String.ToString();
         }
 
-        #endregion DumpApplicationState
-
-        #region DumpCache
-
         /// <summary>
         /// Dumps the values found in the cache
         /// </summary>
@@ -142,10 +126,6 @@ namespace Utilities.Web
             }
             return String.ToString();
         }
-
-        #endregion DumpCache
-
-        #region DumpCookies
 
         /// <summary>
         /// Dumps the values found in the cookies sent by the user
@@ -197,10 +177,6 @@ namespace Utilities.Web
             return String.ToString();
         }
 
-        #endregion DumpCookies
-
-        #region DumpRequestVariable
-
         /// <summary>
         /// Dumps information about the request variable
         /// </summary>
@@ -226,10 +202,6 @@ namespace Utilities.Web
             return Page.Request.ToString(HTMLOutput);
         }
 
-        #endregion DumpRequestVariable
-
-        #region DumpResponseVariable
-
         /// <summary>
         /// Dumps information about the response variable
         /// </summary>
@@ -254,10 +226,6 @@ namespace Utilities.Web
             Contract.Requires<ArgumentNullException>(Page != null, "Page");
             return Page.Response.DumpResponseVariable(HTMLOutput);
         }
-
-        #endregion DumpResponseVariable
-
-        #region DumpServerVars
 
         /// <summary>
         /// Gets the server variables and dumps them out
@@ -293,10 +261,6 @@ namespace Utilities.Web
             return Page.Request.DumpServerVars(HTMLOutput);
         }
 
-        #endregion DumpServerVars
-
-        #region DumpSession
-
         /// <summary>
         /// Dumps the values found in the session
         /// </summary>
@@ -330,9 +294,5 @@ namespace Utilities.Web
             }
             return String.ToString();
         }
-
-        #endregion DumpSession
-
-        #endregion Functions
     }
 }

@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,8 +29,6 @@ using Utilities.DataTypes;
 using Utilities.Random.DefaultClasses;
 using Utilities.Random.Interfaces;
 
-#endregion Usings
-
 namespace Utilities.Random
 {
     /// <summary>
@@ -41,9 +37,7 @@ namespace Utilities.Random
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class RandomExtensions
     {
-        #region Functions
-
-        #region Next
+        private static Dictionary<Type, IGenerator> Generators = null;
 
         /// <summary>
         /// Randomly generates a value of the specified type
@@ -205,10 +199,6 @@ namespace Utilities.Random
             return Amount.Times(x => Generator.Next(Random));
         }
 
-        #endregion Next
-
-        #region NextEnum
-
         /// <summary>
         /// Randomly generates a value of the specified enum type
         /// </summary>
@@ -244,10 +234,6 @@ namespace Utilities.Random
             return Amount.Times(x => Generator.Next(Random));
         }
 
-        #endregion NextEnum
-
-        #region RegisterGenerator
-
         /// <summary>
         /// Registers a generator with a type
         /// </summary>
@@ -276,10 +262,6 @@ namespace Utilities.Random
             return Rand;
         }
 
-        #endregion RegisterGenerator
-
-        #region ResetGenerators
-
         /// <summary>
         /// Resets the generators to the defaults
         /// </summary>
@@ -291,10 +273,6 @@ namespace Utilities.Random
             SetupGenerators();
             return Random;
         }
-
-        #endregion ResetGenerators
-
-        #region Shuffle
 
         /// <summary>
         /// Shuffles a list randomly
@@ -309,14 +287,6 @@ namespace Utilities.Random
                 return List;
             return List.OrderBy(x => Random.Next());
         }
-
-        #endregion Shuffle
-
-        #endregion Functions
-
-        #region Private Functions/Variables
-
-        private static Dictionary<Type, IGenerator> Generators = null;
 
         private static void SetupGenerators()
         {
@@ -341,7 +311,5 @@ namespace Utilities.Random
             Generators.Add(typeof(Color), new ColorGenerator());
             Generators.Add(typeof(string), new StringGenerator());
         }
-
-        #endregion Private Functions/Variables
     }
 }

@@ -19,14 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System.Collections.Generic;
 using System.Data;
 using Utilities.DataTypes.Comparison;
 using Utilities.ORM.Manager.Schema.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.ORM.Manager.Schema.Default.Database
 {
@@ -36,8 +32,6 @@ namespace Utilities.ORM.Manager.Schema.Default.Database
     /// <typeparam name="T">Data type of the column</typeparam>
     public class Column<T> : IColumn
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -89,10 +83,6 @@ namespace Utilities.ORM.Manager.Schema.Default.Database
             this.OnDeleteSetNull = OnDeleteSetNull;
             AddForeignKey(ForeignKeyTable, ForeignKeyColumn);
         }
-
-        #endregion Constructor
-
-        #region Public Properties
 
         /// <summary>
         /// Auto increment?
@@ -164,17 +154,9 @@ namespace Utilities.ORM.Manager.Schema.Default.Database
         /// </summary>
         public bool Unique { get; set; }
 
-        #endregion Public Properties
-
-        #region Private Variables
-
         private List<string> ForeignKeyColumns { get; set; }
 
         private List<string> ForeignKeyTables { get; set; }
-
-        #endregion Private Variables
-
-        #region Public Functions
 
         /// <summary>
         /// Add foreign key
@@ -217,7 +199,5 @@ namespace Utilities.ORM.Manager.Schema.Default.Database
                 }
             }
         }
-
-        #endregion Public Functions
     }
 }

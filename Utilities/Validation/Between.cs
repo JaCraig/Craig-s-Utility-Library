@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,8 +28,6 @@ using System.Web.Mvc;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Comparison;
 
-#endregion Usings
-
 namespace Utilities.Validation
 {
     /// <summary>
@@ -40,8 +36,6 @@ namespace Utilities.Validation
     [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     public class BetweenAttribute : ValidationAttribute, IClientValidatable
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -55,10 +49,6 @@ namespace Utilities.Validation
             this.Max = Max;
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// Max value to compare to
         /// </summary>
@@ -68,10 +58,6 @@ namespace Utilities.Validation
         /// Min value to compare to
         /// </summary>
         public object Min { get; private set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Formats the error message
@@ -116,7 +102,5 @@ namespace Utilities.Validation
                 new ValidationResult(FormatErrorMessage(validationContext.DisplayName)) :
                 ValidationResult.Success;
         }
-
-        #endregion Functions
     }
 }

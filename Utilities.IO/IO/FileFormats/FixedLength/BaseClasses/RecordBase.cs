@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System.Collections.Generic;
 using System.Text;
 using Utilities.IO.FileFormats.FixedLength.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
 {
@@ -35,8 +31,6 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
     /// <typeparam name="T">Field type</typeparam>
     public abstract class RecordBase<T> : IRecord<T>, IList<IField<T>>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -44,10 +38,6 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
         {
             Fields = new List<IField<T>>();
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Number of Fields
@@ -85,10 +75,6 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
             get { return Fields[Position]; }
             set { Fields[Position] = value; }
         }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Adds a Field to the file
@@ -202,7 +188,5 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
                 Builder.Append(Field.ToString());
             return Builder.ToString();
         }
-
-        #endregion Functions
     }
 }

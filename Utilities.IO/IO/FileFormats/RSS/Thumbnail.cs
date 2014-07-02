@@ -19,14 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Xml.XPath;
-
-#endregion Usings
 
 namespace Utilities.IO.FileFormats.RSS
 {
@@ -35,8 +31,6 @@ namespace Utilities.IO.FileFormats.RSS
     /// </summary>
     public class Thumbnail
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -66,10 +60,6 @@ namespace Utilities.IO.FileFormats.RSS
             }
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// Image height
         /// </summary>
@@ -85,10 +75,6 @@ namespace Utilities.IO.FileFormats.RSS
         /// </summary>
         public virtual int Width { get; set; }
 
-        #endregion Properties
-
-        #region Public Overridden Functions
-
         /// <summary>
         /// to string item. Used for outputting the item to RSS.
         /// </summary>
@@ -101,7 +87,5 @@ namespace Utilities.IO.FileFormats.RSS
             }
             return string.Empty;
         }
-
-        #endregion Public Overridden Functions
     }
 }

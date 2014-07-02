@@ -19,14 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Diagnostics.Contracts;
 using System.Text;
 using Utilities.DataTypes.Formatters.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.DataTypes.Formatters
 {
@@ -35,8 +31,6 @@ namespace Utilities.DataTypes.Formatters
     /// </summary>
     public class GenericStringFormatter : IFormatProvider, ICustomFormatter, IStringFormatter
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -47,23 +41,20 @@ namespace Utilities.DataTypes.Formatters
             EscapeChar = '\\';
         }
 
-        #endregion Constructor
-
-        #region IFormatProvider Functions
+        /// <summary>
+        /// Represents alpha characters (defaults to @)
+        /// </summary>
+        public virtual char AlphaChar { get; protected set; }
 
         /// <summary>
-        /// Gets the format associated with the type
+        /// Represents digits (defaults to #)
         /// </summary>
-        /// <param name="formatType">Format type</param>
-        /// <returns>The appropriate formatter based on the type</returns>
-        public object GetFormat(Type formatType)
-        {
-            return formatType == typeof(ICustomFormatter) ? this : null;
-        }
+        public virtual char DigitChar { get; protected set; }
 
-        #endregion IFormatProvider Functions
-
-        #region ICustomFormatter Functions
+        /// <summary>
+        /// Represents the escape character (defaults to \)
+        /// </summary>
+        public virtual char EscapeChar { get; protected set; }
 
         /// <summary>
         /// Formats the string
@@ -76,12 +67,6 @@ namespace Utilities.DataTypes.Formatters
         {
             return Format(arg.ToString(), format);
         }
-
-        #endregion ICustomFormatter Functions
-
-        #region Functions
-
-        #region Format
 
         /// <summary>
         /// Formats the string based on the pattern
@@ -112,9 +97,15 @@ namespace Utilities.DataTypes.Formatters
             return ReturnValue.ToString();
         }
 
-        #endregion Format
-
-        #region GetMatchingInput
+        /// <summary>
+        /// Gets the format associated with the type
+        /// </summary>
+        /// <param name="formatType">Format type</param>
+        /// <returns>The appropriate formatter based on the type</returns>
+        public object GetFormat(Type formatType)
+        {
+            return formatType == typeof(ICustomFormatter) ? this : null;
+        }
 
         /// <summary>
         /// Gets matching input
@@ -146,10 +137,6 @@ namespace Utilities.DataTypes.Formatters
             return Input.Substring(Index);
         }
 
-        #endregion GetMatchingInput
-
-        #region IsValid
-
         /// <summary>
         /// Checks if the format pattern is valid
         /// </summary>
@@ -174,28 +161,5 @@ namespace Utilities.DataTypes.Formatters
                 return false;
             return true;
         }
-
-        #endregion IsValid
-
-        #endregion Functions
-
-        #region Properties
-
-        /// <summary>
-        /// Represents alpha characters (defaults to @)
-        /// </summary>
-        public virtual char AlphaChar { get; protected set; }
-
-        /// <summary>
-        /// Represents digits (defaults to #)
-        /// </summary>
-        public virtual char DigitChar { get; protected set; }
-
-        /// <summary>
-        /// Represents the escape character (defaults to \)
-        /// </summary>
-        public virtual char EscapeChar { get; protected set; }
-
-        #endregion Properties
     }
 }

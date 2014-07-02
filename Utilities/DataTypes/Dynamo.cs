@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,8 +32,6 @@ using System.Security;
 using System.Text;
 using System.Xml.Serialization;
 using Utilities.DataTypes.DataMapper;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -74,8 +70,6 @@ namespace Utilities.DataTypes
     public abstract class Dynamo<T> : Dynamo
         where T : Dynamo<T>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -113,10 +107,6 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(info != null, "info");
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// Keys to the dynamic type
         /// </summary>
@@ -150,10 +140,6 @@ namespace Utilities.DataTypes
                 return Temp;
             }
         }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Gets a value
@@ -197,8 +183,6 @@ namespace Utilities.DataTypes
             else if (Property == null)
                 base.SetValue(key, value);
         }
-
-        #endregion Functions
     }
 
     /// <summary>
@@ -207,8 +191,6 @@ namespace Utilities.DataTypes
     [Serializable]
     public class Dynamo : DynamicObject, IDictionary<string, object>, INotifyPropertyChanged, ISerializable, IXmlSerializable
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -272,9 +254,22 @@ namespace Utilities.DataTypes
             }
         }
 
-        #endregion Constructor
+        /// <summary>
+        /// Called when the value/property is found but before it is returned to the caller Sends
+        /// (this, PropertyName, EventArgs) to items attached to the event
+        /// </summary>
+        public event Action<Dynamo, string, EventArgs.OnEndEventArgs> GetValueEnd;
 
-        #region Properties
+        /// <summary>
+        /// Called when beginning to get a value/property Sends (this, EventArgs) to items attached
+        /// to the event
+        /// </summary>
+        public event Action<Dynamo, EventArgs.OnStartEventArgs> GetValueStart;
+
+        /// <summary>
+        /// Property changed event
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Change log
@@ -339,10 +334,6 @@ namespace Utilities.DataTypes
                 SetValue(key, value);
             }
         }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Adds a key/value pair to the object
@@ -737,41 +728,6 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Sets a value
-        /// </summary>
-        /// <param name="key">Name of the item</param>
-        /// <param name="value">Value to set</param>
-        protected virtual void SetValue(string key, object value)
-        {
-            RaisePropertyChanged(key, value);
-            if (InternalValues.ContainsKey(key))
-                InternalValues[key] = value;
-            else
-                InternalValues.Add(key, value);
-        }
-
-        #endregion Functions
-
-        #region Events
-
-        /// <summary>
-        /// Called when the value/property is found but before it is returned to the caller Sends
-        /// (this, PropertyName, EventArgs) to items attached to the event
-        /// </summary>
-        public event Action<Dynamo, string, EventArgs.OnEndEventArgs> GetValueEnd;
-
-        /// <summary>
-        /// Called when beginning to get a value/property Sends (this, EventArgs) to items attached
-        /// to the event
-        /// </summary>
-        public event Action<Dynamo, EventArgs.OnStartEventArgs> GetValueStart;
-
-        /// <summary>
-        /// Property changed event
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
         /// Raises the get value end event
         /// </summary>
         /// <param name="PropertyName">Property name</param>
@@ -821,6 +777,18 @@ namespace Utilities.DataTypes
                 Handler(this, new PropertyChangedEventArgs(PropertyName));
         }
 
-        #endregion Events
+        /// <summary>
+        /// Sets a value
+        /// </summary>
+        /// <param name="key">Name of the item</param>
+        /// <param name="value">Value to set</param>
+        protected virtual void SetValue(string key, object value)
+        {
+            RaisePropertyChanged(key, value);
+            if (InternalValues.ContainsKey(key))
+                InternalValues[key] = value;
+            else
+                InternalValues.Add(key, value);
+        }
     }
 }

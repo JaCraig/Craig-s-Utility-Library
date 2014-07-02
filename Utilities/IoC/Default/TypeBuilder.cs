@@ -19,12 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using Utilities.IoC.Default.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.IoC.Default
 {
@@ -34,8 +30,6 @@ namespace Utilities.IoC.Default
     /// <typeparam name="T">Type this builder creates</typeparam>
     public class TypeBuilder<T> : ITypeBuilder
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -44,10 +38,6 @@ namespace Utilities.IoC.Default
             this.Implementation = Implementation;
             this.ReturnType = typeof(T);
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Return type of the implementation
@@ -58,10 +48,6 @@ namespace Utilities.IoC.Default
         /// Implementation used to create the type
         /// </summary>
         protected Func<T> Implementation { get; set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Creates the object
@@ -80,7 +66,5 @@ namespace Utilities.IoC.Default
         {
             return Implementation().ToString();
         }
-
-        #endregion Functions
     }
 }

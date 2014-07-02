@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
@@ -28,8 +26,6 @@ using System.Globalization;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
-
-#endregion Usings
 
 namespace Utilities.Web
 {
@@ -39,42 +35,6 @@ namespace Utilities.Web
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class HTTPRequestExtensions
     {
-        #region Functions
-
-        #region UserIPAddress
-
-        /// <summary>
-        /// Gets the user's IP address if it exists, null is returned otherwise
-        /// </summary>
-        /// <param name="Request">Request</param>
-        /// <returns>The IPAddress object if it exists, null otherwise</returns>
-        public static IPAddress UserIPAddress(this HttpRequestBase Request)
-        {
-            Contract.Requires<ArgumentNullException>(Request != null, "Request");
-            IPAddress Address = null;
-            if (!IPAddress.TryParse(Request.UserHostAddress, out Address))
-                Address = null;
-            return Address;
-        }
-
-        /// <summary>
-        /// Gets the user's IP address if it exists, null is returned otherwise
-        /// </summary>
-        /// <param name="Request">Request</param>
-        /// <returns>The IPAddress object if it exists, null otherwise</returns>
-        public static IPAddress UserIPAddress(this HttpRequest Request)
-        {
-            Contract.Requires<ArgumentNullException>(Request != null, "Request");
-            IPAddress Address = null;
-            if (!IPAddress.TryParse(Request.UserHostAddress, out Address))
-                Address = null;
-            return Address;
-        }
-
-        #endregion UserIPAddress
-
-        #region IfModifiedSince
-
         /// <summary>
         /// Converts the If-Modified-Since header value to a DateTime object
         /// </summary>
@@ -100,10 +60,6 @@ namespace Utilities.Web
             DateTime Result = DateTime.MinValue;
             return DateTime.TryParse(Request.Headers["If-Modified-Since"], out Result) ? Result : DateTime.MinValue;
         }
-
-        #endregion IfModifiedSince
-
-        #region IsMobile
 
         /// <summary>
         /// Detects if a browser is on a mobile device or not (does a more thorough job than simply Request.Browser.IsMobileDevice)
@@ -151,8 +107,32 @@ namespace Utilities.Web
             return false;
         }
 
-        #endregion IsMobile
+        /// <summary>
+        /// Gets the user's IP address if it exists, null is returned otherwise
+        /// </summary>
+        /// <param name="Request">Request</param>
+        /// <returns>The IPAddress object if it exists, null otherwise</returns>
+        public static IPAddress UserIPAddress(this HttpRequestBase Request)
+        {
+            Contract.Requires<ArgumentNullException>(Request != null, "Request");
+            IPAddress Address = null;
+            if (!IPAddress.TryParse(Request.UserHostAddress, out Address))
+                Address = null;
+            return Address;
+        }
 
-        #endregion Functions
+        /// <summary>
+        /// Gets the user's IP address if it exists, null is returned otherwise
+        /// </summary>
+        /// <param name="Request">Request</param>
+        /// <returns>The IPAddress object if it exists, null otherwise</returns>
+        public static IPAddress UserIPAddress(this HttpRequest Request)
+        {
+            Contract.Requires<ArgumentNullException>(Request != null, "Request");
+            IPAddress Address = null;
+            if (!IPAddress.TryParse(Request.UserHostAddress, out Address))
+                Address = null;
+            return Address;
+        }
     }
 }

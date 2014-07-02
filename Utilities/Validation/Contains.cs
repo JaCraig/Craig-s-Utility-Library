@@ -19,16 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Comparison;
-
-#endregion Usings
 
 namespace Utilities.Validation
 {
@@ -38,8 +34,6 @@ namespace Utilities.Validation
     [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     public class ContainsAttribute : ValidationAttribute
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -51,18 +45,10 @@ namespace Utilities.Validation
             this.Value = Value;
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// Value to compare to
         /// </summary>
         public object Value { get; private set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Formats the error message
@@ -99,7 +85,5 @@ namespace Utilities.Validation
             }
             return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
         }
-
-        #endregion Functions
     }
 }

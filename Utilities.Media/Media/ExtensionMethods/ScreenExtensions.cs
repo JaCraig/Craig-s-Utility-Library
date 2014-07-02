@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,8 +26,6 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
-
-#endregion Usings
 
 namespace Utilities.Media
 {
@@ -39,10 +35,6 @@ namespace Utilities.Media
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ScreenExtensions
     {
-        #region Functions
-
-        #region TakeScreenShot
-
         /// <summary>
         /// Takes a screenshot of the screen as a whole (if multiple screens are attached, it takes
         /// an image containing them all)
@@ -101,9 +93,5 @@ namespace Utilities.Media
                 TempBitmap.Save(FileName);
             return TempBitmap;
         }
-
-        #endregion TakeScreenShot
-
-        #endregion Functions
     }
 }

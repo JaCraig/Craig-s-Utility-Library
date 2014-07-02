@@ -19,14 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Text;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -36,8 +32,6 @@ namespace Utilities.DataTypes
     /// <typeparam name="T">Type that the set holds</typeparam>
     public class Set<T> : List<T>
     {
-        #region Constructors
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -55,56 +49,6 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentOutOfRangeException>(InitialSize >= 0, "InitialSize should be larger than or equal to 0");
         }
-
-        #endregion Constructors
-
-        #region Public Functions
-
-        /// <summary>
-        /// Used to tell if this set contains the other
-        /// </summary>
-        /// <param name="Set">Set to check against</param>
-        /// <returns>True if it is, false otherwise</returns>
-        public virtual bool Contains(Set<T> Set)
-        {
-            Contract.Requires<ArgumentNullException>(Set != null, "Set");
-            return Set.IsSubset(this);
-        }
-
-        /// <summary>
-        /// Determines if the sets intersect
-        /// </summary>
-        /// <param name="Set">Set to check against</param>
-        /// <returns>True if they do, false otherwise</returns>
-        public virtual bool Intersect(Set<T> Set)
-        {
-            if (Set == null)
-                return false;
-            for (int x = 0; x < this.Count; ++x)
-                if (Set.Contains(this[x]))
-                    return true;
-            return false;
-        }
-
-        /// <summary>
-        /// Used to tell if this is a subset of the other
-        /// </summary>
-        /// <param name="Set">Set to check against</param>
-        /// <returns>True if it is, false otherwise</returns>
-        public virtual bool IsSubset(Set<T> Set)
-        {
-            if (Set == null || this.Count > Set.Count)
-                return false;
-
-            for (int x = 0; x < this.Count; ++x)
-                if (!Set.Contains(this[x]))
-                    return false;
-            return true;
-        }
-
-        #endregion Public Functions
-
-        #region Public Static Functions
 
         /// <summary>
         /// Gets the intersection of set 1 and set 2
@@ -191,9 +135,16 @@ namespace Utilities.DataTypes
             return Set1.Contains(Set2) && Set2.Contains(Set1);
         }
 
-        #endregion Public Static Functions
-
-        #region Public Overridden Functions
+        /// <summary>
+        /// Used to tell if this set contains the other
+        /// </summary>
+        /// <param name="Set">Set to check against</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public virtual bool Contains(Set<T> Set)
+        {
+            Contract.Requires<ArgumentNullException>(Set != null, "Set");
+            return Set.IsSubset(this);
+        }
 
         /// <summary>
         /// Determines if the two sets are equivalent
@@ -215,6 +166,37 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
+        /// Determines if the sets intersect
+        /// </summary>
+        /// <param name="Set">Set to check against</param>
+        /// <returns>True if they do, false otherwise</returns>
+        public virtual bool Intersect(Set<T> Set)
+        {
+            if (Set == null)
+                return false;
+            for (int x = 0; x < this.Count; ++x)
+                if (Set.Contains(this[x]))
+                    return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Used to tell if this is a subset of the other
+        /// </summary>
+        /// <param name="Set">Set to check against</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public virtual bool IsSubset(Set<T> Set)
+        {
+            if (Set == null || this.Count > Set.Count)
+                return false;
+
+            for (int x = 0; x < this.Count; ++x)
+                if (!Set.Contains(this[x]))
+                    return false;
+            return true;
+        }
+
+        /// <summary>
         /// Returns the set as a string
         /// </summary>
         /// <returns>The set as a string</returns>
@@ -232,7 +214,5 @@ namespace Utilities.DataTypes
             Builder.Append(" }");
             return Builder.ToString();
         }
-
-        #endregion Public Overridden Functions
     }
 }

@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System.Text;
 using Utilities.DataTypes;
 using Utilities.IO.FileFormats.FixedLength.BaseClasses;
-
-#endregion Usings
 
 namespace Utilities.IO.FileFormats.FixedLength
 {
@@ -34,8 +30,6 @@ namespace Utilities.IO.FileFormats.FixedLength
     /// </summary>
     public class StringField : FieldBase<string>
     {
-        #region Constructors
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -46,10 +40,6 @@ namespace Utilities.IO.FileFormats.FixedLength
         {
             Parse(Value, Length);
         }
-
-        #endregion Constructors
-
-        #region Public Overridden Functions
 
         /// <summary>
         /// Parses the string field
@@ -72,7 +62,5 @@ namespace Utilities.IO.FileFormats.FixedLength
                 Builder.Append(FillerCharacter);
             this.Value = Builder.ToString();
         }
-
-        #endregion Public Overridden Functions
     }
 }

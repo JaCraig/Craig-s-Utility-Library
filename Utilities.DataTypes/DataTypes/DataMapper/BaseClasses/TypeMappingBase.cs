@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -30,8 +28,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Utilities.DataTypes.DataMapper.Interfaces;
 
-#endregion Usings
-
 namespace Utilities.DataTypes.DataMapper.BaseClasses
 {
     /// <summary>
@@ -39,8 +35,6 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
     /// </summary>
     public abstract class TypeMappingBase<Left, Right> : ITypeMapping<Left, Right>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -49,18 +43,10 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
             this.Mappings = new ConcurrentBag<IMapping<Left, Right>>();
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// List of mappings
         /// </summary>
         protected ConcurrentBag<IMapping<Left, Right>> Mappings { get; private set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Adds a mapping
@@ -298,7 +284,5 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
                 }
             }
         }
-
-        #endregion Functions
     }
 }

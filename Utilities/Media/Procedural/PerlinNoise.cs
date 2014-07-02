@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Imaging;
 using Utilities.DataTypes;
-
-#endregion Usings
 
 namespace Utilities.Media.Procedural
 {
@@ -36,8 +32,6 @@ namespace Utilities.Media.Procedural
     /// </summary>
     public static class PerlinNoise
     {
-        #region Functions
-
         /// <summary>
         /// Generates perlin noise
         /// </summary>
@@ -127,7 +121,5 @@ namespace Utilities.Media.Procedural
             FinalValue = FinalValue.Clamp(1.0f, -1.0f);
             return FinalValue;
         }
-
-        #endregion Functions
     }
 }

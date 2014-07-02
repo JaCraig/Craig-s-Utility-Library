@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System.Text.RegularExpressions;
 using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.IO.FileSystem.BaseClasses
 {
@@ -34,8 +30,6 @@ namespace Utilities.IO.FileSystem.BaseClasses
     /// </summary>
     public abstract class FileSystemBase : SafeDisposableBaseClass, IFileSystem
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -44,10 +38,6 @@ namespace Utilities.IO.FileSystem.BaseClasses
         {
             HandleRegex = new Regex(HandleRegexString, RegexOptions.Compiled | RegexOptions.IgnoreCase);
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Name of the file system
@@ -63,10 +53,6 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// Regex string used to determine if the file system can handle the path
         /// </summary>
         protected abstract string HandleRegexString { get; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Returns true if it can handle the path, false otherwise
@@ -104,7 +90,5 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <param name="Path">Path to convert to absolute</param>
         /// <returns>The absolute path of the path passed in</returns>
         protected abstract string AbsolutePath(string Path);
-
-        #endregion Functions
     }
 }

@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Diagnostics.Contracts;
 using System.Text;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -35,7 +31,9 @@ namespace Utilities.DataTypes
     [Serializable()]
     public class Matrix
     {
-        #region Constructor
+        private int _Height = 1;
+
+        private int _Width = 1;
 
         /// <summary>
         /// Constructor
@@ -49,10 +47,6 @@ namespace Utilities.DataTypes
             _Height = Height;
             this.Values = (Values == null) ? new double[Width, Height] : Values;
         }
-
-        #endregion Constructor
-
-        #region Public Properties
 
         /// <summary>
         /// Height of the matrix
@@ -101,17 +95,6 @@ namespace Utilities.DataTypes
                 Values[X, Y] = value;
             }
         }
-
-        #endregion Public Properties
-
-        #region Private Variables
-
-        private int _Height = 1;
-        private int _Width = 1;
-
-        #endregion Private Variables
-
-        #region Operators
 
         /// <summary>
         /// Subtracts two matrices
@@ -279,9 +262,40 @@ namespace Utilities.DataTypes
             return true;
         }
 
-        #endregion Operators
-
-        #region Public Overridden Functions
+        /// <summary>
+        /// Gets the determinant of a square matrix
+        /// </summary>
+        /// <returns>The determinant of a square matrix</returns>
+        public virtual double Determinant()
+        {
+            Contract.Requires<InvalidOperationException>(Width == Height, "The determinant can not be calculated for a non square matrix");
+            if (Width == 2)
+                return (this[0, 0] * this[1, 1]) - (this[0, 1] * this[1, 0]);
+            double Answer = 0.0;
+            for (int x = 0; x < Width; ++x)
+            {
+                Matrix TempMatrix = new Matrix(Width - 1, Height - 1);
+                int WidthCounter = 0;
+                for (int y = 0; y < Width; ++y)
+                {
+                    if (y != x)
+                    {
+                        for (int z = 1; z < Height; ++z)
+                            TempMatrix[WidthCounter, z - 1] = this[y, z];
+                        ++WidthCounter;
+                    }
+                }
+                if (x % 2 == 0)
+                {
+                    Answer += TempMatrix.Determinant();
+                }
+                else
+                {
+                    Answer -= TempMatrix.Determinant();
+                }
+            }
+            return Answer;
+        }
 
         /// <summary>
         /// Determines if the objects are equal
@@ -331,45 +345,6 @@ namespace Utilities.DataTypes
             return Builder.ToString();
         }
 
-        #endregion Public Overridden Functions
-
-        #region Public Functions
-
-        /// <summary>
-        /// Gets the determinant of a square matrix
-        /// </summary>
-        /// <returns>The determinant of a square matrix</returns>
-        public virtual double Determinant()
-        {
-            Contract.Requires<InvalidOperationException>(Width == Height, "The determinant can not be calculated for a non square matrix");
-            if (Width == 2)
-                return (this[0, 0] * this[1, 1]) - (this[0, 1] * this[1, 0]);
-            double Answer = 0.0;
-            for (int x = 0; x < Width; ++x)
-            {
-                Matrix TempMatrix = new Matrix(Width - 1, Height - 1);
-                int WidthCounter = 0;
-                for (int y = 0; y < Width; ++y)
-                {
-                    if (y != x)
-                    {
-                        for (int z = 1; z < Height; ++z)
-                            TempMatrix[WidthCounter, z - 1] = this[y, z];
-                        ++WidthCounter;
-                    }
-                }
-                if (x % 2 == 0)
-                {
-                    Answer += TempMatrix.Determinant();
-                }
-                else
-                {
-                    Answer -= TempMatrix.Determinant();
-                }
-            }
-            return Answer;
-        }
-
         /// <summary>
         /// Transposes the matrix
         /// </summary>
@@ -382,7 +357,5 @@ namespace Utilities.DataTypes
                     TempValues[y, x] = Values[x, y];
             return TempValues;
         }
-
-        #endregion Public Functions
     }
 }

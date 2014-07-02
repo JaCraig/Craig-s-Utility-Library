@@ -19,12 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Reflection;
-
-#endregion Usings
 
 namespace Utilities.DataTypes.Patterns.BaseClasses
 {
@@ -34,7 +30,9 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
     /// <typeparam name="T">The class type</typeparam>
     public class Singleton<T> where T : class
     {
-        #region Constructor
+        private static T _Instance = null;
+
+        private static object Temp = 1;
 
         /// <summary>
         /// Constructor
@@ -42,17 +40,6 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
         protected Singleton()
         {
         }
-
-        #endregion Constructor
-
-        #region Private Variables
-
-        private static T _Instance = null;
-        private static object Temp = 1;
-
-        #endregion Private Variables
-
-        #region Properties
 
         /// <summary>
         /// Gets the instance of the singleton
@@ -78,7 +65,5 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
                 return _Instance;
             }
         }
-
-        #endregion Properties
     }
 }

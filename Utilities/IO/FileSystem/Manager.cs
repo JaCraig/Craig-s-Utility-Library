@@ -19,16 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.IO.FileSystem
 {
@@ -37,8 +33,6 @@ namespace Utilities.IO.FileSystem
     /// </summary>
     public class Manager : SafeDisposableBaseClass
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -47,10 +41,6 @@ namespace Utilities.IO.FileSystem
         {
             this.FileSystems = FileSystems;
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// File systems that the library can use
@@ -63,10 +53,6 @@ namespace Utilities.IO.FileSystem
         /// <param name="Name">Name of the file system</param>
         /// <returns>The file system specified</returns>
         public IFileSystem this[string Name] { get { return FileSystems.FirstOrDefault(x => x.Name == Name); } }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Gets the directory representation for the directory
@@ -132,7 +118,5 @@ namespace Utilities.IO.FileSystem
         {
             return FileSystems.FirstOrDefault(x => x.CanHandle(Path));
         }
-
-        #endregion Functions
     }
 }

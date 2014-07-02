@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,20 +32,83 @@ using System.Text.RegularExpressions;
 using Utilities.DataTypes.Formatters;
 using Utilities.DataTypes.Formatters.Interfaces;
 
-#endregion Usings
-
 namespace Utilities.DataTypes
 {
+    /// <summary>
+    /// What sort of string capitalization should be used?
+    /// </summary>
+    public enum StringCase
+    {
+        /// <summary>
+        /// Sentence capitalization
+        /// </summary>
+        SentenceCapitalize,
+
+        /// <summary>
+        /// First character upper case
+        /// </summary>
+        FirstCharacterUpperCase,
+
+        /// <summary>
+        /// Title case
+        /// </summary>
+        TitleCase
+    }
+
+    /// <summary>
+    /// What type of string comparison are we doing?
+    /// </summary>
+    public enum StringCompare
+    {
+        /// <summary>
+        /// Is this a credit card number?
+        /// </summary>
+        CreditCard,
+
+        /// <summary>
+        /// Is this an anagram?
+        /// </summary>
+        Anagram,
+
+        /// <summary>
+        /// Is this Unicode
+        /// </summary>
+        Unicode
+    }
+
+    /// <summary>
+    /// Predefined filters
+    /// </summary>
+    [Flags]
+    public enum StringFilter
+    {
+        /// <summary>
+        /// Alpha characters
+        /// </summary>
+        Alpha = 1,
+
+        /// <summary>
+        /// Numeric characters
+        /// </summary>
+        Numeric = 2,
+
+        /// <summary>
+        /// Numbers with period, basically allows for decimal point
+        /// </summary>
+        FloatNumeric = 4,
+
+        /// <summary>
+        /// Multiple spaces
+        /// </summary>
+        ExtraSpaces = 8
+    }
+
     /// <summary>
     /// String and StringBuilder extensions
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class StringExtensions
     {
-        #region Functions
-
-        #region AppendLineFormat
-
         /// <summary>
         /// Does an AppendFormat and then an AppendLine on the StringBuilder
         /// </summary>
@@ -62,10 +123,6 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(Objects != null, "Objects");
             return Builder.AppendFormat(CultureInfo.InvariantCulture, Format, Objects).AppendLine();
         }
-
-        #endregion AppendLineFormat
-
-        #region Center
 
         /// <summary>
         /// Centers the input string (if it's longer than the length) and pads it using the padding string
@@ -91,10 +148,6 @@ namespace Utilities.DataTypes
             return Output;
         }
 
-        #endregion Center
-
-        #region Encode
-
         /// <summary>
         /// Converts a string to a string of another encoding
         /// </summary>
@@ -115,10 +168,6 @@ namespace Utilities.DataTypes
             return Encoding.Convert(OriginalEncodingUsing, EncodingUsing, Input.ToByteArray(OriginalEncodingUsing))
                            .ToString(EncodingUsing);
         }
-
-        #endregion Encode
-
-        #region FromBase64
 
         /// <summary>
         /// Converts base 64 string based on the encoding passed in
@@ -143,10 +192,6 @@ namespace Utilities.DataTypes
         {
             return string.IsNullOrEmpty(Input) ? new byte[0] : Convert.FromBase64String(Input);
         }
-
-        #endregion FromBase64
-
-        #region Is
 
         /// <summary>
         /// Is this value of the specified type
@@ -194,10 +239,6 @@ namespace Utilities.DataTypes
             return new string(Value1.OrderBy(x => x).ToArray()) == new string(Value2.OrderBy(x => x).ToArray());
         }
 
-        #endregion Is
-
-        #region Keep
-
         /// <summary>
         /// Removes everything that is not in the filter text from the input.
         /// </summary>
@@ -230,10 +271,6 @@ namespace Utilities.DataTypes
             return Input.Keep(Value);
         }
 
-        #endregion Keep
-
-        #region Left
-
         /// <summary>
         /// Gets the first x number of characters from the left hand side
         /// </summary>
@@ -246,10 +283,6 @@ namespace Utilities.DataTypes
                 return "";
             return string.IsNullOrEmpty(Input) ? "" : Input.Substring(0, Input.Length > Length ? Length : Input.Length);
         }
-
-        #endregion Left
-
-        #region LevenshteinDistance
 
         /// <summary>
         /// Calculates the Levenshtein distance
@@ -281,10 +314,6 @@ namespace Utilities.DataTypes
             return Matrix[Value1.Length, Value2.Length];
         }
 
-        #endregion LevenshteinDistance
-
-        #region MaskLeft
-
         /// <summary>
         /// Masks characters to the left ending at a specific character
         /// </summary>
@@ -299,10 +328,6 @@ namespace Utilities.DataTypes
                 Appending += Mask;
             return Appending + Input.Remove(0, EndPosition);
         }
-
-        #endregion MaskLeft
-
-        #region MaskRight
 
         /// <summary>
         /// Masks characters to the right starting at a specific character
@@ -322,10 +347,6 @@ namespace Utilities.DataTypes
             return Input.Remove(StartPosition) + Appending;
         }
 
-        #endregion MaskRight
-
-        #region NumberTimesOccurs
-
         /// <summary>
         /// returns the number of times a string occurs within the text
         /// </summary>
@@ -336,10 +357,6 @@ namespace Utilities.DataTypes
         {
             return string.IsNullOrEmpty(Input) ? 0 : new Regex(Match).Matches(Input).Count;
         }
-
-        #endregion NumberTimesOccurs
-
-        #region Pluralize
 
         /// <summary>
         /// Pluralizes a word
@@ -356,10 +373,6 @@ namespace Utilities.DataTypes
             Culture = Culture.Check(CultureInfo.CurrentCulture);
             return PluralizationService.CreateService(Culture).Pluralize(Word);
         }
-
-        #endregion Pluralize
-
-        #region Remove
 
         /// <summary>
         /// Removes everything that is in the filter text from the input.
@@ -388,10 +401,6 @@ namespace Utilities.DataTypes
             return Input.Remove(Value);
         }
 
-        #endregion Remove
-
-        #region Replace
-
         /// <summary>
         /// Replaces everything that is in the filter text with the value specified.
         /// </summary>
@@ -407,10 +416,6 @@ namespace Utilities.DataTypes
             return new Regex(FilterValue).Replace(Input, Value);
         }
 
-        #endregion Replace
-
-        #region Reverse
-
         /// <summary>
         /// Reverses a string
         /// </summary>
@@ -421,10 +426,6 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Input), "Input");
             return new string(Input.Reverse<char>().ToArray());
         }
-
-        #endregion Reverse
-
-        #region Right
 
         /// <summary>
         /// Gets the last x number of characters from the right hand side
@@ -442,10 +443,6 @@ namespace Utilities.DataTypes
             return Input.Substring(Input.Length - Length, Length);
         }
 
-        #endregion Right
-
-        #region Singularize
-
         /// <summary>
         /// Singularizes a word
         /// </summary>
@@ -461,59 +458,6 @@ namespace Utilities.DataTypes
             Culture = Culture.Check(CultureInfo.CurrentCulture);
             return PluralizationService.CreateService(Culture).Singularize(Word);
         }
-
-        #endregion Singularize
-
-        #region StripLeft
-
-        /// <summary>
-        /// Strips out any of the characters specified starting on the left side of the input string
-        /// (stops when a character not in the list is found)
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <param name="Characters">Characters to strip (defaults to a space)</param>
-        /// <returns>The Input string with specified characters stripped out</returns>
-        public static string StripLeft(this string Input, string Characters = " ")
-        {
-            if (string.IsNullOrEmpty(Input))
-                return Input;
-            if (string.IsNullOrEmpty(Characters))
-                return Input;
-            return Input.SkipWhile(x => Characters.Contains(x)).ToString(x => x.ToString(), "");
-        }
-
-        #endregion StripLeft
-
-        #region StripRight
-
-        /// <summary>
-        /// Strips out any of the characters specified starting on the right side of the input
-        /// string (stops when a character not in the list is found)
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <param name="Characters">Characters to strip (defaults to a space)</param>
-        /// <returns>The Input string with specified characters stripped out</returns>
-        public static string StripRight(this string Input, string Characters = " ")
-        {
-            if (string.IsNullOrEmpty(Input))
-                return Input;
-            if (string.IsNullOrEmpty(Characters))
-                return Input;
-            int Position = Input.Length - 1;
-            for (int x = Input.Length - 1; x >= 0; --x)
-            {
-                if (!Characters.Contains(Input[x]))
-                {
-                    Position = x + 1;
-                    break;
-                }
-            }
-            return Input.Left(Position);
-        }
-
-        #endregion StripRight
-
-        #region StripIllegalXML
 
         /// <summary>
         /// Strips illegal characters for XML content
@@ -544,9 +488,46 @@ namespace Utilities.DataTypes
                 .Replace("\"", "&quot;").Replace("\'", "&apos;");
         }
 
-        #endregion StripIllegalXML
+        /// <summary>
+        /// Strips out any of the characters specified starting on the left side of the input string
+        /// (stops when a character not in the list is found)
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="Characters">Characters to strip (defaults to a space)</param>
+        /// <returns>The Input string with specified characters stripped out</returns>
+        public static string StripLeft(this string Input, string Characters = " ")
+        {
+            if (string.IsNullOrEmpty(Input))
+                return Input;
+            if (string.IsNullOrEmpty(Characters))
+                return Input;
+            return Input.SkipWhile(x => Characters.Contains(x)).ToString(x => x.ToString(), "");
+        }
 
-        #region ToByteArray
+        /// <summary>
+        /// Strips out any of the characters specified starting on the right side of the input
+        /// string (stops when a character not in the list is found)
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="Characters">Characters to strip (defaults to a space)</param>
+        /// <returns>The Input string with specified characters stripped out</returns>
+        public static string StripRight(this string Input, string Characters = " ")
+        {
+            if (string.IsNullOrEmpty(Input))
+                return Input;
+            if (string.IsNullOrEmpty(Characters))
+                return Input;
+            int Position = Input.Length - 1;
+            for (int x = Input.Length - 1; x >= 0; --x)
+            {
+                if (!Characters.Contains(Input[x]))
+                {
+                    Position = x + 1;
+                    break;
+                }
+            }
+            return Input.Left(Position);
+        }
 
         /// <summary>
         /// Converts a string to a byte array
@@ -558,10 +539,6 @@ namespace Utilities.DataTypes
         {
             return string.IsNullOrEmpty(Input) ? new byte[0] : EncodingUsing.Check(new UTF8Encoding()).GetBytes(Input);
         }
-
-        #endregion ToByteArray
-
-        #region ToString
 
         /// <summary>
         /// Converts from the specified encoding to a base 64 string
@@ -709,12 +686,6 @@ namespace Utilities.DataTypes
             return Regex.Replace(Input, Format, OutputFormat, Options);
         }
 
-        #endregion ToString
-
-        #endregion Functions
-
-        #region Private Functions
-
         private static string BuildFilter(StringFilter Filter)
         {
             string FilterValue = "";
@@ -741,80 +712,5 @@ namespace Utilities.DataTypes
             }
             return FilterValue;
         }
-
-        #endregion Private Functions
     }
-
-    #region Enums
-
-    /// <summary>
-    /// What sort of string capitalization should be used?
-    /// </summary>
-    public enum StringCase
-    {
-        /// <summary>
-        /// Sentence capitalization
-        /// </summary>
-        SentenceCapitalize,
-
-        /// <summary>
-        /// First character upper case
-        /// </summary>
-        FirstCharacterUpperCase,
-
-        /// <summary>
-        /// Title case
-        /// </summary>
-        TitleCase
-    }
-
-    /// <summary>
-    /// What type of string comparison are we doing?
-    /// </summary>
-    public enum StringCompare
-    {
-        /// <summary>
-        /// Is this a credit card number?
-        /// </summary>
-        CreditCard,
-
-        /// <summary>
-        /// Is this an anagram?
-        /// </summary>
-        Anagram,
-
-        /// <summary>
-        /// Is this Unicode
-        /// </summary>
-        Unicode
-    }
-
-    /// <summary>
-    /// Predefined filters
-    /// </summary>
-    [Flags]
-    public enum StringFilter
-    {
-        /// <summary>
-        /// Alpha characters
-        /// </summary>
-        Alpha = 1,
-
-        /// <summary>
-        /// Numeric characters
-        /// </summary>
-        Numeric = 2,
-
-        /// <summary>
-        /// Numbers with period, basically allows for decimal point
-        /// </summary>
-        FloatNumeric = 4,
-
-        /// <summary>
-        /// Multiple spaces
-        /// </summary>
-        ExtraSpaces = 8
-    }
-
-    #endregion Enums
 }

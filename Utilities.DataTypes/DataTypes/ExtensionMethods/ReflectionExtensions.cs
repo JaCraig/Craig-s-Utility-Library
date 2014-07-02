@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,20 +29,30 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
-#endregion Usings
-
 namespace Utilities.DataTypes
 {
+    /// <summary>
+    /// Version info
+    /// </summary>
+    public enum VersionInfo
+    {
+        /// <summary>
+        /// Short version
+        /// </summary>
+        ShortVersion = 1,
+
+        /// <summary>
+        /// Long version
+        /// </summary>
+        LongVersion = 2
+    }
+
     /// <summary>
     /// Reflection oriented extensions
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ReflectionExtensions
     {
-        #region Functions
-
-        #region Attribute
-
         /// <summary>
         /// Gets the attribute from the item
         /// </summary>
@@ -66,10 +74,6 @@ namespace Utilities.DataTypes
             return default(T);
         }
 
-        #endregion Attribute
-
-        #region Attributes
-
         /// <summary>
         /// Gets the attributes from the item
         /// </summary>
@@ -84,10 +88,6 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(Provider != null, "Provider");
             return Provider.IsDefined(typeof(T), Inherit) ? Provider.GetCustomAttributes(typeof(T), Inherit).ToArray(x => (T)x) : new T[0];
         }
-
-        #endregion Attributes
-
-        #region Call
 
         /// <summary>
         /// Calls a method on an object
@@ -211,10 +211,6 @@ namespace Utilities.DataTypes
             return (ReturnType)Method.Invoke(Object, InputVariables);
         }
 
-        #endregion Call
-
-        #region Create
-
         /// <summary>
         /// Creates an instance of the type and casts it to the specified type
         /// </summary>
@@ -265,10 +261,6 @@ namespace Utilities.DataTypes
             return Types.ForEach(x => x.Create(args));
         }
 
-        #endregion Create
-
-        #region GetName
-
         /// <summary>
         /// Returns the type's name (Actual C# name, not the funky version from the Name property)
         /// </summary>
@@ -307,10 +299,6 @@ namespace Utilities.DataTypes
             return Output.ToString().Replace("&", "");
         }
 
-        #endregion GetName
-
-        #region HasDefaultConstructor
-
         /// <summary>
         /// Determines if the type has a default constructor
         /// </summary>
@@ -322,10 +310,6 @@ namespace Utilities.DataTypes
             return Type.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
                         .Any(x => x.GetParameters().Length == 0);
         }
-
-        #endregion HasDefaultConstructor
-
-        #region Is
 
         /// <summary>
         /// Determines if an object is of a specific type
@@ -384,10 +368,6 @@ namespace Utilities.DataTypes
             return ObjectType.Is(typeof(BaseObjectType));
         }
 
-        #endregion Is
-
-        #region Load
-
         /// <summary>
         /// Loads an assembly by its name
         /// </summary>
@@ -402,10 +382,6 @@ namespace Utilities.DataTypes
             }
             catch (BadImageFormatException) { return null; }
         }
-
-        #endregion Load
-
-        #region LoadAssemblies
 
         /// <summary>
         /// Loads assemblies within a directory and returns them in an array.
@@ -427,31 +403,6 @@ namespace Utilities.DataTypes
             }
             return Assemblies;
         }
-
-        #endregion LoadAssemblies
-
-        #region MarkedWith
-
-        /// <summary>
-        /// Goes through a list of types and determines if they're marked with a specific attribute
-        /// </summary>
-        /// <typeparam name="T">Attribute type</typeparam>
-        /// <param name="Types">Types to check</param>
-        /// <param name="Inherit">
-        /// When true, it looks up the heirarchy chain for the inherited custom attributes
-        /// </param>
-        /// <returns>The list of types that are marked with an attribute</returns>
-        public static IEnumerable<Type> MarkedWith<T>(this IEnumerable<Type> Types, bool Inherit = true)
-            where T : Attribute
-        {
-            if (Types == null)
-                return null;
-            return Types.Where(x => x.IsDefined(typeof(T), Inherit) && !x.IsAbstract);
-        }
-
-        #endregion MarkedWith
-
-        #region MakeShallowCopy
 
         /// <summary>
         /// Makes a shallow copy of the object
@@ -500,9 +451,22 @@ namespace Utilities.DataTypes
             return ClassInstance;
         }
 
-        #endregion MakeShallowCopy
-
-        #region Objects
+        /// <summary>
+        /// Goes through a list of types and determines if they're marked with a specific attribute
+        /// </summary>
+        /// <typeparam name="T">Attribute type</typeparam>
+        /// <param name="Types">Types to check</param>
+        /// <param name="Inherit">
+        /// When true, it looks up the heirarchy chain for the inherited custom attributes
+        /// </param>
+        /// <returns>The list of types that are marked with an attribute</returns>
+        public static IEnumerable<Type> MarkedWith<T>(this IEnumerable<Type> Types, bool Inherit = true)
+            where T : Attribute
+        {
+            if (Types == null)
+                return null;
+            return Types.Where(x => x.IsDefined(typeof(T), Inherit) && !x.IsAbstract);
+        }
 
         /// <summary>
         /// Returns an instance of all classes that it finds within an assembly that are of the
@@ -549,10 +513,6 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(Directory != null, "Directory");
             return Directory.LoadAssemblies(Recursive).Objects<ClassType>(Args);
         }
-
-        #endregion Objects
-
-        #region Property
 
         /// <summary>
         /// Gets the value of property
@@ -644,10 +604,6 @@ namespace Utilities.DataTypes
             return Object;
         }
 
-        #endregion Property
-
-        #region PropertyGetter
-
         /// <summary>
         /// Gets a lambda expression that calls a specific property's getter function
         /// </summary>
@@ -684,10 +640,6 @@ namespace Utilities.DataTypes
             return Property.PropertyGetter<ClassType, object>();
         }
 
-        #endregion PropertyGetter
-
-        #region PropertyName
-
         /// <summary>
         /// Gets a property name
         /// </summary>
@@ -718,10 +670,6 @@ namespace Utilities.DataTypes
                 return "";
             return TempExpression.Expression.PropertyName() + TempExpression.Member.Name + ".";
         }
-
-        #endregion PropertyName
-
-        #region PropertySetter
 
         /// <summary>
         /// Gets a lambda expression that calls a specific property's setter function
@@ -794,10 +742,6 @@ namespace Utilities.DataTypes
             return Property.PropertySetter<ClassType, object>();
         }
 
-        #endregion PropertySetter
-
-        #region PropertyType
-
         /// <summary>
         /// Gets a property's type
         /// </summary>
@@ -836,10 +780,6 @@ namespace Utilities.DataTypes
             }
             return ObjectType;
         }
-
-        #endregion PropertyType
-
-        #region ToString
 
         /// <summary>
         /// Gets the version information in a string format
@@ -950,10 +890,6 @@ namespace Utilities.DataTypes
             return TempValue.ToString();
         }
 
-        #endregion ToString
-
-        #region Types
-
         /// <summary>
         /// Gets a list of types based on an interface
         /// </summary>
@@ -1029,29 +965,5 @@ namespace Utilities.DataTypes
             });
             return ReturnValues;
         }
-
-        #endregion Types
-
-        #endregion Functions
     }
-
-    #region Enums
-
-    /// <summary>
-    /// Version info
-    /// </summary>
-    public enum VersionInfo
-    {
-        /// <summary>
-        /// Short version
-        /// </summary>
-        ShortVersion = 1,
-
-        /// <summary>
-        /// Long version
-        /// </summary>
-        LongVersion = 2
-    }
-
-    #endregion Enums
 }

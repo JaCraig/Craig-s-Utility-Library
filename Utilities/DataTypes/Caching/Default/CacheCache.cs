@@ -19,17 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Caching;
 using Utilities.DataTypes.Caching.BaseClasses;
-using Utilities.DataTypes.Caching.Interfaces;
-using Utilities.DataTypes.Patterns.BaseClasses;
-
-#endregion Usings
 
 namespace Utilities.DataTypes.Caching.Default
 {
@@ -38,8 +32,6 @@ namespace Utilities.DataTypes.Caching.Default
     /// </summary>
     public class CacheCache : CacheBase
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -48,10 +40,6 @@ namespace Utilities.DataTypes.Caching.Default
         {
             InternalKeys = new List<string>();
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// The number of items in the cache
@@ -104,10 +92,6 @@ namespace Utilities.DataTypes.Caching.Default
         /// Internal keys
         /// </summary>
         private List<string> InternalKeys { get; set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Add item to the cache
@@ -239,7 +223,5 @@ namespace Utilities.DataTypes.Caching.Default
                 return;
             Clear();
         }
-
-        #endregion Functions
     }
 }

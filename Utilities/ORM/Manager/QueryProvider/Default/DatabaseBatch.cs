@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,12 +29,8 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes;
-using Utilities.DataTypes.Caching.Interfaces;
-using Utilities.IoC.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.ORM.Manager.QueryProvider.Default
 {
@@ -45,6 +39,11 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
     /// </summary>
     public class DatabaseBatch : IBatch
     {
+        /// <summary>
+        /// Used to parse SQL commands to find parameters (when batching)
+        /// </summary>
+        private static Regex ParameterRegex = new Regex(@"[^@](?<ParamStart>[:@?])(?<ParamName>\w+)", RegexOptions.Compiled);
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -70,11 +69,6 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// Connection string
         /// </summary>
         protected ISourceInfo Source { get; set; }
-
-        /// <summary>
-        /// Used to parse SQL commands to find parameters (when batching)
-        /// </summary>
-        private static Regex ParameterRegex = new Regex(@"[^@](?<ParamStart>[:@?])(?<ParamName>\w+)", RegexOptions.Compiled);
 
         /// <summary>
         /// Adds a command to be batched

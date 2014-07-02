@@ -19,12 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.Random.NameGenerators
 {
@@ -33,56 +29,6 @@ namespace Utilities.Random.NameGenerators
     /// </summary>
     public class MaleFirstNameGenerator : GeneratorAttributeBase, IGenerator<string>
     {
-        #region Constructors
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public MaleFirstNameGenerator()
-            : base("", "")
-        {
-        }
-
-        #endregion Constructors
-
-        #region Functions
-
-        /// <summary>
-        /// Generates a random value of the specified type
-        /// </summary>
-        /// <param name="Rand">Random number generator that it can use</param>
-        /// <returns>A randomly generated object of the specified type</returns>
-        public virtual string Next(System.Random Rand)
-        {
-            return Rand.Next(MaleFirstNames);
-        }
-
-        /// <summary>
-        /// Generates a random value of the specified type
-        /// </summary>
-        /// <param name="Rand">Random number generator that it can use</param>
-        /// <param name="Min">Minimum value (inclusive)</param>
-        /// <param name="Max">Maximum value (inclusive)</param>
-        /// <returns>A randomly generated object of the specified type</returns>
-        public virtual string Next(System.Random Rand, string Min, string Max)
-        {
-            return Next(Rand);
-        }
-
-        /// <summary>
-        /// Generates next object
-        /// </summary>
-        /// <param name="Rand">Random number generator</param>
-        /// <returns>The next object</returns>
-        public override object NextObj(System.Random Rand)
-        {
-            return Next(Rand);
-        }
-
-        #endregion Functions
-
-        #region Private Variables
-
         private string[] MaleFirstNames = { "Jacob", "Mason", "William", "Jayden", "Noah", "Michael", "Ethan",
                                               "Alexander", "Aiden", "Daniel", "Anthony", "Matthew", "Elijah", "Joshua",
                                               "Liam", "Andrew", "James", "David", "Benjamin", "Logan", "Christopher", "Joseph",
@@ -115,6 +61,44 @@ namespace Utilities.Random.NameGenerators
                                               "Raymond", "Edwin", "Charlie", "Abel", "Myles", "Bennett", "Johnathan", "Andre",
                                               "Alexis", "Edgar", "Troy", "Zion", "Jeffrey", "Hector", "Shawn", "Lukas", "Amir" };
 
-        #endregion Private Variables
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public MaleFirstNameGenerator()
+            : base("", "")
+        {
+        }
+
+        /// <summary>
+        /// Generates a random value of the specified type
+        /// </summary>
+        /// <param name="Rand">Random number generator that it can use</param>
+        /// <returns>A randomly generated object of the specified type</returns>
+        public virtual string Next(System.Random Rand)
+        {
+            return Rand.Next(MaleFirstNames);
+        }
+
+        /// <summary>
+        /// Generates a random value of the specified type
+        /// </summary>
+        /// <param name="Rand">Random number generator that it can use</param>
+        /// <param name="Min">Minimum value (inclusive)</param>
+        /// <param name="Max">Maximum value (inclusive)</param>
+        /// <returns>A randomly generated object of the specified type</returns>
+        public virtual string Next(System.Random Rand, string Min, string Max)
+        {
+            return Next(Rand);
+        }
+
+        /// <summary>
+        /// Generates next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
+        public override object NextObj(System.Random Rand)
+        {
+            return Next(Rand);
+        }
     }
 }

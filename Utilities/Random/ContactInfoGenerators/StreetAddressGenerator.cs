@@ -19,14 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
 using Utilities.Random.NameGenerators;
 using Utilities.Random.StringGenerators;
-
-#endregion Usings
 
 namespace Utilities.Random.ContactInfoGenerators
 {
@@ -35,7 +31,13 @@ namespace Utilities.Random.ContactInfoGenerators
     /// </summary>
     public class StreetAddressGenerator : GeneratorAttributeBase, IGenerator<string>
     {
-        #region Constructors
+        private string[] AddressFormats = { "#####", "####", "###" };
+
+        private string[] SecondLineAddressFormat = { "Apt. #", "Apt. ##", "Apt. ###", "Apt. @", "Apt. @#", "Suite ###" };
+
+        private string[] StreetSuffix = { "Avenue", "Bypass", "Center", "Circle", "Corner", "Court", "Cove", "Creek", "Crossing",
+                                            "Drive", "Estates", "Expressway", "Freeway", "Highway", "Junction", "Lane", "Loop",
+                                            "Park", "Parkway", "Pass", "Plaza", "Road", "Route", "Street", "Turnpike" };
 
         /// <summary>
         /// Constructor
@@ -44,10 +46,6 @@ namespace Utilities.Random.ContactInfoGenerators
             : base("", "")
         {
         }
-
-        #endregion Constructors
-
-        #region Functions
 
         /// <summary>
         /// Generates a random value of the specified type
@@ -82,19 +80,5 @@ namespace Utilities.Random.ContactInfoGenerators
         {
             return Next(Rand);
         }
-
-        #endregion Functions
-
-        #region Private Variables
-
-        private string[] AddressFormats = { "#####", "####", "###" };
-
-        private string[] SecondLineAddressFormat = { "Apt. #", "Apt. ##", "Apt. ###", "Apt. @", "Apt. @#", "Suite ###" };
-
-        private string[] StreetSuffix = { "Avenue", "Bypass", "Center", "Circle", "Corner", "Court", "Cove", "Creek", "Crossing",
-                                            "Drive", "Estates", "Expressway", "Freeway", "Highway", "Junction", "Lane", "Loop",
-                                            "Park", "Parkway", "Pass", "Plaza", "Road", "Route", "Street", "Turnpike" };
-
-        #endregion Private Variables
     }
 }

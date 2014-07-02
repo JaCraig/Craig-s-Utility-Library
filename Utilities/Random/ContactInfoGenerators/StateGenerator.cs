@@ -19,12 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.Random.ContactInfoGenerators
 {
@@ -33,7 +29,15 @@ namespace Utilities.Random.ContactInfoGenerators
     /// </summary>
     public class StateGenerator : GeneratorAttributeBase, IGenerator<string>
     {
-        #region Constructors
+        private string[] StatesAndDistricts = { "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado",
+                                                  "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho",
+                                                  "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine",
+                                                  "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi",
+                                                  "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
+                                                  "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma",
+                                                  "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota",
+                                                  "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia",
+                                                  "Wisconsin", "Wyoming", "District of Columbia" };
 
         /// <summary>
         /// Constructor
@@ -42,10 +46,6 @@ namespace Utilities.Random.ContactInfoGenerators
             : base("", "")
         {
         }
-
-        #endregion Constructors
-
-        #region Functions
 
         /// <summary>
         /// Generates a random value of the specified type
@@ -78,21 +78,5 @@ namespace Utilities.Random.ContactInfoGenerators
         {
             return Next(Rand);
         }
-
-        #endregion Functions
-
-        #region Private Variables
-
-        private string[] StatesAndDistricts = { "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado",
-                                                  "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho",
-                                                  "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine",
-                                                  "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi",
-                                                  "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
-                                                  "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma",
-                                                  "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota",
-                                                  "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia",
-                                                  "Wisconsin", "Wyoming", "District of Columbia" };
-
-        #endregion Private Variables
     }
 }

@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.Random.StringGenerators
 {
@@ -36,8 +32,6 @@ namespace Utilities.Random.StringGenerators
     /// </summary>
     public class RegexStringGenerator : GeneratorAttributeBase, IGenerator<string>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -54,10 +48,6 @@ namespace Utilities.Random.StringGenerators
             this.NumberOfNonAlphaNumericsAllowed = NumberOfNonAlphaNumericsAllowed;
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// Characters allowed
         /// </summary>
@@ -72,10 +62,6 @@ namespace Utilities.Random.StringGenerators
         /// Number of non alpha numeric characters allowed
         /// </summary>
         public virtual int NumberOfNonAlphaNumericsAllowed { get; protected set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Generates a random value of the specified type
@@ -130,7 +116,5 @@ namespace Utilities.Random.StringGenerators
         {
             return Next(Rand);
         }
-
-        #endregion Functions
     }
 }

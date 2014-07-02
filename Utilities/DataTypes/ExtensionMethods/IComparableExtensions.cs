@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Utilities.DataTypes.Comparison;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -37,10 +33,6 @@ namespace Utilities.DataTypes
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class IComparableExtensions
     {
-        #region Functions
-
-        #region Between
-
         /// <summary>
         /// Checks if an item is between two values
         /// </summary>
@@ -58,10 +50,6 @@ namespace Utilities.DataTypes
             Comparer = Comparer.Check(() => new GenericComparer<T>());
             return Comparer.Compare(Max, Value) >= 0 && Comparer.Compare(Value, Min) >= 0;
         }
-
-        #endregion Between
-
-        #region Clamp
 
         /// <summary>
         /// Clamps a value between two values
@@ -82,10 +70,6 @@ namespace Utilities.DataTypes
             return Value;
         }
 
-        #endregion Clamp
-
-        #region Max
-
         /// <summary>
         /// Returns the maximum value between the two
         /// </summary>
@@ -100,10 +84,6 @@ namespace Utilities.DataTypes
             return Comparer.Compare(InputA, InputB) < 0 ? InputB : InputA;
         }
 
-        #endregion Max
-
-        #region Min
-
         /// <summary>
         /// Returns the minimum value between the two
         /// </summary>
@@ -117,9 +97,5 @@ namespace Utilities.DataTypes
             Comparer = Comparer.Check(() => new GenericComparer<T>());
             return Comparer.Compare(InputA, InputB) > 0 ? InputB : InputA;
         }
-
-        #endregion Min
-
-        #endregion Functions
     }
 }

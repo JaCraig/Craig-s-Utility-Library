@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System.Security.Cryptography;
 using System.Text;
 using Utilities.IO.Encryption.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.IO.Encryption.BaseClasses
 {
@@ -34,8 +30,6 @@ namespace Utilities.IO.Encryption.BaseClasses
     /// </summary>
     public abstract class AsymmetricBase : IAsymmetric
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -43,18 +37,10 @@ namespace Utilities.IO.Encryption.BaseClasses
         {
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// Name of the encryptor
         /// </summary>
         public abstract string Name { get; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Creates a new set of keys
@@ -113,7 +99,5 @@ namespace Utilities.IO.Encryption.BaseClasses
         /// </summary>
         /// <returns>Asymmetric algorithm</returns>
         protected abstract AsymmetricAlgorithm GetProvider();
-
-        #endregion Functions
     }
 }

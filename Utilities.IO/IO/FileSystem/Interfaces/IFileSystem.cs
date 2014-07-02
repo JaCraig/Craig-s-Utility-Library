@@ -19,10 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
-#endregion Usings
-
 namespace Utilities.IO.FileSystem.Interfaces
 {
     /// <summary>
@@ -30,16 +26,10 @@ namespace Utilities.IO.FileSystem.Interfaces
     /// </summary>
     public interface IFileSystem
     {
-        #region Properties
-
         /// <summary>
         /// Name of the file system
         /// </summary>
         string Name { get; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Returns true if it can handle the path, false otherwise
@@ -67,7 +57,5 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// <param name="UserName">User name to be used to access the file (optional)</param>
         /// <returns>The file object</returns>
         IFile File(string Path, string UserName = "", string Password = "", string Domain = "");
-
-        #endregion Functions
     }
 }

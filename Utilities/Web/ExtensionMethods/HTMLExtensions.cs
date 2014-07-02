@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
@@ -32,8 +30,6 @@ using System.Web;
 using Utilities.IO;
 using Utilities.Web.Streams;
 
-#endregion Usings
-
 namespace Utilities.Web
 {
     /// <summary>
@@ -42,7 +38,11 @@ namespace Utilities.Web
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class HTMLExtensions
     {
-        #region AbsoluteRoot
+        private const string DEFLATE = "deflate";
+
+        private const string GZIP = "gzip";
+
+        private static readonly Regex STRIP_HTML_REGEX = new Regex("<[^>]*>", RegexOptions.Compiled);
 
         /// <summary>
         /// Returns the absolute root
@@ -66,10 +66,6 @@ namespace Utilities.Web
             return Context.Items["absoluteurl"] as Uri;
         }
 
-        #endregion AbsoluteRoot
-
-        #region AddScriptFile
-
         /// <summary>
         /// Adds a script file to the header of the current page
         /// </summary>
@@ -83,10 +79,6 @@ namespace Utilities.Web
             if (!Page.ClientScript.IsClientScriptIncludeRegistered(typeof(System.Web.UI.Page), File.FullName))
                 Page.ClientScript.RegisterClientScriptInclude(typeof(System.Web.UI.Page), File.FullName, File.FullName);
         }
-
-        #endregion AddScriptFile
-
-        #region ContainsHTML
 
         /// <summary>
         /// Decides if the string contains HTML
@@ -108,10 +100,6 @@ namespace Utilities.Web
             Contract.Requires<ArgumentNullException>(Input != null, "Input");
             return Input.Exists ? Input.Read().ContainsHTML() : false;
         }
-
-        #endregion ContainsHTML
-
-        #region HTTPCompress
 
         /// <summary>
         /// Adds HTTP compression to the current context
@@ -201,10 +189,6 @@ namespace Utilities.Web
             }
         }
 
-        #endregion HTTPCompress
-
-        #region IsEncodingAccepted
-
         /// <summary>
         /// Checks the request headers to see if the specified encoding is accepted by the client.
         /// </summary>
@@ -224,10 +208,6 @@ namespace Utilities.Web
                 return false;
             return Context.Request.Headers["Accept-encoding"] != null && Context.Request.Headers["Accept-encoding"].Contains(Encoding);
         }
-
-        #endregion IsEncodingAccepted
-
-        #region RelativeRoot
 
         /// <summary>
         /// Gets the relative root of the web site
@@ -250,10 +230,6 @@ namespace Utilities.Web
         {
             return VirtualPathUtility.ToAbsolute("~/");
         }
-
-        #endregion RelativeRoot
-
-        #region RemoveURLIllegalCharacters
 
         /// <summary>
         /// Removes illegal characters (used in uri's, etc.)
@@ -281,10 +257,6 @@ namespace Utilities.Web
             return Input.URLEncode().Replace("%", string.Empty);
         }
 
-        #endregion RemoveURLIllegalCharacters
-
-        #region SetEncoding
-
         /// <summary>
         /// Adds the specified encoding to the response headers.
         /// </summary>
@@ -306,10 +278,6 @@ namespace Utilities.Web
             Contract.Requires<ArgumentNullException>(Context != null, "Context");
             Context.Response.AppendHeader("Content-encoding", Encoding);
         }
-
-        #endregion SetEncoding
-
-        #region StripHTML
 
         /// <summary>
         /// Removes HTML elements from a string
@@ -337,10 +305,6 @@ namespace Utilities.Web
             return HTML.Read().StripHTML();
         }
 
-        #endregion StripHTML
-
-        #region URLDecode
-
         /// <summary>
         /// URL decodes a string
         /// </summary>
@@ -353,10 +317,6 @@ namespace Utilities.Web
             return HttpUtility.UrlDecode(Input);
         }
 
-        #endregion URLDecode
-
-        #region URLEncode
-
         /// <summary>
         /// URL encodes a string
         /// </summary>
@@ -368,10 +328,6 @@ namespace Utilities.Web
                 return "";
             return HttpUtility.UrlEncode(Input);
         }
-
-        #endregion URLEncode
-
-        #region Private Functions
 
         /// <summary>
         /// Removes special characters (Diacritics) from the string
@@ -404,20 +360,5 @@ namespace Utilities.Web
                 return Input;
             return new Regex(@"[-]{2,}", RegexOptions.None).Replace(Input, "-");
         }
-
-        #endregion Private Functions
-
-        #region Variables
-
-        private static readonly Regex STRIP_HTML_REGEX = new Regex("<[^>]*>", RegexOptions.Compiled);
-
-        #endregion Variables
-
-        #region Constants
-
-        private const string DEFLATE = "deflate";
-        private const string GZIP = "gzip";
-
-        #endregion Constants
     }
 }

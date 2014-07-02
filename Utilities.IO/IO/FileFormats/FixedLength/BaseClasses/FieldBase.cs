@@ -19,11 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using Utilities.IO.FileFormats.FixedLength.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
 {
@@ -33,18 +29,12 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
     /// <typeparam name="T">Field type</typeparam>
     public abstract class FieldBase<T> : IField<T>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
         protected FieldBase()
         {
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Length of the field
@@ -55,10 +45,6 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
         /// Value of the field
         /// </summary>
         public virtual T Value { get; set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Parses the field
@@ -76,7 +62,5 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
         {
             return Value.ToString();
         }
-
-        #endregion Functions
     }
 }

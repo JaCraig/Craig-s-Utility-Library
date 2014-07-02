@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -29,8 +27,6 @@ using System.Text;
 using System.Xml;
 using System.Xml.XPath;
 
-#endregion Usings
-
 namespace Utilities.IO.FileFormats.RSS
 {
     /// <summary>
@@ -38,8 +34,6 @@ namespace Utilities.IO.FileFormats.RSS
     /// </summary>
     public class Channel : IList<Item>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -128,10 +122,6 @@ namespace Utilities.IO.FileFormats.RSS
             }
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// Categories
         /// </summary>
@@ -146,6 +136,14 @@ namespace Utilities.IO.FileFormats.RSS
         /// Copyright
         /// </summary>
         public string Copyright { get; set; }
+
+        /// <summary>
+        /// Count
+        /// </summary>
+        public int Count
+        {
+            get { return Items.Count; }
+        }
 
         /// <summary>
         /// Description
@@ -166,6 +164,14 @@ namespace Utilities.IO.FileFormats.RSS
         /// Image URL
         /// </summary>
         public string ImageUrl { get; set; }
+
+        /// <summary>
+        /// Is read only?
+        /// </summary>
+        public bool IsReadOnly
+        {
+            get { return Items.IsReadOnly; }
+        }
 
         /// <summary>
         /// Language
@@ -201,26 +207,6 @@ namespace Utilities.IO.FileFormats.RSS
         /// Items
         /// </summary>
         protected IList<Item> Items { get; private set; }
-
-        #endregion Properties
-
-        #region Functions
-
-        /// <summary>
-        /// Count
-        /// </summary>
-        public int Count
-        {
-            get { return Items.Count; }
-        }
-
-        /// <summary>
-        /// Is read only?
-        /// </summary>
-        public bool IsReadOnly
-        {
-            get { return Items.IsReadOnly; }
-        }
 
         /// <summary>
         /// Gets/sets an item at a specific index
@@ -372,7 +358,5 @@ namespace Utilities.IO.FileFormats.RSS
             ChannelString.Append("</channel>\r\n");
             return ChannelString.ToString();
         }
-
-        #endregion Functions
     }
 }

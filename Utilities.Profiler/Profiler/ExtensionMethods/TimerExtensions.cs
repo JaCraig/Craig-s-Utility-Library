@@ -19,12 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.ComponentModel;
-
-#endregion Usings
 
 namespace Utilities.Profiler
 {
@@ -34,10 +30,6 @@ namespace Utilities.Profiler
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class TimerExtensions
     {
-        #region Functions
-
-        #region Time
-
         /// <summary>
         /// Times an action and places
         /// </summary>
@@ -173,9 +165,5 @@ namespace Utilities.Profiler
             using (new Profiler(FunctionName))
                 return FuncToTime(Object1, Object2, Object3);
         }
-
-        #endregion Time
-
-        #endregion Functions
     }
 }

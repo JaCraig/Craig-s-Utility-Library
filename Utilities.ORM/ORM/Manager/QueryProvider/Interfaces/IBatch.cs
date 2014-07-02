@@ -19,14 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Data;
 using Utilities.ORM.Manager.QueryProvider.Default;
-
-#endregion Usings
 
 namespace Utilities.ORM.Manager.QueryProvider.Interfaces
 {

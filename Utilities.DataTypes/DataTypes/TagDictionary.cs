@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -38,8 +34,6 @@ namespace Utilities.DataTypes
     /// <typeparam name="Value">Value type</typeparam>
     public class TagDictionary<Key, Value> : IDictionary<Key, IEnumerable<Value>>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -48,10 +42,6 @@ namespace Utilities.DataTypes
             Items = new ConcurrentBag<TaggedItem<Key, Value>>();
             KeyList = new List<Key>();
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Number of items in the dictionary
@@ -111,10 +101,6 @@ namespace Utilities.DataTypes
                 Add(key, value);
             }
         }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Adds a list of values to the key
@@ -253,10 +239,6 @@ namespace Utilities.DataTypes
             return value.Count() > 0;
         }
 
-        #endregion Functions
-
-        #region Internal Classes
-
         /// <summary>
         /// Holds information about each value
         /// </summary>
@@ -264,8 +246,6 @@ namespace Utilities.DataTypes
         /// <typeparam name="TValue">Value type</typeparam>
         private class TaggedItem<TKey, TValue>
         {
-            #region Constructor
-
             /// <summary>
             /// Constructor
             /// </summary>
@@ -288,10 +268,6 @@ namespace Utilities.DataTypes
                 this.Value = Value;
             }
 
-            #endregion Constructor
-
-            #region Properties
-
             /// <summary>
             /// The list of keys associated with the value
             /// </summary>
@@ -301,10 +277,6 @@ namespace Utilities.DataTypes
             /// Value
             /// </summary>
             public TValue Value { get; set; }
-
-            #endregion Properties
         }
-
-        #endregion Internal Classes
     }
 }

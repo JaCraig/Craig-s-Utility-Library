@@ -19,16 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Utilities.IoC.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.IoC.BaseClasses
 {
@@ -45,6 +39,14 @@ namespace Utilities.IoC.BaseClasses
         protected BootstrapperBase(IEnumerable<Assembly> Assemblies)
         {
             this.Assemblies = Assemblies;
+        }
+
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        ~BootstrapperBase()
+        {
+            Dispose(false);
         }
 
         /// <summary>
@@ -174,14 +176,6 @@ namespace Utilities.IoC.BaseClasses
         /// </param>
         protected virtual void Dispose(bool Managed)
         {
-        }
-
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        ~BootstrapperBase()
-        {
-            Dispose(false);
         }
     }
 }

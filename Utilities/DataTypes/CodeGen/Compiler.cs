@@ -19,14 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Utilities.DataTypes.CodeGen.BaseClasses;
-
-#endregion Usings
 
 namespace Utilities.DataTypes.CodeGen
 {
@@ -35,8 +31,6 @@ namespace Utilities.DataTypes.CodeGen
     /// </summary>
     public class Compiler : CompilerBase
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -56,10 +50,6 @@ namespace Utilities.DataTypes.CodeGen
         {
         }
 
-        #endregion Constructor
-
-        #region Functions
-
         /// <summary>
         /// Creates a class object
         /// </summary>
@@ -72,7 +62,5 @@ namespace Utilities.DataTypes.CodeGen
         {
             return Add(ClassName, Code, Usings, References);
         }
-
-        #endregion Functions
     }
 }

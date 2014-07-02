@@ -19,16 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using Utilities.DataTypes.Conversion.Converters.BaseClasses;
-
-#endregion Usings
 
 namespace Utilities.DataTypes.Conversion.Converters
 {
@@ -37,8 +33,6 @@ namespace Utilities.DataTypes.Conversion.Converters
     /// </summary>
     public class SqlDbTypeTypeConverter : TypeConverterBase<SqlDbType>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -86,10 +80,6 @@ namespace Utilities.DataTypes.Conversion.Converters
             Conversions.Add(typeof(byte[]), DbType.Binary);
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// Conversions
         /// </summary>
@@ -99,10 +89,6 @@ namespace Utilities.DataTypes.Conversion.Converters
         /// Internal converter
         /// </summary>
         protected override TypeConverter InternalConverter { get { return new EnumConverter(typeof(SqlDbType)); } }
-
-        #endregion Properties
-
-        #region Functions
 
         private static object DbTypeToSqlDbType(object value)
         {
@@ -166,7 +152,5 @@ namespace Utilities.DataTypes.Conversion.Converters
             Parameter.DbType = Item;
             return Parameter.SqlDbType;
         }
-
-        #endregion Functions
     }
 }

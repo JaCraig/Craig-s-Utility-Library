@@ -19,17 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.Profiler.Manager.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.Profiler.Manager
 {
@@ -38,8 +33,6 @@ namespace Utilities.Profiler.Manager
     /// </summary>
     public class Manager : SafeDisposableBaseClass
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -52,18 +45,10 @@ namespace Utilities.Profiler.Manager
                 Profiler = Profilers.Where(x => x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// Root profiler object
         /// </summary>
         protected IProfiler Profiler { get; private set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Starts the profiler and uses the name specified
@@ -117,7 +102,5 @@ namespace Utilities.Profiler.Manager
                 Profiler = null;
             }
         }
-
-        #endregion Functions
     }
 }

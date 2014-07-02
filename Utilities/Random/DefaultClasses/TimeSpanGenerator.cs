@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.Random.DefaultClasses
 {
@@ -34,8 +30,6 @@ namespace Utilities.Random.DefaultClasses
     /// </summary>
     public class TimeSpanGenerator : GeneratorAttributeBase, IGenerator<TimeSpan>
     {
-        #region Constructors
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -43,8 +37,6 @@ namespace Utilities.Random.DefaultClasses
             : base(TimeSpan.MinValue, TimeSpan.MaxValue)
         {
         }
-
-        #endregion Constructors
 
         /// <summary>
         /// Generates a random value of the specified type

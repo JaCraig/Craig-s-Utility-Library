@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -28,8 +26,6 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Utilities.DataTypes;
-
-#endregion Usings
 
 namespace Utilities.Validation
 {
@@ -39,8 +35,6 @@ namespace Utilities.Validation
     [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     public class IsAttribute : ValidationAttribute, IClientValidatable
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -52,18 +46,10 @@ namespace Utilities.Validation
             this.Type = Type;
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// Type of validation to do
         /// </summary>
         public IsValid Type { get; private set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Formats the error message
@@ -118,7 +104,5 @@ namespace Utilities.Validation
                 return Regex.IsMatch(Tempvalue, @"^\d+$") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             return ValidationResult.Success;
         }
-
-        #endregion Functions
     }
 }

@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,8 +26,6 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Text;
 using System.Threading;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -39,36 +35,6 @@ namespace Utilities.DataTypes
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ProcessExtensions
     {
-        #region Functions
-
-        #region KillProcessAsync
-
-        /// <summary>
-        /// Kills a process
-        /// </summary>
-        /// <param name="Process">Process that should be killed</param>
-        /// <param name="TimeToKill">Amount of time (in ms) until the process is killed.</param>
-        public static void KillProcessAsync(this Process Process, int TimeToKill = 0)
-        {
-            Contract.Requires<ArgumentNullException>(Process != null, "Process");
-            ThreadPool.QueueUserWorkItem(delegate { KillProcessAsyncHelper(Process, TimeToKill); });
-        }
-
-        /// <summary>
-        /// Kills a list of processes
-        /// </summary>
-        /// <param name="Processes">Processes that should be killed</param>
-        /// <param name="TimeToKill">Amount of time (in ms) until the processes are killed.</param>
-        public static void KillProcessAsync(this IEnumerable<Process> Processes, int TimeToKill = 0)
-        {
-            Contract.Requires<ArgumentNullException>(Processes != null, "Processes");
-            Processes.ForEach(x => ThreadPool.QueueUserWorkItem(delegate { KillProcessAsyncHelper(x, TimeToKill); }));
-        }
-
-        #endregion KillProcessAsync
-
-        #region GetInformation
-
         /// <summary>
         /// Gets information about all processes and returns it in an HTML formatted string
         /// </summary>
@@ -103,11 +69,27 @@ namespace Utilities.DataTypes
             return Builder.ToString();
         }
 
-        #endregion GetInformation
+        /// <summary>
+        /// Kills a process
+        /// </summary>
+        /// <param name="Process">Process that should be killed</param>
+        /// <param name="TimeToKill">Amount of time (in ms) until the process is killed.</param>
+        public static void KillProcessAsync(this Process Process, int TimeToKill = 0)
+        {
+            Contract.Requires<ArgumentNullException>(Process != null, "Process");
+            ThreadPool.QueueUserWorkItem(delegate { KillProcessAsyncHelper(Process, TimeToKill); });
+        }
 
-        #endregion Functions
-
-        #region Private Static Functions
+        /// <summary>
+        /// Kills a list of processes
+        /// </summary>
+        /// <param name="Processes">Processes that should be killed</param>
+        /// <param name="TimeToKill">Amount of time (in ms) until the processes are killed.</param>
+        public static void KillProcessAsync(this IEnumerable<Process> Processes, int TimeToKill = 0)
+        {
+            Contract.Requires<ArgumentNullException>(Processes != null, "Processes");
+            Processes.ForEach(x => ThreadPool.QueueUserWorkItem(delegate { KillProcessAsyncHelper(x, TimeToKill); }));
+        }
 
         /// <summary>
         /// Kills a process asyncronously
@@ -121,7 +103,5 @@ namespace Utilities.DataTypes
                 Thread.Sleep(TimeToKill);
             Process.Kill();
         }
-
-        #endregion Private Static Functions
     }
 }

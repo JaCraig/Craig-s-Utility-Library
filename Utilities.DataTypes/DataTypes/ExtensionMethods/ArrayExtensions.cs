@@ -19,14 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -36,10 +32,6 @@ namespace Utilities.DataTypes
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ArrayExtensions
     {
-        #region Functions
-
-        #region Clear
-
         /// <summary>
         /// Clears the array completely
         /// </summary>
@@ -64,10 +56,6 @@ namespace Utilities.DataTypes
             return (ArrayType[])((Array)Array).Clear();
         }
 
-        #endregion Clear
-
-        #region Concat
-
         /// <summary>
         /// Combines two arrays and returns a new array containing both values
         /// </summary>
@@ -90,9 +78,5 @@ namespace Utilities.DataTypes
             }
             return Result;
         }
-
-        #endregion Concat
-
-        #endregion Functions
     }
 }

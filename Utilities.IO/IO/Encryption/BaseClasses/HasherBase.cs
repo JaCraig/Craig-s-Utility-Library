@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using Utilities.IO.Encryption.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.IO.Encryption.BaseClasses
 {
@@ -36,8 +32,6 @@ namespace Utilities.IO.Encryption.BaseClasses
     /// </summary>
     public abstract class HasherBase : IHasher
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -45,10 +39,6 @@ namespace Utilities.IO.Encryption.BaseClasses
         {
             ImplementedAlgorithms = new Dictionary<string, Func<HashAlgorithm>>();
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Name
@@ -59,10 +49,6 @@ namespace Utilities.IO.Encryption.BaseClasses
         /// Algorithms this implements
         /// </summary>
         protected IDictionary<string, Func<HashAlgorithm>> ImplementedAlgorithms { get; private set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Can this handle the algorithm specified
@@ -107,7 +93,5 @@ namespace Utilities.IO.Encryption.BaseClasses
             Contract.Requires<NullReferenceException>(ImplementedAlgorithms != null, "ImplementedAlgorithms");
             return ImplementedAlgorithms[Algorithm.ToUpperInvariant()]();
         }
-
-        #endregion Functions
     }
 }

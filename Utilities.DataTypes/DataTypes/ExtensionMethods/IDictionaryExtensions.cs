@@ -19,18 +19,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Text;
 using Utilities.DataTypes.Comparison;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -40,10 +35,6 @@ namespace Utilities.DataTypes
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class IDictionaryExtensions
     {
-        #region Functions
-
-        #region GetValue
-
         /// <summary>
         /// Gets the value from a dictionary or the default value if it isn't found
         /// </summary>
@@ -62,10 +53,6 @@ namespace Utilities.DataTypes
             TValue ReturnValue = Default;
             return Dictionary.TryGetValue(Key, out ReturnValue) ? ReturnValue : Default;
         }
-
-        #endregion GetValue
-
-        #region SetValue
 
         /// <summary>
         /// Sets the value in a dictionary
@@ -86,10 +73,6 @@ namespace Utilities.DataTypes
                 Dictionary.Add(Key, Value);
             return Dictionary;
         }
-
-        #endregion SetValue
-
-        #region Sort
 
         /// <summary>
         /// Sorts a dictionary
@@ -123,9 +106,5 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(OrderBy != null, "OrderBy");
             return Dictionary.OrderBy(OrderBy, Comparer.Check(() => new GenericComparer<T3>())).ToDictionary(x => x.Key, x => x.Value);
         }
-
-        #endregion Sort
-
-        #endregion Functions
     }
 }

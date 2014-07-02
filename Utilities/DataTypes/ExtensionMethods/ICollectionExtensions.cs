@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -37,10 +33,6 @@ namespace Utilities.DataTypes
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ICollectionExtensions
     {
-        #region Functions
-
-        #region Add
-
         /// <summary>
         /// Adds a list of items to the collection
         /// </summary>
@@ -73,10 +65,6 @@ namespace Utilities.DataTypes
             return Collection;
         }
 
-        #endregion Add
-
-        #region AddAndReturn
-
         /// <summary>
         /// Adds an item to a list and returns the item
         /// </summary>
@@ -90,10 +78,6 @@ namespace Utilities.DataTypes
             Collection.Add(Item);
             return Item;
         }
-
-        #endregion AddAndReturn
-
-        #region AddIf
 
         /// <summary>
         /// Adds items to the collection if it passes the predicate test
@@ -141,10 +125,6 @@ namespace Utilities.DataTypes
                 return true;
             return Collection.AddIf(Predicate, Items.ToArray());
         }
-
-        #endregion AddIf
-
-        #region AddIfUnique
 
         /// <summary>
         /// Adds an item to the collection if it isn't already in the collection
@@ -216,10 +196,6 @@ namespace Utilities.DataTypes
             return Collection.AddIf(x => !Collection.Any(y => Predicate(x, y)), Items);
         }
 
-        #endregion AddIfUnique
-
-        #region Remove
-
         /// <summary>
         /// Removes all items that fit the predicate passed in
         /// </summary>
@@ -246,9 +222,5 @@ namespace Utilities.DataTypes
                 return Collection;
             return Collection.Where(x => !Items.Contains(x)).ToList();
         }
-
-        #endregion Remove
-
-        #endregion Functions
     }
 }

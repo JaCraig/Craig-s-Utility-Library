@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System.Data;
 using System.Globalization;
 using System.Linq;
@@ -29,8 +27,6 @@ using System.Text.RegularExpressions;
 using Utilities.DataTypes;
 using Utilities.IO.FileFormats.BaseClasses;
 
-#endregion Usings
-
 namespace Utilities.IO.FileFormats.Delimited
 {
     /// <summary>
@@ -38,7 +34,7 @@ namespace Utilities.IO.FileFormats.Delimited
     /// </summary>
     public class Delimited : StringListFormatBase<Delimited, Row>
     {
-        #region Constructor
+        private string _Delimiter = "";
 
         /// <summary>
         /// Constructor
@@ -70,20 +66,10 @@ namespace Utilities.IO.FileFormats.Delimited
             Parse(FileContent);
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// The delimiter used to seperate values (must be overridden)
         /// </summary>
         public string Delimiter { get { return _Delimiter; } set { _Delimiter = value; Records.ForEach(x => x.Delimiter = _Delimiter); } }
-
-        private string _Delimiter = "";
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Converts the string to the format specified
@@ -201,7 +187,5 @@ namespace Utilities.IO.FileFormats.Delimited
             }
             return Count[MaxIndex] > 1 ? Delimiters[MaxIndex] : ",";
         }
-
-        #endregion Functions
     }
 }

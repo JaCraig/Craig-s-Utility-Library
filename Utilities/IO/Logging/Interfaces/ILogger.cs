@@ -19,12 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
-
-#endregion Usings
 
 namespace Utilities.IO.Logging.Interfaces
 {
@@ -33,8 +29,6 @@ namespace Utilities.IO.Logging.Interfaces
     /// </summary>
     public interface ILogger : IDisposable
     {
-        #region Properties
-
         /// <summary>
         /// Logs held by the logger
         /// </summary>
@@ -44,10 +38,6 @@ namespace Utilities.IO.Logging.Interfaces
         /// Name of the logger
         /// </summary>
         string Name { get; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Adds a log object or replaces one already in use
@@ -61,7 +51,5 @@ namespace Utilities.IO.Logging.Interfaces
         /// <param name="Name">The name of the log file</param>
         /// <returns>The log file specified</returns>
         ILog GetLog(string Name = "Default");
-
-        #endregion Functions
     }
 }

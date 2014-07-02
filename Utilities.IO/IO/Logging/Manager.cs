@@ -19,18 +19,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.IO.Logging.Default;
 using Utilities.IO.Logging.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.IO.Logging
 {
@@ -39,8 +34,6 @@ namespace Utilities.IO.Logging
     /// </summary>
     public class Manager : SafeDisposableBaseClass
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -53,18 +46,10 @@ namespace Utilities.IO.Logging
                 LoggerUsing = new DefaultLogger();
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// Logger that the system uses
         /// </summary>
         protected ILogger LoggerUsing { get; private set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Gets a specified log
@@ -99,7 +84,5 @@ namespace Utilities.IO.Logging
                 LoggerUsing = null;
             }
         }
-
-        #endregion Functions
     }
 }

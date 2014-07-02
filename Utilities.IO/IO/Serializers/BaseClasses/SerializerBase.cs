@@ -19,12 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using Utilities.IO.Serializers.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.IO.Serializers.BaseClasses
 {
@@ -34,18 +30,12 @@ namespace Utilities.IO.Serializers.BaseClasses
     /// <typeparam name="T">Serialized data type</typeparam>
     public abstract class SerializerBase<T> : ISerializer<T>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
         protected SerializerBase()
         {
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Content type (MIME type)
@@ -67,10 +57,6 @@ namespace Utilities.IO.Serializers.BaseClasses
         /// </summary>
         public Type ReturnType { get { return typeof(T); } }
 
-        #endregion Properties
-
-        #region Functions
-
         /// <summary>
         /// Deserializes the data
         /// </summary>
@@ -86,7 +72,5 @@ namespace Utilities.IO.Serializers.BaseClasses
         /// <param name="Data">Data to serialize</param>
         /// <returns>The serialized data</returns>
         public abstract T Serialize(Type ObjectType, object Data);
-
-        #endregion Functions
     }
 }

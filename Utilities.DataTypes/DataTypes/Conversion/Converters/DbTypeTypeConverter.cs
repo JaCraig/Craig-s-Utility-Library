@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using Utilities.DataTypes.Conversion.Converters.BaseClasses;
-
-#endregion Usings
 
 namespace Utilities.DataTypes.Conversion.Converters
 {
@@ -36,8 +32,6 @@ namespace Utilities.DataTypes.Conversion.Converters
     /// </summary>
     public class DbTypeTypeConverter : TypeConverterBase<DbType>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -50,18 +44,10 @@ namespace Utilities.DataTypes.Conversion.Converters
             ConvertFromTypes.Add(typeof(SqlDbType), SqlDbTypeToDbType);
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// Internal converter
         /// </summary>
         protected override TypeConverter InternalConverter { get { return new EnumConverter(typeof(DbType)); } }
-
-        #endregion Properties
-
-        #region Functions
 
         private static object DbTypeToSqlDbType(object value)
         {
@@ -153,7 +139,5 @@ namespace Utilities.DataTypes.Conversion.Converters
             else if (TempValue == typeof(DateTimeOffset?)) return DbType.DateTimeOffset;
             return DbType.Int32;
         }
-
-        #endregion Functions
     }
 }

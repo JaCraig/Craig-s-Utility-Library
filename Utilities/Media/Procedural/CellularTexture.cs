@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System.Drawing;
 using System.Drawing.Imaging;
 using Utilities.DataTypes;
-
-#endregion Usings
 
 namespace Utilities.Media.Procedural
 {
@@ -34,8 +30,6 @@ namespace Utilities.Media.Procedural
     /// </summary>
     public static class CellularTexture
     {
-        #region Functions
-
         /// <summary>
         /// Generates a cellular texture image
         /// </summary>
@@ -79,7 +73,5 @@ namespace Utilities.Media.Procedural
                 return 0.0f;
             return (DistanceBuffer[(int)X, (int)Y] - MinimumDistance) / (MaxDistance - MinimumDistance);
         }
-
-        #endregion Functions
     }
 }

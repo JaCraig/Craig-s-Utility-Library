@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Diagnostics.Contracts;
 using Utilities.IO.FileFormats.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.IO.FileFormats.BaseClasses
 {
@@ -37,18 +33,12 @@ namespace Utilities.IO.FileFormats.BaseClasses
     public abstract class FormatBase<FormatType, ContentType> : IFormat<FormatType, ContentType>
         where FormatType : FormatBase<FormatType, ContentType>, new()
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
         protected FormatBase()
         {
         }
-
-        #endregion Constructor
-
-        #region Functions
 
         /// <summary>
         /// Loads the object from the location specified
@@ -59,76 +49,6 @@ namespace Utilities.IO.FileFormats.BaseClasses
         {
             return new FormatType().InternalLoad(Location);
         }
-
-        /// <summary>
-        /// Clones the object
-        /// </summary>
-        /// <returns>A newly cloned object</returns>
-        public abstract object Clone();
-
-        /// <summary>
-        /// Compares the object to another object
-        /// </summary>
-        /// <param name="obj">Object to compare to</param>
-        /// <returns>0 if they are equal, -1 if this is smaller, 1 if it is larger</returns>
-        public int CompareTo(object obj)
-        {
-            return obj is FormatBase<FormatType, ContentType> ? CompareTo((FormatType)obj) : -1;
-        }
-
-        /// <summary>
-        /// Compares the object to another object
-        /// </summary>
-        /// <param name="other">Object to compare to</param>
-        /// <returns>0 if they are equal, -1 if this is smaller, 1 if it is larger</returns>
-        public abstract int CompareTo(FormatType other);
-
-        /// <summary>
-        /// Determines if the objects are equal
-        /// </summary>
-        /// <param name="other">Other object to compare to</param>
-        /// <returns>True if they are equal, false otherwise</returns>
-        public abstract bool Equals(FormatType other);
-
-        /// <summary>
-        /// Determines if the objects are equal
-        /// </summary>
-        /// <param name="obj">Other object to compare to</param>
-        /// <returns>True if they are equal, false otherwise</returns>
-        public override bool Equals(object obj)
-        {
-            object TempItem = obj as FormatType;
-            if (TempItem == null)
-                return false;
-            return Equals((FormatType)TempItem);
-        }
-
-        /// <summary>
-        /// Gets the hash code for the object
-        /// </summary>
-        /// <returns>The hash code for the object</returns>
-        public override int GetHashCode()
-        {
-            return ToString().GetHashCode();
-        }
-
-        /// <summary>
-        /// Saves the object
-        /// </summary>
-        /// <param name="Location">Location to save it to</param>
-        /// <returns>This</returns>
-        public abstract FormatType Save(string Location);
-
-        /// <summary>
-        /// Loads the object from the location specified
-        /// </summary>
-        /// <param name="Location">Location of the file to load</param>
-        /// <returns>This</returns>
-        protected abstract FormatType InternalLoad(string Location);
-
-        #endregion Functions
-
-        #region Operators
 
         /// <summary>
         /// Determines if the two are not equal
@@ -200,6 +120,70 @@ namespace Utilities.IO.FileFormats.BaseClasses
             return Value1.CompareTo(Value2) >= 0;
         }
 
-        #endregion Operators
+        /// <summary>
+        /// Clones the object
+        /// </summary>
+        /// <returns>A newly cloned object</returns>
+        public abstract object Clone();
+
+        /// <summary>
+        /// Compares the object to another object
+        /// </summary>
+        /// <param name="obj">Object to compare to</param>
+        /// <returns>0 if they are equal, -1 if this is smaller, 1 if it is larger</returns>
+        public int CompareTo(object obj)
+        {
+            return obj is FormatBase<FormatType, ContentType> ? CompareTo((FormatType)obj) : -1;
+        }
+
+        /// <summary>
+        /// Compares the object to another object
+        /// </summary>
+        /// <param name="other">Object to compare to</param>
+        /// <returns>0 if they are equal, -1 if this is smaller, 1 if it is larger</returns>
+        public abstract int CompareTo(FormatType other);
+
+        /// <summary>
+        /// Determines if the objects are equal
+        /// </summary>
+        /// <param name="other">Other object to compare to</param>
+        /// <returns>True if they are equal, false otherwise</returns>
+        public abstract bool Equals(FormatType other);
+
+        /// <summary>
+        /// Determines if the objects are equal
+        /// </summary>
+        /// <param name="obj">Other object to compare to</param>
+        /// <returns>True if they are equal, false otherwise</returns>
+        public override bool Equals(object obj)
+        {
+            object TempItem = obj as FormatType;
+            if (TempItem == null)
+                return false;
+            return Equals((FormatType)TempItem);
+        }
+
+        /// <summary>
+        /// Gets the hash code for the object
+        /// </summary>
+        /// <returns>The hash code for the object</returns>
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
+        }
+
+        /// <summary>
+        /// Saves the object
+        /// </summary>
+        /// <param name="Location">Location to save it to</param>
+        /// <returns>This</returns>
+        public abstract FormatType Save(string Location);
+
+        /// <summary>
+        /// Loads the object from the location specified
+        /// </summary>
+        /// <param name="Location">Location of the file to load</param>
+        /// <returns>This</returns>
+        protected abstract FormatType InternalLoad(string Location);
     }
 }

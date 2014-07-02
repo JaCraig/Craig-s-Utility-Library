@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -32,8 +30,6 @@ using Utilities.IO.Enums;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
 
-#endregion Usings
-
 namespace Utilities.IO.FileSystem.Default
 {
     /// <summary>
@@ -41,8 +37,6 @@ namespace Utilities.IO.FileSystem.Default
     /// </summary>
     public class WebDirectory : DirectoryBase<Uri, WebDirectory>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -74,10 +68,6 @@ namespace Utilities.IO.FileSystem.Default
             : base(Directory, UserName, Password, Domain)
         {
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// returns now
@@ -150,10 +140,6 @@ namespace Utilities.IO.FileSystem.Default
         {
             get { return 0; }
         }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Copies the directory to the specified parent directory
@@ -301,7 +287,5 @@ namespace Utilities.IO.FileSystem.Default
                 Request.Credentials = new NetworkCredential(UserName, Password);
             }
         }
-
-        #endregion Functions
     }
 }

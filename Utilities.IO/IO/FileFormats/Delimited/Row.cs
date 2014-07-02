@@ -19,16 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-
-#endregion Usings
 
 namespace Utilities.IO.FileFormats.Delimited
 {
@@ -37,8 +33,6 @@ namespace Utilities.IO.FileFormats.Delimited
     /// </summary>
     public class Row : IList<Cell>
     {
-        #region Constructors
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -80,14 +74,26 @@ namespace Utilities.IO.FileFormats.Delimited
             }
         }
 
-        #endregion Constructors
-
-        #region Properties
+        /// <summary>
+        /// Number of Cells
+        /// </summary>
+        public int Count
+        {
+            get { return Cells.Count; }
+        }
 
         /// <summary>
         /// Delimiter used
         /// </summary>
         public string Delimiter { get; set; }
+
+        /// <summary>
+        /// Is the file read only
+        /// </summary>
+        public bool IsReadOnly
+        {
+            get { return Cells.IsReadOnly; }
+        }
 
         /// <summary>
         /// Cells within the row
@@ -103,26 +109,6 @@ namespace Utilities.IO.FileFormats.Delimited
         {
             get { return Cells[Position]; }
             set { Cells[Position] = value; }
-        }
-
-        #endregion Properties
-
-        #region Functions
-
-        /// <summary>
-        /// Number of Cells
-        /// </summary>
-        public int Count
-        {
-            get { return Cells.Count; }
-        }
-
-        /// <summary>
-        /// Is the file read only
-        /// </summary>
-        public bool IsReadOnly
-        {
-            get { return Cells.IsReadOnly; }
         }
 
         /// <summary>
@@ -234,7 +220,5 @@ namespace Utilities.IO.FileFormats.Delimited
             }
             return Builder.Append(System.Environment.NewLine).ToString();
         }
-
-        #endregion Functions
     }
 }

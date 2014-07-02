@@ -19,16 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.IO.FileFormats.BaseClasses;
-
-#endregion Usings
 
 namespace Utilities.IO.FileFormats
 {
@@ -37,7 +33,7 @@ namespace Utilities.IO.FileFormats
     /// </summary>
     public class INI : StringFormatBase<INI>
     {
-        #region Constructor
+        private string _FileName = string.Empty;
 
         /// <summary>
         /// Constructor
@@ -56,9 +52,16 @@ namespace Utilities.IO.FileFormats
             this.FileName = FileName;
         }
 
-        #endregion Constructor
+        /// <summary>
+        /// Name of the file
+        /// </summary>
+        public virtual string FileName
+        {
+            get { return _FileName; }
+            set { _FileName = value; InternalLoad(_FileName); }
+        }
 
-        #region Public Functions
+        private Dictionary<string, Dictionary<string, string>> FileContents { get; set; }
 
         /// <summary>
         /// Deletes a section from the INI file
@@ -174,10 +177,6 @@ namespace Utilities.IO.FileFormats
             Save(_FileName);
         }
 
-        #endregion Public Functions
-
-        #region Private Functions
-
         /// <summary>
         /// Loads the object from the data specified
         /// </summary>
@@ -206,24 +205,5 @@ namespace Utilities.IO.FileFormats
                 ++Counter;
             }
         }
-
-        #endregion Private Functions
-
-        #region Properties
-
-        /// <summary>
-        /// Name of the file
-        /// </summary>
-        public virtual string FileName
-        {
-            get { return _FileName; }
-            set { _FileName = value; InternalLoad(_FileName); }
-        }
-
-        private Dictionary<string, Dictionary<string, string>> FileContents { get; set; }
-
-        private string _FileName = string.Empty;
-
-        #endregion Properties
     }
 }

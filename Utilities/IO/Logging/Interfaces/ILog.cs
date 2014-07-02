@@ -19,12 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using Utilities.IO.Logging.Enums;
-
-#endregion Usings
 
 namespace Utilities.IO.Logging.Interfaces
 {
@@ -33,16 +29,10 @@ namespace Utilities.IO.Logging.Interfaces
     /// </summary>
     public interface ILog : IDisposable
     {
-        #region Properties
-
         /// <summary>
         /// Name of the logger
         /// </summary>
         string Name { get; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Logs a message
@@ -53,7 +43,5 @@ namespace Utilities.IO.Logging.Interfaces
         /// Any additional arguments that will be used in formatting the message
         /// </param>
         void LogMessage(string Message, MessageType Type, params object[] args);
-
-        #endregion Functions
     }
 }

@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using Utilities.DataTypes;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.Random.DefaultClasses
 {
@@ -66,8 +62,6 @@ namespace Utilities.Random.DefaultClasses
             return Next(Rand);
         }
     }
-
-    #region Decimal Generators
 
     /// <summary>
     /// Decimal generator
@@ -170,6 +164,4 @@ namespace Utilities.Random.DefaultClasses
             return new DecimalGenerator<float>().Next(Rand, (float)Min, (float)Max);
         }
     }
-
-    #endregion Decimal Generators
 }

@@ -19,12 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
-
-#endregion Usings
 
 namespace Utilities.DataTypes.Patterns
 {
@@ -35,8 +31,6 @@ namespace Utilities.DataTypes.Patterns
     /// <typeparam name="T">The class type that you want created</typeparam>
     public class Factory<Key, T>
     {
-        #region Constructors
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -45,18 +39,10 @@ namespace Utilities.DataTypes.Patterns
             Constructors = new Dictionary<Key, Func<T>>();
         }
 
-        #endregion Constructors
-
-        #region Protected Variables
-
         /// <summary>
         /// List of constructors/initializers
         /// </summary>
         protected Dictionary<Key, Func<T>> Constructors { get; private set; }
-
-        #endregion Protected Variables
-
-        #region Public Functions
 
         /// <summary>
         /// Creates an instance associated with the key
@@ -97,7 +83,5 @@ namespace Utilities.DataTypes.Patterns
         {
             Constructors.SetValue(Key, Constructor);
         }
-
-        #endregion Public Functions
     }
 }

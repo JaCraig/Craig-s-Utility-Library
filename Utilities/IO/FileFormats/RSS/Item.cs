@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -29,8 +27,6 @@ using System.Text;
 using System.Xml;
 using System.Xml.XPath;
 
-#endregion Usings
-
 namespace Utilities.IO.FileFormats.RSS
 {
     /// <summary>
@@ -38,8 +34,6 @@ namespace Utilities.IO.FileFormats.RSS
     /// </summary>
     public class Item
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -107,10 +101,6 @@ namespace Utilities.IO.FileFormats.RSS
             }
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// Author
         /// </summary>
@@ -156,10 +146,6 @@ namespace Utilities.IO.FileFormats.RSS
         /// </summary>
         public string Title { get; set; }
 
-        #endregion Properties
-
-        #region Public Overridden Function
-
         /// <summary>
         /// Outputs a string ready for RSS
         /// </summary>
@@ -187,7 +173,5 @@ namespace Utilities.IO.FileFormats.RSS
             ItemString.Append("</item>\r\n");
             return ItemString.ToString();
         }
-
-        #endregion Public Overridden Function
     }
 }

@@ -19,14 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-
-#endregion Usings
 
 namespace Utilities.Validation
 {
@@ -36,8 +32,6 @@ namespace Utilities.Validation
     [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     public class NotEmptyAttribute : ValidationAttribute
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -46,10 +40,6 @@ namespace Utilities.Validation
             : base(string.IsNullOrEmpty(ErrorMessage) ? "{0} is not empty" : ErrorMessage)
         {
         }
-
-        #endregion Constructor
-
-        #region Functions
 
         /// <summary>
         /// Formats the error message
@@ -74,7 +64,5 @@ namespace Utilities.Validation
             IEnumerable ValueList = value as IEnumerable;
             return ValueList != null && ValueList.GetEnumerator().MoveNext() ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
         }
-
-        #endregion Functions
     }
 }

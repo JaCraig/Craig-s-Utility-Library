@@ -19,16 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -39,8 +35,6 @@ namespace Utilities.DataTypes
     /// <typeparam name="T">Object type to process</typeparam>
     public class TaskQueue<T> : BlockingCollection<T>, IDisposable
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -61,10 +55,6 @@ namespace Utilities.DataTypes
             Tasks = new Task[Capacity];
             Capacity.Times(x => Tasks[x] = Task.Factory.StartNew(Process));
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Determines if it has been cancelled
@@ -101,10 +91,6 @@ namespace Utilities.DataTypes
         /// Group of tasks that the queue uses
         /// </summary>
         private Task[] Tasks { get; set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Cancels the queue from processing
@@ -179,7 +165,5 @@ namespace Utilities.DataTypes
                 }
             }
         }
-
-        #endregion Functions
     }
 }

@@ -19,14 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -37,8 +33,6 @@ namespace Utilities.DataTypes
     public class BinaryTree<T> : ICollection<T>
         where T : IComparable<T>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -54,14 +48,26 @@ namespace Utilities.DataTypes
             NumberOfNodes = Traversal(Root).Count();
         }
 
-        #endregion Constructor
-
-        #region Properties
+        /// <summary>
+        /// Number of items in the tree
+        /// </summary>
+        public virtual int Count
+        {
+            get { return NumberOfNodes; }
+        }
 
         /// <summary>
         /// Is the tree empty
         /// </summary>
         public virtual bool IsEmpty { get { return Root == null; } }
+
+        /// <summary>
+        /// Is this read only?
+        /// </summary>
+        public virtual bool IsReadOnly
+        {
+            get { return false; }
+        }
 
         /// <summary>
         /// Gets the maximum value of the tree
@@ -105,56 +111,15 @@ namespace Utilities.DataTypes
         /// </summary>
         protected virtual int NumberOfNodes { get; set; }
 
-        #endregion Properties
-
-        #region IEnumerable<T> Members
-
         /// <summary>
-        /// Gets the enumerator
+        /// Converts the object to a string
         /// </summary>
-        /// <returns>The enumerator</returns>
-        public virtual IEnumerator<T> GetEnumerator()
+        /// <param name="Value">Value to convert</param>
+        /// <returns>The value as a string</returns>
+        public static implicit operator string(BinaryTree<T> Value)
         {
-            foreach (TreeNode<T> TempNode in Traversal(Root))
-            {
-                yield return TempNode.Value;
-            }
-        }
-
-        #endregion IEnumerable<T> Members
-
-        #region IEnumerable Members
-
-        /// <summary>
-        /// Gets the enumerator
-        /// </summary>
-        /// <returns>The enumerator</returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            foreach (TreeNode<T> TempNode in Traversal(Root))
-            {
-                yield return TempNode.Value;
-            }
-        }
-
-        #endregion IEnumerable Members
-
-        #region ICollection<T> Members
-
-        /// <summary>
-        /// Number of items in the tree
-        /// </summary>
-        public virtual int Count
-        {
-            get { return NumberOfNodes; }
-        }
-
-        /// <summary>
-        /// Is this read only?
-        /// </summary>
-        public virtual bool IsReadOnly
-        {
-            get { return false; }
+            Contract.Requires<ArgumentNullException>(Value != null, "Value");
+            return Value.ToString();
         }
 
         /// <summary>
@@ -225,6 +190,18 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
+        /// Gets the enumerator
+        /// </summary>
+        /// <returns>The enumerator</returns>
+        public virtual IEnumerator<T> GetEnumerator()
+        {
+            foreach (TreeNode<T> TempNode in Traversal(Root))
+            {
+                yield return TempNode.Value;
+            }
+        }
+
+        /// <summary>
         /// Removes an item from the tree
         /// </summary>
         /// <param name="item">Item to remove</param>
@@ -257,9 +234,26 @@ namespace Utilities.DataTypes
             return true;
         }
 
-        #endregion ICollection<T> Members
+        /// <summary>
+        /// Gets the enumerator
+        /// </summary>
+        /// <returns>The enumerator</returns>
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            foreach (TreeNode<T> TempNode in Traversal(Root))
+            {
+                yield return TempNode.Value;
+            }
+        }
 
-        #region Private Functions
+        /// <summary>
+        /// Outputs the tree as a string
+        /// </summary>
+        /// <returns>The string representation of the tree</returns>
+        public override string ToString()
+        {
+            return this.ToString(x => x.ToString(), " ");
+        }
 
         /// <summary>
         /// Finds a specific object
@@ -341,32 +335,6 @@ namespace Utilities.DataTypes
                 }
             }
         }
-
-        #endregion Private Functions
-
-        #region Functions
-
-        /// <summary>
-        /// Converts the object to a string
-        /// </summary>
-        /// <param name="Value">Value to convert</param>
-        /// <returns>The value as a string</returns>
-        public static implicit operator string(BinaryTree<T> Value)
-        {
-            Contract.Requires<ArgumentNullException>(Value != null, "Value");
-            return Value.ToString();
-        }
-
-        /// <summary>
-        /// Outputs the tree as a string
-        /// </summary>
-        /// <returns>The string representation of the tree</returns>
-        public override string ToString()
-        {
-            return this.ToString(x => x.ToString(), " ");
-        }
-
-        #endregion Functions
     }
 
     /// <summary>
@@ -375,8 +343,6 @@ namespace Utilities.DataTypes
     /// <typeparam name="T">The value type</typeparam>
     public class TreeNode<T>
     {
-        #region Constructors
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -391,10 +357,6 @@ namespace Utilities.DataTypes
             this.Left = Left;
             this.Parent = Parent;
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         /// <summary>
         /// Is this a leaf
@@ -431,10 +393,6 @@ namespace Utilities.DataTypes
         /// </summary>
         internal bool Visited { get; set; }
 
-        #endregion Properties
-
-        #region Public Overridden Functions
-
         /// <summary>
         /// Returns the node as a string
         /// </summary>
@@ -443,7 +401,5 @@ namespace Utilities.DataTypes
         {
             return Value.ToString();
         }
-
-        #endregion Public Overridden Functions
     }
 }

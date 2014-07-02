@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Globalization;
 using System.IO;
@@ -30,8 +28,6 @@ using System.Text.RegularExpressions;
 using System.Web;
 using Utilities.IO.Serializers.BaseClasses;
 
-#endregion Usings
-
 namespace Utilities.IO.Serializers.Default
 {
     /// <summary>
@@ -39,6 +35,11 @@ namespace Utilities.IO.Serializers.Default
     /// </summary>
     public class JSONSerializer : SerializerBase<string>
     {
+        /// <summary>
+        /// JSONP regex filter
+        /// </summary>
+        private static Regex JsonPRegex = new Regex(@"[^\(]+\(([^\)]*)\);", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -61,11 +62,6 @@ namespace Utilities.IO.Serializers.Default
         /// Name
         /// </summary>
         public override string Name { get { return "JSON"; } }
-
-        /// <summary>
-        /// JSONP regex filter
-        /// </summary>
-        private static Regex JsonPRegex = new Regex(@"[^\(]+\(([^\)]*)\);", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Deserializes the data

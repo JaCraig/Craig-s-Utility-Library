@@ -19,16 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Threading;
 using Utilities.DataTypes.Comparison;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -38,7 +34,7 @@ namespace Utilities.DataTypes
     /// <typeparam name="T">Type of the data it holds</typeparam>
     public class RingBuffer<T> : ICollection<T>, ICollection
     {
-        #region Constructor
+        private object Root;
 
         /// <summary>
         /// Constructor
@@ -65,10 +61,6 @@ namespace Utilities.DataTypes
             WritePosition = 0;
             Buffer = new T[MaxCapacity];
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Is overflow allowed?
@@ -144,13 +136,16 @@ namespace Utilities.DataTypes
             }
         }
 
-        private object Root;
-
-        #endregion Properties
-
-        #region Functions
-
-        #region Add
+        /// <summary>
+        /// Converts the object to a string
+        /// </summary>
+        /// <param name="Value">Value to convert</param>
+        /// <returns>The value as a string</returns>
+        public static implicit operator string(RingBuffer<T> Value)
+        {
+            Contract.Requires<ArgumentNullException>(Value != null, "Value");
+            return Value.ToString();
+        }
 
         /// <summary>
         /// Adds an item to the buffer
@@ -193,10 +188,6 @@ namespace Utilities.DataTypes
                 Add(buffer[x]);
         }
 
-        #endregion Add
-
-        #region Clear
-
         /// <summary>
         /// Clears the buffer
         /// </summary>
@@ -208,10 +199,6 @@ namespace Utilities.DataTypes
             for (int x = 0; x < MaxCapacity; ++x)
                 Buffer[x] = default(T);
         }
-
-        #endregion Clear
-
-        #region Constains
 
         /// <summary>
         /// Determines if the buffer contains the item
@@ -232,10 +219,6 @@ namespace Utilities.DataTypes
             }
             return false;
         }
-
-        #endregion Constains
-
-        #region CopyTo
 
         /// <summary>
         /// Copies the buffer to an array
@@ -277,10 +260,6 @@ namespace Utilities.DataTypes
             }
         }
 
-        #endregion CopyTo
-
-        #region GetEnumerator
-
         /// <summary>
         /// Gets the enumerator for the buffer
         /// </summary>
@@ -305,10 +284,6 @@ namespace Utilities.DataTypes
         {
             return (IEnumerator)GetEnumerator();
         }
-
-        #endregion GetEnumerator
-
-        #region Remove
 
         /// <summary>
         /// Reads the next item from the buffer
@@ -392,10 +367,6 @@ namespace Utilities.DataTypes
             return MaxLength;
         }
 
-        #endregion Remove
-
-        #region Skip
-
         /// <summary>
         /// Skips ahead in the buffer
         /// </summary>
@@ -410,21 +381,6 @@ namespace Utilities.DataTypes
                 ReadPosition %= MaxCapacity;
         }
 
-        #endregion Skip
-
-        #region ToString
-
-        /// <summary>
-        /// Converts the object to a string
-        /// </summary>
-        /// <param name="Value">Value to convert</param>
-        /// <returns>The value as a string</returns>
-        public static implicit operator string(RingBuffer<T> Value)
-        {
-            Contract.Requires<ArgumentNullException>(Value != null, "Value");
-            return Value.ToString();
-        }
-
         /// <summary>
         /// Returns the buffer as a string
         /// </summary>
@@ -433,9 +389,5 @@ namespace Utilities.DataTypes
         {
             return Buffer.ToString<T>();
         }
-
-        #endregion ToString
-
-        #endregion Functions
     }
 }

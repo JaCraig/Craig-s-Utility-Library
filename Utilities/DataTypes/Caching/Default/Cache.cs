@@ -19,16 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities.DataTypes.Caching.BaseClasses;
-using Utilities.DataTypes.Caching.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.DataTypes.Caching.Default
 {

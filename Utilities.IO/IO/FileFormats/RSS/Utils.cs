@@ -29,8 +29,6 @@ namespace Utilities.IO.FileFormats.RSS
     /// </summary>
     public static class Utils
     {
-        #region Public Static Functions
-
         /// <summary>
         /// Strips illegal characters from RSS items
         /// </summary>
@@ -44,7 +42,5 @@ namespace Utilities.IO.FileFormats.RSS
             Original = Original.Trim().Replace("&", "and");
             return Original;
         }
-
-        #endregion Public Static Functions
     }
 }

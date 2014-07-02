@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.ComponentModel;
 using System.Linq;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -35,10 +31,6 @@ namespace Utilities.DataTypes
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class PredicateExtensions
     {
-        #region Functions
-
-        #region AddToSet
-
         /// <summary>
         /// Adds the given values to the predicate set
         /// </summary>
@@ -50,10 +42,6 @@ namespace Utilities.DataTypes
         {
             return x => Values.Contains(x) || Predicate(x);
         }
-
-        #endregion AddToSet
-
-        #region CartesianProduct
 
         /// <summary>
         /// Treats the predicates as sets and does a cartesian product of them
@@ -68,10 +56,6 @@ namespace Utilities.DataTypes
             return (x, y) => Predicate1(x) && Predicate2(y);
         }
 
-        #endregion CartesianProduct
-
-        #region Difference
-
         /// <summary>
         /// Treats the predicates as sets and does a difference
         /// </summary>
@@ -83,10 +67,6 @@ namespace Utilities.DataTypes
         {
             return x => Predicate1(x) ^ Predicate2(x);
         }
-
-        #endregion Difference
-
-        #region Intersect
 
         /// <summary>
         /// Treats predicates as sets and intersects them together
@@ -100,10 +80,6 @@ namespace Utilities.DataTypes
             return x => Predicate1(x) && Predicate2(x);
         }
 
-        #endregion Intersect
-
-        #region RelativeComplement
-
         /// <summary>
         /// Treats predicates as sets and returns the relative complement
         /// </summary>
@@ -115,10 +91,6 @@ namespace Utilities.DataTypes
         {
             return x => Predicate1(x) && !Predicate2(x);
         }
-
-        #endregion RelativeComplement
-
-        #region RemoveFromSet
 
         /// <summary>
         /// Removes the values from the predicate set
@@ -132,10 +104,6 @@ namespace Utilities.DataTypes
             return x => !Values.Contains(x) && Predicate(x);
         }
 
-        #endregion RemoveFromSet
-
-        #region Union
-
         /// <summary>
         /// Treats predicates as sets and unions them together
         /// </summary>
@@ -147,9 +115,5 @@ namespace Utilities.DataTypes
         {
             return x => Predicate1(x) || Predicate2(x);
         }
-
-        #endregion Union
-
-        #endregion Functions
     }
 }

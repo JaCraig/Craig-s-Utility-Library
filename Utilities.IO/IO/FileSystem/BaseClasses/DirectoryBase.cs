@@ -19,16 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Utilities.IO.Enums;
 using Utilities.IO.FileSystem.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.IO.FileSystem.BaseClasses
 {
@@ -42,8 +38,6 @@ namespace Utilities.IO.FileSystem.BaseClasses
     public abstract class DirectoryBase<InternalDirectoryType, DirectoryType> : IDirectory
         where DirectoryType : DirectoryBase<InternalDirectoryType, DirectoryType>, new()
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -65,10 +59,6 @@ namespace Utilities.IO.FileSystem.BaseClasses
             this.Password = Password;
             this.Domain = Domain;
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Last time accessed (UTC time)
@@ -135,9 +125,83 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// </summary>
         protected string UserName { get; set; }
 
-        #endregion Properties
+        /// <summary>
+        /// Determines if two directories are not equal
+        /// </summary>
+        /// <param name="Directory1">Directory 1</param>
+        /// <param name="Directory2">Directory 2</param>
+        /// <returns>True if they are not equal, false otherwise</returns>
+        public static bool operator !=(DirectoryBase<InternalDirectoryType, DirectoryType> Directory1, IDirectory Directory2)
+        {
+            return !(Directory1 == Directory2);
+        }
 
-        #region Functions
+        /// <summary>
+        /// Less than
+        /// </summary>
+        /// <param name="Directory1">Directory 1</param>
+        /// <param name="Directory2">Directory 2</param>
+        /// <returns>The result</returns>
+        public static bool operator <(DirectoryBase<InternalDirectoryType, DirectoryType> Directory1, IDirectory Directory2)
+        {
+            if (Directory1 == null || Directory2 == null)
+                return false;
+            return string.Compare(Directory1.FullName, Directory2.FullName, StringComparison.OrdinalIgnoreCase) < 0;
+        }
+
+        /// <summary>
+        /// Less than or equal
+        /// </summary>
+        /// <param name="Directory1">Directory 1</param>
+        /// <param name="Directory2">Directory 2</param>
+        /// <returns>The result</returns>
+        public static bool operator <=(DirectoryBase<InternalDirectoryType, DirectoryType> Directory1, IDirectory Directory2)
+        {
+            if (Directory1 == null || Directory2 == null)
+                return false;
+            return string.Compare(Directory1.FullName, Directory2.FullName, StringComparison.OrdinalIgnoreCase) <= 0;
+        }
+
+        /// <summary>
+        /// Determines if two directories are equal
+        /// </summary>
+        /// <param name="Directory1">Directory 1</param>
+        /// <param name="Directory2">Directory 2</param>
+        /// <returns>True if they are, false otherwise</returns>
+        public static bool operator ==(DirectoryBase<InternalDirectoryType, DirectoryType> Directory1, IDirectory Directory2)
+        {
+            if ((object)Directory1 == null && (object)Directory2 == null)
+                return true;
+            if ((object)Directory1 == null || (object)Directory2 == null)
+                return false;
+            return Directory1.FullName == Directory2.FullName;
+        }
+
+        /// <summary>
+        /// Greater than
+        /// </summary>
+        /// <param name="Directory1">Directory 1</param>
+        /// <param name="Directory2">Directory 2</param>
+        /// <returns>The result</returns>
+        public static bool operator >(DirectoryBase<InternalDirectoryType, DirectoryType> Directory1, IDirectory Directory2)
+        {
+            if (Directory1 == null || Directory2 == null)
+                return false;
+            return string.Compare(Directory1.FullName, Directory2.FullName, StringComparison.OrdinalIgnoreCase) > 0;
+        }
+
+        /// <summary>
+        /// Greater than or equal
+        /// </summary>
+        /// <param name="Directory1">Directory 1</param>
+        /// <param name="Directory2">Directory 2</param>
+        /// <returns>The result</returns>
+        public static bool operator >=(DirectoryBase<InternalDirectoryType, DirectoryType> Directory1, IDirectory Directory2)
+        {
+            if (Directory1 == null || Directory2 == null)
+                return false;
+            return string.Compare(Directory1.FullName, Directory2.FullName, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
 
         /// <summary>
         /// Clones the directory object
@@ -308,89 +372,5 @@ namespace Utilities.IO.FileSystem.BaseClasses
         {
             return FullName;
         }
-
-        #endregion Functions
-
-        #region Operators
-
-        /// <summary>
-        /// Determines if two directories are not equal
-        /// </summary>
-        /// <param name="Directory1">Directory 1</param>
-        /// <param name="Directory2">Directory 2</param>
-        /// <returns>True if they are not equal, false otherwise</returns>
-        public static bool operator !=(DirectoryBase<InternalDirectoryType, DirectoryType> Directory1, IDirectory Directory2)
-        {
-            return !(Directory1 == Directory2);
-        }
-
-        /// <summary>
-        /// Less than
-        /// </summary>
-        /// <param name="Directory1">Directory 1</param>
-        /// <param name="Directory2">Directory 2</param>
-        /// <returns>The result</returns>
-        public static bool operator <(DirectoryBase<InternalDirectoryType, DirectoryType> Directory1, IDirectory Directory2)
-        {
-            if (Directory1 == null || Directory2 == null)
-                return false;
-            return string.Compare(Directory1.FullName, Directory2.FullName, StringComparison.OrdinalIgnoreCase) < 0;
-        }
-
-        /// <summary>
-        /// Less than or equal
-        /// </summary>
-        /// <param name="Directory1">Directory 1</param>
-        /// <param name="Directory2">Directory 2</param>
-        /// <returns>The result</returns>
-        public static bool operator <=(DirectoryBase<InternalDirectoryType, DirectoryType> Directory1, IDirectory Directory2)
-        {
-            if (Directory1 == null || Directory2 == null)
-                return false;
-            return string.Compare(Directory1.FullName, Directory2.FullName, StringComparison.OrdinalIgnoreCase) <= 0;
-        }
-
-        /// <summary>
-        /// Determines if two directories are equal
-        /// </summary>
-        /// <param name="Directory1">Directory 1</param>
-        /// <param name="Directory2">Directory 2</param>
-        /// <returns>True if they are, false otherwise</returns>
-        public static bool operator ==(DirectoryBase<InternalDirectoryType, DirectoryType> Directory1, IDirectory Directory2)
-        {
-            if ((object)Directory1 == null && (object)Directory2 == null)
-                return true;
-            if ((object)Directory1 == null || (object)Directory2 == null)
-                return false;
-            return Directory1.FullName == Directory2.FullName;
-        }
-
-        /// <summary>
-        /// Greater than
-        /// </summary>
-        /// <param name="Directory1">Directory 1</param>
-        /// <param name="Directory2">Directory 2</param>
-        /// <returns>The result</returns>
-        public static bool operator >(DirectoryBase<InternalDirectoryType, DirectoryType> Directory1, IDirectory Directory2)
-        {
-            if (Directory1 == null || Directory2 == null)
-                return false;
-            return string.Compare(Directory1.FullName, Directory2.FullName, StringComparison.OrdinalIgnoreCase) > 0;
-        }
-
-        /// <summary>
-        /// Greater than or equal
-        /// </summary>
-        /// <param name="Directory1">Directory 1</param>
-        /// <param name="Directory2">Directory 2</param>
-        /// <returns>The result</returns>
-        public static bool operator >=(DirectoryBase<InternalDirectoryType, DirectoryType> Directory1, IDirectory Directory2)
-        {
-            if (Directory1 == null || Directory2 == null)
-                return false;
-            return string.Compare(Directory1.FullName, Directory2.FullName, StringComparison.OrdinalIgnoreCase) >= 0;
-        }
-
-        #endregion Operators
     }
 }

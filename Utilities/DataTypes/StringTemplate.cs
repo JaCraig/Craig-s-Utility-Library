@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.Serialization;
 using System.Security;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -37,8 +33,6 @@ namespace Utilities.DataTypes
     [Serializable]
     public class StringTemplate : Dictionary<string, string>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -62,10 +56,6 @@ namespace Utilities.DataTypes
         {
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// Ending signifier of a key
         /// </summary>
@@ -80,10 +70,6 @@ namespace Utilities.DataTypes
         /// Template
         /// </summary>
         public string Template { get; protected set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Converts the object to a string
@@ -116,7 +102,5 @@ namespace Utilities.DataTypes
         {
             return Template.ToString(this.ToArray(x => new KeyValuePair<string, string>(KeyStart + x.Key + KeyEnd, x.Value)));
         }
-
-        #endregion Functions
     }
 }

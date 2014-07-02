@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using Utilities.DataTypes.AOP.Interfaces;
 using Utilities.DataTypes.CodeGen;
 using Utilities.IoC.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.DataTypes.AOP.Module
 {

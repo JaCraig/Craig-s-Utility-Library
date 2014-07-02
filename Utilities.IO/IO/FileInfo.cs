@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -30,8 +28,6 @@ using Utilities.IO.FileFormats.BaseClasses;
 using Utilities.IO.FileSystem;
 using Utilities.IO.FileSystem.Interfaces;
 
-#endregion Usings
-
 namespace Utilities.IO
 {
     /// <summary>
@@ -39,8 +35,6 @@ namespace Utilities.IO
     /// </summary>
     public class FileInfo : IFile
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -61,10 +55,6 @@ namespace Utilities.IO
         {
             this.InternalFile = InternalFile;
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Last time accessed (UTC time)
@@ -116,9 +106,107 @@ namespace Utilities.IO
         /// </summary>
         protected IFile InternalFile { get; private set; }
 
-        #endregion Properties
+        /// <summary>
+        /// Reads the file and converts it to a byte array
+        /// </summary>
+        /// <param name="File">File to read</param>
+        /// <returns>The file as a byte array</returns>
+        public static implicit operator byte[](FileInfo File)
+        {
+            if (File == null)
+                return new byte[0];
+            return File.ReadBinary();
+        }
 
-        #region Functions
+        /// <summary>
+        /// Reads the file and converts it to a string
+        /// </summary>
+        /// <param name="File">File to read</param>
+        /// <returns>The file as a string</returns>
+        public static implicit operator string(FileInfo File)
+        {
+            if (File == null)
+                return "";
+            return File.Read();
+        }
+
+        /// <summary>
+        /// Determines if two directories are not equal
+        /// </summary>
+        /// <param name="File1">File 1</param>
+        /// <param name="File2">File 2</param>
+        /// <returns>True if they are not equal, false otherwise</returns>
+        public static bool operator !=(FileInfo File1, FileInfo File2)
+        {
+            return !(File1 == File2);
+        }
+
+        /// <summary>
+        /// Less than
+        /// </summary>
+        /// <param name="File1">File 1</param>
+        /// <param name="File2">File 2</param>
+        /// <returns>The result</returns>
+        public static bool operator <(FileInfo File1, FileInfo File2)
+        {
+            if (File1 == null || File2 == null)
+                return false;
+            return string.Compare(File1.FullName, File2.FullName, StringComparison.OrdinalIgnoreCase) < 0;
+        }
+
+        /// <summary>
+        /// Less than or equal
+        /// </summary>
+        /// <param name="File1">File 1</param>
+        /// <param name="File2">File 2</param>
+        /// <returns>The result</returns>
+        public static bool operator <=(FileInfo File1, FileInfo File2)
+        {
+            if (File1 == null || File2 == null)
+                return false;
+            return string.Compare(File1.FullName, File2.FullName, StringComparison.OrdinalIgnoreCase) <= 0;
+        }
+
+        /// <summary>
+        /// Determines if two directories are equal
+        /// </summary>
+        /// <param name="File1">File 1</param>
+        /// <param name="File2">File 2</param>
+        /// <returns>True if they are, false otherwise</returns>
+        public static bool operator ==(FileInfo File1, FileInfo File2)
+        {
+            if ((object)File1 == null && (object)File2 == null)
+                return true;
+            if ((object)File1 == null || (object)File2 == null)
+                return false;
+            return File1.FullName == File2.FullName;
+        }
+
+        /// <summary>
+        /// Greater than
+        /// </summary>
+        /// <param name="File1">File 1</param>
+        /// <param name="File2">File 2</param>
+        /// <returns>The result</returns>
+        public static bool operator >(FileInfo File1, FileInfo File2)
+        {
+            if (File1 == null || File2 == null)
+                return false;
+            return string.Compare(File1.FullName, File2.FullName, StringComparison.OrdinalIgnoreCase) > 0;
+        }
+
+        /// <summary>
+        /// Greater than or equal
+        /// </summary>
+        /// <param name="File1">File 1</param>
+        /// <param name="File2">File 2</param>
+        /// <returns>The result</returns>
+        public static bool operator >=(FileInfo File1, FileInfo File2)
+        {
+            if (File1 == null || File2 == null)
+                return false;
+            return string.Compare(File1.FullName, File2.FullName, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
 
         /// <summary>
         /// Clones the file object
@@ -338,113 +426,5 @@ namespace Utilities.IO
                 return Content;
             return InternalFile.Write(Content, Mode);
         }
-
-        #endregion Functions
-
-        #region Operators
-
-        /// <summary>
-        /// Reads the file and converts it to a byte array
-        /// </summary>
-        /// <param name="File">File to read</param>
-        /// <returns>The file as a byte array</returns>
-        public static implicit operator byte[](FileInfo File)
-        {
-            if (File == null)
-                return new byte[0];
-            return File.ReadBinary();
-        }
-
-        /// <summary>
-        /// Reads the file and converts it to a string
-        /// </summary>
-        /// <param name="File">File to read</param>
-        /// <returns>The file as a string</returns>
-        public static implicit operator string(FileInfo File)
-        {
-            if (File == null)
-                return "";
-            return File.Read();
-        }
-
-        /// <summary>
-        /// Determines if two directories are not equal
-        /// </summary>
-        /// <param name="File1">File 1</param>
-        /// <param name="File2">File 2</param>
-        /// <returns>True if they are not equal, false otherwise</returns>
-        public static bool operator !=(FileInfo File1, FileInfo File2)
-        {
-            return !(File1 == File2);
-        }
-
-        /// <summary>
-        /// Less than
-        /// </summary>
-        /// <param name="File1">File 1</param>
-        /// <param name="File2">File 2</param>
-        /// <returns>The result</returns>
-        public static bool operator <(FileInfo File1, FileInfo File2)
-        {
-            if (File1 == null || File2 == null)
-                return false;
-            return string.Compare(File1.FullName, File2.FullName, StringComparison.OrdinalIgnoreCase) < 0;
-        }
-
-        /// <summary>
-        /// Less than or equal
-        /// </summary>
-        /// <param name="File1">File 1</param>
-        /// <param name="File2">File 2</param>
-        /// <returns>The result</returns>
-        public static bool operator <=(FileInfo File1, FileInfo File2)
-        {
-            if (File1 == null || File2 == null)
-                return false;
-            return string.Compare(File1.FullName, File2.FullName, StringComparison.OrdinalIgnoreCase) <= 0;
-        }
-
-        /// <summary>
-        /// Determines if two directories are equal
-        /// </summary>
-        /// <param name="File1">File 1</param>
-        /// <param name="File2">File 2</param>
-        /// <returns>True if they are, false otherwise</returns>
-        public static bool operator ==(FileInfo File1, FileInfo File2)
-        {
-            if ((object)File1 == null && (object)File2 == null)
-                return true;
-            if ((object)File1 == null || (object)File2 == null)
-                return false;
-            return File1.FullName == File2.FullName;
-        }
-
-        /// <summary>
-        /// Greater than
-        /// </summary>
-        /// <param name="File1">File 1</param>
-        /// <param name="File2">File 2</param>
-        /// <returns>The result</returns>
-        public static bool operator >(FileInfo File1, FileInfo File2)
-        {
-            if (File1 == null || File2 == null)
-                return false;
-            return string.Compare(File1.FullName, File2.FullName, StringComparison.OrdinalIgnoreCase) > 0;
-        }
-
-        /// <summary>
-        /// Greater than or equal
-        /// </summary>
-        /// <param name="File1">File 1</param>
-        /// <param name="File2">File 2</param>
-        /// <returns>The result</returns>
-        public static bool operator >=(FileInfo File1, FileInfo File2)
-        {
-            if (File1 == null || File2 == null)
-                return false;
-            return string.Compare(File1.FullName, File2.FullName, StringComparison.OrdinalIgnoreCase) >= 0;
-        }
-
-        #endregion Operators
     }
 }

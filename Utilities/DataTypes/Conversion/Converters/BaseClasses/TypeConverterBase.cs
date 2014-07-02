@@ -19,14 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Utilities.DataTypes.Conversion.Converters.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.DataTypes.Conversion.Converters.BaseClasses
 {
@@ -36,8 +32,6 @@ namespace Utilities.DataTypes.Conversion.Converters.BaseClasses
     /// <typeparam name="T">Converter type</typeparam>
     public abstract class TypeConverterBase<T> : TypeConverter, IConverter
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -48,10 +42,6 @@ namespace Utilities.DataTypes.Conversion.Converters.BaseClasses
             ConvertFromTypes = new Dictionary<Type, Func<object, object>>();
             AssociatedType = typeof(T);
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Associated type
@@ -72,10 +62,6 @@ namespace Utilities.DataTypes.Conversion.Converters.BaseClasses
         /// Converter used internally if this can not convert the object
         /// </summary>
         protected abstract TypeConverter InternalConverter { get; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Can convert from
@@ -132,7 +118,5 @@ namespace Utilities.DataTypes.Conversion.Converters.BaseClasses
                 return ConvertToTypes[destinationType](value);
             return base.ConvertFrom(context, culture, value);
         }
-
-        #endregion Functions
     }
 }

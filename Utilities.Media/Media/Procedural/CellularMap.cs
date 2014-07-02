@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-
-#endregion Usings
 
 namespace Utilities.Media.Procedural
 {
@@ -34,7 +30,11 @@ namespace Utilities.Media.Procedural
     /// </summary>
     public class CellularMap
     {
-        #region Constructors
+        private int _Height = 0;
+
+        private int _Width = 0;
+
+        private List<Point> Points = new List<Point>();
 
         /// <summary>
         /// Constructor
@@ -62,9 +62,27 @@ namespace Utilities.Media.Procedural
             CalculateDistances();
         }
 
-        #endregion Constructors
+        /// <summary>
+        /// List of closest cells
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member")]
+        public virtual int[,] ClosestPoint { get; set; }
 
-        #region Private Functions
+        /// <summary>
+        /// Distances to the closest cell
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member")]
+        public virtual float[,] Distances { get; set; }
+
+        /// <summary>
+        /// Maximum distance to a point
+        /// </summary>
+        public virtual float MaxDistance { get; set; }
+
+        /// <summary>
+        /// Minimum distance to a point
+        /// </summary>
+        public virtual float MinDistance { get; set; }
 
         /// <summary>
         /// Calculate the distance between the points
@@ -109,63 +127,19 @@ namespace Utilities.Media.Procedural
             if (MaxDistance > this.MaxDistance)
                 this.MaxDistance = MaxDistance;
         }
-
-        #endregion Private Functions
-
-        #region Public Properties
-
-        /// <summary>
-        /// List of closest cells
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member")]
-        public virtual int[,] ClosestPoint { get; set; }
-
-        /// <summary>
-        /// Distances to the closest cell
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member")]
-        public virtual float[,] Distances { get; set; }
-
-        /// <summary>
-        /// Maximum distance to a point
-        /// </summary>
-        public virtual float MaxDistance { get; set; }
-
-        /// <summary>
-        /// Minimum distance to a point
-        /// </summary>
-        public virtual float MinDistance { get; set; }
-
-        #endregion Public Properties
-
-        #region Private Properties
-
-        private int _Height = 0;
-        private int _Width = 0;
-        private List<Point> Points = new List<Point>();
-
-        #endregion Private Properties
     }
-
-    #region Internal Classes
 
     /// <summary>
     /// Individual point
     /// </summary>
     internal class Point
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
         public Point()
         {
         }
-
-        #endregion Constructor
-
-        #region Public Properties
 
         /// <summary>
         /// X axis
@@ -176,9 +150,5 @@ namespace Utilities.Media.Procedural
         /// Y axis
         /// </summary>
         public virtual int Y { get; set; }
-
-        #endregion Public Properties
     }
-
-    #endregion Internal Classes
 }

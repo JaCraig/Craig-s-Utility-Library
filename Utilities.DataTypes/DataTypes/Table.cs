@@ -19,16 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Linq;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -37,8 +33,6 @@ namespace Utilities.DataTypes
     /// </summary>
     public class Row
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -52,10 +46,6 @@ namespace Utilities.DataTypes
             this.ColumnNames = ColumnNames;
             this.ColumnValues = (object[])ColumnValues.Clone();
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Column names
@@ -107,8 +97,6 @@ namespace Utilities.DataTypes
                 return ColumnValues[Column];
             }
         }
-
-        #endregion Properties
     }
 
     /// <summary>
@@ -116,8 +104,6 @@ namespace Utilities.DataTypes
     /// </summary>
     public class Table
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -168,10 +154,6 @@ namespace Utilities.DataTypes
             }
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         /// <summary>
         /// Column Name hash table
         /// </summary>
@@ -201,10 +183,6 @@ namespace Utilities.DataTypes
             }
         }
 
-        #endregion Properties
-
-        #region Functions
-
         /// <summary>
         /// Adds a row using the objects passed in
         /// </summary>
@@ -217,7 +195,5 @@ namespace Utilities.DataTypes
             this.Rows.Add(new Row(ColumnNameHash, ColumnNames, Objects));
             return this;
         }
-
-        #endregion Functions
     }
 }

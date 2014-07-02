@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,8 +28,6 @@ using System.Reflection;
 using Utilities.DataTypes.Conversion;
 using Utilities.DataTypes.DataMapper.Interfaces;
 
-#endregion Usings
-
 namespace Utilities.DataTypes
 {
     /// <summary>
@@ -40,10 +36,6 @@ namespace Utilities.DataTypes
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class TypeConversionExtensions
     {
-        #region Functions
-
-        #region FormatToString
-
         /// <summary>
         /// Calls the object's ToString function passing in the formatting
         /// </summary>
@@ -56,10 +48,6 @@ namespace Utilities.DataTypes
                 return "";
             return !string.IsNullOrEmpty(Format) ? Input.Call<string>("ToString", Format) : Input.ToString();
         }
-
-        #endregion FormatToString
-
-        #region MapTo
 
         /// <summary>
         /// Sets up a mapping between two types
@@ -95,10 +83,6 @@ namespace Utilities.DataTypes
         {
             return IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.DataMapper.Manager>().Map<Left, Right>();
         }
-
-        #endregion MapTo
-
-        #region To
 
         /// <summary>
         /// Attempts to convert the DataTable to a list of objects
@@ -165,9 +149,5 @@ namespace Utilities.DataTypes
         {
             return Manager.To(Object, ResultType, DefaultValue);
         }
-
-        #endregion To
-
-        #endregion Functions
     }
 }

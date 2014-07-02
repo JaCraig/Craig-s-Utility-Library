@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -31,8 +29,6 @@ using System.Xml.XPath;
 using Utilities.DataTypes;
 using Utilities.IO.FileFormats.BaseClasses;
 
-#endregion Usings
-
 namespace Utilities.IO.FileFormats.RSS
 {
     /// <summary>
@@ -40,8 +36,6 @@ namespace Utilities.IO.FileFormats.RSS
     /// </summary>
     public class Document : StringFormatBase<Document>, IList<Channel>
     {
-        #region Constructors
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -71,10 +65,6 @@ namespace Utilities.IO.FileFormats.RSS
             Contract.Requires<ArgumentNullException>(Document != null, "Document");
             Load(Document);
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         /// <summary>
         /// Channel count
@@ -113,10 +103,6 @@ namespace Utilities.IO.FileFormats.RSS
                 Channels[index] = value;
             }
         }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Adds a channel to the document
@@ -278,7 +264,5 @@ namespace Utilities.IO.FileFormats.RSS
                 }
             }
         }
-
-        #endregion Functions
     }
 }

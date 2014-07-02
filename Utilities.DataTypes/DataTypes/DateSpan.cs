@@ -19,12 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Diagnostics.Contracts;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -33,8 +29,6 @@ namespace Utilities.DataTypes
     /// </summary>
     public class DateSpan
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -46,10 +40,6 @@ namespace Utilities.DataTypes
             this.Start = Start;
             this.End = End;
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Days between the two dates
@@ -95,41 +85,6 @@ namespace Utilities.DataTypes
         /// Years between the two dates
         /// </summary>
         public virtual int Years { get { return (End - Start).Years(); } }
-
-        #endregion Properties
-
-        #region Functions
-
-        /// <summary>
-        /// Returns the intersecting time span between the two values
-        /// </summary>
-        /// <param name="Span">Span to use</param>
-        /// <returns>The intersection of the two time spans</returns>
-        public DateSpan Intersection(DateSpan Span)
-        {
-            if (Span == null)
-                return null;
-            if (!Overlap(Span))
-                return null;
-            DateTime Start = Span.Start > this.Start ? Span.Start : this.Start;
-            DateTime End = Span.End < this.End ? Span.End : this.End;
-            return new DateSpan(Start, End);
-        }
-
-        /// <summary>
-        /// Determines if two DateSpans overlap
-        /// </summary>
-        /// <param name="Span">The span to compare to</param>
-        /// <returns>True if they overlap, false otherwise</returns>
-        public bool Overlap(DateSpan Span)
-        {
-            Contract.Requires<ArgumentNullException>(Span != null, "Span");
-            return ((Start >= Span.Start && Start < Span.End) || (End <= Span.End && End > Span.Start) || (Start <= Span.Start && End >= Span.End));
-        }
-
-        #endregion Functions
-
-        #region Operators
 
         /// <summary>
         /// Converts the object to a string
@@ -187,10 +142,6 @@ namespace Utilities.DataTypes
             return Span1.Start == Span2.Start && Span1.End == Span2.End;
         }
 
-        #endregion Operators
-
-        #region Overridden Functions
-
         /// <summary>
         /// Determines if two objects are equal
         /// </summary>
@@ -212,6 +163,33 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
+        /// Returns the intersecting time span between the two values
+        /// </summary>
+        /// <param name="Span">Span to use</param>
+        /// <returns>The intersection of the two time spans</returns>
+        public DateSpan Intersection(DateSpan Span)
+        {
+            if (Span == null)
+                return null;
+            if (!Overlap(Span))
+                return null;
+            DateTime Start = Span.Start > this.Start ? Span.Start : this.Start;
+            DateTime End = Span.End < this.End ? Span.End : this.End;
+            return new DateSpan(Start, End);
+        }
+
+        /// <summary>
+        /// Determines if two DateSpans overlap
+        /// </summary>
+        /// <param name="Span">The span to compare to</param>
+        /// <returns>True if they overlap, false otherwise</returns>
+        public bool Overlap(DateSpan Span)
+        {
+            Contract.Requires<ArgumentNullException>(Span != null, "Span");
+            return ((Start >= Span.Start && Start < Span.End) || (End <= Span.End && End > Span.Start) || (Start <= Span.Start && End >= Span.End));
+        }
+
+        /// <summary>
         /// Converts the DateSpan to a string
         /// </summary>
         /// <returns>The DateSpan as a string</returns>
@@ -219,7 +197,5 @@ namespace Utilities.DataTypes
         {
             return "Start: " + Start.ToString() + " End: " + End.ToString();
         }
-
-        #endregion Overridden Functions
     }
 }

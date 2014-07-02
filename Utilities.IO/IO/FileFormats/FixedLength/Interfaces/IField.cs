@@ -19,10 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
-#endregion Usings
-
 namespace Utilities.IO.FileFormats.FixedLength.Interfaces
 {
     /// <summary>
@@ -30,20 +26,6 @@ namespace Utilities.IO.FileFormats.FixedLength.Interfaces
     /// </summary>
     public interface IField<T>
     {
-        #region Functions
-
-        /// <summary>
-        /// Parses the string into fields
-        /// </summary>
-        /// <param name="Value">The string value</param>
-        /// <param name="Length">Max length of the value</param>
-        /// <param name="FillerCharacter">Filler character used to fill the rest of the field</param>
-        void Parse(string Value, int Length = -1, string FillerCharacter = " ");
-
-        #endregion Functions
-
-        #region Properties
-
         /// <summary>
         /// Field length
         /// </summary>
@@ -54,6 +36,12 @@ namespace Utilities.IO.FileFormats.FixedLength.Interfaces
         /// </summary>
         T Value { get; set; }
 
-        #endregion Properties
+        /// <summary>
+        /// Parses the string into fields
+        /// </summary>
+        /// <param name="Value">The string value</param>
+        /// <param name="Length">Max length of the value</param>
+        /// <param name="FillerCharacter">Filler character used to fill the rest of the field</param>
+        void Parse(string Value, int Length = -1, string FillerCharacter = " ");
     }
 }

@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -30,8 +28,6 @@ using System.Globalization;
 using Utilities.DataTypes;
 using Utilities.IO.FileFormats.BaseClasses;
 
-#endregion Usings
-
 namespace Utilities.IO.FileFormats
 {
     /// <summary>
@@ -39,8 +35,6 @@ namespace Utilities.IO.FileFormats
     /// </summary>
     public class Excel : StringListFormatBase<Excel, List<string>>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -60,10 +54,6 @@ namespace Utilities.IO.FileFormats
         {
             Parse(FilePath, Sheet);
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Names of each column
@@ -85,10 +75,6 @@ namespace Utilities.IO.FileFormats
                 return Records[Value][ColumnNames.IndexOf(Name)];
             }
         }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Loads an excel doc/sheet
@@ -161,7 +147,5 @@ namespace Utilities.IO.FileFormats
                 }
             }
         }
-
-        #endregion Functions
     }
 }

@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,19 +32,76 @@ using System.Threading.Tasks;
 using Utilities.DataTypes;
 using Utilities.Media.Procedural;
 
-#endregion Usings
-
 namespace Utilities.Media
 {
+    /// <summary>
+    /// Enum defining alignment
+    /// </summary>
+    public enum Align
+    {
+        /// <summary>
+        /// Top
+        /// </summary>
+        Top,
+
+        /// <summary>
+        /// Bottom
+        /// </summary>
+        Bottom,
+
+        /// <summary>
+        /// Left
+        /// </summary>
+        Left,
+
+        /// <summary>
+        /// Right
+        /// </summary>
+        Right
+    }
+
+    /// <summary>
+    /// Direction
+    /// </summary>
+    public enum Direction
+    {
+        /// <summary>
+        /// Top to bottom
+        /// </summary>
+        TopBottom = 0,
+
+        /// <summary>
+        /// Left to right
+        /// </summary>
+        LeftRight
+    };
+
+    /// <summary>
+    /// Enum defining quality
+    /// </summary>
+    public enum Quality
+    {
+        /// <summary>
+        /// High
+        /// </summary>
+        High,
+
+        /// <summary>
+        /// Low
+        /// </summary>
+        Low
+    }
+
     /// <summary>
     /// Bitmap extensions
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class BitmapExtensions
     {
-        #region Functions
-
-        #region AddNoise
+        /// <summary>
+        /// Characters used for ASCII art
+        /// </summary>
+        private static string[] _ASCIICharacters = { "#", "#", "@", "%", "=", "+", "*", ":", "-", ".", " " };
 
         /// <summary>
         /// adds noise to the image
@@ -88,10 +143,6 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion AddNoise
-
-        #region AdjustBrightness
-
         /// <summary>
         /// Adjusts the brightness
         /// </summary>
@@ -117,10 +168,6 @@ namespace Utilities.Media
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
         }
-
-        #endregion AdjustBrightness
-
-        #region AdjustContrast
 
         /// <summary>
         /// Adjusts the Contrast
@@ -168,10 +215,6 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion AdjustContrast
-
-        #region AdjustGamma
-
         /// <summary>
         /// Adjusts the Gamma
         /// </summary>
@@ -216,10 +259,6 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion AdjustGamma
-
-        #region And
-
         /// <summary>
         /// ands two images
         /// </summary>
@@ -262,10 +301,6 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion And
-
-        #region BlackAndWhite
-
         /// <summary>
         /// Converts an Bitmap to black and white
         /// </summary>
@@ -289,10 +324,6 @@ namespace Utilities.Media
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
         }
-
-        #endregion BlackAndWhite
-
-        #region BlueFilter
 
         /// <summary>
         /// Gets the blue filter for an image
@@ -318,10 +349,6 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion BlueFilter
-
-        #region BoxBlur
-
         /// <summary>
         /// Does smoothing using a box blur
         /// </summary>
@@ -342,10 +369,6 @@ namespace Utilities.Media
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
         }
-
-        #endregion BoxBlur
-
-        #region BumpMap
 
         /// <summary>
         /// Creates the bump map
@@ -419,10 +442,6 @@ namespace Utilities.Media
             }
         }
 
-        #endregion BumpMap
-
-        #region Colorize
-
         /// <summary>
         /// Colorizes a black and white image
         /// </summary>
@@ -458,10 +477,6 @@ namespace Utilities.Media
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
         }
-
-        #endregion Colorize
-
-        #region Crop
 
         /// <summary>
         /// Crops an image
@@ -506,10 +521,6 @@ namespace Utilities.Media
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
         }
-
-        #endregion Crop
-
-        #region Dilate
 
         /// <summary>
         /// Does dilation
@@ -567,19 +578,6 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion Dilate
-
-        #region Distance
-
-        private static double Distance(int R1, int R2, int G1, int G2, int B1, int B2)
-        {
-            return ((double)(((R1 - R2) * (R1 - R2)) + ((G1 - G2) * (G1 - G2)) + ((B1 - B2) * (B1 - B2)))).Sqrt();
-        }
-
-        #endregion Distance
-
-        #region DrawRoundedRectangle
-
         /// <summary>
         /// Draws a rounded rectangle on a bitmap
         /// </summary>
@@ -623,10 +621,6 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion DrawRoundedRectangle
-
-        #region DrawText
-
         /// <summary>
         /// Draws text on an Bitmap within the bounding box specified.
         /// </summary>
@@ -655,10 +649,6 @@ namespace Utilities.Media
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
         }
-
-        #endregion DrawText
-
-        #region EdgeDetection
 
         /// <summary>
         /// Does basic edge detection on an image
@@ -712,10 +702,6 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion EdgeDetection
-
-        #region Emboss
-
         /// <summary>
         /// Emboss function
         /// </summary>
@@ -741,10 +727,6 @@ namespace Utilities.Media
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
         }
-
-        #endregion Emboss
-
-        #region Equalize
 
         /// <summary>
         /// Uses an RGB histogram to equalize the image
@@ -786,10 +768,6 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion Equalize
-
-        #region Flip
-
         /// <summary>
         /// Flips an image
         /// </summary>
@@ -815,10 +793,6 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion Flip
-
-        #region GaussianBlur
-
         /// <summary>
         /// Does smoothing using a gaussian blur
         /// </summary>
@@ -841,10 +815,6 @@ namespace Utilities.Media
                 }
             }
         }
-
-        #endregion GaussianBlur
-
-        #region GetHTMLPalette
 
         /// <summary>
         /// Gets a palette listing in HTML string format
@@ -873,9 +843,62 @@ namespace Utilities.Media
             return ReturnArray;
         }
 
-        #endregion GetHTMLPalette
+        /// <summary>
+        /// Returns the Bitmap format this file is using
+        /// </summary>
+        /// <param name="FileName"></param>
+        /// <returns></returns>
+        public static ImageFormat GetImageFormat(this string FileName)
+        {
+            if (string.IsNullOrEmpty(FileName))
+                return ImageFormat.Bmp;
+            if (FileName.EndsWith("jpg", StringComparison.InvariantCultureIgnoreCase) || FileName.EndsWith("jpeg", StringComparison.InvariantCultureIgnoreCase))
+                return ImageFormat.Jpeg;
+            if (FileName.EndsWith("png", StringComparison.InvariantCultureIgnoreCase))
+                return ImageFormat.Png;
+            if (FileName.EndsWith("tiff", StringComparison.InvariantCultureIgnoreCase))
+                return ImageFormat.Tiff;
+            if (FileName.EndsWith("ico", StringComparison.InvariantCultureIgnoreCase))
+                return ImageFormat.Icon;
+            if (FileName.EndsWith("gif", StringComparison.InvariantCultureIgnoreCase))
+                return ImageFormat.Gif;
+            return ImageFormat.Bmp;
+        }
 
-        #region GreenFilter
+        /// <summary>
+        /// Gets a pixel from an x,y coordinate
+        /// </summary>
+        /// <param name="Data">Bitmap data</param>
+        /// <param name="x">X coord</param>
+        /// <param name="y">Y coord</param>
+        /// <param name="PixelSizeInBytes">Pixel size in bytes</param>
+        /// <returns>The pixel at the x,y coords</returns>
+        public static unsafe Color GetPixel(this BitmapData Data, int x, int y, int PixelSizeInBytes)
+        {
+            Contract.Requires<ArgumentNullException>(Data != null, "Data");
+            byte* DataPointer = (byte*)Data.Scan0;
+            DataPointer = DataPointer + (y * Data.Stride) + (x * PixelSizeInBytes);
+            return (PixelSizeInBytes == 3) ?
+                Color.FromArgb(DataPointer[2], DataPointer[1], DataPointer[0]) :
+                Color.FromArgb(DataPointer[3], DataPointer[2], DataPointer[1], DataPointer[0]);
+        }
+
+        /// <summary>
+        /// Gets the pixel size (in bytes)
+        /// </summary>
+        /// <param name="Data">Bitmap data</param>
+        /// <returns>The pixel size (in bytes)</returns>
+        public static int GetPixelSize(this BitmapData Data)
+        {
+            Contract.Requires<ArgumentNullException>(Data != null, "Data");
+            if (Data.PixelFormat == PixelFormat.Format24bppRgb)
+                return 3;
+            else if (Data.PixelFormat == PixelFormat.Format32bppArgb
+                || Data.PixelFormat == PixelFormat.Format32bppPArgb
+                || Data.PixelFormat == PixelFormat.Format32bppRgb)
+                return 4;
+            return 0;
+        }
 
         /// <summary>
         /// Gets the Green filter for an image
@@ -900,129 +923,6 @@ namespace Utilities.Media
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
         }
-
-        #endregion GreenFilter
-
-        #region GetHeight
-
-        private static float GetHeight(int x, int y, BitmapData BlackAndWhiteData, int BlackAndWhitePixelSize)
-        {
-            Contract.Requires<ArgumentNullException>(BlackAndWhiteData != null, "BlackAndWhiteData");
-            Color TempColor = BlackAndWhiteData.GetPixel(x, y, BlackAndWhitePixelSize);
-            return GetHeight(TempColor);
-        }
-
-        private static float GetHeight(Color Color)
-        {
-            return (float)Color.R / 255.0f;
-        }
-
-        #endregion GetHeight
-
-        #region GetImageFormat
-
-        /// <summary>
-        /// Returns the Bitmap format this file is using
-        /// </summary>
-        /// <param name="FileName"></param>
-        /// <returns></returns>
-        public static ImageFormat GetImageFormat(this string FileName)
-        {
-            if (string.IsNullOrEmpty(FileName))
-                return ImageFormat.Bmp;
-            if (FileName.EndsWith("jpg", StringComparison.InvariantCultureIgnoreCase) || FileName.EndsWith("jpeg", StringComparison.InvariantCultureIgnoreCase))
-                return ImageFormat.Jpeg;
-            if (FileName.EndsWith("png", StringComparison.InvariantCultureIgnoreCase))
-                return ImageFormat.Png;
-            if (FileName.EndsWith("tiff", StringComparison.InvariantCultureIgnoreCase))
-                return ImageFormat.Tiff;
-            if (FileName.EndsWith("ico", StringComparison.InvariantCultureIgnoreCase))
-                return ImageFormat.Icon;
-            if (FileName.EndsWith("gif", StringComparison.InvariantCultureIgnoreCase))
-                return ImageFormat.Gif;
-            return ImageFormat.Bmp;
-        }
-
-        #endregion GetImageFormat
-
-        #region GetMinMaxPixel
-
-        private static void GetMinMaxPixel(out Color Min, out Color Max, BitmapData ImageData, int PixelSize)
-        {
-            Contract.Requires<ArgumentNullException>(ImageData != null, "ImageData");
-            int MinR = 255, MinG = 255, MinB = 255;
-            int MaxR = 0, MaxG = 0, MaxB = 0;
-            for (int x = 0; x < ImageData.Width; ++x)
-            {
-                for (int y = 0; y < ImageData.Height; ++y)
-                {
-                    Color TempImage = ImageData.GetPixel(x, y, PixelSize);
-                    if (MinR > TempImage.R)
-                        MinR = TempImage.R;
-                    if (MaxR < TempImage.R)
-                        MaxR = TempImage.R;
-
-                    if (MinG > TempImage.G)
-                        MinG = TempImage.G;
-                    if (MaxG < TempImage.G)
-                        MaxG = TempImage.G;
-
-                    if (MinB > TempImage.B)
-                        MinB = TempImage.B;
-                    if (MaxB < TempImage.B)
-                        MaxB = TempImage.B;
-                }
-            }
-            Min = Color.FromArgb(MinR, MinG, MinB);
-            Max = Color.FromArgb(MaxR, MaxG, MaxB);
-        }
-
-        #endregion GetMinMaxPixel
-
-        #region GetPixelSize
-
-        /// <summary>
-        /// Gets the pixel size (in bytes)
-        /// </summary>
-        /// <param name="Data">Bitmap data</param>
-        /// <returns>The pixel size (in bytes)</returns>
-        public static int GetPixelSize(this BitmapData Data)
-        {
-            Contract.Requires<ArgumentNullException>(Data != null, "Data");
-            if (Data.PixelFormat == PixelFormat.Format24bppRgb)
-                return 3;
-            else if (Data.PixelFormat == PixelFormat.Format32bppArgb
-                || Data.PixelFormat == PixelFormat.Format32bppPArgb
-                || Data.PixelFormat == PixelFormat.Format32bppRgb)
-                return 4;
-            return 0;
-        }
-
-        #endregion GetPixelSize
-
-        #region GetPixel
-
-        /// <summary>
-        /// Gets a pixel from an x,y coordinate
-        /// </summary>
-        /// <param name="Data">Bitmap data</param>
-        /// <param name="x">X coord</param>
-        /// <param name="y">Y coord</param>
-        /// <param name="PixelSizeInBytes">Pixel size in bytes</param>
-        /// <returns>The pixel at the x,y coords</returns>
-        public static unsafe Color GetPixel(this BitmapData Data, int x, int y, int PixelSizeInBytes)
-        {
-            Contract.Requires<ArgumentNullException>(Data != null, "Data");
-            byte* DataPointer = (byte*)Data.Scan0;
-            DataPointer = DataPointer + (y * Data.Stride) + (x * PixelSizeInBytes);
-            return (PixelSizeInBytes == 3) ?
-                Color.FromArgb(DataPointer[2], DataPointer[1], DataPointer[0]) :
-                Color.FromArgb(DataPointer[3], DataPointer[2], DataPointer[1], DataPointer[0]);
-        }
-
-        #endregion GetPixel
-
-        #region Jitter
 
         /// <summary>
         /// Causes a "Jitter" effect
@@ -1062,10 +962,6 @@ namespace Utilities.Media
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
         }
-
-        #endregion Jitter
-
-        #region KuwaharaBlur
 
         /// <summary>
         /// Does smoothing using a kuwahara blur
@@ -1165,10 +1061,6 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion KuwaharaBlur
-
-        #region LaplaceEdgeDetection
-
         /// <summary>
         /// Laplace edge detection function
         /// </summary>
@@ -1217,10 +1109,6 @@ namespace Utilities.Media
             }
         }
 
-        #endregion LaplaceEdgeDetection
-
-        #region LockImage
-
         /// <summary>
         /// Locks an image
         /// </summary>
@@ -1232,21 +1120,6 @@ namespace Utilities.Media
             return Image.LockBits(new Rectangle(0, 0, Image.Width, Image.Height),
                 ImageLockMode.ReadWrite, Image.PixelFormat);
         }
-
-        #endregion LockImage
-
-        #region Map
-
-        private static int Map(int Value, int Min, int Max)
-        {
-            double TempVal = (Value - Min);
-            TempVal /= (double)(Max - Min);
-            return ((int)(TempVal * 255)).Clamp(255, 0);
-        }
-
-        #endregion Map
-
-        #region MedianFilter
 
         /// <summary>
         /// Does smoothing using a median filter
@@ -1305,10 +1178,6 @@ namespace Utilities.Media
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
         }
-
-        #endregion MedianFilter
-
-        #region MotionDetection
 
         /// <summary>
         /// Runs a simplistic motion detection algorithm
@@ -1392,10 +1261,6 @@ namespace Utilities.Media
             }
         }
 
-        #endregion MotionDetection
-
-        #region Negative
-
         /// <summary>
         /// gets the negative of the image
         /// </summary>
@@ -1428,10 +1293,6 @@ namespace Utilities.Media
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
         }
-
-        #endregion Negative
-
-        #region NormalMap
 
         /// <summary>
         /// Creates the normal map
@@ -1484,56 +1345,6 @@ namespace Utilities.Media
                 }
             }
         }
-
-        #endregion NormalMap
-
-        #region Or
-
-        /// <summary>
-        /// Ors two images
-        /// </summary>
-        /// <param name="Image1">Image to manipulate</param>
-        /// <param name="Image2">Image to manipulate</param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>A bitmap image</returns>
-        public static Bitmap Or(this Bitmap Image1, Bitmap Image2, string FileName = "")
-        {
-            Contract.Requires<ArgumentNullException>(Image1 != null, "Image1");
-            Contract.Requires<ArgumentNullException>(Image2 != null, "Image2");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            Bitmap NewBitmap = new Bitmap(Image1.Width, Image1.Height);
-            BitmapData NewData = NewBitmap.LockImage();
-            BitmapData OldData1 = Image1.LockImage();
-            BitmapData OldData2 = Image2.LockImage();
-            int NewPixelSize = NewData.GetPixelSize();
-            int OldPixelSize1 = OldData1.GetPixelSize();
-            int OldPixelSize2 = OldData2.GetPixelSize();
-            int Width = NewBitmap.Width;
-            int Height = NewBitmap.Height;
-            Parallel.For(0, Width, x =>
-            {
-                for (int y = 0; y < Height; ++y)
-                {
-                    Color Pixel1 = OldData1.GetPixel(x, y, OldPixelSize1);
-                    Color Pixel2 = OldData2.GetPixel(x, y, OldPixelSize2);
-                    NewData.SetPixel(x, y,
-                        Color.FromArgb(Pixel1.R | Pixel2.R,
-                            Pixel1.G | Pixel2.G,
-                            Pixel1.B | Pixel2.B),
-                        NewPixelSize);
-                }
-            });
-            NewBitmap.UnlockImage(NewData);
-            Image1.UnlockImage(OldData1);
-            Image2.UnlockImage(OldData2);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
-        }
-
-        #endregion Or
-
-        #region OilPainting
 
         /// <summary>
         /// Slow but interesting function that applies an oil painting effect
@@ -1592,9 +1403,47 @@ namespace Utilities.Media
             return _Image;
         }
 
-        #endregion OilPainting
-
-        #region Pixelate
+        /// <summary>
+        /// Ors two images
+        /// </summary>
+        /// <param name="Image1">Image to manipulate</param>
+        /// <param name="Image2">Image to manipulate</param>
+        /// <param name="FileName">File to save to</param>
+        /// <returns>A bitmap image</returns>
+        public static Bitmap Or(this Bitmap Image1, Bitmap Image2, string FileName = "")
+        {
+            Contract.Requires<ArgumentNullException>(Image1 != null, "Image1");
+            Contract.Requires<ArgumentNullException>(Image2 != null, "Image2");
+            ImageFormat FormatUsing = FileName.GetImageFormat();
+            Bitmap NewBitmap = new Bitmap(Image1.Width, Image1.Height);
+            BitmapData NewData = NewBitmap.LockImage();
+            BitmapData OldData1 = Image1.LockImage();
+            BitmapData OldData2 = Image2.LockImage();
+            int NewPixelSize = NewData.GetPixelSize();
+            int OldPixelSize1 = OldData1.GetPixelSize();
+            int OldPixelSize2 = OldData2.GetPixelSize();
+            int Width = NewBitmap.Width;
+            int Height = NewBitmap.Height;
+            Parallel.For(0, Width, x =>
+            {
+                for (int y = 0; y < Height; ++y)
+                {
+                    Color Pixel1 = OldData1.GetPixel(x, y, OldPixelSize1);
+                    Color Pixel2 = OldData2.GetPixel(x, y, OldPixelSize2);
+                    NewData.SetPixel(x, y,
+                        Color.FromArgb(Pixel1.R | Pixel2.R,
+                            Pixel1.G | Pixel2.G,
+                            Pixel1.B | Pixel2.B),
+                        NewPixelSize);
+                }
+            });
+            NewBitmap.UnlockImage(NewData);
+            Image1.UnlockImage(OldData1);
+            Image2.UnlockImage(OldData2);
+            if (!string.IsNullOrEmpty(FileName))
+                NewBitmap.Save(FileName, FormatUsing);
+            return NewBitmap;
+        }
 
         /// <summary>
         /// Pixelates an image
@@ -1653,10 +1502,6 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion Pixelate
-
-        #region RedFilter
-
         /// <summary>
         /// Gets the Red filter for an image
         /// </summary>
@@ -1680,10 +1525,6 @@ namespace Utilities.Media
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
         }
-
-        #endregion RedFilter
-
-        #region Resize
 
         /// <summary>
         /// Resizes an Bitmap to a certain height
@@ -1749,10 +1590,6 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion Resize
-
-        #region Rotate
-
         /// <summary>
         /// Rotates an image
         /// </summary>
@@ -1780,10 +1617,6 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion Rotate
-
-        #region SepiaTone
-
         /// <summary>
         /// Converts an Bitmap to sepia tone
         /// </summary>
@@ -1807,10 +1640,6 @@ namespace Utilities.Media
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
         }
-
-        #endregion SepiaTone
-
-        #region SetPixel
 
         /// <summary>
         /// Sets a pixel at the x,y coords
@@ -1838,10 +1667,6 @@ namespace Utilities.Media
             DataPointer[0] = PixelColor.B;
         }
 
-        #endregion SetPixel
-
-        #region Sharpen
-
         /// <summary>
         /// Sharpens an image
         /// </summary>
@@ -1868,10 +1693,6 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion Sharpen
-
-        #region SharpenLess
-
         /// <summary>
         /// Sharpens an image
         /// </summary>
@@ -1897,10 +1718,6 @@ namespace Utilities.Media
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
         }
-
-        #endregion SharpenLess
-
-        #region SinWave
 
         /// <summary>
         /// Does a "wave" effect on the image
@@ -1954,119 +1771,6 @@ namespace Utilities.Media
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
         }
-
-        #endregion SinWave
-
-        #region SobelEdgeDetection
-
-        /// <summary>
-        /// Sobel edge detection function
-        /// </summary>
-        /// <param name="Input">Image to manipulate</param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>A bitmap image</returns>
-        public static Bitmap SobelEdgeDetection(this Bitmap Input, string FileName = "")
-        {
-            Contract.Requires<ArgumentNullException>(Input != null, "Input");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            using (Bitmap TempImage = Input.BlackAndWhite())
-            {
-                Filter TempFilter = new Filter(3, 3);
-                TempFilter.MyFilter[0, 0] = -1;
-                TempFilter.MyFilter[0, 1] = 0;
-                TempFilter.MyFilter[0, 2] = 1;
-                TempFilter.MyFilter[1, 0] = -2;
-                TempFilter.MyFilter[1, 1] = 0;
-                TempFilter.MyFilter[1, 2] = 2;
-                TempFilter.MyFilter[2, 0] = -1;
-                TempFilter.MyFilter[2, 1] = 0;
-                TempFilter.MyFilter[2, 2] = 1;
-                TempFilter.Absolute = true;
-                using (Bitmap TempImageX = TempFilter.ApplyFilter(TempImage))
-                {
-                    TempFilter = new Filter(3, 3);
-                    TempFilter.MyFilter[0, 0] = 1;
-                    TempFilter.MyFilter[0, 1] = 2;
-                    TempFilter.MyFilter[0, 2] = 1;
-                    TempFilter.MyFilter[1, 0] = 0;
-                    TempFilter.MyFilter[1, 1] = 0;
-                    TempFilter.MyFilter[1, 2] = 0;
-                    TempFilter.MyFilter[2, 0] = -1;
-                    TempFilter.MyFilter[2, 1] = -2;
-                    TempFilter.MyFilter[2, 2] = -1;
-                    TempFilter.Absolute = true;
-                    using (Bitmap TempImageY = TempFilter.ApplyFilter(TempImage))
-                    {
-                        using (Bitmap NewBitmap = new Bitmap(TempImage.Width, TempImage.Height))
-                        {
-                            BitmapData NewData = NewBitmap.LockImage();
-                            BitmapData OldData1 = TempImageX.LockImage();
-                            BitmapData OldData2 = TempImageY.LockImage();
-                            int NewPixelSize = NewData.GetPixelSize();
-                            int OldPixelSize1 = OldData1.GetPixelSize();
-                            int OldPixelSize2 = OldData2.GetPixelSize();
-                            int Width = NewBitmap.Width;
-                            int Height = NewBitmap.Height;
-                            Parallel.For(0, Width, x =>
-                            {
-                                for (int y = 0; y < Height; ++y)
-                                {
-                                    Color Pixel1 = OldData1.GetPixel(x, y, OldPixelSize1);
-                                    Color Pixel2 = OldData2.GetPixel(x, y, OldPixelSize2);
-                                    NewData.SetPixel(x, y,
-                                        Color.FromArgb((Pixel1.R + Pixel2.R).Clamp(255, 0),
-                                            (Pixel1.G + Pixel2.G).Clamp(255, 0),
-                                            (Pixel1.B + Pixel2.B).Clamp(255, 0)),
-                                        NewPixelSize);
-                                }
-                            });
-                            NewBitmap.UnlockImage(NewData);
-                            TempImageX.UnlockImage(OldData1);
-                            TempImageY.UnlockImage(OldData2);
-                            Bitmap NewBitmap2 = NewBitmap.Negative();
-                            if (!string.IsNullOrEmpty(FileName))
-                                NewBitmap2.Save(FileName, FormatUsing);
-                            return NewBitmap2;
-                        }
-                    }
-                }
-            }
-        }
-
-        #endregion SobelEdgeDetection
-
-        #region SobelEmboss
-
-        /// <summary>
-        /// Sobel emboss function
-        /// </summary>
-        /// <param name="Image">Image to manipulate</param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>A bitmap image</returns>
-        public static Bitmap SobelEmboss(this Bitmap Image, string FileName = "")
-        {
-            Contract.Requires<ArgumentNullException>(Image != null, "Image");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            Filter TempFilter = new Filter(3, 3);
-            TempFilter.MyFilter[0, 0] = -1;
-            TempFilter.MyFilter[0, 1] = 0;
-            TempFilter.MyFilter[0, 2] = 1;
-            TempFilter.MyFilter[1, 0] = -2;
-            TempFilter.MyFilter[1, 1] = 0;
-            TempFilter.MyFilter[1, 2] = 2;
-            TempFilter.MyFilter[2, 0] = -1;
-            TempFilter.MyFilter[2, 1] = 0;
-            TempFilter.MyFilter[2, 2] = 1;
-            TempFilter.Offset = 127;
-            Bitmap NewBitmap = TempFilter.ApplyFilter(Image);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
-        }
-
-        #endregion SobelEmboss
-
-        #region SNNBlur
 
         /// <summary>
         /// Does smoothing using a SNN blur
@@ -2144,9 +1848,106 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion SNNBlur
+        /// <summary>
+        /// Sobel edge detection function
+        /// </summary>
+        /// <param name="Input">Image to manipulate</param>
+        /// <param name="FileName">File to save to</param>
+        /// <returns>A bitmap image</returns>
+        public static Bitmap SobelEdgeDetection(this Bitmap Input, string FileName = "")
+        {
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
+            ImageFormat FormatUsing = FileName.GetImageFormat();
+            using (Bitmap TempImage = Input.BlackAndWhite())
+            {
+                Filter TempFilter = new Filter(3, 3);
+                TempFilter.MyFilter[0, 0] = -1;
+                TempFilter.MyFilter[0, 1] = 0;
+                TempFilter.MyFilter[0, 2] = 1;
+                TempFilter.MyFilter[1, 0] = -2;
+                TempFilter.MyFilter[1, 1] = 0;
+                TempFilter.MyFilter[1, 2] = 2;
+                TempFilter.MyFilter[2, 0] = -1;
+                TempFilter.MyFilter[2, 1] = 0;
+                TempFilter.MyFilter[2, 2] = 1;
+                TempFilter.Absolute = true;
+                using (Bitmap TempImageX = TempFilter.ApplyFilter(TempImage))
+                {
+                    TempFilter = new Filter(3, 3);
+                    TempFilter.MyFilter[0, 0] = 1;
+                    TempFilter.MyFilter[0, 1] = 2;
+                    TempFilter.MyFilter[0, 2] = 1;
+                    TempFilter.MyFilter[1, 0] = 0;
+                    TempFilter.MyFilter[1, 1] = 0;
+                    TempFilter.MyFilter[1, 2] = 0;
+                    TempFilter.MyFilter[2, 0] = -1;
+                    TempFilter.MyFilter[2, 1] = -2;
+                    TempFilter.MyFilter[2, 2] = -1;
+                    TempFilter.Absolute = true;
+                    using (Bitmap TempImageY = TempFilter.ApplyFilter(TempImage))
+                    {
+                        using (Bitmap NewBitmap = new Bitmap(TempImage.Width, TempImage.Height))
+                        {
+                            BitmapData NewData = NewBitmap.LockImage();
+                            BitmapData OldData1 = TempImageX.LockImage();
+                            BitmapData OldData2 = TempImageY.LockImage();
+                            int NewPixelSize = NewData.GetPixelSize();
+                            int OldPixelSize1 = OldData1.GetPixelSize();
+                            int OldPixelSize2 = OldData2.GetPixelSize();
+                            int Width = NewBitmap.Width;
+                            int Height = NewBitmap.Height;
+                            Parallel.For(0, Width, x =>
+                            {
+                                for (int y = 0; y < Height; ++y)
+                                {
+                                    Color Pixel1 = OldData1.GetPixel(x, y, OldPixelSize1);
+                                    Color Pixel2 = OldData2.GetPixel(x, y, OldPixelSize2);
+                                    NewData.SetPixel(x, y,
+                                        Color.FromArgb((Pixel1.R + Pixel2.R).Clamp(255, 0),
+                                            (Pixel1.G + Pixel2.G).Clamp(255, 0),
+                                            (Pixel1.B + Pixel2.B).Clamp(255, 0)),
+                                        NewPixelSize);
+                                }
+                            });
+                            NewBitmap.UnlockImage(NewData);
+                            TempImageX.UnlockImage(OldData1);
+                            TempImageY.UnlockImage(OldData2);
+                            Bitmap NewBitmap2 = NewBitmap.Negative();
+                            if (!string.IsNullOrEmpty(FileName))
+                                NewBitmap2.Save(FileName, FormatUsing);
+                            return NewBitmap2;
+                        }
+                    }
+                }
+            }
+        }
 
-        #region StretchContrast
+        /// <summary>
+        /// Sobel emboss function
+        /// </summary>
+        /// <param name="Image">Image to manipulate</param>
+        /// <param name="FileName">File to save to</param>
+        /// <returns>A bitmap image</returns>
+        public static Bitmap SobelEmboss(this Bitmap Image, string FileName = "")
+        {
+            Contract.Requires<ArgumentNullException>(Image != null, "Image");
+            ImageFormat FormatUsing = FileName.GetImageFormat();
+            Filter TempFilter = new Filter(3, 3);
+            TempFilter.MyFilter[0, 0] = -1;
+            TempFilter.MyFilter[0, 1] = 0;
+            TempFilter.MyFilter[0, 2] = 1;
+            TempFilter.MyFilter[1, 0] = -2;
+            TempFilter.MyFilter[1, 1] = 0;
+            TempFilter.MyFilter[1, 2] = 2;
+            TempFilter.MyFilter[2, 0] = -1;
+            TempFilter.MyFilter[2, 1] = 0;
+            TempFilter.MyFilter[2, 2] = 1;
+            TempFilter.Offset = 127;
+            Bitmap NewBitmap = TempFilter.ApplyFilter(Image);
+            if (!string.IsNullOrEmpty(FileName))
+                NewBitmap.Save(FileName, FormatUsing);
+            return NewBitmap;
+        }
 
         /// <summary>
         /// Stretches the contrast
@@ -2186,10 +1987,6 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion StretchContrast
-
-        #region Threshold
-
         /// <summary>
         /// Does threshold manipulation of the image
         /// </summary>
@@ -2227,10 +2024,6 @@ namespace Utilities.Media
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
         }
-
-        #endregion Threshold
-
-        #region ToASCIIArt
 
         /// <summary>
         /// Converts an Bitmap to ASCII art
@@ -2271,10 +2064,6 @@ namespace Utilities.Media
             }
         }
 
-        #endregion ToASCIIArt
-
-        #region ToBase64
-
         /// <summary>
         /// Converts an Bitmap to a base64 string and returns it
         /// </summary>
@@ -2291,10 +2080,6 @@ namespace Utilities.Media
                 return Stream.ToArray().ToString(Base64FormattingOptions.None);
             }
         }
-
-        #endregion ToBase64
-
-        #region Turbulence
 
         /// <summary>
         /// Does turbulence manipulation of the image
@@ -2346,10 +2131,6 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion Turbulence
-
-        #region UnlockImage
-
         /// <summary>
         /// Unlocks the image's data
         /// </summary>
@@ -2363,10 +2144,6 @@ namespace Utilities.Media
             Image.UnlockBits(ImageData);
             return Image;
         }
-
-        #endregion UnlockImage
-
-        #region Watermark
 
         /// <summary>
         /// Adds a watermark to an image
@@ -2419,10 +2196,6 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion Watermark
-
-        #region Xor
-
         /// <summary>
         /// Xors two images
         /// </summary>
@@ -2465,79 +2238,58 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion Xor
+        private static double Distance(int R1, int R2, int G1, int G2, int B1, int B2)
+        {
+            return ((double)(((R1 - R2) * (R1 - R2)) + ((G1 - G2) * (G1 - G2)) + ((B1 - B2) * (B1 - B2)))).Sqrt();
+        }
 
-        #endregion Functions
+        private static float GetHeight(int x, int y, BitmapData BlackAndWhiteData, int BlackAndWhitePixelSize)
+        {
+            Contract.Requires<ArgumentNullException>(BlackAndWhiteData != null, "BlackAndWhiteData");
+            Color TempColor = BlackAndWhiteData.GetPixel(x, y, BlackAndWhitePixelSize);
+            return GetHeight(TempColor);
+        }
 
-        #region Variables
+        private static float GetHeight(Color Color)
+        {
+            return (float)Color.R / 255.0f;
+        }
 
-        /// <summary>
-        /// Characters used for ASCII art
-        /// </summary>
-        private static string[] _ASCIICharacters = { "#", "#", "@", "%", "=", "+", "*", ":", "-", ".", " " };
+        private static void GetMinMaxPixel(out Color Min, out Color Max, BitmapData ImageData, int PixelSize)
+        {
+            Contract.Requires<ArgumentNullException>(ImageData != null, "ImageData");
+            int MinR = 255, MinG = 255, MinB = 255;
+            int MaxR = 0, MaxG = 0, MaxB = 0;
+            for (int x = 0; x < ImageData.Width; ++x)
+            {
+                for (int y = 0; y < ImageData.Height; ++y)
+                {
+                    Color TempImage = ImageData.GetPixel(x, y, PixelSize);
+                    if (MinR > TempImage.R)
+                        MinR = TempImage.R;
+                    if (MaxR < TempImage.R)
+                        MaxR = TempImage.R;
 
-        #endregion Variables
+                    if (MinG > TempImage.G)
+                        MinG = TempImage.G;
+                    if (MaxG < TempImage.G)
+                        MaxG = TempImage.G;
+
+                    if (MinB > TempImage.B)
+                        MinB = TempImage.B;
+                    if (MaxB < TempImage.B)
+                        MaxB = TempImage.B;
+                }
+            }
+            Min = Color.FromArgb(MinR, MinG, MinB);
+            Max = Color.FromArgb(MaxR, MaxG, MaxB);
+        }
+
+        private static int Map(int Value, int Min, int Max)
+        {
+            double TempVal = (Value - Min);
+            TempVal /= (double)(Max - Min);
+            return ((int)(TempVal * 255)).Clamp(255, 0);
+        }
     }
-
-    #region Enums
-
-    /// <summary>
-    /// Enum defining alignment
-    /// </summary>
-    public enum Align
-    {
-        /// <summary>
-        /// Top
-        /// </summary>
-        Top,
-
-        /// <summary>
-        /// Bottom
-        /// </summary>
-        Bottom,
-
-        /// <summary>
-        /// Left
-        /// </summary>
-        Left,
-
-        /// <summary>
-        /// Right
-        /// </summary>
-        Right
-    }
-
-    /// <summary>
-    /// Direction
-    /// </summary>
-    public enum Direction
-    {
-        /// <summary>
-        /// Top to bottom
-        /// </summary>
-        TopBottom = 0,
-
-        /// <summary>
-        /// Left to right
-        /// </summary>
-        LeftRight
-    };
-
-    /// <summary>
-    /// Enum defining quality
-    /// </summary>
-    public enum Quality
-    {
-        /// <summary>
-        /// High
-        /// </summary>
-        High,
-
-        /// <summary>
-        /// Low
-        /// </summary>
-        Low
-    }
-
-    #endregion Enums
 }

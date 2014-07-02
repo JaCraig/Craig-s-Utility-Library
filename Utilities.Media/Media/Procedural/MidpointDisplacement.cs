@@ -19,14 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Drawing;
-
-#endregion Usings
 
 namespace Utilities.Media.Procedural
 {
@@ -35,8 +31,6 @@ namespace Utilities.Media.Procedural
     /// </summary>
     public static class MidpointDisplacement
     {
-        #region Functions
-
         /// <summary>
         /// Generates an image that contains cracks
         /// </summary>
@@ -112,14 +106,20 @@ namespace Utilities.Media.Procedural
             }
             return Lines;
         }
-
-        #endregion Functions
     }
-
-    #region Internal classes
 
     internal class Line
     {
+        public List<Line> SubLines = new List<Line>();
+
+        public int X1;
+
+        public int X2;
+
+        public int Y1;
+
+        public int Y2;
+
         public Line()
         {
         }
@@ -140,13 +140,5 @@ namespace Utilities.Media.Procedural
             this.Y1 = Y1;
             this.Y2 = Y2;
         }
-
-        public List<Line> SubLines = new List<Line>();
-        public int X1;
-        public int X2;
-        public int Y1;
-        public int Y2;
     }
-
-    #endregion Internal classes
 }

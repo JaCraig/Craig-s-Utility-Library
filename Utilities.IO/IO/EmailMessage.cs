@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System.Collections.Generic;
 using System.Net.Mail;
 using Utilities.IO.Messaging;
 using Utilities.IO.Messaging.BaseClasses;
 using Utilities.IO.Messaging.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.IO
 {
@@ -36,8 +32,6 @@ namespace Utilities.IO
     /// </summary>
     public class EmailMessage : MessageBase, IMessage
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -49,10 +43,6 @@ namespace Utilities.IO
             Priority = MailPriority.Normal;
             Port = 25;
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Attachments
@@ -104,10 +94,6 @@ namespace Utilities.IO
         /// </summary>
         public bool UseSSL { get; set; }
 
-        #endregion Properties
-
-        #region Functions
-
         /// <summary>
         /// Disposes of the objects
         /// </summary>
@@ -133,7 +119,5 @@ namespace Utilities.IO
                 EmbeddedResources = null;
             }
         }
-
-        #endregion Functions
     }
 }

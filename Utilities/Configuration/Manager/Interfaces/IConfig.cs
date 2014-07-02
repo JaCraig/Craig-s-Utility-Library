@@ -19,10 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
-#endregion Usings
-
 namespace Utilities.Configuration.Manager.Interfaces
 {
     /// <summary>
@@ -30,16 +26,10 @@ namespace Utilities.Configuration.Manager.Interfaces
     /// </summary>
     public interface IConfig
     {
-        #region Properties
-
         /// <summary>
         /// Name of the Config object
         /// </summary>
         string Name { get; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Loads the config file
@@ -50,7 +40,5 @@ namespace Utilities.Configuration.Manager.Interfaces
         /// Saves the config file
         /// </summary>
         void Save();
-
-        #endregion Functions
     }
 }

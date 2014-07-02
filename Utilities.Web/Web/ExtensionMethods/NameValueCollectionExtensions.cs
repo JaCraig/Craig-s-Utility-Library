@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Text;
-
-#endregion Usings
 
 namespace Utilities.Web
 {
@@ -37,10 +33,6 @@ namespace Utilities.Web
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class NameValueCollectionExtensions
     {
-        #region Functions
-
-        #region ToQueryString
-
         /// <summary>
         /// Converts the NameValueCollection to a query string
         /// </summary>
@@ -61,9 +53,5 @@ namespace Utilities.Web
             }
             return Builder.ToString();
         }
-
-        #endregion ToQueryString
-
-        #endregion Functions
     }
 }

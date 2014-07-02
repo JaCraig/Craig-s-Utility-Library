@@ -19,23 +19,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.Common;
-using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.Linq;
 using Utilities.DataTypes;
-using Utilities.DataTypes.Comparison;
 using Utilities.ORM.Manager;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.ORM
 {

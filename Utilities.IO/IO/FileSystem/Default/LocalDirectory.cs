@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,8 +27,6 @@ using Utilities.IO.Enums;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
 
-#endregion Usings
-
 namespace Utilities.IO.FileSystem.Default
 {
     /// <summary>
@@ -38,8 +34,6 @@ namespace Utilities.IO.FileSystem.Default
     /// </summary>
     public class LocalDirectory : DirectoryBase<System.IO.DirectoryInfo, LocalDirectory>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -65,10 +59,6 @@ namespace Utilities.IO.FileSystem.Default
             : base(Directory)
         {
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Time accessed (UTC time)
@@ -141,10 +131,6 @@ namespace Utilities.IO.FileSystem.Default
         {
             get { return Exists ? InternalDirectory.EnumerateFiles("*", SearchOption.AllDirectories).Sum(x => x.Length) : 0; }
         }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Copies the directory to the specified parent directory
@@ -273,7 +259,5 @@ namespace Utilities.IO.FileSystem.Default
             InternalDirectory.MoveTo(Parent.FullName + "\\" + Name);
             InternalDirectory = new System.IO.DirectoryInfo(Parent.FullName + "\\" + Name);
         }
-
-        #endregion Functions
     }
 }

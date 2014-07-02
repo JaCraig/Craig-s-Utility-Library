@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
-
-#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -37,10 +33,6 @@ namespace Utilities.DataTypes
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class PermutationExtensions
     {
-        #region Functions
-
-        #region Permute
-
         /// <summary>
         /// Finds all permutations of the items within the list
         /// </summary>
@@ -86,9 +78,5 @@ namespace Utilities.DataTypes
             }
             return ReturnValue;
         }
-
-        #endregion Permute
-
-        #endregion Functions
     }
 }

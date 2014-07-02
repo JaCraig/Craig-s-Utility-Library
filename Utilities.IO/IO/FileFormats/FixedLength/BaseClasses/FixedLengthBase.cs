@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System.Text;
 using Utilities.IO.FileFormats.BaseClasses;
 using Utilities.IO.FileFormats.FixedLength.Interfaces;
-
-#endregion Usings
 
 namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
 {
@@ -37,8 +33,6 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
     public abstract class FixedLengthBase<ObjectType, FieldType> : StringListFormatBase<ObjectType, IRecord<FieldType>>
         where ObjectType : FixedLengthBase<ObjectType, FieldType>, new()
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -46,10 +40,6 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
             : base()
         {
         }
-
-        #endregion Constructor
-
-        #region Functions
 
         /// <summary>
         /// Parses the string into fields
@@ -78,7 +68,5 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
         {
             Parse(Data);
         }
-
-        #endregion Functions
     }
 }

@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Imaging;
 using Utilities.DataTypes;
-
-#endregion Usings
 
 namespace Utilities.Media
 {
@@ -36,7 +32,9 @@ namespace Utilities.Media
     /// </summary>
     public class RGBHistogram
     {
-        #region Constructors
+        private int Height;
+
+        private int Width;
 
         /// <summary>
         /// Constructor
@@ -51,9 +49,23 @@ namespace Utilities.Media
                 LoadImage(Image);
         }
 
-        #endregion Constructors
+        /// <summary>
+        /// Blue values
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
+        public virtual float[] B { get; set; }
 
-        #region Public Functions
+        /// <summary>
+        /// Green values
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
+        public virtual float[] G { get; set; }
+
+        /// <summary>
+        /// Red values
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
+        public virtual float[] R { get; set; }
 
         /// <summary>
         /// Equalizes the histogram
@@ -153,36 +165,5 @@ namespace Utilities.Media
                 B[x] /= TotalPixels;
             }
         }
-
-        #endregion Public Functions
-
-        #region Private Values
-
-        private int Height;
-        private int Width;
-
-        #endregion Private Values
-
-        #region Public Properties
-
-        /// <summary>
-        /// Blue values
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public virtual float[] B { get; set; }
-
-        /// <summary>
-        /// Green values
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public virtual float[] G { get; set; }
-
-        /// <summary>
-        /// Red values
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public virtual float[] R { get; set; }
-
-        #endregion Public Properties
     }
 }
