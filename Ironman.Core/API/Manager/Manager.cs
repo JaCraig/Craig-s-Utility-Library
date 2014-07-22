@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using Ironman.Core.API.Manager.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -29,7 +28,9 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Ironman.Core.API.Manager.Interfaces;
 using Utilities.DataTypes;
+using Utilities.Workflow.Manager.Interfaces;
 
 namespace Ironman.Core.API.Manager
 {
@@ -42,12 +43,12 @@ namespace Ironman.Core.API.Manager
         /// Constructor
         /// </summary>
         /// <param name="Mappings">The mappings.</param>
-        /// <param name="Workflows">The workflows.</param>
         /// <param name="Services">The services.</param>
-        public Manager(IEnumerable<IAPIMapping> Mappings, IEnumerable<IWorkflow> Workflows, IEnumerable<IService> Services)
+        /// <param name="WorkflowManager">The workflow manager.</param>
+        public Manager(IEnumerable<IAPIMapping> Mappings, IEnumerable<IService> Services, Utilities.Workflow.Manager.Manager WorkflowManager)
             : base()
         {
-            this.Workflows = Workflows;
+            this.WorkflowManager = WorkflowManager;
             this.Services = new Dictionary<int, ServiceHolder>();
             this.Mappings = new Dictionary<int, MappingHolder>();
             if (Mappings == null)
@@ -87,10 +88,10 @@ namespace Ironman.Core.API.Manager
         private IDictionary<int, ServiceHolder> Services { get; set; }
 
         /// <summary>
-        /// Gets or sets the workflows.
+        /// Gets or sets the workflow manager.
         /// </summary>
-        /// <value>The workflows.</value>
-        private IEnumerable<IWorkflow> Workflows { get; set; }
+        /// <value>The workflow manager.</value>
+        private Utilities.Workflow.Manager.Manager WorkflowManager { get; set; }
 
         /// <summary>
         /// Gets the specified mapping
@@ -111,6 +112,7 @@ namespace Ironman.Core.API.Manager
         {
             try
             {
+                WorkflowManager.CreateWorkflow<bool>(Mapping + "_All_" + Version).Start(true);
                 if (Workflows.Any(x => !x.PreAll(Mapping)))
                     return new List<Dynamo>();
                 IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;

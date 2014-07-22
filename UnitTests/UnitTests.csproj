@@ -255,6 +255,13 @@
     <Compile Include="Web\MinificationExtensions.cs" />
     <Compile Include="Web\NameValueCollectionExtensions.cs" />
     <Compile Include="Web\Streams\UglyStream.cs" />
+    <Compile Include="Workflow\GenericConstraint.cs" />
+    <Compile Include="Workflow\GenericOperation.cs" />
+    <Compile Include="Workflow\Manager.cs" />
+    <Compile Include="Workflow\OperationInvoker.cs" />
+    <Compile Include="Workflow\Workflow.cs" />
+    <Compile Include="Workflow\WorkflowInvoker.cs" />
+    <Compile Include="Workflow\WorkflowNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities\Utilities.csproj">

@@ -192,7 +192,6 @@
     <Compile Include="API\Manager\Interfaces\IAPIMapping.cs" />
     <Compile Include="API\Manager\Interfaces\IAPIProperty.cs" />
     <Compile Include="API\Manager\Interfaces\IService.cs" />
-    <Compile Include="API\Manager\Interfaces\IWorkflow.cs" />
     <Compile Include="API\Manager\Manager.cs" />
     <Compile Include="API\Manager\MappingHolder.cs" />
     <Compile Include="API\Manager\Properties\ID.cs" />

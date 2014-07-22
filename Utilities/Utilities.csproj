@@ -530,6 +530,22 @@
     <Compile Include="Web\ExtensionMethods\IPAddressExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\NameValueCollectionExtensions.cs" />
     <Compile Include="Web\Streams\UglyStream.cs" />
+    <Compile Include="Workflow\Manager\GenericConstraint.cs" />
+    <Compile Include="Workflow\Manager\GenericOperation.cs" />
+    <Compile Include="Workflow\Manager\Interfaces\IConstraint.cs" />
+    <Compile Include="Workflow\Manager\Interfaces\IInvoker.cs" />
+    <Compile Include="Workflow\Manager\Interfaces\IOperation.cs" />
+    <Compile Include="Workflow\Manager\Interfaces\IOperationInvoker.cs" />
+    <Compile Include="Workflow\Manager\Interfaces\IWorkflow.cs" />
+    <Compile Include="Workflow\Manager\Interfaces\IWorkflowInvoker.cs" />
+    <Compile Include="Workflow\Manager\Interfaces\IWorkflowNode.cs" />
+    <Compile Include="Workflow\Manager\Manager.cs" />
+    <Compile Include="Workflow\Manager\Module\WorkflowModule.cs" />
+    <Compile Include="Workflow\Manager\OperationInvoker.cs" />
+    <Compile Include="Workflow\Manager\Workflow.cs" />
+    <Compile Include="Workflow\Manager\WorkflowInvoker.cs" />
+    <Compile Include="Workflow\Manager\WorkflowNode.cs" />
+    <Compile Include="Workflow\Workflows.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

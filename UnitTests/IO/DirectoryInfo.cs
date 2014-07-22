@@ -82,6 +82,7 @@ namespace UnitTests.IO
         public void Enumeration()
         {
             new Utilities.IO.DirectoryInfo("~/Logs/").Delete();
+            new Utilities.IO.DirectoryInfo("~/App_Data/").Delete();
             Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo(".");
             Assert.DoesNotThrow(() => { foreach (IFile File in Temp) { } });
             Assert.Equal(0, Temp.EnumerateDirectories().Count());
