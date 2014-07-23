@@ -19,13 +19,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using Ironman.Core.API.Manager.BaseClasses;
-using Ironman.Core.API.Manager.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ironman.Core.API.Manager.BaseClasses;
+using Ironman.Core.API.Manager.Interfaces;
 using Utilities.DataTypes;
 using Xunit;
 
@@ -36,7 +36,7 @@ namespace IronmanTests.API
         [Fact]
         public void All()
         {
-            Ironman.Core.API.Manager.Manager TestObject = new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflow>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>());
+            Ironman.Core.API.Manager.Manager TestObject = new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflowModule>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.Workflow.Manager.Manager>());
             List<Dynamo> Objects = TestObject.All(1, "TestClass").Select(x => (Dynamo)x).ToList();
             Assert.Equal("ASDFG", Objects[0]["A"]);
             Assert.Equal(10, Objects[0]["B"]);
@@ -53,7 +53,7 @@ namespace IronmanTests.API
         [Fact]
         public void Any()
         {
-            Ironman.Core.API.Manager.Manager TestObject = new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflow>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>());
+            Ironman.Core.API.Manager.Manager TestObject = new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflowModule>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.Workflow.Manager.Manager>());
             Dynamo Object = TestObject.Any(1, "TestClass", "A");
             Assert.Equal("ASDFG", Object["A"]);
             Assert.Equal(10, Object["B"]);
@@ -65,7 +65,7 @@ namespace IronmanTests.API
         [Fact]
         public void AnyEmbedded()
         {
-            Ironman.Core.API.Manager.Manager TestObject = new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflow>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>());
+            Ironman.Core.API.Manager.Manager TestObject = new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflowModule>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.Workflow.Manager.Manager>());
             Dynamo Object = TestObject.Any(1, "TestClass", "A", "E");
             Assert.Equal("ASDFG", Object["A"]);
             Assert.Equal(10, Object["B"]);
@@ -77,13 +77,13 @@ namespace IronmanTests.API
         [Fact]
         public void Create()
         {
-            Assert.DoesNotThrow(() => new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflow>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>()));
+            Assert.DoesNotThrow(() => new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflowModule>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.Workflow.Manager.Manager>()));
         }
 
         [Fact]
         public void Delete()
         {
-            Ironman.Core.API.Manager.Manager TestObject = new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflow>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>());
+            Ironman.Core.API.Manager.Manager TestObject = new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflowModule>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.Workflow.Manager.Manager>());
             Dynamo Object = TestObject.Delete(1, "TestClass", "A");
             Assert.Equal("Object deleted successfully", Object["Message"]);
             Assert.Equal("Success", Object["Status"]);
@@ -92,7 +92,7 @@ namespace IronmanTests.API
         [Fact]
         public void Save()
         {
-            Ironman.Core.API.Manager.Manager TestObject = new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflow>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>());
+            Ironman.Core.API.Manager.Manager TestObject = new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflowModule>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.Workflow.Manager.Manager>());
             Dynamo Object = TestObject.Save(1, "TestClass", new Dynamo[] { new Dynamo() });
             Assert.Equal("Object saved successfully", Object["Message"]);
             Assert.Equal("Success", Object["Status"]);
@@ -101,7 +101,7 @@ namespace IronmanTests.API
         [Fact]
         public void Service()
         {
-            Ironman.Core.API.Manager.Manager TestObject = new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflow>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>());
+            Ironman.Core.API.Manager.Manager TestObject = new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflowModule>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.Workflow.Manager.Manager>());
             Dynamo Value = TestObject.CallService(1, "TestService", new Dynamo(new { A = 1 }));
             Assert.NotNull(Value);
             Assert.Equal(1, Value["A"]);

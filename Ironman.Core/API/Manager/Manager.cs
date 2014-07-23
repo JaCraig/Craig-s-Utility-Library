@@ -44,10 +44,15 @@ namespace Ironman.Core.API.Manager
         /// </summary>
         /// <param name="Mappings">The mappings.</param>
         /// <param name="Services">The services.</param>
+        /// <param name="Modules">The workflow modules.</param>
         /// <param name="WorkflowManager">The workflow manager.</param>
-        public Manager(IEnumerable<IAPIMapping> Mappings, IEnumerable<IService> Services, Utilities.Workflow.Manager.Manager WorkflowManager)
+        public Manager(IEnumerable<IAPIMapping> Mappings, IEnumerable<IService> Services, IEnumerable<IWorkflowModule> Modules, Utilities.Workflow.Manager.Manager WorkflowManager)
             : base()
         {
+            Contract.Requires<ArgumentNullException>(Mappings != null);
+            Contract.Requires<ArgumentNullException>(Services != null);
+            Contract.Requires<ArgumentNullException>(Modules != null);
+            Contract.Requires<ArgumentNullException>(WorkflowManager != null);
             this.WorkflowManager = WorkflowManager;
             this.Services = new Dictionary<int, ServiceHolder>();
             this.Mappings = new Dictionary<int, MappingHolder>();
@@ -71,6 +76,37 @@ namespace Ironman.Core.API.Manager
                     if (!this.Services.ContainsKey(Version))
                         this.Services.Add(Version, new ServiceHolder());
                     this.Services[Version].Services.Add(Service.Name, Service);
+                }
+            }
+            foreach (int Version in this.Mappings.Keys)
+            {
+                foreach (IWorkflowModule Module in Modules.Where(x => x.Versions.Contains(Version)))
+                {
+                    foreach (IAPIMapping Mapping in this.Mappings[Version])
+                    {
+                        foreach (WorkflowType ActionType in Enum.GetValues(typeof(WorkflowType))
+                            .OfType<WorkflowType>()
+                            .Where(x => !x.HasFlag(WorkflowType.PreService)
+                                && !x.HasFlag(WorkflowType.PostService)
+                                && Module.ActionsTypes.HasFlag(x)))
+                        {
+                            Module.Setup(Mapping.Name, WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping.Name + "_" + ActionType.ToString() + "_" + Version));
+                        }
+                    }
+                }
+            }
+            foreach (int Version in this.Services.Keys)
+            {
+                foreach (IWorkflowModule Module in Modules.Where(x => x.Versions.Contains(Version)))
+                {
+                    foreach (IService Service in this.Services[Version])
+                    {
+                        foreach (WorkflowType ActionType in new WorkflowType[] { WorkflowType.PreService, WorkflowType.PostService }
+                            .Where(x => Module.ActionsTypes.HasFlag(x)))
+                        {
+                            Module.Setup(Service.Name, WorkflowManager.CreateWorkflow<WorkflowInfo>(Service.Name + "_" + ActionType.ToString() + "_" + Version));
+                        }
+                    }
                 }
             }
         }
@@ -112,14 +148,13 @@ namespace Ironman.Core.API.Manager
         {
             try
             {
-                WorkflowManager.CreateWorkflow<bool>(Mapping + "_All_" + Version).Start(true);
-                if (Workflows.Any(x => !x.PreAll(Mapping)))
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PreAll_" + Version).Start(new WorkflowInfo(Mapping, "PreAll", Version, null)).Continue)
                     return new List<Dynamo>();
                 IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
                 if (!TempMappings.ContainsKey(Mapping))
                     return new List<Dynamo>();
                 IEnumerable<Dynamo> ReturnValue = TempMappings[Mapping].All(Mappings.GetValue(Version), EmbeddedProperties);
-                if (Workflows.Any(x => !x.PostAll(Mapping, ReturnValue)))
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PostAll_" + Version).Start(new WorkflowInfo(Mapping, "PostAll", Version, ReturnValue)).Continue)
                     return new List<Dynamo>();
                 return ReturnValue;
             }
@@ -141,13 +176,13 @@ namespace Ironman.Core.API.Manager
         {
             try
             {
-                if (Workflows.Any(x => !x.PreAny(Mapping)))
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PreAny_" + Version).Start(new WorkflowInfo(Mapping, "PreAny", Version, null)).Continue)
                     return Error("Error getting item");
                 IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
                 if (!TempMappings.ContainsKey(Mapping))
                     return Error("Error getting item");
                 Dynamo ReturnValue = TempMappings[Mapping].Any(ID, Mappings.GetValue(Version), EmbeddedProperties);
-                if (Workflows.Any(x => !x.PostAny(Mapping, ReturnValue)))
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PostAny_" + Version).Start(new WorkflowInfo(Mapping, "PostAny", Version, ReturnValue)).Continue)
                     return Error("Error getting item");
                 return ReturnValue;
             }
@@ -168,13 +203,13 @@ namespace Ironman.Core.API.Manager
         {
             try
             {
-                if (Workflows.Any(x => !x.PreService(Mapping, Value)))
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PreService_" + Version).Start(new WorkflowInfo(Mapping, "PreService", Version, Value)).Continue)
                     return Error("Error running service");
                 IDictionary<string, IService> TempMappings = Services.GetValue(Version).Services;
                 if (!TempMappings.ContainsKey(Mapping))
                     return Error("Error getting item");
                 Dynamo ReturnValue = TempMappings[Mapping].Process(Value);
-                if (Workflows.Any(x => !x.PostService(Mapping, ReturnValue)))
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PostService_" + Version).Start(new WorkflowInfo(Mapping, "PostService", Version, ReturnValue)).Continue)
                     return Error("Error running service");
                 return ReturnValue;
             }
@@ -195,12 +230,12 @@ namespace Ironman.Core.API.Manager
         {
             try
             {
-                if (Workflows.Any(x => !x.PreDelete(Mapping, ID)))
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PreDelete_" + Version).Start(new WorkflowInfo(Mapping, "PreDelete", Version, ID)).Continue)
                     return Error("Error deleting the object");
                 IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
                 if (!TempMappings.ContainsKey(Mapping) || !TempMappings[Mapping].Delete(ID))
                     return Error("Error deleting the object");
-                if (Workflows.Any(x => !x.PostDelete(Mapping, ID)))
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PostDelete_" + Version).Start(new WorkflowInfo(Mapping, "PostDelete", Version, ID)).Continue)
                     return Error("Error deleting the object");
                 return Success("Object deleted successfully");
             }
@@ -423,7 +458,7 @@ namespace Ironman.Core.API.Manager
             Contract.Requires<ArgumentNullException>(Objects != null, "Objects");
             try
             {
-                if (Workflows.Any(x => !x.PreSave(Mapping, Objects)))
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PreSave_" + Version).Start(new WorkflowInfo(Mapping, "PreSave", Version, Objects)).Continue)
                     return Error("Error saving the object");
                 IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
                 foreach (Dynamo Object in Objects)
@@ -431,7 +466,7 @@ namespace Ironman.Core.API.Manager
                     if (!TempMappings.ContainsKey(Mapping) || !TempMappings[Mapping].Save(Object))
                         return Error("Error saving the object");
                 }
-                if (Workflows.Any(x => !x.PostSave(Mapping, Objects)))
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PostSave_" + Version).Start(new WorkflowInfo(Mapping, "PostSave", Version, Objects)).Continue)
                     return Error("Error saving the object");
                 return Success("Object saved successfully");
             }
@@ -471,8 +506,7 @@ namespace Ironman.Core.API.Manager
         /// <returns>String version of the manager</returns>
         public override string ToString()
         {
-            return "API Mappings:\r\n" + Mappings.ToString(x => "Version: " + x.Key + "\r\n" + x.Value.ToString() + "\r\n")
-                + "Workflows:\r\n" + Workflows.ToString(x => x.Name, "\r\n");
+            return "API Mappings:\r\n" + Mappings.ToString(x => "Version: " + x.Key + "\r\n" + x.Value.ToString() + "\r\n");
         }
 
         private static Dynamo Error(string Message)

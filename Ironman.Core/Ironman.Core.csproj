@@ -192,6 +192,7 @@
     <Compile Include="API\Manager\Interfaces\IAPIMapping.cs" />
     <Compile Include="API\Manager\Interfaces\IAPIProperty.cs" />
     <Compile Include="API\Manager\Interfaces\IService.cs" />
+    <Compile Include="API\Manager\Interfaces\IWorkflow.cs" />
     <Compile Include="API\Manager\Manager.cs" />
     <Compile Include="API\Manager\MappingHolder.cs" />
     <Compile Include="API\Manager\Properties\ID.cs" />
@@ -199,6 +200,8 @@
     <Compile Include="API\Manager\Properties\Map.cs" />
     <Compile Include="API\Manager\Properties\Reference.cs" />
     <Compile Include="API\Manager\ServiceHolder.cs" />
+    <Compile Include="API\Manager\WorkflowInfo.cs" />
+    <Compile Include="API\Manager\WorkflowType.cs" />
     <Compile Include="Assets\Asset.cs" />
     <Compile Include="Assets\AssetManager.cs" />
     <Compile Include="Assets\Enums\AssetType.cs" />

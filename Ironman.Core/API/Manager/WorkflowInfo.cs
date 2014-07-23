@@ -21,75 +21,72 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using Ironman.Core.API.Manager.Interfaces;
 using Utilities.DataTypes;
 
 namespace Ironman.Core.API.Manager
 {
     /// <summary>
-    /// Holds the various mappings for a version
+    /// Workflow info
     /// </summary>
-    public class MappingHolder : IEnumerable<IAPIMapping>
+    public class WorkflowInfo
     {
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="WorkflowInfo" /> class.
         /// </summary>
-        public MappingHolder()
+        /// <param name="Mapping">The mapping.</param>
+        /// <param name="Function">The function.</param>
+        /// <param name="Version">The version.</param>
+        /// <param name="ReturnValues">The return values.</param>
+        public WorkflowInfo(string Mapping, string Function, int Version, dynamic ReturnValues)
         {
-            this.Mappings = new Dictionary<string, IAPIMapping>();
+            this.Mapping = Mapping;
+            this.Function = Function;
+            this.Version = Version;
+            this.ReturnValues = ReturnValues;
+            this.Continue = true;
         }
 
         /// <summary>
-        /// Mappings that this holds
+        /// Gets or sets a value indicating whether this <see cref="WorkflowInfo"/> should continue.
         /// </summary>
-        public IDictionary<string, IAPIMapping> Mappings { get; set; }
+        /// <value>
+        ///   <c>true</c> if continue; otherwise, <c>false</c>.
+        /// </value>
+        public bool Continue { get; set; }
 
         /// <summary>
-        /// Gets the specified mapping
+        /// Gets or sets the function.
         /// </summary>
-        /// <param name="Key">Name of the mapped type</param>
-        /// <returns>The mapping specified</returns>
-        public IAPIMapping this[string Key]
-        {
-            get
-            {
-                Contract.Requires<ArgumentNullException>(Mappings != null, "Mappings");
-                return Mappings.GetValue(Key);
-            }
-        }
+        /// <value>
+        /// The function.
+        /// </value>
+        public string Function { get; set; }
 
         /// <summary>
-        /// Gets the enumerator.
+        /// Gets or sets the mapping name.
         /// </summary>
-        /// <returns></returns>
-        public IEnumerator<IAPIMapping> GetEnumerator()
-        {
-            foreach (var Mapping in Mappings.Values)
-                yield return Mapping;
-        }
+        /// <value>
+        /// The mapping.
+        /// </value>
+        public string Mapping { get; set; }
 
         /// <summary>
-        /// Gets the enumerator.
+        /// Gets or sets the return values.
         /// </summary>
-        /// <returns></returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        /// <value>
+        /// The return values.
+        /// </value>
+        public dynamic ReturnValues { get; set; }
 
         /// <summary>
-        /// Outputs mapping holder info as a string
+        /// Gets or sets the version.
         /// </summary>
-        /// <returns>String version of the mapping holder</returns>
-        public override string ToString()
-        {
-            return Mappings.ToString(x => x.Key);
-        }
+        /// <value>
+        /// The version.
+        /// </value>
+        public int Version { get; set; }
     }
 }

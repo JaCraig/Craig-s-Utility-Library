@@ -35,7 +35,7 @@ namespace Ironman.Core.API.Manager
     /// <summary>
     /// Holds the various services for a version
     /// </summary>
-    public class ServiceHolder
+    public class ServiceHolder : IEnumerable<IService>
     {
         /// <summary>
         /// Constructor
@@ -62,6 +62,29 @@ namespace Ironman.Core.API.Manager
                 Contract.Requires<ArgumentNullException>(Services != null, "Services");
                 return Services.GetValue(Key);
             }
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
+        /// </returns>
+        public IEnumerator<IService> GetEnumerator()
+        {
+            foreach (var Mapping in Services.Values)
+                yield return Mapping;
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
+        /// </returns>
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         /// <summary>

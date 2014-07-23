@@ -21,75 +21,71 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using Ironman.Core.API.Manager.Interfaces;
-using Utilities.DataTypes;
 
 namespace Ironman.Core.API.Manager
 {
     /// <summary>
-    /// Holds the various mappings for a version
+    /// Workflow type
     /// </summary>
-    public class MappingHolder : IEnumerable<IAPIMapping>
+    [Flags]
+    public enum WorkflowType
     {
         /// <summary>
-        /// Constructor
+        /// The none
         /// </summary>
-        public MappingHolder()
-        {
-            this.Mappings = new Dictionary<string, IAPIMapping>();
-        }
+        None = 0,
 
         /// <summary>
-        /// Mappings that this holds
+        /// The pre all
         /// </summary>
-        public IDictionary<string, IAPIMapping> Mappings { get; set; }
+        PreAll,
 
         /// <summary>
-        /// Gets the specified mapping
+        /// The pre any
         /// </summary>
-        /// <param name="Key">Name of the mapped type</param>
-        /// <returns>The mapping specified</returns>
-        public IAPIMapping this[string Key]
-        {
-            get
-            {
-                Contract.Requires<ArgumentNullException>(Mappings != null, "Mappings");
-                return Mappings.GetValue(Key);
-            }
-        }
+        PreAny,
 
         /// <summary>
-        /// Gets the enumerator.
+        /// The pre delete
         /// </summary>
-        /// <returns></returns>
-        public IEnumerator<IAPIMapping> GetEnumerator()
-        {
-            foreach (var Mapping in Mappings.Values)
-                yield return Mapping;
-        }
+        PreDelete,
 
         /// <summary>
-        /// Gets the enumerator.
+        /// The pre save
         /// </summary>
-        /// <returns></returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        PreSave,
 
         /// <summary>
-        /// Outputs mapping holder info as a string
+        /// The post all
         /// </summary>
-        /// <returns>String version of the mapping holder</returns>
-        public override string ToString()
-        {
-            return Mappings.ToString(x => x.Key);
-        }
+        PostAll,
+
+        /// <summary>
+        /// The post any
+        /// </summary>
+        PostAny,
+
+        /// <summary>
+        /// The post delete
+        /// </summary>
+        PostDelete,
+
+        /// <summary>
+        /// The post save
+        /// </summary>
+        PostSave,
+
+        /// <summary>
+        /// The pre service
+        /// </summary>
+        PreService,
+
+        /// <summary>
+        /// The post service
+        /// </summary>
+        PostService
     }
 }
