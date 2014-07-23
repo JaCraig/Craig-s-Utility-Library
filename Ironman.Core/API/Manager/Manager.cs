@@ -148,13 +148,13 @@ namespace Ironman.Core.API.Manager
         {
             try
             {
-                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PreAll_" + Version).Start(new WorkflowInfo(Mapping, "PreAll", Version, null)).Continue)
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PreAll_" + Version).Start(new WorkflowInfo(Mapping, WorkflowType.PreAll, Version, null)).Continue)
                     return new List<Dynamo>();
                 IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
                 if (!TempMappings.ContainsKey(Mapping))
                     return new List<Dynamo>();
                 IEnumerable<Dynamo> ReturnValue = TempMappings[Mapping].All(Mappings.GetValue(Version), EmbeddedProperties);
-                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PostAll_" + Version).Start(new WorkflowInfo(Mapping, "PostAll", Version, ReturnValue)).Continue)
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PostAll_" + Version).Start(new WorkflowInfo(Mapping, WorkflowType.PostAll, Version, ReturnValue)).Continue)
                     return new List<Dynamo>();
                 return ReturnValue;
             }
@@ -176,13 +176,13 @@ namespace Ironman.Core.API.Manager
         {
             try
             {
-                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PreAny_" + Version).Start(new WorkflowInfo(Mapping, "PreAny", Version, null)).Continue)
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PreAny_" + Version).Start(new WorkflowInfo(Mapping, WorkflowType.PreAny, Version, null)).Continue)
                     return Error("Error getting item");
                 IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
                 if (!TempMappings.ContainsKey(Mapping))
                     return Error("Error getting item");
                 Dynamo ReturnValue = TempMappings[Mapping].Any(ID, Mappings.GetValue(Version), EmbeddedProperties);
-                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PostAny_" + Version).Start(new WorkflowInfo(Mapping, "PostAny", Version, ReturnValue)).Continue)
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PostAny_" + Version).Start(new WorkflowInfo(Mapping, WorkflowType.PostAny, Version, ReturnValue)).Continue)
                     return Error("Error getting item");
                 return ReturnValue;
             }
@@ -203,13 +203,13 @@ namespace Ironman.Core.API.Manager
         {
             try
             {
-                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PreService_" + Version).Start(new WorkflowInfo(Mapping, "PreService", Version, Value)).Continue)
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PreService_" + Version).Start(new WorkflowInfo(Mapping, WorkflowType.PreService, Version, Value)).Continue)
                     return Error("Error running service");
                 IDictionary<string, IService> TempMappings = Services.GetValue(Version).Services;
                 if (!TempMappings.ContainsKey(Mapping))
                     return Error("Error getting item");
                 Dynamo ReturnValue = TempMappings[Mapping].Process(Value);
-                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PostService_" + Version).Start(new WorkflowInfo(Mapping, "PostService", Version, ReturnValue)).Continue)
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PostService_" + Version).Start(new WorkflowInfo(Mapping, WorkflowType.PostService, Version, ReturnValue)).Continue)
                     return Error("Error running service");
                 return ReturnValue;
             }
@@ -230,12 +230,12 @@ namespace Ironman.Core.API.Manager
         {
             try
             {
-                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PreDelete_" + Version).Start(new WorkflowInfo(Mapping, "PreDelete", Version, ID)).Continue)
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PreDelete_" + Version).Start(new WorkflowInfo(Mapping, WorkflowType.PreDelete, Version, ID)).Continue)
                     return Error("Error deleting the object");
                 IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
                 if (!TempMappings.ContainsKey(Mapping) || !TempMappings[Mapping].Delete(ID))
                     return Error("Error deleting the object");
-                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PostDelete_" + Version).Start(new WorkflowInfo(Mapping, "PostDelete", Version, ID)).Continue)
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PostDelete_" + Version).Start(new WorkflowInfo(Mapping, WorkflowType.PostDelete, Version, ID)).Continue)
                     return Error("Error deleting the object");
                 return Success("Object deleted successfully");
             }
@@ -458,7 +458,7 @@ namespace Ironman.Core.API.Manager
             Contract.Requires<ArgumentNullException>(Objects != null, "Objects");
             try
             {
-                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PreSave_" + Version).Start(new WorkflowInfo(Mapping, "PreSave", Version, Objects)).Continue)
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PreSave_" + Version).Start(new WorkflowInfo(Mapping, WorkflowType.PreSave, Version, Objects)).Continue)
                     return Error("Error saving the object");
                 IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
                 foreach (Dynamo Object in Objects)
@@ -466,7 +466,7 @@ namespace Ironman.Core.API.Manager
                     if (!TempMappings.ContainsKey(Mapping) || !TempMappings[Mapping].Save(Object))
                         return Error("Error saving the object");
                 }
-                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PostSave_" + Version).Start(new WorkflowInfo(Mapping, "PostSave", Version, Objects)).Continue)
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PostSave_" + Version).Start(new WorkflowInfo(Mapping, WorkflowType.PostSave, Version, Objects)).Continue)
                     return Error("Error saving the object");
                 return Success("Object saved successfully");
             }

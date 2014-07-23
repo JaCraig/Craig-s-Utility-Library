@@ -40,7 +40,7 @@ namespace Ironman.Core.API.Manager
         /// <param name="Function">The function.</param>
         /// <param name="Version">The version.</param>
         /// <param name="ReturnValues">The return values.</param>
-        public WorkflowInfo(string Mapping, string Function, int Version, dynamic ReturnValues)
+        public WorkflowInfo(string Mapping, WorkflowType Function, int Version, dynamic ReturnValues)
         {
             this.Mapping = Mapping;
             this.Function = Function;
@@ -63,7 +63,7 @@ namespace Ironman.Core.API.Manager
         /// <value>
         /// The function.
         /// </value>
-        public string Function { get; set; }
+        public WorkflowType Function { get; set; }
 
         /// <summary>
         /// Gets or sets the mapping name.
