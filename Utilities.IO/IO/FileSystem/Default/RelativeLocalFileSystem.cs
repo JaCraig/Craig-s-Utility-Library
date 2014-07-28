@@ -62,12 +62,12 @@ namespace Utilities.IO.FileSystem.Default
             if (HttpContext.Current == null)
             {
                 BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                ParentDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent.FullName;
+                ParentDirectory = new LocalDirectory(AppDomain.CurrentDomain.BaseDirectory).Parent.FullName;
             }
             else
             {
                 BaseDirectory = HttpContext.Current.Server.MapPath("~/");
-                ParentDirectory = new DirectoryInfo(HttpContext.Current.Server.MapPath("~/")).Parent.FullName;
+                ParentDirectory = new LocalDirectory(HttpContext.Current.Server.MapPath("~/")).Parent.FullName;
             }
             if (Path.StartsWith("..\\", StringComparison.OrdinalIgnoreCase))
             {

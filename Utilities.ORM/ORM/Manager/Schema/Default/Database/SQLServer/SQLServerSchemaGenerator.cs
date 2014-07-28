@@ -108,7 +108,6 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         /// <param name="QueryProvider">The query provider.</param>
         public void Setup(ListMapping<IDatabase, IMapping> Mappings, IDatabase Database, QueryProvider.Manager QueryProvider)
         {
-            Contract.Requires<NullReferenceException>(Mappings != null, "Mappings");
             ISourceInfo TempSource = SourceProvider.GetSource(Database.Name);
             Utilities.ORM.Manager.Schema.Default.Database.Database TempDatabase = new Schema.Default.Database.Database(Regex.Match(TempSource.Connection, "Initial Catalog=(.*?;)").Value.Replace("Initial Catalog=", "").Replace(";", ""));
             SetupTables(Mappings, Database, TempDatabase);

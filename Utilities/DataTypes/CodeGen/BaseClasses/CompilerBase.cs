@@ -182,10 +182,11 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         /// </summary>
         protected void Save()
         {
-            if (AssemblyStream != null
+            if ((AssemblyStream != null
                 && !string.IsNullOrEmpty(AssemblyDirectory)
                 && (!new FileInfo(AssemblyDirectory + "\\" + AssemblyName + ".dll").Exists
                 || RegenerateAssembly))
+                && AssemblyStream.Length > 0)
             {
                 using (FileStream TempStream = new FileInfo(AssemblyDirectory + "\\" + AssemblyName + ".dll").OpenWrite())
                 {

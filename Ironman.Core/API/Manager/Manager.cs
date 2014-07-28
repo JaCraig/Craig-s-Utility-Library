@@ -78,6 +78,11 @@ namespace Ironman.Core.API.Manager
                     this.Services[Version].Services.Add(Service.Name, Service);
                 }
             }
+            if (AppDomain.CurrentDomain.GetAssemblies()
+                .Where(x => !x.FullName.Contains("vshost32") && !x.IsDynamic && !string.IsNullOrEmpty(x.Location))
+                .Any(x => new System.IO.FileInfo(x.Location).LastWriteTime <= WorkflowManager.LastModified))
+                return;
+
             foreach (int Version in this.Mappings.Keys)
             {
                 foreach (IWorkflowModule Module in Modules.Where(x => x.Versions.Contains(Version)))

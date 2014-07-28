@@ -13,15 +13,23 @@ namespace UtilitiesSplitter
     {
         public static void Main(string[] args)
         {
-            var Bootstrapper = Utilities.IoC.Manager.Bootstrapper;
-            UpdateProjects();
-            ReversionPackages();
-            SetupDependencies();
-            SetupInternalDependencies();
-            if (args.Length > 0 && args[0] == "Push")
+            try
             {
-                CreatePackages();
-                PushPackages();
+                var Bootstrapper = Utilities.IoC.Manager.Bootstrapper;
+                UpdateProjects();
+                ReversionPackages();
+                SetupDependencies();
+                SetupInternalDependencies();
+                if (args.Length > 0 && args[0] == "Push")
+                {
+                    CreatePackages();
+                    PushPackages();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                Console.ReadKey();
             }
         }
 
