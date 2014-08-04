@@ -76,7 +76,7 @@ namespace UnitTests.DataTypes.CodeGen
                 Assert.Equal("Somewhere", Test.AssemblyName);
                 File = Test.AssemblyDirectory + "/" + Test.AssemblyName + ".dll";
             }
-            Assert.True(new Utilities.IO.FileInfo(File).Exists);
+            Assert.False(new Utilities.IO.FileInfo(File).Exists);
             new Utilities.IO.FileInfo(File).Delete();
         }
 

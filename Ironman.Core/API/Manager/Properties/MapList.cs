@@ -83,7 +83,7 @@ namespace Ironman.Core.API.Manager.Properties
         /// <returns>The property specified</returns>
         public override dynamic GetValue(MappingHolder Mappings, dynamic Object)
         {
-            if (Mappings == null)
+            if (Mappings == null || CompiledExpression == null)
                 return false;
             ClassType TempItem = Object;
             if (TempItem == null)
@@ -114,7 +114,7 @@ namespace Ironman.Core.API.Manager.Properties
         /// <returns>True if it is saved, false otherwise</returns>
         public override bool SaveValue(MappingHolder MappingHolder, dynamic Object, IEnumerable<Dynamo> Models)
         {
-            if (MappingHolder == null)
+            if (MappingHolder == null || CompiledExpression == null)
                 return false;
             ClassType TempItem = Object;
             if (TempItem == null)

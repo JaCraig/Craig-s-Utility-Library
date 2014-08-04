@@ -40,6 +40,8 @@ namespace Ironman.Core.Bootstrapper
         /// </summary>
         public DependencyResolver(IBootstrapper Container)
         {
+            if (Container == null)
+                throw new ArgumentNullException("Container");
             this.Container = Container;
         }
 

@@ -21,13 +21,13 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using Ironman.Core.Serialization.BaseClasses;
 using System;
 using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Ironman.Core.Serialization.BaseClasses;
 using Utilities.DataTypes;
 using Utilities.IO;
 
@@ -61,7 +61,9 @@ namespace Ironman.Core.Serialization
         /// </summary>
         public override void AddFactory()
         {
-            ValueProviderFactories.Factories.Remove(ValueProviderFactories.Factories.OfType<JsonValueProviderFactory>().FirstOrDefault());
+            JsonValueProviderFactory TempProvider = ValueProviderFactories.Factories.OfType<JsonValueProviderFactory>().FirstOrDefault();
+            if (TempProvider != null)
+                ValueProviderFactories.Factories.Remove(TempProvider);
             ValueProviderFactories.Factories.Add(this);
         }
 

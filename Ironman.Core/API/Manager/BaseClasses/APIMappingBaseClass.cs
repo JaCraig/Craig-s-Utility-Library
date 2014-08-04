@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using Ironman.Core.API.Manager.Interfaces;
-using Ironman.Core.API.Manager.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -29,6 +27,8 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using Ironman.Core.API.Manager.Interfaces;
+using Ironman.Core.API.Manager.Properties;
 using Utilities.DataTypes;
 using Utilities.ORM;
 using Utilities.Web;
@@ -133,6 +133,8 @@ namespace Ironman.Core.API.Manager.BaseClasses
         public IEnumerable<Dynamo> All(MappingHolder Mappings, params string[] EmbeddedProperties)
         {
             IEnumerable<ClassType> Objects = AllFunc();
+            if (Objects == null)
+                Objects = new List<ClassType>();
             List<Dynamo> ReturnValue = new List<Dynamo>();
             foreach (ClassType Object in Objects)
             {
@@ -341,7 +343,8 @@ namespace Ironman.Core.API.Manager.BaseClasses
             Dynamo SubSet = Object.SubSet(Properties.Where(x => x is IReference)
                                                                    .Select(x => x.Name)
                                                                    .ToArray());
-            SubSet.CopyTo(Item);
+            if (SubSet != null)
+                SubSet.CopyTo(Item);
             return SaveFunc(Item);
         }
 
