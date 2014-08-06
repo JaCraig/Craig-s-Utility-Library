@@ -116,6 +116,8 @@ namespace Utilities.IO.FileSystem
         /// <returns>The file system associated with the path</returns>
         protected IFileSystem FindSystem(string Path)
         {
+            if (FileSystems == null)
+                return null;
             return FileSystems.FirstOrDefault(x => x.CanHandle(Path));
         }
     }

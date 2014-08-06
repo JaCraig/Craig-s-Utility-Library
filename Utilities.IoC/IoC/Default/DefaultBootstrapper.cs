@@ -265,7 +265,7 @@ namespace Utilities.IoC.Default
         {
             if (_AppContainer != null)
             {
-                foreach (IDisposable Item in _AppContainer.Values.OfType<IDisposable>())
+                foreach (IDisposable Item in _AppContainer.Values.Where(x => IsOfType(x.ReturnType, typeof(IDisposable))).Reverse().Select(x => x.Create()))
                 {
                     Item.Dispose();
                 }
@@ -347,6 +347,9 @@ namespace Utilities.IoC.Default
                 return false;
             if (x == type)
                 return true;
+            foreach (Type Interface in x.GetInterfaces())
+                if (IsOfType(Interface, type))
+                    return true;
             return IsOfType(x.BaseType, type);
         }
     }

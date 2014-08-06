@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary</id>
-		<version>4.0.180-beta</version>
+		<version>4.0.191-beta</version>
 		<title>Craig's Utility Library</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -36,7 +36,7 @@
 		<dependencies>
             <dependency id="Microsoft.CodeAnalysis.CSharp" version="[0.7.4052301-beta]" />
 			<dependency id="Microsoft.Web.Infrastructure" version="[1.0.0.0]" />
-			<dependency id="Microsoft.AspNet.Mvc" version="[5.1.2]" />
+			<dependency id="Microsoft.AspNet.Mvc" version="[5.2.0]" />
         </dependencies>
 	</metadata>
 	<files>

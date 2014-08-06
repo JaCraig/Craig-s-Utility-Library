@@ -131,7 +131,14 @@ namespace Utilities.Workflow.Manager
         protected override void Dispose(bool Managed)
         {
             new System.IO.DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/").Create();
-            FileManager.File("~/App_Data/Workflows.obj").Write(SerializationManager.Serialize<byte[]>(this.Workflows, typeof(Dictionary<string, IWorkflow>), SerializationType.Binary.ToString()));
+            if (FileManager != null && SerializationManager != null)
+            {
+                IFile File = FileManager.File("~/App_Data/Workflows.obj");
+                if (File != null)
+                    File.Write(SerializationManager.Serialize<byte[]>(this.Workflows, typeof(Dictionary<string, IWorkflow>), SerializationType.Binary.ToString()));
+                FileManager = null;
+                SerializationManager = null;
+            }
         }
     }
 }

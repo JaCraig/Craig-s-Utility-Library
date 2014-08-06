@@ -250,13 +250,15 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Fact]
         public void VersionInfo2()
         {
-            Assert.Equal("Microsoft.CodeAnalysis: 0.7\r\nMicrosoft.CodeAnalysis.CSharp: 0.7\r\nMicrosoft.Web.Infrastructure: 1.0\r\nSystem.Collections.Immutable: 1.1\r\nSystem.Reflection.Metadata: 1.0\r\nSystem.Web.Helpers: 3.0\r\nSystem.Web.Mvc: 5.1\r\nSystem.Web.Razor: 3.0\r\nSystem.Web.WebPages: 3.0\r\nSystem.Web.WebPages.Deployment: 3.0\r\nSystem.Web.WebPages.Razor: 3.0\r\nUnitTests: 1.0\r\nUtilities: 4.0\r\nxunit: 1.9\r\n", new DirectoryInfo(@".\").LoadAssemblies().ToString(VersionInfo.ShortVersion));
+            Assert.Equal("Microsoft.CodeAnalysis: 0.7\r\nMicrosoft.CodeAnalysis.CSharp: 0.7\r\nMicrosoft.Web.Infrastructure: 1.0\r\nSystem.Collections.Immutable: 1.1\r\nSystem.Reflection.Metadata: 1.0\r\nSystem.Web.Helpers: 3.0\r\nSystem.Web.Mvc: 5.2\r\nSystem.Web.Razor: 3.0\r\nSystem.Web.WebPages: 3.0\r\nSystem.Web.WebPages.Deployment: 3.0\r\nSystem.Web.WebPages.Razor: 3.0\r\nUnitTests: 1.0\r\nUtilities: 4.0\r\nxunit: 1.9\r\n", new DirectoryInfo(@".\").LoadAssemblies().ToString(VersionInfo.ShortVersion));
         }
     }
 
     [Testing]
     public class TestClass : TestInterface
     {
+        public string Value3 = "ASDF";
+
         public TestClass()
         {
             Value = 1; Value2 = 2;
@@ -265,8 +267,6 @@ namespace UnitTests.Reflection.ExtensionMethods
         public int Value { get; set; }
 
         public int Value2 { get; set; }
-
-        public string Value3 = "ASDF";
     }
 
     public class TestClass2 : TestInterface
