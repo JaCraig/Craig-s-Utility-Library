@@ -134,6 +134,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity.Design" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Reflection.Metadata">
       <HintPath>..\packages\Microsoft.Bcl.Metadata.1.0.11-alpha\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
@@ -402,6 +403,10 @@
     <Compile Include="ORM\Manager\ORMManager.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\FileSystem\FileSystemGenerator.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\FileSystem\FileSystemQueryProvider.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\LDAP\LDAPBatch.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\LDAP\LDAPGenerator.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\LDAP\LDAPQueryProvider.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\LDAP\LDAPSchema.cs" />
     <Compile Include="ORM\Manager\Session.cs" />
     <Compile Include="ORM\Manager\SourceProvider\DefaultDatabase.cs" />
     <Compile Include="ORM\Manager\SourceProvider\Manager.cs" />

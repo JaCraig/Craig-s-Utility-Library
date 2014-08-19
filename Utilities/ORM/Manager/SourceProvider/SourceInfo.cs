@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System.Configuration;
+using System.Text.RegularExpressions;
 using Utilities.DataTypes;
 using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
@@ -66,7 +67,13 @@ namespace Utilities.ORM.Manager.SourceProvider
                 else if (SourceType.Contains("Oracle"))
                     this.ParameterPrefix = ":";
                 else
+                {
+                    this.Server = Regex.Match(this.Connection, @"Data Source=([^;]*)").Groups[1].Value;
+                    this.DatabaseName = Regex.Match(this.Connection, @"Initial Catalog=([^;]*)").Groups[1].Value;
+                    this.UserName = Regex.Match(this.Connection, @"User ID=([^;]*)").Groups[1].Value;
+                    this.Password = Regex.Match(this.Connection, @"Password=([^;]*)").Groups[1].Value;
                     this.ParameterPrefix = "@";
+                }
             }
             else
                 this.ParameterPrefix = ParameterPrefix;
@@ -87,6 +94,14 @@ namespace Utilities.ORM.Manager.SourceProvider
         public IDatabase Database { get; protected set; }
 
         /// <summary>
+        /// Gets the database.
+        /// </summary>
+        /// <value>
+        /// The database.
+        /// </value>
+        public string DatabaseName { get; protected set; }
+
+        /// <summary>
         /// Name of the source
         /// </summary>
         public string Name { get; protected set; }
@@ -102,14 +117,38 @@ namespace Utilities.ORM.Manager.SourceProvider
         public string ParameterPrefix { get; protected set; }
 
         /// <summary>
+        /// Gets the password.
+        /// </summary>
+        /// <value>
+        /// The password.
+        /// </value>
+        public string Password { get; protected set; }
+
+        /// <summary>
         /// Should this source be used to read data?
         /// </summary>
         public bool Readable { get; protected set; }
 
         /// <summary>
+        /// Gets the data source.
+        /// </summary>
+        /// <value>
+        /// The data source.
+        /// </value>
+        public string Server { get; protected set; }
+
+        /// <summary>
         /// Source type, based on ADO.Net provider name or identifier used by CUL
         /// </summary>
         public string SourceType { get; protected set; }
+
+        /// <summary>
+        /// Gets the name of the user.
+        /// </summary>
+        /// <value>
+        /// The name of the user.
+        /// </value>
+        public string UserName { get; protected set; }
 
         /// <summary>
         /// Should this source be used to write data?
