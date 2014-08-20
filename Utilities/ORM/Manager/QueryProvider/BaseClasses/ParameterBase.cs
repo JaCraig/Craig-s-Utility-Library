@@ -115,6 +115,14 @@ namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
         public virtual string ID { get; set; }
 
         /// <summary>
+        /// Gets the internal value.
+        /// </summary>
+        /// <value>
+        /// The internal value.
+        /// </value>
+        public object InternalValue { get { return Value; } }
+
+        /// <summary>
         /// Starting string of the parameter
         /// </summary>
         public string ParameterStarter { get; set; }

@@ -19,20 +19,40 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
-namespace UnitTests.Configuration.Manager.Default
+namespace UnitTests.ORM.Manager.QueryProvider.Default.LDAP
 {
-    public class SystemConfig
+    /// <summary>
+    /// LDAP Batch
+    /// </summary>
+    public class LDAPBatch : DatabaseBaseClass
     {
+        public LDAPBatch() :
+            base()
+        {
+        }
+
+        [Fact]
+        public void AddCommand()
+        {
+            Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPBatch(TestDatabaseSource);
+            Temp.AddCommand(null, null, " ", CommandType.Text, "@", new object[] { 1, "ASDF", 2.0f, Guid.NewGuid() });
+            Assert.Equal(1, Temp.CommandCount);
+        }
+
         [Fact]
         public void Create()
         {
-            Utilities.Configuration.Manager.Default.SystemConfig Temp = new Utilities.Configuration.Manager.Default.SystemConfig();
+            Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPBatch(TestDatabaseSource);
             Assert.NotNull(Temp);
-            Assert.Equal(1, Temp.AppSettings.Count);
-            Assert.Equal(3, Temp.ConnectionStrings.Count);
-            Assert.Equal("Default", Temp.Name);
+            Assert.Equal(0, Temp.CommandCount);
         }
     }
 }

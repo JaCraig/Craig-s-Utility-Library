@@ -54,114 +54,286 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
             this.Mapping = Mapping;
         }
 
+        /// <summary>
+        /// Gets or sets the mapping.
+        /// </summary>
+        /// <value>
+        /// The mapping.
+        /// </value>
+        private IMapping Mapping { get; set; }
+
+        /// <summary>
+        /// Gets or sets the query provider.
+        /// </summary>
+        /// <value>
+        /// The query provider.
+        /// </value>
+        private LDAPQueryProvider QueryProvider { get; set; }
+
+        /// <summary>
+        /// Gets or sets the source.
+        /// </summary>
+        /// <value>
+        /// The source.
+        /// </value>
+        private ISourceInfo Source { get; set; }
+
+        /// <summary>
+        /// Generates a batch that will get all items for the given type the parameters specified
+        /// </summary>
+        /// <param name="Parameters">Parameters</param>
+        /// <returns>Batch with the appropriate commands</returns>
         public IBatch All(params IParameter[] Parameters)
         {
-            throw new NotImplementedException();
+            if (Mapping == null)
+                return QueryProvider.Batch(Source);
+            Parameters = Parameters.Check(new IParameter[] { });
+            string Command = "(*)";
+            Parameters.ForEach(x =>
+            {
+                Command = string.Format(CultureInfo.InvariantCulture, "(&({0}={1})({2}))", x.ID, x.InternalValue.ToString(), Command);
+            });
+            return QueryProvider.Batch(Source)
+                .AddCommand(null,
+                    null,
+                    Command,
+                    CommandType.Text,
+                    Parameters);
         }
 
+        /// <summary>
+        /// Generates a batch that will get all items for the given type the parameters specified
+        /// </summary>
+        /// <param name="Parameters">Parameters</param>
+        /// <param name="Limit">Max number of items to return</param>
+        /// <returns>Batch with the appropriate commands</returns>
         public IBatch All(int Limit, params IParameter[] Parameters)
         {
-            throw new NotImplementedException();
+            return All(Parameters);
         }
 
+        /// <summary>
+        /// Generates a batch that will get the first item that satisfies the parameters specified
+        /// </summary>
+        /// <param name="Parameters">Parameters</param>
+        /// <returns>Batch with the appropriate commands</returns>
         public IBatch Any(params IParameter[] Parameters)
         {
-            throw new NotImplementedException();
+            return All(Parameters);
         }
 
+        /// <summary>
+        /// Generates a batch that will delete the object
+        /// </summary>
+        /// <param name="Object">Object to delete</param>
+        /// <returns>Batch with the appropriate commands</returns>
         public IBatch Delete(T Object)
         {
-            throw new NotImplementedException();
+            return QueryProvider
+                .Batch(Source);
         }
 
+        /// <summary>
+        /// Generates a batch that will delete the object
+        /// </summary>
+        /// <param name="Objects">Objects to delete</param>
+        /// <returns>Batch with the appropriate commands</returns>
         public IBatch Delete(IEnumerable<T> Objects)
         {
-            throw new NotImplementedException();
+            IBatch TempBatch = QueryProvider.Batch(Source);
+            foreach (T Object in Objects)
+            {
+                TempBatch.AddCommand(Delete(Object));
+            }
+            return TempBatch;
         }
 
+        /// <summary>
+        /// Generates a batch that will insert the data from the object
+        /// </summary>
+        /// <param name="Object">Object to insert</param>
+        /// <returns>Batch with the appropriate commands</returns>
         public IBatch Insert(T Object)
         {
-            throw new NotImplementedException();
+            return QueryProvider.Batch(Source);
         }
 
+        /// <summary>
+        /// Generates a batch that will insert the data from the objects
+        /// </summary>
+        /// <param name="Objects">Objects to insert</param>
+        /// <returns>Batch with the appropriate commands</returns>
         public IBatch Insert(IEnumerable<T> Objects)
         {
-            throw new NotImplementedException();
+            IBatch TempBatch = QueryProvider.Batch(Source);
+            foreach (T Object in Objects)
+            {
+                TempBatch.AddCommand(Insert(Object));
+            }
+            return TempBatch;
         }
 
+        /// <summary>
+        /// Deletes items from the joining table for the property
+        /// </summary>
+        /// <param name="Property">Property</param>
+        /// <param name="Object">Object</param>
+        /// <typeparam name="P">Property type</typeparam>
+        /// <returns>The batch with the appropriate commands</returns>
         public IBatch JoinsDelete<P>(IProperty<T, P> Property, T Object)
         {
-            throw new NotImplementedException();
+            return QueryProvider.Batch(Source);
         }
 
+        /// <summary>
+        /// Saves items to the joining table for the property
+        /// </summary>
+        /// <param name="Property">Property</param>
+        /// <param name="Object">Object</param>
+        /// <typeparam name="P">Property type</typeparam>
+        /// <typeparam name="ItemType">Item type</typeparam>
+        /// <returns>The batch with the appropriate commands</returns>
         public IBatch JoinsSave<P, ItemType>(IProperty<T, P> Property, T Object)
         {
-            throw new NotImplementedException();
+            return QueryProvider.Batch(Source);
         }
 
+        /// <summary>
+        /// Generates a batch that will get the specific property for the object
+        /// </summary>
+        /// <typeparam name="P">Property type</typeparam>
+        /// <param name="Object">Object to get the property for</param>
+        /// <param name="Property">Property to get</param>
+        /// <returns>Batch with the appropriate commands</returns>
         public IBatch LoadProperty<P>(T Object, IProperty Property)
         {
-            throw new NotImplementedException();
+            return QueryProvider.Batch(Source);
         }
 
+        /// <summary>
+        /// Generates a batch that will get the number of pages for a given page size given the
+        /// parameters specified
+        /// </summary>
+        /// <param name="Parameters">Parameters</param>
+        /// <param name="PageSize">Page size</param>
+        /// <returns>Batch with the appropriate commands</returns>
         public IBatch PageCount(int PageSize, params IParameter[] Parameters)
         {
-            throw new NotImplementedException();
+            return QueryProvider.Batch(Source);
         }
 
+        /// <summary>
+        /// Generates a batch that will get a specific page of data that satisfies the parameters specified
+        /// </summary>
+        /// <param name="Parameters">Parameters</param>
+        /// <param name="CurrentPage">The current page (starting at 0)</param>
+        /// <param name="PageSize">Page size</param>
+        /// <returns>Batch with the appropriate commands</returns>
         public IBatch Paged(int PageSize, int CurrentPage, params IParameter[] Parameters)
         {
-            throw new NotImplementedException();
+            return All(Parameters);
         }
 
+        /// <summary>
+        /// Saves the object to the source
+        /// </summary>
+        /// <typeparam name="PrimaryKeyType">Primary key type</typeparam>
+        /// <param name="Object">Object to save</param>
         public IBatch Save<PrimaryKeyType>(T Object)
         {
-            throw new NotImplementedException();
+            return QueryProvider.Batch(Source);
         }
 
+        /// <summary>
+        /// Sets up the various default commands for the mapping
+        /// </summary>
+        /// <param name="Mapping"></param>
         public void SetupCommands(IMapping<T> Mapping)
         {
-            throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Sets up the default load command for a map property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">Map property</param>
         public void SetupLoadCommands<D>(Mapper.Default.Map<T, D> Property) where D : class, new()
         {
-            throw new NotImplementedException();
         }
 
-        public void SetupLoadCommands<D>(Mapper.Default.IEnumerableManyToOne<T, D> Property) where D : class, new()
+        /// <summary>
+        /// Sets up the default load command for a IEnumerableManyToOne property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">IEnumerableManyToOne property</param>
+        public void SetupLoadCommands<D>(Mapper.Default.IEnumerableManyToOne<T, D> Property)
+            where D : class, new()
         {
-            throw new NotImplementedException();
         }
 
-        public void SetupLoadCommands<D>(Mapper.Default.ListManyToOne<T, D> Property) where D : class, new()
+        /// <summary>
+        /// Sets up the default load command for a ListManyToOne property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">ListManyToOne property</param>
+        public void SetupLoadCommands<D>(Mapper.Default.ListManyToOne<T, D> Property)
+                    where D : class, new()
         {
-            throw new NotImplementedException();
         }
 
-        public void SetupLoadCommands<D>(Mapper.Default.ListManyToMany<T, D> Property) where D : class, new()
+        /// <summary>
+        /// Sets up the default load command for a ListManyToMany property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">ListManyToMany property</param>
+        public void SetupLoadCommands<D>(Mapper.Default.ListManyToMany<T, D> Property)
+            where D : class, new()
         {
-            throw new NotImplementedException();
         }
 
-        public void SetupLoadCommands<D>(Mapper.Default.ManyToMany<T, D> Property) where D : class, new()
+        /// <summary>
+        /// Sets up the default load command for a ManyToOne property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">ManyToOne property</param>
+        public void SetupLoadCommands<D>(Mapper.Default.ManyToOne<T, D> Property)
+            where D : class, new()
         {
-            throw new NotImplementedException();
         }
 
-        public void SetupLoadCommands<D>(Mapper.Default.ManyToOne<T, D> Property) where D : class, new()
+        /// <summary>
+        /// Sets up the default load command for a ManyToMany property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">ManyToMany property</param>
+        public void SetupLoadCommands<D>(Mapper.Default.ManyToMany<T, D> Property)
+            where D : class, new()
         {
-            throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Generates a batch that will update the data from the object
+        /// </summary>
+        /// <param name="Object">Object to update</param>
+        /// <returns>Batch with the appropriate commands</returns>
         public IBatch Update(T Object)
         {
-            throw new NotImplementedException();
+            return QueryProvider.Batch(Source);
         }
 
+        /// <summary>
+        /// Generates a batch that will update the data from the objects
+        /// </summary>
+        /// <param name="Objects">Objects to update</param>
+        /// <returns>Batch with the appropriate commands</returns>
         public IBatch Update(IEnumerable<T> Objects)
         {
-            throw new NotImplementedException();
+            IBatch TempBatch = QueryProvider.Batch(Source);
+            foreach (T Object in Objects)
+            {
+                TempBatch.AddCommand(Update(Object));
+            }
+            return TempBatch;
         }
     }
 }

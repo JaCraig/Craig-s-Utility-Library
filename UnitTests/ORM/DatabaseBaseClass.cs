@@ -36,6 +36,7 @@ namespace UnitTests.ORM
             : base()
         {
             DatabaseSource = new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Integrated Security=SSPI;Pooling=false");
+            LDAPSource = new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("LDAP");
             MasterDatabaseSource = new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false");
             TestDatabaseSource = new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
             Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(DatabaseSource);
@@ -52,6 +53,8 @@ namespace UnitTests.ORM
         }
 
         protected ISourceInfo DatabaseSource { get; set; }
+
+        protected ISourceInfo LDAPSource { get; set; }
 
         protected ISourceInfo MasterDatabaseSource { get; set; }
 

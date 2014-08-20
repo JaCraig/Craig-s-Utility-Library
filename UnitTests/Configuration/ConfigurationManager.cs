@@ -31,7 +31,7 @@ namespace UnitTests.Configuration
             Utilities.Configuration.Manager.Default.SystemConfig Temp = Utilities.Configuration.ConfigurationManager.Get<Utilities.Configuration.Manager.Default.SystemConfig>(Utilities.Configuration.ConfigurationSystem.Default);
             Assert.NotNull(Temp);
             Assert.Equal(1, Temp.AppSettings.Count);
-            Assert.Equal(2, Temp.ConnectionStrings.Count);
+            Assert.Equal(3, Temp.ConnectionStrings.Count);
             Assert.Equal("Default", Temp.Name);
         }
 
@@ -41,7 +41,7 @@ namespace UnitTests.Configuration
             Utilities.Configuration.Manager.Default.SystemConfig Temp = Utilities.Configuration.ConfigurationManager.Get<Utilities.Configuration.Manager.Default.SystemConfig>();
             Assert.NotNull(Temp);
             Assert.Equal(1, Temp.AppSettings.Count);
-            Assert.Equal(2, Temp.ConnectionStrings.Count);
+            Assert.Equal(3, Temp.ConnectionStrings.Count);
             Assert.Equal("Default", Temp.Name);
         }
     }

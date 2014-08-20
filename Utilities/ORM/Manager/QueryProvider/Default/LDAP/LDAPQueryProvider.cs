@@ -29,9 +29,9 @@ using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
 {
-    // <summary>
-    // LDAP query provider
-    // </summary>
+    /// <summary>
+    /// LDAP query provider
+    /// </summary>
     public class LDAPQueryProvider : IQueryProvider
     {
         /// <summary>
@@ -45,7 +45,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
         ///<summary>
         /// Provider name associated with the query provider
         ///</summary>
-        public override string ProviderName { get { return "Local"; } }
+        public string ProviderName { get { return "LDAP"; } }
 
         /// <summary>
         /// Parameter prefix
@@ -53,7 +53,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
         /// <value>
         /// The parameter prefix.
         /// </value>
-        protected override string ParameterPrefix { get { return "@"; } }
+        protected static string ParameterPrefix { get { return ""; } }
 
         /// <summary>
         /// Creates a batch for running commands
@@ -76,7 +76,8 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
         /// <returns>
         /// A generator class
         /// </returns>
-        public override IGenerator<T> Generate<T>(ISourceInfo Source, IMapping Mapping)
+        public IGenerator<T> Generate<T>(ISourceInfo Source, IMapping Mapping)
+            where T : class,new()
         {
             return new LDAPGenerator<T>(this, Source, Mapping);
         }

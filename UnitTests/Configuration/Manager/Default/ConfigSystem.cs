@@ -43,7 +43,7 @@ namespace UnitTests.Configuration.Manager.Default
             Utilities.Configuration.Manager.Default.SystemConfig ConfigObject = Temp.Config<Utilities.Configuration.Manager.Default.SystemConfig>("Default");
             Assert.NotNull(ConfigObject);
             Assert.Equal(1, ConfigObject.AppSettings.Count);
-            Assert.Equal(2, ConfigObject.ConnectionStrings.Count);
+            Assert.Equal(3, ConfigObject.ConnectionStrings.Count);
             Assert.Equal("Default", ConfigObject.Name);
         }
     }

@@ -40,7 +40,7 @@ namespace UnitTests.ORM.Manager.QueryProvider
         public void Create()
         {
             Assert.DoesNotThrow(() => new Utilities.ORM.Manager.QueryProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IQueryProvider>()));
-            Assert.Equal("Query providers: System.Data.SqlClient\r\n", new Utilities.ORM.Manager.QueryProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IQueryProvider>()).ToString());
+            Assert.Equal("Query providers: LDAP,System.Data.SqlClient\r\n", new Utilities.ORM.Manager.QueryProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IQueryProvider>()).ToString());
         }
 
         [Fact]
