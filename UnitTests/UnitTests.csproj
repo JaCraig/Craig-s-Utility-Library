@@ -197,6 +197,7 @@
     <Compile Include="ORM\Manager\QueryProvider\Default\DatabaseBatch.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\LDAP\LDAPBatch.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\LDAP\LDAPGenerator.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\LDAP\LDAPQueryProvider.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\Parameter.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\SQLServer\SQLServerGenerator.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\SQLServer\SQLServerQueryProvider.cs" />
@@ -205,6 +206,7 @@
     <Compile Include="ORM\Manager\Schema\Default\Column.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Database.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Function.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\LDAP\LDAPSchemaGenerator.cs" />
     <Compile Include="ORM\Manager\Schema\Default\SQLServer\SQLServerSchemaGenerator.cs" />
     <Compile Include="ORM\Manager\Schema\Default\StoredProcedure.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Table.cs" />
