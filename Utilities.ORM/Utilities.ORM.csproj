@@ -233,6 +233,10 @@
     <Compile Include="ORM\QueryProvider.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\FileSystem\FileSystemGenerator.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\FileSystem\FileSystemQueryProvider.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\LDAP\LDAPBatch.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\LDAP\LDAPGenerator.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\LDAP\LDAPQueryProvider.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\LDAP\LDAPSchema.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

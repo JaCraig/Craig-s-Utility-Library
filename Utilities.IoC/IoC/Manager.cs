@@ -43,24 +43,28 @@ namespace Utilities.IoC
         /// </summary>
         protected Manager()
         {
-            foreach (FileInfo File in new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).GetFiles("*.dll", SearchOption.TopDirectoryOnly)
-                                                                                              .Where(x => !x.Name.Equals("CULGeneratedTypes.dll", StringComparison.InvariantCultureIgnoreCase)))
+            IEnumerable<FileInfo> Files = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).GetFiles("*.dll", SearchOption.TopDirectoryOnly)
+                                                                                              .Where(x => !x.Name.Equals("CULGeneratedTypes.dll", StringComparison.InvariantCultureIgnoreCase));
+            List<Assembly> LoadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
+            LoadAssemblies(LoadedAssemblies, Files.Select(x => AssemblyName.GetAssemblyName(x.FullName)).ToArray());
+            IEnumerable<Assembly> StarterAssemblies = LoadedAssemblies.ToArray();
+            foreach (Assembly Assembly in StarterAssemblies)
             {
                 try
                 {
-                    LoadAssemblies(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(File.FullName)).GetReferencedAssemblies());
+                    LoadAssemblies(LoadedAssemblies, Assembly.GetReferencedAssemblies());
                 }
                 catch { }
             }
             FileInfo GeneratedFile = new FileInfo(AppDomain.CurrentDomain.BaseDirectory + "\\CULGeneratedTypes.dll");
             if (GeneratedFile.Exists
-                && AppDomain.CurrentDomain.GetAssemblies()
-                                          .Where(x => !x.FullName.Contains("vshost32") && !x.IsDynamic)
-                                          .All(x => new System.IO.FileInfo(x.Location).LastWriteTime <= GeneratedFile.LastWriteTime))
+                && LoadedAssemblies.Where(x => !x.FullName.Contains("vshost32") && !x.IsDynamic)
+                                   .All(x => new System.IO.FileInfo(x.Location).LastWriteTime <= GeneratedFile.LastWriteTime))
             {
-                LoadAssemblies(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(GeneratedFile.FullName)).GetReferencedAssemblies());
+                LoadAssemblies(LoadedAssemblies, AssemblyName.GetAssemblyName(GeneratedFile.FullName));
             }
-            IEnumerable<Assembly> Assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(x =>
+            LoadedAssemblies = LoadedAssemblies.Distinct(new AssemblyComparer()).ToList();
+            IEnumerable<Assembly> Assemblies = LoadedAssemblies.Where(x =>
             {
                 try
                 {
@@ -170,14 +174,49 @@ namespace Utilities.IoC
             }
         }
 
-        private void LoadAssemblies(params AssemblyName[] assemblyName)
+        private void LoadAssemblies(List<Assembly> Assemblies, params AssemblyName[] assemblyName)
         {
             if (assemblyName == null)
                 return;
-            foreach (AssemblyName Name in assemblyName)
+            foreach (AssemblyName Name in assemblyName.Where(x => !x.FullName.StartsWith("System.")))
             {
-                if (!AppDomain.CurrentDomain.GetAssemblies().Any(x => x.FullName == Name.FullName))
-                    LoadAssemblies(AppDomain.CurrentDomain.Load(Name).GetReferencedAssemblies());
+                if (!Assemblies.Any(x => x.FullName == Name.FullName))
+                {
+                    Assembly TempAssembly = AppDomain.CurrentDomain.Load(Name);
+                    Assemblies.Add(TempAssembly);
+                    LoadAssemblies(Assemblies, TempAssembly.GetReferencedAssemblies());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Assembly comparer
+        /// </summary>
+        public class AssemblyComparer : IEqualityComparer<Assembly>
+        {
+            /// <summary>
+            /// Determines whether the specified objects are equal.
+            /// </summary>
+            /// <param name="x">The first object of type System.Reflection.Assembly to compare.</param>
+            /// <param name="y">The second object of type System.Reflection.Assembly to compare.</param>
+            /// <returns>
+            /// true if the specified objects are equal; otherwise, false.
+            /// </returns>
+            public bool Equals(Assembly x, Assembly y)
+            {
+                return string.Equals(x.FullName, y.FullName, StringComparison.InvariantCultureIgnoreCase);
+            }
+
+            /// <summary>
+            /// Returns a hash code for this instance.
+            /// </summary>
+            /// <param name="obj">The object.</param>
+            /// <returns>
+            /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            /// </returns>
+            public int GetHashCode(Assembly obj)
+            {
+                return obj.GetHashCode();
             }
         }
     }

@@ -57,6 +57,14 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         string ID { get; set; }
 
         /// <summary>
+        /// Gets the internal value.
+        /// </summary>
+        /// <value>
+        /// The internal value.
+        /// </value>
+        object InternalValue { get; }
+
+        /// <summary>
         /// Adds this parameter to the SQLHelper
         /// </summary>
         /// <param name="Helper">SQLHelper</param>

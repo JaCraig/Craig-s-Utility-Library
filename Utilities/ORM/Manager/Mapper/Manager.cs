@@ -55,7 +55,7 @@ namespace Utilities.ORM.Manager.Mapper
         /// </summary>
         /// <param name="Key">The object type</param>
         /// <returns>The mapping specified</returns>
-        public IEnumerable<IMapping> this[Type Key] { get { return Mappings.GetValue(Key); } }
+        public IEnumerable<IMapping> this[Type Key] { get { return Mappings.GetValue(Key).Check(new List<IMapping>()); } }
 
         /// <summary>
         /// Gets the mapping specified by the object type and source
@@ -63,7 +63,7 @@ namespace Utilities.ORM.Manager.Mapper
         /// <param name="Key">The object type</param>
         /// <param name="Source">Source information</param>
         /// <returns>The mapping specified</returns>
-        public IMapping this[Type Key, ISourceInfo Source] { get { return Mappings.GetValue(Key).FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType()); } }
+        public IMapping this[Type Key, ISourceInfo Source] { get { return this[Key].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType()); } }
 
         /// <summary>
         /// Gets the enumerator for the mappings

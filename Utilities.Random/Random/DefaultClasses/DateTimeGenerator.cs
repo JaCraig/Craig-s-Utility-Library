@@ -39,6 +39,16 @@ namespace Utilities.Random.DefaultClasses
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="DateTimeGenerator"/> class.
+        /// </summary>
+        /// <param name="Min">The minimum.</param>
+        /// <param name="Max">The maximum.</param>
+        public DateTimeGenerator(string Min, string Max)
+            : base(DateTime.Parse(Min), DateTime.Parse(Max))
+        {
+        }
+
+        /// <summary>
         /// Generates a random value of the specified type
         /// </summary>
         /// <param name="Rand">Random number generator that it can use</param>

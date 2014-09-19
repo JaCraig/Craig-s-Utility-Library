@@ -66,14 +66,14 @@ namespace Utilities.ORM
         /// Date object was created
         /// </summary>
         [Between("1/1/1900", "1/1/2100")]
-        [DateTimeGenerator]
+        [DateTimeGenerator("1/1/1900", "1/1/2100")]
         public virtual DateTime DateCreated { get; set; }
 
         /// <summary>
         /// Date last modified
         /// </summary>
         [Between("1/1/1900", "1/1/2100")]
-        [DateTimeGenerator]
+        [DateTimeGenerator("1/1/1900", "1/1/2100")]
         public virtual DateTime DateModified { get; set; }
 
         /// <summary>
