@@ -178,7 +178,7 @@ namespace Utilities.IoC
         {
             if (assemblyName == null)
                 return;
-            foreach (AssemblyName Name in assemblyName.Where(x => !x.FullName.StartsWith("System.")))
+            foreach (AssemblyName Name in assemblyName.Where(x => !x.FullName.StartsWith("System.", StringComparison.InvariantCultureIgnoreCase)))
             {
                 if (!Assemblies.Any(x => x.FullName == Name.FullName))
                 {
@@ -192,7 +192,7 @@ namespace Utilities.IoC
         /// <summary>
         /// Assembly comparer
         /// </summary>
-        public class AssemblyComparer : IEqualityComparer<Assembly>
+        private class AssemblyComparer : IEqualityComparer<Assembly>
         {
             /// <summary>
             /// Determines whether the specified objects are equal.

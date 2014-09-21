@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Globalization;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
 
@@ -44,7 +45,7 @@ namespace Utilities.Random.DefaultClasses
         /// <param name="Min">The minimum.</param>
         /// <param name="Max">The maximum.</param>
         public DateTimeGenerator(string Min, string Max)
-            : base(DateTime.Parse(Min), DateTime.Parse(Max))
+            : base(DateTime.Parse(Min, CultureInfo.CurrentCulture), DateTime.Parse(Max, CultureInfo.CurrentCulture))
         {
         }
 
