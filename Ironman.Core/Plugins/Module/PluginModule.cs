@@ -48,7 +48,10 @@ namespace Ironman.Core.Plugins.Module
         /// <param name="Bootstrapper">Bootstrapper to register with</param>
         public void Load(IBootstrapper Bootstrapper)
         {
-            if (Bootstrapper == null)
+            if (Bootstrapper == null
+                || ConfigurationManager.AppSettings == null
+                || !ConfigurationManager.AppSettings.AllKeys.Contains("Ironman:PluginSource")
+                || string.IsNullOrEmpty(ConfigurationManager.AppSettings["Ironman:PluginSource"]))
                 return;
             Bootstrapper.Register(new PluginManager(ConfigurationManager.AppSettings["Ironman:PluginSource"].Split(',')));
         }
