@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Threading.Tasks;
 using Utilities.DataTypes.Comparison;
 
 namespace Utilities.DataTypes
@@ -35,6 +36,25 @@ namespace Utilities.DataTypes
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class IDictionaryExtensions
     {
+        /// <summary>
+        /// Copies the dictionary to another dictionary.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="Dictionary">The dictionary.</param>
+        /// <param name="Target">The target dictionary.</param>
+        /// <returns>
+        /// This
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">Thrown if the dictionary is null</exception>
+        public static IDictionary<TKey, TValue> CopyTo<TKey, TValue>(this IDictionary<TKey, TValue> Dictionary, IDictionary<TKey, TValue> Target)
+        {
+            Contract.Requires<ArgumentNullException>(Dictionary != null, "Dictionary");
+            Contract.Requires<ArgumentNullException>(Target != null, "Target");
+            Parallel.ForEach(Dictionary, x => Target.SetValue(x.Key, x.Value));
+            return Dictionary;
+        }
+
         /// <summary>
         /// Gets the value from a dictionary or the default value if it isn't found
         /// </summary>

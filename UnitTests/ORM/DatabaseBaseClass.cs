@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Utilities.ORM.Interfaces;
@@ -35,9 +36,9 @@ namespace UnitTests.ORM
         public DatabaseBaseClass()
             : base()
         {
-            DatabaseSource = new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Integrated Security=SSPI;Pooling=false");
+            DatabaseSource = new Utilities.ORM.Manager.SourceProvider.Manager(new List<IDatabase>()).GetSource("Data Source=localhost;Integrated Security=SSPI;Pooling=false");
             LDAPSource = new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("LDAP");
-            MasterDatabaseSource = new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false");
+            MasterDatabaseSource = new Utilities.ORM.Manager.SourceProvider.Manager(new List<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false");
             TestDatabaseSource = new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
             Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(DatabaseSource);
             try

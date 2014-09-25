@@ -26,6 +26,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 using Utilities.DataTypes.DataMapper.Interfaces;
 
 namespace Utilities.DataTypes.DataMapper.BaseClasses
@@ -109,7 +110,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
             else
             {
                 PropertyInfo[] Properties = typeof(Left).GetProperties();
-                for (int x = 0; x < Properties.Length; ++x)
+                Parallel.For(0, Properties.Length, x =>
                 {
                     PropertyInfo DestinationProperty = RightType.GetProperty(Properties[x].Name);
                     if (DestinationProperty != null)
@@ -118,7 +119,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
                         Expression<Func<Right, object>> RightGet = DestinationProperty.PropertyGetter<Right>();
                         this.AddMapping(LeftGet, RightGet);
                     }
-                }
+                });
             }
             return this;
         }
@@ -170,26 +171,14 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
             {
                 IDictionary<string, object> LeftSide = (IDictionary<string, object>)x;
                 IDictionary<string, object> RightSide = (IDictionary<string, object>)y;
-                foreach (string Key in RightSide.Keys)
-                {
-                    if (LeftSide.ContainsKey(Key))
-                        LeftSide[Key] = RightSide[Key];
-                    else
-                        LeftSide.Add(Key, RightSide[Key]);
-                }
+                RightSide.CopyTo(LeftSide);
             }),
             x => x,
             new Action<Right, object>((x, y) =>
             {
                 IDictionary<string, object> LeftSide = (IDictionary<string, object>)y;
                 IDictionary<string, object> RightSide = (IDictionary<string, object>)x;
-                foreach (string Key in LeftSide.Keys)
-                {
-                    if (RightSide.ContainsKey(Key))
-                        RightSide[Key] = LeftSide[Key];
-                    else
-                        RightSide.Add(Key, LeftSide[Key]);
-                }
+                LeftSide.CopyTo(RightSide);
             }));
         }
 
@@ -198,7 +187,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
             Contract.Requires<ArgumentNullException>(RightType != null, "RightType");
             Contract.Requires<ArgumentNullException>(LeftType != null, "LeftType");
             PropertyInfo[] Properties = RightType.GetProperties();
-            for (int x = 0; x < Properties.Length; ++x)
+            Parallel.For(0, Properties.Length, x =>
             {
                 PropertyInfo Property = Properties[x];
                 Expression<Func<Right, object>> RightGet = Properties[x].PropertyGetter<Right>();
@@ -236,7 +225,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
                             RightSet(y, z);
                     }));
                 }
-            }
+            });
         }
 
         private void AddRightIDictionaryMapping(Type LeftType, Type RightType)
@@ -244,7 +233,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
             Contract.Requires<ArgumentNullException>(RightType != null, "RightType");
             Contract.Requires<ArgumentNullException>(LeftType != null, "LeftType");
             PropertyInfo[] Properties = LeftType.GetProperties();
-            for (int x = 0; x < Properties.Length; ++x)
+            Parallel.For(0, Properties.Length, x =>
             {
                 PropertyInfo Property = Properties[x];
                 Expression<Func<Left, object>> LeftGet = Property.PropertyGetter<Left>();
@@ -282,7 +271,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
                             LeftSide.Add(Property.Name, z);
                     }));
                 }
-            }
+            });
         }
     }
 }

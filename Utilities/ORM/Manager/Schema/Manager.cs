@@ -86,7 +86,7 @@ namespace Utilities.ORM.Manager.Schema
         /// <returns>The schema generator information as a string</returns>
         public override string ToString()
         {
-            return "Schema Providers: " + SchemaGenerators.ToString(x => x.Key) + "\r\n";
+            return "Schema Providers: " + SchemaGenerators.OrderBy(x => x.Key).ToString(x => x.Key) + "\r\n";
         }
     }
 }

@@ -32,7 +32,7 @@ namespace UnitTests.ORM.Manager.Mapper
         public void Create()
         {
             Assert.DoesNotThrow(() => new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>()));
-            Assert.Equal("Mappers: TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,Dynamo_,TestClass_,TestClass_,TestClass_,TestClass_\r\n", new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>()).ToString());
+            Assert.Equal(150, new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>()).ToString().Length);
         }
     }
 }

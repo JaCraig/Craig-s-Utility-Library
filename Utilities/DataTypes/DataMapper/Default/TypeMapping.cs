@@ -20,7 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Utilities.DataTypes.DataMapper.BaseClasses;
 using Utilities.DataTypes.DataMapper.Interfaces;
 
@@ -98,10 +100,7 @@ namespace Utilities.DataTypes.DataMapper.Default
         /// <param name="Destination">Destination object</param>
         public override void Copy(Left Source, Right Destination)
         {
-            foreach (Mapping<Left, Right> Mapping in Mappings)
-            {
-                Mapping.Copy(Source, Destination);
-            }
+            Parallel.ForEach(Mappings.OfType<Mapping<Left, Right>>(), x => x.Copy(Source, Destination));
         }
 
         /// <summary>
@@ -111,10 +110,7 @@ namespace Utilities.DataTypes.DataMapper.Default
         /// <param name="Destination">Destination object</param>
         public override void Copy(Right Source, Left Destination)
         {
-            foreach (Mapping<Left, Right> Mapping in Mappings)
-            {
-                Mapping.Copy(Source, Destination);
-            }
+            Parallel.ForEach(Mappings.OfType<Mapping<Left, Right>>(), x => x.Copy(Source, Destination));
         }
 
         /// <summary>
@@ -125,10 +121,7 @@ namespace Utilities.DataTypes.DataMapper.Default
         /// <param name="Destination">Destination</param>
         public override void CopyLeftToRight(Left Source, Right Destination)
         {
-            foreach (Mapping<Left, Right> Mapping in Mappings)
-            {
-                Mapping.CopyLeftToRight(Source, Destination);
-            }
+            Parallel.ForEach(Mappings.OfType<Mapping<Left, Right>>(), x => x.CopyLeftToRight(Source, Destination));
         }
 
         /// <summary>
@@ -139,10 +132,7 @@ namespace Utilities.DataTypes.DataMapper.Default
         /// <param name="Destination">Destination</param>
         public override void CopyRightToLeft(Right Source, Left Destination)
         {
-            foreach (Mapping<Left, Right> Mapping in Mappings)
-            {
-                Mapping.CopyRightToLeft(Source, Destination);
-            }
+            Parallel.ForEach(Mappings.OfType<Mapping<Left, Right>>(), x => x.CopyRightToLeft(Source, Destination));
         }
     }
 }

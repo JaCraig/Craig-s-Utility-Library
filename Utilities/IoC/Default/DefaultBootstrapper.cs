@@ -21,11 +21,13 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using Utilities.IoC.BaseClasses;
 using Utilities.IoC.Default.Interfaces;
 
@@ -36,7 +38,7 @@ namespace Utilities.IoC.Default
     /// </summary>
     public class DefaultBootstrapper : BootstrapperBase<IDictionary<Tuple<Type, string>, ITypeBuilder>>
     {
-        private IDictionary<Tuple<Type, string>, ITypeBuilder> _AppContainer = null;
+        private ConcurrentDictionary<Tuple<Type, string>, ITypeBuilder> _AppContainer = null;
 
         /// <summary>
         /// Constructor
@@ -45,7 +47,7 @@ namespace Utilities.IoC.Default
         public DefaultBootstrapper(IEnumerable<Assembly> Assemblies)
             : base(Assemblies)
         {
-            _AppContainer = new Dictionary<Tuple<Type, string>, ITypeBuilder>();
+            _AppContainer = new ConcurrentDictionary<Tuple<Type, string>, ITypeBuilder>();
         }
 
         /// <summary>
@@ -114,14 +116,9 @@ namespace Utilities.IoC.Default
         public override void Register<T>(Func<T> Function, string Name = "")
         {
             Tuple<Type, string> Key = new Tuple<Type, string>(typeof(T), Name);
-            if (AppContainer.ContainsKey(Key))
-            {
-                AppContainer[Key] = new TypeBuilder<T>(Function);
-            }
-            else
-            {
-                AppContainer.Add(Key, new TypeBuilder<T>(Function));
-            }
+            _AppContainer.AddOrUpdate(Key,
+                x => new TypeBuilder<T>(Function),
+                (x, y) => new TypeBuilder<T>(Function));
         }
 
         /// <summary>
@@ -143,12 +140,13 @@ namespace Utilities.IoC.Default
                                                             && !x.IsAbstract
                                                             && !x.ContainsGenericParameters));
             }
+            MethodInfo GenericRegisterMethod = GetType().GetMethods().First(x => x.Name == "Register" && x.GetGenericArguments().Count() == 2);
             foreach (Type Type in Types)
             {
-                MethodInfo RegisterMethod = GetType().GetMethods().First(x => x.Name == "Register" && x.GetGenericArguments().Count() == 2).MakeGenericMethod(typeof(T), Type);
-                RegisterMethod.Invoke(this, new object[] { Types.Count == 1 ? "" : Type.FullName });
-                RegisterMethod = GetType().GetMethods().First(x => x.Name == "Register" && x.GetGenericArguments().Count() == 2).MakeGenericMethod(Type, Type);
-                RegisterMethod.Invoke(this, new object[] { "" });
+                GenericRegisterMethod.MakeGenericMethod(typeof(T), Type)
+                    .Invoke(this, new object[] { Types.Count == 1 ? "" : Type.FullName });
+                GenericRegisterMethod.MakeGenericMethod(Type, Type)
+                    .Invoke(this, new object[] { "" });
             }
         }
 
@@ -198,10 +196,8 @@ namespace Utilities.IoC.Default
             try
             {
                 Tuple<Type, string> Key = new Tuple<Type, string>(ObjectType, Name);
-                if (!AppContainer.ContainsKey(Key))
-                    return DefaultObject;
-
-                return AppContainer[Key].Create();
+                ITypeBuilder Builder = null;
+                return _AppContainer.TryGetValue(Key, out Builder) ? Builder.Create() : DefaultObject;
             }
             catch { return DefaultObject; }
         }
@@ -213,16 +209,7 @@ namespace Utilities.IoC.Default
         /// <returns>An IEnumerable containing all objects of the type specified</returns>
         public override IEnumerable<T> ResolveAll<T>()
         {
-            List<T> ReturnValues = new List<T>();
-            Type TypeWanted = typeof(T);
-            foreach (Tuple<Type, string> Key in _AppContainer.Keys)
-            {
-                if (Key.Item1 == TypeWanted)
-                {
-                    ReturnValues.Add((T)Resolve(Key.Item1, Key.Item2, default(T)));
-                }
-            }
-            return ReturnValues;
+            return ResolveAll(typeof(T)).Select(x => (T)x);
         }
 
         /// <summary>
@@ -232,13 +219,10 @@ namespace Utilities.IoC.Default
         /// <returns>An IEnumerable containing all objects of the type specified</returns>
         public override IEnumerable<object> ResolveAll(Type ObjectType)
         {
-            List<object> ReturnValues = new List<object>();
-            foreach (Tuple<Type, string> Key in _AppContainer.Keys)
+            ConcurrentBag<object> ReturnValues = new ConcurrentBag<object>();
+            foreach (Tuple<Type, string> Key in _AppContainer.Keys.Where(x => x.Item1 == ObjectType))
             {
-                if (Key.Item1 == ObjectType)
-                {
-                    ReturnValues.Add(Resolve(Key.Item1, Key.Item2, null));
-                }
+                ReturnValues.Add(Resolve(Key.Item1, Key.Item2, null));
             }
             return ReturnValues;
         }
@@ -347,10 +331,9 @@ namespace Utilities.IoC.Default
                 return false;
             if (x == type)
                 return true;
-            foreach (Type Interface in x.GetInterfaces())
-                if (IsOfType(Interface, type))
-                    return true;
-            return IsOfType(x.BaseType, type);
+            return x.GetInterfaces()
+                    .Any(y => IsOfType(y, type))
+                || IsOfType(x.BaseType, type);
         }
     }
 }
