@@ -30,6 +30,7 @@ namespace Ironman.Core
     using Ironman.Core.Tasks;
     using Ironman.Core.Tasks.Enums;
     using System.Web.Mvc;
+    using System.Web.Routing;
     using Utilities.IO;
     using Utilities.IO.Logging.Enums;
     using Utilities.IO.Logging.Interfaces;
@@ -93,6 +94,17 @@ namespace Ironman.Core
                 ViewEngines.Engines.Clear();
                 ViewEngines.Engines.Add(new RazorViewEngine());
             }
+        }
+
+        /// <summary>
+        /// Registers the API.
+        /// </summary>
+        /// <param name="Routes">The routes.</param>
+        /// <param name="ControllerName">Name of the controller.</param>
+        /// <param name="AreaName">Name of the area.</param>
+        public static void RegisterAPI(RouteCollection Routes, string ControllerName, string AreaName)
+        {
+            Bootstrapper.Resolve<API.Manager.Manager>().RegisterRoutes(Routes, ControllerName, AreaName);
         }
     }
 }
