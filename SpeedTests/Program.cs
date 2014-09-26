@@ -38,17 +38,11 @@ namespace SpeedTests
     {
         public static void Main(string[] args)
         {
-            //try
-            //{
-            //    StopWatch StopWatch = new StopWatch();
-            //    StopWatch.Start();
-            //    IBootstrapper Bootstrapper = Utilities.IoC.Manager.Bootstrapper;
-            //    StopWatch.Stop();
-            //    Console.WriteLine(StopWatch.ElapsedTime);
-            //}
-            //catch (Exception e) { Console.WriteLine(e.ToString()); }
-            //Console.ReadKey();
+            StopWatch StopWatch = new StopWatch();
+            StopWatch.Start();
             IBootstrapper Bootstrapper = Utilities.IoC.Manager.Bootstrapper;
+            StopWatch.Stop();
+            Console.WriteLine("Start up: " + StopWatch.ElapsedTime);
             using (IDisposable StartProfiler = Utilities.Profiler.Profiler.StartProfiling())
             {
                 System.Random Rand = new System.Random();
