@@ -100,7 +100,10 @@ namespace Utilities.DataTypes.DataMapper.Default
         /// <param name="Destination">Destination object</param>
         public override void Copy(Left Source, Right Destination)
         {
-            Parallel.ForEach(Mappings.OfType<Mapping<Left, Right>>(), x => x.Copy(Source, Destination));
+            foreach (Mapping<Left, Right> Mapping in Mappings.OfType<Mapping<Left, Right>>())
+            {
+                Mapping.Copy(Source, Destination);
+            }
         }
 
         /// <summary>
@@ -110,7 +113,10 @@ namespace Utilities.DataTypes.DataMapper.Default
         /// <param name="Destination">Destination object</param>
         public override void Copy(Right Source, Left Destination)
         {
-            Parallel.ForEach(Mappings.OfType<Mapping<Left, Right>>(), x => x.Copy(Source, Destination));
+            foreach (Mapping<Left, Right> Mapping in Mappings.OfType<Mapping<Left, Right>>())
+            {
+                Mapping.Copy(Source, Destination);
+            }
         }
 
         /// <summary>
@@ -121,7 +127,10 @@ namespace Utilities.DataTypes.DataMapper.Default
         /// <param name="Destination">Destination</param>
         public override void CopyLeftToRight(Left Source, Right Destination)
         {
-            Parallel.ForEach(Mappings.OfType<Mapping<Left, Right>>(), x => x.CopyLeftToRight(Source, Destination));
+            foreach (Mapping<Left, Right> Mapping in Mappings.OfType<Mapping<Left, Right>>())
+            {
+                Mapping.CopyLeftToRight(Source, Destination);
+            }
         }
 
         /// <summary>
@@ -132,7 +141,10 @@ namespace Utilities.DataTypes.DataMapper.Default
         /// <param name="Destination">Destination</param>
         public override void CopyRightToLeft(Right Source, Left Destination)
         {
-            Parallel.ForEach(Mappings.OfType<Mapping<Left, Right>>(), x => x.CopyRightToLeft(Source, Destination));
+            foreach (Mapping<Left, Right> Mapping in Mappings.OfType<Mapping<Left, Right>>())
+            {
+                Mapping.CopyRightToLeft(Source, Destination);
+            }
         }
     }
 }

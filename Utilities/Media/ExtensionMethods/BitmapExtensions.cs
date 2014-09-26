@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
@@ -27,6 +28,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Utilities.DataTypes;
@@ -824,23 +826,26 @@ namespace Utilities.Media
         public static IEnumerable<string> GetHTMLPalette(this Bitmap OriginalImage)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
-            List<string> ReturnArray = new List<string>();
             if (OriginalImage.Palette != null && OriginalImage.Palette.Entries.Length > 0)
             {
-                OriginalImage.Palette.Entries.ForEach(x => ReturnArray.AddIfUnique(ColorTranslator.ToHtml(x)));
-                return ReturnArray;
+                return OriginalImage.Palette.Entries.Distinct((x, y) => x == y).Select(x => ColorTranslator.ToHtml(x));
             }
+            ConcurrentDictionary<string, int> ReturnArray = new ConcurrentDictionary<string, int>();
             BitmapData ImageData = OriginalImage.LockImage();
             int PixelSize = ImageData.GetPixelSize();
-            for (int x = 0; x < OriginalImage.Width; ++x)
+            int Width = OriginalImage.Width;
+            int Height = OriginalImage.Height;
+            Parallel.For(0, Width, x =>
             {
-                for (int y = 0; y < OriginalImage.Height; ++y)
+                for (int y = 0; y < Height; ++y)
                 {
-                    ReturnArray.AddIfUnique(ColorTranslator.ToHtml(ImageData.GetPixel(x, y, PixelSize)));
+                    ReturnArray.AddOrUpdate(ColorTranslator.ToHtml(ImageData.GetPixel(x, y, PixelSize)),
+                        z => 0,
+                        (z, a) => 0);
                 }
-            }
+            });
             OriginalImage.UnlockImage(ImageData);
-            return ReturnArray;
+            return ReturnArray.Keys;
         }
 
         /// <summary>
