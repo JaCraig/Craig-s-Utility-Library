@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Utilities.DataTypes.AI
 {
@@ -54,7 +56,7 @@ namespace Utilities.DataTypes.AI
         {
             SetA = new Bag<T>();
             SetB = new Bag<T>();
-            Probabilities = new Dictionary<T, double>();
+            Probabilities = new ConcurrentDictionary<T, double>();
             Total = 0;
             TotalA = 0;
             TotalB = 0;
@@ -110,7 +112,7 @@ namespace Utilities.DataTypes.AI
         /// <summary>
         /// Dictionary containing probabilities
         /// </summary>
-        protected Dictionary<T, double> Probabilities { get; private set; }
+        protected ConcurrentDictionary<T, double> Probabilities { get; private set; }
 
         /// <summary>
         /// Total number of tokens
@@ -179,12 +181,16 @@ namespace Utilities.DataTypes.AI
             TotalA = SetA.Sum(x => SetA[x]);
             TotalB = SetB.Sum(x => SetB[x]);
             Total = TotalA + TotalB;
-            Probabilities = new Dictionary<T, double>();
-            foreach (T Token in SetA)
-                Probabilities.Add(Token, CalculateProbabilityOfToken(Token));
-            foreach (T Token in SetB)
+            Probabilities = new ConcurrentDictionary<T, double>();
+            Parallel.ForEach(SetA, Token =>
+            {
+                Probabilities.AddOrUpdate(Token, x => CalculateProbabilityOfToken(x), (x, y) => CalculateProbabilityOfToken(x));
+            });
+            Parallel.ForEach(SetB, Token =>
+            {
                 if (!Probabilities.ContainsKey(Token))
-                    Probabilities.Add(Token, CalculateProbabilityOfToken(Token));
+                    Probabilities.AddOrUpdate(Token, x => CalculateProbabilityOfToken(x), (x, y) => y);
+            });
         }
 
         /// <summary>

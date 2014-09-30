@@ -50,7 +50,7 @@ namespace UnitTests.DataTypes
                     int Value = Rand.Next();
                     TestObject.Add(Name, Value);
                     Assert.Equal(y + 1, TestObject[Name].Count);
-                    Assert.Equal(Value, TestObject[Name].ElementAt(y));
+                    Assert.True(TestObject[Name].Contains(Value));
                 }
             }
             Assert.Equal(10, TestObject.Count);

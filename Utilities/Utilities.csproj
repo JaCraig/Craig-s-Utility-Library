@@ -236,6 +236,8 @@
     <Compile Include="DataTypes\EventArgs\EventArgs.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\CacheExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ConcurrentBagExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ConcurrentDictionary.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DateTimeExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DelegateExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ExceptionExtensions.cs" />

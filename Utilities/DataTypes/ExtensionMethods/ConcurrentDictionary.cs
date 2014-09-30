@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
@@ -31,10 +32,10 @@ using Utilities.DataTypes.Comparison;
 namespace Utilities.DataTypes
 {
     /// <summary>
-    /// IDictionary extensions
+    /// ConcurrentDictionary extensions
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public static class IDictionaryExtensions
+    public static class ConcurrentDictionaryExtensions
     {
         /// <summary>
         /// Copies the dictionary to another dictionary.
@@ -47,14 +48,11 @@ namespace Utilities.DataTypes
         /// This
         /// </returns>
         /// <exception cref="System.ArgumentNullException">Thrown if the dictionary is null</exception>
-        public static IDictionary<TKey, TValue> CopyTo<TKey, TValue>(this IDictionary<TKey, TValue> Dictionary, IDictionary<TKey, TValue> Target)
+        public static ConcurrentDictionary<TKey, TValue> CopyTo<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> Dictionary, ConcurrentDictionary<TKey, TValue> Target)
         {
             Contract.Requires<ArgumentNullException>(Dictionary != null, "Dictionary");
             Contract.Requires<ArgumentNullException>(Target != null, "Target");
-            foreach (KeyValuePair<TKey, TValue> Pair in Dictionary)
-            {
-                Target.SetValue(Pair.Key, Pair.Value);
-            }
+            Parallel.ForEach(Dictionary, x => Target.SetValue(x.Key, x.Value));
             return Dictionary;
         }
 
@@ -70,7 +68,7 @@ namespace Utilities.DataTypes
         /// The value associated with the key or the default value if the key is not found
         /// </returns>
         /// <exception cref="System.ArgumentNullException">Thrown if the dictionary is null</exception>
-        public static TValue GetValue<TKey, TValue>(this IDictionary<TKey, TValue> Dictionary, TKey Key, TValue Default = default(TValue))
+        public static TValue GetValue<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> Dictionary, TKey Key, TValue Default = default(TValue))
         {
             Contract.Requires<ArgumentNullException>(Dictionary != null, "Dictionary");
             TValue ReturnValue = Default;
@@ -87,47 +85,11 @@ namespace Utilities.DataTypes
         /// <param name="Value">Value to add</param>
         /// <returns>The dictionary</returns>
         /// <exception cref="System.ArgumentNullException">Thrown if the dictionary is null</exception>
-        public static IDictionary<TKey, TValue> SetValue<TKey, TValue>(this IDictionary<TKey, TValue> Dictionary, TKey Key, TValue Value)
+        public static ConcurrentDictionary<TKey, TValue> SetValue<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> Dictionary, TKey Key, TValue Value)
         {
             Contract.Requires<ArgumentNullException>(Dictionary != null, "Dictionary");
-            if (Dictionary.ContainsKey(Key))
-                Dictionary[Key] = Value;
-            else
-                Dictionary.Add(Key, Value);
+            Dictionary.AddOrUpdate(Key, Value, (x, y) => Value);
             return Dictionary;
-        }
-
-        /// <summary>
-        /// Sorts a dictionary
-        /// </summary>
-        /// <typeparam name="T1">Key type</typeparam>
-        /// <typeparam name="T2">Value type</typeparam>
-        /// <param name="Dictionary">Dictionary to sort</param>
-        /// <param name="Comparer">Comparer used to sort (defaults to GenericComparer)</param>
-        /// <returns>The sorted dictionary</returns>
-        public static IDictionary<T1, T2> Sort<T1, T2>(this IDictionary<T1, T2> Dictionary, IComparer<T1> Comparer = null)
-            where T1 : IComparable
-        {
-            Contract.Requires<ArgumentNullException>(Dictionary != null, "Dictionary");
-            return Dictionary.Sort(x => x.Key, Comparer);
-        }
-
-        /// <summary>
-        /// Sorts a dictionary
-        /// </summary>
-        /// <typeparam name="T1">Key type</typeparam>
-        /// <typeparam name="T2">Value type</typeparam>
-        /// <typeparam name="T3">Order by type</typeparam>
-        /// <param name="Dictionary">Dictionary to sort</param>
-        /// <param name="OrderBy">Function used to order the dictionary</param>
-        /// <param name="Comparer">Comparer used to sort (defaults to GenericComparer)</param>
-        /// <returns>The sorted dictionary</returns>
-        public static IDictionary<T1, T2> Sort<T1, T2, T3>(this IDictionary<T1, T2> Dictionary, Func<KeyValuePair<T1, T2>, T3> OrderBy, IComparer<T3> Comparer = null)
-            where T3 : IComparable
-        {
-            Contract.Requires<ArgumentNullException>(Dictionary != null, "Dictionary");
-            Contract.Requires<ArgumentNullException>(OrderBy != null, "OrderBy");
-            return Dictionary.OrderBy(OrderBy, Comparer.Check(() => new GenericComparer<T3>())).ToDictionary(x => x.Key, x => x.Value);
         }
     }
 }

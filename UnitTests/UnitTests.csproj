@@ -104,6 +104,8 @@
     <Compile Include="DataTypes\Dynamic\Dynamo.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\CacheExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ConcurrentBagExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ConcurrentDictionaryExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DateTimeExtension.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ExceptionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\GenericObjectExtensions.cs" />
