@@ -49,7 +49,7 @@ namespace UnitTests.DataTypes
                 {
                     int Value = Rand.Next();
                     TestObject.Add(Name, Value);
-                    Assert.Equal(y + 1, TestObject[Name].Count);
+                    Assert.Equal(y + 1, TestObject[Name].Count());
                     Assert.True(TestObject[Name].Contains(Value));
                 }
             }
@@ -63,7 +63,7 @@ namespace UnitTests.DataTypes
             TestObject.Add("A", 0);
             TestObject.Add("A", 1);
             TestObject.Remove("A", 0);
-            Assert.Equal(1, TestObject["A"].Count);
+            Assert.Equal(1, TestObject["A"].Count());
             Assert.Equal(1, TestObject["A"].FirstOrDefault());
         }
     }
