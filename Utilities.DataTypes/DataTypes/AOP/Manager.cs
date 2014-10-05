@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -38,12 +39,12 @@ namespace Utilities.DataTypes.AOP
         /// <summary>
         /// The list of aspects that are being used
         /// </summary>
-        private static ICollection<IAspect> Aspects = new List<IAspect>();
+        private static ConcurrentBag<IAspect> Aspects = new ConcurrentBag<IAspect>();
 
         /// <summary>
         /// Dictionary containing generated types and associates it with original type
         /// </summary>
-        private static IDictionary<Type, Type> Classes = new Dictionary<Type, Type>();
+        private static ConcurrentDictionary<Type, Type> Classes = new ConcurrentDictionary<Type, Type>();
 
         /// <summary>
         /// Constructor
@@ -60,8 +61,8 @@ namespace Utilities.DataTypes.AOP
             Manager.Compiler = Compiler;
             if (Manager.Aspects.Count == 0)
                 Manager.Aspects.Add(Aspects);
-            Compiler.Classes.ForEach(x => Classes.Add(x.BaseType, x));
-            Modules.ForEach(x => x.Setup(this));
+            Compiler.Classes.ForEachParallel(x => Classes.AddOrUpdate(x.BaseType, y => x, (y, z) => x));
+            Modules.ForEachParallel(x => x.Setup(this));
         }
 
         /// <summary>
@@ -101,19 +102,19 @@ namespace Utilities.DataTypes.AOP
         public virtual void Setup(params Assembly[] Assembly)
         {
             Contract.Requires<ArgumentNullException>(Assembly != null, "Assembly");
-            foreach (Type TempType in Assembly.Types()
-                                              .Where(x => !x.ContainsGenericParameters
-                                                          && !x.IsAbstract
-                                                          && x.IsClass
-                                                          && x.IsPublic
-                                                          && !x.IsSealed
-                                                          && x.IsVisible
-                                                          && !x.IsCOMObject
-                                                          && x.HasDefaultConstructor()
-                                                          && !string.IsNullOrEmpty(x.Namespace)))
+            Assembly.Types()
+                    .Where(x => !x.ContainsGenericParameters
+                        && !x.IsAbstract
+                        && x.IsClass
+                        && x.IsPublic
+                        && !x.IsSealed
+                        && x.IsVisible
+                        && !x.IsCOMObject
+                        && x.HasDefaultConstructor()
+                        && !string.IsNullOrEmpty(x.Namespace)).ForEachParallel(x =>
             {
-                Setup(TempType);
-            }
+                Setup(x);
+            });
         }
 
         /// <summary>
@@ -269,11 +270,15 @@ namespace {1}
 }");
             try
             {
-                Manager.Classes.Add(Type, Manager.Compiler.CreateClass(Namespace + "." + Type.Name + "Derived", Builder.ToString(), Usings, AssembliesUsing.ToArray()));
+                Manager.Classes.AddOrUpdate(Type,
+                    Manager.Compiler.CreateClass(Namespace + "." + Type.Name + "Derived", Builder.ToString(), Usings, AssembliesUsing.ToArray()),
+                    (x, y) => x);
             }
             catch (Exception)
             {
-                Manager.Classes.Add(Type, Type);
+                Manager.Classes.AddOrUpdate(Type,
+                    Type,
+                    (x, y) => x);
             }
         }
 

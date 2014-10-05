@@ -19,15 +19,15 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Emit;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Emit;
 using Utilities.DataTypes.Patterns.BaseClasses;
 
 namespace Utilities.DataTypes.CodeGen.BaseClasses
@@ -136,7 +136,7 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
             CSharpCompilation CSharpCompiler = CSharpCompilation.Create(AssemblyName + ".dll",
                                                     new SyntaxTree[] { CSharpSyntaxTree.ParseText(Code) },
                                                     References.ForEach(x => new MetadataFileReference(x.Location)).ToArray(),
-                                                    new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, usings: Usings, optimize: Optimize));
+                                                    new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, usings: Usings, optimizationLevel: Optimize ? OptimizationLevel.Release : OptimizationLevel.Debug));
             using (MemoryStream TempStream = new MemoryStream())
             {
                 EmitResult Result = CSharpCompiler.Emit(TempStream);

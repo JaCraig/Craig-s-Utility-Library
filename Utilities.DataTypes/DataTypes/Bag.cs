@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -36,7 +37,7 @@ namespace Utilities.DataTypes
         /// </summary>
         public Bag()
         {
-            Items = new Dictionary<T, int>();
+            Items = new ConcurrentDictionary<T, int>();
         }
 
         /// <summary>
@@ -58,7 +59,7 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Actual internal container
         /// </summary>
-        protected Dictionary<T, int> Items { get; private set; }
+        protected ConcurrentDictionary<T, int> Items { get; private set; }
 
         /// <summary>
         /// Gets a specified item
@@ -67,8 +68,8 @@ namespace Utilities.DataTypes
         /// <returns>The number of this item in the bag</returns>
         public virtual int this[T index]
         {
-            get { return Items[index]; }
-            set { Items[index] = value; }
+            get { return Items.GetValue(index); }
+            set { Items.SetValue(index, value); }
         }
 
         /// <summary>
@@ -77,10 +78,7 @@ namespace Utilities.DataTypes
         /// <param name="item">Item to add</param>
         public virtual void Add(T item)
         {
-            if (Items.ContainsKey(item))
-                ++Items[item];
-            else
-                Items.Add(item, 1);
+            Items.SetValue(item, Items.GetValue(item, 0) + 1);
         }
 
         /// <summary>
@@ -128,7 +126,8 @@ namespace Utilities.DataTypes
         /// <returns>True if it is removed, false otherwise</returns>
         public virtual bool Remove(T item)
         {
-            return Items.Remove(item);
+            int Value = 0;
+            return Items.TryRemove(item, out Value);
         }
 
         /// <summary>

@@ -20,7 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Utilities.DataTypes
 {
@@ -30,14 +33,14 @@ namespace Utilities.DataTypes
     /// <typeparam name="T1">Key value</typeparam>
     /// <typeparam name="T2">Type that the list should contain</typeparam>
     [Serializable]
-    public class ListMapping<T1, T2> : IDictionary<T1, ICollection<T2>>
+    public class ListMapping<T1, T2> : IDictionary<T1, IEnumerable<T2>>
     {
         /// <summary>
         /// Constructor
         /// </summary>
         public ListMapping()
         {
-            Items = new Dictionary<T1, ICollection<T2>>();
+            Items = new ConcurrentDictionary<T1, ConcurrentBag<T2>>();
         }
 
         /// <summary>
@@ -67,11 +70,11 @@ namespace Utilities.DataTypes
         /// <summary>
         /// List that contains the list of values
         /// </summary>
-        public ICollection<ICollection<T2>> Values
+        public ICollection<IEnumerable<T2>> Values
         {
             get
             {
-                List<ICollection<T2>> Lists = new List<ICollection<T2>>();
+                List<IEnumerable<T2>> Lists = new List<IEnumerable<T2>>();
                 foreach (T1 Key in Keys)
                     Lists.Add(this[Key]);
                 return Lists;
@@ -81,17 +84,17 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Container holding the data
         /// </summary>
-        protected Dictionary<T1, ICollection<T2>> Items { get; private set; }
+        protected ConcurrentDictionary<T1, ConcurrentBag<T2>> Items { get; private set; }
 
         /// <summary>
         /// Gets a list of values associated with a key
         /// </summary>
         /// <param name="key">Key to look for</param>
         /// <returns>The list of values</returns>
-        public virtual ICollection<T2> this[T1 key]
+        public virtual IEnumerable<T2> this[T1 key]
         {
-            get { return Items[key]; }
-            set { Items[key] = value; }
+            get { return Items.GetValue(key, new ConcurrentBag<T2>()); }
+            set { Items.SetValue(key, new ConcurrentBag<T2>(value)); }
         }
 
         /// <summary>
@@ -101,19 +104,17 @@ namespace Utilities.DataTypes
         /// <param name="Value">The value to add</param>
         public virtual void Add(T1 Key, T2 Value)
         {
-            if (!Items.ContainsKey(Key))
-            {
-                List<T2> Temp = new List<T2>();
-                Items.Add(Key, Temp);
-            }
-            Items[Key].Add(Value);
+            Items.AddOrUpdate(Key,
+                              x => new ConcurrentBag<T2>(),
+                              (x, y) => y)
+                 .Add(Value);
         }
 
         /// <summary>
         /// Adds a key value pair
         /// </summary>
         /// <param name="item">Key value pair to add</param>
-        public virtual void Add(KeyValuePair<T1, ICollection<T2>> item)
+        public virtual void Add(KeyValuePair<T1, IEnumerable<T2>> item)
         {
             Add(item.Key, item.Value);
         }
@@ -123,14 +124,12 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="Key">Key value</param>
         /// <param name="Value">The values to add</param>
-        public virtual void Add(T1 Key, ICollection<T2> Value)
+        public virtual void Add(T1 Key, IEnumerable<T2> Value)
         {
-            if (!Items.ContainsKey(Key))
-            {
-                List<T2> Temp = new List<T2>();
-                Items.Add(Key, Temp);
-            }
-            Items[Key].Add(Value);
+            Items.AddOrUpdate(Key,
+                              x => new ConcurrentBag<T2>(),
+                              (x, y) => y)
+                 .Add(Value);
         }
 
         /// <summary>
@@ -146,7 +145,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="item">Key value pair to check</param>
         /// <returns>True if it exists, false otherwise</returns>
-        public virtual bool Contains(KeyValuePair<T1, ICollection<T2>> item)
+        public virtual bool Contains(KeyValuePair<T1, IEnumerable<T2>> item)
         {
             if (!ContainsKey(item.Key))
                 return false;
@@ -161,7 +160,7 @@ namespace Utilities.DataTypes
         /// <param name="Key">Key value</param>
         /// <param name="Values">Value</param>
         /// <returns>True if it exists, false otherwise</returns>
-        public virtual bool Contains(T1 Key, ICollection<T2> Values)
+        public virtual bool Contains(T1 Key, IEnumerable<T2> Values)
         {
             if (!ContainsKey(Key))
                 return false;
@@ -181,7 +180,7 @@ namespace Utilities.DataTypes
         {
             if (!ContainsKey(Key))
                 return false;
-            if (!this[Key].Contains(Value))
+            if (!this.Items[Key].Contains(Value))
                 return false;
             return true;
         }
@@ -201,7 +200,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="array">Array to copy to</param>
         /// <param name="arrayIndex">array index</param>
-        public void CopyTo(KeyValuePair<T1, ICollection<T2>>[] array, int arrayIndex)
+        public void CopyTo(KeyValuePair<T1, IEnumerable<T2>>[] array, int arrayIndex)
         {
             throw new NotImplementedException();
         }
@@ -210,10 +209,10 @@ namespace Utilities.DataTypes
         /// Gets the enumerator
         /// </summary>
         /// <returns>The enumerator for this object</returns>
-        public IEnumerator<KeyValuePair<T1, ICollection<T2>>> GetEnumerator()
+        public IEnumerator<KeyValuePair<T1, IEnumerable<T2>>> GetEnumerator()
         {
             foreach (T1 Key in Keys)
-                yield return new KeyValuePair<T1, ICollection<T2>>(Key, this[Key]);
+                yield return new KeyValuePair<T1, IEnumerable<T2>>(Key, this[Key]);
         }
 
         /// <summary>
@@ -223,7 +222,8 @@ namespace Utilities.DataTypes
         /// <returns>True if the key is found, false otherwise</returns>
         public virtual bool Remove(T1 key)
         {
-            return Items.Remove(key);
+            ConcurrentBag<T2> Value = new ConcurrentBag<T2>();
+            return Items.TryRemove(key, out Value);
         }
 
         /// <summary>
@@ -231,7 +231,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="item">items to remove</param>
         /// <returns>True if it is removed, false otherwise</returns>
-        public virtual bool Remove(KeyValuePair<T1, ICollection<T2>> item)
+        public virtual bool Remove(KeyValuePair<T1, IEnumerable<T2>> item)
         {
             if (!Contains(item))
                 return false;
@@ -251,8 +251,12 @@ namespace Utilities.DataTypes
         {
             if (!Contains(Key, Value))
                 return false;
-            this[Key].Remove(Value);
-            if (this[Key].Count == 0)
+            List<T2> TempValue = Items[Key].ToList(z => z);
+            TempValue.Remove(Value);
+            Items.AddOrUpdate(Key,
+                new ConcurrentBag<T2>(TempValue),
+                (x, y) => new ConcurrentBag<T2>(TempValue));
+            if (this[Key].Count() == 0)
                 Remove(Key);
             return true;
         }
@@ -268,19 +272,36 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            StringBuilder Builder = new StringBuilder();
+            foreach (var Key in Keys)
+            {
+                Builder.AppendLineFormat("{0}:{{{1}}}", Key.ToString(), Items[Key].ToString(x => x.ToString()));
+            }
+            return Builder.ToString();
+        }
+
+        /// <summary>
         /// Tries to get the value associated with the key
         /// </summary>
         /// <param name="Key">Key value</param>
         /// <param name="Value">The values getting</param>
         /// <returns>True if it was able to get the value, false otherwise</returns>
-        public virtual bool TryGetValue(T1 Key, out ICollection<T2> Value)
+        public virtual bool TryGetValue(T1 Key, out IEnumerable<T2> Value)
         {
-            if (ContainsKey(Key))
+            Value = new List<T2>();
+            ConcurrentBag<T2> TempValue = new ConcurrentBag<T2>();
+            if (Items.TryGetValue(Key, out TempValue))
             {
-                Value = this[Key];
+                Value = TempValue.ToList(x => x);
                 return true;
             }
-            Value = new List<T2>();
             return false;
         }
     }

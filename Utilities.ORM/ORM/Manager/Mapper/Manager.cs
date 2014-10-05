@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -55,7 +56,7 @@ namespace Utilities.ORM.Manager.Mapper
         /// </summary>
         /// <param name="Key">The object type</param>
         /// <returns>The mapping specified</returns>
-        public IEnumerable<IMapping> this[Type Key] { get { return Mappings.GetValue(Key).Check(new List<IMapping>()); } }
+        public IEnumerable<IMapping> this[Type Key] { get { return Mappings.GetValue(Key).Check(new ConcurrentBag<IMapping>()); } }
 
         /// <summary>
         /// Gets the mapping specified by the object type and source
@@ -101,7 +102,7 @@ namespace Utilities.ORM.Manager.Mapper
         /// <returns>The mapping information as a string</returns>
         public override string ToString()
         {
-            return "Mappers: " + Mappings.ToString(x => x.Value.ToString(y => y.ToString())) + "\r\n";
+            return "Mappers: " + Mappings.ToString(x => x.Value.OrderBy(y => y.ToString()).ToString(y => y.ToString())) + "\r\n";
         }
     }
 }

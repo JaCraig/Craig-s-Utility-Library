@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
@@ -158,10 +159,10 @@ namespace Utilities.DataTypes
                 if (Property != null)
                 {
                     Func<T, object> Temp = Property.PropertyGetter<T>().Compile();
-                    ChildValues.Add(Name, () => Temp((T)this));
+                    ChildValues.AddOrUpdate(Name, x => () => Temp((T)this), (x, y) => () => Temp((T)this));
                 }
                 else
-                    ChildValues.Add(Name, () => null);
+                    ChildValues.AddOrUpdate(Name, x => () => null, (x, y) => null);
             }
             return ChildValues[Name]().To(ReturnType, null);
         }
@@ -206,16 +207,16 @@ namespace Utilities.DataTypes
         public Dynamo(object Item)
             : base()
         {
-            InternalValues = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-            ChildValues = new Dictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
-            ChangeLog = new Dictionary<string, Change>(StringComparer.OrdinalIgnoreCase);
+            InternalValues = new ConcurrentDictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+            ChildValues = new ConcurrentDictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
+            ChangeLog = new ConcurrentDictionary<string, Change>(StringComparer.OrdinalIgnoreCase);
             IDictionary<string, object> DictItem = Item as IDictionary<string, object>;
             if (Item == null)
                 return;
             if (Item is string || Item.GetType().IsValueType)
                 SetValue("Value", Item);
             else if (DictItem != null)
-                InternalValues = new Dictionary<string, object>(DictItem, StringComparer.OrdinalIgnoreCase);
+                InternalValues = new ConcurrentDictionary<string, object>(DictItem, StringComparer.OrdinalIgnoreCase);
             else if (Item is IEnumerable)
                 SetValue("Items", Item);
             else
@@ -231,9 +232,9 @@ namespace Utilities.DataTypes
         public Dynamo(IDictionary<string, object> Dictionary)
             : base()
         {
-            InternalValues = new Dictionary<string, object>(Dictionary, StringComparer.OrdinalIgnoreCase);
-            ChildValues = new Dictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
-            ChangeLog = new Dictionary<string, Change>(StringComparer.OrdinalIgnoreCase);
+            InternalValues = new ConcurrentDictionary<string, object>(Dictionary, StringComparer.OrdinalIgnoreCase);
+            ChildValues = new ConcurrentDictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
+            ChangeLog = new ConcurrentDictionary<string, Change>(StringComparer.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -245,9 +246,9 @@ namespace Utilities.DataTypes
             : base()
         {
             Contract.Requires<ArgumentNullException>(info != null, "info");
-            InternalValues = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-            ChildValues = new Dictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
-            ChangeLog = new Dictionary<string, Change>(StringComparer.OrdinalIgnoreCase);
+            InternalValues = new ConcurrentDictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+            ChildValues = new ConcurrentDictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
+            ChangeLog = new ConcurrentDictionary<string, Change>(StringComparer.OrdinalIgnoreCase);
             foreach (SerializationEntry Item in info)
             {
                 SetValue(Item.Name, Item.Value);
@@ -274,7 +275,7 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Change log
         /// </summary>
-        public IDictionary<string, Change> ChangeLog { get; private set; }
+        public ConcurrentDictionary<string, Change> ChangeLog { get; private set; }
 
         /// <summary>
         /// Number of items
@@ -284,7 +285,7 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Is this read only?
         /// </summary>
-        public bool IsReadOnly { get { return InternalValues.IsReadOnly; } }
+        public bool IsReadOnly { get { return false; } }
 
         /// <summary>
         /// Keys
@@ -299,12 +300,12 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Child class key/value dictionary
         /// </summary>
-        internal IDictionary<string, Func<object>> ChildValues { get; set; }
+        internal ConcurrentDictionary<string, Func<object>> ChildValues { get; set; }
 
         /// <summary>
         /// Internal key/value dictionary
         /// </summary>
-        internal IDictionary<string, object> InternalValues { get; set; }
+        internal ConcurrentDictionary<string, object> InternalValues { get; set; }
 
         /// <summary>
         /// Gets or sets the aop manager.
@@ -398,7 +399,7 @@ namespace Utilities.DataTypes
             {
                 foreach (string Key in DictItem.Keys)
                 {
-                    InternalValues.Add(Key, DictItem[Key]);
+                    InternalValues.AddOrUpdate(Key, x => DictItem[Key], (x, y) => DictItem[Key]);
                 }
             }
             else if (Item is IEnumerable)
@@ -416,7 +417,7 @@ namespace Utilities.DataTypes
         /// <param name="arrayIndex">Array index</param>
         public void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
         {
-            InternalValues.CopyTo(array, arrayIndex);
+            InternalValues.ToArray().CopyTo(array, arrayIndex);
         }
 
         /// <summary>
@@ -530,7 +531,8 @@ namespace Utilities.DataTypes
         public bool Remove(string key)
         {
             RaisePropertyChanged(key, null);
-            return InternalValues.Remove(key);
+            object TempObject = null;
+            return InternalValues.TryRemove(key, out TempObject);
         }
 
         /// <summary>
@@ -541,7 +543,8 @@ namespace Utilities.DataTypes
         public bool Remove(KeyValuePair<string, object> item)
         {
             RaisePropertyChanged(item.Key, null);
-            return InternalValues.Remove(item);
+            object TempObject = null;
+            return InternalValues.TryRemove(item.Key, out TempObject);
         }
 
         /// <summary>
@@ -603,7 +606,7 @@ namespace Utilities.DataTypes
         {
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("{0} this", GetType().Name);
-            foreach (string Key in Keys)
+            foreach (string Key in Keys.OrderBy(x => x))
             {
                 object Item = GetValue(Key, typeof(object));
                 if (Item != null)
@@ -709,7 +712,10 @@ namespace Utilities.DataTypes
             if (Value != null)
                 return Value;
             if (ContainsKey(Name))
-                return InternalValues[Name].To(ReturnType, null);
+            {
+                if (InternalValues.TryGetValue(Name, out Value))
+                    return Value.To(ReturnType, null);
+            }
             if (!ChildValues.ContainsKey(Name))
             {
                 Type ObjectType = GetType();
@@ -717,10 +723,10 @@ namespace Utilities.DataTypes
                 if (Property != null)
                 {
                     Func<Dynamo, object> Temp = Property.PropertyGetter<Dynamo>().Compile();
-                    ChildValues.Add(Name, () => Temp(this));
+                    ChildValues.AddOrUpdate(Name, x => () => Temp(this), (x, y) => () => Temp(this));
                 }
                 else
-                    ChildValues.Add(Name, () => null);
+                    ChildValues.AddOrUpdate(Name, x => () => null, (x, y) => null);
             }
             object ReturnValue = ChildValues[Name]().To(ReturnType, null);
             Value = RaiseGetValueEnd(Name, ReturnValue);
@@ -788,7 +794,7 @@ namespace Utilities.DataTypes
             if (InternalValues.ContainsKey(key))
                 InternalValues[key] = value;
             else
-                InternalValues.Add(key, value);
+                InternalValues.AddOrUpdate(key, value, (x, y) => value);
         }
     }
 }
