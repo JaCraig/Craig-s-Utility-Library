@@ -20,7 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Utilities.DataTypes;
+using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.IO.Logging.Interfaces;
 
 namespace Utilities.IO.Logging.BaseClasses
@@ -28,22 +31,14 @@ namespace Utilities.IO.Logging.BaseClasses
     /// <summary>
     /// Logger base
     /// </summary>
-    public abstract class LoggerBase : ILogger
+    public abstract class LoggerBase : SafeDisposableBaseClass, ILogger
     {
         /// <summary>
         /// Constructor
         /// </summary>
         protected LoggerBase()
         {
-            Logs = new Dictionary<string, ILog>();
-        }
-
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        ~LoggerBase()
-        {
-            Dispose(false);
+            Logs = new ConcurrentDictionary<string, ILog>();
         }
 
         /// <summary>
@@ -63,15 +58,6 @@ namespace Utilities.IO.Logging.BaseClasses
         public abstract void AddLog(string Name = "Default");
 
         /// <summary>
-        /// Disposes the object
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
         /// Gets a specified log
         /// </summary>
         /// <param name="Name">The name of the log file</param>
@@ -80,7 +66,7 @@ namespace Utilities.IO.Logging.BaseClasses
         {
             if (!Logs.ContainsKey(Name))
                 AddLog(Name);
-            return Logs[Name];
+            return Logs.GetValue(Name);
         }
 
         /// <summary>
@@ -98,13 +84,13 @@ namespace Utilities.IO.Logging.BaseClasses
         /// <param name="Disposing">
         /// True to dispose of all resources, false only disposes of native resources
         /// </param>
-        protected virtual void Dispose(bool Disposing)
+        protected override void Dispose(bool Disposing)
         {
             if (Logs != null)
             {
-                foreach (string Key in Logs.Keys)
+                foreach (KeyValuePair<string, ILog> Log in Logs)
                 {
-                    Logs[Key].Dispose();
+                    Log.Value.Dispose();
                 }
                 Logs.Clear();
             }

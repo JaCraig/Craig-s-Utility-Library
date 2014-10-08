@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -46,25 +47,17 @@ namespace Utilities.IoC
         {
             IEnumerable<FileInfo> Files = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).GetFiles("*.dll", SearchOption.TopDirectoryOnly)
                                                                                               .Where(x => !x.Name.Equals("CULGeneratedTypes.dll", StringComparison.InvariantCultureIgnoreCase));
-            List<Assembly> LoadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
+            ConcurrentBag<Assembly> LoadedAssemblies = new ConcurrentBag<Assembly>(AppDomain.CurrentDomain.GetAssemblies());
             LoadAssemblies(LoadedAssemblies, Files.Select(x => AssemblyName.GetAssemblyName(x.FullName)).ToArray());
-            IEnumerable<Assembly> StarterAssemblies = LoadedAssemblies.ToArray();
-            foreach (Assembly Assembly in StarterAssemblies)
-            {
-                try
-                {
-                    LoadAssemblies(LoadedAssemblies, Assembly.GetReferencedAssemblies());
-                }
-                catch { }
-            }
             FileInfo GeneratedFile = new FileInfo(AppDomain.CurrentDomain.BaseDirectory + "\\CULGeneratedTypes.dll");
+            LoadedAssemblies = new ConcurrentBag<Assembly>(LoadedAssemblies.Distinct(new AssemblyComparer()));
             if (GeneratedFile.Exists
-                && LoadedAssemblies.Where(x => !x.FullName.Contains("vshost32") && !x.IsDynamic)
-                                   .All(x => new System.IO.FileInfo(x.Location).LastWriteTime <= GeneratedFile.LastWriteTime))
+                && LoadedAssemblies.Any(x => !x.FullName.Contains("vshost32")
+                                            && !x.IsDynamic
+                                            && new System.IO.FileInfo(x.Location).LastWriteTime > GeneratedFile.LastWriteTime))
             {
                 LoadAssemblies(LoadedAssemblies, AssemblyName.GetAssemblyName(GeneratedFile.FullName));
             }
-            LoadedAssemblies = LoadedAssemblies.Distinct(new AssemblyComparer()).ToList();
             IEnumerable<Assembly> Assemblies = LoadedAssemblies.Where(x =>
             {
                 try
@@ -175,11 +168,11 @@ namespace Utilities.IoC
             }
         }
 
-        private void LoadAssemblies(List<Assembly> Assemblies, params AssemblyName[] assemblyName)
+        private void LoadAssemblies(ConcurrentBag<Assembly> Assemblies, params AssemblyName[] assemblyName)
         {
             if (assemblyName == null)
                 return;
-            foreach (AssemblyName Name in assemblyName.Where(x => !x.FullName.StartsWith("System.", StringComparison.InvariantCultureIgnoreCase)))
+            foreach (var Name in assemblyName.Where(x => !x.FullName.StartsWith("System.", StringComparison.InvariantCultureIgnoreCase)))
             {
                 if (!Assemblies.Any(x => x.FullName == Name.FullName))
                 {
