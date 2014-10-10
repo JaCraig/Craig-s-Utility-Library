@@ -277,7 +277,7 @@ namespace Utilities.IoC.Default
                     Type ParameterType = Parameter.ParameterType;
                     if (Parameter.ParameterType.GetInterfaces().Contains(typeof(IEnumerable)) && Parameter.ParameterType.IsGenericType)
                     {
-                        ParameterType = Parameter.ParameterType.GetGenericArguments().First();
+                        ParameterType = ParameterType.GetGenericArguments().First();
                         if (!AppContainer.Keys.Any(x => x.Item1 == ParameterType))
                         {
                             Found = false;

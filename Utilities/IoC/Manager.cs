@@ -50,15 +50,7 @@ namespace Utilities.IoC
             ConcurrentBag<Assembly> LoadedAssemblies = new ConcurrentBag<Assembly>(AppDomain.CurrentDomain.GetAssemblies());
             LoadAssemblies(LoadedAssemblies, Files.Select(x => AssemblyName.GetAssemblyName(x.FullName)).ToArray());
             FileInfo GeneratedFile = new FileInfo(AppDomain.CurrentDomain.BaseDirectory + "\\CULGeneratedTypes.dll");
-            LoadedAssemblies = new ConcurrentBag<Assembly>(LoadedAssemblies.Distinct(new AssemblyComparer()));
-            if (GeneratedFile.Exists
-                && LoadedAssemblies.Any(x => !x.FullName.Contains("vshost32")
-                                            && !x.IsDynamic
-                                            && new System.IO.FileInfo(x.Location).LastWriteTime > GeneratedFile.LastWriteTime))
-            {
-                LoadAssemblies(LoadedAssemblies, AssemblyName.GetAssemblyName(GeneratedFile.FullName));
-            }
-            IEnumerable<Assembly> Assemblies = LoadedAssemblies.Where(x =>
+            LoadedAssemblies = new ConcurrentBag<Assembly>(LoadedAssemblies.Distinct(new AssemblyComparer()).Where(x =>
             {
                 try
                 {
@@ -66,10 +58,16 @@ namespace Utilities.IoC
                 }
                 catch (ReflectionTypeLoadException) { return false; }
                 return true;
-            });
-
+            }));
+            if (GeneratedFile.Exists
+                && LoadedAssemblies.Any(x => !x.FullName.Contains("vshost32")
+                                            && !x.IsDynamic
+                                            && new System.IO.FileInfo(x.Location).LastWriteTime > GeneratedFile.LastWriteTime))
+            {
+                LoadAssemblies(LoadedAssemblies, AssemblyName.GetAssemblyName(GeneratedFile.FullName));
+            }
             List<Type> Bootstrappers = new List<Type>();
-            foreach (Assembly Assembly in Assemblies)
+            foreach (Assembly Assembly in LoadedAssemblies)
             {
                 Bootstrappers.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IBootstrapper))
                                                                         && x.IsClass
@@ -81,9 +79,9 @@ namespace Utilities.IoC
             {
                 Bootstrappers.Add(typeof(DefaultBootstrapper));
             }
-            InternalBootstrapper = (IBootstrapper)Activator.CreateInstance(Bootstrappers[0], Assemblies);
+            InternalBootstrapper = (IBootstrapper)Activator.CreateInstance(Bootstrappers[0], LoadedAssemblies);
             List<Type> Modules = new List<Type>();
-            foreach (Assembly Assembly in Assemblies)
+            foreach (Assembly Assembly in LoadedAssemblies)
             {
                 Modules.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IModule))
                                                                         && x.IsClass
