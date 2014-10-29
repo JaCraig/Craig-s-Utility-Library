@@ -19,6 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using Ironman.Core.API.Manager.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -28,7 +29,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Ironman.Core.API.Manager.Interfaces;
 using Utilities.DataTypes;
 using Utilities.Workflow.Manager.Interfaces;
 
@@ -316,12 +316,14 @@ namespace Ironman.Core.API.Manager
                 routes.MapRoute(
                     name: "Ironman_API_Service",
                     url: AreaName + "/v" + VersionNumber + "/Services/{ServiceName}",
-                    defaults: new { controller = ControllerName, action = "Services" }
+                    defaults: new { controller = ControllerName, action = "Services" },
+                    constraints: new { httpMethod = new HttpMethodConstraint("POST", "GET") }
                 );
                 routes.MapRoute(
                     name: "Ironman_API_Service_Ending",
                     url: AreaName + "/v" + VersionNumber + "/Services/{ServiceName}.{ending}",
-                    defaults: new { controller = ControllerName, action = "Services" }
+                    defaults: new { controller = ControllerName, action = "Services" },
+                    constraints: new { httpMethod = new HttpMethodConstraint("POST", "GET") }
                 );
                 routes.MapRoute(
                     name: "Ironman_API_Save",

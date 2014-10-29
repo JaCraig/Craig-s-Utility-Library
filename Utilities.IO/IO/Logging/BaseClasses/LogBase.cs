@@ -20,7 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Utilities.DataTypes;
+using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.IO.Logging.Enums;
 using Utilities.IO.Logging.Interfaces;
 
@@ -39,7 +42,7 @@ namespace Utilities.IO.Logging.BaseClasses
     /// Base class for logs
     /// </summary>
     /// <typeparam name="LogType">Log type</typeparam>
-    public abstract class LogBase<LogType> : ILog
+    public abstract class LogBase<LogType> : SafeDisposableBaseClass, ILog
         where LogType : LogBase<LogType>
     {
         /// <summary>
@@ -49,15 +52,7 @@ namespace Utilities.IO.Logging.BaseClasses
         protected LogBase(string Name)
         {
             this.Name = Name;
-            this.Log = new Dictionary<MessageType, Action<string>>();
-        }
-
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        ~LogBase()
-        {
-            Dispose(false);
+            this.Log = new ConcurrentDictionary<MessageType, Action<string>>();
         }
 
         /// <summary>
@@ -78,21 +73,12 @@ namespace Utilities.IO.Logging.BaseClasses
         /// <summary>
         /// Called to log the current message
         /// </summary>
-        protected Dictionary<MessageType, Action<string>> Log { get; private set; }
+        protected IDictionary<MessageType, Action<string>> Log { get; private set; }
 
         /// <summary>
         /// Called when the log is "opened"
         /// </summary>
         protected Action<LogType> Start { get; set; }
-
-        /// <summary>
-        /// Disposes the object
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
 
         /// <summary>
         /// Logs a message
@@ -104,7 +90,7 @@ namespace Utilities.IO.Logging.BaseClasses
         {
             Message = FormatMessage(Message, Type, args);
             if (Log.ContainsKey(Type))
-                Log[Type](Message);
+                Log.GetValue(Type, x => { })(Message);
         }
 
         /// <summary>
@@ -122,7 +108,7 @@ namespace Utilities.IO.Logging.BaseClasses
         /// <param name="Disposing">
         /// True to dispose of all resources, false only disposes of native resources
         /// </param>
-        protected virtual void Dispose(bool Disposing)
+        protected override void Dispose(bool Disposing)
         {
             if (Disposing)
                 End((LogType)this);

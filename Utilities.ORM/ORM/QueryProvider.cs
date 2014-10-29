@@ -26,6 +26,7 @@ using System.Linq;
 using Utilities.DataTypes;
 using Utilities.ORM.Manager;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
+using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 namespace Utilities.ORM
 {
@@ -83,9 +84,7 @@ namespace Utilities.ORM
         public static IEnumerable<ObjectType> All<ObjectType>(string Command, CommandType Type, string ConnectionString, params object[] Parameters)
             where ObjectType : class,new()
         {
-            return Batch(ConnectionString)
-                .AddCommand(null, null, Command, Type, Parameters)
-                .Execute()[0]
+            return All(Command, Type, ConnectionString, Parameters)
                 .ForEach(x => (ObjectType)x);
         }
 
@@ -140,7 +139,7 @@ namespace Utilities.ORM
         public static ObjectType Any<ObjectType>(string Command, CommandType Type, string ConnectionString, params object[] Parameters)
             where ObjectType : class,new()
         {
-            return (ObjectType)All(Command, Type, ConnectionString, Parameters).FirstOrDefault();
+            return (ObjectType)Any(Command, Type, ConnectionString, Parameters);
         }
 
         /// <summary>
@@ -153,7 +152,13 @@ namespace Utilities.ORM
         /// <returns>An appropriate batch object</returns>
         public static IBatch Batch(string ConnectionString)
         {
-            return QueryManager.Batch(SourceManager.GetSource(ConnectionString));
+            ISourceInfo Source = SourceManager.GetSource(ConnectionString);
+            if (Source == null)
+                throw new NullReferenceException("Source not found");
+            IBatch Batch = QueryManager.Batch(Source);
+            if (Batch == null)
+                throw new NullReferenceException("Batch could not be created");
+            return Batch;
         }
 
         /// <summary>

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CUL.Bender</id>
-		<version>4.0.208-beta</version>
+		<version>4.0.209-beta</version>
 		<title>Craig's Utility Library Bender Support</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -19,7 +19,7 @@
 		</references>
 		<dependencies>
             <dependency id="Bender" version="[3.0.1.0]" />
-			<dependency id="CraigsUtilityLibrary" version="[4.0.208-beta]" />
+			<dependency id="CraigsUtilityLibrary" version="[4.0.209-beta]" />
         </dependencies>
 	</metadata>
 	<files>
