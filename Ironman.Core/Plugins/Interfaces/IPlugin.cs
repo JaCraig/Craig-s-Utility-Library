@@ -19,12 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using Ironman.Models.Plugins;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Ironman.Models.Plugins;
 
 namespace Ironman.Core.Plugins.Interfaces
 {
@@ -33,6 +33,14 @@ namespace Ironman.Core.Plugins.Interfaces
     /// </summary>
     public interface IPlugin : IDisposable
     {
+        /// <summary>
+        /// Gets the identifier.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        string ID { get; }
+
         /// <summary>
         /// Gets the name.
         /// </summary>

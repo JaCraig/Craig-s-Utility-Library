@@ -19,6 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using Ironman.Core.Plugins.Interfaces;
+using Ironman.Models.Plugins;
+using NuGet;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -28,9 +31,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using Ironman.Core.Plugins.Interfaces;
-using Ironman.Models.Plugins;
-using NuGet;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.IO.Logging.Enums;
@@ -146,7 +146,7 @@ namespace Ironman.Core.Plugins
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ID), "ID");
             string User = HttpContext.Current.Chain(x => x.User).Chain(x => x.Identity).Chain(x => x.Name, "");
             Utilities.IO.Log.Get().LogMessage("Plugin {0} is being installed by {1}", MessageType.Debug, ID, User);
-            IPlugin TempPlugin = PluginsInstalled.FirstOrDefault(x => string.Equals(x.Name, ID, StringComparison.InvariantCultureIgnoreCase));
+            Plugin TempPlugin = PluginList.Get(ID);
             if (TempPlugin != null)
                 UninstallPlugin(ID);
             foreach (IPackageRepository Repo in PackageRepositories)

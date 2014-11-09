@@ -19,12 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using Ironman.Models.Plugins;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Ironman.Models.Plugins;
 using Utilities.IO;
 using Xunit;
 
@@ -87,6 +87,36 @@ namespace Ironman.Core.Tests.Plugins
         }
 
         [Fact]
+        public void InstallPluginMultipleTimes()
+        {
+            Ironman.Core.Plugins.PluginManager Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" });
+            Assert.DoesNotThrow(() => Manager.InstallPlugin("xunit"));
+            Assert.DoesNotThrow(() => Manager.InstallPlugin("xunit"));
+            PluginList List = PluginList.Load();
+            Assert.Equal(1, List.Plugins.Count);
+            Plugin TempPlugin = PluginList.Load().Get("xunit");
+            Assert.Equal(6, new DirectoryInfo("~/App_Data/plugins/xunit/").EnumerateFiles().Count());
+            Assert.True(new FileInfo("~/App_Data/plugins/xunit/xunit.xml").Exists);
+            Assert.True(new FileInfo("~/App_Data/plugins/xunit/xunit.runner.utility.dll").Exists);
+            Assert.True(new FileInfo("~/App_Data/plugins/xunit/xunit.runner.tdnet.dll").Exists);
+            Assert.True(new FileInfo("~/App_Data/plugins/xunit/xunit.runner.msbuild.dll").Exists);
+            Assert.True(new FileInfo("~/App_Data/plugins/xunit/xunit.dll.tdnet").Exists);
+            Assert.True(new FileInfo("~/App_Data/plugins/xunit/xunit.dll").Exists);
+            Assert.NotNull(TempPlugin);
+            Assert.Equal("JamesNewkirk,BradWilson", TempPlugin.Author.Replace(" ", ""));
+            Assert.Equal("xUnit.net is a developer testing framework, built to support Test Driven Development, with a design goal of extreme simplicity and alignment with framework features.", TempPlugin.Description);
+            Assert.Equal(6, TempPlugin.Files.Count);
+            Assert.Equal("xUnit.net", TempPlugin.Name);
+            Assert.Equal("1.9.2", TempPlugin.OnlineVersion);
+            Assert.Equal("xunit", TempPlugin.PluginID);
+            Assert.Equal(0, TempPlugin.Priority);
+            Assert.Equal(null, TempPlugin.Tags);
+            Assert.Equal(null, TempPlugin.Type);
+            Assert.Equal(false, TempPlugin.UpdateAvailable);
+            Assert.Equal("1.9.2", TempPlugin.Version);
+        }
+
+        [Fact]
         public void InstallPluginWithRequireds()
         {
             Ironman.Core.Plugins.PluginManager Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" });
@@ -101,26 +131,26 @@ namespace Ironman.Core.Tests.Plugins
             Assert.Equal("Contains the models used by various plugins that need crm.", TempPlugin.Description);
             Assert.Equal(1, TempPlugin.Files.Count);
             Assert.Equal("Copernicus Models for CRM", TempPlugin.Name);
-            Assert.Equal("1.0.0", TempPlugin.OnlineVersion);
+            Assert.Equal("1.0.2", TempPlugin.OnlineVersion);
             Assert.Equal("Copernicus.Models.CRM", TempPlugin.PluginID);
             Assert.Equal(0, TempPlugin.Priority);
             Assert.Equal("models crm", TempPlugin.Tags);
             Assert.Equal(null, TempPlugin.Type);
             Assert.Equal(false, TempPlugin.UpdateAvailable);
-            Assert.Equal("1.0.0", TempPlugin.Version);
+            Assert.Equal("1.0.2", TempPlugin.Version);
             TempPlugin = PluginList.Load().Get("Copernicus.Models.Content");
             Assert.NotNull(TempPlugin);
             Assert.Equal("JamesCraig", TempPlugin.Author.Replace(" ", ""));
             Assert.Equal("Contains the models used by various plugins that need content.", TempPlugin.Description);
             Assert.Equal(1, TempPlugin.Files.Count);
             Assert.Equal("Copernicus Models for Content", TempPlugin.Name);
-            Assert.Equal("1.0.0", TempPlugin.OnlineVersion);
+            Assert.Equal("1.0.2", TempPlugin.OnlineVersion);
             Assert.Equal("Copernicus.Models.Content", TempPlugin.PluginID);
             Assert.Equal(0, TempPlugin.Priority);
             Assert.Equal("models content", TempPlugin.Tags);
             Assert.Equal(null, TempPlugin.Type);
             Assert.Equal(false, TempPlugin.UpdateAvailable);
-            Assert.Equal("1.0.0", TempPlugin.Version);
+            Assert.Equal("1.0.2", TempPlugin.Version);
         }
 
         [Fact]

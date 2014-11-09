@@ -19,13 +19,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using Ironman.Core.Plugins.Interfaces;
+using Ironman.Models.Plugins;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Ironman.Core.Plugins.Interfaces;
-using Ironman.Models.Plugins;
 using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.IO;
 using Utilities.IO.Logging.Enums;
@@ -43,9 +43,16 @@ namespace Ironman.Core.Plugins.BaseClasses
         protected PluginBase()
             : base()
         {
-            Log.Get().LogMessage("Initializing plugin: {0}", MessageType.Debug, Name);
-            PluginData = PluginList.Load().Get(Name);
+            PluginData = PluginList.Load().Get(ID);
         }
+
+        /// <summary>
+        /// Gets the identifier.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        public abstract string ID { get; }
 
         /// <summary>
         /// Gets the name.
@@ -75,7 +82,6 @@ namespace Ironman.Core.Plugins.BaseClasses
         /// </param>
         protected override void Dispose(bool Managed)
         {
-            Log.Get().LogMessage("Uninitializing plugin: {0}", MessageType.Debug, Name);
         }
     }
 }
