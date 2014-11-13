@@ -34,6 +34,7 @@ using System.Web;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.IO.Logging.Enums;
+using Utilities.IoC.Interfaces;
 
 namespace Ironman.Core.Plugins
 {
@@ -46,9 +47,11 @@ namespace Ironman.Core.Plugins
         /// Initializes a new instance of the <see cref="PluginManager" /> class.
         /// </summary>
         /// <param name="Repositories">The repositories.</param>
-        public PluginManager(IEnumerable<string> Repositories)
+        /// <param name="Bootstrapper">The bootstrapper.</param>
+        public PluginManager(IEnumerable<string> Repositories, IBootstrapper Bootstrapper)
         {
             Contract.Requires<ArgumentNullException>(Repositories != null, "Repositories");
+            this.Bootstrapper = Bootstrapper;
             PackageRepositories = Repositories.ForEach(x => PackageRepositoryFactory.Default.CreateRepository(x));
             Initialize();
         }
@@ -92,6 +95,14 @@ namespace Ironman.Core.Plugins
         protected IEnumerable<IPlugin> PluginsInstalled { get; set; }
 
         /// <summary>
+        /// Gets or sets the bootstrapper.
+        /// </summary>
+        /// <value>
+        /// The bootstrapper.
+        /// </value>
+        private IBootstrapper Bootstrapper { get; set; }
+
+        /// <summary>
         /// Restarts the system.
         /// </summary>
         public static void RestartSystem()
@@ -123,6 +134,7 @@ namespace Ironman.Core.Plugins
             PluginsInstalled = AppDomain.CurrentDomain.GetAssemblies().Objects<IPlugin>();
             foreach (IPlugin TempPlugin in PluginsInstalled)
             {
+                Bootstrapper.AddAssembly(TempPlugin.GetType().Assembly);
                 foreach (IPackageRepository Repo in PackageRepositories)
                 {
                     IPackage Package = Repo.FindPackage(TempPlugin.PluginData.PluginID);
@@ -254,13 +266,21 @@ namespace Ironman.Core.Plugins
                 return;
             foreach (FileInfo File in Directory.EnumerateFiles())
             {
-                File.Delete();
+                try
+                {
+                    File.Delete();
+                }
+                catch { }
             }
             foreach (DirectoryInfo SubDirectory in Directory.EnumerateDirectories())
             {
                 Delete(SubDirectory);
             }
-            Directory.Delete();
+            try
+            {
+                Directory.Delete();
+            }
+            catch { }
         }
     }
 }

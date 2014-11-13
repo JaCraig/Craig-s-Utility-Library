@@ -19,6 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using NuGet;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -29,7 +30,6 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using NuGet;
 using Utilities.DataTypes;
 using Utilities.ORM.Parameters;
 
@@ -221,7 +221,11 @@ namespace Ironman.Models.Plugins
             Directory2.Create();
             foreach (FileInfo TempFile in Directory1.EnumerateFiles())
             {
-                TempFile.CopyTo(Path.Combine(Directory2.FullName, TempFile.Name), true);
+                try
+                {
+                    TempFile.CopyTo(Path.Combine(Directory2.FullName, TempFile.Name), true);
+                }
+                catch { }
             }
             foreach (DirectoryInfo SubDirectory in Directory1.EnumerateDirectories())
                 CopyTo(SubDirectory, new DirectoryInfo(Path.Combine(Directory2.FullName, SubDirectory.Name)));
@@ -238,13 +242,21 @@ namespace Ironman.Models.Plugins
                 return;
             foreach (FileInfo File in Directory.EnumerateFiles())
             {
-                File.Delete();
+                try
+                {
+                    File.Delete();
+                }
+                catch { }
             }
             foreach (DirectoryInfo SubDirectory in Directory.EnumerateDirectories())
             {
                 Delete(SubDirectory);
             }
-            Directory.Delete();
+            try
+            {
+                Directory.Delete();
+            }
+            catch { }
         }
     }
 }

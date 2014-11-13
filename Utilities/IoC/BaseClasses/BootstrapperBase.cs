@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Utilities.IoC.Interfaces;
 
@@ -38,7 +39,7 @@ namespace Utilities.IoC.BaseClasses
         /// <param name="Assemblies">The assemblies.</param>
         protected BootstrapperBase(IEnumerable<Assembly> Assemblies)
         {
-            this.Assemblies = Assemblies;
+            this.Assemblies = Assemblies.ToList();
         }
 
         /// <summary>
@@ -63,7 +64,22 @@ namespace Utilities.IoC.BaseClasses
         /// Gets the assemblies.
         /// </summary>
         /// <value>The assemblies.</value>
-        protected IEnumerable<Assembly> Assemblies { get; private set; }
+        protected List<Assembly> Assemblies { get; private set; }
+
+        /// <summary>
+        /// Adds the assembly.
+        /// </summary>
+        /// <param name="Assemblies">The assemblies.</param>
+        public void AddAssembly(params Assembly[] Assemblies)
+        {
+            if (Assemblies == null || Assemblies.Length == 0)
+                return;
+            foreach (Assembly Assembly in Assemblies)
+            {
+                if (!this.Assemblies.Contains(Assembly))
+                    this.Assemblies.Add(Assembly);
+            }
+        }
 
         /// <summary>
         /// Disposes of the object

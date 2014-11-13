@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Utilities.IoC.Interfaces
 {
@@ -33,6 +34,12 @@ namespace Utilities.IoC.Interfaces
         /// Name of the bootstrapper
         /// </summary>
         string Name { get; }
+
+        /// <summary>
+        /// Adds the assembly.
+        /// </summary>
+        /// <param name="Assemblies">The assemblies.</param>
+        void AddAssembly(params Assembly[] Assemblies);
 
         /// <summary>
         /// Registers an object with the bootstrapper

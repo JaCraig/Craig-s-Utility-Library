@@ -135,7 +135,7 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
                 return null;
             CSharpCompilation CSharpCompiler = CSharpCompilation.Create(AssemblyName + ".dll",
                                                     new SyntaxTree[] { CSharpSyntaxTree.ParseText(Code) },
-                                                    References.ForEach(x => new MetadataFileReference(x.Location)).ToArray(),
+                                                    References.ForEach(x => MetadataReference.CreateFromFile(x.Location)),
                                                     new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, usings: Usings, optimizationLevel: Optimize ? OptimizationLevel.Release : OptimizationLevel.Debug));
             using (MemoryStream TempStream = new MemoryStream())
             {

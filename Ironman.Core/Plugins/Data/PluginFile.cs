@@ -69,10 +69,14 @@ namespace Ironman.Models.Plugins
         /// </summary>
         public void Remove()
         {
-            if (IsDirectory)
-                Delete(new DirectoryInfo(HttpContext.Current != null ? HttpContext.Current.Server.MapPath(Path) : Path.Replace("~", AppDomain.CurrentDomain.BaseDirectory)));
-            else
-                new FileInfo(HttpContext.Current != null ? HttpContext.Current.Server.MapPath(Path) : Path.Replace("~", AppDomain.CurrentDomain.BaseDirectory)).Delete();
+            try
+            {
+                if (IsDirectory)
+                    Delete(new DirectoryInfo(HttpContext.Current != null ? HttpContext.Current.Server.MapPath(Path) : Path.Replace("~", AppDomain.CurrentDomain.BaseDirectory)));
+                else
+                    new FileInfo(HttpContext.Current != null ? HttpContext.Current.Server.MapPath(Path) : Path.Replace("~", AppDomain.CurrentDomain.BaseDirectory)).Delete();
+            }
+            catch { }
         }
 
         /// <summary>
@@ -86,13 +90,21 @@ namespace Ironman.Models.Plugins
                 return;
             foreach (FileInfo File in Directory.EnumerateFiles())
             {
-                File.Delete();
+                try
+                {
+                    File.Delete();
+                }
+                catch { }
             }
             foreach (DirectoryInfo SubDirectory in Directory.EnumerateDirectories())
             {
                 Delete(SubDirectory);
             }
-            Directory.Delete();
+            try
+            {
+                Directory.Delete();
+            }
+            catch { }
         }
     }
 }

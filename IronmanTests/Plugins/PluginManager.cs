@@ -42,7 +42,7 @@ namespace Ironman.Core.Tests.Plugins
         public void Creation()
         {
             Ironman.Core.Plugins.PluginManager Manager = null;
-            Assert.DoesNotThrow(() => Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" }));
+            Assert.DoesNotThrow(() => Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" }, Utilities.IoC.Manager.Bootstrapper));
         }
 
         public void Dispose()
@@ -53,7 +53,7 @@ namespace Ironman.Core.Tests.Plugins
         [Fact]
         public void GetPluginsAvailable()
         {
-            Ironman.Core.Plugins.PluginManager Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" });
+            Ironman.Core.Plugins.PluginManager Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" }, Utilities.IoC.Manager.Bootstrapper);
             IEnumerable<Ironman.Models.Plugins.Plugin> Plugins = Manager.PluginsAvailable;
             Assert.True(Plugins.Any(x => x.Name == "xUnit.net"));
             Assert.True(Plugins.Count() > 0);
@@ -62,7 +62,7 @@ namespace Ironman.Core.Tests.Plugins
         [Fact]
         public void InstallPlugin()
         {
-            Ironman.Core.Plugins.PluginManager Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" });
+            Ironman.Core.Plugins.PluginManager Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" }, Utilities.IoC.Manager.Bootstrapper);
             Assert.DoesNotThrow(() => Manager.InstallPlugin("xunit"));
             Plugin TempPlugin = PluginList.Load().Get("xunit");
             Assert.Equal(6, new DirectoryInfo("~/App_Data/plugins/xunit/").EnumerateFiles().Count());
@@ -89,7 +89,7 @@ namespace Ironman.Core.Tests.Plugins
         [Fact]
         public void InstallPluginMultipleTimes()
         {
-            Ironman.Core.Plugins.PluginManager Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" });
+            Ironman.Core.Plugins.PluginManager Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" }, Utilities.IoC.Manager.Bootstrapper);
             Assert.DoesNotThrow(() => Manager.InstallPlugin("xunit"));
             Assert.DoesNotThrow(() => Manager.InstallPlugin("xunit"));
             PluginList List = PluginList.Load();
@@ -119,7 +119,7 @@ namespace Ironman.Core.Tests.Plugins
         [Fact]
         public void InstallPluginWithRequireds()
         {
-            Ironman.Core.Plugins.PluginManager Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" });
+            Ironman.Core.Plugins.PluginManager Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" }, Utilities.IoC.Manager.Bootstrapper);
             Assert.DoesNotThrow(() => Manager.InstallPlugin("Copernicus.Models.CRM"));
             Plugin TempPlugin = PluginList.Load().Get("Copernicus.Models.CRM");
             Assert.Equal(1, new DirectoryInfo("~/App_Data/plugins/Copernicus.Models.CRM/").EnumerateFiles().Count());
@@ -156,7 +156,7 @@ namespace Ironman.Core.Tests.Plugins
         [Fact]
         public void UninstallPlugin()
         {
-            Ironman.Core.Plugins.PluginManager Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" });
+            Ironman.Core.Plugins.PluginManager Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" }, Utilities.IoC.Manager.Bootstrapper);
             Assert.DoesNotThrow(() => Manager.InstallPlugin("xunit"));
             Assert.DoesNotThrow(() => Manager.UninstallPlugin("xunit"));
             Assert.Equal(0, new DirectoryInfo("~/App_Data/plugins/xunit/").EnumerateFiles().Count());
@@ -167,7 +167,7 @@ namespace Ironman.Core.Tests.Plugins
         [Fact]
         public void UpdatePlugin()
         {
-            Ironman.Core.Plugins.PluginManager Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" });
+            Ironman.Core.Plugins.PluginManager Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" }, Utilities.IoC.Manager.Bootstrapper);
             Assert.DoesNotThrow(() => Manager.InstallPlugin("xunit"));
             Plugin TempPlugin = PluginList.Load().Get("xunit");
             TempPlugin.OnlineVersion = "2.0.0";

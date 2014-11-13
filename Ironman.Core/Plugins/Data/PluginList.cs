@@ -61,8 +61,12 @@ namespace Ironman.Models.Plugins
         /// </summary>
         public static void Delete()
         {
-            string FileLocation = HttpContext.Current != null ? HttpContext.Current.Server.MapPath("~/App_Data/PluginList.txt") : AppDomain.CurrentDomain.BaseDirectory + "/App_Data/PluginList.txt";
-            new System.IO.FileInfo(FileLocation).Delete();
+            try
+            {
+                string FileLocation = HttpContext.Current != null ? HttpContext.Current.Server.MapPath("~/App_Data/PluginList.txt") : AppDomain.CurrentDomain.BaseDirectory + "/App_Data/PluginList.txt";
+                new System.IO.FileInfo(FileLocation).Delete();
+            }
+            catch { }
         }
 
         /// <summary>

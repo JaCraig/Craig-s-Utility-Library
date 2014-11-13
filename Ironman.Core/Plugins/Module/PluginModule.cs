@@ -53,7 +53,7 @@ namespace Ironman.Core.Plugins.Module
                 || !ConfigurationManager.AppSettings.AllKeys.Contains("Ironman:PluginSource")
                 || string.IsNullOrEmpty(ConfigurationManager.AppSettings["Ironman:PluginSource"]))
                 return;
-            Bootstrapper.Register(new PluginManager(ConfigurationManager.AppSettings["Ironman:PluginSource"].Split(',')));
+            Bootstrapper.Register(new PluginManager(ConfigurationManager.AppSettings["Ironman:PluginSource"].Split(','), Bootstrapper));
         }
     }
 }
