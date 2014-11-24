@@ -30,7 +30,7 @@ namespace UnitTests.DataTypes.DataMapper.Default
         public void AutoMapping()
         {
             Utilities.DataTypes.DataMapper.Default.TypeMapping<MappingA, MappingB> TestObject = null;
-            Assert.DoesNotThrow(() => TestObject = new TypeMapping<MappingA, MappingB>());
+            TestObject = new TypeMapping<MappingA, MappingB>();
             Assert.NotNull(TestObject);
             TestObject.AutoMap();
             MappingA A = new MappingA();
@@ -48,7 +48,7 @@ namespace UnitTests.DataTypes.DataMapper.Default
         public void CreationTest()
         {
             Utilities.DataTypes.DataMapper.Default.TypeMapping<MappingA, MappingB> TestObject = null;
-            Assert.DoesNotThrow(() => TestObject = new TypeMapping<MappingA, MappingB>());
+            TestObject = new TypeMapping<MappingA, MappingB>();
             Assert.NotNull(TestObject);
         }
 
@@ -56,7 +56,7 @@ namespace UnitTests.DataTypes.DataMapper.Default
         public void Mapping()
         {
             Utilities.DataTypes.DataMapper.Default.TypeMapping<MappingA, MappingB> TestObject = null;
-            Assert.DoesNotThrow(() => TestObject = new TypeMapping<MappingA, MappingB>());
+            TestObject = new TypeMapping<MappingA, MappingB>();
             Assert.NotNull(TestObject);
             TestObject.AddMapping(x => x.Item1, x => x.Item1);
             TestObject.AddMapping(x => x.Item2, x => x.Item2);

@@ -33,7 +33,7 @@ namespace UnitTests.Validation.Rules
         {
             MaxLengthClass Temp = new MaxLengthClass();
             Temp.ItemA = "Test";
-            Assert.DoesNotThrow(() => Temp.Validate());
+            Temp.Validate();
             Temp.ItemA = "Testing";
             Assert.Throws<ValidationException>(() => Temp.Validate());
         }

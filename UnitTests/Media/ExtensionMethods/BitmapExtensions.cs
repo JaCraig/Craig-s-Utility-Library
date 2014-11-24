@@ -28,7 +28,7 @@ using Xunit;
 
 namespace UnitTests.Media.Image.ExtensionMethods
 {
-    public class BitmapExtensions : IUseFixture<TestingDirectoryFixture>
+    public class BitmapExtensions :TestingDirectoryFixture
     {
         [Fact]
         public void AddNoise()

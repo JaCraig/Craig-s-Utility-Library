@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnitTests.Fixtures;
 using Utilities.Workflow;
 using Utilities.Workflow.Manager;
 using Utilities.Workflow.Manager.Interfaces;
@@ -31,7 +32,7 @@ using Xunit;
 
 namespace Utilities.Tests.Workflow
 {
-    public class Manager
+    public class Manager:TestingDirectoryFixture
     {
         [Fact]
         public void CreateWorkflow()
@@ -44,7 +45,6 @@ namespace Utilities.Tests.Workflow
                 Assert.Equal(typeof(object), Workflow.DataType);
             }
             Assert.True(new System.IO.FileInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/Workflows.obj").Exists);
-            new Utilities.IO.DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/").Delete();
         }
 
         [Fact]
@@ -67,7 +67,6 @@ namespace Utilities.Tests.Workflow
                 Assert.Equal(1, Workflow.Start(1));
             }
             Assert.True(new System.IO.FileInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/Workflows.obj").Exists);
-            new Utilities.IO.DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/").Delete();
         }
 
         [Fact]
@@ -90,7 +89,6 @@ namespace Utilities.Tests.Workflow
                 Assert.Equal(typeof(object), Workflow.DataType);
                 Assert.Equal(3, Workflow.Start(1));
             }
-            new Utilities.IO.DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/").Delete();
         }
     }
 }

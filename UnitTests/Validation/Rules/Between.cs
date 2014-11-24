@@ -35,7 +35,7 @@ namespace UnitTests.Validation.Rules
             ClassA Temp = new ClassA();
             Temp.ItemA = 1;
             Temp.ItemB = DateTime.Now;
-            Assert.DoesNotThrow(() => Temp.Validate());
+            Temp.Validate();
             Temp.ItemA = 0;
             Temp.ItemB = new DateTime(1800, 1, 1);
             Assert.Throws<ValidationException>(() => Temp.Validate());

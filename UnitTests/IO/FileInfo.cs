@@ -20,12 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System.Text;
+using UnitTests.Fixtures;
 using Utilities.IO;
 using Xunit;
 
 namespace UnitTests.IO
 {
-    public class FileInfo
+    public class FileInfo:TestingDirectoryFixture
     {
         [Fact]
         public void Clone()

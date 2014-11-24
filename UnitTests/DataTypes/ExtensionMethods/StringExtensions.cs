@@ -268,7 +268,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             Assert.IsType<int>("123".To<string, int>());
             Assert.Equal(123, "123".To<string, int>());
-            Assert.DoesNotThrow(() => "ASD".To<string, int>());
+            "ASD".To<string, int>();
         }
 
         private enum EnumValues

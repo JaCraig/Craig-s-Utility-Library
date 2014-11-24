@@ -92,7 +92,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ForEachTest3()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            Assert.DoesNotThrow(() => Temp.ForEach<int, float>(x => x > 0 ? (float)x : 1.0f));
+            Temp.ForEach<int, float>(x => x > 0 ? (float)x : 1.0f);
         }
 
         [Fact]
@@ -165,21 +165,21 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ThrowIfAll()
         {
             Assert.Throws<Exception>(() => new int[] { 0, 0, 1, 2, 3 }.ThrowIfAll(x => x < 4, new Exception()));
-            Assert.DoesNotThrow(() => new int[] { 0, 0, 1, 2, 3 }.ThrowIfAll(x => x < 3, new Exception()));
+            new int[] { 0, 0, 1, 2, 3 }.ThrowIfAll(x => x < 3, new Exception());
         }
 
         [Fact]
         public void ThrowIfAny()
         {
             Assert.Throws<Exception>(() => new int[] { 0, 0, 1, 2, 3 }.ThrowIfAny(x => x < 3, new Exception()));
-            Assert.DoesNotThrow(() => new int[] { 0, 0, 1, 2, 3 }.ThrowIfAny(x => x > 3, new Exception()));
+            new int[] { 0, 0, 1, 2, 3 }.ThrowIfAny(x => x > 3, new Exception());
         }
 
         [Fact]
         public void ToArray()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            Assert.DoesNotThrow(() => Temp.ToArray<int, double>(x => (double)x));
+            Temp.ToArray<int, double>(x => (double)x);
             double[] Temp2 = Temp.ToArray<int, double>(x => (double)x);
             Assert.Equal(0, Temp2[0]);
             Assert.Equal(0, Temp2[1]);
@@ -192,7 +192,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ToDataTable()
         {
             List<PreDataTable> Temp = new PreDataTable[] { new PreDataTable { ID = 1, Value = "A" }, new PreDataTable { ID = 2, Value = "B" }, new PreDataTable { ID = 3, Value = "C" } }.ToList();
-            Assert.DoesNotThrow(() => Temp.To());
+            Temp.To();
             DataTable Temp2 = Temp.To();
             Assert.Equal(1, Temp2.Rows[0].ItemArray[0]);
             Assert.Equal("A", Temp2.Rows[0].ItemArray[1]);

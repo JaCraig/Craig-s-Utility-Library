@@ -30,7 +30,7 @@ namespace UnitTests.DataTypes.DataMapper.Default
         public void CreationTest()
         {
             Utilities.DataTypes.DataMapper.Default.Mapping<MappingA, MappingB> TempObject = null;
-            Assert.DoesNotThrow(() => TempObject = new Mapping<MappingA, MappingB>(x => x.Item1, x => x.Item1));
+            TempObject = new Mapping<MappingA, MappingB>(x => x.Item1, x => x.Item1);
             Assert.NotNull(TempObject);
         }
 

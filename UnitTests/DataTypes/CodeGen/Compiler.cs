@@ -21,13 +21,14 @@ THE SOFTWARE.*/
 
 using System;
 using System.Linq;
+using UnitTests.Fixtures;
 using Utilities.DataTypes;
 using Utilities.DataTypes.CodeGen.BaseClasses;
 using Xunit;
 
 namespace UnitTests.DataTypes.CodeGen
 {
-    public class Compiler
+    public class Compiler:TestingDirectoryFixture
     {
         [Fact]
         public void CreateMultipleTypes()

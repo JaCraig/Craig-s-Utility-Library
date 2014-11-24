@@ -34,7 +34,7 @@ namespace UnitTests.Validation.Rules
             CompareToClass Temp = new CompareToClass();
             Temp.ItemA = 1;
             Temp.ItemB = 1;
-            Assert.DoesNotThrow(() => Temp.Validate());
+            Temp.Validate();
             Temp.ItemA = 2;
             Assert.Throws<ValidationException>(() => Temp.Validate());
         }

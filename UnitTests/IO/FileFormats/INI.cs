@@ -24,7 +24,7 @@ using Xunit;
 
 namespace UnitTests.IO.FileFormats
 {
-    public class INI : IUseFixture<TestingDirectoryFixture>
+    public class INI :TestingDirectoryFixture
     {
         public INI()
         {

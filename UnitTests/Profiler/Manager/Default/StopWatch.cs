@@ -33,7 +33,7 @@ namespace UnitTests.Profiler
             TestObject.Start();
             Thread.Sleep(100);
             TestObject.Stop();
-            Assert.InRange(TestObject.ElapsedTime, 80, 120);
+            Assert.InRange(TestObject.ElapsedTime, 80, 200);
         }
     }
 }

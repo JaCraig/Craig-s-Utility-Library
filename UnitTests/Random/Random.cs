@@ -31,7 +31,7 @@ namespace UnitTests.Random
         {
             Parallel.For(0, 100, x =>
             {
-                Assert.DoesNotThrow(() => Utilities.Random.Random.ThreadSafeNext(-20, 20));
+                Utilities.Random.Random.ThreadSafeNext(-20, 20);
             });
         }
     }

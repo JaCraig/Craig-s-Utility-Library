@@ -42,7 +42,7 @@ namespace Ironman.Core.Tests.Plugins
         public void Creation()
         {
             Ironman.Core.Plugins.PluginManager Manager = null;
-            Assert.DoesNotThrow(() => Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" }, Utilities.IoC.Manager.Bootstrapper));
+            Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" }, Utilities.IoC.Manager.Bootstrapper);
         }
 
         public void Dispose()
@@ -63,7 +63,7 @@ namespace Ironman.Core.Tests.Plugins
         public void InstallPlugin()
         {
             Ironman.Core.Plugins.PluginManager Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" }, Utilities.IoC.Manager.Bootstrapper);
-            Assert.DoesNotThrow(() => Manager.InstallPlugin("xunit"));
+            Manager.InstallPlugin("xunit");
             Plugin TempPlugin = PluginList.Load().Get("xunit");
             Assert.Equal(6, new DirectoryInfo("~/App_Data/plugins/xunit/").EnumerateFiles().Count());
             Assert.True(new FileInfo("~/App_Data/plugins/xunit/xunit.xml").Exists);
@@ -90,8 +90,8 @@ namespace Ironman.Core.Tests.Plugins
         public void InstallPluginMultipleTimes()
         {
             Ironman.Core.Plugins.PluginManager Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" }, Utilities.IoC.Manager.Bootstrapper);
-            Assert.DoesNotThrow(() => Manager.InstallPlugin("xunit"));
-            Assert.DoesNotThrow(() => Manager.InstallPlugin("xunit"));
+            Manager.InstallPlugin("xunit");
+            Manager.InstallPlugin("xunit");
             PluginList List = PluginList.Load();
             Assert.Equal(1, List.Plugins.Count);
             Plugin TempPlugin = PluginList.Load().Get("xunit");
@@ -120,7 +120,7 @@ namespace Ironman.Core.Tests.Plugins
         public void InstallPluginWithRequireds()
         {
             Ironman.Core.Plugins.PluginManager Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" }, Utilities.IoC.Manager.Bootstrapper);
-            Assert.DoesNotThrow(() => Manager.InstallPlugin("Copernicus.Models.CRM"));
+            Manager.InstallPlugin("Copernicus.Models.CRM");
             Plugin TempPlugin = PluginList.Load().Get("Copernicus.Models.CRM");
             Assert.Equal(1, new DirectoryInfo("~/App_Data/plugins/Copernicus.Models.CRM/").EnumerateFiles().Count());
             Assert.True(new FileInfo("~/App_Data/plugins/Copernicus.Models.CRM/Copernicus.Models.CRM.dll").Exists);
@@ -157,8 +157,8 @@ namespace Ironman.Core.Tests.Plugins
         public void UninstallPlugin()
         {
             Ironman.Core.Plugins.PluginManager Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" }, Utilities.IoC.Manager.Bootstrapper);
-            Assert.DoesNotThrow(() => Manager.InstallPlugin("xunit"));
-            Assert.DoesNotThrow(() => Manager.UninstallPlugin("xunit"));
+            Manager.InstallPlugin("xunit");
+            Manager.UninstallPlugin("xunit");
             Assert.Equal(0, new DirectoryInfo("~/App_Data/plugins/xunit/").EnumerateFiles().Count());
             Assert.Null(PluginList.Load().Get("xunit"));
             Assert.Equal(0, PluginList.Load().Plugins.Count);
@@ -168,10 +168,10 @@ namespace Ironman.Core.Tests.Plugins
         public void UpdatePlugin()
         {
             Ironman.Core.Plugins.PluginManager Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" }, Utilities.IoC.Manager.Bootstrapper);
-            Assert.DoesNotThrow(() => Manager.InstallPlugin("xunit"));
+            Manager.InstallPlugin("xunit");
             Plugin TempPlugin = PluginList.Load().Get("xunit");
             TempPlugin.OnlineVersion = "2.0.0";
-            Assert.DoesNotThrow(() => Manager.UpdatePlugin("xunit"));
+            Manager.UpdatePlugin("xunit");
             TempPlugin = PluginList.Load().Get("xunit");
             Assert.Equal(1, PluginList.Load().Plugins.Count);
             Assert.Equal(6, new DirectoryInfo("~/App_Data/plugins/xunit/").EnumerateFiles().Count());

@@ -26,7 +26,7 @@ using Xunit;
 
 namespace UnitTests.Media.Image.Procedural
 {
-    public class CellularTexture : IUseFixture<TestingDirectoryFixture>
+    public class CellularTexture :TestingDirectoryFixture
     {
         [Fact]
         public void Generate()

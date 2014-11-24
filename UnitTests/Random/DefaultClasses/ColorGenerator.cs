@@ -30,8 +30,8 @@ namespace UnitTests.Random.DefaultClasses
         public void Next()
         {
             Utilities.Random.DefaultClasses.ColorGenerator Generator = new Utilities.Random.DefaultClasses.ColorGenerator();
-            Assert.DoesNotThrow(() => Generator.Next(new System.Random()));
-            Assert.DoesNotThrow(() => Generator.Next(new System.Random(), Color.Green, Color.Blue));
+            Generator.Next(new System.Random());
+            Generator.Next(new System.Random(), Color.Green, Color.Blue);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace UnitTests.DataTypes.Patterns.BaseClasses
         [Fact]
         public void Creation()
         {
-            Assert.DoesNotThrow(() => TestClass.Instance.Function());
+            TestClass.Instance.Function();
         }
 
         [Fact]

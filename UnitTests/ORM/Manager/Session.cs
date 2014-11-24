@@ -231,7 +231,7 @@ namespace UnitTests.ORM.Manager
         [Fact]
         public void Create()
         {
-            Assert.DoesNotThrow(() => new Utilities.ORM.Manager.Session());
+            new Utilities.ORM.Manager.Session();
         }
 
         [Fact]

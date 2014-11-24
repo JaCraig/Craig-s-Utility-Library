@@ -26,13 +26,8 @@ using Xunit;
 
 namespace UnitTests.IO.FileFormats
 {
-    public class VCalendar : IUseFixture<TestingDirectoryFixture>, IDisposable
+    public class VCalendar : TestingDirectoryFixture
     {
-        public VCalendar()
-        {
-            new Utilities.IO.DirectoryInfo(@".\Testing").Create();
-        }
-
         [Fact]
         public void BasicTest()
         {
@@ -50,17 +45,8 @@ namespace UnitTests.IO.FileFormats
             Assert.Equal("<div class=\"vevent\"><div class=\"summary\">This is a test</div><div>Date: <abbr class=\"dtstart\" title=\"" + DateTime.Today.AddHours(5).AddDays(10).ToString("MM-dd-yyyy hh:mm tt") + "\">" + DateTime.Today.AddHours(5).AddDays(10).ToString("MMMM dd, yyyy hh:mm tt") + "</abbr> to <abbr class=\"dtend\" title=\"" + DateTime.Today.AddHours(7).AddDays(10).ToString("MM-dd-yyyy hh:mm tt") + "\">" + DateTime.Today.AddHours(7).AddDays(10).ToString("hh:mm tt") + "</abbr></div><div>Location: <span class=\"location\">That spot</span></div><div class=\"description\">Test vcal item</div></div>", Calendar.GetHCalendar());
             Assert.Equal("BEGIN:VCALENDAR\r\nVERSION:1.0\r\nBEGIN:VEVENT\r\nDTStart:" + DateTime.Today.AddHours(5).AddDays(10).ToUniversalTime().ToString("yyyyMMddTHHmmss") + "\r\nDTEnd:" + DateTime.Today.AddHours(7).AddDays(10).ToUniversalTime().ToString("yyyyMMddTHHmmss") + "\r\nLocation;ENCODING=QUOTED-PRINTABLE:That spot\r\nSUMMARY;ENCODING=QUOTED-PRINTABLE:This is a test\r\nDESCRIPTION;ENCODING=QUOTED-PRINTABLE:Test vcal item\r\nUID:" + DateTime.Today.AddHours(5).AddDays(10).ToUniversalTime().ToString("yyyyMMddTHHmmss") + DateTime.Today.AddHours(7).AddDays(10).ToUniversalTime().ToString("yyyyMMddTHHmmss") + "This is a test\r\nPRIORITY:3\r\nEnd:VEVENT\r\nEnd:VCALENDAR\r\n", Calendar.GetVCalendar());
             Assert.Equal("Type:Single Meeting\r\nOrganizer:Test3 Test3\r\nStart Time:" + DateTime.Today.AddHours(5).AddDays(10).ToLongDateString() + " " + DateTime.Today.AddHours(5).AddDays(10).ToLongTimeString() + "\r\nEnd Time:" + DateTime.Today.AddHours(7).AddDays(10).ToLongDateString() + " " + DateTime.Today.AddHours(7).AddDays(10).ToLongTimeString() + "\r\nTime Zone:Eastern Standard Time\r\nLocation: That spot\r\n\r\n*~*~*~*~*~*~*~*~*~*\r\n\r\nTest vcal item", Calendar.GetText());
-            Assert.DoesNotThrow(() => Calendar.Save("./Testing/Item.ics"));
+            Calendar.Save("./Testing/Item.ics");
             Assert.Equal("Type:Single Meeting\r\nOrganizer:\r\nStart Time:" + DateTime.Today.AddHours(5).AddDays(10).ToLongDateString() + " " + DateTime.Today.AddHours(5).AddDays(10).ToLongTimeString() + "\r\nEnd Time:" + DateTime.Today.AddHours(7).AddDays(10).ToLongDateString() + " " + DateTime.Today.AddHours(7).AddDays(10).ToLongTimeString() + "\r\nTime Zone:Eastern Standard Time\r\nLocation: That spot\r\n\r\n*~*~*~*~*~*~*~*~*~*\r\n\r\nTest vcal item", Utilities.IO.FileFormats.VCalendar.Load("./Testing/Item.ics").GetText());
-        }
-
-        public void Dispose()
-        {
-            new Utilities.IO.DirectoryInfo(@".\Testing").Delete();
-        }
-
-        public void SetFixture(TestingDirectoryFixture data)
-        {
         }
     }
 }

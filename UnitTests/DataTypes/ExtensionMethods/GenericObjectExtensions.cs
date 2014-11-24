@@ -32,7 +32,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void Async()
         {
-            Assert.DoesNotThrow(() => new Action(() => string.IsNullOrEmpty("")).Async());
+            new Action(() => string.IsNullOrEmpty("")).Async();
         }
 
         [Fact]
@@ -80,7 +80,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void Execute1()
         {
             Func<int> Temp = () => 1;
-            Assert.DoesNotThrow(() => Temp.Execute());
+            Temp.Execute();
         }
 
         [Fact]
@@ -152,7 +152,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             object TempObject = null;
             Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIf(x => x == null, new ArgumentNullException("TempName")));
-            Assert.DoesNotThrow(() => TempObject.ThrowIf(x => x != null, new ArgumentNullException("TempName")));
+            TempObject.ThrowIf(x => x != null, new ArgumentNullException("TempName"));
         }
 
         [Fact]
@@ -166,40 +166,40 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ThrowIfFalse()
         {
             Assert.Throws<Exception>(() => "ASDF".ThrowIfNot(x => string.IsNullOrEmpty(x), new Exception()));
-            Assert.DoesNotThrow(() => "ASDF".ThrowIfNot(x => !string.IsNullOrEmpty(x), new Exception()));
+            "ASDF".ThrowIfNot(x => !string.IsNullOrEmpty(x), new Exception());
         }
 
         [Fact]
         public void ThrowIfNotDefault()
         {
-            Assert.DoesNotThrow(() => default(DateTime).ThrowIfNotDefault("TempName"));
-            Assert.DoesNotThrow(() => default(DateTime).ThrowIfNotDefault(new ArgumentNullException("TempName")));
+            default(DateTime).ThrowIfNotDefault("TempName");
+            default(DateTime).ThrowIfNotDefault(new ArgumentNullException("TempName"));
         }
 
         [Fact]
         public void ThrowIfNotNull()
         {
             object TempObject = null;
-            Assert.DoesNotThrow(() => TempObject.ThrowIfNotNull("TempName"));
-            Assert.DoesNotThrow(() => TempObject.ThrowIfNotNull(new ArgumentNullException("TempName")));
+            TempObject.ThrowIfNotNull("TempName");
+            TempObject.ThrowIfNotNull(new ArgumentNullException("TempName"));
         }
 
         [Fact]
         public void ThrowIfNotNullOrDBNull()
         {
-            Assert.DoesNotThrow(() => DBNull.Value.ThrowIfNotNull("TempName"));
+            DBNull.Value.ThrowIfNotNull("TempName");
             object TempObject = null;
-            Assert.DoesNotThrow(() => TempObject.ThrowIfNotNull("TempName"));
-            Assert.DoesNotThrow(() => DBNull.Value.ThrowIfNotNull(new ArgumentNullException("TempName")));
-            Assert.DoesNotThrow(() => TempObject.ThrowIfNotNull(new ArgumentNullException("TempName")));
+            TempObject.ThrowIfNotNull("TempName");
+            DBNull.Value.ThrowIfNotNull(new ArgumentNullException("TempName"));
+            TempObject.ThrowIfNotNull(new ArgumentNullException("TempName"));
         }
 
         [Fact]
         public void ThrowIfNotNullOrEmpty()
         {
             string TempObject = "";
-            Assert.DoesNotThrow(() => TempObject.ThrowIfNotNullOrEmpty("TempName"));
-            Assert.DoesNotThrow(() => TempObject.ThrowIfNotNullOrEmpty(new ArgumentNullException("TempName")));
+            TempObject.ThrowIfNotNullOrEmpty("TempName");
+            TempObject.ThrowIfNotNullOrEmpty(new ArgumentNullException("TempName"));
         }
 
         [Fact]
@@ -231,7 +231,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void ThrowIfTrue()
         {
-            Assert.DoesNotThrow(() => "ASDF".ThrowIf(x => string.IsNullOrEmpty(x), new Exception()));
+            "ASDF".ThrowIf(x => string.IsNullOrEmpty(x), new Exception());
             Assert.Throws<Exception>(() => "ASDF".ThrowIf(x => !string.IsNullOrEmpty(x), new Exception()));
         }
 

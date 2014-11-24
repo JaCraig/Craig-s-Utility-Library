@@ -40,7 +40,7 @@ namespace UnitTests.Validation.Rules
             Temp.ItemE = -1;
             Temp.ItemF = DateTime.Now;
             Temp.NaNTest = 1;
-            Assert.DoesNotThrow(() => Temp.Validate());
+            Temp.Validate();
             Temp.ItemA = 2;
             Temp.NaNTest = double.NaN;
             Assert.Throws<ValidationException>(() => Temp.Validate());

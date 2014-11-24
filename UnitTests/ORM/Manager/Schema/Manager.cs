@@ -36,7 +36,7 @@ namespace UnitTests.ORM.Manager.Schema
         [Fact]
         public void Create()
         {
-            Assert.DoesNotThrow(() => new Utilities.ORM.Manager.Schema.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<ISchemaGenerator>()));
+            new Utilities.ORM.Manager.Schema.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<ISchemaGenerator>());
             Assert.Equal("Schema Providers: LDAP,System.Data.SqlClient\r\n", new Utilities.ORM.Manager.Schema.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<ISchemaGenerator>()).ToString());
         }
 

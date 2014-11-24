@@ -20,12 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using UnitTests.Fixtures;
 using Utilities.IO.Logging.Enums;
 using Xunit;
 
 namespace UnitTests.IO.Logging.Default
 {
-    public class DefaultLog
+    public class DefaultLog:TestingDirectoryFixture
     {
         [Fact]
         public void Creation()
@@ -44,7 +45,7 @@ namespace UnitTests.IO.Logging.Default
             using (Utilities.IO.Logging.Default.DefaultLog File = new Utilities.IO.Logging.Default.DefaultLog("Test"))
             {
                 foreach (MessageType Type in Enum.GetValues(typeof(MessageType)))
-                    Assert.DoesNotThrow(() => File.LogMessage("TestMessage", Type));
+                    File.LogMessage("TestMessage", Type);
                 Assert.Contains("\r\nGeneral: TestMessage\r\nDebug: TestMessage\r\nTrace: TestMessage\r\nInfo: TestMessage\r\nWarn: TestMessage\r\nError: TestMessage\r\n", new Utilities.IO.FileInfo(File.FileName).Read());
             }
             new Utilities.IO.DirectoryInfo("~/Logs/").Delete();

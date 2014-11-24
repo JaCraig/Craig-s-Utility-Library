@@ -33,7 +33,7 @@ namespace UnitTests.Validation.Rules
         {
             MinLengthClass Temp = new MinLengthClass();
             Temp.ItemA = "Test";
-            Assert.DoesNotThrow(() => Temp.Validate());
+            Temp.Validate();
             Temp.ItemA = "Tes";
             Assert.Throws<ValidationException>(() => Temp.Validate());
         }

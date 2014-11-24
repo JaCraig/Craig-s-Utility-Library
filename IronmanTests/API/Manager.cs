@@ -77,7 +77,7 @@ namespace IronmanTests.API
         [Fact]
         public void Create()
         {
-            Assert.DoesNotThrow(() => new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflowModule>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.Workflow.Manager.Manager>()));
+            new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflowModule>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.Workflow.Manager.Manager>());
         }
 
         [Fact]

@@ -31,6 +31,7 @@ using Xunit;
 
 namespace UnitTests.ORM
 {
+    [Collection("DatabaseCollection")]
     public abstract class DatabaseBaseClass : IDisposable
     {
         public DatabaseBaseClass()

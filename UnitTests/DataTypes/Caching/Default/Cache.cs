@@ -138,7 +138,7 @@ namespace UnitTests.DataTypes.Caching.Default
             Assert.Equal(1, Temp.GetByTag("Tag2").Count());
             Assert.Equal(0, Temp.GetByTag("Tag1").Count());
             Assert.Equal(2, Temp.GetByTag("Tag2").First());
-            Assert.DoesNotThrow(() => Temp.RemoveByTag("Tag1"));
+            Temp.RemoveByTag("Tag1");
         }
 
         [Fact]

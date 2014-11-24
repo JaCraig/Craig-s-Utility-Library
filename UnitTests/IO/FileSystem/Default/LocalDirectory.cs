@@ -19,12 +19,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using UnitTests.Fixtures;
 using Utilities.IO.FileSystem.Interfaces;
 using Xunit;
 
 namespace UnitTests.IO.FileSystem.Default
 {
-    public class LocalDirectory
+    public class LocalDirectory:TestingDirectoryFixture
     {
         [Fact]
         public void Clone()
@@ -85,7 +86,7 @@ namespace UnitTests.IO.FileSystem.Default
         public void Enumeration()
         {
             Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory(".");
-            Assert.DoesNotThrow(() => { foreach (IFile File in Temp) { } });
+            foreach (IFile File in Temp) { }
         }
 
         [Fact]

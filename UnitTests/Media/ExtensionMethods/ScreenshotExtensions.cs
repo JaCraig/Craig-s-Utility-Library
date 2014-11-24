@@ -27,7 +27,7 @@ using Xunit;
 
 namespace UnitTests.Media.Image.ExtensionMethods
 {
-    public class ScreenshotExtensions : IUseFixture<TestingDirectoryFixture>
+    public class ScreenshotExtensions :TestingDirectoryFixture
     {
         public void SetFixture(TestingDirectoryFixture data)
         {

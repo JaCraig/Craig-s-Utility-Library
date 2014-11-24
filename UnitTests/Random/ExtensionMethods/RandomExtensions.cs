@@ -54,30 +54,30 @@ namespace UnitTests.Random.ExtensionMethods
         public void Next()
         {
             System.Random Random = new System.Random();
-            Assert.DoesNotThrow(() => Random.Next<bool>());
-            Assert.DoesNotThrow(() => Random.Next<byte>());
-            Assert.DoesNotThrow(() => Random.Next<char>());
-            Assert.DoesNotThrow(() => Random.Next<decimal>());
-            Assert.DoesNotThrow(() => Random.Next<double>());
-            Assert.DoesNotThrow(() => Random.Next<float>());
-            Assert.DoesNotThrow(() => Random.Next<int>());
-            Assert.DoesNotThrow(() => Random.Next<long>());
-            Assert.DoesNotThrow(() => Random.Next<sbyte>());
-            Assert.DoesNotThrow(() => Random.Next<short>());
-            Assert.DoesNotThrow(() => Random.Next<uint>());
-            Assert.DoesNotThrow(() => Random.Next<ulong>());
-            Assert.DoesNotThrow(() => Random.Next<ushort>());
-            Assert.DoesNotThrow(() => Random.Next<DateTime>());
-            Assert.DoesNotThrow(() => Random.Next<Color>());
-            Assert.DoesNotThrow(() => Random.Next<TimeSpan>());
-            Assert.DoesNotThrow(() => Random.Next<string>());
+            Random.Next<bool>();
+            Random.Next<byte>();
+            Random.Next<char>();
+            Random.Next<decimal>();
+            Random.Next<double>();
+            Random.Next<float>();
+            Random.Next<int>();
+            Random.Next<long>();
+            Random.Next<sbyte>();
+            Random.Next<short>();
+            Random.Next<uint>();
+            Random.Next<ulong>();
+            Random.Next<ushort>();
+            Random.Next<DateTime>();
+            Random.Next<Color>();
+            Random.Next<TimeSpan>();
+            Random.Next<string>();
         }
 
         [Fact]
         public void Next2()
         {
             System.Random Random = new System.Random();
-            Assert.DoesNotThrow(() => Random.Next<bool>(false, true));
+            Random.Next<bool>(false, true);
             Assert.InRange(Random.Next<byte>(1, 29), 1, 29);
             Assert.InRange(Random.Next<char>('a', 'z'), 'a', 'z');
             Assert.InRange(Random.Next<decimal>(1.0m, 102.1m), 1, 102.1m);
@@ -137,7 +137,7 @@ namespace UnitTests.Random.ExtensionMethods
         public void RegisterGenerator()
         {
             Utilities.Random.Random Rand = new Utilities.Random.Random();
-            Assert.DoesNotThrow(() => Rand.RegisterGenerator<string>(new NameGenerator()));
+            Rand.RegisterGenerator<string>(new NameGenerator());
             Assert.True(100.Times(x => Rand.Next<string>()).All(x => x.Split(' ').Length == 2));
         }
 

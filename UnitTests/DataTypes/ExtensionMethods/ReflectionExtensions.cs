@@ -26,6 +26,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using UnitTests.Fixtures;
 using Utilities.DataTypes;
 using Xunit;
 
@@ -38,7 +39,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         int Value2 { get; set; }
     }
 
-    public class ReflectionExtensions
+    public class ReflectionExtensions:TestingDirectoryFixture
     {
         [Fact]
         public void CallMethodTest()
@@ -186,7 +187,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Fact]
         public void LoadAssembliesTest()
         {
-            Assert.Equal(14, new DirectoryInfo(@".\").LoadAssemblies().Count());
+            Assert.Equal(21, new DirectoryInfo(@".\").LoadAssemblies().Count());
         }
 
         [Fact]
@@ -250,7 +251,28 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Fact]
         public void VersionInfo2()
         {
-            Assert.Equal("Microsoft.CodeAnalysis: 1.0\r\nMicrosoft.CodeAnalysis.CSharp: 1.0\r\nMicrosoft.Web.Infrastructure: 1.0\r\nSystem.Collections.Immutable: 1.1\r\nSystem.Reflection.Metadata: 1.0\r\nSystem.Web.Helpers: 3.0\r\nSystem.Web.Mvc: 5.2\r\nSystem.Web.Razor: 3.0\r\nSystem.Web.WebPages: 3.0\r\nSystem.Web.WebPages.Deployment: 3.0\r\nSystem.Web.WebPages.Razor: 3.0\r\nUnitTests: 1.0\r\nUtilities: 4.0\r\nxunit: 1.9\r\n", new DirectoryInfo(@".\").LoadAssemblies().ToString(VersionInfo.ShortVersion));
+            Assert.Equal(@"Microsoft.CodeAnalysis: 1.0
+Microsoft.CodeAnalysis.CSharp: 1.0
+Microsoft.VisualStudio.TestPlatform.ObjectModel: 12.0
+Microsoft.Web.Infrastructure: 1.0
+msdia120typelib_clr0200: 12.0
+System.Collections.Immutable: 1.1
+System.Reflection.Metadata: 1.0
+System.Web.Helpers: 3.0
+System.Web.Mvc: 5.2
+System.Web.Razor: 3.0
+System.Web.WebPages: 3.0
+System.Web.WebPages.Deployment: 3.0
+System.Web.WebPages.Razor: 3.0
+UnitTests: 1.0
+Utilities: 4.0
+xunit.abstractions: 2.0
+xunit.assert: 2.0
+xunit.core: 2.0
+xunit.execution: 2.0
+xunit.runner.utility: 2.0
+xunit.runner.visualstudio.testadapter: 0.99
+", new DirectoryInfo(@".\").LoadAssemblies().ToString(VersionInfo.ShortVersion));
         }
     }
 

@@ -32,7 +32,7 @@ namespace UnitTests.DataTypes.Threading
         {
             using (Utilities.DataTypes.TaskQueue<string> Tasks = new Utilities.DataTypes.TaskQueue<string>(3, x => Console.WriteLine(x)))
             {
-                10.Times(x => Assert.DoesNotThrow(() => Tasks.Enqueue("This is a test #" + x)));
+                10.Times(x => Tasks.Enqueue("This is a test #" + x));
             }
         }
     }

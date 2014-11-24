@@ -31,7 +31,7 @@ namespace UnitTests.IO.Messaging.Default
         [Fact]
         public void Create()
         {
-            Assert.DoesNotThrow(() => new Utilities.IO.Messaging.Default.DefaultFormatter());
+            new Utilities.IO.Messaging.Default.DefaultFormatter();
             Assert.Equal("Default", new Utilities.IO.Messaging.Default.DefaultFormatter().Name);
         }
 

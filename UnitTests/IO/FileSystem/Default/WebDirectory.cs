@@ -21,12 +21,13 @@ THE SOFTWARE.*/
 
 using System;
 using System.Net;
+using UnitTests.Fixtures;
 using Utilities.IO.FileSystem.Interfaces;
 using Xunit;
 
 namespace UnitTests.IO.FileSystem.Default
 {
-    public class WebDirectory
+    public class WebDirectory:TestingDirectoryFixture
     {
         [Fact]
         public void Clone()
@@ -81,7 +82,7 @@ namespace UnitTests.IO.FileSystem.Default
         public void Enumeration()
         {
             Utilities.IO.FileSystem.Default.WebDirectory Temp = new Utilities.IO.FileSystem.Default.WebDirectory("http://www.google.com");
-            Assert.DoesNotThrow(() => { foreach (IFile File in Temp) { } });
+            foreach (IFile File in Temp) { }
         }
 
         [Fact]

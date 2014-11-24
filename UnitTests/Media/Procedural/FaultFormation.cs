@@ -26,7 +26,7 @@ using Xunit;
 
 namespace UnitTests.Media.Image.Procedural
 {
-    public class FaultFormation : IUseFixture<TestingDirectoryFixture>
+    public class FaultFormation : TestingDirectoryFixture
     {
         [Fact]
         public void Generate()

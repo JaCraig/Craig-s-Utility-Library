@@ -36,7 +36,7 @@ namespace UnitTests.Validation.Rules
             Temp.ItemB = "1234.123";
             Temp.ItemC = "http://www.google.com";
             Temp.ItemD = "1234";
-            Assert.DoesNotThrow(() => Temp.Validate());
+            Temp.Validate();
             Temp.ItemA = "1234567890123";
             Temp.ItemB = "ASD1234";
             Temp.ItemC = "google@somewhere.com";

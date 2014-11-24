@@ -33,7 +33,7 @@ namespace UnitTests.Validation.Rules
         {
             NotBetweenClass Temp = new NotBetweenClass();
             Temp.ItemA = 0;
-            Assert.DoesNotThrow(() => Temp.Validate());
+            Temp.Validate();
             Temp.ItemA = 1;
             Assert.Throws<ValidationException>(() => Temp.Validate());
         }

@@ -21,13 +21,14 @@ THE SOFTWARE.*/
 
 using System;
 using System.Linq;
+using UnitTests.Fixtures;
 using Utilities.IO;
 using Utilities.IO.FileSystem.Interfaces;
 using Xunit;
 
 namespace UnitTests.IO
 {
-    public class DirectoryInfo
+    public class DirectoryInfo:TestingDirectoryFixture
     {
         [Fact]
         public void Clone()
@@ -84,11 +85,11 @@ namespace UnitTests.IO
             new Utilities.IO.DirectoryInfo("~/Logs/").Delete();
             new Utilities.IO.DirectoryInfo("~/App_Data/").Delete();
             Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo(".");
-            Assert.DoesNotThrow(() => { foreach (IFile File in Temp) { } });
-            Assert.Equal(0, Temp.EnumerateDirectories().Count());
-            Assert.Equal(29, Temp.EnumerateFiles().Count());
-            Assert.Equal(0, Temp.EnumerateDirectories(x => x.Created < DateTime.UtcNow).Count());
-            Assert.Equal(29, Temp.EnumerateFiles(x => x.Created < DateTime.UtcNow).Count());
+            foreach (IFile File in Temp) { }
+            Assert.Equal(1, Temp.EnumerateDirectories().Count());
+            Assert.Equal(39, Temp.EnumerateFiles().Count());
+            Assert.Equal(1, Temp.EnumerateDirectories(x => x.Created < DateTime.UtcNow).Count());
+            Assert.Equal(39, Temp.EnumerateFiles(x => x.Created < DateTime.UtcNow).Count());
         }
 
         [Fact]

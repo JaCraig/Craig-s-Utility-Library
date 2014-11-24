@@ -43,7 +43,7 @@ namespace UnitTests.IO.Messaging.Default
         {
             Utilities.IO.Messaging.Default.SMTPSystem Temp = new Utilities.IO.Messaging.Default.SMTPSystem();
             Assert.NotNull(Temp);
-            Assert.DoesNotThrow(() => { Temp.Send(null, new Temp()).Wait(); });
+            Temp.Send(null, new Temp()).Wait();
         }
 
         [Serializable]

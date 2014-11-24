@@ -33,7 +33,7 @@ namespace UnitTests.DataTypes.DataMapper
         public void CreationTest()
         {
             Utilities.DataTypes.DataMapper.Manager TestObject = null;
-            Assert.DoesNotThrow(() => TestObject = new Utilities.DataTypes.DataMapper.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IDataMapper>(), AppDomain.CurrentDomain.GetAssemblies().Objects<IMapperModule>()));
+            TestObject = new Utilities.DataTypes.DataMapper.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IDataMapper>(), AppDomain.CurrentDomain.GetAssemblies().Objects<IMapperModule>());
             Assert.NotNull(TestObject);
         }
 
