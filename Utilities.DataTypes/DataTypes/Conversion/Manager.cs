@@ -52,7 +52,9 @@ namespace Utilities.DataTypes.Conversion
         /// <typeparam name="T">Incoming type</typeparam>
         /// <typeparam name="R">Resulting type</typeparam>
         /// <param name="Item">Incoming object</param>
-        /// <param name="DefaultValue">Default return value if the item is null or can not be converted</param>
+        /// <param name="DefaultValue">
+        /// Default return value if the item is null or can not be converted
+        /// </param>
         /// <returns>The value converted to the specified type</returns>
         public static R To<T, R>(T Item, R DefaultValue = default(R))
         {
@@ -65,7 +67,9 @@ namespace Utilities.DataTypes.Conversion
         /// <typeparam name="T">Incoming type</typeparam>
         /// <param name="Item">Incoming object</param>
         /// <param name="ResultType">Result type</param>
-        /// <param name="DefaultValue">Default return value if the item is null or can not be converted</param>
+        /// <param name="DefaultValue">
+        /// Default return value if the item is null or can not be converted
+        /// </param>
         /// <returns>The value converted to the specified type</returns>
         public static object To<T>(T Item, Type ResultType, object DefaultValue = null)
         {
@@ -88,6 +92,12 @@ namespace Utilities.DataTypes.Conversion
                     return Item;
                 if (Item as IConvertible != null && !ObjectType.IsEnum && !ResultType.IsEnum)
                     return Convert.ChangeType(Item, ResultType, CultureInfo.InvariantCulture);
+                TypeConverter Converter = TypeDescriptor.GetConverter(Item);
+                if (Converter.CanConvertTo(ResultType))
+                    return Converter.ConvertTo(Item, ResultType);
+                Converter = TypeDescriptor.GetConverter(ResultType);
+                if (Converter.CanConvertFrom(ObjectType))
+                    return Converter.ConvertFrom(Item);
                 if (ResultType.IsEnum)
                 {
                     if (ObjectType == ResultType.GetEnumUnderlyingType())
@@ -95,12 +105,6 @@ namespace Utilities.DataTypes.Conversion
                     if (ObjectType == typeof(string))
                         return System.Enum.Parse(ResultType, Item as string, true);
                 }
-                TypeConverter Converter = TypeDescriptor.GetConverter(Item);
-                if (Converter.CanConvertTo(ResultType))
-                    return Converter.ConvertTo(Item, ResultType);
-                Converter = TypeDescriptor.GetConverter(ResultType);
-                if (Converter.CanConvertFrom(ObjectType))
-                    return Converter.ConvertFrom(Item);
                 if (ResultType.IsClass)
                 {
                     object ReturnValue = Activator.CreateInstance(ResultType);

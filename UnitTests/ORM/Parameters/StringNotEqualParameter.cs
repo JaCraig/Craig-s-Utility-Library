@@ -36,6 +36,10 @@ namespace UnitTests.ORM.Parameters
             Assert.Equal("@", TestObject.ParameterStarter);
             Assert.Equal("ID<>@ID", TestObject.ToString());
             Assert.Equal(100, TestObject.Length);
+            Assert.Equal(DbType.String, TestObject.DatabaseType);
+            Assert.Equal(ParameterDirection.Input, TestObject.Direction);
+            Assert.Equal("ID", TestObject.FieldName);
+            Assert.Equal("ASDF", TestObject.InternalValue);
             IBatch Batch = new Utilities.ORM.Manager.QueryProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IQueryProvider>()).Batch(TestDatabaseSource);
             Batch.AddCommand(null, null, "SELECT * FROM TestTable", CommandType.Text, TestObject).Execute();
         }

@@ -29,17 +29,22 @@ namespace UnitTests.DataTypes.Conversion
 {
     public class Manager
     {
+        public Manager()
+        {
+            TestObject = new Utilities.DataTypes.Conversion.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IConverter>());
+        }
+
+        private Utilities.DataTypes.Conversion.Manager TestObject { get; set; }
+
         [Fact]
         public void Create()
         {
-            Utilities.DataTypes.Conversion.Manager TestObject = new Utilities.DataTypes.Conversion.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IConverter>());
             Assert.NotNull(TestObject);
         }
 
         [Fact]
         public void To()
         {
-            Utilities.DataTypes.Conversion.Manager TestObject = new Utilities.DataTypes.Conversion.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IConverter>());
             Assert.Equal(10, Utilities.DataTypes.Conversion.Manager.To(10.0f, 5));
             Assert.Equal(5.0f, Utilities.DataTypes.Conversion.Manager.To(5, 10.0f));
             Assert.Equal(5.0f, Utilities.DataTypes.Conversion.Manager.To("5", 10.0f));
@@ -51,7 +56,6 @@ namespace UnitTests.DataTypes.Conversion
         [Fact]
         public void ToClasses()
         {
-            Utilities.DataTypes.Conversion.Manager TestObject = new Utilities.DataTypes.Conversion.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IConverter>());
             TestA Object1 = new TestA() { A = 10, B = "ASDF" };
             TestB Object2 = new TestB() { A = 20, B = "ZXCV" };
             TestB Result1 = Utilities.DataTypes.Conversion.Manager.To<TestA, TestB>(Object1, null);
