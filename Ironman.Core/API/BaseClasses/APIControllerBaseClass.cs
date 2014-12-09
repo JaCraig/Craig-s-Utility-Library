@@ -19,20 +19,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
+using Ironman.Core.ActionFilters;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Dynamic;
 using System.Linq;
 using System.Web.Mvc;
-using Ironman.Core.ActionFilters;
-using Ironman.Core.BaseClasses;
 using Utilities.DataTypes;
-using Utilities.IO;
-
-#endregion Usings
 
 namespace Ironman.Core.API.BaseClasses
 {
@@ -130,6 +124,22 @@ namespace Ironman.Core.API.BaseClasses
             Contract.Requires<ArgumentNullException>(Request != null, "Request");
             Contract.Requires<ArgumentNullException>(Request.QueryString != null, "Request.QueryString");
             return Serialize(APIManager.GetProperty(Version, ModelName, ID, PropertyName, Request.QueryString.Get("Embedded").Check("").Split(',')));
+        }
+
+        /// <summary>
+        /// Gets the paged group specified of the item of the specified type, with the specified
+        /// page ID
+        /// GET: {APIRoot}/{ModelName}/Paged/{PageNumber}
+        /// </summary>
+        /// <param name="ModelName">Model name</param>
+        /// <param name="PageNumber">The page number.</param>
+        /// <returns>The resulting items</returns>
+        [HttpGet]
+        public virtual ActionResult Paged(string ModelName, int PageNumber)
+        {
+            Contract.Requires<ArgumentNullException>(Request != null, "Request");
+            Contract.Requires<ArgumentNullException>(Request.QueryString != null, "Request.QueryString");
+            return Serialize<IEnumerable<Dynamo>>(APIManager.Paged(Version, ModelName, Request.QueryString.Get("OrderBy").Check("").Split(','), Request.QueryString.Get("Embedded").Check("").Split(',')));
         }
 
         /// <summary>

@@ -24,13 +24,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Utilities.DataTypes;
-using Utilities.Workflow.Manager.Interfaces;
 
 namespace Ironman.Core.API.Manager
 {
@@ -298,6 +295,11 @@ namespace Ironman.Core.API.Manager
             {
                 return Error("Error getting the object");
             }
+        }
+
+        public IEnumerable<Dynamo> Paged(int Version, string ModelName, int PageSize, int Page, string[] OrderBy, string[] Embedded)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

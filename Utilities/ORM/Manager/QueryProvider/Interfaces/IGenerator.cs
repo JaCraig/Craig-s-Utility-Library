@@ -122,11 +122,12 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <summary>
         /// Generates a batch that will get a specific page of data that satisfies the parameters specified
         /// </summary>
-        /// <param name="Parameters">Parameters</param>
-        /// <param name="CurrentPage">The current page (starting at 0)</param>
         /// <param name="PageSize">Page size</param>
+        /// <param name="CurrentPage">The current page (starting at 0)</param>
+        /// <param name="OrderBy">The order by.</param>
+        /// <param name="Parameters">Parameters</param>
         /// <returns>Batch with the appropriate commands</returns>
-        IBatch Paged(int PageSize, int CurrentPage, params IParameter[] Parameters);
+        IBatch Paged(int PageSize, int CurrentPage, string OrderBy, params IParameter[] Parameters);
 
         /// <summary>
         /// Saves the object to the source
