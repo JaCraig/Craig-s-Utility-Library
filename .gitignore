@@ -168,3 +168,4 @@ pip-log.txt
 .hg/*
 *.log
 packages/
+Utilities/ApiPortabilityAnalysis(1).htm
