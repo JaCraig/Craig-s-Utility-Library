@@ -21,10 +21,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Utilities.DataTypes;
 
 namespace Ironman.Core.API.Manager.Interfaces
@@ -65,6 +62,12 @@ namespace Ironman.Core.API.Manager.Interfaces
         /// Delete func
         /// </summary>
         Func<ClassType, bool> DeleteFunc { get; }
+
+        /// <summary>
+        /// Gets the paged function.
+        /// </summary>
+        /// <value>The paged function.</value>
+        Func<int, int, string, IEnumerable<ClassType>> PagedFunc { get; }
 
         /// <summary>
         /// Save func
@@ -181,6 +184,13 @@ namespace Ironman.Core.API.Manager.Interfaces
         IAPIMapping<ClassType> SetDelete(Func<ClassType, bool> Value);
 
         /// <summary>
+        /// Sets the paged function.
+        /// </summary>
+        /// <param name="Value">Function used to get all items of the specified type of the page</param>
+        /// <returns>This</returns>
+        IAPIMapping<ClassType> SetPaged(Func<int, int, string, IEnumerable<ClassType>> Value);
+
+        /// <summary>
         /// Sets the save function that is used by the mapping
         /// </summary>
         /// <param name="Value">
@@ -259,6 +269,17 @@ namespace Ironman.Core.API.Manager.Interfaces
         /// <param name="Property">Property name</param>
         /// <returns>The property specified</returns>
         dynamic GetProperty(string ID, MappingHolder Mappings, string Property, params string[] EmbeddedProperties);
+
+        /// <summary>
+        /// Gets all items of the mapped type
+        /// </summary>
+        /// <param name="mappingHolder">The mapping holder.</param>
+        /// <param name="PageSize">Size of the page.</param>
+        /// <param name="Page">The page specified</param>
+        /// <param name="OrderBy">The order by clause</param>
+        /// <param name="EmbeddedProperties">Properties to embed</param>
+        /// <returns>All items of the mapped type</returns>
+        IEnumerable<Dynamo> Paged(MappingHolder mappingHolder, int PageSize, int Page, string[] OrderBy, string[] EmbeddedProperties);
 
         /// <summary>
         /// Saves the specified object

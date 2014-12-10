@@ -297,9 +297,34 @@ namespace Ironman.Core.API.Manager
             }
         }
 
-        public IEnumerable<Dynamo> Paged(int Version, string ModelName, int PageSize, int Page, string[] OrderBy, string[] Embedded)
+        /// <summary>
+        /// Gets all items of the specified mapping of the specified page
+        /// </summary>
+        /// <param name="Version">API version number</param>
+        /// <param name="Mapping">Mapping name</param>
+        /// <param name="PageSize">Size of the page.</param>
+        /// <param name="Page">The page desired</param>
+        /// <param name="OrderBy">The order by clause</param>
+        /// <param name="EmbeddedProperties">Embedded properties</param>
+        /// <returns>The resulting items</returns>
+        public IEnumerable<Dynamo> Paged(int Version, string Mapping, int PageSize, int Page, string[] OrderBy, string[] EmbeddedProperties)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PrePaged_" + Version).Start(new WorkflowInfo(Mapping, WorkflowType.PreAll, Version, null)).Continue)
+                    return new List<Dynamo>();
+                IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
+                if (!TempMappings.ContainsKey(Mapping))
+                    return new List<Dynamo>();
+                IEnumerable<Dynamo> ReturnValue = TempMappings[Mapping].Paged(Mappings.GetValue(Version), PageSize, Page, OrderBy, EmbeddedProperties);
+                if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PostPaged_" + Version).Start(new WorkflowInfo(Mapping, WorkflowType.PostAll, Version, ReturnValue)).Continue)
+                    return new List<Dynamo>();
+                return ReturnValue;
+            }
+            catch
+            {
+                return new List<Dynamo>();
+            }
         }
 
         /// <summary>

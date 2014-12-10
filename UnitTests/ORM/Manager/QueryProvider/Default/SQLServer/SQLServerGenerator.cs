@@ -19,14 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
-using System.Data;
-using System.Linq;
 using Utilities.ORM.BaseClasses;
 using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
-using Utilities.ORM.Manager.Schema.Default.Database;
 using Xunit;
 
 namespace UnitTests.ORM.Manager.QueryProvider.Default.SQLServer
@@ -97,7 +93,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.SQLServer
         [Fact]
         public void Paged()
         {
-            IBatch Batch = Generator.Paged(25, 0);
+            IBatch Batch = Generator.Paged(25, 0, "");
             Assert.Equal(1, Batch.CommandCount);
         }
 

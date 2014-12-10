@@ -124,7 +124,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// </summary>
         /// <param name="PageSize">Page size</param>
         /// <param name="CurrentPage">The current page (starting at 0)</param>
-        /// <param name="OrderBy">The order by.</param>
+        /// <param name="OrderBy">The order by portion of the query</param>
         /// <param name="Parameters">Parameters</param>
         /// <returns>Batch with the appropriate commands</returns>
         IBatch Paged(int PageSize, int CurrentPage, string OrderBy, params IParameter[] Parameters);

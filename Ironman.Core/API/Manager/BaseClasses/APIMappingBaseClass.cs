@@ -19,19 +19,15 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 using Ironman.Core.API.Manager.Interfaces;
 using Ironman.Core.API.Manager.Properties;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Web;
 using Utilities.DataTypes;
 using Utilities.ORM;
-using Utilities.Web;
 
 namespace Ironman.Core.API.Manager.BaseClasses
 {
@@ -60,6 +56,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
             SetAny(x => QueryProvider.Any<ClassType, IDType>(x.To(default(IDType))));
             SetDelete(x => { QueryProvider.Delete(x); return true; });
             SetSave(x => { QueryProvider.Save<ClassType, IDType>(x); return true; });
+            SetPaged((x, y, z) => QueryProvider.Paged<ClassType>(x, y, z));
             this.Versions = Versions.Check(x => x.Length > 0, new int[] { 1 }).ToList();
         }
 
@@ -102,6 +99,12 @@ namespace Ironman.Core.API.Manager.BaseClasses
         /// Object type
         /// </summary>
         public Type ObjectType { get; private set; }
+
+        /// <summary>
+        /// Gets the paged function.
+        /// </summary>
+        /// <value>The paged function.</value>
+        public Func<int, int, string, IEnumerable<ClassType>> PagedFunc { get; private set; }
 
         /// <summary>
         /// Properties in the mapping
@@ -314,6 +317,46 @@ namespace Ironman.Core.API.Manager.BaseClasses
         }
 
         /// <summary>
+        /// Gets all items of the mapped type
+        /// </summary>
+        /// <param name="Mappings">The mapping holder</param>
+        /// <param name="PageSize">Size of the page.</param>
+        /// <param name="Page">The page specified</param>
+        /// <param name="OrderBy">The order by clause</param>
+        /// <param name="EmbeddedProperties">Properties to embed</param>
+        /// <returns>All items of the mapped type</returns>
+        public IEnumerable<Dynamo> Paged(MappingHolder Mappings, int PageSize, int Page, string[] OrderBy, string[] EmbeddedProperties)
+        {
+            IEnumerable<ClassType> Objects = PagedFunc(PageSize, Page, OrderBy.ToString(x => x, ","));
+            if (Objects == null)
+                Objects = new List<ClassType>();
+            List<Dynamo> ReturnValue = new List<Dynamo>();
+            foreach (ClassType Object in Objects)
+            {
+                if (CanGetFunc(Object))
+                {
+                    Dynamo TempItem = new Dynamo(Object);
+                    Dynamo ReturnItem = TempItem.SubSet(Properties.Where(x => x is IReference || x is IID)
+                                                                   .Select(x => x.Name)
+                                                                   .ToArray());
+                    string AbsoluteUri = HttpContext.Current != null ? HttpContext.Current.Request.Url.AbsoluteUri.Left(HttpContext.Current.Request.Url.AbsoluteUri.IndexOf('?')) : "";
+                    AbsoluteUri = AbsoluteUri.Check("");
+                    if (!AbsoluteUri.EndsWith("/"))
+                        AbsoluteUri += "/";
+                    AbsoluteUri += Properties.FirstOrDefault(x => x is IID).GetValue(Mappings, Object).ToString() + "/";
+                    foreach (IAPIProperty Property in Properties.Where(x => x is IMap))
+                    {
+                        ReturnItem[Property.Name] = EmbeddedProperties.Contains(Property.Name) ?
+                                                        (object)Property.GetValue(Mappings, TempItem) :
+                                                        (object)(AbsoluteUri + Property.Name);
+                    }
+                    ReturnValue.Add(ReturnItem);
+                }
+            }
+            return ReturnValue;
+        }
+
+        /// <summary>
         /// Sets a Reference property for the mapping
         /// </summary>
         /// <typeparam name="DataType">Data type</typeparam>
@@ -444,6 +487,17 @@ namespace Ironman.Core.API.Manager.BaseClasses
         public IAPIMapping<ClassType> SetDelete(Func<ClassType, bool> Value)
         {
             DeleteFunc = Value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the paged function.
+        /// </summary>
+        /// <param name="Value">Function used to get all items of the specified type of the page</param>
+        /// <returns>This</returns>
+        public IAPIMapping<ClassType> SetPaged(Func<int, int, string, IEnumerable<ClassType>> Value)
+        {
+            PagedFunc = Value;
             return this;
         }
 

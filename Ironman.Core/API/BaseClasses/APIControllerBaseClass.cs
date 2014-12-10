@@ -139,7 +139,15 @@ namespace Ironman.Core.API.BaseClasses
         {
             Contract.Requires<ArgumentNullException>(Request != null, "Request");
             Contract.Requires<ArgumentNullException>(Request.QueryString != null, "Request.QueryString");
-            return Serialize<IEnumerable<Dynamo>>(APIManager.Paged(Version, ModelName, Request.QueryString.Get("OrderBy").Check("").Split(','), Request.QueryString.Get("Embedded").Check("").Split(',')));
+            int PageSize = 0;
+            if (!int.TryParse(Request.QueryString.Get("PageSize").Check("20"), out PageSize))
+                PageSize = 20;
+            return Serialize<IEnumerable<Dynamo>>(APIManager.Paged(Version,
+                ModelName,
+                PageSize,
+                PageNumber,
+                Request.QueryString.Get("OrderBy").Check("").Split(','),
+                Request.QueryString.Get("Embedded").Check("").Split(',')));
         }
 
         /// <summary>

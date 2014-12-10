@@ -19,18 +19,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics.Contracts;
 using System.Globalization;
-using System.Linq;
 using Utilities.DataTypes;
-using Utilities.DataTypes.Comparison;
 using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
-using Utilities.ORM.Parameters;
 
 namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
 {
@@ -57,25 +52,19 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
         /// <summary>
         /// Gets or sets the mapping.
         /// </summary>
-        /// <value>
-        /// The mapping.
-        /// </value>
+        /// <value>The mapping.</value>
         private IMapping Mapping { get; set; }
 
         /// <summary>
         /// Gets or sets the query provider.
         /// </summary>
-        /// <value>
-        /// The query provider.
-        /// </value>
+        /// <value>The query provider.</value>
         private LDAPQueryProvider QueryProvider { get; set; }
 
         /// <summary>
         /// Gets or sets the source.
         /// </summary>
-        /// <value>
-        /// The source.
-        /// </value>
+        /// <value>The source.</value>
         private ISourceInfo Source { get; set; }
 
         /// <summary>
@@ -225,11 +214,12 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
         /// <summary>
         /// Generates a batch that will get a specific page of data that satisfies the parameters specified
         /// </summary>
-        /// <param name="Parameters">Parameters</param>
-        /// <param name="CurrentPage">The current page (starting at 0)</param>
         /// <param name="PageSize">Page size</param>
+        /// <param name="CurrentPage">The current page (starting at 0)</param>
+        /// <param name="OrderBy">The order by portion of the query</param>
+        /// <param name="Parameters">The parameters.</param>
         /// <returns>Batch with the appropriate commands</returns>
-        public IBatch Paged(int PageSize, int CurrentPage, params IParameter[] Parameters)
+        public IBatch Paged(int PageSize, int CurrentPage, string OrderBy, params IParameter[] Parameters)
         {
             return All(Parameters);
         }
