@@ -25,7 +25,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Utilities.IoC.Default;
 using Utilities.IoC.Interfaces;
 
@@ -36,10 +35,6 @@ namespace Utilities.IoC
     /// </summary>
     public class Manager : IDisposable
     {
-        private static Manager _Instance = new Manager();
-
-        private static object Temp = 1;
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -99,13 +94,9 @@ namespace Utilities.IoC
             }
         }
 
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        ~Manager()
-        {
-            Dispose(false);
-        }
+        private static Manager _Instance = new Manager();
+
+        private static object Temp = 1;
 
         /// <summary>
         /// Gets the instance of the manager
@@ -182,6 +173,14 @@ namespace Utilities.IoC
         }
 
         /// <summary>
+        /// Destructor
+        /// </summary>
+        ~Manager()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
         /// Assembly comparer
         /// </summary>
         private class AssemblyComparer : IEqualityComparer<Assembly>
@@ -191,9 +190,7 @@ namespace Utilities.IoC
             /// </summary>
             /// <param name="x">The first object of type System.Reflection.Assembly to compare.</param>
             /// <param name="y">The second object of type System.Reflection.Assembly to compare.</param>
-            /// <returns>
-            /// true if the specified objects are equal; otherwise, false.
-            /// </returns>
+            /// <returns>true if the specified objects are equal; otherwise, false.</returns>
             public bool Equals(Assembly x, Assembly y)
             {
                 return string.Equals(x.FullName, y.FullName, StringComparison.InvariantCultureIgnoreCase);
@@ -204,7 +201,8 @@ namespace Utilities.IoC
             /// </summary>
             /// <param name="obj">The object.</param>
             /// <returns>
-            /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            /// A hash code for this instance, suitable for use in hashing algorithms and data
+            /// structures like a hash table.
             /// </returns>
             public int GetHashCode(Assembly obj)
             {

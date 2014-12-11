@@ -130,8 +130,6 @@ namespace Utilities.ORM.Manager
                 }
             }
             Cache.Add(KeyName, ReturnValue, new string[] { typeof(ObjectType).GetName() });
-            if (ReturnValue == null)
-                return default(ObjectType);
             return ConvertValue<ObjectType>(ReturnValue);
         }
 
@@ -169,8 +167,6 @@ namespace Utilities.ORM.Manager
                 }
             }
             Cache.Add(KeyName, ReturnValue, new string[] { typeof(ObjectType).GetName() });
-            if (ReturnValue == null)
-                return default(ObjectType);
             return ConvertValue<ObjectType>(ReturnValue);
         }
 

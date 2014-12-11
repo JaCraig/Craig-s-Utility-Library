@@ -23,7 +23,6 @@ using System;
 using System.Data;
 using System.Linq;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
-using Utilities.ORM.Manager.Schema.Default.Database;
 using Xunit;
 
 namespace UnitTests.ORM.Manager.QueryProvider.Default
@@ -33,6 +32,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         [Fact]
         public void Create()
         {
+            var Bootstrapper = Utilities.IoC.Manager.Bootstrapper;
             Utilities.ORM.Manager.QueryProvider.Default.Command Temp = new Utilities.ORM.Manager.QueryProvider.Default.Command(null, null, "SELECT * FROM A", CommandType.Text, "@", new object[] { 1, "ASDF", 2.0f, Guid.NewGuid() });
             Assert.Equal(CommandType.Text, Temp.CommandType);
             Assert.Equal(4, Temp.Parameters.Count);

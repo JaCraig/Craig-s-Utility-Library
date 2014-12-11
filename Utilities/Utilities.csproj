@@ -420,6 +420,9 @@
     <Compile Include="ORM\Manager\QueryProvider\Default\LDAP\LDAPBatch.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\LDAP\LDAPGenerator.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\LDAP\LDAPQueryProvider.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\PostgreSQL\PostgreSQLGenerator.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\PostgreSQL\PostgreSQLQueryProvider.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Database\PostgreSQL\PostgreSQLSchemaGenerator.cs" />
     <Compile Include="ORM\Manager\Schema\Default\LDAP\LDAPSchema.cs" />
     <Compile Include="ORM\Manager\Session.cs" />
     <Compile Include="ORM\Manager\SourceProvider\DefaultDatabase.cs" />
