@@ -19,16 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
-using fastJSON;
 using System;
-using System.IO;
 using System.Web;
 using Utilities.DataTypes;
 using Utilities.IO.Serializers.BaseClasses;
-
-#endregion Usings
 
 namespace CUL.Serialization
 {
@@ -43,6 +37,7 @@ namespace CUL.Serialization
         public JsonSerializer()
             : base()
         {
+            fastJSON.JSON.Parameters.EnableAnonymousTypes = true;
         }
 
         /// <summary>
@@ -77,11 +72,11 @@ namespace CUL.Serialization
         }
 
         /// <summary>
-        /// Serializes the object to a CSV
+        /// Serializes the object to a JSON string
         /// </summary>
         /// <param name="ObjectType">Object type</param>
         /// <param name="Data">Object</param>
-        /// <returns>The object as a CSV</returns>
+        /// <returns>The object as a JSON string</returns>
         public override string Serialize(Type ObjectType, object Data)
         {
             if (Data == null)

@@ -410,6 +410,11 @@ namespace Utilities.ORM.Manager
 
         private static void CopyOrAdd(List<Dynamo> ReturnValue, IProperty IDProperty, Dynamo Item)
         {
+            Contract.Requires<ArgumentNullException>(IDProperty != null);
+            if (Item == null)
+                return;
+            if (ReturnValue == null)
+                ReturnValue = new List<Dynamo>();
             object IDValue = IDProperty.GetValue(Item);
             Dynamo Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
             if (Value == null)
@@ -483,17 +488,21 @@ namespace Utilities.ORM.Manager
 
         private IEnumerable<ObjectType> ConvertValues<ObjectType>(List<Dynamo> ReturnValue) where ObjectType : class, new()
         {
+            if (ReturnValue == null)
+                ReturnValue = new List<Dynamo>();
             return ReturnValue.ForEachParallel(x => ConvertValue<ObjectType>(x));
         }
 
         private ObjectType GetCached<ObjectType>(ref Dynamo ReturnValue, string KeyName) where ObjectType : class, new()
         {
+            Contract.Requires(this.Cache != null);
             ReturnValue = (Dynamo)Cache[KeyName];
             return ConvertValue<ObjectType>(ReturnValue);
         }
 
         private IEnumerable<ObjectType> GetListCached<ObjectType>(ref List<Dynamo> ReturnValue, string KeyName) where ObjectType : class, new()
         {
+            Contract.Requires(this.Cache != null);
             ReturnValue = (List<Dynamo>)Cache[KeyName];
             return ConvertValues<ObjectType>(ReturnValue);
         }

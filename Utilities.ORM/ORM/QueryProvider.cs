@@ -190,13 +190,14 @@ namespace Utilities.ORM
         /// </summary>
         /// <typeparam name="ObjectType">Object type</typeparam>
         /// <param name="PageSize">Page size</param>
-        /// <param name="Parameters">Parameters</param>
         /// <param name="CurrentPage">Current page (0 based)</param>
+        /// <param name="OrderBy">The order by portion of the query</param>
+        /// <param name="Parameters">Parameters</param>
         /// <returns>The objects specified</returns>
-        public static IEnumerable<ObjectType> Paged<ObjectType>(int PageSize = 25, int CurrentPage = 0, params IParameter[] Parameters)
+        public static IEnumerable<ObjectType> Paged<ObjectType>(int PageSize = 25, int CurrentPage = 0, string OrderBy = "", params IParameter[] Parameters)
             where ObjectType : class,new()
         {
-            return new Session().Paged<ObjectType>(PageSize, CurrentPage, Parameters);
+            return new Session().Paged<ObjectType>(PageSize, CurrentPage, OrderBy, Parameters);
         }
 
         /// <summary>

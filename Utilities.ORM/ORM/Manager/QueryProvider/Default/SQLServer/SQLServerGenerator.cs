@@ -369,14 +369,17 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <summary>
         /// Generates a batch that will get a specific page of data that satisfies the parameters specified
         /// </summary>
-        /// <param name="Parameters">Parameters</param>
-        /// <param name="CurrentPage">The current page (starting at 0)</param>
         /// <param name="PageSize">Page size</param>
+        /// <param name="CurrentPage">The current page (starting at 0)</param>
+        /// <param name="OrderBy">The order by portion of the query</param>
+        /// <param name="Parameters">Parameters</param>
         /// <returns>Batch with the appropriate commands</returns>
-        public IBatch Paged(int PageSize, int CurrentPage, params IParameter[] Parameters)
+        public IBatch Paged(int PageSize, int CurrentPage, string OrderBy, params IParameter[] Parameters)
         {
             string WhereCommand = "";
-            string OrderBy = Mapping.IDProperties.ToString(x => x.Name);
+            string FinalOrderBy = Mapping.IDProperties.ToString(x => x.Name);
+            if (!string.IsNullOrEmpty(OrderBy))
+                FinalOrderBy = OrderBy;
             int PageStart = CurrentPage * PageSize;
             if (Parameters != null && Parameters.Length > 0)
                 WhereCommand += " WHERE " + Parameters.ToString(x => x.ToString(), " AND ");
@@ -385,7 +388,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 .AddCommand(null,
                     null, string.Format(CultureInfo.InvariantCulture,
                     "SELECT Paged.* FROM (SELECT ROW_NUMBER() OVER (ORDER BY {0}) AS Row, Query.* FROM (SELECT {1} FROM {2} {3}) as Query) AS Paged WHERE Row>{4} AND Row<={5}",
-                    OrderBy,
+                    FinalOrderBy,
                     GetColumns(Mapping),
                     Mapping.TableName,
                     WhereCommand,

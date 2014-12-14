@@ -40,11 +40,6 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
     public class DatabaseBatch : IBatch
     {
         /// <summary>
-        /// Used to parse SQL commands to find parameters (when batching)
-        /// </summary>
-        private static Regex ParameterRegex = new Regex(@"[^@](?<ParamStart>[:@?])(?<ParamName>\w+)", RegexOptions.Compiled);
-
-        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="Source">Source info</param>
@@ -54,6 +49,11 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
             this.Commands = new List<Command>();
             this.Source = Source;
         }
+
+        /// <summary>
+        /// Used to parse SQL commands to find parameters (when batching)
+        /// </summary>
+        private static Regex ParameterRegex = new Regex(@"[^@](?<ParamStart>[:@?])(?<ParamName>\w+)", RegexOptions.Compiled);
 
         /// <summary>
         /// Command count
@@ -179,6 +179,9 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
 
         private IList<IList<dynamic>> ExecuteCommands()
         {
+            Contract.Requires(this.Source != null);
+            if (Commands == null)
+                return new List<IList<dynamic>>();
             IList<IList<dynamic>> ReturnValue = new List<IList<dynamic>>();
             if (Commands.Count == 0)
             {

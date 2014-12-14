@@ -315,16 +315,17 @@ namespace Utilities.ORM
         /// </summary>
         /// <param name="PageSize">Page size</param>
         /// <param name="CurrentPage">Current page (0 based)</param>
+        /// <param name="OrderBy">The order by portion of the query</param>
         /// <param name="Params">Parameters used to specify what to load</param>
         /// <returns>All items that fit the specified query</returns>
-        public static IEnumerable<ObjectType> Paged(int PageSize = 25, int CurrentPage = 0, params IParameter[] Params)
+        public static IEnumerable<ObjectType> Paged(int PageSize = 25, int CurrentPage = 0, string OrderBy = "", params IParameter[] Params)
         {
             IEnumerable<ObjectType> instance = new List<ObjectType>();
             LoadingEventArgs E = new LoadingEventArgs();
             ObjectBaseClass<ObjectType, IDType>.OnLoading(null, E);
             if (!E.Stop)
             {
-                instance = QueryProvider.Paged<ObjectType>(PageSize, CurrentPage, Params);
+                instance = QueryProvider.Paged<ObjectType>(PageSize, CurrentPage, OrderBy, Params);
                 foreach (ObjectType Item in instance)
                 {
                     Item.OnLoaded(new LoadedEventArgs());

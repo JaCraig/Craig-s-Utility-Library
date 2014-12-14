@@ -85,13 +85,7 @@ namespace Utilities.ORM.Manager
             Parameters.ForEach(x => { KeyName = x.AddParameter(KeyName); });
             if (Cache.ContainsKey(KeyName))
             {
-                ReturnValue = (List<Dynamo>)Cache[KeyName];
-                return ReturnValue.ForEachParallel(x =>
-                {
-                    ObjectType Value = x.To<ObjectType>();
-                    ((IORMObject)Value).Session0 = this;
-                    return Value;
-                });
+                return GetListCached<ObjectType>(ref ReturnValue, KeyName);
             }
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
@@ -101,22 +95,12 @@ namespace Utilities.ORM.Manager
                     foreach (Dynamo Item in QueryProvider.Generate<ObjectType>(Source, Mapping).All(Parameters).Execute()[0])
                     {
                         IProperty IDProperty = Mapping.IDProperties.FirstOrDefault();
-                        object IDValue = IDProperty.GetValue(Item);
-                        Dynamo Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
-                        if (Value == null)
-                            ReturnValue.Add(Item);
-                        else
-                            Item.CopyTo(Value);
+                        CopyOrAdd(ReturnValue, IDProperty, Item);
                     }
                 }
             }
             Cache.Add(KeyName, ReturnValue, new string[] { typeof(ObjectType).GetName() });
-            return ReturnValue.ForEachParallel(x =>
-            {
-                ObjectType Value = x.To<ObjectType>();
-                ((IORMObject)Value).Session0 = this;
-                return Value;
-            });
+            return ConvertValues<ObjectType>(ReturnValue);
         }
 
         /// <summary>
@@ -134,10 +118,7 @@ namespace Utilities.ORM.Manager
             Parameters.ForEach(x => { KeyName = x.AddParameter(KeyName); });
             if (Cache.ContainsKey(KeyName))
             {
-                ReturnValue = (Dynamo)Cache[KeyName];
-                if (ReturnValue == null)
-                    return default(ObjectType);
-                return ReturnValue.To<ObjectType>().Chain(x => { ((IORMObject)x).Session0 = this; });
+                return GetCached<ObjectType>(ref ReturnValue, KeyName);
             }
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
@@ -145,19 +126,11 @@ namespace Utilities.ORM.Manager
                 if (Mapping != null)
                 {
                     Dynamo Value = QueryProvider.Generate<ObjectType>(Source, Mapping).Any(Parameters).Execute()[0].FirstOrDefault();
-                    if (Value != null)
-                    {
-                        if (ReturnValue == null)
-                            ReturnValue = Value;
-                        else
-                            Value.CopyTo(ReturnValue);
-                    }
+                    ReturnValue = CopyOrAssign(ReturnValue, Value);
                 }
             }
             Cache.Add(KeyName, ReturnValue, new string[] { typeof(ObjectType).GetName() });
-            if (ReturnValue == null)
-                return default(ObjectType);
-            return ReturnValue.To<ObjectType>().Chain(x => { ((IORMObject)x).Session0 = this; });
+            return ConvertValue<ObjectType>(ReturnValue);
         }
 
         /// <summary>
@@ -175,10 +148,7 @@ namespace Utilities.ORM.Manager
             string KeyName = typeof(ObjectType).GetName() + "_Any_" + ID.ToString();
             if (Cache.ContainsKey(KeyName))
             {
-                ReturnValue = (Dynamo)Cache[KeyName];
-                if (ReturnValue == null)
-                    return default(ObjectType);
-                return ReturnValue.To<ObjectType>().Chain(x => { ((IORMObject)x).Session0 = this; });
+                return GetCached<ObjectType>(ref ReturnValue, KeyName);
             }
             string StringID = ID.ToString();
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
@@ -192,20 +162,12 @@ namespace Utilities.ORM.Manager
                         Dynamo Value = typeof(IDType) == typeof(string) ?
                             QueryProvider.Generate<ObjectType>(Source, Mapping).Any(new StringEqualParameter(StringID, IDProperty.FieldName, StringID.Length, IDProperty.FieldName, Source.ParameterPrefix)).Execute()[0].FirstOrDefault() :
                             QueryProvider.Generate<ObjectType>(Source, Mapping).Any(new EqualParameter<IDType>(ID, IDProperty.FieldName, IDProperty.FieldName, Source.ParameterPrefix)).Execute()[0].FirstOrDefault();
-                        if (Value != null)
-                        {
-                            if (ReturnValue == null)
-                                ReturnValue = Value;
-                            else
-                                Value.CopyTo(ReturnValue);
-                        }
+                        ReturnValue = CopyOrAssign(ReturnValue, Value);
                     }
                 }
             }
             Cache.Add(KeyName, ReturnValue, new string[] { typeof(ObjectType).GetName() });
-            if (ReturnValue == null)
-                return default(ObjectType);
-            return ReturnValue.To<ObjectType>().Chain(x => { ((IORMObject)x).Session0 = this; });
+            return ConvertValue<ObjectType>(ReturnValue);
         }
 
         /// <summary>
@@ -257,14 +219,7 @@ namespace Utilities.ORM.Manager
                             .Execute()[0])
                         {
                             IProperty IDProperty = Property.ForeignMapping.IDProperties.FirstOrDefault();
-                            object IDValue = IDProperty.GetValue(Item);
-                            Dynamo Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
-                            if (Value == null)
-                                ReturnValue.Add(Item);
-                            else
-                            {
-                                Item.CopyTo(Value);
-                            }
+                            CopyOrAdd(ReturnValue, IDProperty, Item);
                         }
                     }
                 }
@@ -298,20 +253,13 @@ namespace Utilities.ORM.Manager
                         {
                             foreach (Dynamo Item in QueryProvider.Generate<DataType>(Source, Mapping).All(Parameter).Execute()[0])
                             {
-                                object IDValue = IDProperty.GetValue(Item);
-                                Dynamo Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
-                                Item.CopyTo(Value);
+                                CopyOrAdd(ReturnValue, IDProperty, Item);
                             }
                         }
                     }
                 }
             }
-            return ReturnValue.ForEachParallel(x =>
-            {
-                DataType Value = x.To<DataType>();
-                ((IORMObject)Value).Session0 = this;
-                return Value;
-            }).ToList();
+            return ConvertValues<DataType>(ReturnValue).ToList();
         }
 
         /// <summary>
@@ -373,9 +321,10 @@ namespace Utilities.ORM.Manager
         /// <typeparam name="ObjectType">Object type</typeparam>
         /// <param name="PageSize">Page size</param>
         /// <param name="CurrentPage">Current page (starting with 0)</param>
+        /// <param name="OrderBy">The order by portion of the query</param>
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>A paged list of items that match the criteria</returns>
-        public IEnumerable<ObjectType> Paged<ObjectType>(int PageSize = 25, int CurrentPage = 0, params IParameter[] Parameters)
+        public IEnumerable<ObjectType> Paged<ObjectType>(int PageSize = 25, int CurrentPage = 0, string OrderBy = "", params IParameter[] Parameters)
             where ObjectType : class,new()
         {
             Parameters = Parameters.Check(new IParameter[] { });
@@ -384,13 +333,7 @@ namespace Utilities.ORM.Manager
             System.Collections.Generic.List<Dynamo> ReturnValue = new System.Collections.Generic.List<Dynamo>();
             if (Cache.ContainsKey(KeyName))
             {
-                ReturnValue = (List<Dynamo>)Cache[KeyName];
-                return ReturnValue.ForEachParallel(x =>
-                {
-                    ObjectType Value = x.To<ObjectType>();
-                    ((IORMObject)Value).Session0 = this;
-                    return Value;
-                });
+                return GetListCached<ObjectType>(ref ReturnValue, KeyName);
             }
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
@@ -401,26 +344,16 @@ namespace Utilities.ORM.Manager
                     if (IDProperty != null)
                     {
                         foreach (Dynamo Item in QueryProvider.Generate<ObjectType>(Source, Mapping)
-                            .Paged(PageSize, CurrentPage, Parameters)
+                            .Paged(PageSize, CurrentPage, OrderBy, Parameters)
                             .Execute()[0])
                         {
-                            object IDValue = IDProperty.GetValue(Item);
-                            Dynamo Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
-                            if (Value == null)
-                                ReturnValue.Add(Item);
-                            else
-                                Item.CopyTo(Value);
+                            CopyOrAdd(ReturnValue, IDProperty, Item);
                         }
                     }
                 }
             }
             Cache.Add(KeyName, ReturnValue, new string[] { typeof(ObjectType).GetName() });
-            return ReturnValue.ForEachParallel(x =>
-            {
-                ObjectType Value = x.To<ObjectType>();
-                ((IORMObject)Value).Session0 = this;
-                return Value;
-            });
+            return ConvertValues<ObjectType>(ReturnValue);
         }
 
         /// <summary>
@@ -475,6 +408,31 @@ namespace Utilities.ORM.Manager
             }
         }
 
+        private static void CopyOrAdd(List<Dynamo> ReturnValue, IProperty IDProperty, Dynamo Item)
+        {
+            Contract.Requires<ArgumentNullException>(IDProperty != null);
+            if (Item == null)
+                return;
+            if (ReturnValue == null)
+                ReturnValue = new List<Dynamo>();
+            object IDValue = IDProperty.GetValue(Item);
+            Dynamo Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
+            if (Value == null)
+                ReturnValue.Add(Item);
+            else
+                Item.CopyTo(Value);
+        }
+
+        private static Dynamo CopyOrAssign(Dynamo ReturnValue, Dynamo Value)
+        {
+            if (Value == null)
+                return ReturnValue;
+            if (ReturnValue == null)
+                return Value;
+            Value.CopyTo(ReturnValue);
+            return ReturnValue;
+        }
+
         private static void JoinsDelete<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch, List<object> ObjectsSeen)
             where ObjectType : class, new()
         {
@@ -519,6 +477,34 @@ namespace Utilities.ORM.Manager
                     TempBatch.AddCommand(Property.CascadeJoinsSave(Object, Source, ObjectsSeen.ToList()));
                 }
             }
+        }
+
+        private ObjectType ConvertValue<ObjectType>(Dynamo ReturnValue) where ObjectType : class,new()
+        {
+            if (ReturnValue == null)
+                return default(ObjectType);
+            return ReturnValue.To<ObjectType>().Chain(x => { ((IORMObject)x).Session0 = this; });
+        }
+
+        private IEnumerable<ObjectType> ConvertValues<ObjectType>(List<Dynamo> ReturnValue) where ObjectType : class, new()
+        {
+            if (ReturnValue == null)
+                ReturnValue = new List<Dynamo>();
+            return ReturnValue.ForEachParallel(x => ConvertValue<ObjectType>(x));
+        }
+
+        private ObjectType GetCached<ObjectType>(ref Dynamo ReturnValue, string KeyName) where ObjectType : class, new()
+        {
+            Contract.Requires(this.Cache != null);
+            ReturnValue = (Dynamo)Cache[KeyName];
+            return ConvertValue<ObjectType>(ReturnValue);
+        }
+
+        private IEnumerable<ObjectType> GetListCached<ObjectType>(ref List<Dynamo> ReturnValue, string KeyName) where ObjectType : class, new()
+        {
+            Contract.Requires(this.Cache != null);
+            ReturnValue = (List<Dynamo>)Cache[KeyName];
+            return ConvertValues<ObjectType>(ReturnValue);
         }
     }
 }

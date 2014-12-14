@@ -64,6 +64,11 @@ namespace UnitTests.DataTypes.ExtensionMethods
 
     public class TypeConversion
     {
+        public TypeConversion()
+        {
+            var Bootstrapper = Utilities.IoC.Manager.Bootstrapper;
+        }
+
         [Fact]
         public void DbTypeToSqlDbType()
         {
