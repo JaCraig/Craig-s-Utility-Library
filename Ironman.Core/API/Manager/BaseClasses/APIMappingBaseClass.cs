@@ -57,6 +57,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
             SetDelete(x => { QueryProvider.Delete(x); return true; });
             SetSave(x => { QueryProvider.Save<ClassType, IDType>(x); return true; });
             SetPaged((x, y, z) => QueryProvider.Paged<ClassType>(x, y, z));
+            SetPageCount(x => QueryProvider.PageCount<ClassType>(x));
             this.Versions = Versions.Check(x => x.Length > 0, new int[] { 1 }).ToList();
         }
 
@@ -99,6 +100,12 @@ namespace Ironman.Core.API.Manager.BaseClasses
         /// Object type
         /// </summary>
         public Type ObjectType { get; private set; }
+
+        /// <summary>
+        /// Gets the page count function.
+        /// </summary>
+        /// <value>The page count function.</value>
+        public Func<int, int> PageCountFunc { get; private set; }
 
         /// <summary>
         /// Gets the paged function.
@@ -317,6 +324,17 @@ namespace Ironman.Core.API.Manager.BaseClasses
         }
 
         /// <summary>
+        /// Gets the page count
+        /// </summary>
+        /// <param name="mappingHolder">The mapping holder.</param>
+        /// <param name="PageSize">Size of the page.</param>
+        /// <returns>The page count</returns>
+        public int PageCount(MappingHolder mappingHolder, int PageSize)
+        {
+            return PageCountFunc(PageSize);
+        }
+
+        /// <summary>
         /// Gets all items of the mapped type
         /// </summary>
         /// <param name="Mappings">The mapping holder</param>
@@ -327,7 +345,26 @@ namespace Ironman.Core.API.Manager.BaseClasses
         /// <returns>All items of the mapped type</returns>
         public IEnumerable<Dynamo> Paged(MappingHolder Mappings, int PageSize, int Page, string[] OrderBy, string[] EmbeddedProperties)
         {
-            IEnumerable<ClassType> Objects = PagedFunc(PageSize, Page, OrderBy.ToString(x => x, ","));
+            string OrderByClauseFinal = "";
+            string Splitter = "";
+            foreach (string OrderByClause in OrderBy)
+            {
+                string[] SplitValues = OrderByClause.Split(' ');
+                if (SplitValues.Length > 0)
+                {
+                    if (Properties.Where(x => x is IReference || x is IID).Any(x => string.Equals(x.Name, SplitValues[0], StringComparison.InvariantCulture)))
+                    {
+                        OrderByClauseFinal += Splitter + SplitValues[0];
+                        if (SplitValues.Length > 1)
+                        {
+                            SplitValues[1] = SplitValues[1].Equals("DESC", StringComparison.InvariantCultureIgnoreCase) ? "DESC" : "ASC";
+                            OrderByClauseFinal += " " + SplitValues[1];
+                        }
+                        Splitter = ",";
+                    }
+                }
+            }
+            IEnumerable<ClassType> Objects = PagedFunc(PageSize, Page, OrderByClauseFinal);
             if (Objects == null)
                 Objects = new List<ClassType>();
             List<Dynamo> ReturnValue = new List<Dynamo>();
@@ -487,6 +524,17 @@ namespace Ironman.Core.API.Manager.BaseClasses
         public IAPIMapping<ClassType> SetDelete(Func<ClassType, bool> Value)
         {
             DeleteFunc = Value;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the page count.
+        /// </summary>
+        /// <param name="Value">The value.</param>
+        /// <returns>Page count</returns>
+        public IAPIMapping<ClassType> SetPageCount(Func<int, int> Value)
+        {
+            this.PageCountFunc = Value;
             return this;
         }
 

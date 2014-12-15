@@ -127,6 +127,25 @@ namespace Ironman.Core.API.BaseClasses
         }
 
         /// <summary>
+        /// Gets the page count specified of the item of the specified type, with the specified page ID
+        /// GET: {APIRoot}/{ModelName}/Paged/
+        /// </summary>
+        /// <param name="ModelName">Model name</param>
+        /// <returns>The resulting items</returns>
+        [HttpGet]
+        public virtual ActionResult PageCount(string ModelName)
+        {
+            Contract.Requires<ArgumentNullException>(Request != null, "Request");
+            Contract.Requires<ArgumentNullException>(Request.QueryString != null, "Request.QueryString");
+            int PageSize = 0;
+            if (!int.TryParse(Request.QueryString.Get("PageSize").Check("20"), out PageSize))
+                PageSize = 20;
+            return Serialize<Dynamo>(APIManager.PageCount(Version,
+                ModelName,
+                PageSize));
+        }
+
+        /// <summary>
         /// Gets the paged group specified of the item of the specified type, with the specified
         /// page ID
         /// GET: {APIRoot}/{ModelName}/Paged/{PageNumber}

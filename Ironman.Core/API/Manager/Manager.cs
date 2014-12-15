@@ -298,6 +298,29 @@ namespace Ironman.Core.API.Manager
         }
 
         /// <summary>
+        /// Gets the page count for the mapping specified
+        /// </summary>
+        /// <param name="Version">API version number</param>
+        /// <param name="Mapping">Mapping name</param>
+        /// <param name="PageSize">Size of the page.</param>
+        /// <returns>The resulting items</returns>
+        public Dynamo PageCount(int Version, string Mapping, int PageSize)
+        {
+            try
+            {
+                IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
+                if (!TempMappings.ContainsKey(Mapping))
+                    return new Dynamo(new { PageCount = 0 });
+                Dynamo ReturnValue = new Dynamo(new { PageCount = TempMappings[Mapping].PageCount(Mappings.GetValue(Version), PageSize) });
+                return ReturnValue;
+            }
+            catch
+            {
+                return new Dynamo(new { PageCount = 0 });
+            }
+        }
+
+        /// <summary>
         /// Gets all items of the specified mapping of the specified page
         /// </summary>
         /// <param name="Version">API version number</param>
@@ -337,7 +360,8 @@ namespace Ironman.Core.API.Manager
         {
             Contract.Requires<ArgumentNullException>(routes != null, "routes");
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ControllerName), "ControllerName");
-            AreaName = AreaName.Check(ControllerName);
+            if (string.IsNullOrEmpty(AreaName))
+                AreaName = ControllerName;
             foreach (int VersionNumber in Mappings.Keys)
             {
                 routes.MapRoute(
@@ -392,6 +416,20 @@ namespace Ironman.Core.API.Manager
                     url: AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}/{PropertyName}/{PropertyID}",
                     defaults: new { controller = ControllerName, action = "DeleteProperty" },
                     constraints: new { httpMethod = new HttpMethodConstraint("DELETE") }
+                );
+
+                routes.MapRoute(
+                    name: "Ironman_API_GetPageCount",
+                    url: AreaName + "/v" + VersionNumber + "/{ModelName}/Paged",
+                    defaults: new { controller = ControllerName, action = "PageCount" },
+                    constraints: new { httpMethod = new HttpMethodConstraint("GET") }
+                );
+
+                routes.MapRoute(
+                    name: "Ironman_API_GetPaged",
+                    url: AreaName + "/v" + VersionNumber + "/{ModelName}/Paged/{PageNumber}",
+                    defaults: new { controller = ControllerName, action = "Paged" },
+                    constraints: new { httpMethod = new HttpMethodConstraint("GET") }
                 );
 
                 routes.MapRoute(

@@ -64,6 +64,12 @@ namespace Ironman.Core.API.Manager.Interfaces
         Func<ClassType, bool> DeleteFunc { get; }
 
         /// <summary>
+        /// Gets the page count function.
+        /// </summary>
+        /// <value>The page count function.</value>
+        Func<int, int> PageCountFunc { get; }
+
+        /// <summary>
         /// Gets the paged function.
         /// </summary>
         /// <value>The paged function.</value>
@@ -184,6 +190,13 @@ namespace Ironman.Core.API.Manager.Interfaces
         IAPIMapping<ClassType> SetDelete(Func<ClassType, bool> Value);
 
         /// <summary>
+        /// Sets the page count.
+        /// </summary>
+        /// <param name="Value">The value.</param>
+        /// <returns></returns>
+        IAPIMapping<ClassType> SetPageCount(Func<int, int> Value);
+
+        /// <summary>
         /// Sets the paged function.
         /// </summary>
         /// <param name="Value">Function used to get all items of the specified type of the page</param>
@@ -269,6 +282,14 @@ namespace Ironman.Core.API.Manager.Interfaces
         /// <param name="Property">Property name</param>
         /// <returns>The property specified</returns>
         dynamic GetProperty(string ID, MappingHolder Mappings, string Property, params string[] EmbeddedProperties);
+
+        /// <summary>
+        /// Gets the page count
+        /// </summary>
+        /// <param name="mappingHolder">The mapping holder.</param>
+        /// <param name="PageSize">Size of the page.</param>
+        /// <returns>The page count</returns>
+        int PageCount(MappingHolder mappingHolder, int PageSize);
 
         /// <summary>
         /// Gets all items of the mapped type
