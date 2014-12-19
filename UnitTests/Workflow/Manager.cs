@@ -32,7 +32,7 @@ using Xunit;
 
 namespace Utilities.Tests.Workflow
 {
-    public class Manager:TestingDirectoryFixture
+    public class Manager : TestingDirectoryFixture
     {
         [Fact]
         public void CreateWorkflow()
@@ -67,6 +67,22 @@ namespace Utilities.Tests.Workflow
                 Assert.Equal(1, Workflow.Start(1));
             }
             Assert.True(new System.IO.FileInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/Workflows.obj").Exists);
+        }
+
+        [Fact]
+        public void GetWorkflow()
+        {
+            using (Utilities.Workflow.Manager.Manager TempOperation = new Utilities.Workflow.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.FileSystem.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>()))
+            {
+                IWorkflow<dynamic> Workflow = TempOperation.CreateWorkflow<dynamic>("ASDF");
+                Assert.NotNull(Workflow);
+                Assert.Equal("ASDF", Workflow.Name);
+                Assert.Equal(typeof(object), Workflow.DataType);
+                Workflow = TempOperation["ASDF"];
+                Assert.NotNull(Workflow);
+                Assert.Equal("ASDF", Workflow.Name);
+                Assert.Equal(typeof(object), Workflow.DataType);
+            }
         }
 
         [Fact]

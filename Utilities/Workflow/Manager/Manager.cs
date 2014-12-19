@@ -23,15 +23,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Threading.Tasks;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.IO;
 using Utilities.IO.FileSystem.Interfaces;
-using Utilities.IoC.Interfaces;
 using Utilities.Workflow.Manager.Interfaces;
 
 namespace Utilities.Workflow.Manager
@@ -42,7 +37,7 @@ namespace Utilities.Workflow.Manager
     public class Manager : SafeDisposableBaseClass
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Manager" /> class.
+        /// Initializes a new instance of the <see cref="Manager"/> class.
         /// </summary>
         /// <param name="FileManager">The file manager.</param>
         /// <param name="SerializationManager">The serialization manager.</param>
@@ -61,38 +56,46 @@ namespace Utilities.Workflow.Manager
         /// <summary>
         /// Gets the last modified date for the workflows
         /// </summary>
-        /// <value>
-        /// The last modified date for the workflows
-        /// </value>
+        /// <value>The last modified date for the workflows</value>
         public DateTime LastModified { get; private set; }
 
         /// <summary>
         /// Gets or sets the file manager.
         /// </summary>
-        /// <value>
-        /// The file manager.
-        /// </value>
+        /// <value>The file manager.</value>
         private IO.FileSystem.Manager FileManager { get; set; }
 
         /// <summary>
         /// Gets or sets the serialization manager.
         /// </summary>
-        /// <value>
-        /// The serialization manager.
-        /// </value>
+        /// <value>The serialization manager.</value>
         private IO.Serializers.Manager SerializationManager { get; set; }
 
-        /// <summary> 
-        /// Gets or sets the workflows. 
-        /// </summary> 
+        /// <summary>
+        /// Gets or sets the workflows.
+        /// </summary>
         /// <value>The workflows.</value>
         private Dictionary<string, IWorkflow> Workflows { get; set; }
 
-        /// <summary> 
-        /// Creates the workflow. 
-        /// </summary> 
+        /// <summary>
+        /// Gets the <see cref="IWorkflow"/> with the specified name.
+        /// </summary>
+        /// <value>The <see cref="IWorkflow"/>.</value>
         /// <param name="Name">The name.</param>
-        /// <returns>The workflow that is created</returns> 
+        /// <returns>The workflow if it exists, null otherwise</returns>
+        public IWorkflow this[string Name]
+        {
+            get
+            {
+                return Workflows.GetValue(Name);
+            }
+        }
+
+        /// <summary>
+        /// Creates the workflow.
+        /// </summary>
+        /// <param name="Name">The name.</param>
+        /// <returns>The workflow that is created</returns>
         public IWorkflow<T> CreateWorkflow<T>(string Name)
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name), "Name");
@@ -104,7 +107,7 @@ namespace Utilities.Workflow.Manager
         }
 
         ///<summary>
-        /// Removes the workflow. 
+        /// Removes the workflow.
         /// </summary>
         /// <param name="Workflow">The workflow.</param>
         /// <returns>True if it is removed, false otherwise</returns>
@@ -114,11 +117,9 @@ namespace Utilities.Workflow.Manager
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
-        /// <returns>
-        /// A <see cref="System.String" /> that represents this instance.
-        /// </returns>
+        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString()
         {
             return "Workflows: " + Workflows.ToString(x => x.Key) + "\r\n";
@@ -127,7 +128,9 @@ namespace Utilities.Workflow.Manager
         /// <summary>
         /// Function to override in order to dispose objects
         /// </summary>
-        /// <param name="Managed">If true, managed and unmanaged objects should be disposed. Otherwise unmanaged objects only.</param>
+        /// <param name="Managed">
+        /// If true, managed and unmanaged objects should be disposed. Otherwise unmanaged objects only.
+        /// </param>
         protected override void Dispose(bool Managed)
         {
             new System.IO.DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/").Create();
