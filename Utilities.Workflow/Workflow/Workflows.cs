@@ -19,11 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Utilities.Workflow.Manager.Interfaces;
 
 namespace Utilities.Workflow
@@ -42,6 +37,27 @@ namespace Utilities.Workflow
         public static IWorkflow<T> CreateOrLoad<T>(string Name)
         {
             return IoC.Manager.Bootstrapper.Resolve<Manager.Manager>().CreateWorkflow<T>(Name);
+        }
+
+        /// <summary>
+        /// Determines if a workflow exists
+        /// </summary>
+        /// <param name="Name">The name of a workflow</param>
+        /// <returns>True if it exists, false otherwise</returns>
+        public static bool Exists(string Name)
+        {
+            return IoC.Manager.Bootstrapper.Resolve<Manager.Manager>().Exists(Name);
+        }
+
+        /// <summary>
+        /// Gets the specified workflow based on the specified name.
+        /// </summary>
+        /// <typeparam name="T">Object type that the workflow accepts</typeparam>
+        /// <param name="Name">The name of the workflow.</param>
+        /// <returns>The workflow if it exists, null otherwise</returns>
+        public static IWorkflow<T> Get<T>(string Name)
+        {
+            return IoC.Manager.Bootstrapper.Resolve<Manager.Manager>()[Name] as IWorkflow<T>;
         }
 
         /// <summary>

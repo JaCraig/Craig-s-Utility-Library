@@ -40,6 +40,16 @@ namespace Utilities.Workflow
         }
 
         /// <summary>
+        /// Determines if a workflow exists
+        /// </summary>
+        /// <param name="Name">The name of a workflow</param>
+        /// <returns>True if it exists, false otherwise</returns>
+        public static bool Exists(string Name)
+        {
+            return IoC.Manager.Bootstrapper.Resolve<Manager.Manager>().Exists(Name);
+        }
+
+        /// <summary>
         /// Gets the specified workflow based on the specified name.
         /// </summary>
         /// <typeparam name="T">Object type that the workflow accepts</typeparam>

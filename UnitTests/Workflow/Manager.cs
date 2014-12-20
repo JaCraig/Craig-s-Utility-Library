@@ -20,12 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnitTests.Fixtures;
-using Utilities.Workflow;
 using Utilities.Workflow.Manager;
 using Utilities.Workflow.Manager.Interfaces;
 using Xunit;
@@ -45,6 +40,22 @@ namespace Utilities.Tests.Workflow
                 Assert.Equal(typeof(object), Workflow.DataType);
             }
             Assert.True(new System.IO.FileInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/Workflows.obj").Exists);
+        }
+
+        [Fact]
+        public void GetWorkflow()
+        {
+            using (Utilities.Workflow.Manager.Manager TempOperation = new Utilities.Workflow.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.FileSystem.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>()))
+            {
+                IWorkflow<dynamic> Workflow = TempOperation.CreateWorkflow<dynamic>("ASDF");
+                Assert.NotNull(Workflow);
+                Assert.Equal("ASDF", Workflow.Name);
+                Assert.Equal(typeof(object), Workflow.DataType);
+                Workflow = TempOperation["ASDF"] as IWorkflow<dynamic>;
+                Assert.NotNull(Workflow);
+                Assert.Equal("ASDF", Workflow.Name);
+                Assert.Equal(typeof(object), Workflow.DataType);
+            }
         }
 
         [Fact]
@@ -70,22 +81,6 @@ namespace Utilities.Tests.Workflow
         }
 
         [Fact]
-        public void GetWorkflow()
-        {
-            using (Utilities.Workflow.Manager.Manager TempOperation = new Utilities.Workflow.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.FileSystem.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>()))
-            {
-                IWorkflow<dynamic> Workflow = TempOperation.CreateWorkflow<dynamic>("ASDF");
-                Assert.NotNull(Workflow);
-                Assert.Equal("ASDF", Workflow.Name);
-                Assert.Equal(typeof(object), Workflow.DataType);
-                Workflow = TempOperation["ASDF"];
-                Assert.NotNull(Workflow);
-                Assert.Equal("ASDF", Workflow.Name);
-                Assert.Equal(typeof(object), Workflow.DataType);
-            }
-        }
-
-        [Fact]
         public void Serialization()
         {
             using (Utilities.Workflow.Manager.Manager TempOperation = new Utilities.Workflow.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.FileSystem.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>()))
@@ -104,6 +99,20 @@ namespace Utilities.Tests.Workflow
                 Assert.Equal("ASDF", Workflow.Name);
                 Assert.Equal(typeof(object), Workflow.DataType);
                 Assert.Equal(3, Workflow.Start(1));
+            }
+        }
+
+        [Fact]
+        public void WorkflowExists()
+        {
+            using (Utilities.Workflow.Manager.Manager TempOperation = new Utilities.Workflow.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.FileSystem.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>()))
+            {
+                IWorkflow<dynamic> Workflow = TempOperation.CreateWorkflow<dynamic>("ASDF");
+                Assert.NotNull(Workflow);
+                Assert.Equal("ASDF", Workflow.Name);
+                Assert.Equal(typeof(object), Workflow.DataType);
+                Assert.True(TempOperation.Exists("ASDF"));
+                Assert.True(!TempOperation.Exists("ASDF2"));
             }
         }
     }

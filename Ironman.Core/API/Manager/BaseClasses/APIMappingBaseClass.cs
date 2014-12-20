@@ -345,6 +345,8 @@ namespace Ironman.Core.API.Manager.BaseClasses
         /// <returns>All items of the mapped type</returns>
         public IEnumerable<Dynamo> Paged(MappingHolder Mappings, int PageSize, int Page, string[] OrderBy, string[] EmbeddedProperties)
         {
+            if (OrderBy == null)
+                OrderBy = new string[0];
             string OrderByClauseFinal = "";
             string Splitter = "";
             foreach (string OrderByClause in OrderBy)

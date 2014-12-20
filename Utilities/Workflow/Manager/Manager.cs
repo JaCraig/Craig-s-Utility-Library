@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.IO;
@@ -99,11 +98,21 @@ namespace Utilities.Workflow.Manager
         public IWorkflow<T> CreateWorkflow<T>(string Name)
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name), "Name");
-            if (Workflows.Keys.Contains(Name))
+            if (Exists(Name))
                 return (IWorkflow<T>)Workflows[Name];
             IWorkflow<T> ReturnValue = new Workflow<T>(Name);
             Workflows.Add(new KeyValuePair<string, IWorkflow>(Name, ReturnValue));
             return ReturnValue;
+        }
+
+        /// <summary>
+        /// Determines if a workflow exists
+        /// </summary>
+        /// <param name="Name">The name of a workflow</param>
+        /// <returns>True if it exists, false otherwise</returns>
+        public bool Exists(string Name)
+        {
+            return Workflows.ContainsKey(Name);
         }
 
         ///<summary>

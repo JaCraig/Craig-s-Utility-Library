@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Utilities.DataTypes;
 using Utilities.IoC.Interfaces;
 using Utilities.Workflow.Manager.Interfaces;
@@ -50,9 +49,7 @@ namespace Utilities.Workflow.Manager
         /// <summary>
         /// Gets the type of the data expected
         /// </summary>
-        /// <value>
-        /// The type of the data expected
-        /// </value>
+        /// <value>The type of the data expected</value>
         public Type DataType { get { return typeof(T); } }
 
         /// <summary>
