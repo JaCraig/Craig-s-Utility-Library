@@ -67,9 +67,13 @@ namespace Utilities.ORM
         /// <returns>The list of objects requested</returns>
         public static IEnumerable<dynamic> All(string Command, CommandType Type, string ConnectionString, params object[] Parameters)
         {
-            return Batch(ConnectionString)
-                .AddCommand(null, null, Command, Type, Parameters)
-                .Execute()[0];
+            IParameter[] TempParameters = Parameters as IParameter[];
+            IBatch TempBatch = Batch(ConnectionString);
+            if (TempParameters == null)
+                TempBatch.AddCommand(null, null, Command, Type, Parameters);
+            else
+                TempBatch.AddCommand(null, null, Command, Type, TempParameters);
+            return TempBatch.Execute()[0];
         }
 
         /// <summary>
