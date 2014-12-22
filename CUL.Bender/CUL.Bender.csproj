@@ -113,8 +113,9 @@
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Bender">
-      <HintPath>..\packages\Bender.3.0.1.0\lib\Bender.dll</HintPath>
+    <Reference Include="Bender, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Bender.3.0.2.0\lib\Bender.dll</HintPath>
     </Reference>
     <Reference Include="Flexo, Version=1.0.19.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
