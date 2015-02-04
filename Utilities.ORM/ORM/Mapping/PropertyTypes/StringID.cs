@@ -120,7 +120,9 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// <param name="MicroORM">Micro ORM object</param>
         public override void CascadeDelete(ClassType Object, SQLHelper MicroORM)
         {
-
+            if (Object == null)
+                return;
+            MicroORM.Delete<ClassType>(Object);
         }
 
         /// <summary>
@@ -130,6 +132,16 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// <param name="MicroORM">Micro ORM object</param>
         public override void CascadeSave(ClassType Object, SQLHelper MicroORM)
         {
+            if (Object == null)
+                return;
+            List<IParameter> Params = new List<IParameter>();
+            foreach (IProperty Property in Mapping.Properties)
+            {
+                IParameter Parameter = ((IProperty<ClassType>)Property).GetAsParameter(Object);
+                if (Parameter != null)
+                    Params.Add(Parameter);
+            }
+            MicroORM.Save<ClassType, string>(Object, Params.ToArray());
         }
 
         /// <summary>
@@ -139,7 +151,12 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// <returns>The value as a parameter</returns>
         public override IParameter GetAsParameter(ClassType Object)
         {
-            return null;
+            if (Object == null)
+                return null;
+            string Item = CompiledExpression(Object);
+            if (Item == null)
+                return null;
+            return new Utilities.SQL.ParameterTypes.StringEqualParameter(Item, FieldName, Item.Length);
         }
 
         /// <summary>
@@ -149,7 +166,9 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// <returns>The value as an object</returns>
         public override object GetAsObject(ClassType Object)
         {
-            return null;
+            if (Object == null)
+                return null;
+            return CompiledExpression(Object);
         }
 
         /// <summary>

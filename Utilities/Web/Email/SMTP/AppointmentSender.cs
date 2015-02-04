@@ -19,10 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
+using System.IO;
 using System.Net.Mail;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.FileFormats;
-#endregion
 
 namespace Utilities.Web.Email.SMTP
 {
@@ -31,8 +31,6 @@ namespace Utilities.Web.Email.SMTP
     /// </summary>
     public class AppointmentSender : EmailSender
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -41,10 +39,6 @@ namespace Utilities.Web.Email.SMTP
         {
             AppointmentInfo = new VCalendar();
         }
-
-        #endregion
-
-        #region Public Functions
 
         /// <summary>
         /// Sends an email
@@ -98,6 +92,8 @@ namespace Utilities.Web.Email.SMTP
                             {
                                 Mail.Attachments.Add(Attachment);
                             }
+                            if (Attachments.Count > 0)
+                                Mail.Attachments.Add(new Attachment(new MemoryStream(AppointmentInfo.GetICalendar().ToByteArray()), "meeting.ics"));
                             Mail.Priority = Priority;
                             Mail.SubjectEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
                             Mail.BodyEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
@@ -119,15 +115,9 @@ namespace Utilities.Web.Email.SMTP
             }
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Contains all of the appointment info
         /// </summary>
         public VCalendar AppointmentInfo { get; set; }
-
-        #endregion
     }
 }

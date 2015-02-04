@@ -31,7 +31,7 @@ using Xunit;
 
 namespace UnitTests.ORM.Test2
 {
-    public class ORMTest2:IDisposable
+    public class ORMTest2 : IDisposable
     {
         public ORMTest2()
         {
@@ -39,22 +39,7 @@ namespace UnitTests.ORM.Test2
         }
 
         [Fact]
-        public void DatabaseCreation()
-        {
-            Database DatabaseObject = SQLServer.GetDatabaseStructure("Data Source=localhost;Initial Catalog=ORMTestDatabase2;Integrated Security=SSPI;Pooling=false");
-            Assert.Equal(8, DatabaseObject.Tables.Count);
-            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Project_"));
-            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Task_"));
-            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Task_Task"));
-            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Project_Task"));
-            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Project_Audit"));
-            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Task_Audit"));
-            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Task_TaskAudit"));
-            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Project_TaskAudit"));
-        }
-
-        [Fact]
-        public void Save()
+        public void All()
         {
             Task TempTask = new Task();
             TempTask.Description = "This is a test";
@@ -86,86 +71,13 @@ namespace UnitTests.ORM.Test2
             Tasks2.Add(TempTask);
             TestProject.Tasks = Tasks2;
             TestProject.Save();
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Project_", CommandType.Text, "Data Source=localhost;Initial Catalog=ORMTestDatabase2;Integrated Security=SSPI;Pooling=false"))
-            {
-                Helper.ExecuteReader();
-                if (Helper.Read())
-                {
-                    Assert.Equal("This is a test project", Helper.GetParameter<string>("Description_", ""));
-                    Assert.Equal("Test Project", Helper.GetParameter<string>("Name_", ""));
-                }
-                else
-                {
-                    Assert.False(true,"Nothing was inserted");
-                }
-            }
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Task_", CommandType.Text, "Data Source=localhost;Initial Catalog=ORMTestDatabase2;Integrated Security=SSPI;Pooling=false"))
-            {
-                Helper.ExecuteReader();
-                while (Helper.Read())
-                {
-                    Assert.Equal("This is a test", Helper.GetParameter<string>("Description_", ""));
-                    Assert.Contains(Helper.GetParameter<string>("Name_", ""), new string[] { "Sub task 1", "Sub task 2", "Sub task 3", "Test task" });
-                }
-            }
-        }
 
-        [Fact]
-        public void Update()
-        {
-            Task TempTask = new Task();
-            TempTask.Description = "This is a test";
-            TempTask.DueDate = new DateTime(1900, 1, 1);
-            TempTask.Name = "Test task";
-
-            List<Task> Tasks = new List<Task>();
-            Task SubTask = new Task();
-            SubTask.Description = "This is a test";
-            SubTask.DueDate = new DateTime(1900, 1, 1);
-            SubTask.Name = "Sub task 1";
-            Tasks.Add(SubTask);
-            SubTask = new Task();
-            SubTask.Description = "This is a test";
-            SubTask.DueDate = new DateTime(1900, 1, 1);
-            SubTask.Name = "Sub task 2";
-            Tasks.Add(SubTask);
-            SubTask = new Task();
-            SubTask.Description = "This is a test";
-            SubTask.DueDate = new DateTime(1900, 1, 1);
-            SubTask.Name = "Sub task 3";
-            Tasks.Add(SubTask);
-
-            TempTask.SubTasks = Tasks;
-            Project TestProject = new Project();
-            TestProject.Description = "This is a test project";
-            TestProject.Name = "Test Project";
-            List<Task> Tasks2 = new List<Task>();
-            Tasks2.Add(TempTask);
-            TestProject.Tasks = Tasks2;
-            TestProject.Save();
-            TestProject.Description = "Test description2";
-            TestProject.Save();
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Project_", CommandType.Text, "Data Source=localhost;Initial Catalog=ORMTestDatabase2;Integrated Security=SSPI;Pooling=false"))
+            IEnumerable<Task> TestObject = Task.All();
+            foreach (Task TestTask in TestObject)
             {
-                Helper.ExecuteReader();
-                if (Helper.Read())
-                {
-                    Assert.Equal("Test description2", Helper.GetParameter<string>("Description_", ""));
-                    Assert.Equal("Test Project", Helper.GetParameter<string>("Name_", ""));
-                }
-                else
-                {
-                    Assert.False(true,"Nothing was inserted");
-                }
-            }
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Task_", CommandType.Text, "Data Source=localhost;Initial Catalog=ORMTestDatabase2;Integrated Security=SSPI;Pooling=false"))
-            {
-                Helper.ExecuteReader();
-                while (Helper.Read())
-                {
-                    Assert.Equal("This is a test", Helper.GetParameter<string>("Description_", ""));
-                    Assert.Contains(Helper.GetParameter<string>("Name_", ""), new string[] { "Sub task 1", "Sub task 2", "Sub task 3", "Test task" });
-                }
+                Assert.Contains(TestTask.Name, new string[] { "Sub task 1", "Sub task 2", "Sub task 3", "Test task" });
+                Assert.Equal("This is a test", TestTask.Description);
+                Assert.Equal(new DateTime(1900, 1, 1), TestTask.DueDate);
             }
         }
 
@@ -219,22 +131,41 @@ namespace UnitTests.ORM.Test2
         }
 
         [Fact]
-        public void Scalar()
+        public void DatabaseCreation()
         {
-            List<Task> Tasks = new List<Task>();
-            for (int x = 0; x < 100; ++x)
+            Database DatabaseObject = SQLServer.GetDatabaseStructure("Data Source=localhost;Initial Catalog=ORMTestDatabase2;Integrated Security=SSPI;Pooling=false");
+            Assert.Equal(8, DatabaseObject.Tables.Count);
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Project_"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Task_"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Task_Task"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Project_Task"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Project_Audit"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Task_Audit"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Task_TaskAudit"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Project_TaskAudit"));
+        }
+
+        public void Dispose()
+        {
+            Utilities.ORM.ORM.Destroy();
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false"))
             {
-                Task SubTask = new Task();
-                SubTask.Description = "This is a test";
-                SubTask.DueDate = new DateTime(1900, 1, 1);
-                SubTask.Name = "Sub task 1";
-                SubTask.Save();
+                Helper.Batch().AddCommand("ALTER DATABASE ORMTestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
+                    .AddCommand("ALTER DATABASE ORMTestDatabase2 SET ONLINE", CommandType.Text)
+                    .AddCommand("DROP DATABASE ORMTestDatabase2", CommandType.Text);
+                Helper.ExecuteNonQuery();
             }
-            Assert.Equal(100, Task.Scalar<int>("COUNT(*)"));
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false"))
+            {
+                Helper.Batch().AddCommand("ALTER DATABASE ORMTestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
+                    .AddCommand("ALTER DATABASE ORMTestDatabase SET ONLINE", CommandType.Text)
+                    .AddCommand("DROP DATABASE ORMTestDatabase", CommandType.Text);
+                Helper.ExecuteNonQuery();
+            }
         }
 
         [Fact]
-        public void All()
+        public void NullDontReload()
         {
             Task TempTask = new Task();
             TempTask.Description = "This is a test";
@@ -267,13 +198,13 @@ namespace UnitTests.ORM.Test2
             TestProject.Tasks = Tasks2;
             TestProject.Save();
 
-            IEnumerable<Task> TestObject = Task.All();
-            foreach (Task TestTask in TestObject)
-            {
-                Assert.Contains(TestTask.Name, new string[] { "Sub task 1", "Sub task 2", "Sub task 3", "Test task" });
-                Assert.Equal("This is a test", TestTask.Description);
-                Assert.Equal(new DateTime(1900, 1, 1), TestTask.DueDate);
-            }
+            Project TestObject = Project.Any(new EqualParameter<long>(TestProject.ID, "ID_"));
+            Assert.Equal(1, TestObject.Tasks.Count());
+            TestObject.Tasks = new List<Task>();
+            Assert.Equal(0, TestObject.Tasks.Count());
+            TestObject.Tasks = null;
+            Assert.NotNull(TestObject.Tasks);
+            Assert.Equal(0, TestObject.Tasks.Count());
         }
 
         [Fact]
@@ -351,22 +282,134 @@ namespace UnitTests.ORM.Test2
             Assert.Equal(2, Task.PageCount("SELECT * FROM Task_ WHERE ID_>@ID", 25, new EqualParameter<long>(50, "ID")));
         }
 
-        public void Dispose()
+        [Fact]
+        public void Save()
         {
-            Utilities.ORM.ORM.Destroy();
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("",  CommandType.Text, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false"))
+            Task TempTask = new Task();
+            TempTask.Description = "This is a test";
+            TempTask.DueDate = new DateTime(1900, 1, 1);
+            TempTask.Name = "Test task";
+
+            List<Task> Tasks = new List<Task>();
+            Task SubTask = new Task();
+            SubTask.Description = "This is a test";
+            SubTask.DueDate = new DateTime(1900, 1, 1);
+            SubTask.Name = "Sub task 1";
+            Tasks.Add(SubTask);
+            SubTask = new Task();
+            SubTask.Description = "This is a test";
+            SubTask.DueDate = new DateTime(1900, 1, 1);
+            SubTask.Name = "Sub task 2";
+            Tasks.Add(SubTask);
+            SubTask = new Task();
+            SubTask.Description = "This is a test";
+            SubTask.DueDate = new DateTime(1900, 1, 1);
+            SubTask.Name = "Sub task 3";
+            Tasks.Add(SubTask);
+
+            TempTask.SubTasks = Tasks;
+            Project TestProject = new Project();
+            TestProject.Description = "This is a test project";
+            TestProject.Name = "Test Project";
+            List<Task> Tasks2 = new List<Task>();
+            Tasks2.Add(TempTask);
+            TestProject.Tasks = Tasks2;
+            TestProject.Save();
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Project_", CommandType.Text, "Data Source=localhost;Initial Catalog=ORMTestDatabase2;Integrated Security=SSPI;Pooling=false"))
             {
-                Helper.Batch().AddCommand("ALTER DATABASE ORMTestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
-                    .AddCommand("ALTER DATABASE ORMTestDatabase2 SET ONLINE", CommandType.Text)
-                    .AddCommand("DROP DATABASE ORMTestDatabase2", CommandType.Text);
-                Helper.ExecuteNonQuery();
+                Helper.ExecuteReader();
+                if (Helper.Read())
+                {
+                    Assert.Equal("This is a test project", Helper.GetParameter<string>("Description_", ""));
+                    Assert.Equal("Test Project", Helper.GetParameter<string>("Name_", ""));
+                }
+                else
+                {
+                    Assert.False(true, "Nothing was inserted");
+                }
             }
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("",  CommandType.Text, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false"))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Task_", CommandType.Text, "Data Source=localhost;Initial Catalog=ORMTestDatabase2;Integrated Security=SSPI;Pooling=false"))
             {
-                Helper.Batch().AddCommand("ALTER DATABASE ORMTestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
-                    .AddCommand("ALTER DATABASE ORMTestDatabase SET ONLINE", CommandType.Text)
-                    .AddCommand("DROP DATABASE ORMTestDatabase", CommandType.Text);
-                Helper.ExecuteNonQuery();
+                Helper.ExecuteReader();
+                while (Helper.Read())
+                {
+                    Assert.Equal("This is a test", Helper.GetParameter<string>("Description_", ""));
+                    Assert.Contains(Helper.GetParameter<string>("Name_", ""), new string[] { "Sub task 1", "Sub task 2", "Sub task 3", "Test task" });
+                }
+            }
+        }
+
+        [Fact]
+        public void Scalar()
+        {
+            List<Task> Tasks = new List<Task>();
+            for (int x = 0; x < 100; ++x)
+            {
+                Task SubTask = new Task();
+                SubTask.Description = "This is a test";
+                SubTask.DueDate = new DateTime(1900, 1, 1);
+                SubTask.Name = "Sub task 1";
+                SubTask.Save();
+            }
+            Assert.Equal(100, Task.Scalar<int>("COUNT(*)"));
+        }
+
+        [Fact]
+        public void Update()
+        {
+            Task TempTask = new Task();
+            TempTask.Description = "This is a test";
+            TempTask.DueDate = new DateTime(1900, 1, 1);
+            TempTask.Name = "Test task";
+
+            List<Task> Tasks = new List<Task>();
+            Task SubTask = new Task();
+            SubTask.Description = "This is a test";
+            SubTask.DueDate = new DateTime(1900, 1, 1);
+            SubTask.Name = "Sub task 1";
+            Tasks.Add(SubTask);
+            SubTask = new Task();
+            SubTask.Description = "This is a test";
+            SubTask.DueDate = new DateTime(1900, 1, 1);
+            SubTask.Name = "Sub task 2";
+            Tasks.Add(SubTask);
+            SubTask = new Task();
+            SubTask.Description = "This is a test";
+            SubTask.DueDate = new DateTime(1900, 1, 1);
+            SubTask.Name = "Sub task 3";
+            Tasks.Add(SubTask);
+
+            TempTask.SubTasks = Tasks;
+            Project TestProject = new Project();
+            TestProject.Description = "This is a test project";
+            TestProject.Name = "Test Project";
+            List<Task> Tasks2 = new List<Task>();
+            Tasks2.Add(TempTask);
+            TestProject.Tasks = Tasks2;
+            TestProject.Save();
+            TestProject.Description = "Test description2";
+            TestProject.Save();
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Project_", CommandType.Text, "Data Source=localhost;Initial Catalog=ORMTestDatabase2;Integrated Security=SSPI;Pooling=false"))
+            {
+                Helper.ExecuteReader();
+                if (Helper.Read())
+                {
+                    Assert.Equal("Test description2", Helper.GetParameter<string>("Description_", ""));
+                    Assert.Equal("Test Project", Helper.GetParameter<string>("Name_", ""));
+                }
+                else
+                {
+                    Assert.False(true, "Nothing was inserted");
+                }
+            }
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Task_", CommandType.Text, "Data Source=localhost;Initial Catalog=ORMTestDatabase2;Integrated Security=SSPI;Pooling=false"))
+            {
+                Helper.ExecuteReader();
+                while (Helper.Read())
+                {
+                    Assert.Equal("This is a test", Helper.GetParameter<string>("Description_", ""));
+                    Assert.Contains(Helper.GetParameter<string>("Name_", ""), new string[] { "Sub task 1", "Sub task 2", "Sub task 3", "Test task" });
+                }
             }
         }
     }

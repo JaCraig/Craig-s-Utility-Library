@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -33,7 +34,8 @@ using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.SQL;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.ORM.QueryProviders
 {
@@ -58,7 +60,7 @@ namespace Utilities.ORM.QueryProviders
             }
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Functions
 
@@ -85,7 +87,7 @@ namespace Utilities.ORM.QueryProviders
             Manager = new Reflection.AOP.AOPManager();
         }
 
-        #endregion
+        #endregion Setup
 
         #region AddMapping
 
@@ -106,7 +108,7 @@ namespace Utilities.ORM.QueryProviders
             }
         }
 
-        #endregion
+        #endregion AddMapping
 
         #region Any
 
@@ -128,14 +130,14 @@ namespace Utilities.ORM.QueryProviders
                     using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
                         if (Mapping.AnyCommand == null)
-                            ReturnValue = ORMObject.Any<ObjectType>("*", ReturnValue, () => Manager.Create<ObjectType>(),false, Parameters);
+                            ReturnValue = ORMObject.Any<ObjectType>("*", ReturnValue, () => Manager.Create<ObjectType>(), false, Parameters);
                         else
-                            ReturnValue = ORMObject.Any<ObjectType>(Mapping.AnyCommand.SQLCommand, Mapping.AnyCommand.CommandType, ReturnValue, () => Manager.Create<ObjectType>(),false, Parameters);
+                            ReturnValue = ORMObject.Any<ObjectType>(Mapping.AnyCommand.SQLCommand, Mapping.AnyCommand.CommandType, ReturnValue, () => Manager.Create<ObjectType>(), false, Parameters);
                     }
                 }
             }
             IORMObject TempReturnValue = ReturnValue as IORMObject;
-            if (TempReturnValue!=null)
+            if (TempReturnValue != null)
                 TempReturnValue.Session0 = CurrentSession;
             return ReturnValue;
         }
@@ -157,7 +159,7 @@ namespace Utilities.ORM.QueryProviders
                 {
                     using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
-                        ReturnValue = ORMObject.Any<ObjectType>(Columns, ReturnValue, () => Manager.Create<ObjectType>(),false, Parameters);
+                        ReturnValue = ORMObject.Any<ObjectType>(Columns, ReturnValue, () => Manager.Create<ObjectType>(), false, Parameters);
                     }
                 }
             }
@@ -185,7 +187,7 @@ namespace Utilities.ORM.QueryProviders
                 {
                     using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
-                        ReturnValue = ORMObject.Any<ObjectType>(Command, CommandType, ReturnValue, () => Manager.Create<ObjectType>(),false, Parameters);
+                        ReturnValue = ORMObject.Any<ObjectType>(Command, CommandType, ReturnValue, () => Manager.Create<ObjectType>(), false, Parameters);
                     }
                 }
             }
@@ -195,7 +197,7 @@ namespace Utilities.ORM.QueryProviders
             return ReturnValue;
         }
 
-        #endregion
+        #endregion Any
 
         #region All
 
@@ -218,7 +220,7 @@ namespace Utilities.ORM.QueryProviders
                 {
                     using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
-                        ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.All<ObjectType>(Columns, Limit, OrderBy, ReturnValues, () => Manager.Create<ObjectType>(),false, Parameters);
+                        ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.All<ObjectType>(Columns, Limit, OrderBy, ReturnValues, () => Manager.Create<ObjectType>(), false, Parameters);
                     }
                 }
             }
@@ -249,7 +251,7 @@ namespace Utilities.ORM.QueryProviders
                 {
                     using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
-                        ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.All<ObjectType>(Command, CommandType, ReturnValues, () => Manager.Create<ObjectType>(),false, Parameters);
+                        ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.All<ObjectType>(Command, CommandType, ReturnValues, () => Manager.Create<ObjectType>(), false, Parameters);
                     }
                 }
             }
@@ -281,11 +283,11 @@ namespace Utilities.ORM.QueryProviders
                     {
                         if (Mapping.AllCommand == null)
                         {
-                            ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.All<ObjectType>("*", 0, "", ReturnValues, () => Manager.Create<ObjectType>(),false, Parameters);
+                            ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.All<ObjectType>("*", 0, "", ReturnValues, () => Manager.Create<ObjectType>(), false, Parameters);
                         }
                         else
                         {
-                            ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.All<ObjectType>(Mapping.AllCommand.SQLCommand, Mapping.AllCommand.CommandType, ReturnValues, () => Manager.Create<ObjectType>(),false, Parameters);
+                            ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.All<ObjectType>(Mapping.AllCommand.SQLCommand, Mapping.AllCommand.CommandType, ReturnValues, () => Manager.Create<ObjectType>(), false, Parameters);
                         }
                     }
                 }
@@ -299,7 +301,7 @@ namespace Utilities.ORM.QueryProviders
             return ReturnValues;
         }
 
-        #endregion
+        #endregion All
 
         #region Delete
 
@@ -348,7 +350,7 @@ namespace Utilities.ORM.QueryProviders
             }
         }
 
-        #endregion
+        #endregion Delete
 
         #region LoadProperties
 
@@ -395,7 +397,7 @@ namespace Utilities.ORM.QueryProviders
             return ReturnValue;
         }
 
-        #endregion
+        #endregion LoadProperties
 
         #region LoadListProperties
 
@@ -427,9 +429,9 @@ namespace Utilities.ORM.QueryProviders
                         using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                         {
                             if (Property.CommandToLoad == null)
-                                ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.All<DataType>("*", 0, "", ReturnValue, () => Manager.Create<DataType>(),false, Parameters);
+                                ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.All<DataType>("*", 0, "", ReturnValue, () => Manager.Create<DataType>(), false, Parameters);
                             else
-                                ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.All<DataType>(Property.CommandToLoad.SQLCommand, Property.CommandToLoad.CommandType, ReturnValue, () => Manager.Create<DataType>(),false, Parameters);
+                                ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.All<DataType>(Property.CommandToLoad.SQLCommand, Property.CommandToLoad.CommandType, ReturnValue, () => Manager.Create<DataType>(), false, Parameters);
                         }
                     }
                 }
@@ -443,7 +445,7 @@ namespace Utilities.ORM.QueryProviders
             return ReturnValue;
         }
 
-        #endregion
+        #endregion LoadListProperties
 
         #region LoadProperty
 
@@ -486,7 +488,7 @@ namespace Utilities.ORM.QueryProviders
             return ReturnValue;
         }
 
-        #endregion
+        #endregion LoadProperty
 
         #region Paged
 
@@ -511,7 +513,7 @@ namespace Utilities.ORM.QueryProviders
                 {
                     using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
-                        ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Paged<ObjectType>(Columns, OrderBy, PageSize, CurrentPage, ReturnValues, () => Manager.Create<ObjectType>(),false, Parameters);
+                        ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Paged<ObjectType>(Columns, OrderBy, PageSize, CurrentPage, ReturnValues, () => Manager.Create<ObjectType>(), false, Parameters);
                     }
                 }
             }
@@ -524,7 +526,7 @@ namespace Utilities.ORM.QueryProviders
             return ReturnValues;
         }
 
-        #endregion
+        #endregion Paged
 
         #region PagedCommand
 
@@ -549,7 +551,7 @@ namespace Utilities.ORM.QueryProviders
                 {
                     using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
-                        ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.PagedCommand<ObjectType>(Command, OrderBy, PageSize, CurrentPage, ReturnValues, () => Manager.Create<ObjectType>(),false, Parameters);
+                        ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.PagedCommand<ObjectType>(Command, OrderBy, PageSize, CurrentPage, ReturnValues, () => Manager.Create<ObjectType>(), false, Parameters);
                     }
                 }
             }
@@ -562,7 +564,7 @@ namespace Utilities.ORM.QueryProviders
             return ReturnValues;
         }
 
-        #endregion
+        #endregion PagedCommand
 
         #region PageCount
 
@@ -582,7 +584,7 @@ namespace Utilities.ORM.QueryProviders
                 {
                     using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
-                        return ORMObject.PageCount<ObjectType>(PageSize,false, Parameters);
+                        return ORMObject.PageCount<ObjectType>(PageSize, false, Parameters);
                     }
                 }
             }
@@ -606,14 +608,14 @@ namespace Utilities.ORM.QueryProviders
                 {
                     using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
-                        return ORMObject.PageCount<ObjectType>(Command, PageSize,false, Parameters);
+                        return ORMObject.PageCount<ObjectType>(Command, PageSize, false, Parameters);
                     }
                 }
             }
             return 0;
         }
 
-        #endregion
+        #endregion PageCount
 
         #region Save
 
@@ -668,8 +670,11 @@ namespace Utilities.ORM.QueryProviders
                         }
                         if (JoinCommands.Count > 0)
                         {
-                            ORMObject.Batch().AddCommands(JoinCommands.ToArray());
-                            ORMObject.ExecuteNonQuery();
+                            for (int x = 0; x < (JoinCommands.Sum(y => y.Parameters.Count) / 100) + 1; ++x)
+                            {
+                                ORMObject.Batch().AddCommands(JoinCommands.ElementsBetween(x * 100, (x * 100) + 100).ToArray());
+                                ORMObject.ExecuteNonQuery();
+                            }
                         }
                         JoinCommands = new System.Collections.Generic.List<Command>();
                         foreach (IProperty Property in Mapping.Properties)
@@ -690,15 +695,18 @@ namespace Utilities.ORM.QueryProviders
                         }
                         if (JoinCommands.Count > 0)
                         {
-                            ORMObject.Batch().AddCommands(JoinCommands.ToArray());
-                            ORMObject.ExecuteNonQuery();
+                            for (int x = 0; x < (JoinCommands.Sum(y => y.Parameters.Count) / 100) + 1; ++x)
+                            {
+                                ORMObject.Batch().AddCommands(JoinCommands.ElementsBetween(x * 100, (x * 100) + 100).ToArray());
+                                ORMObject.ExecuteNonQuery();
+                            }
                         }
                     }
                 }
             }
         }
 
-        #endregion
+        #endregion Save
 
         #region Scalar
 
@@ -755,21 +763,16 @@ namespace Utilities.ORM.QueryProviders
             return default(DataType);
         }
 
-        #endregion
+        #endregion Scalar
 
-        #endregion
+        #endregion Functions
 
         #region Properties
 
         /// <summary>
-        /// Mappings associated to databases
-        /// </summary>
-        public ListMapping<IDatabase, IMapping> Mappings { get;private set; }
-
-        /// <summary>
         /// List of database configurations
         /// </summary>
-        public ICollection<IDatabase> Databases { get;private set; }
+        public ICollection<IDatabase> Databases { get; private set; }
 
         /// <summary>
         /// AOP manager (used to create objects)
@@ -777,10 +780,15 @@ namespace Utilities.ORM.QueryProviders
         public Reflection.AOP.AOPManager Manager { get; set; }
 
         /// <summary>
+        /// Mappings associated to databases
+        /// </summary>
+        public ListMapping<IDatabase, IMapping> Mappings { get; private set; }
+
+        /// <summary>
         /// Should the queries be profiled?
         /// </summary>
         public bool Profile { get; set; }
 
-        #endregion
+        #endregion Properties
     }
 }

@@ -79,7 +79,7 @@ namespace Utilities.DataMapper
         {
             Contract.Requires(LeftExpression != null, "LeftExpression");
             Contract.Requires(RightGet != null, "RightGet");
-            Contract.Requires(RightSet != null, "RightSet");
+            //Contract.Requires(RightSet != null, "RightSet");
             LeftGet = LeftExpression.Compile();
             LeftSet = LeftExpression.PropertySetter().Compile();
             this.RightGet = RightGet;

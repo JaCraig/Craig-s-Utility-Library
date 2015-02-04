@@ -63,7 +63,7 @@ namespace Utilities.SQL.ExtensionMethods
             DbParameter Parameter = Command.GetOrCreateParameter(ID);
             Parameter.Value = string.IsNullOrEmpty(Value) ? System.DBNull.Value : (object)Value;
             Parameter.IsNullable = string.IsNullOrEmpty(Value);
-            Parameter.DbType = typeof(string).To(DbType.Int32);
+            Parameter.DbType = DbType.String;
             Parameter.Direction = Direction;
             Parameter.Size = Length;
             return Command;

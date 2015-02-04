@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,7 +29,7 @@ using System.Globalization;
 using System.Reflection;
 using Utilities.DataTypes.Conversion.Interfaces;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes.Conversion.Converters
 {
@@ -41,7 +42,10 @@ namespace Utilities.DataTypes.Conversion.Converters
         /// Constructor
         /// </summary>
         /// <param name="Manager">Manager object</param>
-        public GenericConverter(Manager Manager) { this.Manager = Manager; }
+        public GenericConverter(Manager Manager)
+        {
+            this.Manager = Manager;
+        }
 
         /// <summary>
         /// Manager object
@@ -72,6 +76,8 @@ namespace Utilities.DataTypes.Conversion.Converters
             Type ObjectType = Item.GetType();
             if (ReturnType.IsAssignableFrom(ObjectType))
                 return Item;
+            if (ReturnType.IsEnum && ObjectType == ReturnType.GetEnumUnderlyingType())
+                return System.Enum.ToObject(ReturnType, Item);
             if (ReturnType.IsEnum)
                 return System.Enum.Parse(ReturnType, ObjectValue, true);
             if ((Item as IConvertible) != null)

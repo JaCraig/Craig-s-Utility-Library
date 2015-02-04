@@ -47,7 +47,10 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files (x86)\Microsoft ASP.NET\ASP.NET MVC 3\Assemblies\System.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -161,6 +164,11 @@
     <Compile Include="ORM\ListTest\Models\Project2.cs" />
     <Compile Include="ORM\ListTest\Models\Task2.cs" />
     <Compile Include="ORM\ListTest\ORMListTest.cs" />
+    <Compile Include="ORM\StringIDTest\Models\Mappings\Project3Mapping.cs" />
+    <Compile Include="ORM\StringIDTest\Models\Mappings\Task3Mapping.cs" />
+    <Compile Include="ORM\StringIDTest\Models\Project3.cs" />
+    <Compile Include="ORM\StringIDTest\Models\Task3.cs" />
+    <Compile Include="ORM\StringIDTest\StringIDTest.cs" />
     <Compile Include="ORM\Test1\Config\Test1Config.cs" />
     <Compile Include="ORM\Test1\Models\Account.cs" />
     <Compile Include="ORM\Test1\Models\Group.cs" />
@@ -228,6 +236,7 @@
     <Compile Include="SQL\SQLCommand.cs" />
     <Compile Include="SQL\SQLHelper.cs" />
     <Compile Include="SQL\SQLServer\SQLServer.cs" />
+    <Compile Include="Validation\Extensions\ObjectExtensions.cs" />
     <Compile Include="Validation\Rules\Between.cs" />
     <Compile Include="Validation\Rules\Cascade.cs" />
     <Compile Include="Validation\Rules\Compare.cs" />

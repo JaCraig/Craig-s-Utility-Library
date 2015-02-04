@@ -257,7 +257,11 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static System.Reflection.Assembly Load(this AssemblyName Name)
         {
             Contract.Requires<ArgumentNullException>(Name != null, "Name");
-            return AppDomain.CurrentDomain.Load(Name);
+            try
+            {
+                return AppDomain.CurrentDomain.Load(Name);
+            }
+            catch (BadImageFormatException) { return null; }
         }
 
         #endregion
@@ -272,8 +276,16 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>Array of assemblies in the directory</returns>
         public static IEnumerable<Assembly> LoadAssemblies(this DirectoryInfo Directory, bool Recursive = false)
         {
+            List<Assembly> Assemblies = new List<Assembly>();
             foreach (FileInfo File in Directory.GetFiles("*.dll", Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
-                yield return AssemblyName.GetAssemblyName(File.FullName).Load();
+            {
+                try
+                {
+                    Assemblies.Add(AssemblyName.GetAssemblyName(File.FullName).Load());
+                }
+                catch(BadImageFormatException) { }
+            }
+            return Assemblies;
         }
 
         #endregion
@@ -372,7 +384,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             Contract.Requires<ArgumentNullException>(Assemblies != null, "Assemblies");
             List<ClassType> ReturnValues = new List<ClassType>();
-            foreach (Assembly Assembly in Assemblies)
+            foreach (Assembly Assembly in Assemblies.Where(x => x != null))
                 ReturnValues.AddRange(Assembly.Objects<ClassType>());
             return ReturnValues;
         }
@@ -685,7 +697,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static string ToString(this IEnumerable<Assembly> Assemblies, VersionInfo InfoType)
         {
             StringBuilder Builder = new StringBuilder();
-            Assemblies.OrderBy(x => x.FullName).ForEach<Assembly>(x => Builder.AppendLine(x.GetName().Name + ": " + x.ToString(InfoType)));
+            Assemblies.Where(x=>x!=null).OrderBy(x => x.FullName).ForEach<Assembly>(x => Builder.AppendLine(x.GetName().Name + ": " + x.ToString(InfoType)));
             return Builder.ToString();
         }
 
@@ -699,7 +711,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             StringBuilder Builder = new StringBuilder();
             Builder.Append(HTMLOutput ? "<strong>Assembly Information</strong><br />" : "Assembly Information\r\n");
-            Assemblies.ForEach<Assembly>(x => Builder.Append(x.ToString(HTMLOutput)));
+            Assemblies.Where(x => x != null).ForEach<Assembly>(x => Builder.Append(x.ToString(HTMLOutput)));
             return Builder.ToString();
         }
 
@@ -822,7 +834,7 @@ namespace Utilities.DataTypes.ExtensionMethods
             Contract.Requires<ArgumentNullException>(Assemblies != null, "Assemblies");
             Contract.Requires<ArgumentNullException>(BaseType != null, "BaseType");
             List<Type> ReturnValues = new List<Type>();
-            Assemblies.ForEach(y => ReturnValues.AddRange(y.Types(BaseType)));
+            Assemblies.Where(x => x != null).ForEach(y => ReturnValues.AddRange(y.Types(BaseType)));
             return ReturnValues;
         }
 

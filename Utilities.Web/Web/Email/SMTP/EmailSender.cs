@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Net.Mail;
@@ -27,7 +28,8 @@ using System.Net.Mime;
 using System.Threading;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.Patterns.BaseClasses;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Web.Email.SMTP
 {
@@ -48,7 +50,7 @@ namespace Utilities.Web.Email.SMTP
             Priority = MailPriority.Normal;
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Public Functions
 
@@ -60,6 +62,8 @@ namespace Utilities.Web.Email.SMTP
         {
             if (!string.IsNullOrEmpty(MessageBody))
                 Body = MessageBody;
+            if (string.IsNullOrEmpty(Body))
+                Body = " ";
             using (System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage())
             {
                 char[] Splitter = { ',', ';' };
@@ -150,20 +154,39 @@ namespace Utilities.Web.Email.SMTP
             }
         }
 
-        #endregion
+        #endregion Public Functions
 
         #region Properties
 
         /// <summary>
-        /// Any attachments that are included with this
-        /// message.
+        /// Any attachments that are included with this message.
         /// </summary>
         public ICollection<Attachment> Attachments { get; private set; }
+
+        /// <summary>
+        /// Blind carbon copy send (seperate email addresses with a comma)
+        /// </summary>
+        public string Bcc { get; set; }
+
+        /// <summary>
+        /// Carbon copy send (seperate email addresses with a comma)
+        /// </summary>
+        public string CC { get; set; }
 
         /// <summary>
         /// Any attachment (usually images) that need to be embedded in the message
         /// </summary>
         public ICollection<LinkedResource> EmbeddedResources { get; private set; }
+
+        /// <summary>
+        /// Password for the server
+        /// </summary>
+        public string Password { get; set; }
+
+        /// <summary>
+        /// Port to send the information on
+        /// </summary>
+        public int Port { get; set; }
 
         /// <summary>
         /// The priority of this message
@@ -181,30 +204,10 @@ namespace Utilities.Web.Email.SMTP
         public string UserName { get; set; }
 
         /// <summary>
-        /// Password for the server
-        /// </summary>
-        public string Password { get; set; }
-
-        /// <summary>
-        /// Port to send the information on
-        /// </summary>
-        public int Port { get; set; }
-
-        /// <summary>
         /// Decides whether we are using STARTTLS (SSL) or not
         /// </summary>
         public bool UseSSL { get; set; }
 
-        /// <summary>
-        /// Carbon copy send (seperate email addresses with a comma)
-        /// </summary>
-        public string CC { get; set; }
-
-        /// <summary>
-        /// Blind carbon copy send (seperate email addresses with a comma)
-        /// </summary>
-        public string Bcc { get; set; }
-
-        #endregion
+        #endregion Properties
     }
 }

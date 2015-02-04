@@ -31,7 +31,7 @@ using Xunit;
 
 namespace UnitTests.ORM.Test1
 {
-    public class ORMTest1:IDisposable
+    public class ORMTest1 : IDisposable
     {
         public ORMTest1()
         {
@@ -59,6 +59,25 @@ namespace UnitTests.ORM.Test1
             Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Role_UserAudit"));
         }
 
+        public void Dispose()
+        {
+            Utilities.ORM.ORM.Destroy();
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false"))
+            {
+                Helper.Batch().AddCommand("ALTER DATABASE ORMTestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
+                    .AddCommand("ALTER DATABASE ORMTestDatabase2 SET ONLINE", CommandType.Text)
+                    .AddCommand("DROP DATABASE ORMTestDatabase2", CommandType.Text);
+                Helper.ExecuteNonQuery();
+            }
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false"))
+            {
+                Helper.Batch().AddCommand("ALTER DATABASE ORMTestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
+                    .AddCommand("ALTER DATABASE ORMTestDatabase SET ONLINE", CommandType.Text)
+                    .AddCommand("DROP DATABASE ORMTestDatabase", CommandType.Text);
+                Helper.ExecuteNonQuery();
+            }
+        }
+
         [Fact]
         public void ManyToOneTest()
         {
@@ -67,8 +86,9 @@ namespace UnitTests.ORM.Test1
             for (int x = 0; x < 5; ++x)
             {
                 Item Child = new Item();
-                Child.Name = "Child "+x.ToString();
-                Child.Parent=Temp;
+                Child.Name = "Child " + x.ToString();
+                Child.Parent = Temp;
+                Child.Value = EnumValue.Value3;
                 Temp.Children.Add(Child);
             }
             Temp.Save();
@@ -84,29 +104,14 @@ namespace UnitTests.ORM.Test1
                 Assert.Equal(Parent, Child.Parent);
             Assert.Equal(4, Parent.Children.Count);
             Assert.Equal(null, Parent.Parent);
+            Assert.Equal(EnumValue.Value3, Parent.Children[0].Value);
+            Assert.Equal(EnumValue.Value3, Parent.Children[1].Value);
+            Assert.Equal(EnumValue.Value3, Parent.Children[2].Value);
+            Assert.Equal(EnumValue.Value3, Parent.Children[3].Value);
             Parent.Delete();
             Parent = Item.Any(new EqualParameter<long>(Temp.ID, "ID_"));
             Assert.Null(Parent);
             Assert.Equal(1, Item.All().Count());
-        }
-
-        public void Dispose()
-        {
-            Utilities.ORM.ORM.Destroy();
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("",  CommandType.Text, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false"))
-            {
-                Helper.Batch().AddCommand("ALTER DATABASE ORMTestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
-                    .AddCommand("ALTER DATABASE ORMTestDatabase2 SET ONLINE", CommandType.Text)
-                    .AddCommand("DROP DATABASE ORMTestDatabase2", CommandType.Text);
-                Helper.ExecuteNonQuery();
-            }
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("",  CommandType.Text, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false"))
-            {
-                Helper.Batch().AddCommand("ALTER DATABASE ORMTestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
-                    .AddCommand("ALTER DATABASE ORMTestDatabase SET ONLINE", CommandType.Text)
-                    .AddCommand("DROP DATABASE ORMTestDatabase", CommandType.Text);
-                Helper.ExecuteNonQuery();
-            }
         }
     }
 }

@@ -36,6 +36,7 @@ namespace UnitTests.ORM.Test1.Models.Mappings
             Reference(x => x.DateModified).SetDefaultValue(() => DateTime.Now);
             ID(x => x.ID).TurnOnAutoIncrement();
             Reference(x => x.Name).SetMaxLength(100);
+            Reference(x => x.Value);
         }
     }
 }

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-Configuration</id>
-		<version>3.4.0020</version>
+		<version>3.4.0149</version>
 		<title>Craig's Utility Library Configuration Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -14,10 +14,10 @@
 		<copyright>Copyright 2011</copyright>
 		<tags>utility utilities</tags>
 		<dependencies>
-			<dependency id="CraigsUtilityLibrary-DataTypes" version="[3.4.0020]" />
-			<dependency id="CraigsUtilityLibrary-Encryption" version="[3.4.0020]" />
-			<dependency id="CraigsUtilityLibrary-IO" version="[3.4.0020]" />
-			<dependency id="CraigsUtilityLibrary-Reflection" version="[3.4.0020]" />
+			<dependency id="CraigsUtilityLibrary-DataTypes" version="[3.4.0149]" />
+			<dependency id="CraigsUtilityLibrary-Encryption" version="[3.4.0149]" />
+			<dependency id="CraigsUtilityLibrary-IO" version="[3.4.0149]" />
+			<dependency id="CraigsUtilityLibrary-Reflection" version="[3.4.0149]" />
 		</dependencies>
 		<references>
 			<reference file="Utilities.Configuration.dll" />

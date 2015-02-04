@@ -20,10 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Validation.ExtensionMethods
 {
@@ -45,10 +46,10 @@ namespace Utilities.Validation.ExtensionMethods
         {
             if (Object == null)
                 return true;
-            return Validator.TryValidateObject(Object, new ValidationContext(Object, null, null), Results);
+            return Validator.TryValidateObject(Object, new ValidationContext(Object, null, null), Results, true);
         }
 
-        #endregion
+        #endregion TryValidate
 
         #region Validate
 
@@ -57,14 +58,14 @@ namespace Utilities.Validation.ExtensionMethods
         /// </summary>
         /// <typeparam name="ObjectType">Object type</typeparam>
         /// <param name="Object">Object to validate</param>
-        /// <exception cref="System.ComponentModel.DataAnnotations.ValidationException" />
+        /// <exception cref="System.ComponentModel.DataAnnotations.ValidationException"></exception>
         public static void Validate<ObjectType>(this ObjectType Object)
         {
-            if (Object==null)
+            if (Object == null)
                 return;
             Validator.ValidateObject(Object, new ValidationContext(Object, null, null), true);
         }
 
-        #endregion
+        #endregion Validate
     }
 }

@@ -24,6 +24,15 @@ using Utilities.ORM;
 
 namespace UnitTests.ORM.Test1.Models
 {
+    public enum EnumValue
+    {
+        Value1,
+        Value2,
+        Value3,
+        Value4,
+        Value5
+    }
+
     public class Item : ObjectBaseClass<Item, long>
     {
         #region Constructor
@@ -34,14 +43,18 @@ namespace UnitTests.ORM.Test1.Models
             Children = new List<Item>();
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
-        public virtual string Name { get; set; }
-        public virtual Item Parent { get; set; }
         public virtual List<Item> Children { get; set; }
 
-        #endregion
+        public virtual string Name { get; set; }
+
+        public virtual Item Parent { get; set; }
+
+        public virtual EnumValue Value { get; set; }
+
+        #endregion Properties
     }
 }
