@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Data.Common;
 using Utilities.SQL.ExtensionMethods;
 using Utilities.SQL.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.SQL.ParameterTypes
 {
@@ -40,17 +42,16 @@ namespace Utilities.SQL.ParameterTypes
         /// </summary>
         /// <param name="Value">Value of the parameter</param>
         /// <param name="ID">Name of the parameter</param>
-        /// <param name="ParameterStarter">What the database expects as the
-        /// parameter starting string ("@" for SQL Server, ":" for Oracle, etc.)</param>
-        public NotEqualParameter(DataType Value, string ID,string ParameterStarter = "@")
+        /// <param name="ParameterStarter">
+        /// What the database expects as the parameter starting string ("@" for SQL Server, ":" for
+        /// Oracle, etc.)
+        /// </param>
+        public NotEqualParameter(DataType Value, string ID, string ParameterStarter = "@")
             : base(ID, Value, System.Data.ParameterDirection.Input, ParameterStarter)
         {
-            this.Value = Value;
-            this.ID = ID;
-            this.ParameterStarter = ParameterStarter;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Functions
 
@@ -70,15 +71,18 @@ namespace Utilities.SQL.ParameterTypes
         /// <returns>A copy of the parameter</returns>
         public override IParameter CreateCopy(string Suffix)
         {
-            return new NotEqualParameter<DataType>(Value, ID + Suffix, ParameterStarter);
+            return new NotEqualParameter<DataType>(Value, OriginalID + Suffix, ParameterStarter);
         }
 
         /// <summary>
         /// Outputs the param as a string
         /// </summary>
         /// <returns>The param as a string</returns>
-        public override string ToString() { return ID + "<>" + ParameterStarter + ID; }
+        public override string ToString()
+        {
+            return OriginalID + "<>" + ParameterStarter + ID;
+        }
 
-        #endregion
+        #endregion Functions
     }
 }

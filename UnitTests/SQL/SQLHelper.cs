@@ -28,6 +28,7 @@ using Xunit;
 
 namespace UnitTests.SQL
 {
+    [Collection("DatabaseCollection")]
     public class SQLHelper : IDisposable
     {
         public SQLHelper()
@@ -325,12 +326,9 @@ namespace UnitTests.SQL
         [Fact]
         public void Connect()
         {
-            Assert.DoesNotThrow(() =>
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
-                using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
-                {
-                }
-            });
+            }
         }
 
         [Fact]

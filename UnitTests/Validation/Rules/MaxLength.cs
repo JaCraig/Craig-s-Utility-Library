@@ -19,10 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-
 using System.ComponentModel.DataAnnotations;
 using Utilities.Validation.ExtensionMethods;
-using Utilities.Validation.Rules;
 using Xunit;
 
 namespace UnitTests.Validation.Rules
@@ -34,7 +32,7 @@ namespace UnitTests.Validation.Rules
         {
             MaxLengthClass Temp = new MaxLengthClass();
             Temp.ItemA = "Test";
-            Assert.DoesNotThrow(() => Temp.Validate());
+            Temp.Validate();
             Temp.ItemA = "Testing";
             Assert.Throws<ValidationException>(() => Temp.Validate());
         }
@@ -42,7 +40,7 @@ namespace UnitTests.Validation.Rules
 
     public class MaxLengthClass
     {
-        [MaxLength(4)]
+        [Utilities.Validation.Rules.MaxLength(4)]
         public string ItemA { get; set; }
     }
 }

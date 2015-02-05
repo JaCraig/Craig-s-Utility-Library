@@ -20,12 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Data;
 using System.Data.Common;
 using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.ExtensionMethods;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.SQL.Interfaces
 {
@@ -43,19 +45,13 @@ namespace Utilities.SQL.Interfaces
         /// <param name="ID">ID of the parameter</param>
         /// <param name="Value">Value of the parameter</param>
         /// <param name="Direction">Direction of the parameter</param>
-        /// <param name="ParameterStarter">What the database expects as the
-        /// parameter starting string ("@" for SQL Server, ":" for Oracle, etc.)</param>
+        /// <param name="ParameterStarter">
+        /// What the database expects as the parameter starting string ("@" for SQL Server, ":" for
+        /// Oracle, etc.)
+        /// </param>
         protected ParameterBase(string ID, DataType Value, ParameterDirection Direction = ParameterDirection.Input, string ParameterStarter = "@")
+            : this(ID, Value == null ? typeof(DataType).To(DbType.Int32) : Value.GetType().To(DbType.Int32), Value, Direction, ParameterStarter)
         {
-            this.ID = ID;
-            this.Value = Value;
-            this.Direction = Direction;
-            if (Value == null)
-                this.DatabaseType = typeof(DataType).To(DbType.Int32);
-            else
-                this.DatabaseType = Value.GetType().To(DbType.Int32);
-            this.BatchID = ID;
-            this.ParameterStarter = ParameterStarter;
         }
 
         /// <summary>
@@ -65,16 +61,13 @@ namespace Utilities.SQL.Interfaces
         /// <param name="Type">Database type</param>
         /// <param name="Value">Value of the parameter</param>
         /// <param name="Direction">Direction of the parameter</param>
-        /// <param name="ParameterStarter">What the database expects as the
-        /// parameter starting string ("@" for SQL Server, ":" for Oracle, etc.)</param>
+        /// <param name="ParameterStarter">
+        /// What the database expects as the parameter starting string ("@" for SQL Server, ":" for
+        /// Oracle, etc.)
+        /// </param>
         protected ParameterBase(string ID, SqlDbType Type, object Value = null, ParameterDirection Direction = ParameterDirection.Input, string ParameterStarter = "@")
+            : this(ID, Type.To(DbType.Int32), Value, Direction, ParameterStarter)
         {
-            this.ID = ID;
-            this.Value = (DataType)Value;
-            this.DatabaseType = Type.To(DbType.Int32);
-            this.Direction = Direction;
-            this.BatchID = ID;
-            this.ParameterStarter = ParameterStarter;
         }
 
         /// <summary>
@@ -84,41 +77,24 @@ namespace Utilities.SQL.Interfaces
         /// <param name="Type">Database type</param>
         /// <param name="Value">Value of the parameter</param>
         /// <param name="Direction">Direction of the parameter</param>
-        /// <param name="ParameterStarter">What the database expects as the
-        /// parameter starting string ("@" for SQL Server, ":" for Oracle, etc.)</param>
+        /// <param name="ParameterStarter">
+        /// What the database expects as the parameter starting string ("@" for SQL Server, ":" for
+        /// Oracle, etc.)
+        /// </param>
         protected ParameterBase(string ID, DbType Type, object Value = null, ParameterDirection Direction = ParameterDirection.Input, string ParameterStarter = "@")
         {
-            this.ID = ID;
+            this.OriginalID = ID;
+            this.ID = ID.Keep("[a-zA-Z0-9_@]");
             this.Value = (DataType)Value;
             this.DatabaseType = Type;
             this.Direction = Direction;
-            this.BatchID = ID;
+            this.BatchID = ID.Keep("[a-zA-Z0-9_@]");
             this.ParameterStarter = ParameterStarter;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-
-        /// <summary>
-        /// The Name that the parameter goes by
-        /// </summary>
-        public virtual string ID { get; set; }
-
-        /// <summary>
-        /// Batch ID
-        /// </summary>
-        protected virtual string BatchID { get; set; }
-
-        /// <summary>
-        /// Parameter value
-        /// </summary>
-        public virtual DataType Value { get; set; }
-
-        /// <summary>
-        /// Direction of the parameter
-        /// </summary>
-        public virtual ParameterDirection Direction { get; set; }
 
         /// <summary>
         /// Database type
@@ -126,13 +102,67 @@ namespace Utilities.SQL.Interfaces
         public virtual DbType DatabaseType { get; set; }
 
         /// <summary>
+        /// Direction of the parameter
+        /// </summary>
+        public virtual ParameterDirection Direction { get; set; }
+
+        /// <summary>
+        /// The Name that the parameter goes by
+        /// </summary>
+        public virtual string ID { get; set; }
+
+        /// <summary>
+        /// Gets or sets the original identifier.
+        /// </summary>
+        /// <value>The original identifier.</value>
+        public virtual string OriginalID { get; set; }
+
+        /// <summary>
         /// Starting string of the parameter
         /// </summary>
         public string ParameterStarter { get; set; }
 
-        #endregion
+        /// <summary>
+        /// Parameter value
+        /// </summary>
+        public virtual DataType Value { get; set; }
+
+        /// <summary>
+        /// Batch ID
+        /// </summary>
+        protected virtual string BatchID { get; set; }
+
+        #endregion Properties
 
         #region Functions
+
+        /// <summary>
+        /// != operator
+        /// </summary>
+        /// <param name="first">First item</param>
+        /// <param name="second">Second item</param>
+        /// <returns>returns true if they are not equal, false otherwise</returns>
+        public static bool operator !=(ParameterBase<DataType> first, ParameterBase<DataType> second)
+        {
+            return !(first == second);
+        }
+
+        /// <summary>
+        /// The == operator
+        /// </summary>
+        /// <param name="first">First item</param>
+        /// <param name="second">Second item</param>
+        /// <returns>true if the first and second item are the same, false otherwise</returns>
+        public static bool operator ==(ParameterBase<DataType> first, ParameterBase<DataType> second)
+        {
+            if (Object.ReferenceEquals(first, second))
+                return true;
+
+            if ((object)first == null || (object)second == null)
+                return false;
+
+            return first.GetHashCode() == second.GetHashCode();
+        }
 
         /// <summary>
         /// Adds this parameter to the SQLHelper
@@ -180,34 +210,6 @@ namespace Utilities.SQL.Interfaces
             return ParameterStarter + ID;
         }
 
-        /// <summary>
-        /// The == operator
-        /// </summary>
-        /// <param name="first">First item</param>
-        /// <param name="second">Second item</param>
-        /// <returns>true if the first and second item are the same, false otherwise</returns>
-        public static bool operator ==(ParameterBase<DataType> first, ParameterBase<DataType> second)
-        {
-            if (Object.ReferenceEquals(first, second))
-                return true;
-
-            if ((object)first == null || (object)second == null)
-                return false;
-
-            return first.GetHashCode() == second.GetHashCode();
-        }
-
-        /// <summary>
-        /// != operator
-        /// </summary>
-        /// <param name="first">First item</param>
-        /// <param name="second">Second item</param>
-        /// <returns>returns true if they are not equal, false otherwise</returns>
-        public static bool operator !=(ParameterBase<DataType> first, ParameterBase<DataType> second)
-        {
-            return !(first == second);
-        }
-
-        #endregion
+        #endregion Functions
     }
 }

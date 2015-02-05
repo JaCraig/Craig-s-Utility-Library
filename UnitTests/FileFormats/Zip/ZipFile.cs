@@ -27,7 +27,7 @@ using Xunit;
 
 namespace UnitTests.FileFormats.Zip
 {
-    public class ZipFile : IUseFixture<TestingDirectoryFixture>,IDisposable
+    public class ZipFile : TestingDirectoryFixture,IDisposable
     {
         public ZipFile()
         {

@@ -20,11 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Data;
 using System.Data.Common;
 using Utilities.SQL.ExtensionMethods;
 using Utilities.SQL.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.SQL.MicroORM
 {
@@ -74,7 +76,7 @@ namespace Utilities.SQL.MicroORM
         {
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Functions
 
@@ -94,9 +96,9 @@ namespace Utilities.SQL.MicroORM
         /// <returns>A copy of the parameter</returns>
         public override IParameter CreateCopy(string Suffix)
         {
-            return new Parameter<DataType>(ID + Suffix, DatabaseType, Value, Direction, ParameterStarter);
+            return new Parameter<DataType>(OriginalID + Suffix, DatabaseType, Value, Direction, ParameterStarter);
         }
 
-        #endregion
+        #endregion Functions
     }
 }

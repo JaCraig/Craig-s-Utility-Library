@@ -27,9 +27,12 @@ using Xunit;
 
 namespace UnitTests.IO.ExtensionMethods
 {
-    public class File : IUseFixture<TestingDirectoryFixture>
+    public class File : TestingDirectoryFixture
     {
-        public File() { new DirectoryInfo(@"..\..\Data\Testing").CopyTo(@".\Testing"); }
+        public File()
+        {
+            new DirectoryInfo(@"..\..\Data\Testing").CopyTo(@".\Testing");
+        }
 
         [Fact]
         public void Append()
@@ -43,6 +46,18 @@ namespace UnitTests.IO.ExtensionMethods
         public void CompareTo()
         {
             Assert.True(new FileInfo(@".\Testing\Test.txt").CompareTo(new FileInfo(@"..\..\Data\Testing\Test.txt")));
+        }
+
+        [Fact]
+        public void DriveInfo()
+        {
+            Assert.NotNull(new FileInfo(@".\Testing\Test.txt").DriveInfo());
+        }
+
+        [Fact]
+        public void Execute()
+        {
+            new FileInfo(@"..\..\Data\Test.bat").Execute(WindowStyle: System.Diagnostics.ProcessWindowStyle.Hidden);
         }
 
         [Fact]
@@ -65,12 +80,6 @@ namespace UnitTests.IO.ExtensionMethods
         }
 
         [Fact]
-        public void DriveInfo()
-        {
-            Assert.NotNull(new FileInfo(@".\Testing\Test.txt").DriveInfo());
-        }
-
-        [Fact]
         public void Save()
         {
             new FileInfo(@".\Testing\Test2.txt").Save("This is yet another test");
@@ -90,12 +99,6 @@ namespace UnitTests.IO.ExtensionMethods
             new FileInfo(@".\Testing\Test2.txt").SaveAsync("This is yet another test", SaveAsyncCallback, null);
         }
 
-        [Fact]
-        public void Execute()
-        {
-            Assert.DoesNotThrow(() => new FileInfo(@"..\..\Data\Test.bat").Execute(WindowStyle: System.Diagnostics.ProcessWindowStyle.Hidden));
-        }
-
         public void SaveAsyncCallback(IAsyncResult Result)
         {
             Assert.True(Result.IsCompleted);
@@ -103,7 +106,6 @@ namespace UnitTests.IO.ExtensionMethods
 
         public void SetFixture(TestingDirectoryFixture data)
         {
-            
         }
     }
 }

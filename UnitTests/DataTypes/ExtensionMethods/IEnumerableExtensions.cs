@@ -32,47 +32,10 @@ namespace UnitTests.DataTypes.ExtensionMethods
     public class IEnumerableExtensions
     {
         [Fact]
-        public void ForEachTest3()
+        public void ElementsBetween()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            Assert.DoesNotThrow(() => Temp.ForEach<int, float>(x => x > 0 ? (float)x : 1.0f));
-        }
-
-        [Fact]
-        public void IsNullOrEmptyTest()
-        {
-            List<int> Temp = new List<int>();
-            Assert.True(Temp.Is(x => x == null || x.Count == 0));
-            Temp = null;
-            Assert.True(Temp.Is(x => x == null || x.Count == 0));
-            Temp = new int[] { 1, 2, 3 }.ToList();
-            Assert.False(Temp.Is(x => x == null || x.Count == 0));
-        }
-
-        [Fact]
-        public void RemoveDefaultsTest()
-        {
-            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            foreach (int Value in Temp.Remove(x => x == 0))
-                Assert.NotEqual(0, Value);
-        }
-
-        [Fact]
-        public void ForEachTest()
-        {
-            StringBuilder Builder = new StringBuilder();
-            int[] Temp = new int[] { 0, 0, 1, 2, 3 };
-            Temp.ForEach<int>(x => Builder.Append(x));
-            Assert.Equal("00123", Builder.ToString());
-        }
-
-        [Fact]
-        public void ForEachTest2()
-        {
-            StringBuilder Builder = new StringBuilder();
-            int[] Temp = new int[] { 0, 0, 1, 2, 3 };
-            Temp.ForEach(x => x.ToString()).ForEach<string>(x => Builder.Append(x));
-            Assert.Equal("00123", Builder.ToString());
+            Assert.Equal(new int[] { 0, 0, 1 }.ToList(), Temp.ElementsBetween(0, 3));
         }
 
         [Fact]
@@ -99,12 +62,28 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
-        public void ForTest()
+        public void ForEachTest()
         {
             StringBuilder Builder = new StringBuilder();
             int[] Temp = new int[] { 0, 0, 1, 2, 3 };
-            Temp.For<int>(0, Temp.Length - 1, x => Builder.Append(x));
+            Temp.ForEach<int>(x => Builder.Append(x));
             Assert.Equal("00123", Builder.ToString());
+        }
+
+        [Fact]
+        public void ForEachTest2()
+        {
+            StringBuilder Builder = new StringBuilder();
+            int[] Temp = new int[] { 0, 0, 1, 2, 3 };
+            Temp.ForEach(x => x.ToString()).ForEach<string>(x => Builder.Append(x));
+            Assert.Equal("00123", Builder.ToString());
+        }
+
+        [Fact]
+        public void ForEachTest3()
+        {
+            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            Temp.ForEach<int, float>(x => x > 0 ? (float)x : 1.0f);
         }
 
         [Fact]
@@ -131,6 +110,33 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
+        public void ForTest()
+        {
+            StringBuilder Builder = new StringBuilder();
+            int[] Temp = new int[] { 0, 0, 1, 2, 3 };
+            Temp.For<int>(0, Temp.Length - 1, x => Builder.Append(x));
+            Assert.Equal("00123", Builder.ToString());
+        }
+
+        [Fact]
+        public void IsNullOrEmptyTest()
+        {
+            List<int> Temp = new List<int>();
+            Assert.True(Temp.Is(x => x == null || x.Count == 0));
+            Temp = null;
+            Assert.True(Temp.Is(x => x == null || x.Count == 0));
+            Temp = new int[] { 1, 2, 3 }.ToList();
+            Assert.False(Temp.Is(x => x == null || x.Count == 0));
+        }
+
+        [Fact]
+        public void Last()
+        {
+            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            Assert.Equal(new int[] { 1, 2, 3 }.ToList(), Temp.Last(3));
+        }
+
+        [Fact]
         public void PositionOf()
         {
             Assert.Equal(0, new int[] { 1, 2, 3 }.PositionOf(1));
@@ -139,16 +145,52 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
+        public void RemoveDefaultsTest()
+        {
+            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            foreach (int Value in Temp.Remove(x => x == 0))
+                Assert.NotEqual(0, Value);
+        }
+
+        [Fact]
+        public void ThrowIfAll()
+        {
+            Assert.Throws<Exception>(() => new int[] { 0, 0, 1, 2, 3 }.ThrowIfAll(x => x < 4, new Exception()));
+            new int[] { 0, 0, 1, 2, 3 }.ThrowIfAll(x => x < 3, new Exception());
+        }
+
+        [Fact]
+        public void ThrowIfAny()
+        {
+            Assert.Throws<Exception>(() => new int[] { 0, 0, 1, 2, 3 }.ThrowIfAny(x => x < 3, new Exception()));
+            new int[] { 0, 0, 1, 2, 3 }.ThrowIfAny(x => x > 3, new Exception());
+        }
+
+        [Fact]
         public void ToArray()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            Assert.DoesNotThrow(() => Temp.ToArray<int, double>(x => (double)x));
+            Temp.ToArray<int, double>(x => (double)x);
             double[] Temp2 = Temp.ToArray<int, double>(x => (double)x);
             Assert.Equal(0, Temp2[0]);
             Assert.Equal(0, Temp2[1]);
             Assert.Equal(1, Temp2[2]);
             Assert.Equal(2, Temp2[3]);
             Assert.Equal(3, Temp2[4]);
+        }
+
+        [Fact]
+        public void ToDataTable()
+        {
+            List<PreDataTable> Temp = new PreDataTable[] { new PreDataTable { ID = 1, Value = "A" }, new PreDataTable { ID = 2, Value = "B" }, new PreDataTable { ID = 3, Value = "C" } }.ToList();
+            Temp.ToDataTable();
+            DataTable Temp2 = Temp.ToDataTable();
+            Assert.Equal(1, Temp2.Rows[0].ItemArray[0]);
+            Assert.Equal("A", Temp2.Rows[0].ItemArray[1]);
+            Assert.Equal(2, Temp2.Rows[1].ItemArray[0]);
+            Assert.Equal("B", Temp2.Rows[1].ItemArray[1]);
+            Assert.Equal(3, Temp2.Rows[2].ItemArray[0]);
+            Assert.Equal("C", Temp2.Rows[2].ItemArray[1]);
         }
 
         [Fact]
@@ -160,34 +202,6 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(11, Temp[2]);
             Assert.Equal(12, Temp[3]);
             Assert.Equal(13, Temp[4]);
-        }
-
-        [Fact]
-        public void ThrowIfAll()
-        {
-            Assert.Throws<Exception>(() => new int[] { 0, 0, 1, 2, 3 }.ThrowIfAll(x => x < 4, new Exception()));
-            Assert.DoesNotThrow(() => new int[] { 0, 0, 1, 2, 3 }.ThrowIfAll(x => x < 3, new Exception()));
-        }
-
-        [Fact]
-        public void ThrowIfAny()
-        {
-            Assert.Throws<Exception>(() => new int[] { 0, 0, 1, 2, 3 }.ThrowIfAny(x => x < 3, new Exception()));
-            Assert.DoesNotThrow(() => new int[] { 0, 0, 1, 2, 3 }.ThrowIfAny(x => x > 3, new Exception()));
-        }
-
-        [Fact]
-        public void ToDataTable()
-        {
-            List<PreDataTable> Temp = new PreDataTable[] { new PreDataTable { ID = 1, Value = "A" }, new PreDataTable { ID = 2, Value = "B" }, new PreDataTable { ID = 3, Value = "C" } }.ToList();
-            Assert.DoesNotThrow(() => Temp.ToDataTable());
-            DataTable Temp2 = Temp.ToDataTable();
-            Assert.Equal(1, Temp2.Rows[0].ItemArray[0]);
-            Assert.Equal("A", Temp2.Rows[0].ItemArray[1]);
-            Assert.Equal(2, Temp2.Rows[1].ItemArray[0]);
-            Assert.Equal("B", Temp2.Rows[1].ItemArray[1]);
-            Assert.Equal(3, Temp2.Rows[2].ItemArray[0]);
-            Assert.Equal("C", Temp2.Rows[2].ItemArray[1]);
         }
 
         [Fact]
@@ -234,26 +248,21 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(6, Results2.Count);
             Assert.Equal(22, Results2.Sum());
         }
-
-        [Fact]
-        public void ElementsBetween()
-        {
-            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            Assert.Equal(new int[] { 0, 0, 1 }.ToList(), Temp.ElementsBetween(0, 3));
-        }
-        
-        [Fact]
-        public void Last()
-        {
-            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            Assert.Equal(new int[] { 1, 2, 3 }.ToList(), Temp.Last(3));
-        }
     }
 
     public class PreDataTable
     {
         public virtual int ID { get; set; }
+
         public virtual string Value { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is PreDataTable))
+                return false;
+            return GetHashCode() == obj.GetHashCode();
+        }
+
         public override int GetHashCode()
         {
             return ID.GetHashCode() + Value.GetHashCode();
@@ -262,13 +271,6 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public override string ToString()
         {
             return base.ToString();
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (!(obj is PreDataTable))
-                return false;
-            return GetHashCode() == obj.GetHashCode();
         }
     }
 }

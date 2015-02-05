@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
-using System.Data;
 using System.Linq;
 using UnitTests.ORM.Test1.Models;
 using Utilities.DataTypes.ExtensionMethods;
@@ -31,13 +29,8 @@ using Xunit;
 
 namespace UnitTests.ORM.Test1
 {
-    public class ORMTest1 : IDisposable
+    public class ORMTest1 : DatabaseBaseClass
     {
-        public ORMTest1()
-        {
-            new Utilities.ORM.ORM(false, typeof(Account).Assembly);
-        }
-
         [Fact]
         public void DatabaseCreation()
         {
@@ -57,25 +50,6 @@ namespace UnitTests.ORM.Test1
             Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Group_UserAudit"));
             Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Role_User"));
             Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Role_UserAudit"));
-        }
-
-        public void Dispose()
-        {
-            Utilities.ORM.ORM.Destroy();
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false"))
-            {
-                Helper.Batch().AddCommand("ALTER DATABASE ORMTestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
-                    .AddCommand("ALTER DATABASE ORMTestDatabase2 SET ONLINE", CommandType.Text)
-                    .AddCommand("DROP DATABASE ORMTestDatabase2", CommandType.Text);
-                Helper.ExecuteNonQuery();
-            }
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false"))
-            {
-                Helper.Batch().AddCommand("ALTER DATABASE ORMTestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
-                    .AddCommand("ALTER DATABASE ORMTestDatabase SET ONLINE", CommandType.Text)
-                    .AddCommand("DROP DATABASE ORMTestDatabase", CommandType.Text);
-                Helper.ExecuteNonQuery();
-            }
         }
 
         [Fact]

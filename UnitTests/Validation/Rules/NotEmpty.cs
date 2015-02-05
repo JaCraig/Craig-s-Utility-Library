@@ -36,7 +36,7 @@ namespace UnitTests.Validation.Rules
             Temp.ItemA = new List<string>();
             Temp.ItemA.Add("A");
             Temp.ItemA.Add("B");
-            Assert.DoesNotThrow(() => Temp.Validate());
+            Temp.Validate();
             Temp.ItemA.Clear();
             Assert.Throws<ValidationException>(() => Temp.Validate());
         }

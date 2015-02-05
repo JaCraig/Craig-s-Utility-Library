@@ -32,9 +32,9 @@ namespace UnitTests.Reflection.Emit
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
             Utilities.Reflection.Emit.EnumBuilder Enum = Assembly.CreateEnum("TestEnum");
-            Assert.DoesNotThrow(() => Enum.AddLiteral("TestLiteral1", 1));
-            Assert.DoesNotThrow(() => Enum.AddLiteral("TestLiteral2", 2));
-            Assert.DoesNotThrow(() => Assembly.Create());
+            Enum.AddLiteral("TestLiteral1", 1);
+            Enum.AddLiteral("TestLiteral2", 2);
+            Assembly.Create();
             Assert.NotNull(Activator.CreateInstance(Enum.DefinedType));
         }
     }

@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-
 using System.Data;
 using Utilities.SQL.ParameterTypes;
 using Xunit;
@@ -38,7 +37,7 @@ namespace UnitTests.SQL.ParameterTypes
             Assert.Equal("ID=@ID", TestObject.ToString());
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Integrated Security=SSPI;Pooling=false"))
             {
-                Assert.DoesNotThrow(() => Helper.AddParameter(TestObject));
+                Helper.AddParameter(TestObject);
             }
         }
     }

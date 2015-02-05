@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-
 using System.ComponentModel.DataAnnotations;
 using Utilities.Validation.ExtensionMethods;
 using Utilities.Validation.Rules;
@@ -37,7 +36,7 @@ namespace UnitTests.Validation.Rules
             Temp.ItemB = "1234.123";
             Temp.ItemC = "http://www.google.com";
             Temp.ItemD = "1234";
-            Assert.DoesNotThrow(() => Temp.Validate());
+            Temp.Validate();
             Temp.ItemA = "1234567890123";
             Temp.ItemB = "ASD1234";
             Temp.ItemC = "google@somewhere.com";
@@ -50,10 +49,13 @@ namespace UnitTests.Validation.Rules
     {
         [Is(Utilities.Validation.Rules.Enums.IsValid.CreditCard)]
         public string ItemA { get; set; }
+
         [Is(Utilities.Validation.Rules.Enums.IsValid.Decimal)]
         public string ItemB { get; set; }
+
         [Is(Utilities.Validation.Rules.Enums.IsValid.Domain)]
         public string ItemC { get; set; }
+
         [Is(Utilities.Validation.Rules.Enums.IsValid.Integer)]
         public string ItemD { get; set; }
     }

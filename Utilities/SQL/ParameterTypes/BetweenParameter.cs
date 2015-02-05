@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Data.Common;
 using Utilities.SQL.ExtensionMethods;
 using Utilities.SQL.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.SQL.ParameterTypes
 {
@@ -41,32 +43,32 @@ namespace Utilities.SQL.ParameterTypes
         /// <param name="Min">Min value of the parameter</param>
         /// <param name="Max">Max value of the parameter</param>
         /// <param name="ID">Name of the parameter</param>
-        /// <param name="ParameterStarter">What the database expects as the
-        /// parameter starting string ("@" for SQL Server, ":" for Oracle, etc.)</param>
-        public BetweenParameter(DataType Min,DataType Max, string ID, string ParameterStarter = "@")
+        /// <param name="ParameterStarter">
+        /// What the database expects as the parameter starting string ("@" for SQL Server, ":" for
+        /// Oracle, etc.)
+        /// </param>
+        public BetweenParameter(DataType Min, DataType Max, string ID, string ParameterStarter = "@")
             : base(ID, Min, System.Data.ParameterDirection.Input, ParameterStarter)
         {
             this.Min = Min;
             this.Max = Max;
-            this.ID = ID;
-            this.ParameterStarter = ParameterStarter;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-
-        /// <summary>
-        /// Min value of the parameter
-        /// </summary>
-        public DataType Min { get; set; }
 
         /// <summary>
         /// Max value of the parameter
         /// </summary>
         public DataType Max { get; set; }
 
-        #endregion
+        /// <summary>
+        /// Min value of the parameter
+        /// </summary>
+        public DataType Min { get; set; }
+
+        #endregion Properties
 
         #region Functions
 
@@ -87,15 +89,18 @@ namespace Utilities.SQL.ParameterTypes
         /// <returns>A copy of the parameter</returns>
         public override IParameter CreateCopy(string Suffix)
         {
-            return new BetweenParameter<DataType>(Min, Max, ID + Suffix, ParameterStarter);
+            return new BetweenParameter<DataType>(Min, Max, OriginalID + Suffix, ParameterStarter);
         }
 
         /// <summary>
         /// Outputs the param as a string
         /// </summary>
         /// <returns>The param as a string</returns>
-        public override string ToString() { return ID + " BETWEEN " + ParameterStarter + ID + "Min AND " + ParameterStarter + ID + "Max"; }
+        public override string ToString()
+        {
+            return OriginalID + " BETWEEN " + ParameterStarter + ID + "Min AND " + ParameterStarter + ID + "Max";
+        }
 
-        #endregion
+        #endregion Functions
     }
 }

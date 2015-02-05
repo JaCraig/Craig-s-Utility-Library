@@ -20,11 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Data;
 using System.Data.Common;
 using Utilities.SQL.ExtensionMethods;
 using Utilities.SQL.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.SQL.MicroORM
 {
@@ -42,12 +44,12 @@ namespace Utilities.SQL.MicroORM
         /// <param name="Value">Value of the parameter</param>
         /// <param name="Direction">Direction of the parameter</param>
         /// <param name="ParameterStarter">Parameter starter</param>
-        public StringParameter(string ID, string Value, ParameterDirection Direction = ParameterDirection.Input,string ParameterStarter="@")
+        public StringParameter(string ID, string Value, ParameterDirection Direction = ParameterDirection.Input, string ParameterStarter = "@")
             : base(ID, Value, Direction, ParameterStarter)
         {
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Functions
 
@@ -67,9 +69,9 @@ namespace Utilities.SQL.MicroORM
         /// <returns>A copy of the parameter</returns>
         public override IParameter CreateCopy(string Suffix)
         {
-            return new StringParameter(ID + Suffix, Value, Direction, ParameterStarter);
+            return new StringParameter(OriginalID + Suffix, Value, Direction, ParameterStarter);
         }
 
-        #endregion
+        #endregion Functions
     }
 }

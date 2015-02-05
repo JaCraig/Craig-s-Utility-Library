@@ -25,9 +25,36 @@ using Xunit;
 
 namespace UnitTests.IO.Logging
 {
-    public class LoggingManager : IUseFixture<LoggingManagerFixture>
+    public class LoggingManager : LoggingManagerFixture
     {
-        public LoggingManager() { }
+        public LoggingManager()
+        {
+        }
+
+        [Fact]
+        public void AddLog()
+        {
+            Utilities.IO.Logging.LoggingManager.AddLog<Utilities.IO.Logging.ConsoleLog>();
+            Utilities.IO.Logging.ConsoleLog Log = Utilities.IO.Logging.LoggingManager.GetLog<Utilities.IO.Logging.ConsoleLog>();
+            Assert.NotNull(Log);
+        }
+
+        [Fact]
+        public void AddLog2()
+        {
+            Utilities.IO.Logging.LoggingManager.AddLog<Utilities.IO.Logging.ConsoleLog>("NotDefault");
+            Utilities.IO.Logging.ConsoleLog Log = Utilities.IO.Logging.LoggingManager.GetLog<Utilities.IO.Logging.ConsoleLog>("NotDefault");
+            Assert.NotNull(Log);
+        }
+
+        [Fact]
+        public void AddLog3()
+        {
+            Utilities.IO.Logging.ConsoleLog TempConsoleLog = new Utilities.IO.Logging.ConsoleLog();
+            Utilities.IO.Logging.LoggingManager.AddLog(TempConsoleLog);
+            Utilities.IO.Logging.ConsoleLog Log = Utilities.IO.Logging.LoggingManager.GetLog<Utilities.IO.Logging.ConsoleLog>();
+            Assert.Equal(TempConsoleLog, Log);
+        }
 
         [Fact]
         public void GetLog()
@@ -44,34 +71,8 @@ namespace UnitTests.IO.Logging
             Assert.NotNull(Log);
         }
 
-        [Fact]
-        public void AddLog()
-        {
-            Assert.DoesNotThrow(() => Utilities.IO.Logging.LoggingManager.AddLog<Utilities.IO.Logging.ConsoleLog>());
-            Utilities.IO.Logging.ConsoleLog Log = Utilities.IO.Logging.LoggingManager.GetLog<Utilities.IO.Logging.ConsoleLog>();
-            Assert.NotNull(Log);
-        }
-
-        [Fact]
-        public void AddLog2()
-        {
-            Assert.DoesNotThrow(() => Utilities.IO.Logging.LoggingManager.AddLog<Utilities.IO.Logging.ConsoleLog>("NotDefault"));
-            Utilities.IO.Logging.ConsoleLog Log = Utilities.IO.Logging.LoggingManager.GetLog<Utilities.IO.Logging.ConsoleLog>("NotDefault");
-            Assert.NotNull(Log);
-        }
-
-        [Fact]
-        public void AddLog3()
-        {
-            Utilities.IO.Logging.ConsoleLog TempConsoleLog = new Utilities.IO.Logging.ConsoleLog();
-            Assert.DoesNotThrow(() => Utilities.IO.Logging.LoggingManager.AddLog(TempConsoleLog));
-            Utilities.IO.Logging.ConsoleLog Log = Utilities.IO.Logging.LoggingManager.GetLog<Utilities.IO.Logging.ConsoleLog>();
-            Assert.Equal(TempConsoleLog, Log);
-        }
-
         public void SetFixture(LoggingManagerFixture data)
         {
-
         }
     }
 }

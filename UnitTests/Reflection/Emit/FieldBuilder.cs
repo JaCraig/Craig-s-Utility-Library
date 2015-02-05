@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-
 using System.Reflection;
 using Utilities.Reflection.Emit.Interfaces;
 using Xunit;
@@ -28,6 +27,26 @@ namespace UnitTests.Reflection.Emit
 {
     public class FieldBuilder
     {
+        [Fact]
+        public void Assign()
+        {
+            Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
+            Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
+            IMethodBuilder Method = TestType.CreateMethod("TestMethod");
+            Utilities.Reflection.Emit.FieldBuilder Field = TestType.CreateField("Field1", typeof(int));
+            Field.Assign(12);
+        }
+
+        [Fact]
+        public void Call()
+        {
+            Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
+            Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
+            IMethodBuilder Method = TestType.CreateMethod("TestMethod");
+            Utilities.Reflection.Emit.FieldBuilder Field = TestType.CreateField("Field1", typeof(int));
+            Field.Call("ToString");
+        }
+
         [Fact]
         public void Create()
         {
@@ -39,26 +58,6 @@ namespace UnitTests.Reflection.Emit
             Assert.Equal("Field1", Field.Name);
             Assert.Equal(FieldAttributes.Public, Field.Attributes);
             Assert.NotNull(Field.Builder);
-        }
-
-        [Fact]
-        public void Assign()
-        {
-            Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
-            Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
-            IMethodBuilder Method = TestType.CreateMethod("TestMethod");
-            Utilities.Reflection.Emit.FieldBuilder Field = TestType.CreateField("Field1", typeof(int));
-            Assert.DoesNotThrow(() => Field.Assign(12));
-        }
-
-        [Fact]
-        public void Call()
-        {
-            Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
-            Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
-            IMethodBuilder Method = TestType.CreateMethod("TestMethod");
-            Utilities.Reflection.Emit.FieldBuilder Field = TestType.CreateField("Field1", typeof(int));
-            Assert.DoesNotThrow(() => Field.Call("ToString"));
         }
 
         [Fact]
@@ -77,7 +76,7 @@ namespace UnitTests.Reflection.Emit
             Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
             Utilities.Reflection.Emit.FieldBuilder Field = TestType.CreateField("Field1", typeof(int));
             IMethodBuilder Method = TestType.CreateMethod("TestMethod");
-            Assert.DoesNotThrow(() => Field.Load(Method.Generator));
+            Field.Load(Method.Generator);
         }
 
         [Fact]
@@ -87,7 +86,7 @@ namespace UnitTests.Reflection.Emit
             Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
             Utilities.Reflection.Emit.FieldBuilder Field = TestType.CreateField("Field1", typeof(int));
             IMethodBuilder Method = TestType.CreateMethod("TestMethod");
-            Assert.DoesNotThrow(() => Field.Save(Method.Generator));
+            Field.Save(Method.Generator);
         }
     }
 }

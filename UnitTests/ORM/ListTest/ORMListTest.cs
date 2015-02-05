@@ -24,7 +24,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using UnitTests.ORM.ListTest.Models;
-using UnitTests.ORM.Test2.Models;
 using Utilities.ORM.ExtensionMethods;
 using Utilities.SQL.DataClasses;
 using Utilities.SQL.ParameterTypes;
@@ -33,13 +32,8 @@ using Xunit;
 
 namespace UnitTests.ORM.ListTest
 {
-    public class ORMListTest : IDisposable
+    public class ORMListTest : DatabaseBaseClass
     {
-        public ORMListTest()
-        {
-            new Utilities.ORM.ORM(false, typeof(Task).Assembly);
-        }
-
         [Fact]
         public void All()
         {
@@ -145,18 +139,6 @@ namespace UnitTests.ORM.ListTest
             Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Task2_Audit"));
             Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Task2_Task2Audit"));
             Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Project2_Task2Audit"));
-        }
-
-        public void Dispose()
-        {
-            Utilities.ORM.ORM.Destroy();
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false"))
-            {
-                Helper.Batch().AddCommand("ALTER DATABASE ORMTestDatabase3 SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
-                    .AddCommand("ALTER DATABASE ORMTestDatabase3 SET ONLINE", CommandType.Text)
-                    .AddCommand("DROP DATABASE ORMTestDatabase3", CommandType.Text);
-                Helper.ExecuteNonQuery();
-            }
         }
 
         [Fact]

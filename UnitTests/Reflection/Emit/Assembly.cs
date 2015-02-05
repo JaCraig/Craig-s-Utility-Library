@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-
 using Xunit;
 
 namespace UnitTests.Reflection.Emit
@@ -30,16 +29,7 @@ namespace UnitTests.Reflection.Emit
         public void Create()
         {
             Utilities.Reflection.Emit.Assembly TestObject = new Utilities.Reflection.Emit.Assembly("TestingThis");
-            Assert.DoesNotThrow(() => TestObject.Create());
-        }
-
-        [Fact]
-        public void CreateType()
-        {
-            Utilities.Reflection.Emit.Assembly TestObject = new Utilities.Reflection.Emit.Assembly("TestingThis");
-            Utilities.Reflection.Emit.TypeBuilder TypeObject = TestObject.CreateType("TestClass");
-            Assert.NotNull(TypeObject);
-            Assert.DoesNotThrow(() => TestObject.Create());
+            TestObject.Create();
         }
 
         [Fact]
@@ -48,7 +38,16 @@ namespace UnitTests.Reflection.Emit
             Utilities.Reflection.Emit.Assembly TestObject = new Utilities.Reflection.Emit.Assembly("TestingThis");
             Utilities.Reflection.Emit.EnumBuilder EnumObject = TestObject.CreateEnum("TestEnum");
             Assert.NotNull(EnumObject);
-            Assert.DoesNotThrow(() => TestObject.Create());
+            TestObject.Create();
+        }
+
+        [Fact]
+        public void CreateType()
+        {
+            Utilities.Reflection.Emit.Assembly TestObject = new Utilities.Reflection.Emit.Assembly("TestingThis");
+            Utilities.Reflection.Emit.TypeBuilder TypeObject = TestObject.CreateType("TestClass");
+            Assert.NotNull(TypeObject);
+            TestObject.Create();
         }
     }
 }

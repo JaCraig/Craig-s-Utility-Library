@@ -1170,7 +1170,7 @@ namespace Utilities.SQL
         protected virtual string SetupDeleteCommand<ClassType>(Mapping<ClassType> Mapping)
             where ClassType : class,new()
         {
-            return string.Format(CultureInfo.InvariantCulture, "DELETE FROM {0} WHERE {1}", Mapping.TableName, Mapping.PrimaryKey + "=" + DatabaseUsing.ParameterPrefix + Mapping.PrimaryKey);
+            return string.Format(CultureInfo.InvariantCulture, "DELETE FROM {0} WHERE {1}", Mapping.TableName, Mapping.PrimaryKey + "=" + DatabaseUsing.ParameterPrefix + Mapping.PrimaryKey.Keep("[a-zA-Z0-9_]"));
         }
 
         /// <summary>
@@ -1190,14 +1190,14 @@ namespace Utilities.SQL
                 if (!Mapping.AutoIncrement || Name != Mapping.PrimaryKey)
                 {
                     ParameterList += Splitter + Name;
-                    ValueList += Splitter + DatabaseUsing.ParameterPrefix + Name;
+                    ValueList += Splitter + DatabaseUsing.ParameterPrefix + Name.Keep("[a-zA-Z0-9_]");
                     Splitter = ",";
                 }
             }
             foreach (IParameter Parameter in Parameters)
             {
                 ParameterList += Splitter + Parameter.ID;
-                ValueList += Splitter + DatabaseUsing.ParameterPrefix + Parameter.ID;
+                ValueList += Splitter + DatabaseUsing.ParameterPrefix + Parameter.ID.Keep("[a-zA-Z0-9_]");
                 Splitter = ",";
             }
             return string.Format(CultureInfo.InvariantCulture, "INSERT INTO {0}({1}) VALUES({2}) SELECT scope_identity() as [ID]", Mapping.TableName, ParameterList, ValueList);
@@ -1354,13 +1354,13 @@ namespace Utilities.SQL
             where ClassType : class,new()
         {
             string ParameterList = "";
-            string WhereCommand = Mapping.PrimaryKey + "=" + DatabaseUsing.ParameterPrefix + Mapping.PrimaryKey;
+            string WhereCommand = Mapping.PrimaryKey + "=" + DatabaseUsing.ParameterPrefix + Mapping.PrimaryKey.Keep("[a-zA-Z0-9_]");
             string Splitter = "";
             foreach (string Name in Mapping.ParameterNames)
             {
                 if (Name != Mapping.PrimaryKey)
                 {
-                    ParameterList += Splitter + Name + "=" + DatabaseUsing.ParameterPrefix + Name;
+                    ParameterList += Splitter + Name + "=" + DatabaseUsing.ParameterPrefix + Name.Keep("[a-zA-Z0-9_]");
                     Splitter = ",";
                 }
             }

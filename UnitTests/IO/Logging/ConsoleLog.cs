@@ -27,19 +27,24 @@ namespace UnitTests.IO.Logging
 {
     public class ConsoleLog : IDisposable
     {
-        public ConsoleLog() { Log = new Utilities.IO.Logging.ConsoleLog(); }
+        public ConsoleLog()
+        {
+            Log = new Utilities.IO.Logging.ConsoleLog();
+        }
+
+        private Utilities.IO.Logging.ConsoleLog Log { get; set; }
+
+        public void Dispose()
+        {
+            Log.Dispose();
+        }
 
         [Fact]
         public void LogMessage()
         {
             foreach (MessageType Type in Enum.GetValues(typeof(MessageType)))
-                Assert.DoesNotThrow(()=> Log.LogMessage("TestMessage", Type));
-            Assert.DoesNotThrow(() => Log.LogMessage("TestMessage{0}", MessageType.Debug, "1"));
+                Log.LogMessage("TestMessage", Type);
+            Log.LogMessage("TestMessage{0}", MessageType.Debug, "1");
         }
-
-
-        public void Dispose() { Log.Dispose(); }
-
-        private Utilities.IO.Logging.ConsoleLog Log { get; set; }
     }
 }

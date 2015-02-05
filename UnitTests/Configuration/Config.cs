@@ -25,7 +25,7 @@ using Xunit;
 
 namespace UnitTests.Configuration
 {
-    public class Config:IUseFixture<TestingDirectoryFixture>
+    public class Config:TestingDirectoryFixture
     {
         public Config()
         {

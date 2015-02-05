@@ -30,7 +30,7 @@ namespace UnitTests.DataMapper
         public void CreationTest()
         {
             Utilities.DataMapper.Mapping<MappingA, MappingB> TempObject = null;
-            Assert.DoesNotThrow(() => TempObject = new Mapping<MappingA, MappingB>(x => x.Item1, x => x.Item1));
+            TempObject = new Mapping<MappingA, MappingB>(x => x.Item1, x => x.Item1);
             Assert.NotNull(TempObject);
         }
 
@@ -38,11 +38,11 @@ namespace UnitTests.DataMapper
         public void LeftToRight()
         {
             Utilities.DataMapper.Mapping<MappingA, MappingB> TempObject = new Mapping<MappingA, MappingB>(x => x.Item1, x => x.Item1);
-            MappingA A=new MappingA();
-            A.Item1=12;
+            MappingA A = new MappingA();
+            A.Item1 = 12;
             A.Item2 = "ASDF";
-            MappingB B=new MappingB();
-            B.Item1=13;
+            MappingB B = new MappingB();
+            B.Item1 = 13;
             B.Item2 = "ZXCV";
             TempObject.CopyLeftToRight(A, B);
             Assert.Equal(B.Item1, 12);
@@ -68,12 +68,14 @@ namespace UnitTests.DataMapper
     public class MappingA
     {
         public int Item1 { get; set; }
+
         public string Item2 { get; set; }
     }
 
     public class MappingB
     {
         public int Item1 { get; set; }
+
         public string Item2 { get; set; }
     }
 }

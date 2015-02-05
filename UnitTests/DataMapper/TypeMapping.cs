@@ -27,18 +27,10 @@ namespace UnitTests.DataMapper
     public class TypeMapping
     {
         [Fact]
-        public void CreationTest()
-        {
-            Utilities.DataMapper.TypeMapping<MappingA, MappingB> TestObject = null;
-            Assert.DoesNotThrow(() => TestObject = new TypeMapping<MappingA, MappingB>());
-            Assert.NotNull(TestObject);
-        }
-
-        [Fact]
         public void AutoMapping()
         {
             Utilities.DataMapper.TypeMapping<MappingA, MappingB> TestObject = null;
-            Assert.DoesNotThrow(() => TestObject = new TypeMapping<MappingA, MappingB>());
+            TestObject = new TypeMapping<MappingA, MappingB>();
             Assert.NotNull(TestObject);
             TestObject.AutoMap();
             MappingA A = new MappingA();
@@ -53,10 +45,18 @@ namespace UnitTests.DataMapper
         }
 
         [Fact]
+        public void CreationTest()
+        {
+            Utilities.DataMapper.TypeMapping<MappingA, MappingB> TestObject = null;
+            TestObject = new TypeMapping<MappingA, MappingB>();
+            Assert.NotNull(TestObject);
+        }
+
+        [Fact]
         public void Mapping()
         {
             Utilities.DataMapper.TypeMapping<MappingA, MappingB> TestObject = null;
-            Assert.DoesNotThrow(() => TestObject = new TypeMapping<MappingA, MappingB>());
+            TestObject = new TypeMapping<MappingA, MappingB>();
             Assert.NotNull(TestObject);
             TestObject.AddMapping(x => x.Item1, x => x.Item1);
             TestObject.AddMapping(x => x.Item2, x => x.Item2);

@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-
 using System.ComponentModel.DataAnnotations;
 using Utilities.Validation.ExtensionMethods;
 using Utilities.Validation.Rules;
@@ -36,7 +35,7 @@ namespace UnitTests.Validation.Rules
             CompareToClass Temp = new CompareToClass();
             Temp.ItemA = 1;
             Temp.ItemB = 1;
-            Assert.DoesNotThrow(() => Temp.Validate());
+            Temp.Validate();
             Temp.ItemA = 2;
             Assert.Throws<ValidationException>(() => Temp.Validate());
         }

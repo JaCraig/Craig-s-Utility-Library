@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-
 using Xunit;
 
 namespace UnitTests.SQL.MicroORM
@@ -30,10 +29,7 @@ namespace UnitTests.SQL.MicroORM
         public void Create()
         {
             Utilities.SQL.MicroORM.Database TestObject = null;
-            Assert.DoesNotThrow(() =>
-            {
-                TestObject = new Utilities.SQL.MicroORM.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "Database1");
-            });
+            TestObject = new Utilities.SQL.MicroORM.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "Database1");
             Assert.Equal("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", TestObject.Connection);
             Assert.Equal(0, TestObject.Mappings.Count);
             Assert.Equal("Database1", TestObject.Name);

@@ -31,7 +31,8 @@ using Xunit;
 
 namespace UnitTests.SQL.MicroORM
 {
-    public class MicroORM:IDisposable
+    [Collection("DatabaseCollection")]
+    public class MicroORM : IDisposable
     {
         public MicroORM()
         {
@@ -39,7 +40,6 @@ namespace UnitTests.SQL.MicroORM
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("Create Database TestDatabase", CommandType.Text, "Data Source=localhost;Integrated Security=SSPI;Pooling=false"))
             {
                 Helper.ExecuteNonQuery();
-
             }
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("Create Table TestTable(ID_ INT PRIMARY KEY IDENTITY,StringValue_ NVARCHAR(100),LongValue_ BIGINT,BoolValue_ BIT,FloatValue_ FLOAT)", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
@@ -48,25 +48,36 @@ namespace UnitTests.SQL.MicroORM
         }
 
         [Fact]
-        public void Creation()
+        public void All()
         {
-            Assert.DoesNotThrow(() => { Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"); });
+            Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", Database: "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false")
+                    .Map(x => x.ID, "ID_")
+                    .Map(x => x.StringValue, "StringValue_")
+                    .Map(x => x.FloatValue, "FloatValue_")
+                    .Map(x => x.BoolValue, "BoolValue_")
+                    .Map(x => x.LongValue, "LongValue_");
+            ObjectClass1 TempObject = null;
+            Utilities.Random.Random Rand = new Utilities.Random.Random();
+            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
+            {
+                for (int x = 0; x < 100; ++x)
+                {
+                    TempObject = new ObjectClass1();
+                    TempObject.StringValue = Rand.Next<string>(new RegexStringGenerator(10));
+                    TempObject.BoolValue = Rand.Next<bool>();
+                    TempObject.FloatValue = (float)Rand.NextDouble();
+                    TempObject.LongValue = Rand.Next();
+                    ORM.Save<ObjectClass1, int>(TempObject);
+                }
+                TempObject = null;
+                IEnumerable<ObjectClass1> Objects = ORM.All<ObjectClass1>();
+                Assert.Equal(100, Objects.Count());
+            }
         }
 
         [Fact]
-        public void Database()
-        {
-            Assert.DoesNotThrow(() => { Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "DatabaseTestName"); });
-        }
-
-        [Fact]
-        public void Map()
-        {
-            Assert.DoesNotThrow(() => { Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_"); });
-        }
-
-        [Fact]
-        public void Save()
+        public void Any()
         {
             Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
             Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", Database: "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false")
@@ -78,69 +89,18 @@ namespace UnitTests.SQL.MicroORM
             ObjectClass1 TempObject = new ObjectClass1();
             using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
-                TempObject.StringValue = "Test";
-                TempObject.BoolValue = false;
-                TempObject.FloatValue = 1.5f;
-                TempObject.LongValue = 12;
+                TempObject.StringValue = "Test String";
+                TempObject.BoolValue = true;
+                TempObject.FloatValue = 1234.5f;
+                TempObject.LongValue = 12345;
                 ORM.Save<ObjectClass1, int>(TempObject);
-                TempObject.StringValue = "Test String";
-                TempObject.BoolValue = true;
-                TempObject.FloatValue = 1234.5f;
-                TempObject.LongValue = 12345;
-                ORM.Save<ObjectClass1,int>(TempObject);
-            }
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
-            {
-                Helper.ExecuteReader();
-                if (Helper.Read())
-                {
-                    Assert.Equal("Test String", Helper.GetParameter<string>("StringValue_", ""));
-                    Assert.Equal(1234.5f, Helper.GetParameter<float>("FloatValue_", 0));
-                    Assert.Equal(true, Helper.GetParameter<bool>("BoolValue_", false));
-                    Assert.Equal(12345, Helper.GetParameter<long>("LongValue_", 0));
-                    Assert.Equal(TempObject.ID, Helper.GetParameter<int>("ID_", 0));
-                }
-                else
-                {
-                    Assert.False(true,"Nothing was inserted");
-                }
-            }
-        }
-
-        [Fact]
-        public void Insert()
-        {
-            Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
-            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", Database: "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false")
-                    .Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_")
-                    .Map(x => x.FloatValue, "FloatValue_")
-                    .Map(x => x.BoolValue, "BoolValue_")
-                    .Map(x => x.LongValue, "LongValue_");
-            ObjectClass1 TempObject = new ObjectClass1();
-            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
-            {
-                TempObject.StringValue = "Test String";
-                TempObject.BoolValue = true;
-                TempObject.FloatValue = 1234.5f;
-                TempObject.LongValue = 12345;
-                TempObject.ID = ORM.Insert<ObjectClass1, int>(TempObject);
-            }
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
-            {
-                Helper.ExecuteReader();
-                if (Helper.Read())
-                {
-                    Assert.Equal("Test String", Helper.GetParameter<string>("StringValue_", ""));
-                    Assert.Equal(1234.5f, Helper.GetParameter<float>("FloatValue_", 0));
-                    Assert.Equal(true, Helper.GetParameter<bool>("BoolValue_", false));
-                    Assert.Equal(12345, Helper.GetParameter<long>("LongValue_", 0));
-                    Assert.Equal(TempObject.ID, Helper.GetParameter<int>("ID_", 0));
-                }
-                else
-                {
-                    Assert.False(true,"Nothing was inserted");
-                }
+                TempObject = null;
+                TempObject = ORM.Any<ObjectClass1>();
+                Assert.Equal("Test String", TempObject.StringValue);
+                Assert.Equal(1234.5f, TempObject.FloatValue);
+                Assert.Equal(true, TempObject.BoolValue);
+                Assert.Equal(12345, TempObject.LongValue);
+                Assert.Equal(1, TempObject.ID);
             }
         }
 
@@ -185,83 +145,25 @@ namespace UnitTests.SQL.MicroORM
                 Assert.Equal(0, TempObjects.Count());
                 TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, false, new StringEqualParameter("Test String", "StringValue_", 100));
                 Assert.Equal(30, TempObjects.Count());
-                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null,false, new StringNotEqualParameter("Test String", "StringValue_", 100));
+                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, false, new StringNotEqualParameter("Test String", "StringValue_", 100));
                 Assert.Equal(0, TempObjects.Count());
             }
         }
 
         [Fact]
-        public void Update()
+        public void Creation()
         {
-            Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
-            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", Database: "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false")
-                    .Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_")
-                    .Map(x => x.FloatValue, "FloatValue_")
-                    .Map(x => x.BoolValue, "BoolValue_")
-                    .Map(x => x.LongValue, "LongValue_");
-            ObjectClass1 TempObject = new ObjectClass1();
-            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
-            {
-                TempObject.StringValue = "Test";
-                TempObject.BoolValue = false;
-                TempObject.FloatValue = 1.5f;
-                TempObject.LongValue = 12;
-                TempObject.ID = ORM.Insert<ObjectClass1, int>(TempObject);
-                TempObject.StringValue = "Test String";
-                TempObject.BoolValue = true;
-                TempObject.FloatValue = 1234.5f;
-                TempObject.LongValue = 12345;
-                ORM.Update<ObjectClass1>(TempObject);
-            }
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
-            {
-                Helper.ExecuteReader();
-                if (Helper.Read())
-                {
-                    Assert.Equal("Test String", Helper.GetParameter<string>("StringValue_", ""));
-                    Assert.Equal(1234.5f, Helper.GetParameter<float>("FloatValue_", 0));
-                    Assert.Equal(true, Helper.GetParameter<bool>("BoolValue_", false));
-                    Assert.Equal(12345, Helper.GetParameter<long>("LongValue_", 0));
-                    Assert.Equal(TempObject.ID, Helper.GetParameter<int>("ID_", 0));
-                }
-                else
-                {
-                    Assert.False(true,"Nothing was inserted");
-                }
-            }
+            Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
         }
 
         [Fact]
-        public void Any()
+        public void Database()
         {
-            Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
-            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_",Database:"Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false")
-                    .Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_")
-                    .Map(x => x.FloatValue, "FloatValue_")
-                    .Map(x => x.BoolValue, "BoolValue_")
-                    .Map(x => x.LongValue, "LongValue_");
-            ObjectClass1 TempObject = new ObjectClass1();
-            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
-            {
-                TempObject.StringValue = "Test String";
-                TempObject.BoolValue = true;
-                TempObject.FloatValue = 1234.5f;
-                TempObject.LongValue = 12345;
-                ORM.Save<ObjectClass1,int>(TempObject);
-                TempObject = null;
-                TempObject = ORM.Any<ObjectClass1>();
-                Assert.Equal("Test String", TempObject.StringValue);
-                Assert.Equal(1234.5f, TempObject.FloatValue);
-                Assert.Equal(true, TempObject.BoolValue);
-                Assert.Equal(12345, TempObject.LongValue);
-                Assert.Equal(1, TempObject.ID);
-            }
+            Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "DatabaseTestName");
         }
 
         [Fact]
-        public void All()
+        public void Delete()
         {
             Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
             Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", Database: "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false")
@@ -280,13 +182,74 @@ namespace UnitTests.SQL.MicroORM
                     TempObject.StringValue = Rand.Next<string>(new RegexStringGenerator(10));
                     TempObject.BoolValue = Rand.Next<bool>();
                     TempObject.FloatValue = (float)Rand.NextDouble();
-                    TempObject.LongValue =Rand.Next();
+                    TempObject.LongValue = Rand.Next();
                     ORM.Save<ObjectClass1, int>(TempObject);
                 }
                 TempObject = null;
                 IEnumerable<ObjectClass1> Objects = ORM.All<ObjectClass1>();
                 Assert.Equal(100, Objects.Count());
+                foreach (ObjectClass1 Object in Objects)
+                {
+                    ORM.Delete<ObjectClass1>(Object);
+                }
+                Objects = ORM.All<ObjectClass1>();
+                Assert.Equal(0, Objects.Count());
             }
+        }
+
+        public void Dispose()
+        {
+            Utilities.SQL.SQLHelper.ClearAllMappings();
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false"))
+            {
+                Helper.Batch().AddCommand("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
+                    .AddCommand("ALTER DATABASE TestDatabase SET ONLINE", CommandType.Text)
+                    .AddCommand("DROP DATABASE TestDatabase", CommandType.Text);
+                Helper.ExecuteNonQuery();
+            }
+        }
+
+        [Fact]
+        public void Insert()
+        {
+            Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", Database: "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false")
+                    .Map(x => x.ID, "ID_")
+                    .Map(x => x.StringValue, "StringValue_")
+                    .Map(x => x.FloatValue, "FloatValue_")
+                    .Map(x => x.BoolValue, "BoolValue_")
+                    .Map(x => x.LongValue, "LongValue_");
+            ObjectClass1 TempObject = new ObjectClass1();
+            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
+            {
+                TempObject.StringValue = "Test String";
+                TempObject.BoolValue = true;
+                TempObject.FloatValue = 1234.5f;
+                TempObject.LongValue = 12345;
+                TempObject.ID = ORM.Insert<ObjectClass1, int>(TempObject);
+            }
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
+            {
+                Helper.ExecuteReader();
+                if (Helper.Read())
+                {
+                    Assert.Equal("Test String", Helper.GetParameter<string>("StringValue_", ""));
+                    Assert.Equal(1234.5f, Helper.GetParameter<float>("FloatValue_", 0));
+                    Assert.Equal(true, Helper.GetParameter<bool>("BoolValue_", false));
+                    Assert.Equal(12345, Helper.GetParameter<long>("LongValue_", 0));
+                    Assert.Equal(TempObject.ID, Helper.GetParameter<int>("ID_", 0));
+                }
+                else
+                {
+                    Assert.False(true, "Nothing was inserted");
+                }
+            }
+        }
+
+        [Fact]
+        public void Map()
+        {
+            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
         }
 
         [Fact]
@@ -328,7 +291,7 @@ namespace UnitTests.SQL.MicroORM
         }
 
         [Fact]
-        public void Delete()
+        public void Save()
         {
             Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
             Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", Database: "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false")
@@ -337,40 +300,77 @@ namespace UnitTests.SQL.MicroORM
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_");
-            ObjectClass1 TempObject = null;
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
+            ObjectClass1 TempObject = new ObjectClass1();
             using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
-                for (int x = 0; x < 100; ++x)
+                TempObject.StringValue = "Test";
+                TempObject.BoolValue = false;
+                TempObject.FloatValue = 1.5f;
+                TempObject.LongValue = 12;
+                ORM.Save<ObjectClass1, int>(TempObject);
+                TempObject.StringValue = "Test String";
+                TempObject.BoolValue = true;
+                TempObject.FloatValue = 1234.5f;
+                TempObject.LongValue = 12345;
+                ORM.Save<ObjectClass1, int>(TempObject);
+            }
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
+            {
+                Helper.ExecuteReader();
+                if (Helper.Read())
                 {
-                    TempObject = new ObjectClass1();
-                    TempObject.StringValue = Rand.Next<string>(new RegexStringGenerator(10));
-                    TempObject.BoolValue = Rand.Next<bool>();
-                    TempObject.FloatValue = (float)Rand.NextDouble();
-                    TempObject.LongValue = Rand.Next();
-                    ORM.Save<ObjectClass1, int>(TempObject);
+                    Assert.Equal("Test String", Helper.GetParameter<string>("StringValue_", ""));
+                    Assert.Equal(1234.5f, Helper.GetParameter<float>("FloatValue_", 0));
+                    Assert.Equal(true, Helper.GetParameter<bool>("BoolValue_", false));
+                    Assert.Equal(12345, Helper.GetParameter<long>("LongValue_", 0));
+                    Assert.Equal(TempObject.ID, Helper.GetParameter<int>("ID_", 0));
                 }
-                TempObject = null;
-                IEnumerable<ObjectClass1> Objects = ORM.All<ObjectClass1>();
-                Assert.Equal(100, Objects.Count());
-                foreach (ObjectClass1 Object in Objects)
+                else
                 {
-                    ORM.Delete<ObjectClass1>(Object);
+                    Assert.False(true, "Nothing was inserted");
                 }
-                Objects = ORM.All<ObjectClass1>();
-                Assert.Equal(0, Objects.Count());
             }
         }
 
-        public void Dispose()
+        [Fact]
+        public void Update()
         {
-            Utilities.SQL.SQLHelper.ClearAllMappings();
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("",  CommandType.Text, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false"))
+            Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", Database: "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false")
+                    .Map(x => x.ID, "ID_")
+                    .Map(x => x.StringValue, "StringValue_")
+                    .Map(x => x.FloatValue, "FloatValue_")
+                    .Map(x => x.BoolValue, "BoolValue_")
+                    .Map(x => x.LongValue, "LongValue_");
+            ObjectClass1 TempObject = new ObjectClass1();
+            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
-                Helper.Batch().AddCommand("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
-                    .AddCommand("ALTER DATABASE TestDatabase SET ONLINE", CommandType.Text)
-                    .AddCommand("DROP DATABASE TestDatabase", CommandType.Text);
-                Helper.ExecuteNonQuery();
+                TempObject.StringValue = "Test";
+                TempObject.BoolValue = false;
+                TempObject.FloatValue = 1.5f;
+                TempObject.LongValue = 12;
+                TempObject.ID = ORM.Insert<ObjectClass1, int>(TempObject);
+                TempObject.StringValue = "Test String";
+                TempObject.BoolValue = true;
+                TempObject.FloatValue = 1234.5f;
+                TempObject.LongValue = 12345;
+                ORM.Update<ObjectClass1>(TempObject);
+            }
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
+            {
+                Helper.ExecuteReader();
+                if (Helper.Read())
+                {
+                    Assert.Equal("Test String", Helper.GetParameter<string>("StringValue_", ""));
+                    Assert.Equal(1234.5f, Helper.GetParameter<float>("FloatValue_", 0));
+                    Assert.Equal(true, Helper.GetParameter<bool>("BoolValue_", false));
+                    Assert.Equal(12345, Helper.GetParameter<long>("LongValue_", 0));
+                    Assert.Equal(TempObject.ID, Helper.GetParameter<int>("ID_", 0));
+                }
+                else
+                {
+                    Assert.False(true, "Nothing was inserted");
+                }
             }
         }
     }

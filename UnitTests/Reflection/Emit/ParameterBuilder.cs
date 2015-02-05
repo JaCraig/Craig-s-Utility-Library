@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-
 using Utilities.Reflection.Emit.Interfaces;
 using Xunit;
 
@@ -36,7 +35,7 @@ namespace UnitTests.Reflection.Emit
             Assert.NotNull(Method.This);
             Assert.Null(Method.This.DataType);
             Assert.Equal("this", Method.This.Name);
-            Assert.DoesNotThrow(() => Method.This.Load(Method.Generator));
+            Method.This.Load(Method.Generator);
         }
 
         [Fact]
@@ -48,7 +47,7 @@ namespace UnitTests.Reflection.Emit
             Assert.NotNull(Method.This);
             Assert.Null(Method.This.DataType);
             Assert.Equal("this", Method.This.Name);
-            Assert.DoesNotThrow(() => Method.This.Save(Method.Generator));
+            Method.This.Save(Method.Generator);
         }
     }
 }

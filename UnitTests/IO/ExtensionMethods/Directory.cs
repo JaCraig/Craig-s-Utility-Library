@@ -26,7 +26,7 @@ using Xunit;
 
 namespace UnitTests.IO.ExtensionMethods
 {
-    public class Directory : IUseFixture<TestingDirectoryFixture>
+    public class Directory : TestingDirectoryFixture
     {
         [Fact]
         public void DeleteAll()

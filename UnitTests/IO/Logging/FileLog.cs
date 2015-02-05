@@ -29,19 +29,24 @@ namespace UnitTests.IO.Logging
 {
     public class FileLog : IDisposable
     {
-        public FileLog() { Log = new Utilities.IO.Logging.FileLog(@".\Test\File.txt"); }
+        public FileLog()
+        {
+            Log = new Utilities.IO.Logging.FileLog(@".\Test\File.txt");
+        }
+
+        private Utilities.IO.Logging.FileLog Log { get; set; }
+
+        public void Dispose()
+        {
+            Log.Dispose(); new DirectoryInfo(@".\Test").DeleteAll();
+        }
 
         [Fact]
         public void LogMessage()
         {
             foreach (MessageType Type in Enum.GetValues(typeof(MessageType)))
-                Assert.DoesNotThrow(() => Log.LogMessage("TestMessage", Type));
+                Log.LogMessage("TestMessage", Type);
             Assert.Contains("\r\nGeneral: TestMessage\r\nDebug: TestMessage\r\nTrace: TestMessage\r\nInfo: TestMessage\r\nWarn: TestMessage\r\nError: TestMessage\r\n", new FileInfo(@".\Test\File.txt").Read());
         }
-
-
-        public void Dispose() { Log.Dispose(); new DirectoryInfo(@".\Test").DeleteAll(); }
-
-        private Utilities.IO.Logging.FileLog Log { get; set; }
     }
 }

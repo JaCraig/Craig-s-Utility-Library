@@ -27,14 +27,20 @@ using Xunit;
 
 namespace UnitTests.Reflection.AOP
 {
-    public class AOPManager:IDisposable
+    public class AOPManager : IDisposable
     {
-        protected Utilities.Reflection.AOP.AOPManager Manager { get; set; }
-
         public AOPManager()
         {
             Manager = new Utilities.Reflection.AOP.AOPManager(AssemblyDirectory: @".\TestingDLL\", RegenerateAssembly: true);
             new DirectoryInfo(@".\TestingDLL").Create();
+        }
+
+        protected Utilities.Reflection.AOP.AOPManager Manager { get; set; }
+
+        [Fact]
+        public void AddAspect()
+        {
+            Manager.AddAspect(new TestAspect());
         }
 
         [Fact]
@@ -44,31 +50,9 @@ namespace UnitTests.Reflection.AOP
         }
 
         [Fact]
-        public void AddAspect()
-        {
-            Assert.DoesNotThrow(() => Manager.AddAspect(new TestAspect()));
-        }
-
-        [Fact]
-        public void Save()
-        {
-            Assert.DoesNotThrow(() => Manager.AddAspect(new TestAspect()));
-            Assert.DoesNotThrow(() => Manager.Setup(typeof(TestClass)));
-            Assert.DoesNotThrow(() => Manager.Save());
-            Assert.True(new FileInfo(@".\TestingDLL\Aspects.dll").Exists);
-        }
-
-        [Fact]
-        public void Setup()
-        {
-            Assert.DoesNotThrow(() => Manager.AddAspect(new TestAspect()));
-            Assert.DoesNotThrow(() => Manager.Setup(typeof(TestClass)));
-        }
-
-        [Fact]
         public void CreateTest()
         {
-            Assert.DoesNotThrow(() => Manager.AddAspect(new TestAspect()));
+            Manager.AddAspect(new TestAspect());
             TestClass TestObject = Manager.Create<TestClass>();
             Assert.NotNull(TestObject);
             Assert.Equal("A", TestObject.TestMethod());
@@ -79,43 +63,26 @@ namespace UnitTests.Reflection.AOP
             new DirectoryInfo(@".\TestingDLL").Delete(true);
             Utilities.Reflection.AOP.AOPManager.Destroy();
         }
-    }
 
-    public class TestClass
-    {
-        public virtual string TestMethod()
+        [Fact]
+        public void Save()
         {
-            return "B";
+            Manager.AddAspect(new TestAspect());
+            Manager.Setup(typeof(TestClass));
+            Manager.Save();
+            Assert.True(new FileInfo(@".\TestingDLL\Aspects.dll").Exists);
+        }
+
+        [Fact]
+        public void Setup()
+        {
+            Manager.AddAspect(new TestAspect());
+            Manager.Setup(typeof(TestClass));
         }
     }
 
     public class TestAspect : IAspect
     {
-        public void SetupStartMethod(Utilities.Reflection.Emit.Interfaces.IMethodBuilder Method, Type BaseType)
-        {
-            
-        }
-
-        public void SetupEndMethod(Utilities.Reflection.Emit.Interfaces.IMethodBuilder Method, Type BaseType, Utilities.Reflection.Emit.BaseClasses.VariableBase ReturnValue)
-        {
-            
-        }
-
-        public void SetupExceptionMethod(Utilities.Reflection.Emit.Interfaces.IMethodBuilder Method, Type BaseType)
-        {
-            
-        }
-
-        public void Setup(object Object)
-        {
-            ((IEvents)Object).Aspectus_Starting += new EventHandler<Utilities.Reflection.AOP.EventArgs.Starting>(Starting);
-        }
-
-        public void SetupInterfaces(Utilities.Reflection.Emit.TypeBuilder TypeBuilder)
-        {
-            
-        }
-
         public ICollection<Type> InterfacesUsing
         {
             get
@@ -124,13 +91,41 @@ namespace UnitTests.Reflection.AOP
             }
             set
             {
-                
             }
+        }
+
+        public void Setup(object Object)
+        {
+            ((IEvents)Object).Aspectus_Starting += new EventHandler<Utilities.Reflection.AOP.EventArgs.Starting>(Starting);
+        }
+
+        public void SetupEndMethod(Utilities.Reflection.Emit.Interfaces.IMethodBuilder Method, Type BaseType, Utilities.Reflection.Emit.BaseClasses.VariableBase ReturnValue)
+        {
+        }
+
+        public void SetupExceptionMethod(Utilities.Reflection.Emit.Interfaces.IMethodBuilder Method, Type BaseType)
+        {
+        }
+
+        public void SetupInterfaces(Utilities.Reflection.Emit.TypeBuilder TypeBuilder)
+        {
+        }
+
+        public void SetupStartMethod(Utilities.Reflection.Emit.Interfaces.IMethodBuilder Method, Type BaseType)
+        {
         }
 
         public void Starting(object Object, Utilities.Reflection.AOP.EventArgs.Starting EventArgs)
         {
             EventArgs.ReturnValue = "A";
+        }
+    }
+
+    public class TestClass
+    {
+        public virtual string TestMethod()
+        {
+            return "B";
         }
     }
 }

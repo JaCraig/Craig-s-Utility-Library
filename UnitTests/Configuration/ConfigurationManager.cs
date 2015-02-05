@@ -26,22 +26,12 @@ using Xunit;
 
 namespace UnitTests.Configuration
 {
-    public class ConfigurationManager : IUseFixture<TestingDirectoryFixture>
+    public class ConfigurationManager : TestingDirectoryFixture
     {
-        [Fact]
-        public void SingleTest()
-        {
-            Assert.DoesNotThrow(() => Utilities.Configuration.ConfigurationManager.RegisterConfigFile<TestConfig>());
-            Assert.True(Utilities.Configuration.ConfigurationManager.ContainsConfigFile<TestConfig>("TestConfig"));
-            IConfig Config = Utilities.Configuration.ConfigurationManager.GetConfigFile<TestConfig>("TestConfig");
-            Assert.NotNull(Config);
-            Assert.Equal("TestConfig", Config.Name);
-        }
-
         [Fact]
         public void AssemblyTest()
         {
-            Assert.DoesNotThrow(() => Utilities.Configuration.ConfigurationManager.RegisterConfigFile(typeof(TestConfig).Assembly));
+            Utilities.Configuration.ConfigurationManager.RegisterConfigFile(typeof(TestConfig).Assembly);
             Assert.True(Utilities.Configuration.ConfigurationManager.ContainsConfigFile<TestConfig>("TestConfig"));
             IConfig Config = Utilities.Configuration.ConfigurationManager.GetConfigFile<TestConfig>("TestConfig");
             Assert.NotNull(Config);
@@ -50,7 +40,16 @@ namespace UnitTests.Configuration
 
         public void SetFixture(TestingDirectoryFixture data)
         {
+        }
 
+        [Fact]
+        public void SingleTest()
+        {
+            Utilities.Configuration.ConfigurationManager.RegisterConfigFile<TestConfig>();
+            Assert.True(Utilities.Configuration.ConfigurationManager.ContainsConfigFile<TestConfig>("TestConfig"));
+            IConfig Config = Utilities.Configuration.ConfigurationManager.GetConfigFile<TestConfig>("TestConfig");
+            Assert.NotNull(Config);
+            Assert.Equal("TestConfig", Config.Name);
         }
     }
 

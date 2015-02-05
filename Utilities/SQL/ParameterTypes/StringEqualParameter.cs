@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Data.Common;
 using Utilities.SQL.ExtensionMethods;
 using Utilities.SQL.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.SQL.ParameterTypes
 {
@@ -39,19 +41,18 @@ namespace Utilities.SQL.ParameterTypes
         /// </summary>
         /// <param name="Value">Value of the parameter</param>
         /// <param name="ID">Name of the parameter</param>
-        /// <param name="ParameterStarter">What the database expects as the
-        /// parameter starting string ("@" for SQL Server, ":" for Oracle, etc.)</param>
+        /// <param name="ParameterStarter">
+        /// What the database expects as the parameter starting string ("@" for SQL Server, ":" for
+        /// Oracle, etc.)
+        /// </param>
         /// <param name="Length">Max length allowed for the string</param>
         public StringEqualParameter(string Value, string ID, int Length, string ParameterStarter = "@")
             : base(ID, Value, System.Data.ParameterDirection.Input, ParameterStarter)
         {
-            this.Value = Value;
-            this.ID = ID;
             this.Length = Length;
-            this.ParameterStarter = ParameterStarter;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -60,7 +61,7 @@ namespace Utilities.SQL.ParameterTypes
         /// </summary>
         public int Length { get; set; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -80,15 +81,18 @@ namespace Utilities.SQL.ParameterTypes
         /// <returns>A copy of the parameter</returns>
         public override IParameter CreateCopy(string Suffix)
         {
-            return new StringEqualParameter(Value, ID + Suffix, Length, ParameterStarter);
+            return new StringEqualParameter(Value, OriginalID + Suffix, Length, ParameterStarter);
         }
 
         /// <summary>
         /// Outputs the param as a string
         /// </summary>
         /// <returns>The param as a string</returns>
-        public override string ToString() { return ID + "=" + ParameterStarter + ID; }
+        public override string ToString()
+        {
+            return OriginalID + "=" + ParameterStarter + ID;
+        }
 
-        #endregion
+        #endregion Functions
     }
 }

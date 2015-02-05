@@ -15,3 +15,4 @@ Utilities/CraigsUtilityLibrary.3.0.nupkg
 *.nupkg
 .git/*
 ct.ignore
+packages/*

@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-
 using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.Reflection.Emit.Interfaces;
 using Xunit;
@@ -28,6 +27,26 @@ namespace UnitTests.Reflection.Emit
 {
     public class LocalBuilder
     {
+        [Fact]
+        public void Assign()
+        {
+            Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
+            Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
+            IMethodBuilder Method = TestType.CreateMethod("TestMethod");
+            VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
+            Local1.Assign(12);
+        }
+
+        [Fact]
+        public void Call()
+        {
+            Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
+            Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
+            IMethodBuilder Method = TestType.CreateMethod("TestMethod");
+            VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
+            Local1.Call("ToString");
+        }
+
         [Fact]
         public void Create()
         {
@@ -41,33 +60,13 @@ namespace UnitTests.Reflection.Emit
         }
 
         [Fact]
-        public void Assign()
-        {
-            Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
-            Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
-            IMethodBuilder Method = TestType.CreateMethod("TestMethod");
-            VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
-            Assert.DoesNotThrow(() => Local1.Assign(12));
-        }
-
-        [Fact]
-        public void Call()
-        {
-            Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
-            Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
-            IMethodBuilder Method = TestType.CreateMethod("TestMethod");
-            VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
-            Assert.DoesNotThrow(() => Local1.Call("ToString"));
-        }
-
-        [Fact]
         public void Load()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
             Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
             IMethodBuilder Method = TestType.CreateMethod("TestMethod");
             VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
-            Assert.DoesNotThrow(() => Local1.Load(Method.Generator));
+            Local1.Load(Method.Generator);
         }
 
         [Fact]
@@ -77,7 +76,7 @@ namespace UnitTests.Reflection.Emit
             Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
             IMethodBuilder Method = TestType.CreateMethod("TestMethod");
             VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
-            Assert.DoesNotThrow(() => Local1.Save(Method.Generator));
+            Local1.Save(Method.Generator);
         }
     }
 }

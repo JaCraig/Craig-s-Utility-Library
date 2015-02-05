@@ -22,9 +22,11 @@ THE SOFTWARE.*/
 using System;
 using System.IO;
 using Utilities.IO.ExtensionMethods;
+using Xunit;
 
 namespace UnitTests.Fixtures
 {
+    [Collection("DirectoryCollection")]
     public class TestingDirectoryFixture : IDisposable
     {
         public TestingDirectoryFixture()

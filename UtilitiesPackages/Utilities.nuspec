@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary</id>
-		<version>3.4.0149</version>
+		<version>3.4.0165</version>
 		<title>Craig's Utility Library</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -16,6 +16,9 @@
 		<references>
 			<reference file="Utilities.dll" />
 		</references>
+		<dependencies>
+            <dependency id="Microsoft.AspNet.Mvc" version="[4.0.40804.0]" />
+        </dependencies>
 	</metadata>
 	<files>
 		<file src="lib\Utilities.dll" target="lib\net40" />

@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.IO;
 using System.Xml;
@@ -27,15 +28,23 @@ using UnitTests.Fixtures;
 using Utilities.IO.ExtensionMethods;
 using Utilities.IO.Serializers;
 using Xunit;
-#endregion
+
+#endregion Usings
 
 namespace UnitTests.IO.ExtensionMethods
 {
-    public class Serialization : IUseFixture<TestingDirectoryFixture>
+    public class Serialization : TestingDirectoryFixture
     {
+        public Serialization()
+        {
+            TestItem = new TestClass(); TestItem.ID = 123; TestItem.Content = "This is test content";
+        }
+
         public TestClass TestItem { get; set; }
 
-        public Serialization() { TestItem = new TestClass(); TestItem.ID = 123; TestItem.Content = "This is test content"; }
+        public void SetFixture(TestingDirectoryFixture data)
+        {
+        }
 
         [Fact]
         public void ToBinary()
@@ -44,35 +53,6 @@ namespace UnitTests.IO.ExtensionMethods
             Assert.NotNull(Content);
             Assert.NotEmpty(Content);
             TestClass Temp = Content.Deserialize<TestClass>();
-            Assert.Equal(123, Temp.ID);
-            Assert.Equal("This is test content", Temp.Content);
-        }
-
-        [Fact]
-        public void ToXML()
-        {
-            Assert.NotNull(TestItem.Serialize(new XMLSerializer(), FileLocation: @".\Testing\Test.xml"));
-            TestClass Temp = new FileInfo(@".\Testing\Test.xml").Read().Deserialize<TestClass>(new XMLSerializer());
-            Assert.Equal(123, Temp.ID);
-            Assert.Equal("This is test content", Temp.Content);
-        }
-
-        [Fact]
-        public void ToXML2()
-        {
-            Assert.NotNull(TestItem.Serialize(new XMLSerializer(), FileLocation: @".\Testing\Test.xml"));
-            XmlDocument Document = new XmlDocument();
-            Document.LoadXml(new FileInfo(@".\Testing\Test.xml").Read());
-            TestClass Temp = Document.Deserialize<TestClass>(new XMLSerializer());
-            Assert.Equal(123, Temp.ID);
-            Assert.Equal("This is test content", Temp.Content);
-        }
-
-        [Fact]
-        public void ToXML3()
-        {
-            Assert.NotNull(TestItem.Serialize(new XMLSerializer(), FileLocation: @".\Testing\Test.xml"));
-            TestClass Temp = new FileInfo(@".\Testing\Test.xml").Deserialize<TestClass>(new XMLSerializer());
             Assert.Equal(123, Temp.ID);
             Assert.Equal("This is test content", Temp.Content);
         }
@@ -121,16 +101,41 @@ namespace UnitTests.IO.ExtensionMethods
             Assert.Equal("This is test content", Temp.Content);
         }
 
-        public void SetFixture(TestingDirectoryFixture data)
+        [Fact]
+        public void ToXML()
         {
-            
+            Assert.NotNull(TestItem.Serialize(new XMLSerializer(), FileLocation: @".\Testing\Test.xml"));
+            TestClass Temp = new FileInfo(@".\Testing\Test.xml").Read().Deserialize<TestClass>(new XMLSerializer());
+            Assert.Equal(123, Temp.ID);
+            Assert.Equal("This is test content", Temp.Content);
+        }
+
+        [Fact]
+        public void ToXML2()
+        {
+            Assert.NotNull(TestItem.Serialize(new XMLSerializer(), FileLocation: @".\Testing\Test.xml"));
+            XmlDocument Document = new XmlDocument();
+            Document.LoadXml(new FileInfo(@".\Testing\Test.xml").Read());
+            TestClass Temp = Document.Deserialize<TestClass>(new XMLSerializer());
+            Assert.Equal(123, Temp.ID);
+            Assert.Equal("This is test content", Temp.Content);
+        }
+
+        [Fact]
+        public void ToXML3()
+        {
+            Assert.NotNull(TestItem.Serialize(new XMLSerializer(), FileLocation: @".\Testing\Test.xml"));
+            TestClass Temp = new FileInfo(@".\Testing\Test.xml").Deserialize<TestClass>(new XMLSerializer());
+            Assert.Equal(123, Temp.ID);
+            Assert.Equal("This is test content", Temp.Content);
         }
     }
 
     [Serializable]
     public class TestClass
     {
-        public int ID { get; set; }
         public string Content { get; set; }
+
+        public int ID { get; set; }
     }
 }

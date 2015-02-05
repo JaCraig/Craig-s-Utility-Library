@@ -31,13 +31,8 @@ using Xunit;
 
 namespace UnitTests.ORM.Test2
 {
-    public class ORMTest2 : IDisposable
+    public class ORMTest2 : DatabaseBaseClass
     {
-        public ORMTest2()
-        {
-            new Utilities.ORM.ORM(false, typeof(Task).Assembly);
-        }
-
         [Fact]
         public void All()
         {
@@ -143,25 +138,6 @@ namespace UnitTests.ORM.Test2
             Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Task_Audit"));
             Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Task_TaskAudit"));
             Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Project_TaskAudit"));
-        }
-
-        public void Dispose()
-        {
-            Utilities.ORM.ORM.Destroy();
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false"))
-            {
-                Helper.Batch().AddCommand("ALTER DATABASE ORMTestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
-                    .AddCommand("ALTER DATABASE ORMTestDatabase2 SET ONLINE", CommandType.Text)
-                    .AddCommand("DROP DATABASE ORMTestDatabase2", CommandType.Text);
-                Helper.ExecuteNonQuery();
-            }
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false"))
-            {
-                Helper.Batch().AddCommand("ALTER DATABASE ORMTestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
-                    .AddCommand("ALTER DATABASE ORMTestDatabase SET ONLINE", CommandType.Text)
-                    .AddCommand("DROP DATABASE ORMTestDatabase", CommandType.Text);
-                Helper.ExecuteNonQuery();
-            }
         }
 
         [Fact]

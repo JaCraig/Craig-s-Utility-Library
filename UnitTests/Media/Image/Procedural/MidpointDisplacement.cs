@@ -27,7 +27,7 @@ using Xunit;
 
 namespace UnitTests.Media.Image.Procedural
 {
-    public class MidpointDisplacement : IUseFixture<TestingDirectoryFixture>
+    public class MidpointDisplacement : TestingDirectoryFixture
     {
         [Fact]
         public void Generate()

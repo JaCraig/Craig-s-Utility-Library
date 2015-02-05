@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-
-
 using Xunit;
 
 namespace UnitTests.Caching
@@ -32,15 +30,15 @@ namespace UnitTests.Caching
         {
             Utilities.Caching.Cache<string> TestObject = new Utilities.Caching.Cache<string>();
             TestObject.Clear();
-            Assert.DoesNotThrow(() => TestObject.Add("A", "Testing"));
-            Assert.DoesNotThrow(() => TestObject.Add("B", "Testing2"));
-            Assert.DoesNotThrow(() => TestObject.Add("C", "Testing3"));
+            TestObject.Add("A", "Testing");
+            TestObject.Add("B", "Testing2");
+            TestObject.Add("C", "Testing3");
             Assert.Equal(3, TestObject.Count);
             Assert.Equal("Testing", TestObject.Get<string>("A"));
-            Assert.DoesNotThrow(() => TestObject.Remove("A"));
+            TestObject.Remove("A");
             Assert.Equal(null, TestObject.Get<string>("A"));
             Assert.Equal(2, TestObject.Count);
-            Assert.DoesNotThrow(() => TestObject.Clear());
+            TestObject.Clear();
             Assert.Equal(0, TestObject.Count);
         }
     }

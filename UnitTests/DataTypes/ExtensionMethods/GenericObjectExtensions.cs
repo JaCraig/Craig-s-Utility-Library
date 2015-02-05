@@ -30,33 +30,9 @@ namespace UnitTests.DataTypes.ExtensionMethods
     public class GenericObjectExtensions
     {
         [Fact]
-        public void If()
+        public void Async()
         {
-            MyTestClass Temp = new MyTestClass();
-            Assert.Same(Temp, Temp.Check(x => x.B == 10));
-            Assert.NotSame(Temp, Temp.Check(x => x.B == 1));
-        }
-
-        [Fact]
-        public void NotIf()
-        {
-            MyTestClass Temp = new MyTestClass();
-            Assert.NotSame(Temp, Temp.Check(x => x.B != 10));
-            Assert.Same(Temp, Temp.Check(x => x.B != 1));
-        }
-
-        [Fact]
-        public void Execute1()
-        {
-            Func<int> Temp = () => 1;
-            Assert.DoesNotThrow(() => Temp.Execute());
-        }
-
-        [Fact]
-        public void Execute2()
-        {
-            Action Temp = () => Test();
-            Assert.Throws<Exception>(() => Temp.Execute());
+            new Action(() => string.IsNullOrEmpty("")).Async();
         }
 
         [Fact]
@@ -101,25 +77,29 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
-        public void ThrowIfTrue()
+        public void Execute1()
         {
-            Assert.DoesNotThrow(() => "ASDF".ThrowIf(x => string.IsNullOrEmpty(x), new Exception()));
-            Assert.Throws<Exception>(() => "ASDF".ThrowIf(x => !string.IsNullOrEmpty(x), new Exception()));
+            Func<int> Temp = () => 1;
+            Temp.Execute();
         }
 
         [Fact]
-        public void NullCheck()
+        public void Execute2()
         {
-            object TestObject = new DateTime(1999, 1, 1);
-            Assert.Equal(TestObject, TestObject.Check());
-            Assert.Same(TestObject, TestObject.Check());
-            TestObject = null;
-            Assert.Equal(new DateTime(1999, 1, 2), TestObject.Check(new DateTime(1999, 1, 2)));
-            Assert.Equal(new DateTime(1999, 1, 2), TestObject.Check(x => x != null, new DateTime(1999, 1, 2)));
+            Action Temp = () => Test();
+            Assert.Throws<Exception>(() => Temp.Execute());
         }
 
         [Fact]
-        public void IsNull()
+        public void If()
+        {
+            MyTestClass Temp = new MyTestClass();
+            Assert.Same(Temp, Temp.Check(x => x.B == 10));
+            Assert.NotSame(Temp, Temp.Check(x => x.B == 1));
+        }
+
+        [Fact]
+        public void IsDefault()
         {
             Assert.False(new DateTime(1999, 1, 1).Is(default(DateTime)));
             object TestObject = null;
@@ -127,7 +107,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
-        public void IsDefault()
+        public void IsNull()
         {
             Assert.False(new DateTime(1999, 1, 1).Is(default(DateTime)));
             object TestObject = null;
@@ -144,11 +124,27 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
-        public void ThrowIfNull()
+        public void NotIf()
         {
-            object TempObject = null;
-            Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNull("TempName"));
-            Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNull(new ArgumentNullException("TempName")));
+            MyTestClass Temp = new MyTestClass();
+            Assert.NotSame(Temp, Temp.Check(x => x.B != 10));
+            Assert.Same(Temp, Temp.Check(x => x.B != 1));
+        }
+
+        [Fact]
+        public void NullCheck()
+        {
+            object TestObject = new DateTime(1999, 1, 1);
+            Assert.Equal(TestObject, TestObject.Check());
+            Assert.Same(TestObject, TestObject.Check());
+            TestObject = null;
+            Assert.Equal(new DateTime(1999, 1, 2), TestObject.Check(new DateTime(1999, 1, 2)));
+            Assert.Equal(new DateTime(1999, 1, 2), TestObject.Check(x => x != null, new DateTime(1999, 1, 2)));
+        }
+
+        public void Test()
+        {
+            throw new Exception();
         }
 
         [Fact]
@@ -156,15 +152,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             object TempObject = null;
             Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIf(x => x == null, new ArgumentNullException("TempName")));
-            Assert.DoesNotThrow(() => TempObject.ThrowIf(x => x != null, new ArgumentNullException("TempName")));
-        }
-
-        [Fact]
-        public void ThrowIfNullOrEmpty()
-        {
-            string TempObject = "";
-            Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNullOrEmpty("TempName"));
-            Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNullOrEmpty(new ArgumentNullException("TempName")));
+            TempObject.ThrowIf(x => x != null, new ArgumentNullException("TempName"));
         }
 
         [Fact]
@@ -172,6 +160,54 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             Assert.Throws<ArgumentNullException>(() => default(DateTime).ThrowIfDefault("TempName"));
             Assert.Throws<ArgumentNullException>(() => default(DateTime).ThrowIfDefault(new ArgumentNullException("TempName")));
+        }
+
+        [Fact]
+        public void ThrowIfFalse()
+        {
+            Assert.Throws<Exception>(() => "ASDF".ThrowIfNot(x => string.IsNullOrEmpty(x), new Exception()));
+            "ASDF".ThrowIfNot(x => !string.IsNullOrEmpty(x), new Exception());
+        }
+
+        [Fact]
+        public void ThrowIfNotDefault()
+        {
+            default(DateTime).ThrowIfNotDefault("TempName");
+            default(DateTime).ThrowIfNotDefault(new ArgumentNullException("TempName"));
+        }
+
+        [Fact]
+        public void ThrowIfNotNull()
+        {
+            object TempObject = null;
+            TempObject.ThrowIfNotNull("TempName");
+            TempObject.ThrowIfNotNull(new ArgumentNullException("TempName"));
+        }
+
+        [Fact]
+        public void ThrowIfNotNullOrDBNull()
+        {
+            DBNull.Value.ThrowIfNotNull("TempName");
+            object TempObject = null;
+            TempObject.ThrowIfNotNull("TempName");
+            DBNull.Value.ThrowIfNotNull(new ArgumentNullException("TempName"));
+            TempObject.ThrowIfNotNull(new ArgumentNullException("TempName"));
+        }
+
+        [Fact]
+        public void ThrowIfNotNullOrEmpty()
+        {
+            string TempObject = "";
+            TempObject.ThrowIfNotNullOrEmpty("TempName");
+            TempObject.ThrowIfNotNullOrEmpty(new ArgumentNullException("TempName"));
+        }
+
+        [Fact]
+        public void ThrowIfNull()
+        {
+            object TempObject = null;
+            Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNull("TempName"));
+            Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNull(new ArgumentNullException("TempName")));
         }
 
         [Fact]
@@ -185,49 +221,18 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
-        public void ThrowIfNotNull()
-        {
-            object TempObject = null;
-            Assert.DoesNotThrow(() => TempObject.ThrowIfNotNull("TempName"));
-            Assert.DoesNotThrow(() => TempObject.ThrowIfNotNull(new ArgumentNullException("TempName")));
-        }
-
-        [Fact]
-        public void ThrowIfNotNullOrEmpty()
+        public void ThrowIfNullOrEmpty()
         {
             string TempObject = "";
-            Assert.DoesNotThrow(() => TempObject.ThrowIfNotNullOrEmpty("TempName"));
-            Assert.DoesNotThrow(() => TempObject.ThrowIfNotNullOrEmpty(new ArgumentNullException("TempName")));
+            Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNullOrEmpty("TempName"));
+            Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNullOrEmpty(new ArgumentNullException("TempName")));
         }
 
         [Fact]
-        public void ThrowIfNotDefault()
+        public void ThrowIfTrue()
         {
-            Assert.DoesNotThrow(() => default(DateTime).ThrowIfNotDefault("TempName"));
-            Assert.DoesNotThrow(() => default(DateTime).ThrowIfNotDefault(new ArgumentNullException("TempName")));
-        }
-
-        [Fact]
-        public void ThrowIfNotNullOrDBNull()
-        {
-            Assert.DoesNotThrow(() => DBNull.Value.ThrowIfNotNull("TempName"));
-            object TempObject = null;
-            Assert.DoesNotThrow(() => TempObject.ThrowIfNotNull("TempName"));
-            Assert.DoesNotThrow(() => DBNull.Value.ThrowIfNotNull(new ArgumentNullException("TempName")));
-            Assert.DoesNotThrow(() => TempObject.ThrowIfNotNull(new ArgumentNullException("TempName")));
-        }
-
-        [Fact]
-        public void ThrowIfFalse()
-        {
-            Assert.Throws<Exception>(() => "ASDF".ThrowIfNot(x => string.IsNullOrEmpty(x), new Exception()));
-            Assert.DoesNotThrow(() => "ASDF".ThrowIfNot(x => !string.IsNullOrEmpty(x), new Exception()));
-        }
-
-        [Fact]
-        public void Async()
-        {
-            Assert.DoesNotThrow(() => new Action(() => string.IsNullOrEmpty("")).Async());
+            "ASDF".ThrowIf(x => string.IsNullOrEmpty(x), new Exception());
+            Assert.Throws<Exception>(() => "ASDF".ThrowIf(x => !string.IsNullOrEmpty(x), new Exception()));
         }
 
         [Fact]
@@ -237,11 +242,6 @@ namespace UnitTests.DataTypes.ExtensionMethods
             StringBuilder Builder = new StringBuilder();
             5.Times(x => { Builder.Append(x); });
             Assert.Equal("01234", Builder.ToString());
-        }
-
-        public void Test()
-        {
-            throw new Exception();
         }
     }
 }

@@ -20,9 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using Xunit;
 
 namespace UnitTests.Fixtures
 {
+    [Collection("LoggingCollection")]
     public class LoggingManagerFixture : IDisposable
     {
         public void Dispose()

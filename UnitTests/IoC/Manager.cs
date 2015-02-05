@@ -27,15 +27,12 @@ using Xunit;
 
 namespace UnitTests.IoC
 {
+    public interface ITestInterface
+    {
+    }
+
     public class Manager
     {
-        [Fact]
-        public void SetupTest()
-        {
-            Utilities.IoC.Manager TestObject = new Utilities.IoC.Manager();
-            Assert.DoesNotThrow(() => TestObject.Setup(typeof(Manager).Assembly));
-        }
-
         [Fact]
         public void GetTest1()
         {
@@ -54,6 +51,13 @@ namespace UnitTests.IoC
             Assert.NotNull(Object);
             Assert.NotNull(Object.Value1);
         }
+
+        [Fact]
+        public void SetupTest()
+        {
+            Utilities.IoC.Manager TestObject = new Utilities.IoC.Manager();
+            TestObject.Setup(typeof(Manager).Assembly);
+        }
     }
 
     public class Module : BaseModule
@@ -71,19 +75,21 @@ namespace UnitTests.IoC
     {
     }
 
-    public interface ITestInterface
+    public class TestClass1 : ITestInterface
     {
+        public TestClass1()
+        {
+        }
     }
 
     public class TestClass2 : ITestInterface
     {
-        public TestClass2(TestClass1 Value1) { this.Value1 = Value1; }
-        public virtual TestClass1 Value1 { get; set; }
-    }
+        public TestClass2(TestClass1 Value1)
+        {
+            this.Value1 = Value1;
+        }
 
-    public class TestClass1 : ITestInterface
-    {
-        public TestClass1() { }
+        public virtual TestClass1 Value1 { get; set; }
     }
 
     public class TestImplementation : IImplementation

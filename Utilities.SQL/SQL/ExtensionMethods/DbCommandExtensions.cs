@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Data;
 using System.Data.Common;
@@ -28,7 +29,7 @@ using System.Globalization;
 using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.ExtensionMethods;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.SQL.ExtensionMethods
 {
@@ -52,7 +53,7 @@ namespace Utilities.SQL.ExtensionMethods
         public static DbCommand AddParameter(this DbCommand Command, string ID, string Value = "",
             ParameterDirection Direction = ParameterDirection.Input)
         {
-            Contract.Requires<ArgumentNullException>(Command!=null, "Command");
+            Contract.Requires<ArgumentNullException>(Command != null, "Command");
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ID), "ID");
             int Length = string.IsNullOrEmpty(Value) ? 1 : Value.Length;
             if (Direction == ParameterDirection.Output
@@ -81,7 +82,7 @@ namespace Utilities.SQL.ExtensionMethods
         public static DbCommand AddParameter(this DbCommand Command, string ID, SqlDbType Type,
             object Value = null, ParameterDirection Direction = ParameterDirection.Input)
         {
-            Contract.Requires<ArgumentNullException>(Command!=null, "Command");
+            Contract.Requires<ArgumentNullException>(Command != null, "Command");
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ID), "ID");
             return Command.AddParameter(ID, Type.To(DbType.Int32), Value, Direction);
         }
@@ -128,7 +129,7 @@ namespace Utilities.SQL.ExtensionMethods
             return Command;
         }
 
-        #endregion
+        #endregion AddParameter
 
         #region BeginTransaction
 
@@ -147,7 +148,7 @@ namespace Utilities.SQL.ExtensionMethods
             return Command.Transaction;
         }
 
-        #endregion
+        #endregion BeginTransaction
 
         #region ClearParameters
 
@@ -158,12 +159,12 @@ namespace Utilities.SQL.ExtensionMethods
         /// <returns>The DBCommand object</returns>
         public static DbCommand ClearParameters(this DbCommand Command)
         {
-            if (Command!=null && Command.Parameters!=null)
+            if (Command != null && Command.Parameters != null)
                 Command.Parameters.Clear();
             return Command;
         }
 
-        #endregion
+        #endregion ClearParameters
 
         #region Close
 
@@ -174,14 +175,14 @@ namespace Utilities.SQL.ExtensionMethods
         /// <returns>The DBCommand object</returns>
         public static DbCommand Close(this DbCommand Command)
         {
-            if (Command!=null
-                && Command.Connection!=null
+            if (Command != null
+                && Command.Connection != null
                 && Command.Connection.State != ConnectionState.Closed)
                 Command.Connection.Close();
             return Command;
         }
 
-        #endregion
+        #endregion Close
 
         #region Commit
 
@@ -192,12 +193,12 @@ namespace Utilities.SQL.ExtensionMethods
         /// <returns>The DBCommand object</returns>
         public static DbCommand Commit(this DbCommand Command)
         {
-            if (Command!=null && Command.Transaction!=null)
+            if (Command != null && Command.Transaction != null)
                 Command.Transaction.Commit();
             return Command;
         }
 
-        #endregion
+        #endregion Commit
 
         #region ExecuteDataSet
 
@@ -223,7 +224,7 @@ namespace Utilities.SQL.ExtensionMethods
             }
         }
 
-        #endregion
+        #endregion ExecuteDataSet
 
         #region ExecuteScalar
 
@@ -242,7 +243,7 @@ namespace Utilities.SQL.ExtensionMethods
             return Command.ExecuteScalar().To<object, DataType>(Default);
         }
 
-        #endregion
+        #endregion ExecuteScalar
 
         #region GetOrCreateParameter
 
@@ -265,7 +266,7 @@ namespace Utilities.SQL.ExtensionMethods
             }
         }
 
-        #endregion
+        #endregion GetOrCreateParameter
 
         #region GetOutputParameter
 
@@ -276,15 +277,18 @@ namespace Utilities.SQL.ExtensionMethods
         /// <param name="ID">Parameter name</param>
         /// <param name="Command">Command object</param>
         /// <param name="Default">Default value for the parameter</param>
-        /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
+        /// <returns>
+        /// if the parameter exists (and isn't null or empty), it returns the parameter's value.
+        /// Otherwise the default value is returned.
+        /// </returns>
         public static DataType GetOutputParameter<DataType>(this DbCommand Command, string ID, DataType Default = default(DataType))
         {
-            return Command!=null && Command.Parameters[ID]!=null ?
+            return Command != null && Command.Parameters[ID] != null ?
                 Command.Parameters[ID].Value.To<object, DataType>(Default) :
                 Default;
         }
 
-        #endregion
+        #endregion GetOutputParameter
 
         #region Open
 
@@ -295,14 +299,14 @@ namespace Utilities.SQL.ExtensionMethods
         /// <returns>The DBCommand object</returns>
         public static DbCommand Open(this DbCommand Command)
         {
-            if (Command!=null
-                && Command.Connection!=null
+            if (Command != null
+                && Command.Connection != null
                 && Command.Connection.State != ConnectionState.Open)
                 Command.Connection.Open();
             return Command;
         }
 
-        #endregion
+        #endregion Open
 
         #region Rollback
 
@@ -313,13 +317,13 @@ namespace Utilities.SQL.ExtensionMethods
         /// <returns>The DBCommand object</returns>
         public static DbCommand Rollback(this DbCommand Command)
         {
-            if (Command!=null && Command.Transaction!=null)
+            if (Command != null && Command.Transaction != null)
                 Command.Transaction.Rollback();
             return Command;
         }
 
-        #endregion
+        #endregion Rollback
 
-        #endregion
+        #endregion Functions
     }
 }

@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 using System;
 using System.ComponentModel.DataAnnotations;
 using Utilities.Validation.ExtensionMethods;
-using Utilities.Validation.Rules;
 using Utilities.Validation.Rules.Enums;
 using Xunit;
 
@@ -41,7 +40,7 @@ namespace UnitTests.Validation.Rules
             Temp.ItemE = -1;
             Temp.ItemF = DateTime.Now;
             Temp.NaNTest = 1;
-            Assert.DoesNotThrow(() => Temp.Validate());
+            Temp.Validate();
             Temp.ItemA = 2;
             Temp.NaNTest = double.NaN;
             Assert.Throws<ValidationException>(() => Temp.Validate());
@@ -50,19 +49,25 @@ namespace UnitTests.Validation.Rules
 
     public class CompareClass
     {
-        [Compare(1,ComparisonType.Equal)]
+        [Utilities.Validation.Rules.Compare(1, ComparisonType.Equal)]
         public int ItemA { get; set; }
-        [Compare(2.0f, ComparisonType.GreaterThan)]
+
+        [Utilities.Validation.Rules.Compare(2.0f, ComparisonType.GreaterThan)]
         public float ItemB { get; set; }
-        [Compare("1/1/1900", ComparisonType.GreaterThanOrEqual)]
+
+        [Utilities.Validation.Rules.Compare("1/1/1900", ComparisonType.GreaterThanOrEqual)]
         public DateTime ItemC { get; set; }
-        [Compare("A", ComparisonType.LessThan)]
+
+        [Utilities.Validation.Rules.Compare("A", ComparisonType.LessThan)]
         public string ItemD { get; set; }
-        [Compare(0, ComparisonType.LessThanOrEqual)]
+
+        [Utilities.Validation.Rules.Compare(0, ComparisonType.LessThanOrEqual)]
         public long ItemE { get; set; }
-        [Compare("1/1/2100", ComparisonType.NotEqual)]
+
+        [Utilities.Validation.Rules.Compare("1/1/2100", ComparisonType.NotEqual)]
         public DateTime ItemF { get; set; }
-        [Compare(double.NaN,ComparisonType.NotEqual)]
+
+        [Utilities.Validation.Rules.Compare(double.NaN, ComparisonType.NotEqual)]
         public double NaNTest { get; set; }
     }
 }

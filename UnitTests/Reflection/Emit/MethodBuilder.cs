@@ -29,22 +29,13 @@ namespace UnitTests.Reflection.Emit
     public class MethodBuilder
     {
         [Fact]
-        public void Create()
-        {
-            Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
-            Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
-            IMethodBuilder Method = TestType.CreateMethod("TestMethod");
-            Assert.NotNull(Method);
-        }
-
-        [Fact]
         public void Add()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
             Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
             IMethodBuilder Method = TestType.CreateMethod("TestMethod");
-            VariableBase Local1=Method.CreateLocal("Local1",typeof(int));
-            VariableBase Local2=Method.CreateLocal("Local2",typeof(int));
+            VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
+            VariableBase Local2 = Method.CreateLocal("Local2", typeof(int));
             Assert.NotNull(Method.Add(Local1, Local2));
         }
 
@@ -56,7 +47,7 @@ namespace UnitTests.Reflection.Emit
             IMethodBuilder Method = TestType.CreateMethod("TestMethod");
             VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
             VariableBase Local2 = Method.CreateLocal("Local2", typeof(int));
-            Assert.DoesNotThrow(() => Method.Assign(Local1, Local2));
+            Method.Assign(Local1, Local2);
         }
 
         [Fact]
@@ -79,7 +70,7 @@ namespace UnitTests.Reflection.Emit
             IMethodBuilder Method2 = TestType.CreateMethod("TestMethod2");
             VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
             VariableBase Local2 = Method.CreateLocal("Local2", typeof(int));
-            Assert.DoesNotThrow(() => Method.This.Call(Method2, null));
+            Method.This.Call(Method2, null);
         }
 
         [Fact]
@@ -90,22 +81,16 @@ namespace UnitTests.Reflection.Emit
             IMethodBuilder Method = TestType.CreateMethod("TestMethod");
             VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
             VariableBase Local2 = Method.CreateLocal("Local2", typeof(int));
-            Assert.DoesNotThrow(() => Method.Cast(Method.This, typeof(object)));
+            Method.Cast(Method.This, typeof(object));
         }
 
         [Fact]
-        public void TryCatch()
+        public void Create()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
             Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
             IMethodBuilder Method = TestType.CreateMethod("TestMethod");
-            VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
-            VariableBase Local2 = Method.CreateLocal("Local2", typeof(int));
-            Utilities.Reflection.Emit.Commands.Try Try = Method.Try();
-            Utilities.Reflection.Emit.Commands.Catch Catch = Method.Catch(typeof(Exception));
-            Method.EndTry();
-            Assert.NotNull(Try);
-            Assert.NotNull(Catch);
+            Assert.NotNull(Method);
         }
 
         [Fact]
@@ -196,7 +181,7 @@ namespace UnitTests.Reflection.Emit
             IMethodBuilder Method = TestType.CreateMethod("TestMethod", ReturnType: typeof(int));
             VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
             VariableBase Local2 = Method.CreateLocal("Local2", typeof(int));
-            Assert.DoesNotThrow(() => Method.Return(Local1));
+            Method.Return(Local1);
         }
 
         [Fact]
@@ -218,7 +203,22 @@ namespace UnitTests.Reflection.Emit
             IMethodBuilder Method = TestType.CreateMethod("TestMethod");
             VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
             VariableBase Local2 = Method.CreateLocal("Local2", typeof(int));
-            Assert.DoesNotThrow(() => Method.Throw(Method.NewObj(typeof(Exception))));
+            Method.Throw(Method.NewObj(typeof(Exception)));
+        }
+
+        [Fact]
+        public void TryCatch()
+        {
+            Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
+            Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
+            IMethodBuilder Method = TestType.CreateMethod("TestMethod");
+            VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
+            VariableBase Local2 = Method.CreateLocal("Local2", typeof(int));
+            Utilities.Reflection.Emit.Commands.Try Try = Method.Try();
+            Utilities.Reflection.Emit.Commands.Catch Catch = Method.Catch(typeof(Exception));
+            Method.EndTry();
+            Assert.NotNull(Try);
+            Assert.NotNull(Catch);
         }
 
         [Fact]
