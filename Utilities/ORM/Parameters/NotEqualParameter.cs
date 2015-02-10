@@ -44,9 +44,6 @@ namespace Utilities.ORM.Parameters
         public NotEqualParameter(DataType Value, string ID, string FieldName = "", string ParameterStarter = "@")
             : base(ID, Value, System.Data.ParameterDirection.Input, ParameterStarter)
         {
-            this.Value = Value;
-            this.ID = ID;
-            this.ParameterStarter = ParameterStarter;
             this.FieldName = string.IsNullOrEmpty(FieldName) ? ID : FieldName;
         }
 

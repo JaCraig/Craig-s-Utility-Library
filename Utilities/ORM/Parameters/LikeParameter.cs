@@ -44,10 +44,7 @@ namespace Utilities.ORM.Parameters
         public LikeParameter(string Value, string ID, int Length, string FieldName = "", string ParameterStarter = "@")
             : base(ID, Value, System.Data.ParameterDirection.Input, ParameterStarter)
         {
-            this.Value = Value;
-            this.ID = ID;
             this.Length = Length;
-            this.ParameterStarter = ParameterStarter;
             this.FieldName = string.IsNullOrEmpty(FieldName) ? ID : FieldName;
         }
 
