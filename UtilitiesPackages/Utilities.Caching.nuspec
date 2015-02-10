@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-Caching</id>
-		<version>3.4.0173</version>
+		<version>3.4.0182</version>
 		<title>Craig's Utility Library Caching Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -14,7 +14,7 @@
 		<copyright>Copyright 2011</copyright>
 		<tags>utility utilities</tags>
 		<dependencies>
-			<dependency id="CraigsUtilityLibrary-DataTypes" version="[3.4.172]" />
+			<dependency id="CraigsUtilityLibrary-DataTypes" version="[3.4.0182]" />
 		</dependencies>
 		<references>
 			<reference file="Utilities.Caching.dll" />
