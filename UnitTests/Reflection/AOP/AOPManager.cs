@@ -27,6 +27,7 @@ using Xunit;
 
 namespace UnitTests.Reflection.AOP
 {
+    [Collection("DatabaseCollection")]
     public class AOPManager : IDisposable
     {
         public AOPManager()

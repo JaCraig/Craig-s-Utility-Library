@@ -212,8 +212,10 @@
     <Compile Include="ORM\Test1\Models\Mappings\AccountMapping.cs" />
     <Compile Include="ORM\Test1\Models\Mappings\GroupMapping.cs" />
     <Compile Include="ORM\Test1\Models\Mappings\ItemMapping.cs" />
+    <Compile Include="ORM\Test1\Models\Mappings\OfficeMapping.cs" />
     <Compile Include="ORM\Test1\Models\Mappings\RoleMapping.cs" />
     <Compile Include="ORM\Test1\Models\Mappings\UserMapping.cs" />
+    <Compile Include="ORM\Test1\Models\Office.cs" />
     <Compile Include="ORM\Test1\Models\Role.cs" />
     <Compile Include="ORM\Test1\Models\User.cs" />
     <Compile Include="ORM\Test1\ORMTest1.cs" />

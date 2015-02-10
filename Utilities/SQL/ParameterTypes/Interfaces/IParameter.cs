@@ -20,8 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Data.Common;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.SQL.Interfaces
 {
@@ -37,7 +39,13 @@ namespace Utilities.SQL.Interfaces
         /// </summary>
         string ID { get; set; }
 
-        #endregion
+        /// <summary>
+        /// Gets or sets the original identifier.
+        /// </summary>
+        /// <value>The original identifier.</value>
+        string OriginalID { get; set; }
+
+        #endregion Properties
 
         #region Functions
 
@@ -54,6 +62,6 @@ namespace Utilities.SQL.Interfaces
         /// <returns>A copy of the parameter</returns>
         IParameter CreateCopy(string Suffix);
 
-        #endregion
+        #endregion Functions
     }
 }

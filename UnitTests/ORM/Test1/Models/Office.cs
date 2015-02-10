@@ -19,49 +19,39 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
+using Utilities.ORM;
 
-using System.Data.Common;
-
-#endregion Usings
-
-namespace Utilities.SQL.Interfaces
+namespace UnitTests.ORM.Test1.Models
 {
     /// <summary>
-    /// Parameter interface
+    /// Office's can only have two users for reasons
     /// </summary>
-    public interface IParameter
+    public class Office : ObjectBaseClass<Office, long>
     {
-        #region Properties
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Office"/> class.
+        /// </summary>
+        public Office()
+            : base()
+        {
+        }
 
         /// <summary>
-        /// The Name that the parameter goes by
+        /// Gets or sets the name.
         /// </summary>
-        string ID { get; set; }
+        /// <value>The name.</value>
+        public virtual string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the original identifier.
+        /// Gets or sets the user.
         /// </summary>
-        /// <value>The original identifier.</value>
-        string OriginalID { get; set; }
-
-        #endregion Properties
-
-        #region Functions
+        /// <value>The user.</value>
+        public virtual User User { get; set; }
 
         /// <summary>
-        /// Adds this parameter to the SQLHelper
+        /// Gets or sets the user2.
         /// </summary>
-        /// <param name="Helper">SQLHelper</param>
-        void AddParameter(DbCommand Helper);
-
-        /// <summary>
-        /// Creates a copy of the parameter
-        /// </summary>
-        /// <param name="Suffix">Suffix to add to the parameter (for batching purposes)</param>
-        /// <returns>A copy of the parameter</returns>
-        IParameter CreateCopy(string Suffix);
-
-        #endregion Functions
+        /// <value>The user2.</value>
+        public virtual User User2 { get; set; }
     }
 }

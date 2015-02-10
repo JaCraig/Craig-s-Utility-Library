@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,7 +34,8 @@ using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.SQL;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.ORM.Mapping.PropertyTypes
 {
@@ -63,54 +65,37 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             SetFieldName(typeof(DataType).Name + "_" + Name + "_ID");
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Functions
 
         /// <summary>
-        /// Sets up the default load commands
+        /// Add to query provider
         /// </summary>
-        public override void SetupLoadCommands()
+        /// <param name="Database">Database object</param>
+        /// <param name="Mapping">Mapping object</param>
+        public override void AddToQueryProvider(IDatabase Database, Mapping<ClassType> Mapping)
         {
-            if (this.CommandToLoad != null)
+        }
+
+        /// <summary>
+        /// Deletes the object on cascade
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="MicroORM">Micro ORM object</param>
+        public override void CascadeDelete(ClassType Object, SQLHelper MicroORM)
+        {
+            if (Object == null)
                 return;
-            IMapping ForeignMapping = Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType);
-            if (ForeignMapping.TableName == Mapping.TableName)
+            DataType Item = CompiledExpression(Object);
+            if (Item == null)
+                return;
+            foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
             {
-                LoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @"2.*
-                                FROM " + ForeignMapping.TableName + @" AS "+ForeignMapping.TableName+@"2
-                                INNER JOIN " + Mapping.TableName + " ON " + Mapping.TableName + "." + FieldName + "=" + ForeignMapping.TableName + "2." + ForeignMapping.IDProperty.FieldName + @"
-                                WHERE " + Mapping.TableName + "." + Mapping.IDProperty.FieldName + "=@ID", CommandType.Text);
+                if (Property.Cascade)
+                    ((IProperty<DataType>)Property).CascadeDelete(Item, MicroORM);
             }
-            else
-            {
-                LoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Mapping.TableName + " ON " + Mapping.TableName + "." + FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperty.FieldName + @"
-                                WHERE " + Mapping.TableName + "." + Mapping.IDProperty.FieldName + "=@ID", CommandType.Text);
-            }
-        }
-
-        /// <summary>
-        /// Deletes the object from join tables
-        /// </summary>
-        /// <param name="Object">Object to remove</param>
-        /// <param name="MicroORM">Micro ORM object</param>
-        /// <returns>The list of commands needed to do this</returns>
-        public override IEnumerable<Command> JoinsDelete(ClassType Object, SQLHelper MicroORM)
-        {
-            return new List<Command>();
-        }
-
-        /// <summary>
-        /// Saves the object to various join tables
-        /// </summary>
-        /// <param name="Object">Object to add</param>
-        /// <param name="MicroORM">Micro ORM object</param>
-        /// <returns>The list of commands needed to do this</returns>
-        public override IEnumerable<Command> JoinsSave(ClassType Object, SQLHelper MicroORM)
-        {
-            return new List<Command>();
+            ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).CascadeDelete(Item, MicroORM);
         }
 
         /// <summary>
@@ -184,26 +169,6 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         }
 
         /// <summary>
-        /// Deletes the object on cascade
-        /// </summary>
-        /// <param name="Object">Object</param>
-        /// <param name="MicroORM">Micro ORM object</param>
-        public override void CascadeDelete(ClassType Object, SQLHelper MicroORM)
-        {
-            if (Object == null)
-                return;
-            DataType Item = CompiledExpression(Object);
-            if (Item == null)
-                return;
-            foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
-            {
-                if (Property.Cascade)
-                    ((IProperty<DataType>)Property).CascadeDelete(Item, MicroORM);
-            }
-            ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).CascadeDelete(Item, MicroORM);
-        }
-
-        /// <summary>
         /// Saves the object on cascade
         /// </summary>
         /// <param name="Object">Object</param>
@@ -224,20 +189,13 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         }
 
         /// <summary>
-        /// Gets it as a parameter
+        /// Does not allow null values
         /// </summary>
-        /// <param name="Object">Object</param>
-        /// <returns>The value as a parameter</returns>
-        public override IParameter GetAsParameter(ClassType Object)
+        /// <returns>This</returns>
+        public override IMap<ClassType, DataType> DoNotAllowNullValues()
         {
-            if (Object == null)
-                return null;
-            DataType Item = CompiledExpression(Object);
-            if (Item == null)
-                return null;
-            IParameter Parameter = ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).GetAsParameter(Item);
-            Parameter.ID = FieldName;
-            return Parameter;
+            this.NotNull = true;
+            return (IMap<ClassType, DataType>)this;
         }
 
         /// <summary>
@@ -256,6 +214,46 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         }
 
         /// <summary>
+        /// Gets it as a parameter
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <returns>The value as a parameter</returns>
+        public override IParameter GetAsParameter(ClassType Object)
+        {
+            if (Object == null)
+                return null;
+            DataType Item = CompiledExpression(Object);
+            if (Item == null)
+                return null;
+            IParameter Parameter = ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).GetAsParameter(Item);
+            Parameter.ID = FieldName;
+            Parameter.OriginalID = FieldName;
+            return Parameter;
+        }
+
+        /// <summary>
+        /// Deletes the object from join tables
+        /// </summary>
+        /// <param name="Object">Object to remove</param>
+        /// <param name="MicroORM">Micro ORM object</param>
+        /// <returns>The list of commands needed to do this</returns>
+        public override IEnumerable<Command> JoinsDelete(ClassType Object, SQLHelper MicroORM)
+        {
+            return new List<Command>();
+        }
+
+        /// <summary>
+        /// Saves the object to various join tables
+        /// </summary>
+        /// <param name="Object">Object to add</param>
+        /// <param name="MicroORM">Micro ORM object</param>
+        /// <returns>The list of commands needed to do this</returns>
+        public override IEnumerable<Command> JoinsSave(ClassType Object, SQLHelper MicroORM)
+        {
+            return new List<Command>();
+        }
+
+        /// <summary>
         /// Sets the loading command used
         /// </summary>
         /// <param name="Command">Command to use</param>
@@ -268,15 +266,6 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         }
 
         /// <summary>
-        /// Add to query provider
-        /// </summary>
-        /// <param name="Database">Database object</param>
-        /// <param name="Mapping">Mapping object</param>
-        public override void AddToQueryProvider(IDatabase Database, Mapping<ClassType> Mapping)
-        {
-        }
-
-        /// <summary>
         /// Set a default value
         /// </summary>
         /// <param name="DefaultValue">Default value</param>
@@ -284,46 +273,6 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         public override IMap<ClassType, DataType> SetDefaultValue(Func<DataType> DefaultValue)
         {
             this.DefaultValue = DefaultValue;
-            return (IMap<ClassType, DataType>)this;
-        }
-
-        /// <summary>
-        /// Does not allow null values
-        /// </summary>
-        /// <returns>This</returns>
-        public override IMap<ClassType, DataType> DoNotAllowNullValues()
-        {
-            this.NotNull = true;
-            return (IMap<ClassType, DataType>)this;
-        }
-
-        /// <summary>
-        /// This should be unique
-        /// </summary>
-        /// <returns>This</returns>
-        public override IMap<ClassType, DataType> ThisShouldBeUnique()
-        {
-            this.Unique = true;
-            return (IMap<ClassType, DataType>)this;
-        }
-
-        /// <summary>
-        /// Turn on indexing
-        /// </summary>
-        /// <returns>This</returns>
-        public override IMap<ClassType, DataType> TurnOnIndexing()
-        {
-            this.Index = true;
-            return (IMap<ClassType, DataType>)this;
-        }
-
-        /// <summary>
-        /// Turn on auto increment
-        /// </summary>
-        /// <returns>This</returns>
-        public override IMap<ClassType, DataType> TurnOnAutoIncrement()
-        {
-            this.AutoIncrement = true;
             return (IMap<ClassType, DataType>)this;
         }
 
@@ -339,6 +288,17 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         }
 
         /// <summary>
+        /// Set max length
+        /// </summary>
+        /// <param name="MaxLength">Max length</param>
+        /// <returns>This</returns>
+        public override IMap<ClassType, DataType> SetMaxLength(int MaxLength)
+        {
+            this.MaxLength = MaxLength;
+            return (IMap<ClassType, DataType>)this;
+        }
+
+        /// <summary>
         /// Set the table name
         /// </summary>
         /// <param name="TableName">Table name</param>
@@ -346,6 +306,50 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         public override IMap<ClassType, DataType> SetTableName(string TableName)
         {
             this.TableName = TableName;
+            return (IMap<ClassType, DataType>)this;
+        }
+
+        /// <summary>
+        /// Sets up the default load commands
+        /// </summary>
+        public override void SetupLoadCommands()
+        {
+            if (this.CommandToLoad != null)
+                return;
+            IMapping ForeignMapping = Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType);
+            if (ForeignMapping.TableName == Mapping.TableName)
+            {
+                LoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @"2.*
+                                FROM " + ForeignMapping.TableName + @" AS " + ForeignMapping.TableName + @"2
+                                INNER JOIN " + Mapping.TableName + " ON " + Mapping.TableName + "." + FieldName + "=" + ForeignMapping.TableName + "2." + ForeignMapping.IDProperty.FieldName + @"
+                                WHERE " + Mapping.TableName + "." + Mapping.IDProperty.FieldName + "=@ID", CommandType.Text);
+            }
+            else
+            {
+                LoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
+                                FROM " + ForeignMapping.TableName + @"
+                                INNER JOIN " + Mapping.TableName + " ON " + Mapping.TableName + "." + FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperty.FieldName + @"
+                                WHERE " + Mapping.TableName + "." + Mapping.IDProperty.FieldName + "=@ID", CommandType.Text);
+            }
+        }
+
+        /// <summary>
+        /// This should be unique
+        /// </summary>
+        /// <returns>This</returns>
+        public override IMap<ClassType, DataType> ThisShouldBeUnique()
+        {
+            this.Unique = true;
+            return (IMap<ClassType, DataType>)this;
+        }
+
+        /// <summary>
+        /// Turn on auto increment
+        /// </summary>
+        /// <returns>This</returns>
+        public override IMap<ClassType, DataType> TurnOnAutoIncrement()
+        {
+            this.AutoIncrement = true;
             return (IMap<ClassType, DataType>)this;
         }
 
@@ -360,16 +364,15 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         }
 
         /// <summary>
-        /// Set max length
+        /// Turn on indexing
         /// </summary>
-        /// <param name="MaxLength">Max length</param>
         /// <returns>This</returns>
-        public override IMap<ClassType, DataType> SetMaxLength(int MaxLength)
+        public override IMap<ClassType, DataType> TurnOnIndexing()
         {
-            this.MaxLength = MaxLength;
+            this.Index = true;
             return (IMap<ClassType, DataType>)this;
         }
 
-        #endregion
+        #endregion Functions
     }
 }

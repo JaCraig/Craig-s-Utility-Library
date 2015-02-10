@@ -35,11 +35,13 @@ namespace UnitTests.ORM.Test1
         public void DatabaseCreation()
         {
             Database DatabaseObject = SQLServer.GetDatabaseStructure("Data Source=localhost;Initial Catalog=ORMTestDatabase;Integrated Security=SSPI;Pooling=false");
-            Assert.Equal(18, DatabaseObject.Tables.Count);
+            Assert.Equal(20, DatabaseObject.Tables.Count);
             Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Account_"));
             Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Group_"));
             Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Role_"));
             Assert.True(DatabaseObject.Tables.Any(x => x.Name == "User_"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Office_"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Office_Audit"));
             Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Account_Audit"));
             Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Group_Audit"));
             Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Role_Audit"));
@@ -86,6 +88,30 @@ namespace UnitTests.ORM.Test1
             Parent = Item.Any(new EqualParameter<long>(Temp.ID, "ID_"));
             Assert.Null(Parent);
             Assert.Equal(1, Item.All().Count());
+        }
+
+        [Fact]
+        public void MapTest()
+        {
+            Office Temp = new Office() { Name = "Test Office" };
+            Temp.User = new User() { Email = "something@something.com" };
+            Temp.User2 = new User() { Email = "something2@something.com" };
+            Temp.Save();
+            Assert.Equal(1, Office.All().Count());
+            Temp = Office.Any();
+            Assert.Equal("Test Office", Temp.Name);
+            Assert.Equal("something@something.com", Temp.User.Email);
+            Assert.Equal("something2@something.com", Temp.User2.Email);
+            Temp.Save();
+            Temp.Name = "Test Office2";
+            Temp.User.Email = "something2@something.com";
+            Temp.User2.Email = "something3@something.com";
+            Temp.Save();
+            Assert.Equal(1, Office.All().Count());
+            Temp = Office.Any();
+            Assert.Equal("Test Office2", Temp.Name);
+            Assert.Equal("something2@something.com", Temp.User.Email);
+            Assert.Equal("something3@something.com", Temp.User2.Email);
         }
     }
 }
