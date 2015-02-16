@@ -45,16 +45,8 @@ namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
         /// Oracle, etc.)
         /// </param>
         protected ParameterBase(string ID, DataType Value, ParameterDirection Direction = ParameterDirection.Input, string ParameterStarter = "@")
+            : this(ID, Value == null ? typeof(DataType).To(DbType.Int32) : Value.GetType().To(DbType.Int32), Value, Direction, ParameterStarter)
         {
-            this.ID = ID;
-            this.Value = Value;
-            this.Direction = Direction;
-            if (Value == null)
-                this.DatabaseType = typeof(DataType).To(DbType.Int32);
-            else
-                this.DatabaseType = Value.GetType().To(DbType.Int32);
-            this.BatchID = ID;
-            this.ParameterStarter = ParameterStarter;
         }
 
         /// <summary>
@@ -69,13 +61,8 @@ namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
         /// Oracle, etc.)
         /// </param>
         protected ParameterBase(string ID, SqlDbType Type, object Value = null, ParameterDirection Direction = ParameterDirection.Input, string ParameterStarter = "@")
+            : this(ID, Type.To(DbType.Int32), Value, Direction, ParameterStarter)
         {
-            this.ID = ID;
-            this.Value = (DataType)Value;
-            this.DatabaseType = Type.To(DbType.Int32);
-            this.Direction = Direction;
-            this.BatchID = ID;
-            this.ParameterStarter = ParameterStarter;
         }
 
         /// <summary>
@@ -117,9 +104,7 @@ namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
         /// <summary>
         /// Gets the internal value.
         /// </summary>
-        /// <value>
-        /// The internal value.
-        /// </value>
+        /// <value>The internal value.</value>
         public object InternalValue { get { return Value; } }
 
         /// <summary>

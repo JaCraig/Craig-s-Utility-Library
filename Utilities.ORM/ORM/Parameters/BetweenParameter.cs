@@ -46,8 +46,6 @@ namespace Utilities.ORM.Parameters
         {
             this.Min = Min;
             this.Max = Max;
-            this.ID = ID;
-            this.ParameterStarter = ParameterStarter;
         }
 
         /// <summary>
