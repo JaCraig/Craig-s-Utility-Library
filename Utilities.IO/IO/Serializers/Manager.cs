@@ -64,7 +64,7 @@ namespace Utilities.IO.Serializers
         public bool CanSerialize(string ContentType)
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ContentType), "ContentType");
-            return Serializers.ContainsKey(ContentType);
+            return Serializers.ContainsKey(ContentType.Split(';')[0]);
         }
 
         /// <summary>
@@ -93,6 +93,7 @@ namespace Utilities.IO.Serializers
         {
             Contract.Requires<ArgumentNullException>(ObjectType != null, "ObjectType");
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ContentType), "ContentType");
+            ContentType = ContentType.Split(';')[0];
             if (!Serializers.ContainsKey(ContentType) || Serializers[ContentType].ReturnType != typeof(T))
                 return null;
             return ((ISerializer<T>)Serializers[ContentType]).Deserialize(ObjectType, Data);
@@ -134,6 +135,7 @@ namespace Utilities.IO.Serializers
         {
             Contract.Requires<ArgumentNullException>(ObjectType != null, "ObjectType");
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ContentType), "ContentType");
+            ContentType = ContentType.Split(';')[0];
             if (!Serializers.ContainsKey(ContentType) || Serializers[ContentType].ReturnType != typeof(T))
                 return default(T);
             return ((ISerializer<T>)Serializers[ContentType]).Serialize(ObjectType, Object);
