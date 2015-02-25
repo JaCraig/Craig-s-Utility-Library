@@ -208,7 +208,7 @@ namespace Utilities.Profiler
         /// </summary>
         public virtual void Stop()
         {
-            if (Current.Running)
+            if (Current != null && Current.Running)
             {
                 Current.Running = false;
                 Current.StopWatch.Stop();
