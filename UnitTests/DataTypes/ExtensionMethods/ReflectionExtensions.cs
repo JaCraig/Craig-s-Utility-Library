@@ -250,7 +250,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Fact]
         public void VersionInfo2()
         {
-            Assert.Equal("Microsoft.Web.Infrastructure: 1.0\r\nSystem.Web.Helpers: 3.0\r\nSystem.Web.Mvc: 5.2\r\nSystem.Web.Razor: 3.0\r\nSystem.Web.WebPages: 3.0\r\nSystem.Web.WebPages.Deployment: 3.0\r\nSystem.Web.WebPages.Razor: 3.0\r\nUnitTests: 1.0\r\nUtilities: 1.0\r\nxunit.abstractions: 2.0\r\nxunit.assert: 2.0\r\nxunit.core: 2.0\r\nxunit.execution.desktop: 2.0\r\nxunit.runner.utility.desktop: 2.0\r\nxunit.runner.visualstudio.testadapter: 0.99\r\n", new DirectoryInfo(@".\").LoadAssemblies().ToString(VersionInfo.ShortVersion));
+            Assert.Equal("Microsoft.Web.Infrastructure: 1.0\r\nSystem.Web.Helpers: 3.0\r\nSystem.Web.Mvc: 5.2\r\nSystem.Web.Razor: 3.0\r\nSystem.Web.WebPages: 3.0\r\nSystem.Web.WebPages.Deployment: 3.0\r\nSystem.Web.WebPages.Razor: 3.0\r\nUnitTests: 1.0\r\nUtilities: 1.0\r\nxunit.abstractions: 2.0\r\nxunit.assert: 2.0\r\nxunit.core: 2.0\r\nxunit.execution.desktop: 2.0\r\nxunit.runner.utility.desktop: 2.0\r\nxunit.runner.visualstudio.testadapter: 2.0\r\n", new DirectoryInfo(@".\").LoadAssemblies().ToString(VersionInfo.ShortVersion));
         }
     }
 

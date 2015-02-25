@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.SQL.MicroORM.Interfaces;
 using Xunit;
@@ -491,7 +492,7 @@ namespace UnitTests.SQL
                 {
                     Batch.AddCommands(new Utilities.SQL.MicroORM.Command("insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text, "@", "Test String", "Test String", 12345L, true, 1234.5678m, 12345.6534f, new DateTime(1999, 12, 31), TempGuid));
                 }
-                Helper.ExecuteNonQuery();
+                Assert.Throws<SqlException>(() => Helper.ExecuteNonQuery());
             }
         }
 
