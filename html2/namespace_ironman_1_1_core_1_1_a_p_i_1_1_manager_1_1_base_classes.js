@@ -1,0 +1,5 @@
+var namespace_ironman_1_1_core_1_1_a_p_i_1_1_manager_1_1_base_classes =
+[
+    [ "APIMappingBaseClass", "class_ironman_1_1_core_1_1_a_p_i_1_1_manager_1_1_base_classes_1_1_a_p_i_mapping_base_class.html", "class_ironman_1_1_core_1_1_a_p_i_1_1_manager_1_1_base_classes_1_1_a_p_i_mapping_base_class" ],
+    [ "APIPropertyBaseClass", "class_ironman_1_1_core_1_1_a_p_i_1_1_manager_1_1_base_classes_1_1_a_p_i_property_base_class.html", "class_ironman_1_1_core_1_1_a_p_i_1_1_manager_1_1_base_classes_1_1_a_p_i_property_base_class" ]
+];
