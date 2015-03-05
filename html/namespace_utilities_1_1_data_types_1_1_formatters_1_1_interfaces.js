@@ -1,0 +1,4 @@
+var namespace_utilities_1_1_data_types_1_1_formatters_1_1_interfaces =
+[
+    [ "IStringFormatter", "interface_utilities_1_1_data_types_1_1_formatters_1_1_interfaces_1_1_i_string_formatter.html", "interface_utilities_1_1_data_types_1_1_formatters_1_1_interfaces_1_1_i_string_formatter" ]
+];

@@ -1,0 +1,5 @@
+var namespace_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_base_classes =
+[
+    [ "DatabaseQueryProviderBase", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_base_classes_1_1_database_query_provider_base.html", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_base_classes_1_1_database_query_provider_base" ],
+    [ "ParameterBase", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_base_classes_1_1_parameter_base.html", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_base_classes_1_1_parameter_base" ]
+];

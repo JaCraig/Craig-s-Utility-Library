@@ -1,0 +1,4 @@
+var namespace_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_base_classes =
+[
+    [ "PropertyBase", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_base_classes_1_1_property_base.html", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_base_classes_1_1_property_base" ]
+];

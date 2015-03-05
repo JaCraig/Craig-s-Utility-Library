@@ -1,0 +1,4 @@
+var namespace_utilities_1_1_data_types_1_1_conversion_1_1_converters_1_1_base_classes =
+[
+    [ "TypeConverterBase", "class_utilities_1_1_data_types_1_1_conversion_1_1_converters_1_1_base_classes_1_1_type_converter_base.html", "class_utilities_1_1_data_types_1_1_conversion_1_1_converters_1_1_base_classes_1_1_type_converter_base" ]
+];

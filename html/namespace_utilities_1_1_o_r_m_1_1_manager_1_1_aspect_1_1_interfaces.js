@@ -1,0 +1,4 @@
+var namespace_utilities_1_1_o_r_m_1_1_manager_1_1_aspect_1_1_interfaces =
+[
+    [ "IORMObject", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_aspect_1_1_interfaces_1_1_i_o_r_m_object.html", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_aspect_1_1_interfaces_1_1_i_o_r_m_object" ]
+];

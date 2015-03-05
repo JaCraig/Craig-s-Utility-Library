@@ -1,0 +1,8 @@
+var namespace_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_interfaces =
+[
+    [ "IBatch", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_interfaces_1_1_i_batch.html", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_interfaces_1_1_i_batch" ],
+    [ "ICommand", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_interfaces_1_1_i_command.html", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_interfaces_1_1_i_command" ],
+    [ "IGenerator", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_interfaces_1_1_i_generator.html", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_interfaces_1_1_i_generator" ],
+    [ "IParameter", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_interfaces_1_1_i_parameter.html", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_interfaces_1_1_i_parameter" ],
+    [ "IQueryProvider", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_interfaces_1_1_i_query_provider.html", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_interfaces_1_1_i_query_provider" ]
+];

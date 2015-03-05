@@ -1,0 +1,25 @@
+var class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base =
+[
+    [ "CacheBase", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a59d4e2209355366a881e338f034c7295", null ],
+    [ "Add", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a70238a76b944e5c3d6c94ce52d694938", null ],
+    [ "Add", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a5b1aca5b42ee76174b2811ad0f462775", null ],
+    [ "Add", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a7b496f9aaab021cbf3bdc4b00d326ddb", null ],
+    [ "Clear", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#acc830301ffd2bb3a12e0ed09cf263927", null ],
+    [ "Contains", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a9f9f18325f140dd2edf181797ff98729", null ],
+    [ "ContainsKey", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a9f4e46a19f39371160af6a30d8b53c20", null ],
+    [ "CopyTo", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a47993347421896147f2ae7f4b00cd8f0", null ],
+    [ "GetByTag", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a96fcef3e2f58de289afffdbbf6f91b76", null ],
+    [ "GetEnumerator", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#af291951c1783bcd3069661729458d583", null ],
+    [ "Remove", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#acbc9004f144791d29e501cbce6378a55", null ],
+    [ "Remove", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a8e486b738364d6b160348bb5b22c2526", null ],
+    [ "RemoveByTag", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#aa07f6451245ccb7a0a4648a4cb815c40", null ],
+    [ "TryGetValue", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a079998eb01621376fe56a180dfc01f75", null ],
+    [ "Count", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a3e9c9608d7eaa7772721b5cd563f10ad", null ],
+    [ "IsReadOnly", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a6a2f28b6a15fa39e6d3f8bed9458085b", null ],
+    [ "Keys", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a048a39993a9387b4d359d59425b5e5b8", null ],
+    [ "Name", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a9ae4ff73011c0cd3b9e42ea63a999714", null ],
+    [ "TagMappings", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#ad9be438b4def1cfc99703125c5da5b31", null ],
+    [ "Tags", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#af1654979e08a64b8375bb57715b308a5", null ],
+    [ "this[string key]", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#af90d92be823c9cafe47af4b9f2bb0c0f", null ],
+    [ "Values", "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a8eab7cff0e18d10795319d882aa9d108", null ]
+];
