@@ -81,8 +81,8 @@ var searchData=
   ['trysetmember',['TrySetMember',['../class_utilities_1_1_data_types_1_1_dynamo.html#a352d96b613b0f635225c3ffefd892425',1,'Utilities::DataTypes::Dynamo']]],
   ['ttl',['TTL',['../class_utilities_1_1_i_o_1_1_file_formats_1_1_r_s_s_1_1_channel.html#a4a72ea94bd0ff5e48f1af1013416083a',1,'Utilities::IO::FileFormats::RSS::Channel']]],
   ['type',['Type',['../class_utilities_1_1_i_o_1_1_file_formats_1_1_r_s_s_1_1_enclosure.html#a37eef7abf9ba6332cbef700f6d31e54e',1,'Utilities.IO.FileFormats.RSS.Enclosure.Type()'],['../class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_base_classes_1_1_property_base.html#a7629cbb6e3baf99cb7daa32acf636349',1,'Utilities.ORM.Manager.Mapper.BaseClasses.PropertyBase.Type()'],['../interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_property.html#af620c1dad708b18983d67378bafb0981',1,'Utilities.ORM.Manager.Mapper.Interfaces.IProperty.Type()'],['../class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_trigger.html#a13e776abfbb806200bf8c93b9bf5e8bf',1,'Utilities.ORM.Manager.Schema.Default.Database.Trigger.Type()'],['../interface_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_interfaces_1_1_i_trigger.html#a00970a91940e072d9cc2db0decc52ad6',1,'Utilities.ORM.Manager.Schema.Interfaces.ITrigger.Type()'],['../class_utilities_1_1_validation_1_1_compare_attribute.html#a42fe541ce3d4a769306bb34abc12b5cb',1,'Utilities.Validation.CompareAttribute.Type()'],['../class_utilities_1_1_validation_1_1_compare_to_attribute.html#aed8bd48d6bb9859962a46894a978d0f2',1,'Utilities.Validation.CompareToAttribute.Type()'],['../class_utilities_1_1_validation_1_1_is_attribute.html#a75ef88d873797048c3572f0dcaa1c705',1,'Utilities.Validation.IsAttribute.Type()']]],
-  ['typebuilder',['TypeBuilder',['../class_utilities_1_1_io_c_1_1_default_1_1_type_builder.html#af1ea64ed31f9b3f70d4f948ad8dfdeee',1,'Utilities::IoC::Default::TypeBuilder']]],
   ['typebuilder',['TypeBuilder',['../class_utilities_1_1_io_c_1_1_default_1_1_type_builder.html',1,'Utilities::IoC::Default']]],
+  ['typebuilder',['TypeBuilder',['../class_utilities_1_1_io_c_1_1_default_1_1_type_builder.html#af1ea64ed31f9b3f70d4f948ad8dfdeee',1,'Utilities::IoC::Default::TypeBuilder']]],
   ['typebuilder_2ecs',['TypeBuilder.cs',['../_type_builder_8cs.html',1,'']]],
   ['typeconversionextensions_2ecs',['TypeConversionExtensions.cs',['../_type_conversion_extensions_8cs.html',1,'']]],
   ['typeconverterbase',['TypeConverterBase',['../class_utilities_1_1_data_types_1_1_conversion_1_1_converters_1_1_base_classes_1_1_type_converter_base.html',1,'Utilities::DataTypes::Conversion::Converters::BaseClasses']]],
@@ -90,10 +90,11 @@ var searchData=
   ['typeconverterbase_2ecs',['TypeConverterBase.cs',['../_type_converter_base_8cs.html',1,'']]],
   ['typeconverterbase_3c_20dbtype_20_3e',['TypeConverterBase&lt; DbType &gt;',['../class_utilities_1_1_data_types_1_1_conversion_1_1_converters_1_1_base_classes_1_1_type_converter_base.html',1,'Utilities::DataTypes::Conversion::Converters::BaseClasses']]],
   ['typeconverterbase_3c_20sqldbtype_20_3e',['TypeConverterBase&lt; SqlDbType &gt;',['../class_utilities_1_1_data_types_1_1_conversion_1_1_converters_1_1_base_classes_1_1_type_converter_base.html',1,'Utilities::DataTypes::Conversion::Converters::BaseClasses']]],
-  ['typemapping',['TypeMapping',['../class_utilities_1_1_data_types_1_1_data_mapper_1_1_default_1_1_type_mapping.html',1,'Utilities::DataTypes::DataMapper::Default']]],
   ['typemapping',['TypeMapping',['../class_utilities_1_1_data_types_1_1_data_mapper_1_1_default_1_1_type_mapping.html#a90a23eec56434ee4987d74834540f93d',1,'Utilities::DataTypes::DataMapper::Default::TypeMapping']]],
+  ['typemapping',['TypeMapping',['../class_utilities_1_1_data_types_1_1_data_mapper_1_1_default_1_1_type_mapping.html',1,'Utilities::DataTypes::DataMapper::Default']]],
   ['typemapping_2ecs',['TypeMapping.cs',['../_type_mapping_8cs.html',1,'']]],
   ['typemappingbase',['TypeMappingBase',['../class_utilities_1_1_data_types_1_1_data_mapper_1_1_base_classes_1_1_type_mapping_base.html#a3773b187e91a3fa84e894e9b2b740a04',1,'Utilities::DataTypes::DataMapper::BaseClasses::TypeMappingBase']]],
   ['typemappingbase',['TypeMappingBase',['../class_utilities_1_1_data_types_1_1_data_mapper_1_1_base_classes_1_1_type_mapping_base.html',1,'Utilities::DataTypes::DataMapper::BaseClasses']]],
-  ['typemappingbase_2ecs',['TypeMappingBase.cs',['../_type_mapping_base_8cs.html',1,'']]]
+  ['typemappingbase_2ecs',['TypeMappingBase.cs',['../_type_mapping_base_8cs.html',1,'']]],
+  ['types',['Types',['../class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#aeef392626b36af21e76e19ad0faa71d1',1,'Utilities::IoC::BaseClasses::BootstrapperBase']]]
 ];

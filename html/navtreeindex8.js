@@ -227,6 +227,7 @@ var NAVTREEINDEX8 =
 "class_utilities_1_1_i_o_1_1_serializers_1_1_module_1_1_serialization_module.html#ad0552bea4a2c283cc2e3b65519d7597f":[1,0,0,2,6,3,0,0],
 "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html":[1,0,0,3,0,0],
 "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a05571c3f1fd06fcc15e364aa205b084f":[1,0,0,3,0,0,13],
+"class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a07c8101b83083bdd37838cc987c096bd":[1,0,0,3,0,0,0],
 "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a109cc5db0599b1e3313cfaa5fd7c1060":[1,0,0,3,0,0,3],
 "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a24a2c6d39796c788d75fb2394dd706fa":[1,0,0,3,0,0,7],
 "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a37767f685a4be1b90a9a86736e340036":[1,0,0,3,0,0,11],
@@ -234,7 +235,6 @@ var NAVTREEINDEX8 =
 "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a42e2d33da52d576dd2d637d4ba1bae0d":[1,0,0,3,0,0,2],
 "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a435a5f687f1ba3d9d4155c6e4bdf68cb":[1,0,0,3,0,0,8],
 "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a58c79455bb5f05f92183b72fc3783045":[1,0,0,3,0,0,5],
-"class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a5f79f6eca02cc004b6d8b6475aebd05e":[1,0,0,3,0,0,0],
 "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a66512f83fb28b347eadcce08c6d85cac":[1,0,0,3,0,0,17],
 "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a6e5faa5bab50ce81a6ed35dc28434a01":[1,0,0,3,0,0,1],
 "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a9f48e8d8bc1e3289d9e94f70e0ac2eb3":[1,0,0,3,0,0,6],
@@ -244,10 +244,10 @@ var NAVTREEINDEX8 =
 "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#ae580bdd631b50e7a5bd02a39a90a5c02":[1,0,0,3,0,0,9],
 "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#aeb0ceae202c3dd002fac98186ed5fe6d":[1,0,0,3,0,0,14],
 "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#aee5e87622d3cbef9347cec6df188793d":[1,0,0,3,0,0,4],
+"class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#aeef392626b36af21e76e19ad0faa71d1":[1,0,0,3,0,0,18],
 "class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html":[1,0,0,3,1,1],
 "class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#a06cc68c4610e3393fc4dc5063c8a352d":[1,0,0,3,1,1,12],
 "class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#a096baa371692bf1bfa9b37c083c52471":[1,0,0,3,1,1,2],
 "class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#a158d28f4cba67daa484904f8a6a46ea7":[1,0,0,3,1,1,1],
-"class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#a32a0e8fff5013acbc9a258d3c662b29c":[1,0,0,3,1,1,9],
-"class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#a46fb1c6c8be1b9882530e8566380701c":[1,0,0,3,1,1,11]
+"class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#a28d6b334b899dd0f881a7e8e6cd709c0":[1,0,0,3,1,1,17]
 };

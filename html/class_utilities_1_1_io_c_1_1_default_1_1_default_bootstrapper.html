@@ -129,9 +129,9 @@ Inheritance diagram for Utilities.IoC.Default.DefaultBootstrapper:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a830beb9763d7a196b09e3d5c7736e2e8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#a830beb9763d7a196b09e3d5c7736e2e8">DefaultBootstrapper</a> (IEnumerable&lt; Assembly &gt; Assemblies)</td></tr>
-<tr class="memdesc:a830beb9763d7a196b09e3d5c7736e2e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor  <a href="#a830beb9763d7a196b09e3d5c7736e2e8">More...</a><br /></td></tr>
-<tr class="separator:a830beb9763d7a196b09e3d5c7736e2e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71f530db14541441fba30319238a03f0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#a71f530db14541441fba30319238a03f0">DefaultBootstrapper</a> (IEnumerable&lt; Assembly &gt; assemblies, IEnumerable&lt; Type &gt; types)</td></tr>
+<tr class="memdesc:a71f530db14541441fba30319238a03f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor  <a href="#a71f530db14541441fba30319238a03f0">More...</a><br /></td></tr>
+<tr class="separator:a71f530db14541441fba30319238a03f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a096baa371692bf1bfa9b37c083c52471"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#a096baa371692bf1bfa9b37c083c52471">Register&lt; T &gt;</a> (T Object, string <a class="el" href="class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#a723adcccaf45e2e9d4af5b8afdb66add">Name</a>=&quot;&quot;)</td></tr>
 <tr class="memdesc:a096baa371692bf1bfa9b37c083c52471"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers an object  <a href="#a096baa371692bf1bfa9b37c083c52471">More...</a><br /></td></tr>
 <tr class="separator:a096baa371692bf1bfa9b37c083c52471"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -187,9 +187,9 @@ Properties</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="namespace_utilities_1_1_io_c_1_1_default.html">Default</a> bootstrapper if one isn't found </p>
 
-<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00039">39</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
+<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00038">38</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a830beb9763d7a196b09e3d5c7736e2e8"></a>
+<a class="anchor" id="a71f530db14541441fba30319238a03f0"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -197,8 +197,18 @@ Properties</h2></td></tr>
           <td class="memname">Utilities.IoC.Default.DefaultBootstrapper.DefaultBootstrapper </td>
           <td>(</td>
           <td class="paramtype">IEnumerable&lt; Assembly &gt;&#160;</td>
-          <td class="paramname"><em>Assemblies</em></td><td>)</td>
+          <td class="paramname"><em>assemblies</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">IEnumerable&lt; Type &gt;&#160;</td>
+          <td class="paramname"><em>types</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -206,12 +216,13 @@ Properties</h2></td></tr>
 <p>Constructor </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Assemblies</td><td>The assemblies.</td></tr>
+    <tr><td class="paramname">assemblies</td><td>The assemblies.</td></tr>
+    <tr><td class="paramname">types</td><td>The types.</td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00047">47</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
+<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00045">45</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
 
 </div>
 </div>
@@ -246,7 +257,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00248">248</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
+<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00258">258</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
 
 </div>
 </div>
@@ -289,7 +300,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00075">75</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
+<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00096">96</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
 
 </div>
 </div>
@@ -321,7 +332,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00085">85</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
+<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00106">106</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
 
 </div>
 </div>
@@ -364,7 +375,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00116">116</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
+<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00137">137</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
 
 </div>
 </div>
@@ -397,7 +408,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00096">96</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
+<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00117">117</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
 
 </div>
 </div>
@@ -422,7 +433,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00128">128</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
+<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00149">149</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
 
 </div>
 </div>
@@ -460,7 +471,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Object of the type specified</dd></dl>
 
-<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00182">182</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
+<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00192">192</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
 
 </div>
 </div>
@@ -505,7 +516,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Object of the type specified</dd></dl>
 
-<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00194">194</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
+<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00204">204</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
 
 </div>
 </div>
@@ -538,7 +549,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Object of the type specified</dd></dl>
 
-<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00159">159</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
+<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00169">169</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
 
 </div>
 </div>
@@ -582,7 +593,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Object of the type specified</dd></dl>
 
-<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00171">171</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
+<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00181">181</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
 
 </div>
 </div>
@@ -609,7 +620,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>An IEnumerable containing all objects of the type specified</dd></dl>
 
-<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00220">220</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
+<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00230">230</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
 
 </div>
 </div>
@@ -635,7 +646,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>An IEnumerable containing all objects of the type specified</dd></dl>
 
-<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00210">210</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
+<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00220">220</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
 
 </div>
 </div>
@@ -655,7 +666,7 @@ Properties</h2></td></tr>
 <p>Converts the bootstrapper to a string </p>
 <dl class="section return"><dt>Returns</dt><dd>String version of the bootstrapper</dd></dl>
 
-<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00234">234</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
+<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00244">244</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
 
 </div>
 </div>
@@ -680,7 +691,7 @@ Properties</h2></td></tr>
 
 <p>App container </p>
 
-<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00065">65</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
+<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00068">68</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
 
 </div>
 </div>
@@ -704,7 +715,7 @@ Properties</h2></td></tr>
 
 <p>Name of the bootstrapper </p>
 
-<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00057">57</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
+<p>Definition at line <a class="el" href="_default_bootstrapper_8cs_source.html#l00060">60</a> of file <a class="el" href="_default_bootstrapper_8cs_source.html">DefaultBootstrapper.cs</a>.</p>
 
 </div>
 </div>
@@ -717,7 +728,7 @@ Properties</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_utilities.html">Utilities</a></li><li class="navelem"><a class="el" href="namespace_utilities_1_1_io_c.html">IoC</a></li><li class="navelem"><a class="el" href="namespace_utilities_1_1_io_c_1_1_default.html">Default</a></li><li class="navelem"><a class="el" href="class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html">DefaultBootstrapper</a></li>
-    <li class="footer">Generated on Thu Mar 5 2015 22:34:10 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Thu Mar 12 2015 18:54:03 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

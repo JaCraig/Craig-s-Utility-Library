@@ -27,7 +27,7 @@ var searchData=
   ['boolgenerator_2ecs',['BoolGenerator.cs',['../_bool_generator_8cs.html',1,'']]],
   ['bootstrapper',['Bootstrapper',['../class_utilities_1_1_io_c_1_1_manager.html#a24a037bf9337df9c0ecfd635c5013042',1,'Utilities::IoC::Manager']]],
   ['bootstrapperbase',['BootstrapperBase',['../class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html',1,'Utilities::IoC::BaseClasses']]],
-  ['bootstrapperbase',['BootstrapperBase',['../class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a5f79f6eca02cc004b6d8b6475aebd05e',1,'Utilities::IoC::BaseClasses::BootstrapperBase']]],
+  ['bootstrapperbase',['BootstrapperBase',['../class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a07c8101b83083bdd37838cc987c096bd',1,'Utilities::IoC::BaseClasses::BootstrapperBase']]],
   ['bootstrapperbase_2ecs',['BootstrapperBase.cs',['../_bootstrapper_base_8cs.html',1,'']]],
   ['bottom',['Bottom',['../namespace_utilities_1_1_media.html#aaa6f7b87394bf3bed4ea3527298fef6da2ad9d63b69c4a10a5cc9cad923133bc4',1,'Utilities::Media']]],
   ['btokenweight',['BTokenWeight',['../class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html#a79a7c6d15f38f228d305d4c599825681',1,'Utilities::DataTypes::AI::NaiveBayes']]],

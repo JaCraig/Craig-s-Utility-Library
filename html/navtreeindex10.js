@@ -1,5 +1,9 @@
 var NAVTREEINDEX10 =
 {
+"class_utilities_1_1_o_r_m_1_1_manager_1_1_o_r_m_manager.html#aa677b829182431f8b5e2c90478c8b987":[1,0,0,5,3,6,4],
+"class_utilities_1_1_o_r_m_1_1_manager_1_1_o_r_m_manager.html#acf00efe1dd62b4a22294fb50a0c66499":[1,0,0,5,3,6,6],
+"class_utilities_1_1_o_r_m_1_1_manager_1_1_o_r_m_manager.html#ad1338fdfa497de4bcc5f3527d03592be":[1,0,0,5,3,6,3],
+"class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_base_classes_1_1_database_query_provider_base.html":[1,0,0,5,3,3,0,0],
 "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_base_classes_1_1_database_query_provider_base.html#a0a9a8dacb009b4cdbe4849c96a819f7d":[1,0,0,5,3,3,0,0,4],
 "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_base_classes_1_1_database_query_provider_base.html#a3cecc7e30005a12129456892e16cb62f":[1,0,0,5,3,3,0,0,3],
 "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_base_classes_1_1_database_query_provider_base.html#a635748af4ca1f9b80292683e7766fe2d":[1,0,0,5,3,3,0,0,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX10 =
 "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_l_d_a_p_1_1_l_d_a_p_schema_generator.html#ad96b8b5a86637f56be2f95f47f65ba2e":[1,0,0,5,3,4,1,1,0,0],
 "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html":[1,0,0,5,3,4,3],
 "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html#a00d9ed326b5e7e91bfd57799ea22382d":[1,0,0,5,3,4,3,2],
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html#a1868ed286d3a7c41ccfc1bae657212e0":[1,0,0,5,3,4,3,3],
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html#a2b950e7ca48cbba0d9710295bdc663e3":[1,0,0,5,3,4,3,4],
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html#a2c99ee0b04dbc522ff5bfd4a3bd18cd9":[1,0,0,5,3,4,3,1],
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html#a53983617076d5290288cecf0fd67e2b3":[1,0,0,5,3,4,3,0],
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html":[1,0,0,5,3,7]
+"class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html#a1868ed286d3a7c41ccfc1bae657212e0":[1,0,0,5,3,4,3,3]
 };

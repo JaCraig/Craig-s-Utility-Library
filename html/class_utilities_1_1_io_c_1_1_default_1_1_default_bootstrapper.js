@@ -1,6 +1,6 @@
 var class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper =
 [
-    [ "DefaultBootstrapper", "class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#a830beb9763d7a196b09e3d5c7736e2e8", null ],
+    [ "DefaultBootstrapper", "class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#a71f530db14541441fba30319238a03f0", null ],
     [ "Dispose", "class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#a158d28f4cba67daa484904f8a6a46ea7", null ],
     [ "Register< T >", "class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#a096baa371692bf1bfa9b37c083c52471", null ],
     [ "Register< T >", "class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#ade223da16e913f725088656931b9d410", null ],
@@ -15,5 +15,8 @@ var class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper =
     [ "ResolveAll< T >", "class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#a06cc68c4610e3393fc4dc5063c8a352d", null ],
     [ "ToString", "class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#aadca68ddef1c75d3ecc8050d72806b8b", null ],
     [ "AppContainer", "class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#a6da9d4bf911d9ef844a0d5eda3ef2116", null ],
+    [ "GenericRegisterMethod", "class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#acbcefce6507ef40337ba9f141a6354bd", null ],
+    [ "GenericResolveAllMethod", "class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#ab9d627120dd454b49b3e91a3ab9e191f", null ],
+    [ "GenericResolveMethod", "class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#a28d6b334b899dd0f881a7e8e6cd709c0", null ],
     [ "Name", "class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#a723adcccaf45e2e9d4af5b8afdb66add", null ]
 ];

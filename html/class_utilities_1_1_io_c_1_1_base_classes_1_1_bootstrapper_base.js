@@ -1,6 +1,6 @@
 var class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base =
 [
-    [ "BootstrapperBase", "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a5f79f6eca02cc004b6d8b6475aebd05e", null ],
+    [ "BootstrapperBase", "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a07c8101b83083bdd37838cc987c096bd", null ],
     [ "AddAssembly", "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a6e5faa5bab50ce81a6ed35dc28434a01", null ],
     [ "Dispose", "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a42e2d33da52d576dd2d637d4ba1bae0d", null ],
     [ "Dispose", "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a109cc5db0599b1e3313cfaa5fd7c1060", null ],
@@ -17,5 +17,6 @@ var class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base =
     [ "ResolveAll< T >", "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#aeb0ceae202c3dd002fac98186ed5fe6d", null ],
     [ "AppContainer", "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a401e2c011a220c7939a228016e3006ed", null ],
     [ "Assemblies", "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#aac8e02afe75e35610d3961c0ca44e59c", null ],
-    [ "Name", "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a66512f83fb28b347eadcce08c6d85cac", null ]
+    [ "Name", "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a66512f83fb28b347eadcce08c6d85cac", null ],
+    [ "Types", "class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#aeef392626b36af21e76e19ad0faa71d1", null ]
 ];
