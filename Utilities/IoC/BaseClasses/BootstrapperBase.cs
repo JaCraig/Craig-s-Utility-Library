@@ -36,18 +36,12 @@ namespace Utilities.IoC.BaseClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Assemblies">The assemblies.</param>
-        protected BootstrapperBase(IEnumerable<Assembly> Assemblies)
+        /// <param name="assemblies">The assemblies.</param>
+        /// <param name="types">The types.</param>
+        protected BootstrapperBase(IEnumerable<Assembly> assemblies, IEnumerable<Type> types)
         {
-            this.Assemblies = Assemblies.ToList();
-        }
-
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        ~BootstrapperBase()
-        {
-            Dispose(false);
+            this.Assemblies = assemblies.ToList();
+            this.Types = types.ToList();
         }
 
         /// <summary>
@@ -61,10 +55,16 @@ namespace Utilities.IoC.BaseClasses
         protected abstract Container AppContainer { get; }
 
         /// <summary>
+        /// Gets the types.
+        /// </summary>
+        /// <value>The types.</value>
+        protected List<Type> Types { get; private set; }
+
+        /// <summary>
         /// Gets the assemblies.
         /// </summary>
         /// <value>The assemblies.</value>
-        protected List<Assembly> Assemblies { get; private set; }
+        private List<Assembly> Assemblies { get; set; }
 
         /// <summary>
         /// Adds the assembly.
@@ -77,7 +77,14 @@ namespace Utilities.IoC.BaseClasses
             foreach (Assembly Assembly in Assemblies)
             {
                 if (!this.Assemblies.Contains(Assembly))
-                    this.Assemblies.Add(Assembly);
+                {
+                    try
+                    {
+                        this.Types.AddRange(Assembly.GetTypes());
+                        this.Assemblies.Add(Assembly);
+                    }
+                    catch (ReflectionTypeLoadException) { }
+                }
             }
         }
 
@@ -192,6 +199,14 @@ namespace Utilities.IoC.BaseClasses
         /// </param>
         protected virtual void Dispose(bool Managed)
         {
+        }
+
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        ~BootstrapperBase()
+        {
+            Dispose(false);
         }
     }
 }

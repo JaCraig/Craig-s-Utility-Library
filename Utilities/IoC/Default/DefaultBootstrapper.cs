@@ -27,7 +27,6 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using Utilities.IoC.BaseClasses;
 using Utilities.IoC.Default.Interfaces;
 
@@ -38,17 +37,21 @@ namespace Utilities.IoC.Default
     /// </summary>
     public class DefaultBootstrapper : BootstrapperBase<IDictionary<Tuple<Type, string>, ITypeBuilder>>
     {
-        private ConcurrentDictionary<Tuple<Type, string>, ITypeBuilder> _AppContainer = null;
-
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Assemblies">The assemblies.</param>
-        public DefaultBootstrapper(IEnumerable<Assembly> Assemblies)
-            : base(Assemblies)
+        /// <param name="assemblies">The assemblies.</param>
+        /// <param name="types">The types.</param>
+        public DefaultBootstrapper(IEnumerable<Assembly> assemblies, IEnumerable<Type> types)
+            : base(assemblies, types)
         {
             _AppContainer = new ConcurrentDictionary<Tuple<Type, string>, ITypeBuilder>();
+            GenericRegisterMethod = GetType().GetMethods().First(x => x.Name == "Register" && x.GetGenericArguments().Count() == 2);
+            GenericResolveMethod = GetType().GetMethods().First(x => x.Name == "Resolve" && x.IsGenericMethod && x.GetParameters().Length == 1);
+            GenericResolveAllMethod = GetType().GetMethod("ResolveAll", new Type[] { });
         }
+
+        private ConcurrentDictionary<Tuple<Type, string>, ITypeBuilder> _AppContainer = null;
 
         /// <summary>
         /// Name of the bootstrapper
@@ -65,6 +68,24 @@ namespace Utilities.IoC.Default
         {
             get { return _AppContainer; }
         }
+
+        /// <summary>
+        /// Gets or sets the generic register method.
+        /// </summary>
+        /// <value>The generic register method.</value>
+        private MethodInfo GenericRegisterMethod { get; set; }
+
+        /// <summary>
+        /// Gets or sets the generic resolve all method.
+        /// </summary>
+        /// <value>The generic resolve all method.</value>
+        private MethodInfo GenericResolveAllMethod { get; set; }
+
+        /// <summary>
+        /// Gets or sets the generic resolve method.
+        /// </summary>
+        /// <value>The generic resolve method.</value>
+        private MethodInfo GenericResolveMethod { get; set; }
 
         /// <summary>
         /// Registers an object
@@ -127,21 +148,10 @@ namespace Utilities.IoC.Default
         /// <typeparam name="T">Object type</typeparam>
         public override void RegisterAll<T>()
         {
-            List<Type> Types = new List<Type>();
-            foreach (Assembly Assembly in Assemblies)
-            {
-                IEnumerable<Type> TempTypes = Assembly.GetTypes();
-                Types.AddRange(TempTypes.Where(x => x.GetInterfaces().Contains(typeof(T))
-                                                                        && x.IsClass
-                                                                        && !x.IsAbstract
-                                                                        && !x.ContainsGenericParameters));
-                Types.AddRange(TempTypes.Where(x => IsOfType(x, typeof(T))
-                                                            && x.IsClass
-                                                            && !x.IsAbstract
-                                                            && !x.ContainsGenericParameters));
-            }
-            MethodInfo GenericRegisterMethod = GetType().GetMethods().First(x => x.Name == "Register" && x.GetGenericArguments().Count() == 2);
-            foreach (Type Type in Types)
+            foreach (Type Type in Types.Where(x => IsOfType(x, typeof(T))
+                                                    && x.IsClass
+                                                    && !x.IsAbstract
+                                                    && !x.ContainsGenericParameters))
             {
                 GenericRegisterMethod.MakeGenericMethod(typeof(T), Type)
                     .Invoke(this, new object[] { Types.Count == 1 ? "" : Type.FullName });
@@ -313,13 +323,14 @@ namespace Utilities.IoC.Default
                 if (Parameter.ParameterType.GetInterfaces().Contains(typeof(IEnumerable)) && Parameter.ParameterType.IsGenericType)
                 {
                     Type GenericParamType = Parameter.ParameterType.GetGenericArguments().First();
-                    MethodInfo ResolveAllMethod = GetType().GetMethod("ResolveAll", new Type[] { }).MakeGenericMethod(GenericParamType);
-                    Params.Add(ResolveAllMethod.Invoke(this, new object[] { }));
+                    Params.Add(GenericResolveAllMethod.MakeGenericMethod(GenericParamType).Invoke(this, new object[] { }));
                 }
                 else
                 {
-                    MethodInfo ResolveMethod = GetType().GetMethods().FirstOrDefault(x => x.Name == "Resolve" && x.IsGenericMethod && x.GetParameters().Length == 1).MakeGenericMethod(Parameter.ParameterType);
-                    Params.Add(ResolveMethod.Invoke(this, new object[] { Parameter.ParameterType.IsValueType ? Activator.CreateInstance(Parameter.ParameterType) : null }));
+                    Params.Add(GenericResolveMethod.MakeGenericMethod(Parameter.ParameterType)
+                                                   .Invoke(this, new object[] {
+                                                                    Parameter.ParameterType.IsValueType ? Activator.CreateInstance(Parameter.ParameterType) : null
+                                                   }));
                 }
             }
             return Params;
@@ -329,11 +340,9 @@ namespace Utilities.IoC.Default
         {
             if (x == typeof(object) || x == null)
                 return false;
-            if (x == type)
+            if (x == type || x.GetInterfaces().Any(y => y == type))
                 return true;
-            return x.GetInterfaces()
-                    .Any(y => IsOfType(y, type))
-                || IsOfType(x.BaseType, type);
+            return IsOfType(x.BaseType, type);
         }
     }
 }

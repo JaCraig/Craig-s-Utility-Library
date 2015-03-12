@@ -13,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{20C0B5E0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.IoC", "Utilities.IoC\Utilities.IoC.csproj", "{55B9E604-6C35-410D-80D8-86ECA3BD20FB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2B03FE73-339D-483D-83A7-414A908B625E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.Configuration", "Utilities.Configuration\Utilities.Configuration.csproj", "{FA8F4CB5-CE3C-4086-A401-60FD7C067CC2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.DataTypes", "Utilities.DataTypes\Utilities.DataTypes.csproj", "{39CBC271-2E89-43C0-984E-F4CCA7C710F4}"
