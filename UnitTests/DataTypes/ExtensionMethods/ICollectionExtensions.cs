@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Utilities.DataTypes;
 using Xunit;
 
@@ -68,6 +69,27 @@ namespace UnitTests.DataTypes.ExtensionMethods
             List<int> Results = TestObject.Add(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).ToList();
             Assert.Equal(14, Results.Count);
             Assert.Equal(14, TestObject.Count);
+        }
+
+        [Fact]
+        public void ForTest()
+        {
+            StringBuilder Builder = new StringBuilder();
+            int[] Temp = new int[] { 0, 0, 1, 2, 3 };
+            Temp.For(0, Temp.Length - 1, (x, y) => Builder.Append(y));
+            Assert.Equal("00123", Builder.ToString());
+            Builder = new StringBuilder();
+            Temp.For(0, Temp.Length - 1, (x, y) => Builder.Append(x));
+            Assert.Equal("01234", Builder.ToString());
+        }
+
+        [Fact]
+        public void ForTest2()
+        {
+            StringBuilder Builder = new StringBuilder();
+            int[] Temp = new int[] { 0, 0, 1, 2, 3 };
+            int[] Temp2 = Temp.For(0, Temp.Length - 1, (x, y) => x + y).ToArray();
+            Assert.Equal(new int[] { 0, 1, 3, 5, 7 }, Temp2);
         }
 
         [Fact]

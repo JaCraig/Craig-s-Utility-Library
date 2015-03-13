@@ -85,9 +85,7 @@ namespace Utilities.DataTypes
         /// <typeparam name="T">Collection type</typeparam>
         /// <param name="Collection">Collection to add to</param>
         /// <param name="Items">Items to add to the collection</param>
-        /// <param name="Predicate">
-        /// Predicate that an item needs to satisfy in order to be added
-        /// </param>
+        /// <param name="Predicate">Predicate that an item needs to satisfy in order to be added</param>
         /// <returns>True if any are added, false otherwise</returns>
         public static bool AddIf<T>(this ICollection<T> Collection, Predicate<T> Predicate, params T[] Items)
         {
@@ -113,9 +111,7 @@ namespace Utilities.DataTypes
         /// <typeparam name="T">Collection type</typeparam>
         /// <param name="Collection">Collection to add to</param>
         /// <param name="Items">Items to add to the collection</param>
-        /// <param name="Predicate">
-        /// Predicate that an item needs to satisfy in order to be added
-        /// </param>
+        /// <param name="Predicate">Predicate that an item needs to satisfy in order to be added</param>
         /// <returns>True if it is added, false otherwise</returns>
         public static bool AddIf<T>(this ICollection<T> Collection, Predicate<T> Predicate, IEnumerable<T> Items)
         {
@@ -194,6 +190,55 @@ namespace Utilities.DataTypes
             if (Items == null)
                 return true;
             return Collection.AddIf(x => !Collection.Any(y => Predicate(x, y)), Items);
+        }
+
+        /// <summary>
+        /// Does an action for each item in the IEnumerable between the start and end indexes
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="List">IEnumerable to iterate over</param>
+        /// <param name="Start">Item to start with</param>
+        /// <param name="End">Item to end with</param>
+        /// <param name="Action">Action to do</param>
+        /// <returns>The original list</returns>
+        public static IList<T> For<T>(this IList<T> List, int Start, int End, Action<int, T> Action)
+        {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Action != null, "Action");
+            Contract.Requires<ArgumentException>(End + 1 - Start >= 0, "End must be greater than start");
+            if (End >= List.Count)
+                End = List.Count - 1;
+            if (Start < 0)
+                Start = 0;
+            for (int x = Start; x <= End; ++x)
+                Action(x, List[x]);
+            return List;
+        }
+
+        /// <summary>
+        /// Does a function for each item in the IEnumerable between the start and end indexes and
+        /// returns an IEnumerable of the results
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <typeparam name="R">Return type</typeparam>
+        /// <param name="List">IEnumerable to iterate over</param>
+        /// <param name="Start">Item to start with</param>
+        /// <param name="End">Item to end with</param>
+        /// <param name="Function">Function to do</param>
+        /// <returns>The resulting list</returns>
+        public static IList<R> For<T, R>(this IList<T> List, int Start, int End, Func<int, T, R> Function)
+        {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Function != null, "Function");
+            Contract.Requires<ArgumentException>(End + 1 - Start >= 0, "End must be greater than start");
+            List<R> ReturnValues = new List<R>();
+            if (End >= List.Count)
+                End = List.Count - 1;
+            if (Start < 0)
+                Start = 0;
+            for (int x = Start; x <= End; ++x)
+                ReturnValues.Add(Function(x, List[x]));
+            return ReturnValues;
         }
 
         /// <summary>

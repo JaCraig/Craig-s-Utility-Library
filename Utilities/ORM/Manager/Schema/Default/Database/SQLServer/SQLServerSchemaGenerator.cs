@@ -31,6 +31,8 @@ using Utilities.DataTypes;
 using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
+using Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders;
+using Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders.Interfaces;
 using Utilities.ORM.Manager.Schema.Enums;
 using Utilities.ORM.Manager.Schema.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
@@ -45,6 +47,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="Provider">The provider.</param>
+        /// <param name="SourceProvider">The source provider.</param>
         public SQLServerSchemaGenerator(QueryProvider.Manager Provider, SourceProvider.Manager SourceProvider)
         {
             this.Provider = Provider;
@@ -92,8 +96,16 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             if (!SourceExists(DatabaseName, DatabaseSource))
                 return null;
             Database Temp = new Database(DatabaseName);
-            GetTables(Source, Temp);
-            SetupTables(Source, Temp);
+            IBatch Batch = Provider.Batch(Source);
+            IBuilder[] Builders = new IBuilder[]{
+                new Tables(),
+                new TableColumns(),
+                new TableTriggers(),
+                new TableForeignKeys()
+            };
+            Builders.ForEach(x => x.GetCommand(Batch));
+            var Results = Batch.Execute();
+            Builders.For(0, Builders.Length - 1, (x, y) => y.FillDatabase(Results[x], Temp));
             SetupViews(Source, Temp);
             SetupStoredProcedures(Source, Temp);
             SetupFunctions(Source, Temp);
@@ -595,32 +607,6 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             TempDatabase.Tables.Add(TempTables);
         }
 
-        private static void SetupColumns(Table Table, IEnumerable<dynamic> Values)
-        {
-            Contract.Requires<ArgumentNullException>(Values != null, "Values");
-            foreach (dynamic Item in Values)
-            {
-                if (Table.ContainsColumn(Item.Column))
-                {
-                    Table.AddForeignKey(Item.Column, Item.FOREIGN_KEY_TABLE, Item.FOREIGN_KEY_COLUMN);
-                }
-                else
-                {
-                    Table.AddColumn<string>(Item.Column,
-                        Utilities.DataTypes.TypeConversionExtensions.To(Utilities.DataTypes.TypeConversionExtensions.To<string, SqlDbType>(Item.COLUMN_TYPE), DbType.Int32),
-                        (Item.COLUMN_TYPE == "nvarchar") ? Item.MAX_LENGTH / 2 : Item.MAX_LENGTH,
-                        Item.IS_NULLABLE,
-                        Item.IS_IDENTITY,
-                        Item.IS_INDEX != 0,
-                        !string.IsNullOrEmpty(Item.PRIMARY_KEY),
-                        !string.IsNullOrEmpty(Item.UNIQUE),
-                        Item.FOREIGN_KEY_TABLE,
-                        Item.FOREIGN_KEY_COLUMN,
-                        Item.DEFAULT_VALUE);
-                }
-            }
-        }
-
         private static void SetupDeleteTrigger(ITable Table)
         {
             Contract.Requires<ArgumentNullException>(Table != null, "Table");
@@ -838,24 +824,6 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                            .Count() > 0;
         }
 
-        private void GetTables(ISourceInfo Source, Database Temp)
-        {
-            Contract.Requires<ArgumentNullException>(Source != null, "Source");
-            Contract.Requires<NullReferenceException>(Provider != null, "Provider");
-            IEnumerable<dynamic> Values = Provider.Batch(Source)
-                                                  .AddCommand(null, null, CommandType.Text, "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_TYPE FROM INFORMATION_SCHEMA.TABLES")
-                                                  .Execute()[0];
-            foreach (dynamic Item in Values)
-            {
-                string TableName = Item.TABLE_NAME;
-                string TableType = Item.TABLE_TYPE;
-                if (TableType == "BASE TABLE")
-                    Temp.AddTable(TableName);
-                else if (TableType == "VIEW")
-                    Temp.AddView(TableName);
-            }
-        }
-
         private void SetupFunctions(ISourceInfo Source, Database Temp)
         {
             Contract.Requires<ArgumentNullException>(Source != null, "Source");
@@ -902,66 +870,6 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             }
         }
 
-        private void SetupTables(ISourceInfo Source, Database Temp)
-        {
-            Contract.Requires<ArgumentNullException>(Temp != null, "Temp");
-            Contract.Requires<ArgumentNullException>(Temp.Tables != null, "Temp.Tables");
-            foreach (Table Table in Temp.Tables)
-            {
-                IEnumerable<dynamic> Values = Provider.Batch(Source)
-                                                      .AddCommand(null, null, @"SELECT sys.columns.name AS [Column], sys.systypes.name AS [COLUMN_TYPE],
-                                                                sys.columns.max_length as [MAX_LENGTH], sys.columns.is_nullable as [IS_NULLABLE],
-                                                                sys.columns.is_identity as [IS_IDENTITY], sys.index_columns.index_id as [IS_INDEX],
-                                                                key_constraints.name as [PRIMARY_KEY], key_constraints_1.name as [UNIQUE],
-                                                                tables_1.name as [FOREIGN_KEY_TABLE], columns_1.name as [FOREIGN_KEY_COLUMN],
-                                                                sys.default_constraints.definition as [DEFAULT_VALUE] 
-                                                                FROM sys.tables 
-                                                                INNER JOIN sys.columns on sys.columns.object_id=sys.tables.object_id 
-                                                                INNER JOIN sys.systypes ON sys.systypes.xtype = sys.columns.system_type_id 
-                                                                LEFT OUTER JOIN sys.index_columns on sys.index_columns.object_id=sys.tables.object_id and sys.index_columns.column_id=sys.columns.column_id 
-                                                                LEFT OUTER JOIN sys.key_constraints on sys.key_constraints.parent_object_id=sys.tables.object_id and sys.key_constraints.parent_object_id=sys.index_columns.object_id and sys.index_columns.index_id=sys.key_constraints.unique_index_id and sys.key_constraints.type='PK' 
-                                                                LEFT OUTER JOIN sys.foreign_key_columns on sys.foreign_key_columns.parent_object_id=sys.tables.object_id and sys.foreign_key_columns.parent_column_id=sys.columns.column_id 
-                                                                LEFT OUTER JOIN sys.tables as tables_1 on tables_1.object_id=sys.foreign_key_columns.referenced_object_id 
-                                                                LEFT OUTER JOIN sys.columns as columns_1 on columns_1.column_id=sys.foreign_key_columns.referenced_column_id and columns_1.object_id=tables_1.object_id 
-                                                                LEFT OUTER JOIN sys.key_constraints as key_constraints_1 on key_constraints_1.parent_object_id=sys.tables.object_id and key_constraints_1.parent_object_id=sys.index_columns.object_id and sys.index_columns.index_id=key_constraints_1.unique_index_id and key_constraints_1.type='UQ' 
-                                                                LEFT OUTER JOIN sys.default_constraints on sys.default_constraints.object_id=sys.columns.default_object_id 
-                                                                WHERE (sys.tables.name = @0) AND (sys.systypes.xusertype <> 256)",
-                                                                CommandType.Text,
-                                                                Table.Name)
-                                                      .Execute()[0];
-                SetupColumns(Table, Values);
-                SetupTriggers(Source, Table, Values);
-            }
-            foreach (Table Table in Temp.Tables)
-            {
-                Table.SetupForeignKeys();
-            }
-        }
-
-        private void SetupTriggers(ISourceInfo Source, Table Table, IEnumerable<dynamic> Values)
-        {
-            Contract.Requires<ArgumentNullException>(Table != null, "Table");
-            Contract.Requires<ArgumentNullException>(Source != null, "Source");
-            Contract.Requires<NullReferenceException>(Provider != null, "Provider");
-            Values = Provider.Batch(Source)
-                             .AddCommand(null, null, @"SELECT sys.triggers.name as Name,sys.trigger_events.type as Type,
-                                                OBJECT_DEFINITION(sys.triggers.object_id) as Definition 
-                                                FROM sys.triggers 
-                                                INNER JOIN sys.trigger_events ON sys.triggers.object_id=sys.trigger_events.object_id 
-                                                INNER JOIN sys.tables on sys.triggers.parent_id=sys.tables.object_id 
-                                                where sys.tables.name=@0",
-                                    CommandType.Text,
-                                    Table.Name)
-                             .Execute()[0];
-            foreach (dynamic Item in Values)
-            {
-                string Name = Item.Name;
-                int Type = Item.Type;
-                string Definition = Item.Definition;
-                Table.AddTrigger(Name, Definition, Type.ToString(CultureInfo.InvariantCulture).To<string, TriggerType>());
-            }
-        }
-
         private void SetupViews(ISourceInfo Source, Database Temp)
         {
             Contract.Requires<ArgumentNullException>(Temp != null, "Temp");
@@ -976,10 +884,10 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                 View.Definition = Values.First().Definition;
                 Values = Provider.Batch(Source)
                                  .AddCommand(null, null, @"SELECT sys.columns.name AS [Column], sys.systypes.name AS [COLUMN_TYPE],
-                                                        sys.columns.max_length as [MAX_LENGTH], sys.columns.is_nullable as [IS_NULLABLE] 
-                                                        FROM sys.views 
-                                                        INNER JOIN sys.columns on sys.columns.object_id=sys.views.object_id 
-                                                        INNER JOIN sys.systypes ON sys.systypes.xtype = sys.columns.system_type_id 
+                                                        sys.columns.max_length as [MAX_LENGTH], sys.columns.is_nullable as [IS_NULLABLE]
+                                                        FROM sys.views
+                                                        INNER JOIN sys.columns on sys.columns.object_id=sys.views.object_id
+                                                        INNER JOIN sys.systypes ON sys.systypes.xtype = sys.columns.system_type_id
                                                         WHERE (sys.views.name = @0) AND (sys.systypes.xusertype <> 256)",
                                         CommandType.Text,
                                         View.Name)
