@@ -42,7 +42,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         /// <param name="database">The database.</param>
         public void FillDatabase(IEnumerable<dynamic> values, Database database)
         {
-            Contract.Requires<NullReferenceException>(database != null, "database");
+            if (database == null)
+                throw new ArgumentNullException("database");
             if (values == null || values.Count() == 0)
                 return;
             foreach (dynamic Item in values)
@@ -57,7 +58,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         /// <param name="batch">The batch.</param>
         public void GetCommand(IBatch batch)
         {
-            Contract.Requires<NullReferenceException>(batch != null, "batch");
+            if (batch == null)
+                throw new ArgumentNullException("batch");
             batch.AddCommand(null, null, CommandType.Text, @"SELECT sys.procedures.name as NAME,OBJECT_DEFINITION(sys.procedures.object_id) as DEFINITION FROM sys.procedures");
         }
     }

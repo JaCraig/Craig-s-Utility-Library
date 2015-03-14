@@ -43,7 +43,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         /// <param name="database">The database.</param>
         public void FillDatabase(IEnumerable<dynamic> values, Database database)
         {
-            Contract.Requires<NullReferenceException>(database != null, "database");
+            if (database == null)
+                throw new ArgumentNullException("database");
             if (values == null || values.Count() == 0)
                 return;
             foreach (dynamic Item in values)
@@ -58,7 +59,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         /// <param name="batch">The batch.</param>
         public void GetCommand(IBatch batch)
         {
-            Contract.Requires<NullReferenceException>(batch != null, "batch");
+            if (batch == null)
+                throw new ArgumentNullException("batch");
             batch.AddCommand(null, null, CommandType.Text, @"SELECT sys.procedures.name as [Procedure],sys.systypes.name as TYPE,sys.parameters.name as NAME,
 sys.parameters.max_length as LENGTH,sys.parameters.default_value as [DEFAULT VALUE]
 FROM sys.procedures
@@ -72,10 +74,12 @@ WHERE sys.systypes.xusertype <> 256");
         /// </summary>
         /// <param name="storedProcedure">The stored procedure.</param>
         /// <param name="item">The item.</param>
-        private void SetupStoredProcedures(ITable storedProcedure, dynamic item)
+        private static void SetupStoredProcedures(ITable storedProcedure, dynamic item)
         {
-            Contract.Requires<ArgumentNullException>(storedProcedure != null, "storedProcedure");
-            Contract.Requires<NullReferenceException>(item != null, "item");
+            if (storedProcedure == null)
+                throw new ArgumentNullException("storedProcedure");
+            if (item == null)
+                throw new ArgumentNullException("item");
             string Type = item.TYPE;
             string Name = item.NAME;
             int Length = item.LENGTH;

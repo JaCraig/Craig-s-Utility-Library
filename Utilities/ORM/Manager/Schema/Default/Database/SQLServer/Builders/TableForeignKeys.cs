@@ -40,7 +40,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         /// <param name="database">The database.</param>
         public void FillDatabase(IEnumerable<dynamic> values, Database database)
         {
-            Contract.Requires<NullReferenceException>(database != null, "database");
+            if (database == null)
+                throw new ArgumentNullException("database");
             foreach (Table Table in database.Tables)
             {
                 Table.SetupForeignKeys();
@@ -53,7 +54,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         /// <param name="batch">The batch.</param>
         public void GetCommand(IBatch batch)
         {
-            Contract.Requires<NullReferenceException>(batch != null, "batch");
+            if (batch == null)
+                throw new ArgumentNullException("batch");
             batch.AddCommand(null, null, CommandType.Text, @"SELECT sys.tables.name as [Table] FROM sys.tables");
         }
     }

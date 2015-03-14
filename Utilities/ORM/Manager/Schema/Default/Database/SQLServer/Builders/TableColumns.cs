@@ -42,12 +42,12 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         /// <param name="database">The database.</param>
         public void FillDatabase(IEnumerable<dynamic> values, Database database)
         {
-            Contract.Requires<NullReferenceException>(database != null, "database");
+            if (database == null)
+                throw new ArgumentNullException("database");
             if (values == null || values.Count() == 0)
                 return;
             foreach (dynamic Item in values)
             {
-                string TableName = Item.TABLE;
                 SetupColumns(database.Tables.FirstOrDefault(x => x.Name == Item.Table), Item);
             }
         }
@@ -58,7 +58,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         /// <param name="batch">The batch.</param>
         public void GetCommand(IBatch batch)
         {
-            Contract.Requires<NullReferenceException>(batch != null, "batch");
+            if (batch == null)
+                throw new ArgumentNullException("batch");
             batch.AddCommand(null, null, CommandType.Text, @"SELECT sys.tables.name as [Table],sys.columns.name AS [Column], sys.systypes.name AS [COLUMN_TYPE],
                                                                 sys.columns.max_length as [MAX_LENGTH], sys.columns.is_nullable as [IS_NULLABLE],
                                                                 sys.columns.is_identity as [IS_IDENTITY], sys.index_columns.index_id as [IS_INDEX],
@@ -85,8 +86,10 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         /// <param name="item">The item.</param>
         private static void SetupColumns(ITable table, dynamic item)
         {
-            Contract.Requires<ArgumentNullException>(((object)item) != null, "item");
-            Contract.Requires<ArgumentNullException>(table != null, "table");
+            if (item == null)
+                throw new ArgumentNullException("item");
+            if (table == null)
+                throw new ArgumentNullException("table");
             if (table.ContainsColumn(item.Column))
             {
                 table.AddForeignKey(item.Column, item.FOREIGN_KEY_TABLE, item.FOREIGN_KEY_COLUMN);

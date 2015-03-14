@@ -45,12 +45,12 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         /// <param name="database">The database.</param>
         public void FillDatabase(IEnumerable<dynamic> values, Database database)
         {
-            Contract.Requires<NullReferenceException>(database != null, "database");
+            if (database == null)
+                throw new ArgumentNullException("database");
             if (values == null || values.Count() == 0)
                 return;
             foreach (dynamic Item in values)
             {
-                string TableName = Item.TABLE;
                 SetupTriggers(database.Tables.FirstOrDefault(x => x.Name == Item.Table), Item);
             }
         }
@@ -61,7 +61,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         /// <param name="batch">The batch.</param>
         public void GetCommand(IBatch batch)
         {
-            Contract.Requires<NullReferenceException>(batch != null, "batch");
+            if (batch == null)
+                throw new ArgumentNullException("batch");
             batch.AddCommand(null, null, CommandType.Text, @"SELECT sys.tables.name as [Table],sys.triggers.name as Name,sys.trigger_events.type as Type,
                                                                 OBJECT_DEFINITION(sys.triggers.object_id) as Definition
                                                                 FROM sys.triggers
@@ -76,8 +77,10 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         /// <param name="item">The item.</param>
         private static void SetupTriggers(ITable table, dynamic item)
         {
-            Contract.Requires<ArgumentNullException>(((object)item) != null, "item");
-            Contract.Requires<ArgumentNullException>(table != null, "table");
+            if (item == null)
+                throw new ArgumentNullException("item");
+            if (table == null)
+                throw new ArgumentNullException("table");
             string Name = item.Name;
             int Type = item.Type;
             string Definition = item.Definition;
