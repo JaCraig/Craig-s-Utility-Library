@@ -24,8 +24,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using Utilities.DataTypes;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders.Interfaces;
+using Utilities.ORM.Manager.Schema.Interfaces;
 
 namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
 {
@@ -46,12 +48,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
                 return;
             foreach (dynamic Item in values)
             {
-                string ViewName = Item.View_NAME;
-                string ViewType = Item.View_TYPE;
-                if (ViewType == "BASE View")
-                    database.AddView(ViewName);
-                else if (ViewType == "VIEW")
-                    database.AddView(ViewName);
+                SetupViews(database.Views.FirstOrDefault(x => x.Name == Item.View), Item);
             }
         }
 
@@ -62,7 +59,33 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         public void GetCommand(IBatch batch)
         {
             Contract.Requires<NullReferenceException>(batch != null, "batch");
-            batch.AddCommand(null, null, CommandType.Text, "SELECT View_CATALOG, View_SCHEMA, View_NAME, View_TYPE FROM INFORMATION_SCHEMA.ViewS");
+            batch.AddCommand(null, null, CommandType.Text, @"SELECT sys.views.name as [View],OBJECT_DEFINITION(sys.views.object_id) as Definition,
+                                                        sys.columns.name AS [Column], sys.systypes.name AS [COLUMN_TYPE],
+                                                        sys.columns.max_length as [MAX_LENGTH], sys.columns.is_nullable as [IS_NULLABLE]
+                                                        FROM sys.views
+                                                        INNER JOIN sys.columns on sys.columns.object_id=sys.views.object_id
+                                                        INNER JOIN sys.systypes ON sys.systypes.xtype = sys.columns.system_type_id
+                                                        WHERE sys.systypes.xusertype <> 256");
+        }
+
+        /// <summary>
+        /// Setups the views.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        /// <param name="item">The item.</param>
+        private static void SetupViews(ITable table, dynamic item)
+        {
+            Contract.Requires<ArgumentNullException>(((object)item) != null, "item");
+            Contract.Requires<ArgumentNullException>(table != null, "table");
+            View View = (View)table;
+            View.Definition = item.Definition;
+            string ColumnName = item.Column;
+            string ColumnType = item.COLUMN_TYPE;
+            int MaxLength = item.MAX_LENGTH;
+            if (ColumnType == "nvarchar")
+                MaxLength /= 2;
+            bool Nullable = item.IS_NULLABLE;
+            View.AddColumn<string>(ColumnName, ColumnType.To<string, SqlDbType>().To(DbType.Int32), MaxLength, Nullable);
         }
     }
 }

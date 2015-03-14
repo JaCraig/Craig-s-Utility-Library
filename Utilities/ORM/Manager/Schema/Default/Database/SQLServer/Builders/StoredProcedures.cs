@@ -23,20 +23,17 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.Linq;
-using Utilities.DataTypes;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders.Interfaces;
-using Utilities.ORM.Manager.Schema.Enums;
 using Utilities.ORM.Manager.Schema.Interfaces;
 
 namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
 {
     /// <summary>
-    /// Table trigger builder, gets info and does diffs for tables
+    /// StoredProcedure builder, gets info and does diffs for StoredProcedures
     /// </summary>
-    public class TableTriggers : IBuilder
+    public class StoredProcedures : IBuilder
     {
         /// <summary>
         /// Fills the database.
@@ -50,8 +47,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
                 return;
             foreach (dynamic Item in values)
             {
-                string TableName = Item.TABLE;
-                SetupTriggers(database.Tables.FirstOrDefault(x => x.Name == Item.Table), Item);
+                database.AddStoredProcedure(Item.NAME, Item.DEFINITION);
             }
         }
 
@@ -62,26 +58,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         public void GetCommand(IBatch batch)
         {
             Contract.Requires<NullReferenceException>(batch != null, "batch");
-            batch.AddCommand(null, null, CommandType.Text, @"SELECT sys.tables.name as [Table],sys.triggers.name as Name,sys.trigger_events.type as Type,
-                                                                OBJECT_DEFINITION(sys.triggers.object_id) as Definition
-                                                                FROM sys.triggers
-                                                                INNER JOIN sys.trigger_events ON sys.triggers.object_id=sys.trigger_events.object_id
-                                                                INNER JOIN sys.tables on sys.triggers.parent_id=sys.tables.object_id");
-        }
-
-        /// <summary>
-        /// Setups the columns.
-        /// </summary>
-        /// <param name="table">The table.</param>
-        /// <param name="item">The item.</param>
-        private static void SetupTriggers(ITable table, dynamic item)
-        {
-            Contract.Requires<ArgumentNullException>(((object)item) != null, "item");
-            Contract.Requires<ArgumentNullException>(table != null, "table");
-            string Name = item.Name;
-            int Type = item.Type;
-            string Definition = item.Definition;
-            table.AddTrigger(Name, Definition, Type.ToString(CultureInfo.InvariantCulture).To<string, TriggerType>());
+            batch.AddCommand(null, null, CommandType.Text, @"SELECT sys.procedures.name as NAME,OBJECT_DEFINITION(sys.procedures.object_id) as DEFINITION FROM sys.procedures");
         }
     }
 }

@@ -101,14 +101,15 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                 new Tables(),
                 new TableColumns(),
                 new TableTriggers(),
-                new TableForeignKeys()
+                new TableForeignKeys(),
+                new Views(),
+                new StoredProcedures(),
+                new StoredProcedureColumns(),
+                new Functions()
             };
             Builders.ForEach(x => x.GetCommand(Batch));
             var Results = Batch.Execute();
             Builders.For(0, Builders.Length - 1, (x, y) => y.FillDatabase(Results[x], Temp));
-            SetupViews(Source, Temp);
-            SetupStoredProcedures(Source, Temp);
-            SetupFunctions(Source, Temp);
             return Temp;
         }
 
@@ -822,87 +823,6 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                            .AddCommand(null, null, Command, CommandType.Text, Value)
                            .Execute()[0]
                            .Count() > 0;
-        }
-
-        private void SetupFunctions(ISourceInfo Source, Database Temp)
-        {
-            Contract.Requires<ArgumentNullException>(Source != null, "Source");
-            Contract.Requires<NullReferenceException>(Provider != null, "Provider");
-            IEnumerable<dynamic> Values = Provider.Batch(Source)
-                                                      .AddCommand(null, null, CommandType.Text,
-                                                            "SELECT SPECIFIC_NAME as NAME,ROUTINE_DEFINITION as DEFINITION FROM INFORMATION_SCHEMA.ROUTINES WHERE INFORMATION_SCHEMA.ROUTINES.ROUTINE_TYPE='FUNCTION'")
-                                                      .Execute()[0];
-            foreach (dynamic Item in Values)
-            {
-                Temp.AddFunction(Item.NAME, Item.DEFINITION);
-            }
-        }
-
-        private void SetupStoredProcedures(ISourceInfo Source, Database Temp)
-        {
-            Contract.Requires<ArgumentNullException>(Source != null, "Source");
-            Contract.Requires<NullReferenceException>(Provider != null, "Provider");
-            IEnumerable<dynamic> Values = Provider.Batch(Source)
-                                                      .AddCommand(null, null, CommandType.Text,
-                                                            "SELECT sys.procedures.name as NAME,OBJECT_DEFINITION(sys.procedures.object_id) as DEFINITION FROM sys.procedures")
-                                                      .Execute()[0];
-            foreach (dynamic Item in Values)
-            {
-                Temp.AddStoredProcedure(Item.NAME, Item.DEFINITION);
-            }
-            foreach (StoredProcedure Procedure in Temp.StoredProcedures)
-            {
-                Values = Provider.Batch(Source)
-                                .AddCommand(null, null, @"SELECT sys.systypes.name as TYPE,sys.parameters.name as NAME,sys.parameters.max_length as LENGTH,sys.parameters.default_value as [DEFAULT VALUE] FROM sys.procedures INNER JOIN sys.parameters on sys.procedures.object_id=sys.parameters.object_id INNER JOIN sys.systypes on sys.systypes.xusertype=sys.parameters.system_type_id WHERE sys.procedures.name=@0 AND (sys.systypes.xusertype <> 256)",
-                                        CommandType.Text,
-                                        Procedure.Name)
-                                .Execute()[0];
-                foreach (dynamic Item in Values)
-                {
-                    string Type = Item.TYPE;
-                    string Name = Item.NAME;
-                    int Length = Item.LENGTH;
-                    if (Type == "nvarchar")
-                        Length /= 2;
-                    string Default = Item.DEFAULT_VALUE;
-                    Procedure.AddColumn<string>(Name, Type.To<string, SqlDbType>().To(DbType.Int32), Length, DefaultValue: Default);
-                }
-            }
-        }
-
-        private void SetupViews(ISourceInfo Source, Database Temp)
-        {
-            Contract.Requires<ArgumentNullException>(Temp != null, "Temp");
-            Contract.Requires<ArgumentNullException>(Temp.Views != null, "Temp.Views");
-            foreach (View View in Temp.Views)
-            {
-                IEnumerable<dynamic> Values = Provider.Batch(Source)
-                                                      .AddCommand(null, null, @"SELECT OBJECT_DEFINITION(sys.views.object_id) as Definition FROM sys.views WHERE sys.views.name=@0",
-                                                                CommandType.Text,
-                                                                View.Name)
-                                                      .Execute()[0];
-                View.Definition = Values.First().Definition;
-                Values = Provider.Batch(Source)
-                                 .AddCommand(null, null, @"SELECT sys.columns.name AS [Column], sys.systypes.name AS [COLUMN_TYPE],
-                                                        sys.columns.max_length as [MAX_LENGTH], sys.columns.is_nullable as [IS_NULLABLE]
-                                                        FROM sys.views
-                                                        INNER JOIN sys.columns on sys.columns.object_id=sys.views.object_id
-                                                        INNER JOIN sys.systypes ON sys.systypes.xtype = sys.columns.system_type_id
-                                                        WHERE (sys.views.name = @0) AND (sys.systypes.xusertype <> 256)",
-                                        CommandType.Text,
-                                        View.Name)
-                                 .Execute()[0];
-                foreach (dynamic Item in Values)
-                {
-                    string ColumnName = Item.Column;
-                    string ColumnType = Item.COLUMN_TYPE;
-                    int MaxLength = Item.MAX_LENGTH;
-                    if (ColumnType == "nvarchar")
-                        MaxLength /= 2;
-                    bool Nullable = Item.IS_NULLABLE;
-                    View.AddColumn<string>(ColumnName, ColumnType.To<string, SqlDbType>().To(DbType.Int32), MaxLength, Nullable);
-                }
-            }
         }
     }
 }
