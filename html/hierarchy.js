@@ -131,6 +131,16 @@ var hierarchy =
       [ "Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_database_batch.html", null ],
       [ "Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPBatch", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_l_d_a_p_1_1_l_d_a_p_batch.html", null ]
     ] ],
+    [ "Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders.Interfaces.IBuilder", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_s_q_l_server_1e56bb61a9adcdfbd809794a5dca1e8a6.html", [
+      [ "Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders.Functions", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_s_q_l_server_1_1_builders_1_1_functions.html", null ],
+      [ "Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders.StoredProcedureColumns", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_s_q_l_server_1_1_b23f7a3862c8fc2d6d7fd499b7d890f87.html", null ],
+      [ "Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders.StoredProcedures", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_s_q_l_server_1_1_builders_1_1_stored_procedures.html", null ],
+      [ "Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders.TableColumns", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_s_q_l_server_1_1_builders_1_1_table_columns.html", null ],
+      [ "Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders.TableForeignKeys", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_s_q_l_server_1_1_builders_1_1_table_foreign_keys.html", null ],
+      [ "Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders.Tables", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_s_q_l_server_1_1_builders_1_1_tables.html", null ],
+      [ "Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders.TableTriggers", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_s_q_l_server_1_1_builders_1_1_table_triggers.html", null ],
+      [ "Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders.Views", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_s_q_l_server_1_1_builders_1_1_views.html", null ]
+    ] ],
     [ "IClientValidatable", null, [
       [ "Utilities.Validation.BetweenAttribute", "class_utilities_1_1_validation_1_1_between_attribute.html", null ],
       [ "Utilities.Validation.CompareAttribute", "class_utilities_1_1_validation_1_1_compare_attribute.html", null ],
@@ -564,11 +574,11 @@ var hierarchy =
       [ "Utilities.IO.Logging.Default.DefaultLog", "class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_log.html", null ]
     ] ],
     [ "Utilities.DataTypes.AOP.Manager", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html", null ],
+    [ "Utilities.IO.Encryption.Manager", "class_utilities_1_1_i_o_1_1_encryption_1_1_manager.html", null ],
     [ "Utilities.IO.Compression.Manager", "class_utilities_1_1_i_o_1_1_compression_1_1_manager.html", null ],
     [ "Utilities.ORM.Manager.QueryProvider.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_manager.html", null ],
-    [ "Utilities.ORM.Manager.Schema.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html", null ],
     [ "Utilities.DataTypes.Conversion.Manager", "class_utilities_1_1_data_types_1_1_conversion_1_1_manager.html", null ],
-    [ "Utilities.IO.Encryption.Manager", "class_utilities_1_1_i_o_1_1_encryption_1_1_manager.html", null ],
+    [ "Utilities.ORM.Manager.Schema.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html", null ],
     [ "Utilities.IO.Messaging.Manager", "class_utilities_1_1_i_o_1_1_messaging_1_1_manager.html", null ],
     [ "Utilities.DataTypes.DataMapper.Manager", "class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html", null ],
     [ "Utilities.IO.Serializers.Manager", "class_utilities_1_1_i_o_1_1_serializers_1_1_manager.html", null ],

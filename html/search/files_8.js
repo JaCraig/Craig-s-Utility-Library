@@ -5,6 +5,7 @@ var searchData=
   ['iasymmetric_2ecs',['IAsymmetric.cs',['../_i_asymmetric_8cs.html',1,'']]],
   ['ibatch_2ecs',['IBatch.cs',['../_i_batch_8cs.html',1,'']]],
   ['ibootstrapper_2ecs',['IBootstrapper.cs',['../_i_bootstrapper_8cs.html',1,'']]],
+  ['ibuilder_2ecs',['IBuilder.cs',['../_i_builder_8cs.html',1,'']]],
   ['icache_2ecs',['ICache.cs',['../_i_cache_8cs.html',1,'']]],
   ['icollectionextensions_2ecs',['ICollectionExtensions.cs',['../_i_collection_extensions_8cs.html',1,'']]],
   ['icolumn_2ecs',['IColumn.cs',['../_i_column_8cs.html',1,'']]],

@@ -28,6 +28,8 @@ var searchData=
   ['stategenerator',['StateGenerator',['../class_utilities_1_1_random_1_1_contact_info_generators_1_1_state_generator.html',1,'Utilities::Random::ContactInfoGenerators']]],
   ['stopwatch',['StopWatch',['../class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_stop_watch.html',1,'Utilities::Profiler::Manager::Default']]],
   ['storedprocedure',['StoredProcedure',['../class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_stored_procedure.html',1,'Utilities::ORM::Manager::Schema::Default::Database']]],
+  ['storedprocedurecolumns',['StoredProcedureColumns',['../class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_s_q_l_server_1_1_b23f7a3862c8fc2d6d7fd499b7d890f87.html',1,'Utilities::ORM::Manager::Schema::Default::Database::SQLServer::Builders']]],
+  ['storedprocedures',['StoredProcedures',['../class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_s_q_l_server_1_1_builders_1_1_stored_procedures.html',1,'Utilities::ORM::Manager::Schema::Default::Database::SQLServer::Builders']]],
   ['streetaddressgenerator',['StreetAddressGenerator',['../class_utilities_1_1_random_1_1_contact_info_generators_1_1_street_address_generator.html',1,'Utilities::Random::ContactInfoGenerators']]],
   ['stringequalparameter',['StringEqualParameter',['../class_utilities_1_1_o_r_m_1_1_parameters_1_1_string_equal_parameter.html',1,'Utilities::ORM::Parameters']]],
   ['stringfield',['StringField',['../class_utilities_1_1_i_o_1_1_file_formats_1_1_fixed_length_1_1_string_field.html',1,'Utilities::IO::FileFormats::FixedLength']]],

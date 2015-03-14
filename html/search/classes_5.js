@@ -22,5 +22,6 @@ var searchData=
   ['ftpdirectory',['FtpDirectory',['../class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_ftp_directory.html',1,'Utilities::IO::FileSystem::Default']]],
   ['ftpfile',['FtpFile',['../class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_ftp_file.html',1,'Utilities::IO::FileSystem::Default']]],
   ['ftpfilesystem',['FtpFileSystem',['../class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_ftp_file_system.html',1,'Utilities::IO::FileSystem::Default']]],
-  ['function',['Function',['../class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_function.html',1,'Utilities::ORM::Manager::Schema::Default::Database']]]
+  ['function',['Function',['../class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_function.html',1,'Utilities::ORM::Manager::Schema::Default::Database']]],
+  ['functions',['Functions',['../class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_s_q_l_server_1_1_builders_1_1_functions.html',1,'Utilities::ORM::Manager::Schema::Default::Database::SQLServer::Builders']]]
 ];

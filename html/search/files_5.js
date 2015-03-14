@@ -19,5 +19,6 @@ var searchData=
   ['ftpdirectory_2ecs',['FtpDirectory.cs',['../_ftp_directory_8cs.html',1,'']]],
   ['ftpfile_2ecs',['FtpFile.cs',['../_ftp_file_8cs.html',1,'']]],
   ['ftpfilesystem_2ecs',['FtpFileSystem.cs',['../_ftp_file_system_8cs.html',1,'']]],
-  ['function_2ecs',['Function.cs',['../_function_8cs.html',1,'']]]
+  ['function_2ecs',['Function.cs',['../_function_8cs.html',1,'']]],
+  ['functions_2ecs',['Functions.cs',['../_functions_8cs.html',1,'']]]
 ];
