@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -43,47 +44,47 @@ namespace Utilities.DataTypes.Conversion.Converters
             ConvertToTypes.Add(typeof(DbType), SqlDbTypeToDbType);
             ConvertFromTypes.Add(typeof(Type).GetType(), TypeToSqlDbType);
             ConvertFromTypes.Add(typeof(DbType), DbTypeToSqlDbType);
-            Conversions = new Dictionary<Type, DbType>();
-            Conversions.Add(typeof(byte), DbType.Byte);
-            Conversions.Add(typeof(byte?), DbType.Byte);
-            Conversions.Add(typeof(sbyte), DbType.SByte);
-            Conversions.Add(typeof(sbyte?), DbType.SByte);
-            Conversions.Add(typeof(short), DbType.Int16);
-            Conversions.Add(typeof(short?), DbType.Int16);
-            Conversions.Add(typeof(ushort), DbType.UInt16);
-            Conversions.Add(typeof(ushort?), DbType.UInt16);
-            Conversions.Add(typeof(int), DbType.Int32);
-            Conversions.Add(typeof(int?), DbType.Int32);
-            Conversions.Add(typeof(uint), DbType.UInt32);
-            Conversions.Add(typeof(uint?), DbType.UInt32);
-            Conversions.Add(typeof(long), DbType.Int64);
-            Conversions.Add(typeof(long?), DbType.Int64);
-            Conversions.Add(typeof(ulong), DbType.UInt64);
-            Conversions.Add(typeof(ulong?), DbType.UInt64);
-            Conversions.Add(typeof(float), DbType.Single);
-            Conversions.Add(typeof(float?), DbType.Single);
-            Conversions.Add(typeof(double), DbType.Double);
-            Conversions.Add(typeof(double?), DbType.Double);
-            Conversions.Add(typeof(decimal), DbType.Decimal);
-            Conversions.Add(typeof(decimal?), DbType.Decimal);
-            Conversions.Add(typeof(bool), DbType.Boolean);
-            Conversions.Add(typeof(bool?), DbType.Boolean);
-            Conversions.Add(typeof(string), DbType.String);
-            Conversions.Add(typeof(char), DbType.StringFixedLength);
-            Conversions.Add(typeof(char?), DbType.StringFixedLength);
-            Conversions.Add(typeof(Guid), DbType.Guid);
-            Conversions.Add(typeof(Guid?), DbType.Guid);
-            Conversions.Add(typeof(DateTime), DbType.DateTime2);
-            Conversions.Add(typeof(DateTime?), DbType.DateTime2);
-            Conversions.Add(typeof(DateTimeOffset), DbType.DateTimeOffset);
-            Conversions.Add(typeof(DateTimeOffset?), DbType.DateTimeOffset);
-            Conversions.Add(typeof(byte[]), DbType.Binary);
+            Conversions = new ConcurrentDictionary<Type, DbType>();
+            Conversions.AddOrUpdate(typeof(byte), DbType.Byte, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(byte?), DbType.Byte, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(sbyte), DbType.SByte, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(sbyte?), DbType.SByte, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(short), DbType.Int16, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(short?), DbType.Int16, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(ushort), DbType.UInt16, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(ushort?), DbType.UInt16, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(int), DbType.Int32, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(int?), DbType.Int32, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(uint), DbType.UInt32, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(uint?), DbType.UInt32, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(long), DbType.Int64, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(long?), DbType.Int64, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(ulong), DbType.UInt64, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(ulong?), DbType.UInt64, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(float), DbType.Single, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(float?), DbType.Single, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(double), DbType.Double, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(double?), DbType.Double, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(decimal), DbType.Decimal, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(decimal?), DbType.Decimal, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(bool), DbType.Boolean, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(bool?), DbType.Boolean, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(string), DbType.String, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(char), DbType.StringFixedLength, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(char?), DbType.StringFixedLength, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(Guid), DbType.Guid, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(Guid?), DbType.Guid, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(DateTime), DbType.DateTime2, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(DateTime?), DbType.DateTime2, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(DateTimeOffset), DbType.DateTimeOffset, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(DateTimeOffset?), DbType.DateTimeOffset, (x, y) => y);
+            Conversions.AddOrUpdate(typeof(byte[]), DbType.Binary, (x, y) => y);
         }
 
         /// <summary>
         /// Conversions
         /// </summary>
-        protected static Dictionary<Type, DbType> Conversions { get; private set; }
+        protected static ConcurrentDictionary<Type, DbType> Conversions { get; private set; }
 
         /// <summary>
         /// Internal converter
