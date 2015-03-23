@@ -21,6 +21,9 @@ var dir_0737bc85ba905bb4baae5d38e522b5e8 =
     [ "EnumGenerator.cs", "_enum_generator_8cs.html", [
       [ "EnumGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_enum_generator.html", "class_utilities_1_1_random_1_1_default_classes_1_1_enum_generator" ]
     ] ],
+    [ "GuidGenerator.cs", "_guid_generator_8cs.html", [
+      [ "GuidGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_guid_generator.html", "class_utilities_1_1_random_1_1_default_classes_1_1_guid_generator" ]
+    ] ],
     [ "IntegerGenerator.cs", "_integer_generator_8cs.html", [
       [ "ByteGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_byte_generator.html", "class_utilities_1_1_random_1_1_default_classes_1_1_byte_generator" ],
       [ "CharGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_char_generator.html", "class_utilities_1_1_random_1_1_default_classes_1_1_char_generator" ],

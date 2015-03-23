@@ -10,6 +10,7 @@ var namespace_utilities_1_1_random_1_1_default_classes =
     [ "DoubleGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_double_generator.html", "class_utilities_1_1_random_1_1_default_classes_1_1_double_generator" ],
     [ "EnumGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_enum_generator.html", "class_utilities_1_1_random_1_1_default_classes_1_1_enum_generator" ],
     [ "FloatGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_float_generator.html", "class_utilities_1_1_random_1_1_default_classes_1_1_float_generator" ],
+    [ "GuidGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_guid_generator.html", "class_utilities_1_1_random_1_1_default_classes_1_1_guid_generator" ],
     [ "IntegerGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_integer_generator.html", "class_utilities_1_1_random_1_1_default_classes_1_1_integer_generator" ],
     [ "IntGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_int_generator.html", "class_utilities_1_1_random_1_1_default_classes_1_1_int_generator" ],
     [ "LongGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_long_generator.html", "class_utilities_1_1_random_1_1_default_classes_1_1_long_generator" ],

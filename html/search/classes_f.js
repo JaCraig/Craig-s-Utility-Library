@@ -7,7 +7,7 @@ var searchData=
   ['relativelocalfilesystem',['RelativeLocalFileSystem',['../class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_relative_local_file_system.html',1,'Utilities::IO::FileSystem::Default']]],
   ['rgbhistogram',['RGBHistogram',['../class_utilities_1_1_media_1_1_r_g_b_histogram.html',1,'Utilities::Media']]],
   ['ringbuffer',['RingBuffer',['../class_utilities_1_1_data_types_1_1_ring_buffer.html',1,'Utilities::DataTypes']]],
-  ['row',['Row',['../class_utilities_1_1_data_types_1_1_row.html',1,'Utilities::DataTypes']]],
   ['row',['Row',['../class_utilities_1_1_i_o_1_1_file_formats_1_1_delimited_1_1_row.html',1,'Utilities::IO::FileFormats::Delimited']]],
+  ['row',['Row',['../class_utilities_1_1_data_types_1_1_row.html',1,'Utilities::DataTypes']]],
   ['rsa',['RSA',['../class_utilities_1_1_i_o_1_1_encryption_1_1_default_1_1_r_s_a.html',1,'Utilities::IO::Encryption::Default']]]
 ];

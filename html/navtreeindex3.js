@@ -1,11 +1,13 @@
 var NAVTREEINDEX3 =
 {
+"_string_equal_parameter_8cs.html":[2,0,0,5,4,6],
+"_string_equal_parameter_8cs_source.html":[2,0,0,5,4,6],
 "_string_field_8cs.html":[2,0,0,2,4,2,2],
 "_string_field_8cs_source.html":[2,0,0,2,4,2,2],
 "_string_format_base_8cs.html":[2,0,0,2,4,0,1],
 "_string_format_base_8cs_source.html":[2,0,0,2,4,0,1],
-"_string_generator_8cs.html":[2,0,0,8,2,7],
-"_string_generator_8cs_source.html":[2,0,0,8,2,7],
+"_string_generator_8cs.html":[2,0,0,8,2,8],
+"_string_generator_8cs_source.html":[2,0,0,8,2,8],
 "_string_list_format_base_8cs.html":[2,0,0,2,4,0,2],
 "_string_list_format_base_8cs_source.html":[2,0,0,2,4,0,2],
 "_string_not_equal_parameter_8cs.html":[2,0,0,5,4,7],
@@ -38,8 +40,8 @@ var NAVTREEINDEX3 =
 "_thumbnail_8cs_source.html":[2,0,0,2,4,4,5],
 "_time_span_extensions_8cs.html":[2,0,0,1,8,21],
 "_time_span_extensions_8cs_source.html":[2,0,0,1,8,21],
-"_time_span_generator_8cs.html":[2,0,0,8,2,8],
-"_time_span_generator_8cs_source.html":[2,0,0,8,2,8],
+"_time_span_generator_8cs.html":[2,0,0,8,2,9],
+"_time_span_generator_8cs_source.html":[2,0,0,8,2,9],
 "_timer_extensions_8cs.html":[2,0,0,6,0,0],
 "_timer_extensions_8cs_source.html":[2,0,0,6,0,0],
 "_trigger_8cs.html":[2,0,0,5,3,4,1,0,6],
@@ -247,7 +249,5 @@ var NAVTREEINDEX3 =
 "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a70238a76b944e5c3d6c94ce52d694938":[1,0,0,1,2,0,0,1],
 "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a7b496f9aaab021cbf3bdc4b00d326ddb":[1,0,0,1,2,0,0,3],
 "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a8e486b738364d6b160348bb5b22c2526":[1,0,0,1,2,0,0,11],
-"class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a8eab7cff0e18d10795319d882aa9d108":[1,0,0,1,2,0,0,21],
-"class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a96fcef3e2f58de289afffdbbf6f91b76":[1,0,0,1,2,0,0,8],
-"class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a9ae4ff73011c0cd3b9e42ea63a999714":[1,0,0,1,2,0,0,17]
+"class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a8eab7cff0e18d10795319d882aa9d108":[1,0,0,1,2,0,0,21]
 };

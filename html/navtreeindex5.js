@@ -1,5 +1,7 @@
 var NAVTREEINDEX5 =
 {
+"class_utilities_1_1_data_types_1_1_dynamo.html#aaa036bf0a32109bda70828081d48722d":[1,0,0,1,14,50],
+"class_utilities_1_1_data_types_1_1_dynamo.html#ab138319406db5b5b46cc5a989ce5d458":[1,0,0,1,14,21],
 "class_utilities_1_1_data_types_1_1_dynamo.html#ab175a27eee5a892f4bb20ccad0e7d147":[1,0,0,1,14,1],
 "class_utilities_1_1_data_types_1_1_dynamo.html#ab175a27eee5a892f4bb20ccad0e7d147":[1,0,0,1,14,5],
 "class_utilities_1_1_data_types_1_1_dynamo.html#ab19cbbaf8b50425f0931fd46c0e95064":[1,0,0,1,14,26],
@@ -247,7 +249,5 @@ var NAVTREEINDEX5 =
 "class_utilities_1_1_i_o_1_1_compression_1_1_default_1_1_deflate_compressor.html#a249e26f319949ffddcc61e9f6b876829":[1,0,0,2,0,1,0,2],
 "class_utilities_1_1_i_o_1_1_compression_1_1_default_1_1_deflate_compressor.html#a4a8be479b6945d0646ea40f21cbb2c00":[1,0,0,2,0,1,0,1],
 "class_utilities_1_1_i_o_1_1_compression_1_1_default_1_1_deflate_compressor.html#a931f0cb37a5de4ced7bba91a86a6969e":[1,0,0,2,0,1,0,0],
-"class_utilities_1_1_i_o_1_1_compression_1_1_default_1_1_g_zip_compressor.html":[1,0,0,2,0,1,1],
-"class_utilities_1_1_i_o_1_1_compression_1_1_default_1_1_g_zip_compressor.html#a4cd01e632c0880f41173eb15052fdbae":[1,0,0,2,0,1,1,0],
-"class_utilities_1_1_i_o_1_1_compression_1_1_default_1_1_g_zip_compressor.html#ab5367a96989716ae4f0d1ba30aac0e4d":[1,0,0,2,0,1,1,2]
+"class_utilities_1_1_i_o_1_1_compression_1_1_default_1_1_g_zip_compressor.html":[1,0,0,2,0,1,1]
 };

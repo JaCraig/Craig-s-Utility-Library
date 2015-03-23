@@ -17,6 +17,7 @@ var hierarchy =
         [ "Utilities.Random.DefaultClasses.DecimalGenerator< T >", "class_utilities_1_1_random_1_1_default_classes_1_1_decimal_generator.html", null ],
         [ "Utilities.Random.DefaultClasses.DoubleGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_double_generator.html", null ],
         [ "Utilities.Random.DefaultClasses.FloatGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_float_generator.html", null ],
+        [ "Utilities.Random.DefaultClasses.GuidGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_guid_generator.html", null ],
         [ "Utilities.Random.DefaultClasses.IntGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_int_generator.html", null ],
         [ "Utilities.Random.DefaultClasses.LongGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_long_generator.html", null ],
         [ "Utilities.Random.DefaultClasses.SByteGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_s_byte_generator.html", null ],
@@ -339,6 +340,9 @@ var hierarchy =
     [ "Utilities.Random.Interfaces.IGenerator< DateTime >", "interface_utilities_1_1_random_1_1_interfaces_1_1_i_generator.html", [
       [ "Utilities.Random.DefaultClasses.DateTimeGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_date_time_generator.html", null ]
     ] ],
+    [ "Utilities.Random.Interfaces.IGenerator< Guid >", "interface_utilities_1_1_random_1_1_interfaces_1_1_i_generator.html", [
+      [ "Utilities.Random.DefaultClasses.GuidGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_guid_generator.html", null ]
+    ] ],
     [ "Utilities.Random.Interfaces.IGenerator< string >", "interface_utilities_1_1_random_1_1_interfaces_1_1_i_generator.html", [
       [ "Utilities.Random.ContactInfoGenerators.AddressGenerator", "class_utilities_1_1_random_1_1_contact_info_generators_1_1_address_generator.html", null ],
       [ "Utilities.Random.ContactInfoGenerators.CityGenerator", "class_utilities_1_1_random_1_1_contact_info_generators_1_1_city_generator.html", null ],
@@ -575,13 +579,13 @@ var hierarchy =
     ] ],
     [ "Utilities.DataTypes.AOP.Manager", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html", null ],
     [ "Utilities.IO.Encryption.Manager", "class_utilities_1_1_i_o_1_1_encryption_1_1_manager.html", null ],
-    [ "Utilities.IO.Compression.Manager", "class_utilities_1_1_i_o_1_1_compression_1_1_manager.html", null ],
+    [ "Utilities.DataTypes.DataMapper.Manager", "class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html", null ],
     [ "Utilities.ORM.Manager.QueryProvider.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_manager.html", null ],
+    [ "Utilities.IO.Compression.Manager", "class_utilities_1_1_i_o_1_1_compression_1_1_manager.html", null ],
+    [ "Utilities.IO.Serializers.Manager", "class_utilities_1_1_i_o_1_1_serializers_1_1_manager.html", null ],
     [ "Utilities.DataTypes.Conversion.Manager", "class_utilities_1_1_data_types_1_1_conversion_1_1_manager.html", null ],
     [ "Utilities.ORM.Manager.Schema.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html", null ],
     [ "Utilities.IO.Messaging.Manager", "class_utilities_1_1_i_o_1_1_messaging_1_1_manager.html", null ],
-    [ "Utilities.DataTypes.DataMapper.Manager", "class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html", null ],
-    [ "Utilities.IO.Serializers.Manager", "class_utilities_1_1_i_o_1_1_serializers_1_1_manager.html", null ],
     [ "Utilities.DataTypes.Matrix", "class_utilities_1_1_data_types_1_1_matrix.html", null ],
     [ "Utilities.DataTypes.AI.NaiveBayes< T >", "class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html", null ],
     [ "Utilities.ORM.Manager.ORMManager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_o_r_m_manager.html", null ],

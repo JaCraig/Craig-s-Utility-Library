@@ -9,5 +9,6 @@ var searchData=
   ['genericstringformatter_2ecs',['GenericStringFormatter.cs',['../_generic_string_formatter_8cs.html',1,'']]],
   ['globalsuppressions_2ecs',['GlobalSuppressions.cs',['../_global_suppressions_8cs.html',1,'']]],
   ['guid_2ecs',['GUID.cs',['../_g_u_i_d_8cs.html',1,'']]],
+  ['guidgenerator_2ecs',['GuidGenerator.cs',['../_guid_generator_8cs.html',1,'']]],
   ['gzipcompressor_2ecs',['GZipCompressor.cs',['../_g_zip_compressor_8cs.html',1,'']]]
 ];
