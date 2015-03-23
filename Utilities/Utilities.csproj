@@ -535,6 +535,7 @@
     <Compile Include="Random\DefaultClasses\DateTimeGenerator.cs" />
     <Compile Include="Random\DefaultClasses\DecimalGenerator.cs" />
     <Compile Include="Random\DefaultClasses\EnumGenerator.cs" />
+    <Compile Include="Random\DefaultClasses\GuidGenerator.cs" />
     <Compile Include="Random\DefaultClasses\IntegerGenerator.cs" />
     <Compile Include="Random\DefaultClasses\StringGenerator.cs" />
     <Compile Include="Random\DefaultClasses\TimeSpanGenerator.cs" />

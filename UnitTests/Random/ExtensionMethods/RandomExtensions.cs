@@ -71,6 +71,7 @@ namespace UnitTests.Random.ExtensionMethods
             Random.Next<Color>();
             Random.Next<TimeSpan>();
             Random.Next<string>();
+            Random.Next<Guid>();
         }
 
         [Fact]

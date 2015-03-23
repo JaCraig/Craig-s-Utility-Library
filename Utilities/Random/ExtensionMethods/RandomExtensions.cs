@@ -310,6 +310,7 @@ namespace Utilities.Random
             Generators.Add(typeof(TimeSpan), new TimeSpanGenerator());
             Generators.Add(typeof(Color), new ColorGenerator());
             Generators.Add(typeof(string), new StringGenerator());
+            Generators.Add(typeof(Guid), new GuidGenerator());
         }
     }
 }
