@@ -114,7 +114,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             Assert.False(TestObject.Unique);
         }
 
-        private class Database : IDatabase
+        public class Database : IDatabase
         {
             public bool Audit
             {
@@ -147,14 +147,14 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             }
         }
 
-        private class TestClass
+        public class TestClass
         {
             public TestClass A { get; set; }
 
             public int ID { get; set; }
         }
 
-        private class TestClassMapping : MappingBaseClass<TestClass, Database>
+        public class TestClassMapping : MappingBaseClass<TestClass, Database>
         {
             public TestClassMapping()
             {

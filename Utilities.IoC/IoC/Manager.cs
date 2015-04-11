@@ -40,55 +40,27 @@ namespace Utilities.IoC
         /// </summary>
         protected Manager()
         {
-            IEnumerable<FileInfo> Files = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).GetFiles("*.dll", SearchOption.TopDirectoryOnly)
-                                                                                              .Where(x => !x.Name.Equals("CULGeneratedTypes.dll", StringComparison.InvariantCultureIgnoreCase));
-            ConcurrentBag<Assembly> LoadedAssemblies = new ConcurrentBag<Assembly>(AppDomain.CurrentDomain.GetAssemblies());
-            LoadAssemblies(LoadedAssemblies, Files.Select(x => AssemblyName.GetAssemblyName(x.FullName)).ToArray());
-            FileInfo GeneratedFile = new FileInfo(AppDomain.CurrentDomain.BaseDirectory + "\\CULGeneratedTypes.dll");
-            LoadedAssemblies = new ConcurrentBag<Assembly>(LoadedAssemblies.Distinct(new AssemblyComparer()).Where(x =>
-            {
-                try
-                {
-                    x.GetTypes();
-                }
-                catch (ReflectionTypeLoadException) { return false; }
-                return true;
-            }));
-            if (GeneratedFile.Exists
-                && LoadedAssemblies.Any(x => !x.FullName.Contains("vshost32")
-                                            && !x.IsDynamic
-                                            && new System.IO.FileInfo(x.Location).LastWriteTime > GeneratedFile.LastWriteTime))
-            {
-                LoadAssemblies(LoadedAssemblies, AssemblyName.GetAssemblyName(GeneratedFile.FullName));
-            }
-            List<Type> Bootstrappers = new List<Type>();
-            foreach (Assembly Assembly in LoadedAssemblies)
-            {
-                Bootstrappers.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IBootstrapper))
-                                                                        && x.IsClass
-                                                                        && !x.IsAbstract
-                                                                        && !x.ContainsGenericParameters
-                                                                        && !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)));
-            }
+            ConcurrentBag<Assembly> LoadedAssemblies = LoadAssemblies();
+            List<Type> LoadedTypes = GetTypes(ref LoadedAssemblies);
+            List<Type> Bootstrappers = LoadedTypes.Where(x => x.GetInterfaces().Contains(typeof(IBootstrapper))
+                                                                    && x.IsClass
+                                                                    && !x.IsAbstract
+                                                                    && !x.ContainsGenericParameters
+                                                                    && !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase))
+                                                   .ToList();
             if (Bootstrappers.Count == 0)
             {
                 Bootstrappers.Add(typeof(DefaultBootstrapper));
             }
-            InternalBootstrapper = (IBootstrapper)Activator.CreateInstance(Bootstrappers[0], LoadedAssemblies);
-            List<Type> Modules = new List<Type>();
-            foreach (Assembly Assembly in LoadedAssemblies)
-            {
-                Modules.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IModule))
-                                                                        && x.IsClass
-                                                                        && !x.IsAbstract
-                                                                        && !x.ContainsGenericParameters));
-            }
-            List<IModule> ModuleObjects = new List<IModule>();
-            foreach (Type Module in Modules)
-            {
-                ModuleObjects.Add(((IModule)Activator.CreateInstance(Module)));
-            }
-            foreach (IModule Module in ModuleObjects.OrderBy(x => x.Order))
+            InternalBootstrapper = (IBootstrapper)Activator.CreateInstance(Bootstrappers[0], LoadedAssemblies, LoadedTypes);
+            //IEnumerable<Type> Modules = LoadedTypes.Where(x => x.GetInterfaces().Contains(typeof(IModule))
+            //                                                        && x.IsClass
+            //                                                        && !x.IsAbstract
+            //                                                        && !x.ContainsGenericParameters);
+            //foreach (IModule Module in Modules.Select(x => (IModule)Activator.CreateInstance(x))
+            //                                  .OrderBy(x => x.Order))
+            InternalBootstrapper.RegisterAll<IModule>();
+            foreach (IModule Module in InternalBootstrapper.ResolveAll<IModule>().OrderBy(x => x.Order))
             {
                 Module.Load(InternalBootstrapper);
             }
@@ -157,18 +129,63 @@ namespace Utilities.IoC
             }
         }
 
-        private void LoadAssemblies(ConcurrentBag<Assembly> Assemblies, params AssemblyName[] assemblyName)
+        /// <summary>
+        /// Gets the types available
+        /// </summary>
+        /// <param name="LoadedAssemblies">The loaded assemblies.</param>
+        /// <returns>The list of</returns>
+        private static List<Type> GetTypes(ref ConcurrentBag<Assembly> LoadedAssemblies)
+        {
+            List<Type> TempTypes = new List<Type>();
+            LoadedAssemblies = new ConcurrentBag<Assembly>(LoadedAssemblies.Where(x =>
+            {
+                try
+                {
+                    TempTypes.AddRange(x.GetTypes());
+                }
+                catch (ReflectionTypeLoadException) { return false; }
+                return true;
+            }));
+            return TempTypes;
+        }
+
+        /// <summary>
+        /// Loads the assemblies.
+        /// </summary>
+        /// <returns>The list of assemblies that the system has loaded</returns>
+        private static ConcurrentBag<Assembly> LoadAssemblies()
+        {
+            IEnumerable<FileInfo> Files = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).GetFiles("*.dll", SearchOption.TopDirectoryOnly)
+                                                                                              .Where(x => !x.Name.Equals("CULGeneratedTypes.dll", StringComparison.InvariantCultureIgnoreCase));
+            List<Assembly> LoadedAssemblies = new List<Assembly>(AppDomain.CurrentDomain.GetAssemblies());
+            LoadAssemblies(LoadedAssemblies, Files.Select(x => AssemblyName.GetAssemblyName(x.FullName)).ToArray());
+            FileInfo GeneratedFile = new FileInfo(AppDomain.CurrentDomain.BaseDirectory + "\\CULGeneratedTypes.dll");
+            if (GeneratedFile.Exists
+                && LoadedAssemblies.Any(x => !x.FullName.Contains("vshost32")
+                                            && !x.IsDynamic
+                                            && new System.IO.FileInfo(x.Location).LastWriteTime > GeneratedFile.LastWriteTime))
+            {
+                LoadAssemblies(LoadedAssemblies, AssemblyName.GetAssemblyName(GeneratedFile.FullName));
+            }
+            return new ConcurrentBag<Assembly>(LoadedAssemblies.Distinct(new AssemblyComparer()));
+        }
+
+        /// <summary>
+        /// Loads the assemblies.
+        /// </summary>
+        /// <param name="Assemblies">The assemblies.</param>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        private static void LoadAssemblies(List<Assembly> Assemblies, params AssemblyName[] assemblyName)
         {
             if (assemblyName == null)
                 return;
-            foreach (var Name in assemblyName.Where(x => !x.FullName.StartsWith("System.", StringComparison.InvariantCultureIgnoreCase)))
+            foreach (var Name in assemblyName.Where(x => !x.FullName.StartsWith("System.", StringComparison.InvariantCultureIgnoreCase)
+                                                      && !x.FullName.StartsWith("Microsoft.", StringComparison.InvariantCultureIgnoreCase)
+                                                      && !Assemblies.Any(y => string.Equals(y.FullName, x.FullName, StringComparison.InvariantCultureIgnoreCase))))
             {
-                if (!Assemblies.Any(x => x.FullName == Name.FullName))
-                {
-                    Assembly TempAssembly = AppDomain.CurrentDomain.Load(Name);
-                    Assemblies.Add(TempAssembly);
-                    LoadAssemblies(Assemblies, TempAssembly.GetReferencedAssemblies());
-                }
+                Assembly TempAssembly = AppDomain.CurrentDomain.Load(Name);
+                Assemblies.Add(TempAssembly);
+                LoadAssemblies(Assemblies, TempAssembly.GetReferencedAssemblies());
             }
         }
 

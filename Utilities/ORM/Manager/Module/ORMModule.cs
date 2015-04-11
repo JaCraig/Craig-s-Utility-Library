@@ -19,6 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using System.Linq;
 using Utilities.IoC.Interfaces;
 using Utilities.ORM.Aspect;
 using Utilities.ORM.Interfaces;
@@ -50,8 +51,8 @@ namespace Utilities.ORM.Manager.Module
             Bootstrapper.RegisterAll<IMapping>();
             Bootstrapper.Register(new Mapper.Manager(Bootstrapper.ResolveAll<IMapping>()));
 
-            Bootstrapper.RegisterAll<IQueryProvider>();
-            Bootstrapper.Register(new QueryProvider.Manager(Bootstrapper.ResolveAll<IQueryProvider>()));
+            Bootstrapper.RegisterAll<Utilities.ORM.Manager.QueryProvider.Interfaces.IQueryProvider>();
+            Bootstrapper.Register(new QueryProvider.Manager(Bootstrapper.ResolveAll<Utilities.ORM.Manager.QueryProvider.Interfaces.IQueryProvider>()));
 
             Bootstrapper.RegisterAll<IDatabase>();
             Bootstrapper.Register(new SourceProvider.Manager(Bootstrapper.ResolveAll<IDatabase>()));
@@ -66,10 +67,7 @@ namespace Utilities.ORM.Manager.Module
                 Bootstrapper.ResolveAll<IDatabase>()));
 
             ORMAspect.Mapper = Bootstrapper.Resolve<Mapper.Manager>();
-            foreach (IMapping Mapping in ORMAspect.Mapper)
-            {
-                Bootstrapper.Resolve<Utilities.DataTypes.AOP.Manager>().Setup(Mapping.ObjectType);
-            }
+            Bootstrapper.Resolve<Utilities.DataTypes.AOP.Manager>().Setup(ORMAspect.Mapper.Select(x => x.ObjectType).ToArray());
         }
     }
 }

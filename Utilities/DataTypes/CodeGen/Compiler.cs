@@ -62,5 +62,17 @@ namespace Utilities.DataTypes.CodeGen
         {
             return Add(ClassName, Code, Usings, References);
         }
+
+        /// <summary>
+        /// Compiles the specified code and returns the types that are created
+        /// </summary>
+        /// <param name="Code">The code.</param>
+        /// <param name="Usings">The usings.</param>
+        /// <param name="References">The references.</param>
+        /// <returns>The list of types that are generated</returns>
+        public IEnumerable<Type> Create(string Code, IEnumerable<string> Usings, params Assembly[] References)
+        {
+            return Add(Code, Usings, References);
+        }
     }
 }

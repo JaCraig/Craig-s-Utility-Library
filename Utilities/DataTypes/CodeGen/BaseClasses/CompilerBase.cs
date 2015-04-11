@@ -133,6 +133,21 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         {
             if (AssemblyStream == null)
                 return null;
+            return Add(Code, Usings, References).FirstOrDefault(x => x.FullName == ClassName);
+        }
+
+        /// <summary>
+        /// Adds the specified code.
+        /// </summary>
+        /// <param name="Code">The code.</param>
+        /// <param name="Usings">The usings.</param>
+        /// <param name="References">The references.</param>
+        /// <returns>The list of types that have been added</returns>
+        /// <exception cref="System.Exception">Any errors that are sent back by Roslyn</exception>
+        protected IEnumerable<Type> Add(string Code, IEnumerable<string> Usings, params Assembly[] References)
+        {
+            if (AssemblyStream == null)
+                return null;
             CSharpCompilation CSharpCompiler = CSharpCompilation.Create(AssemblyName + ".dll",
                                                     new SyntaxTree[] { CSharpSyntaxTree.ParseText(Code) },
                                                     References.ForEach(x => MetadataReference.CreateFromFile(x.Location)),
@@ -143,11 +158,10 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
                 if (!Result.Success)
                     throw new Exception(Code + System.Environment.NewLine + System.Environment.NewLine + Result.Diagnostics.ToString(x => x.GetMessage(), System.Environment.NewLine));
                 byte[] MiniAssembly = TempStream.ToArray();
-                Type ReturnType = AppDomain.CurrentDomain.Load(MiniAssembly).GetTypes().FirstOrDefault(x => x.FullName == ClassName);
+                Classes.AddIfUnique((x, y) => x.FullName == y.FullName, AppDomain.CurrentDomain.Load(MiniAssembly).GetTypes());
                 AssemblyStream.Write(MiniAssembly, 0, MiniAssembly.Length);
-                Classes.Add(ReturnType);
-                return ReturnType;
             }
+            return Classes;
         }
 
         /// <summary>

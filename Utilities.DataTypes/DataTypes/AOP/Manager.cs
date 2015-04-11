@@ -102,56 +102,106 @@ namespace Utilities.DataTypes.AOP
         public virtual void Setup(params Assembly[] Assembly)
         {
             Contract.Requires<ArgumentNullException>(Assembly != null, "Assembly");
-            Assembly.Types()
-                    .Where(x => !x.ContainsGenericParameters
-                        && !x.IsAbstract
-                        && x.IsClass
-                        && x.IsPublic
-                        && !x.IsSealed
-                        && x.IsVisible
-                        && !x.IsCOMObject
-                        && x.HasDefaultConstructor()
-                        && !string.IsNullOrEmpty(x.Namespace)).ForEachParallel(x =>
-            {
-                Setup(x);
-            });
+            Setup(FilterTypesToSetup(Assembly.Types()));
+        }
+
+        /// <summary>
+        /// Determines whether this instance can setup the specified types.
+        /// </summary>
+        /// <param name="enumerable">The list of types</param>
+        /// <returns>The types that can be set up</returns>
+        private static Type[] FilterTypesToSetup(IEnumerable<Type> enumerable)
+        {
+            return enumerable.Where(x => !Classes.ContainsKey(x)
+                                && !x.ContainsGenericParameters
+                                && x.IsClass
+                                && (x.IsPublic || x.IsNestedPublic)
+                                && !x.IsSealed
+                                && x.IsVisible
+                                && !x.IsCOMObject
+                                && x.HasDefaultConstructor()
+                                && !string.IsNullOrEmpty(x.Namespace))
+                          .ToArray();
         }
 
         /// <summary>
         /// Sets up a type so it can be used in the system later
         /// </summary>
-        /// <param name="Type">Type to set up</param>
-        public virtual void Setup(Type Type)
+        /// <param name="types">The types.</param>
+        public virtual void Setup(params Type[] types)
         {
-            if (Classes.ContainsKey(Type))
-                return;
-
+            IEnumerable<Type> TempTypes = FilterTypesToSetup(types);
             List<Assembly> AssembliesUsing = new List<Assembly>();
-            List<string> Usings = new List<string>();
             AssembliesUsing.Add(typeof(object).Assembly, typeof(System.Linq.Enumerable).Assembly);
-            AssembliesUsing.AddIfUnique(Type.Assembly);
-            AssembliesUsing.AddIfUnique(GetAssemblies(Type));
             Aspects.ForEach(x => AssembliesUsing.AddIfUnique(x.AssembliesUsing));
+
+            List<string> Usings = new List<string>();
             Usings.Add("System");
             Usings.Add("System.Collections.Generic");
             Usings.Add("System.Linq");
             Usings.Add("System.Text");
             Usings.Add("System.Threading.Tasks");
-
             Aspects.ForEach(x => Usings.AddIfUnique(x.Usings));
 
             List<Type> Interfaces = new List<Type>();
             Aspects.ForEach(x => Interfaces.AddRange(x.InterfacesUsing == null ? new List<Type>() : x.InterfacesUsing));
+
             StringBuilder Builder = new StringBuilder();
-            string Namespace = "CULGeneratedTypes.C" + Guid.NewGuid().ToString("N");
-            Builder.AppendLineFormat(@"{0}
-namespace {1}
+
+            foreach (Type Type in TempTypes)
+            {
+                AssembliesUsing.AddIfUnique(Type.Assembly);
+                AssembliesUsing.AddIfUnique(GetAssemblies(Type));
+
+                string Namespace = "CULGeneratedTypes.C" + Guid.NewGuid().ToString("N");
+                string ClassName = Type.Name + "Derived";
+                Builder.AppendLine(Setup(Type, Namespace, ClassName, Usings, Interfaces, AssembliesUsing));
+            }
+            try
+            {
+                IEnumerable<Type> Types = Manager.Compiler.Create(Builder.ToString(), Usings, AssembliesUsing.ToArray());
+                foreach (Type Type in TempTypes)
+                {
+                    Manager.Classes.AddOrUpdate(Type,
+                        Types.FirstOrDefault(x => x.BaseType == Type),
+                        (x, y) => x);
+                }
+            }
+            catch (Exception)
+            {
+                foreach (Type Type in TempTypes)
+                {
+                    Manager.Classes.AddOrUpdate(Type,
+                        Type,
+                        (x, y) => x);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Setups the specified type.
+        /// </summary>
+        /// <param name="Type">The type.</param>
+        /// <param name="Namespace">The namespace.</param>
+        /// <param name="ClassName">Name of the class.</param>
+        /// <param name="Usings">The usings.</param>
+        /// <param name="Interfaces">The interfaces.</param>
+        /// <param name="AssembliesUsing">The assemblies using.</param>
+        /// <returns></returns>
+        private static string Setup(Type Type, string Namespace,
+            string ClassName, List<string> Usings,
+            List<Type> Interfaces, List<Assembly> AssembliesUsing)
+        {
+            StringBuilder Builder = new StringBuilder();
+            Builder.AppendLineFormat(@"namespace {1}
 {{
+    {0}
+
     public class {2} : {3}{4} {5}
     {{
 ", Usings.ToString(x => "using " + x + ";", "\r\n"),
  Namespace,
- Type.Name + "Derived",
+ ClassName,
  Type.FullName.Replace("+", "."),
  Interfaces.Count > 0 ? "," : "", Interfaces.ToString(x => x.Name));
             if (Type.HasDefaultConstructor())
@@ -268,18 +318,7 @@ namespace {1}
             }
             Builder.AppendLine(@"   }
 }");
-            try
-            {
-                Manager.Classes.AddOrUpdate(Type,
-                    Manager.Compiler.CreateClass(Namespace + "." + Type.Name + "Derived", Builder.ToString(), Usings, AssembliesUsing.ToArray()),
-                    (x, y) => x);
-            }
-            catch (Exception)
-            {
-                Manager.Classes.AddOrUpdate(Type,
-                    Type,
-                    (x, y) => x);
-            }
+            return Builder.ToString();
         }
 
         /// <summary>
