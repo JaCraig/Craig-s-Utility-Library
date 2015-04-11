@@ -148,6 +148,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:ad92f460ecc486944656e39056719f00a"><td class="memItemLeft" align="right" valign="top">Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities_1_1_data_types_1_1_code_gen_1_1_base_classes_1_1_compiler_base.html#ad92f460ecc486944656e39056719f00a">Add</a> (string ClassName, string Code, IEnumerable&lt; string &gt; Usings, params Assembly[] References)</td></tr>
 <tr class="memdesc:ad92f460ecc486944656e39056719f00a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compiles and adds the item to the module  <a href="#ad92f460ecc486944656e39056719f00a">More...</a><br /></td></tr>
 <tr class="separator:ad92f460ecc486944656e39056719f00a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a75c22fdc3d690d34c820bcd6af3a63"><td class="memItemLeft" align="right" valign="top">IEnumerable&lt; Type &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities_1_1_data_types_1_1_code_gen_1_1_base_classes_1_1_compiler_base.html#a0a75c22fdc3d690d34c820bcd6af3a63">Add</a> (string Code, IEnumerable&lt; string &gt; Usings, params Assembly[] References)</td></tr>
+<tr class="memdesc:a0a75c22fdc3d690d34c820bcd6af3a63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the specified code.  <a href="#a0a75c22fdc3d690d34c820bcd6af3a63">More...</a><br /></td></tr>
+<tr class="separator:a0a75c22fdc3d690d34c820bcd6af3a63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a7891ff8514759f9ce8041fc2e2f6d2"><td class="memItemLeft" align="right" valign="top">Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities_1_1_data_types_1_1_code_gen_1_1_base_classes_1_1_compiler_base.html#a4a7891ff8514759f9ce8041fc2e2f6d2">Add</a> (string ClassName, string Code, params Assembly[] References)</td></tr>
 <tr class="memdesc:a4a7891ff8514759f9ce8041fc2e2f6d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compiles and adds the item to the module  <a href="#a4a7891ff8514759f9ce8041fc2e2f6d2">More...</a><br /></td></tr>
 <tr class="separator:a4a7891ff8514759f9ce8041fc2e2f6d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -307,6 +310,65 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a0a75c22fdc3d690d34c820bcd6af3a63"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">IEnumerable&lt;Type&gt; Utilities.DataTypes.CodeGen.BaseClasses.CompilerBase.Add </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>Code</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IEnumerable&lt; string &gt;&#160;</td>
+          <td class="paramname"><em>Usings</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">params Assembly[]&#160;</td>
+          <td class="paramname"><em>References</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds the specified code. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Code</td><td>The code.</td></tr>
+    <tr><td class="paramname">Usings</td><td>The usings.</td></tr>
+    <tr><td class="paramname">References</td><td>The references.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The list of types that have been added</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">System.Exception</td><td>Any errors that are sent back by Roslyn</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_compiler_base_8cs_source.html#l00147">147</a> of file <a class="el" href="_compiler_base_8cs_source.html">CompilerBase.cs</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a4a7891ff8514759f9ce8041fc2e2f6d2"></a>
 <div class="memitem">
 <div class="memproto">
@@ -356,7 +418,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>This</dd></dl>
 
-<p>Definition at line <a class="el" href="_compiler_base_8cs_source.html#l00160">160</a> of file <a class="el" href="_compiler_base_8cs_source.html">CompilerBase.cs</a>.</p>
+<p>Definition at line <a class="el" href="_compiler_base_8cs_source.html#l00174">174</a> of file <a class="el" href="_compiler_base_8cs_source.html">CompilerBase.cs</a>.</p>
 
 </div>
 </div>
@@ -444,7 +506,7 @@ Properties</h2></td></tr>
 
 <p>Implements <a class="el" href="class_utilities_1_1_data_types_1_1_patterns_1_1_base_classes_1_1_safe_disposable_base_class.html#a78d603110ba7e16ac776d4b5158c4db5">Utilities.DataTypes.Patterns.BaseClasses.SafeDisposableBaseClass</a>.</p>
 
-<p>Definition at line <a class="el" href="_compiler_base_8cs_source.html#l00169">169</a> of file <a class="el" href="_compiler_base_8cs_source.html">CompilerBase.cs</a>.</p>
+<p>Definition at line <a class="el" href="_compiler_base_8cs_source.html#l00183">183</a> of file <a class="el" href="_compiler_base_8cs_source.html">CompilerBase.cs</a>.</p>
 
 </div>
 </div>
@@ -471,7 +533,7 @@ Properties</h2></td></tr>
 
 <p>Saves the assembly </p>
 
-<p>Definition at line <a class="el" href="_compiler_base_8cs_source.html#l00183">183</a> of file <a class="el" href="_compiler_base_8cs_source.html">CompilerBase.cs</a>.</p>
+<p>Definition at line <a class="el" href="_compiler_base_8cs_source.html#l00197">197</a> of file <a class="el" href="_compiler_base_8cs_source.html">CompilerBase.cs</a>.</p>
 
 </div>
 </div>
@@ -650,7 +712,7 @@ Properties</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_utilities.html">Utilities</a></li><li class="navelem"><a class="el" href="namespace_utilities_1_1_data_types.html">DataTypes</a></li><li class="navelem"><a class="el" href="namespace_utilities_1_1_data_types_1_1_code_gen.html">CodeGen</a></li><li class="navelem"><a class="el" href="namespace_utilities_1_1_data_types_1_1_code_gen_1_1_base_classes.html">BaseClasses</a></li><li class="navelem"><a class="el" href="class_utilities_1_1_data_types_1_1_code_gen_1_1_base_classes_1_1_compiler_base.html">CompilerBase</a></li>
-    <li class="footer">Generated on Mon Mar 23 2015 19:37:45 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Apr 10 2015 22:54:30 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -2,6 +2,7 @@ var class_utilities_1_1_data_types_1_1_code_gen_1_1_base_classes_1_1_compiler_ba
 [
     [ "CompilerBase", "class_utilities_1_1_data_types_1_1_code_gen_1_1_base_classes_1_1_compiler_base.html#a906521ad2fea35126c871057da7b8a5e", null ],
     [ "Add", "class_utilities_1_1_data_types_1_1_code_gen_1_1_base_classes_1_1_compiler_base.html#ad92f460ecc486944656e39056719f00a", null ],
+    [ "Add", "class_utilities_1_1_data_types_1_1_code_gen_1_1_base_classes_1_1_compiler_base.html#a0a75c22fdc3d690d34c820bcd6af3a63", null ],
     [ "Add", "class_utilities_1_1_data_types_1_1_code_gen_1_1_base_classes_1_1_compiler_base.html#a4a7891ff8514759f9ce8041fc2e2f6d2", null ],
     [ "Dispose", "class_utilities_1_1_data_types_1_1_code_gen_1_1_base_classes_1_1_compiler_base.html#a2ac86cd53244d213abebab16a6d3e212", null ],
     [ "Save", "class_utilities_1_1_data_types_1_1_code_gen_1_1_base_classes_1_1_compiler_base.html#a05a3c8ba5575d549e49390e7aa17608b", null ],
