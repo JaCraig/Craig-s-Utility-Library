@@ -53,12 +53,6 @@ namespace Utilities.IoC
                 Bootstrappers.Add(typeof(DefaultBootstrapper));
             }
             InternalBootstrapper = (IBootstrapper)Activator.CreateInstance(Bootstrappers[0], LoadedAssemblies, LoadedTypes);
-            //IEnumerable<Type> Modules = LoadedTypes.Where(x => x.GetInterfaces().Contains(typeof(IModule))
-            //                                                        && x.IsClass
-            //                                                        && !x.IsAbstract
-            //                                                        && !x.ContainsGenericParameters);
-            //foreach (IModule Module in Modules.Select(x => (IModule)Activator.CreateInstance(x))
-            //                                  .OrderBy(x => x.Order))
             InternalBootstrapper.RegisterAll<IModule>();
             foreach (IModule Module in InternalBootstrapper.ResolveAll<IModule>().OrderBy(x => x.Order))
             {
