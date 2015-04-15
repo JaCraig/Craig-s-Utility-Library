@@ -177,6 +177,7 @@
     <Compile Include="IO\FileSystem\Default\LocalFile.cs" />
     <Compile Include="IO\FileSystem\Default\NetworkFileSystem.cs" />
     <Compile Include="IO\FileSystem\Default\RelativeLocalFileSystem.cs" />
+    <Compile Include="IO\FileSystem\Default\ResourceDirectory.cs" />
     <Compile Include="IO\FileSystem\Default\ResourceFile.cs" />
     <Compile Include="IO\FileSystem\Default\WebDirectory.cs" />
     <Compile Include="IO\FileSystem\Default\WebFile.cs" />

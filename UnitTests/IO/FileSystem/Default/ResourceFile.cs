@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System.Text;
 using Xunit;
 
 namespace UnitTests.IO.FileSystem.Default
@@ -50,7 +49,7 @@ namespace UnitTests.IO.FileSystem.Default
             Assert.NotNull(File.Directory);
             Assert.Equal(".txt", File.Extension);
             Assert.Equal("resource://UnitTests/UnitTests.TestFile.txt", File.FullName);
-            Assert.Equal(10, File.Length);
+            Assert.Equal(39, File.Length);
             Assert.Equal("UnitTests.TestFile.txt", File.Name);
         }
 
