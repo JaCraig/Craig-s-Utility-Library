@@ -111,8 +111,7 @@ namespace Utilities.IO.FileSystem.Default
         {
             get
             {
-                var parent = string.IsNullOrEmpty(InternalDirectory) ? null : new ResourceDirectory(new string(InternalDirectory.Take(InternalDirectory.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1).ToArray()), UserName, Password, Domain);
-                return (parent == this) ? null : parent;
+                return null;
             }
         }
 
@@ -121,7 +120,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override IDirectory Root
         {
-            get { return string.IsNullOrEmpty(InternalDirectory) ? null : new ResourceDirectory("resource://" + AssemblyFrom.GetName().Name, UserName, Password, Domain); }
+            get { return this; }
         }
 
         /// <summary>
@@ -145,23 +144,10 @@ namespace Utilities.IO.FileSystem.Default
         }
 
         /// <summary>
-        /// Gets or sets the name of the resource file.
-        /// </summary>
-        /// <value>The name of the resource file.</value>
-        private string ResourceFileName
-        {
-            get
-            {
-                var Match = SplitPathRegex.Match(InternalDirectory).Groups["ResourceFile"];
-                return Match.Success ? Match.Value : "";
-            }
-        }
-
-        /// <summary>
         /// Gets the split path regex.
         /// </summary>
         /// <value>The split path regex.</value>
-        private Regex SplitPathRegex { get { return new Regex(@"^resource://(?<Assembly>[^/]*)/(/(?<ResourceFile>[^/]*)/?)?", RegexOptions.Compiled | RegexOptions.IgnoreCase); } }
+        private Regex SplitPathRegex { get { return new Regex(@"^resource://(?<Assembly>[^/]*)/?", RegexOptions.Compiled | RegexOptions.IgnoreCase); } }
 
         /// <summary>
         /// Copies the directory to the specified parent directory
