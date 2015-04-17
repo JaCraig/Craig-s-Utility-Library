@@ -20,6 +20,7 @@ var searchData=
   ['deletingeventargs',['DeletingEventArgs',['../class_utilities_1_1_data_types_1_1_event_args_1_1_deleting_event_args.html',1,'Utilities::DataTypes::EventArgs']]],
   ['delimited',['Delimited',['../class_utilities_1_1_i_o_1_1_file_formats_1_1_delimited_1_1_delimited.html',1,'Utilities::IO::FileFormats::Delimited']]],
   ['directorybase',['DirectoryBase',['../class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_directory_base.html',1,'Utilities::IO::FileSystem::BaseClasses']]],
+  ['directorybase_3c_20string_2c_20resourcedirectory_20_3e',['DirectoryBase&lt; string, ResourceDirectory &gt;',['../class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_directory_base.html',1,'Utilities::IO::FileSystem::BaseClasses']]],
   ['directorybase_3c_20system_2eio_2edirectoryinfo_2c_20localdirectory_20_3e',['DirectoryBase&lt; System.IO.DirectoryInfo, LocalDirectory &gt;',['../class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_directory_base.html',1,'Utilities::IO::FileSystem::BaseClasses']]],
   ['directorybase_3c_20uri_2c_20ftpdirectory_20_3e',['DirectoryBase&lt; Uri, FtpDirectory &gt;',['../class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_directory_base.html',1,'Utilities::IO::FileSystem::BaseClasses']]],
   ['directorybase_3c_20uri_2c_20webdirectory_20_3e',['DirectoryBase&lt; Uri, WebDirectory &gt;',['../class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_directory_base.html',1,'Utilities::IO::FileSystem::BaseClasses']]],

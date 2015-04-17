@@ -7,6 +7,7 @@ var searchData=
   ['fieldbase',['FieldBase',['../class_utilities_1_1_i_o_1_1_file_formats_1_1_fixed_length_1_1_base_classes_1_1_field_base.html',1,'Utilities::IO::FileFormats::FixedLength::BaseClasses']]],
   ['fieldbase_3c_20string_20_3e',['FieldBase&lt; string &gt;',['../class_utilities_1_1_i_o_1_1_file_formats_1_1_fixed_length_1_1_base_classes_1_1_field_base.html',1,'Utilities::IO::FileFormats::FixedLength::BaseClasses']]],
   ['filebase',['FileBase',['../class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_file_base.html',1,'Utilities::IO::FileSystem::BaseClasses']]],
+  ['filebase_3c_20string_2c_20resourcefile_20_3e',['FileBase&lt; string, ResourceFile &gt;',['../class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_file_base.html',1,'Utilities::IO::FileSystem::BaseClasses']]],
   ['filebase_3c_20system_2eio_2efileinfo_2c_20localfile_20_3e',['FileBase&lt; System.IO.FileInfo, LocalFile &gt;',['../class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_file_base.html',1,'Utilities::IO::FileSystem::BaseClasses']]],
   ['filebase_3c_20uri_2c_20ftpfile_20_3e',['FileBase&lt; Uri, FtpFile &gt;',['../class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_file_base.html',1,'Utilities::IO::FileSystem::BaseClasses']]],
   ['filebase_3c_20uri_2c_20webfile_20_3e',['FileBase&lt; Uri, WebFile &gt;',['../class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_file_base.html',1,'Utilities::IO::FileSystem::BaseClasses']]],

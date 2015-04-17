@@ -27,6 +27,15 @@ var dir_907aa97e1531825d990413d236dd34b6 =
     [ "RelativeLocalFileSystem.cs", "_relative_local_file_system_8cs.html", [
       [ "RelativeLocalFileSystem", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_relative_local_file_system.html", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_relative_local_file_system" ]
     ] ],
+    [ "ResourceDirectory.cs", "_resource_directory_8cs.html", [
+      [ "ResourceDirectory", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory" ]
+    ] ],
+    [ "ResourceFile.cs", "_resource_file_8cs.html", [
+      [ "ResourceFile", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_file.html", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_file" ]
+    ] ],
+    [ "ResourceFileSystem.cs", "_resource_file_system_8cs.html", [
+      [ "ResourceFileSystem", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_file_system.html", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_file_system" ]
+    ] ],
     [ "WebDirectory.cs", "_web_directory_8cs.html", [
       [ "WebDirectory", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_directory.html", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_directory" ]
     ] ],

@@ -190,6 +190,12 @@ var NAVTREEINDEX2 =
 "_regex_string_generator_8cs_source.html":[2,0,0,8,6,2],
 "_relative_local_file_system_8cs.html":[2,0,0,2,5,1,8],
 "_relative_local_file_system_8cs_source.html":[2,0,0,2,5,1,8],
+"_resource_directory_8cs.html":[2,0,0,2,5,1,9],
+"_resource_directory_8cs_source.html":[2,0,0,2,5,1,9],
+"_resource_file_8cs.html":[2,0,0,2,5,1,10],
+"_resource_file_8cs_source.html":[2,0,0,2,5,1,10],
+"_resource_file_system_8cs.html":[2,0,0,2,5,1,11],
+"_resource_file_system_8cs_source.html":[2,0,0,2,5,1,11],
 "_ring_buffer_8cs.html":[2,0,0,1,19],
 "_ring_buffer_8cs_source.html":[2,0,0,1,19],
 "_row_8cs.html":[2,0,0,2,4,1,2],
@@ -243,11 +249,5 @@ var NAVTREEINDEX2 =
 "_stored_procedure_8cs.html":[2,0,0,5,3,4,1,0,4],
 "_stored_procedure_8cs_source.html":[2,0,0,5,3,4,1,0,4],
 "_stored_procedure_columns_8cs.html":[2,0,0,5,3,4,1,0,0,0,2],
-"_stored_procedure_columns_8cs_source.html":[2,0,0,5,3,4,1,0,0,0,2],
-"_stored_procedures_8cs.html":[2,0,0,5,3,4,1,0,0,0,3],
-"_stored_procedures_8cs_source.html":[2,0,0,5,3,4,1,0,0,0,3],
-"_stream_extensions_8cs.html":[2,0,0,1,8,19],
-"_stream_extensions_8cs_source.html":[2,0,0,1,8,19],
-"_street_address_generator_8cs.html":[2,0,0,8,1,7],
-"_street_address_generator_8cs_source.html":[2,0,0,8,1,7]
+"_stored_procedure_columns_8cs_source.html":[2,0,0,5,3,4,1,0,0,0,2]
 };

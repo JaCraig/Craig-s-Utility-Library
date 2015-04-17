@@ -9,6 +9,9 @@ var namespace_utilities_1_1_i_o_1_1_file_system_1_1_default =
     [ "LocalFile", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_local_file.html", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_local_file" ],
     [ "NetworkFileSystem", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_network_file_system.html", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_network_file_system" ],
     [ "RelativeLocalFileSystem", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_relative_local_file_system.html", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_relative_local_file_system" ],
+    [ "ResourceDirectory", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory" ],
+    [ "ResourceFile", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_file.html", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_file" ],
+    [ "ResourceFileSystem", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_file_system.html", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_file_system" ],
     [ "WebDirectory", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_directory.html", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_directory" ],
     [ "WebFile", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_file.html", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_file" ]
 ];
