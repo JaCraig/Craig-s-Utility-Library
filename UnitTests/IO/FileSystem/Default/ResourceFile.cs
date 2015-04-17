@@ -49,7 +49,7 @@ namespace UnitTests.IO.FileSystem.Default
             Assert.NotNull(File.Directory);
             Assert.Equal(".txt", File.Extension);
             Assert.Equal("resource://UnitTests/UnitTests.TestFile.txt", File.FullName);
-            Assert.Equal(39, File.Length);
+            Assert.Equal(36, File.Length);
             Assert.Equal("UnitTests.TestFile.txt", File.Name);
         }
 
