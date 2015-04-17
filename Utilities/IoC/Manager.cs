@@ -155,7 +155,7 @@ namespace Utilities.IoC
             LoadAssemblies(LoadedAssemblies, Files.Select(x => AssemblyName.GetAssemblyName(x.FullName)).ToArray());
             FileInfo GeneratedFile = new FileInfo(AppDomain.CurrentDomain.BaseDirectory + "\\CULGeneratedTypes.dll");
             if (GeneratedFile.Exists
-                && LoadedAssemblies.Any(x => !x.FullName.Contains("vshost32")
+                && !LoadedAssemblies.Any(x => !x.FullName.Contains("vshost32")
                                             && !x.IsDynamic
                                             && new System.IO.FileInfo(x.Location).LastWriteTime > GeneratedFile.LastWriteTime))
             {

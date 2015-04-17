@@ -260,6 +260,9 @@
     <Compile Include="IO\Serializers\Module\SerializationModule.cs" />
     <Compile Include="IO\Messaging\Default\DefaultFormatter.cs" />
     <Compile Include="IO\Serializers\Default\CSVSerializer.cs" />
+    <Compile Include="IO\FileSystem\Default\ResourceDirectory.cs" />
+    <Compile Include="IO\FileSystem\Default\ResourceFile.cs" />
+    <Compile Include="IO\FileSystem\Default\ResourceFileSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />
