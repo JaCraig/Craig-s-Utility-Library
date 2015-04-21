@@ -196,7 +196,7 @@ $(document).ready(function(){initNavTree('_workflow_2_manager_2_manager_8cs_sour
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
 <div class="line"><a name="l00143"></a><span class="lineno"><a class="line" href="class_utilities_1_1_workflow_1_1_manager_1_1_manager.html#ad8601bb6cfd527aa4f81314cf902d410">  143</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">override</span> <span class="keywordtype">void</span> <a class="code" href="class_utilities_1_1_workflow_1_1_manager_1_1_manager.html#ad8601bb6cfd527aa4f81314cf902d410">Dispose</a>(<span class="keywordtype">bool</span> Managed)</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        {</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;            <span class="keyword">new</span> <a class="code" href="namespace_system.html">System</a>.IO.DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + <span class="stringliteral">&quot;/App_Data/&quot;</span>).Create();</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;            <span class="keyword">new</span> <a class="code" href="namespace_system.html">System</a>.IO.DirectoryInfo(Environment.CurrentDirectory + <span class="stringliteral">&quot;/App_Data/&quot;</span>).Create();</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;            <span class="keywordflow">if</span> (FileManager != null &amp;&amp; SerializationManager != null)</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;            {</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                <a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_file.html">IFile</a> File = FileManager.File(<span class="stringliteral">&quot;~/App_Data/Workflows.obj&quot;</span>);</div>
@@ -242,7 +242,7 @@ $(document).ready(function(){initNavTree('_workflow_2_manager_2_manager_8cs_sour
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_e4ccdf57506c3b7741851a0ba1b9142b.html">Workflow</a></li><li class="navelem"><a class="el" href="dir_9af059438975e15be44c0534e398d310.html">Manager</a></li><li class="navelem"><a class="el" href="_workflow_2_manager_2_manager_8cs.html">Manager.cs</a></li>
-    <li class="footer">Generated on Thu Apr 16 2015 22:06:06 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Mon Apr 20 2015 20:37:53 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

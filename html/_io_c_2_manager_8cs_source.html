@@ -224,54 +224,58 @@ $(document).ready(function(){initNavTree('_io_c_2_manager_8cs_source.html','');}
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> ConcurrentBag&lt;Assembly&gt; LoadAssemblies()</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        {</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            IEnumerable&lt;FileInfo&gt; Files = <span class="keyword">new</span> DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).GetFiles(<span class="stringliteral">&quot;*.dll&quot;</span>, SearchOption.TopDirectoryOnly)</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                                                                                              .Where(x =&gt; !x.Name.Equals(<span class="stringliteral">&quot;CULGeneratedTypes.dll&quot;</span>, StringComparison.InvariantCultureIgnoreCase));</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;            List&lt;Assembly&gt; LoadedAssemblies = <span class="keyword">new</span> List&lt;Assembly&gt;(AppDomain.CurrentDomain.GetAssemblies());</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            LoadAssemblies(LoadedAssemblies, Files.Select(x =&gt; AssemblyName.GetAssemblyName(x.FullName)).ToArray());</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            FileInfo GeneratedFile = <span class="keyword">new</span> FileInfo(AppDomain.CurrentDomain.BaseDirectory + <span class="stringliteral">&quot;\\CULGeneratedTypes.dll&quot;</span>);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            <span class="keywordflow">if</span> (GeneratedFile.Exists</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                &amp;&amp; !LoadedAssemblies.Any(x =&gt; !x.FullName.Contains(<span class="stringliteral">&quot;vshost32&quot;</span>)</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                                            &amp;&amp; !x.IsDynamic</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                                            &amp;&amp; <span class="keyword">new</span> <a class="code" href="namespace_system.html">System</a>.IO.FileInfo(x.Location).LastWriteTime &gt; GeneratedFile.LastWriteTime))</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            {</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                LoadAssemblies(LoadedAssemblies, AssemblyName.GetAssemblyName(GeneratedFile.FullName));</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            }</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> ConcurrentBag&lt;Assembly&gt;(LoadedAssemblies.Distinct(<span class="keyword">new</span> AssemblyComparer()));</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        }</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">void</span> LoadAssemblies(List&lt;Assembly&gt; Assemblies, params AssemblyName[] assemblyName)</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        {</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;            <span class="keywordflow">if</span> (assemblyName == null)</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;            <span class="keywordflow">foreach</span> (var Name <span class="keywordflow">in</span> assemblyName.Where(x =&gt; !x.FullName.StartsWith(<span class="stringliteral">&quot;System.&quot;</span>, StringComparison.InvariantCultureIgnoreCase)</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;                                                      &amp;&amp; !x.FullName.StartsWith(<span class="stringliteral">&quot;Microsoft.&quot;</span>, StringComparison.InvariantCultureIgnoreCase)</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;                                                      &amp;&amp; !Assemblies.Any(y =&gt; <span class="keywordtype">string</span>.Equals(y.FullName, x.FullName, StringComparison.InvariantCultureIgnoreCase))))</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;            {</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;                Assembly TempAssembly = AppDomain.CurrentDomain.Load(Name);</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;                Assemblies.Add(TempAssembly);</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                LoadAssemblies(Assemblies, TempAssembly.GetReferencedAssemblies());</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            }</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        }</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        ~Manager()</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        {</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;            Dispose(<span class="keyword">false</span>);</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        }</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        <span class="keyword">private</span> <span class="keyword">class </span>AssemblyComparer : IEqualityComparer&lt;Assembly&gt;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        {</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;            <span class="keyword">public</span> <span class="keywordtype">bool</span> Equals(Assembly x, Assembly y)</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;            {</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;                <span class="keywordflow">return</span> <span class="keywordtype">string</span>.Equals(x.FullName, y.FullName, StringComparison.InvariantCultureIgnoreCase);</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;            }</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;            <span class="keyword">public</span> <span class="keywordtype">int</span> GetHashCode(Assembly obj)</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;            {</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;                <span class="keywordflow">return</span> obj.GetHashCode();</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;            }</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        }</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    }</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;}</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            List&lt;FileInfo&gt; Files = <span class="keyword">new</span> DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).GetFiles(<span class="stringliteral">&quot;*.dll&quot;</span>, SearchOption.TopDirectoryOnly)</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                                                                                              .Where(x =&gt; !x.Name.Equals(<span class="stringliteral">&quot;CULGeneratedTypes.dll&quot;</span>, StringComparison.InvariantCultureIgnoreCase))</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                                                                                              .ToList();</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            Files.AddRange(<span class="keyword">new</span> DirectoryInfo(Environment.CurrentDirectory).GetFiles(<span class="stringliteral">&quot;*.dll&quot;</span>, SearchOption.TopDirectoryOnly)</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                                                                          .Where(x =&gt; !x.Name.Equals(<span class="stringliteral">&quot;CULGeneratedTypes.dll&quot;</span>, StringComparison.InvariantCultureIgnoreCase)));</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            Files = Files.Distinct().ToList();</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            List&lt;Assembly&gt; LoadedAssemblies = <span class="keyword">new</span> List&lt;Assembly&gt;(AppDomain.CurrentDomain.GetAssemblies());</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            LoadAssemblies(LoadedAssemblies, Files.Select(x =&gt; AssemblyName.GetAssemblyName(x.FullName)).ToArray());</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            FileInfo GeneratedFile = <span class="keyword">new</span> FileInfo(AppDomain.CurrentDomain.BaseDirectory + <span class="stringliteral">&quot;\\CULGeneratedTypes.dll&quot;</span>);</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            <span class="keywordflow">if</span> (GeneratedFile.Exists</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                &amp;&amp; !LoadedAssemblies.Any(x =&gt; !x.FullName.Contains(<span class="stringliteral">&quot;vshost32&quot;</span>)</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                                            &amp;&amp; !x.IsDynamic</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                                            &amp;&amp; <span class="keyword">new</span> <a class="code" href="namespace_system.html">System</a>.IO.FileInfo(x.Location).LastWriteTime &gt; GeneratedFile.LastWriteTime))</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            {</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                LoadAssemblies(LoadedAssemblies, AssemblyName.GetAssemblyName(GeneratedFile.FullName));</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;            }</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> ConcurrentBag&lt;Assembly&gt;(LoadedAssemblies.Distinct(<span class="keyword">new</span> AssemblyComparer()));</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        }</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">void</span> LoadAssemblies(List&lt;Assembly&gt; Assemblies, params AssemblyName[] assemblyName)</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        {</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;            <span class="keywordflow">if</span> (assemblyName == null)</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;                <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            <span class="keywordflow">foreach</span> (var Name <span class="keywordflow">in</span> assemblyName.Where(x =&gt; !x.FullName.StartsWith(<span class="stringliteral">&quot;System.&quot;</span>, StringComparison.InvariantCultureIgnoreCase)</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;                                                      &amp;&amp; !x.FullName.StartsWith(<span class="stringliteral">&quot;Microsoft.&quot;</span>, StringComparison.InvariantCultureIgnoreCase)</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                                                      &amp;&amp; !Assemblies.Any(y =&gt; <span class="keywordtype">string</span>.Equals(y.FullName, x.FullName, StringComparison.InvariantCultureIgnoreCase))))</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            {</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                Assembly TempAssembly = AppDomain.CurrentDomain.Load(Name);</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;                Assemblies.Add(TempAssembly);</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                LoadAssemblies(Assemblies, TempAssembly.GetReferencedAssemblies());</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            }</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        }</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        ~Manager()</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        {</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;            Dispose(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        }</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        <span class="keyword">private</span> <span class="keyword">class </span>AssemblyComparer : IEqualityComparer&lt;Assembly&gt;</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        {</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;            <span class="keyword">public</span> <span class="keywordtype">bool</span> Equals(Assembly x, Assembly y)</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            {</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;                <span class="keywordflow">return</span> <span class="keywordtype">string</span>.Equals(x.FullName, y.FullName, StringComparison.InvariantCultureIgnoreCase);</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            }</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;            <span class="keyword">public</span> <span class="keywordtype">int</span> GetHashCode(Assembly obj)</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;            {</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;                <span class="keywordflow">return</span> obj.GetHashCode();</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            }</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        }</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    }</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;}</div>
 <div class="ttc" id="class_utilities_1_1_io_c_1_1_manager_html_a983542cf2530b95803ee5b22a85bea61"><div class="ttname"><a href="class_utilities_1_1_io_c_1_1_manager.html#a983542cf2530b95803ee5b22a85bea61">Utilities.IoC.Manager.ToString</a></div><div class="ttdeci">override string ToString()</div><div class="ttdoc">Displays information about the IoC container in string form </div><div class="ttdef"><b>Definition:</b> <a href="_io_c_2_manager_8cs_source.html#l00106">Manager.cs:106</a></div></div>
 <div class="ttc" id="namespace_system_html"><div class="ttname"><a href="namespace_system.html">System</a></div></div>
 <div class="ttc" id="class_utilities_1_1_io_c_1_1_manager_html_a02c96457f712476b2a98185d03c90fb7"><div class="ttname"><a href="class_utilities_1_1_io_c_1_1_manager.html#a02c96457f712476b2a98185d03c90fb7">Utilities.IoC.Manager.Dispose</a></div><div class="ttdeci">void Dispose()</div><div class="ttdoc">Disposes of the object </div><div class="ttdef"><b>Definition:</b> <a href="_io_c_2_manager_8cs_source.html#l00096">Manager.cs:96</a></div></div>
@@ -293,7 +297,7 @@ $(document).ready(function(){initNavTree('_io_c_2_manager_8cs_source.html','');}
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_2a25a2b0d9506505e87582da3d777bb1.html">IoC</a></li><li class="navelem"><a class="el" href="_io_c_2_manager_8cs.html">Manager.cs</a></li>
-    <li class="footer">Generated on Thu Apr 16 2015 22:06:06 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Mon Apr 20 2015 20:37:53 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
