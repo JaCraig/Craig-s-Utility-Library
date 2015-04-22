@@ -61,8 +61,8 @@ namespace Utilities.IO.FileSystem.Default
             string ParentDirectory = "";
             if (HttpContext.Current == null)
             {
-                BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                ParentDirectory = new LocalDirectory(AppDomain.CurrentDomain.BaseDirectory).Parent.FullName;
+                BaseDirectory = Environment.CurrentDirectory;
+                ParentDirectory = new LocalDirectory(Environment.CurrentDirectory).Parent.FullName;
             }
             else
             {
