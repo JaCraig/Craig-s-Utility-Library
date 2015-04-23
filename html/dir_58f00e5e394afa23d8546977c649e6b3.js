@@ -5,5 +5,8 @@ var dir_58f00e5e394afa23d8546977c649e6b3 =
     ] ],
     [ "IResult.cs", "_i_result_8cs.html", [
       [ "IResult", "interface_utilities_1_1_profiler_1_1_manager_1_1_interfaces_1_1_i_result.html", "interface_utilities_1_1_profiler_1_1_manager_1_1_interfaces_1_1_i_result" ]
+    ] ],
+    [ "IResultEntry.cs", "_i_result_entry_8cs.html", [
+      [ "IResultEntry", "interface_utilities_1_1_profiler_1_1_manager_1_1_interfaces_1_1_i_result_entry.html", "interface_utilities_1_1_profiler_1_1_manager_1_1_interfaces_1_1_i_result_entry" ]
     ] ]
 ];

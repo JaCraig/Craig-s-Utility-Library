@@ -508,6 +508,9 @@ var hierarchy =
     [ "Utilities.Profiler.Manager.Interfaces.IResult", "interface_utilities_1_1_profiler_1_1_manager_1_1_interfaces_1_1_i_result.html", [
       [ "Utilities.Profiler.Manager.Default.Profiler", "class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler.html", null ]
     ] ],
+    [ "Utilities.Profiler.Manager.Interfaces.IResultEntry", "interface_utilities_1_1_profiler_1_1_manager_1_1_interfaces_1_1_i_result_entry.html", [
+      [ "Utilities.Profiler.Manager.Default.Entry", "class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_entry.html", null ]
+    ] ],
     [ "Utilities.ORM.Manager.Schema.Interfaces.ISchemaGenerator", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_interfaces_1_1_i_schema_generator.html", [
       [ "Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_s_q_l_server_1_1_s_q_l_server_schema_generator.html", null ],
       [ "Utilities.ORM.Manager.Schema.Default.LDAP.LDAPSchemaGenerator", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_l_d_a_p_1_1_l_d_a_p_schema_generator.html", null ]
@@ -588,11 +591,11 @@ var hierarchy =
     [ "Utilities.IO.Encryption.Manager", "class_utilities_1_1_i_o_1_1_encryption_1_1_manager.html", null ],
     [ "Utilities.ORM.Manager.QueryProvider.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_manager.html", null ],
     [ "Utilities.DataTypes.Conversion.Manager", "class_utilities_1_1_data_types_1_1_conversion_1_1_manager.html", null ],
-    [ "Utilities.DataTypes.DataMapper.Manager", "class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html", null ],
-    [ "Utilities.IO.Messaging.Manager", "class_utilities_1_1_i_o_1_1_messaging_1_1_manager.html", null ],
-    [ "Utilities.IO.Compression.Manager", "class_utilities_1_1_i_o_1_1_compression_1_1_manager.html", null ],
-    [ "Utilities.IO.Serializers.Manager", "class_utilities_1_1_i_o_1_1_serializers_1_1_manager.html", null ],
     [ "Utilities.ORM.Manager.Schema.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html", null ],
+    [ "Utilities.IO.Compression.Manager", "class_utilities_1_1_i_o_1_1_compression_1_1_manager.html", null ],
+    [ "Utilities.DataTypes.DataMapper.Manager", "class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html", null ],
+    [ "Utilities.IO.Serializers.Manager", "class_utilities_1_1_i_o_1_1_serializers_1_1_manager.html", null ],
+    [ "Utilities.IO.Messaging.Manager", "class_utilities_1_1_i_o_1_1_messaging_1_1_manager.html", null ],
     [ "Utilities.DataTypes.Matrix", "class_utilities_1_1_data_types_1_1_matrix.html", null ],
     [ "Utilities.DataTypes.AI.NaiveBayes< T >", "class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html", null ],
     [ "Utilities.ORM.Manager.ORMManager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_o_r_m_manager.html", null ],

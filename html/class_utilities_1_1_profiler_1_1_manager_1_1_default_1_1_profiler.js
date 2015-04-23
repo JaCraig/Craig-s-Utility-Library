@@ -13,11 +13,11 @@ var class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler =
     [ "ToString", "class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler.html#ae363e770886add5b0342ae5a7d71a999", null ],
     [ "CalledFrom", "class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler.html#a9097257024dbef73a55ada73a6da9e63", null ],
     [ "Children", "class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler.html#a3a7d938fb4140ff0f2aa428df21ff830", null ],
+    [ "Entries", "class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler.html#abae8e07a714f8dedbad8a7e2ce39c92e", null ],
     [ "Function", "class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler.html#a139d1bc1a2b530f0ba1de2d334bf3817", null ],
     [ "InternalChildren", "class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler.html#ae297c97ebcf126db2651396259fb93d7", null ],
     [ "Level", "class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler.html#af5741cb187a7898f89511ec04c6d5716", null ],
     [ "Parent", "class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler.html#a5fdaf533ece4ff785c14488ea12e6435", null ],
     [ "Running", "class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler.html#a902f927fbb1924923ceba25a27dde53d", null ],
-    [ "StopWatch", "class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler.html#ad7f8ed3796055a462bda778ae5072cfc", null ],
-    [ "Times", "class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler.html#a6a441157d83d24369ec7f42af86593fd", null ]
+    [ "StopWatch", "class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler.html#ad7f8ed3796055a462bda778ae5072cfc", null ]
 ];

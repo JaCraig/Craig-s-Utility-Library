@@ -69,6 +69,7 @@ var searchData=
   ['irecord',['IRecord',['../interface_utilities_1_1_i_o_1_1_file_formats_1_1_fixed_length_1_1_interfaces_1_1_i_record.html',1,'Utilities::IO::FileFormats::FixedLength::Interfaces']]],
   ['ireference',['IReference',['../interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_reference.html',1,'Utilities::ORM::Manager::Mapper::Interfaces']]],
   ['iresult',['IResult',['../interface_utilities_1_1_profiler_1_1_manager_1_1_interfaces_1_1_i_result.html',1,'Utilities::Profiler::Manager::Interfaces']]],
+  ['iresultentry',['IResultEntry',['../interface_utilities_1_1_profiler_1_1_manager_1_1_interfaces_1_1_i_result_entry.html',1,'Utilities::Profiler::Manager::Interfaces']]],
   ['isattribute',['IsAttribute',['../class_utilities_1_1_validation_1_1_is_attribute.html',1,'Utilities::Validation']]],
   ['ischemagenerator',['ISchemaGenerator',['../interface_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_interfaces_1_1_i_schema_generator.html',1,'Utilities::ORM::Manager::Schema::Interfaces']]],
   ['iserializer',['ISerializer',['../interface_utilities_1_1_i_o_1_1_serializers_1_1_interfaces_1_1_i_serializer.html',1,'Utilities.IO.Serializers.Interfaces.ISerializer&lt; T &gt;'],['../interface_utilities_1_1_i_o_1_1_serializers_1_1_interfaces_1_1_i_serializer.html',1,'Utilities.IO.Serializers.Interfaces.ISerializer']]],

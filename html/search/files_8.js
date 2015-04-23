@@ -66,6 +66,7 @@ var searchData=
   ['irecord_2ecs',['IRecord.cs',['../_i_record_8cs.html',1,'']]],
   ['ireference_2ecs',['IReference.cs',['../_i_reference_8cs.html',1,'']]],
   ['iresult_2ecs',['IResult.cs',['../_i_result_8cs.html',1,'']]],
+  ['iresultentry_2ecs',['IResultEntry.cs',['../_i_result_entry_8cs.html',1,'']]],
   ['is_2ecs',['Is.cs',['../_is_8cs.html',1,'']]],
   ['ischemagenerator_2ecs',['ISchemaGenerator.cs',['../_i_schema_generator_8cs.html',1,'']]],
   ['iserializer_2ecs',['ISerializer.cs',['../_i_serializer_8cs.html',1,'']]],
