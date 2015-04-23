@@ -19,29 +19,44 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System.Collections.Generic;
+using Utilities.Profiler.Manager.Interfaces;
 
-namespace Utilities.Profiler.Manager.Interfaces
+namespace Utilities.Profiler.Manager.Default
 {
     /// <summary>
-    /// Profiler results interface
+    /// Individual data entry
     /// </summary>
-    public interface IResult
+    public class Entry : IResultEntry
     {
         /// <summary>
-        /// Where the profiler was started at
+        /// Initializes a new instance of the <see cref="Entry"/> class.
         /// </summary>
-        string CalledFrom { get; }
+        /// <param name="time">The time.</param>
+        /// <param name="memory">The memory.</param>
+        /// <param name="cpuUsage">The cpu usage.</param>
+        public Entry(long time, decimal memory, decimal cpuUsage)
+        {
+            this.Time = time;
+            this.Memory = memory;
+            this.CPUUsage = cpuUsage;
+        }
 
         /// <summary>
-        /// Any child results (Key = Name/Identifier, Value = IResult object)
+        /// Gets the cpu usage (percentage)
         /// </summary>
-        IDictionary<string, IResult> Children { get; }
+        /// <value>The cpu usage.</value>
+        public decimal CPUUsage { get; private set; }
 
         /// <summary>
-        /// Gets the entries.
+        /// Gets the memory. (in MB)
         /// </summary>
-        /// <value>The entries.</value>
-        ICollection<IResultEntry> Entries { get; }
+        /// <value>The memory.</value>
+        public decimal Memory { get; private set; }
+
+        /// <summary>
+        /// Total time that the profiler has taken (in milliseconds)
+        /// </summary>
+        /// <value>The time.</value>
+        public long Time { get; private set; }
     }
 }

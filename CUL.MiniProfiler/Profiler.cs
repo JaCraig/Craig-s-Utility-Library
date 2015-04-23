@@ -24,7 +24,6 @@ THE SOFTWARE.*/
 using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Utilities.Profiler.Manager.Interfaces;
 
 #endregion Usings
@@ -42,7 +41,7 @@ namespace CUL.Profiling
         public Profiler()
         {
             this.CalledFrom = CalledFrom;
-            Times = new List<long>();
+            Entries = new List<IResultEntry>();
             Children = new Dictionary<string, IResult>();
         }
 
@@ -68,9 +67,10 @@ namespace CUL.Profiling
         public IDictionary<string, IResult> Children { get; set; }
 
         /// <summary>
-        /// Times
+        /// Gets the entries.
         /// </summary>
-        public ICollection<long> Times { get; set; }
+        /// <value>The entries.</value>
+        public ICollection<IResultEntry> Entries { get; set; }
 
         /// <summary>
         /// Current profiler
@@ -122,7 +122,7 @@ namespace CUL.Profiling
         {
             StackExchange.Profiling.MiniProfiler.Stop(DiscardResults);
             if (StackExchange.Profiling.MiniProfiler.Current != null)
-                Times.Add((long)StackExchange.Profiling.MiniProfiler.Current.DurationMilliseconds);
+                Entries.Add(new Utilities.Profiler.Manager.Default.Entry((long)StackExchange.Profiling.MiniProfiler.Current.DurationMilliseconds, 0, 0));
             return this;
         }
 

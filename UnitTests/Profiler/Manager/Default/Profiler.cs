@@ -36,8 +36,8 @@ namespace UnitTests.Profiler
             Thread.Sleep(600);
             A.Stop();
             TestObject.Stop();
-            Assert.InRange(A.Times.Sum(), 0, 1000);
-            Assert.InRange(TestObject.Times.Sum(), 0, 1500);
+            Assert.InRange(A.Entries.Sum(x => x.Time), 0, 1000);
+            Assert.InRange(TestObject.Entries.Sum(x => x.Time), 0, 1500);
         }
     }
 }

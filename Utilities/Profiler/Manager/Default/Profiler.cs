@@ -42,7 +42,7 @@ namespace Utilities.Profiler.Manager.Default
         /// </summary>
         public Profiler()
         {
-            Times = new List<long>();
+            Entries = new List<IResultEntry>();
             Function = "";
             InternalChildren = new Dictionary<string, Profiler>();
         }
@@ -61,7 +61,7 @@ namespace Utilities.Profiler.Manager.Default
                     Parent.InternalChildren.Add(FunctionName, this);
                 this.Function = FunctionName;
                 this.InternalChildren = new Dictionary<string, Profiler>();
-                this.Times = new List<long>();
+                this.Entries = new List<IResultEntry>();
                 this.StopWatch = new StopWatch();
                 this.Level = Parent == null ? 0 : Parent.Level + 1;
                 this.CalledFrom = new StackTrace().GetMethods(this.GetType().Assembly).ToString<MethodBase>(x => x.DeclaringType.Name + " > " + x.Name, "<br />");
@@ -74,14 +74,6 @@ namespace Utilities.Profiler.Manager.Default
                 Current = Child;
             }
             Start();
-        }
-
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        ~Profiler()
-        {
-            Dispose(false);
         }
 
         /// <summary>
@@ -137,6 +129,12 @@ namespace Utilities.Profiler.Manager.Default
         public IDictionary<string, IResult> Children { get { return InternalChildren.ToDictionary(x => x.Key, x => (IResult)x.Value); } }
 
         /// <summary>
+        /// Gets the entries.
+        /// </summary>
+        /// <value>The entries.</value>
+        public ICollection<IResultEntry> Entries { get; private set; }
+
+        /// <summary>
         /// Function name
         /// </summary>
         public string Function { get; protected set; }
@@ -145,11 +143,6 @@ namespace Utilities.Profiler.Manager.Default
         /// Children profiler items
         /// </summary>
         public IDictionary<string, Profiler> InternalChildren { get; private set; }
-
-        /// <summary>
-        /// Total time that the profiler has taken (in milliseconds)
-        /// </summary>
-        public ICollection<long> Times { get; private set; }
 
         /// <summary>
         /// Level of the profiler
@@ -210,7 +203,7 @@ namespace Utilities.Profiler.Manager.Default
             {
                 Current.Running = false;
                 Current.StopWatch.Stop();
-                Current.Times.Add(Current.StopWatch.ElapsedTime);
+                Current.Entries.Add(new Entry(Current.StopWatch.ElapsedTime, 0, 0));
             }
             Current.Running = true;
             Current.StopWatch.Start();
@@ -277,7 +270,7 @@ namespace Utilities.Profiler.Manager.Default
             {
                 Current.Running = false;
                 Current.StopWatch.Stop();
-                Current.Times.Add(Current.StopWatch.ElapsedTime);
+                Current.Entries.Add(new Entry(Current.StopWatch.ElapsedTime, 0, 0));
                 Current = Parent;
             }
         }
@@ -293,7 +286,7 @@ namespace Utilities.Profiler.Manager.Default
                 return null;
             Root.Stop();
             if (DiscardResults)
-                Root.Times.Clear();
+                Root.Entries.Clear();
             return Root;
         }
 
@@ -305,7 +298,7 @@ namespace Utilities.Profiler.Manager.Default
         {
             StringBuilder Builder = new StringBuilder();
             Level.Times(x => { Builder.Append("\t"); });
-            Builder.AppendLineFormat("{0} ({1} ms)", Function, Times.Sum());
+            Builder.AppendLineFormat("{0} ({1} ms)", Function, Entries.Sum(x => x.Time));
             foreach (string Key in Children.Keys)
             {
                 Builder.AppendLine(Children[Key].ToString());
@@ -323,6 +316,14 @@ namespace Utilities.Profiler.Manager.Default
         {
             if (Disposing)
                 Stop();
+        }
+
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        ~Profiler()
+        {
+            Dispose(false);
         }
     }
 }
