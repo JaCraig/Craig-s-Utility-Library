@@ -30,13 +30,13 @@ namespace Utilities.Profiler.Manager.Interfaces
         /// Gets the cpu usage (percentage)
         /// </summary>
         /// <value>The cpu usage.</value>
-        decimal CPUUsage { get; }
+        float CPUUsage { get; }
 
         /// <summary>
         /// Gets the memory. (in MB)
         /// </summary>
         /// <value>The memory.</value>
-        decimal Memory { get; }
+        float Memory { get; }
 
         /// <summary>
         /// Total time that the profiler has taken (in milliseconds)

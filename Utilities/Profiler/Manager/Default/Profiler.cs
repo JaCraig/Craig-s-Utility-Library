@@ -68,6 +68,10 @@ namespace Utilities.Profiler.Manager.Default
                 Running = false;
                 Current = this;
                 Child = this;
+                if (CPUCounter == null)
+                    CPUCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+                if (MemCounter == null)
+                    MemCounter = new PerformanceCounter("Memory", "Available MBytes");
             }
             else
             {
@@ -117,6 +121,24 @@ namespace Utilities.Profiler.Manager.Default
                 value.Cache("Root_Profiler", "Item");
             }
         }
+
+        private static StopWatch CounterStopWatch { get; set; }
+
+        /// <summary>
+        /// Gets or sets the cpu counter.
+        /// </summary>
+        /// <value>
+        /// The cpu counter.
+        /// </value>
+        private static PerformanceCounter CPUCounter { get; set; }
+
+        /// <summary>
+        /// Gets or sets the memory counter.
+        /// </summary>
+        /// <value>
+        /// The memory counter.
+        /// </value>
+        private static PerformanceCounter MemCounter { get; set; }
 
         /// <summary>
         /// Where the profiler was started at
@@ -203,7 +225,7 @@ namespace Utilities.Profiler.Manager.Default
             {
                 Current.Running = false;
                 Current.StopWatch.Stop();
-                Current.Entries.Add(new Entry(Current.StopWatch.ElapsedTime, 0, 0));
+                Current.Entries.Add(new Entry(Current.StopWatch.ElapsedTime, MemCounter.NextValue(), CPUCounter.NextValue()));
             }
             Current.Running = true;
             Current.StopWatch.Start();
@@ -265,12 +287,24 @@ namespace Utilities.Profiler.Manager.Default
         public void Stop()
         {
             if (Current == null)
+            {
+                if (CPUCounter != null)
+                {
+                    CPUCounter.Dispose();
+                    CPUCounter = null;
+                }
+                if (MemCounter != null)
+                {
+                    MemCounter.Dispose();
+                    MemCounter = null;
+                }
                 return;
+            }
             if (Current.Running)
             {
                 Current.Running = false;
                 Current.StopWatch.Stop();
-                Current.Entries.Add(new Entry(Current.StopWatch.ElapsedTime, 0, 0));
+                Current.Entries.Add(new Entry(Current.StopWatch.ElapsedTime, MemCounter.NextValue(), CPUCounter.NextValue()));
                 Current = Parent;
             }
         }

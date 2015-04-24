@@ -38,6 +38,7 @@ namespace UnitTests.Profiler
             TestObject.Stop();
             Assert.InRange(A.Entries.Sum(x => x.Time), 0, 1000);
             Assert.InRange(TestObject.Entries.Sum(x => x.Time), 0, 1500);
+            Assert.Equal(-100, A.Entries.Sum(x => x.Memory));
         }
     }
 }
