@@ -70,8 +70,12 @@ namespace Utilities.Profiler.Manager.Default
                 Child = this;
                 if (CPUCounter == null)
                     CPUCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
-                if (MemCounter == null)
-                    MemCounter = new PerformanceCounter("Memory", "Available MBytes");
+                if (CounterStopWatch == null)
+                {
+                    CounterStopWatch = new StopWatch();
+                    CounterStopWatch.Start();
+                    LastCounterTime = CounterStopWatch.ElapsedTime;
+                }
             }
             else
             {
@@ -79,6 +83,16 @@ namespace Utilities.Profiler.Manager.Default
             }
             Start();
         }
+
+        /// <summary>
+        /// The _ cpu value
+        /// </summary>
+        private static float _CPUValue = 0;
+
+        /// <summary>
+        /// The _ memory value
+        /// </summary>
+        private static float _MemValue = 0;
 
         /// <summary>
         /// Contains the current profiler
@@ -121,24 +135,6 @@ namespace Utilities.Profiler.Manager.Default
                 value.Cache("Root_Profiler", "Item");
             }
         }
-
-        private static StopWatch CounterStopWatch { get; set; }
-
-        /// <summary>
-        /// Gets or sets the cpu counter.
-        /// </summary>
-        /// <value>
-        /// The cpu counter.
-        /// </value>
-        private static PerformanceCounter CPUCounter { get; set; }
-
-        /// <summary>
-        /// Gets or sets the memory counter.
-        /// </summary>
-        /// <value>
-        /// The memory counter.
-        /// </value>
-        private static PerformanceCounter MemCounter { get; set; }
 
         /// <summary>
         /// Where the profiler was started at
@@ -187,6 +183,60 @@ namespace Utilities.Profiler.Manager.Default
         protected StopWatch StopWatch { get; set; }
 
         /// <summary>
+        /// Gets or sets the counter stop watch.
+        /// </summary>
+        /// <value>The counter stop watch.</value>
+        private static StopWatch CounterStopWatch { get; set; }
+
+        /// <summary>
+        /// Gets or sets the cpu counter.
+        /// </summary>
+        /// <value>The cpu counter.</value>
+        private static PerformanceCounter CPUCounter { get; set; }
+
+        /// <summary>
+        /// Gets the cpu value.
+        /// </summary>
+        /// <value>The cpu value.</value>
+        private static float CPUValue
+        {
+            get
+            {
+                if (CounterStopWatch.ElapsedTime >= LastCounterTime + 500)
+                {
+                    LastCounterTime = CounterStopWatch.ElapsedTime;
+                    _CPUValue = CPUCounter.NextValue();
+                    _MemValue = GC.GetTotalMemory(false) / 1048576;
+                }
+                return _CPUValue;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the last counter time.
+        /// </summary>
+        /// <value>The last counter time.</value>
+        private static long LastCounterTime { get; set; }
+
+        /// <summary>
+        /// Gets the memory value.
+        /// </summary>
+        /// <value>The memory value.</value>
+        private static float MemValue
+        {
+            get
+            {
+                if (CounterStopWatch.ElapsedTime >= LastCounterTime + 500)
+                {
+                    LastCounterTime = CounterStopWatch.ElapsedTime;
+                    _CPUValue = CPUCounter.NextValue();
+                    _MemValue = GC.GetTotalMemory(false) / 1048576;
+                }
+                return _MemValue;
+            }
+        }
+
+        /// <summary>
         /// Compares the profilers and determines if they are not equal
         /// </summary>
         /// <param name="First">First</param>
@@ -225,7 +275,7 @@ namespace Utilities.Profiler.Manager.Default
             {
                 Current.Running = false;
                 Current.StopWatch.Stop();
-                Current.Entries.Add(new Entry(Current.StopWatch.ElapsedTime, MemCounter.NextValue(), CPUCounter.NextValue()));
+                Current.Entries.Add(new Entry(Current.StopWatch.ElapsedTime, MemValue, CPUValue));
             }
             Current.Running = true;
             Current.StopWatch.Start();
@@ -293,18 +343,13 @@ namespace Utilities.Profiler.Manager.Default
                     CPUCounter.Dispose();
                     CPUCounter = null;
                 }
-                if (MemCounter != null)
-                {
-                    MemCounter.Dispose();
-                    MemCounter = null;
-                }
                 return;
             }
             if (Current.Running)
             {
                 Current.Running = false;
                 Current.StopWatch.Stop();
-                Current.Entries.Add(new Entry(Current.StopWatch.ElapsedTime, MemCounter.NextValue(), CPUCounter.NextValue()));
+                Current.Entries.Add(new Entry(Current.StopWatch.ElapsedTime, MemValue, CPUValue));
                 Current = Parent;
             }
         }

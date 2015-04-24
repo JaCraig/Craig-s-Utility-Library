@@ -42,7 +42,7 @@ namespace Utilities.Profiler.Manager.Default
         /// </summary>
         public Profiler()
         {
-            Times = new List<long>();
+            Entries = new List<IResultEntry>();
             Function = "";
             InternalChildren = new Dictionary<string, Profiler>();
         }
@@ -61,13 +61,21 @@ namespace Utilities.Profiler.Manager.Default
                     Parent.InternalChildren.Add(FunctionName, this);
                 this.Function = FunctionName;
                 this.InternalChildren = new Dictionary<string, Profiler>();
-                this.Times = new List<long>();
+                this.Entries = new List<IResultEntry>();
                 this.StopWatch = new StopWatch();
                 this.Level = Parent == null ? 0 : Parent.Level + 1;
                 this.CalledFrom = new StackTrace().GetMethods(this.GetType().Assembly).ToString<MethodBase>(x => x.DeclaringType.Name + " > " + x.Name, "<br />");
                 Running = false;
                 Current = this;
                 Child = this;
+                if (CPUCounter == null)
+                    CPUCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+                if (CounterStopWatch == null)
+                {
+                    CounterStopWatch = new StopWatch();
+                    CounterStopWatch.Start();
+                    LastCounterTime = CounterStopWatch.ElapsedTime;
+                }
             }
             else
             {
@@ -77,12 +85,14 @@ namespace Utilities.Profiler.Manager.Default
         }
 
         /// <summary>
-        /// Destructor
+        /// The _ cpu value
         /// </summary>
-        ~Profiler()
-        {
-            Dispose(false);
-        }
+        private static float _CPUValue = 0;
+
+        /// <summary>
+        /// The _ memory value
+        /// </summary>
+        private static float _MemValue = 0;
 
         /// <summary>
         /// Contains the current profiler
@@ -137,6 +147,12 @@ namespace Utilities.Profiler.Manager.Default
         public IDictionary<string, IResult> Children { get { return InternalChildren.ToDictionary(x => x.Key, x => (IResult)x.Value); } }
 
         /// <summary>
+        /// Gets the entries.
+        /// </summary>
+        /// <value>The entries.</value>
+        public ICollection<IResultEntry> Entries { get; private set; }
+
+        /// <summary>
         /// Function name
         /// </summary>
         public string Function { get; protected set; }
@@ -145,11 +161,6 @@ namespace Utilities.Profiler.Manager.Default
         /// Children profiler items
         /// </summary>
         public IDictionary<string, Profiler> InternalChildren { get; private set; }
-
-        /// <summary>
-        /// Total time that the profiler has taken (in milliseconds)
-        /// </summary>
-        public ICollection<long> Times { get; private set; }
 
         /// <summary>
         /// Level of the profiler
@@ -170,6 +181,60 @@ namespace Utilities.Profiler.Manager.Default
         /// Stop watch
         /// </summary>
         protected StopWatch StopWatch { get; set; }
+
+        /// <summary>
+        /// Gets or sets the counter stop watch.
+        /// </summary>
+        /// <value>The counter stop watch.</value>
+        private static StopWatch CounterStopWatch { get; set; }
+
+        /// <summary>
+        /// Gets or sets the cpu counter.
+        /// </summary>
+        /// <value>The cpu counter.</value>
+        private static PerformanceCounter CPUCounter { get; set; }
+
+        /// <summary>
+        /// Gets the cpu value.
+        /// </summary>
+        /// <value>The cpu value.</value>
+        private static float CPUValue
+        {
+            get
+            {
+                if (CounterStopWatch.ElapsedTime >= LastCounterTime + 500)
+                {
+                    LastCounterTime = CounterStopWatch.ElapsedTime;
+                    _CPUValue = CPUCounter.NextValue();
+                    _MemValue = GC.GetTotalMemory(false) / 1048576;
+                }
+                return _CPUValue;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the last counter time.
+        /// </summary>
+        /// <value>The last counter time.</value>
+        private static long LastCounterTime { get; set; }
+
+        /// <summary>
+        /// Gets the memory value.
+        /// </summary>
+        /// <value>The memory value.</value>
+        private static float MemValue
+        {
+            get
+            {
+                if (CounterStopWatch.ElapsedTime >= LastCounterTime + 500)
+                {
+                    LastCounterTime = CounterStopWatch.ElapsedTime;
+                    _CPUValue = CPUCounter.NextValue();
+                    _MemValue = GC.GetTotalMemory(false) / 1048576;
+                }
+                return _MemValue;
+            }
+        }
 
         /// <summary>
         /// Compares the profilers and determines if they are not equal
@@ -210,7 +275,7 @@ namespace Utilities.Profiler.Manager.Default
             {
                 Current.Running = false;
                 Current.StopWatch.Stop();
-                Current.Times.Add(Current.StopWatch.ElapsedTime);
+                Current.Entries.Add(new Entry(Current.StopWatch.ElapsedTime, MemValue, CPUValue));
             }
             Current.Running = true;
             Current.StopWatch.Start();
@@ -272,12 +337,19 @@ namespace Utilities.Profiler.Manager.Default
         public void Stop()
         {
             if (Current == null)
+            {
+                if (CPUCounter != null)
+                {
+                    CPUCounter.Dispose();
+                    CPUCounter = null;
+                }
                 return;
+            }
             if (Current.Running)
             {
                 Current.Running = false;
                 Current.StopWatch.Stop();
-                Current.Times.Add(Current.StopWatch.ElapsedTime);
+                Current.Entries.Add(new Entry(Current.StopWatch.ElapsedTime, MemValue, CPUValue));
                 Current = Parent;
             }
         }
@@ -293,7 +365,7 @@ namespace Utilities.Profiler.Manager.Default
                 return null;
             Root.Stop();
             if (DiscardResults)
-                Root.Times.Clear();
+                Root.Entries.Clear();
             return Root;
         }
 
@@ -305,7 +377,7 @@ namespace Utilities.Profiler.Manager.Default
         {
             StringBuilder Builder = new StringBuilder();
             Level.Times(x => { Builder.Append("\t"); });
-            Builder.AppendLineFormat("{0} ({1} ms)", Function, Times.Sum());
+            Builder.AppendLineFormat("{0} ({1} ms)", Function, Entries.Sum(x => x.Time));
             foreach (string Key in Children.Keys)
             {
                 Builder.AppendLine(Children[Key].ToString());
@@ -323,6 +395,14 @@ namespace Utilities.Profiler.Manager.Default
         {
             if (Disposing)
                 Stop();
+        }
+
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        ~Profiler()
+        {
+            Dispose(false);
         }
     }
 }

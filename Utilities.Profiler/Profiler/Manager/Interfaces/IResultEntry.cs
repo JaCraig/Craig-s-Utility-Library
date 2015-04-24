@@ -19,29 +19,29 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System.Collections.Generic;
-
 namespace Utilities.Profiler.Manager.Interfaces
 {
     /// <summary>
-    /// Profiler results interface
+    /// Profiler result entry interface
     /// </summary>
-    public interface IResult
+    public interface IResultEntry
     {
         /// <summary>
-        /// Where the profiler was started at
+        /// Gets the cpu usage (percentage)
         /// </summary>
-        string CalledFrom { get; }
+        /// <value>The cpu usage.</value>
+        float CPUUsage { get; }
 
         /// <summary>
-        /// Any child results (Key = Name/Identifier, Value = IResult object)
+        /// Gets the memory. (in MB)
         /// </summary>
-        IDictionary<string, IResult> Children { get; }
+        /// <value>The memory.</value>
+        float Memory { get; }
 
         /// <summary>
-        /// Gets the entries.
+        /// Total time that the profiler has taken (in milliseconds)
         /// </summary>
-        /// <value>The entries.</value>
-        ICollection<IResultEntry> Entries { get; }
+        /// <value>The time.</value>
+        long Time { get; }
     }
 }

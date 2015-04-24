@@ -161,6 +161,8 @@
     <Compile Include="Profiler\Manager\Manager.cs" />
     <Compile Include="Profiler\Manager\Module\ProfilerModule.cs" />
     <Compile Include="Profiler\Profiler.cs" />
+    <Compile Include="Profiler\Manager\Default\Entry.cs" />
+    <Compile Include="Profiler\Manager\Interfaces\IResultEntry.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />
