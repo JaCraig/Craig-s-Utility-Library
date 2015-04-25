@@ -88,7 +88,7 @@ var searchData=
   ['maxtokenprobability',['MaxTokenProbability',['../class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html#a62ca1e3472d1fbbddf81bb285ea4557a',1,'Utilities::DataTypes::AI::NaiveBayes']]],
   ['maxvalue',['MaxValue',['../class_utilities_1_1_data_types_1_1_binary_tree.html#a2f386e490c0938fbcbf17ed9eaf17b7c',1,'Utilities::DataTypes::BinaryTree']]],
   ['me',['Me',['../namespace_utilities_1_1_i_o_1_1_file_formats.html#a1c328a2a149c22b302b9b3a6f922def8a318b2739ddc2c16c97b33c9b04b79f3e',1,'Utilities::IO::FileFormats']]],
-  ['memory',['Memory',['../class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_entry.html#a3c3546d01004cfd8dff6f5c481b4e24b',1,'Utilities.Profiler.Manager.Default.Entry.Memory()'],['../interface_utilities_1_1_profiler_1_1_manager_1_1_interfaces_1_1_i_result_entry.html#a98678f44efcb537bd2330d1bd6d9502e',1,'Utilities.Profiler.Manager.Interfaces.IResultEntry.Memory()']]],
+  ['memory',['Memory',['../class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_entry.html#a7ca28422e2d1e4da8cfaec3b393830c0',1,'Utilities.Profiler.Manager.Default.Entry.Memory()'],['../interface_utilities_1_1_profiler_1_1_manager_1_1_interfaces_1_1_i_result_entry.html#aaf5a318a1521095c578910ff79014115',1,'Utilities.Profiler.Manager.Interfaces.IResultEntry.Memory()']]],
   ['messagebase',['MessageBase',['../class_utilities_1_1_i_o_1_1_messaging_1_1_base_classes_1_1_message_base.html#aa81f71f82d7d2474aa0c63831acfe7dc',1,'Utilities::IO::Messaging::BaseClasses::MessageBase']]],
   ['messagebase',['MessageBase',['../class_utilities_1_1_i_o_1_1_messaging_1_1_base_classes_1_1_message_base.html',1,'Utilities::IO::Messaging::BaseClasses']]],
   ['messagebase_2ecs',['MessageBase.cs',['../_message_base_8cs.html',1,'']]],
