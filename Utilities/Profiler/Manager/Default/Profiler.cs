@@ -69,7 +69,7 @@ namespace Utilities.Profiler.Manager.Default
                 Current = this;
                 Child = this;
                 if (CPUCounter == null)
-                    CPUCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+                    CPUCounter = new PerformanceCounter("Processor Information", "% Processor Time", "_Total");
                 if (CounterStopWatch == null)
                 {
                     CounterStopWatch = new StopWatch();
