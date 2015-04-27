@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Reflection;
 
 namespace Utilities.IoC.Interfaces
@@ -28,6 +29,7 @@ namespace Utilities.IoC.Interfaces
     /// <summary>
     /// Bootstrapper interface
     /// </summary>
+    [ContractClass(typeof(IBootstrapperContract))]
     public interface IBootstrapper : IDisposable
     {
         /// <summary>
@@ -134,5 +136,79 @@ namespace Utilities.IoC.Interfaces
         /// <param name="ObjectType">Object type</param>
         /// <returns>A list of objects of the specified type</returns>
         IEnumerable<object> ResolveAll(Type ObjectType);
+    }
+
+    [ContractClassFor(typeof(IBootstrapper))]
+    internal abstract class IBootstrapperContract : IBootstrapper
+    {
+        public string Name
+        {
+            get
+            {
+                return "";
+            }
+        }
+
+        public void AddAssembly(params Assembly[] Assemblies)
+        {
+        }
+
+        public void Dispose()
+        {
+        }
+
+        public void Register<T>(T Object, string Name = "") where T : class
+        {
+        }
+
+        public void Register<T>(string Name = "") where T : class, new()
+        {
+        }
+
+        public void Register<T1, T2>(string Name = "")
+            where T1 : class
+            where T2 : class, T1
+        {
+        }
+
+        public void Register<T>(Func<T> Function, string Name = "") where T : class
+        {
+        }
+
+        public void RegisterAll<T>() where T : class
+        {
+        }
+
+        public T Resolve<T>(T DefaultObject = default(T)) where T : class
+        {
+            return default(T);
+        }
+
+        public T Resolve<T>(string Name, T DefaultObject = default(T)) where T : class
+        {
+            return default(T);
+        }
+
+        public object Resolve(Type ObjectType, object DefaultObject = null)
+        {
+            return default(object);
+        }
+
+        public object Resolve(Type ObjectType, string Name, object DefaultObject = null)
+        {
+            return default(object);
+        }
+
+        public IEnumerable<T> ResolveAll<T>() where T : class
+        {
+            Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
+            return new List<T>();
+        }
+
+        public IEnumerable<object> ResolveAll(Type ObjectType)
+        {
+            Contract.Ensures(Contract.Result<IEnumerable<object>>() != null);
+            return new List<object>();
+        }
     }
 }
