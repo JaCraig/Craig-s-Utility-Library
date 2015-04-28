@@ -50,6 +50,7 @@ namespace Utilities.DataTypes.DataMapper.Interfaces
     /// </summary>
     /// <typeparam name="Left">Left type</typeparam>
     /// <typeparam name="Right">Right type</typeparam>
+    [ContractClass(typeof(ITypeMappingContract<,>))]
     public interface ITypeMapping<Left, Right> : ITypeMapping
     {
         /// <summary>

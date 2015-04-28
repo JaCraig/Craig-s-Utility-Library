@@ -247,6 +247,8 @@
     <Compile Include="DataTypes\DataMapper\Default\DataMapper.cs" />
     <Compile Include="DataTypes\DataMapper\Default\Mapping.cs" />
     <Compile Include="DataTypes\DataMapper\Default\TypeMapping.cs" />
+    <Compile Include="DataTypes\DataMapper\Interfaces\Contracts\IDataMapperContract.cs" />
+    <Compile Include="DataTypes\DataMapper\Interfaces\Contracts\IMapperModuleContract.cs" />
     <Compile Include="DataTypes\DataMapper\Interfaces\Contracts\ITypeMappingContract.cs" />
     <Compile Include="DataTypes\DataMapper\Interfaces\IDataMapper.cs" />
     <Compile Include="DataTypes\DataMapper\Interfaces\IMapperModule.cs" />
