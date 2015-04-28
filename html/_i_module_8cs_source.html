@@ -128,25 +128,33 @@ $(document).ready(function(){initNavTree('_i_module_8cs_source.html','');});
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">THE SOFTWARE.*/</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespace_utilities.html">Utilities</a>.IoC.Interfaces</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{</div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="interface_utilities_1_1_io_c_1_1_interfaces_1_1_i_module.html">   27</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">interface </span><a class="code" href="interface_utilities_1_1_io_c_1_1_interfaces_1_1_i_module.html">IModule</a></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    {</div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="interface_utilities_1_1_io_c_1_1_interfaces_1_1_i_module.html#acccfef1f512ce9872903c7c7f7800256">   32</a></span>&#160;        <span class="keywordtype">int</span> Order { <span class="keyword">get</span>; }</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keywordtype">void</span> Load(<a class="code" href="interface_utilities_1_1_io_c_1_1_interfaces_1_1_i_bootstrapper.html">IBootstrapper</a> Bootstrapper);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    }</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;}</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Diagnostics.Contracts;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_utilities.html">Utilities</a>.<a class="code" href="namespace_utilities_1_1_io_c.html">IoC</a>.<a class="code" href="namespace_utilities_1_1_io_c_1_1_interfaces.html">Interfaces</a>.<a class="code" href="namespace_utilities_1_1_io_c_1_1_interfaces_1_1_contracts.html">Contracts</a>;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespace_utilities.html">Utilities</a>.IoC.Interfaces</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    [ContractClass(typeof(IModuleContract))]</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="interface_utilities_1_1_io_c_1_1_interfaces_1_1_i_module.html">   31</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">interface </span><a class="code" href="interface_utilities_1_1_io_c_1_1_interfaces_1_1_i_module.html">IModule</a></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    {</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="interface_utilities_1_1_io_c_1_1_interfaces_1_1_i_module.html#acccfef1f512ce9872903c7c7f7800256">   36</a></span>&#160;        <span class="keywordtype">int</span> Order { <span class="keyword">get</span>; }</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keywordtype">void</span> Load(<a class="code" href="interface_utilities_1_1_io_c_1_1_interfaces_1_1_i_bootstrapper.html">IBootstrapper</a> Bootstrapper);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    }</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div>
+<div class="ttc" id="namespace_system_html"><div class="ttname"><a href="namespace_system.html">System</a></div></div>
 <div class="ttc" id="namespace_utilities_html"><div class="ttname"><a href="namespace_utilities.html">Utilities</a></div></div>
-<div class="ttc" id="interface_utilities_1_1_io_c_1_1_interfaces_1_1_i_bootstrapper_html"><div class="ttname"><a href="interface_utilities_1_1_io_c_1_1_interfaces_1_1_i_bootstrapper.html">Utilities.IoC.Interfaces.IBootstrapper</a></div><div class="ttdoc">Bootstrapper interface </div><div class="ttdef"><b>Definition:</b> <a href="_i_bootstrapper_8cs_source.html#l00031">IBootstrapper.cs:31</a></div></div>
-<div class="ttc" id="interface_utilities_1_1_io_c_1_1_interfaces_1_1_i_module_html"><div class="ttname"><a href="interface_utilities_1_1_io_c_1_1_interfaces_1_1_i_module.html">Utilities.IoC.Interfaces.IModule</a></div><div class="ttdoc">IoC module base class </div><div class="ttdef"><b>Definition:</b> <a href="_i_module_8cs_source.html#l00027">IModule.cs:27</a></div></div>
+<div class="ttc" id="namespace_utilities_1_1_io_c_1_1_interfaces_1_1_contracts_html"><div class="ttname"><a href="namespace_utilities_1_1_io_c_1_1_interfaces_1_1_contracts.html">Utilities.IoC.Interfaces.Contracts</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_bootstrapper_contract_8cs_source.html#l00028">IBootstrapperContract.cs:28</a></div></div>
+<div class="ttc" id="interface_utilities_1_1_io_c_1_1_interfaces_1_1_i_bootstrapper_html"><div class="ttname"><a href="interface_utilities_1_1_io_c_1_1_interfaces_1_1_i_bootstrapper.html">Utilities.IoC.Interfaces.IBootstrapper</a></div><div class="ttdoc">Bootstrapper interface </div><div class="ttdef"><b>Definition:</b> <a href="_i_bootstrapper_8cs_source.html#l00034">IBootstrapper.cs:34</a></div></div>
+<div class="ttc" id="interface_utilities_1_1_io_c_1_1_interfaces_1_1_i_module_html"><div class="ttname"><a href="interface_utilities_1_1_io_c_1_1_interfaces_1_1_i_module.html">Utilities.IoC.Interfaces.IModule</a></div><div class="ttdoc">IoC module base class </div><div class="ttdef"><b>Definition:</b> <a href="_i_module_8cs_source.html#l00031">IModule.cs:31</a></div></div>
+<div class="ttc" id="namespace_utilities_1_1_io_c_1_1_interfaces_html"><div class="ttname"><a href="namespace_utilities_1_1_io_c_1_1_interfaces.html">Utilities.IoC.Interfaces</a></div></div>
+<div class="ttc" id="namespace_utilities_1_1_io_c_html"><div class="ttname"><a href="namespace_utilities_1_1_io_c.html">Utilities.IoC</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_2a25a2b0d9506505e87582da3d777bb1.html">IoC</a></li><li class="navelem"><a class="el" href="dir_49a90c5ef622a9df6244cdae23768bb1.html">Interfaces</a></li><li class="navelem"><a class="el" href="_i_module_8cs.html">IModule.cs</a></li>
-    <li class="footer">Generated on Fri Apr 24 2015 21:03:34 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Mon Apr 27 2015 23:49:46 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

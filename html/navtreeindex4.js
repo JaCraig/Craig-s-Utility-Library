@@ -1,5 +1,11 @@
 var NAVTREEINDEX4 =
 {
+"class_utilities_1_1_data_types_1_1_binary_tree.html#ad4880b39dae84e1ed0132623e88bbbdb":[1,0,0,1,11,9],
+"class_utilities_1_1_data_types_1_1_binary_tree.html#ae16dfabe4d9b328457b0fb3c55668059":[1,0,0,1,11,12],
+"class_utilities_1_1_data_types_1_1_binary_tree.html#af1a23fead6809b4fd6ffa50a7637f748":[1,0,0,1,11,10],
+"class_utilities_1_1_data_types_1_1_binary_tree.html#aff28aed15ca9cc24959c57ef175fc54b":[1,0,0,1,11,3],
+"class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html":[1,0,0,1,2,0,0],
+"class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a048a39993a9387b4d359d59425b5e5b8":[1,0,0,1,2,0,0,16],
 "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a079998eb01621376fe56a180dfc01f75":[1,0,0,1,2,0,0,13],
 "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a3e9c9608d7eaa7772721b5cd563f10ad":[1,0,0,1,2,0,0,14],
 "class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a47993347421896147f2ae7f4b00cd8f0":[1,0,0,1,2,0,0,7],
@@ -243,11 +249,5 @@ var NAVTREEINDEX4 =
 "class_utilities_1_1_data_types_1_1_dynamo.html#a3b61a6ec4334a8dcf229e8e5696ae7e7":[1,0,0,1,14,4],
 "class_utilities_1_1_data_types_1_1_dynamo.html#a48431a903e135c63bed7cca2a3e1e5e1":[1,0,0,1,14,54],
 "class_utilities_1_1_data_types_1_1_dynamo.html#a4a3dcd221d23a94b3bb341fdef693af8":[1,0,0,1,14,22],
-"class_utilities_1_1_data_types_1_1_dynamo.html#a54fb669c033c25272aaa796f773d5fcf":[1,0,0,1,14,47],
-"class_utilities_1_1_data_types_1_1_dynamo.html#a5d38d982c64f22e0e79a76e754926470":[1,0,0,1,14,55],
-"class_utilities_1_1_data_types_1_1_dynamo.html#a5f0543816b2b7d21e41c564ad7883211":[1,0,0,1,14,43],
-"class_utilities_1_1_data_types_1_1_dynamo.html#a607fa04c662a54a300a913ac53ba11c6":[1,0,0,1,14,27],
-"class_utilities_1_1_data_types_1_1_dynamo.html#a6d89c11b9e42d4a8ddc6416ca78db61a":[1,0,0,1,14,34],
-"class_utilities_1_1_data_types_1_1_dynamo.html#a72aff0ce92e6e876f001bcd86c2e6600":[1,0,0,1,14,53],
-"class_utilities_1_1_data_types_1_1_dynamo.html#a761825f7d8021ce4cd25f14801639cd0":[1,0,0,1,14,18]
+"class_utilities_1_1_data_types_1_1_dynamo.html#a54fb669c033c25272aaa796f773d5fcf":[1,0,0,1,14,47]
 };

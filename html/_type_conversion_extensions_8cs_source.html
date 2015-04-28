@@ -132,73 +132,86 @@ $(document).ready(function(){initNavTree('_type_conversion_extensions_8cs_source
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Collections.Generic;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.ComponentModel;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Data;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Linq;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Reflection;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_utilities.html">Utilities</a>.<a class="code" href="namespace_utilities_1_1_data_types.html">DataTypes</a>.<a class="code" href="namespace_utilities_1_1_data_types_1_1_conversion.html">Conversion</a>;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_utilities.html">Utilities</a>.<a class="code" href="namespace_utilities_1_1_data_types.html">DataTypes</a>.<a class="code" href="namespace_utilities_1_1_data_types_1_1_data_mapper.html">DataMapper</a>.<a class="code" href="namespace_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces.html">Interfaces</a>;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespace_utilities.html">Utilities</a>.DataTypes</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    [EditorBrowsable(EditorBrowsableState.Never)]</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span>TypeConversionExtensions</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">string</span> FormatToString(<span class="keyword">this</span> <span class="keywordtype">object</span> Input, <span class="keywordtype">string</span> <a class="code" href="namespace_utilities_1_1_i_o_1_1_logging_1_1_base_classes.html#ac848e6004e23702ffc635883d0be4377">Format</a>)</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <span class="keywordflow">if</span> (Input == null)</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keywordflow">return</span> !<span class="keywordtype">string</span>.IsNullOrEmpty(Format) ? Input.Call&lt;<span class="keywordtype">string</span>&gt;(<span class="stringliteral">&quot;ToString&quot;</span>, <a class="code" href="namespace_utilities_1_1_i_o_1_1_logging_1_1_base_classes.html#ac848e6004e23702ffc635883d0be4377">Format</a>) : Input.ToString();</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        }</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <a class="code" href="interface_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_1_1_i_type_mapping.html">ITypeMapping</a> MapTo(<span class="keyword">this</span> Type LeftType, Type RightType)</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">return</span> IoC.Manager.Bootstrapper.Resolve&lt;<a class="code" href="namespace_utilities.html">Utilities</a>.<a class="code" href="namespace_utilities_1_1_data_types.html">DataTypes</a>.<a class="code" href="namespace_utilities_1_1_data_types_1_1_data_mapper.html">DataMapper</a>.<a class="code" href="class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html">Manager</a>&gt;().Map(LeftType, RightType);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <a class="code" href="interface_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_1_1_i_type_mapping.html">ITypeMapping&lt;Left, Right&gt;</a> MapTo&lt;Left, Right&gt;(<span class="keyword">this</span> <a class="code" href="namespace_utilities_1_1_media.html#aaa6f7b87394bf3bed4ea3527298fef6da945d5e233cf7d6240f6b783b36a374ff">Left</a> Object)</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keywordflow">return</span> IoC.Manager.Bootstrapper.Resolve&lt;<a class="code" href="namespace_utilities.html">Utilities</a>.<a class="code" href="namespace_utilities_1_1_data_types.html">DataTypes</a>.<a class="code" href="namespace_utilities_1_1_data_types_1_1_data_mapper.html">DataMapper</a>.<a class="code" href="class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html">Manager</a>&gt;().Map&lt;Left, Right&gt;();</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <a class="code" href="interface_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_1_1_i_type_mapping.html">ITypeMapping&lt;Left, Right&gt;</a> MapTo&lt;Left, Right&gt;(<span class="keyword">this</span> Type ObjectType)</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        {</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">return</span> IoC.Manager.Bootstrapper.Resolve&lt;<a class="code" href="namespace_utilities.html">Utilities</a>.<a class="code" href="namespace_utilities_1_1_data_types.html">DataTypes</a>.<a class="code" href="namespace_utilities_1_1_data_types_1_1_data_mapper.html">DataMapper</a>.<a class="code" href="class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html">Manager</a>&gt;().Map&lt;Left, Right&gt;();</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> List&lt;T&gt; To&lt;T&gt;(<span class="keyword">this</span> DataTable Data, Func&lt;T&gt; Creator)</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            where T : <span class="keyword">class</span>,<span class="keyword">new</span>()</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        {</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            <span class="keywordflow">if</span> (Data == null)</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">new</span> List&lt;T&gt;();</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            Creator = Creator.Check(() =&gt; <span class="keyword">new</span> T());</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            Type TType = typeof(T);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            PropertyInfo[] Properties = TType.GetProperties();</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            List&lt;T&gt; Results = <span class="keyword">new</span> List&lt;T&gt;();</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; Data.Rows.Count; ++x)</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            {</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                T RowObject = Creator();</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; Data.Columns.Count; ++y)</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                {</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                    PropertyInfo Property = Properties.FirstOrDefault(z =&gt; z.Name == Data.Columns[y].ColumnName);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                    <span class="keywordflow">if</span> (Property != null)</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                        Property.SetValue(RowObject, Data.Rows[x][Data.Columns[y]].To(Property.PropertyType, null), <span class="keyword">new</span> <span class="keywordtype">object</span>[] { });</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                }</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                Results.Add(RowObject);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            }</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <span class="keywordflow">return</span> Results;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        }</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> R To&lt;T, R&gt;(<span class="keyword">this</span> T Object, R DefaultValue = <span class="keywordflow">default</span>(R))</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        {</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_utilities_1_1_data_types_1_1_conversion_1_1_manager.html">Manager</a>.To(Object, DefaultValue);</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        }</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">object</span> To&lt;T&gt;(<span class="keyword">this</span> T Object, Type ResultType, <span class="keywordtype">object</span> DefaultValue = null)</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        {</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_utilities_1_1_data_types_1_1_conversion_1_1_manager.html">Manager</a>.To(Object, ResultType, DefaultValue);</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        }</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    }</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;}</div>
-<div class="ttc" id="interface_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_1_1_i_type_mapping_html"><div class="ttname"><a href="interface_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_1_1_i_type_mapping.html">Utilities.DataTypes.DataMapper.Interfaces.ITypeMapping</a></div><div class="ttdoc">Type mapping interface </div><div class="ttdef"><b>Definition:</b> <a href="_i_type_mapping_8cs_source.html#l00030">ITypeMapping.cs:30</a></div></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Diagnostics.Contracts;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Linq;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Reflection;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_utilities.html">Utilities</a>.<a class="code" href="namespace_utilities_1_1_data_types.html">DataTypes</a>.<a class="code" href="namespace_utilities_1_1_data_types_1_1_conversion.html">Conversion</a>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_utilities.html">Utilities</a>.<a class="code" href="namespace_utilities_1_1_data_types.html">DataTypes</a>.<a class="code" href="namespace_utilities_1_1_data_types_1_1_data_mapper.html">DataMapper</a>.<a class="code" href="namespace_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces.html">Interfaces</a>;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespace_utilities.html">Utilities</a>.DataTypes</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    [EditorBrowsable(EditorBrowsableState.Never)]</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span>TypeConversionExtensions</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">string</span> FormatToString(<span class="keyword">this</span> <span class="keywordtype">object</span> Input, <span class="keywordtype">string</span> <a class="code" href="namespace_utilities_1_1_i_o_1_1_logging_1_1_base_classes.html#ac848e6004e23702ffc635883d0be4377">Format</a>)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">if</span> (Input == null)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordflow">return</span> !<span class="keywordtype">string</span>.IsNullOrEmpty(Format) ? Input.Call&lt;<span class="keywordtype">string</span>&gt;(<span class="stringliteral">&quot;ToString&quot;</span>, <a class="code" href="namespace_utilities_1_1_i_o_1_1_logging_1_1_base_classes.html#ac848e6004e23702ffc635883d0be4377">Format</a>) : Input.ToString();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <a class="code" href="interface_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_1_1_i_type_mapping.html">ITypeMapping</a> MapTo(<span class="keyword">this</span> Type LeftType, Type RightType)</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            Contract.Requires&lt;ArgumentNullException&gt;(LeftType != null);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            Contract.Requires&lt;ArgumentNullException&gt;(RightType != null);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            var TempManager = IoC.Manager.Bootstrapper.Resolve&lt;<a class="code" href="namespace_utilities.html">Utilities</a>.<a class="code" href="namespace_utilities_1_1_data_types.html">DataTypes</a>.<a class="code" href="namespace_utilities_1_1_data_types_1_1_data_mapper.html">DataMapper</a>.<a class="code" href="class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html">Manager</a>&gt;();</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keywordflow">if</span> (TempManager == null)</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                <span class="keywordflow">return</span> null;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keywordflow">return</span> TempManager.<a class="code" href="class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html#ac9c716e19edaae8ca117248da00ed3ed">Map</a>(LeftType, RightType);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <a class="code" href="interface_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_1_1_i_type_mapping.html">ITypeMapping&lt;Left, Right&gt;</a> MapTo&lt;Left, Right&gt;(<span class="keyword">this</span> <a class="code" href="namespace_utilities_1_1_media.html#aaa6f7b87394bf3bed4ea3527298fef6da945d5e233cf7d6240f6b783b36a374ff">Left</a> Object)</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            var TempManager = IoC.Manager.Bootstrapper.Resolve&lt;<a class="code" href="namespace_utilities.html">Utilities</a>.<a class="code" href="namespace_utilities_1_1_data_types.html">DataTypes</a>.<a class="code" href="namespace_utilities_1_1_data_types_1_1_data_mapper.html">DataMapper</a>.<a class="code" href="class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html">Manager</a>&gt;();</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordflow">if</span> (TempManager == null)</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                <span class="keywordflow">return</span> null;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keywordflow">return</span> TempManager.<a class="code" href="class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html#ac9c716e19edaae8ca117248da00ed3ed">Map</a>&lt;<a class="code" href="namespace_utilities_1_1_media.html#aaa6f7b87394bf3bed4ea3527298fef6da945d5e233cf7d6240f6b783b36a374ff">Left</a>, <a class="code" href="namespace_utilities_1_1_media.html#aaa6f7b87394bf3bed4ea3527298fef6da92b09c7c48c520c3c55e497875da437c">Right</a>&gt;();</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <a class="code" href="interface_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_1_1_i_type_mapping.html">ITypeMapping&lt;Left, Right&gt;</a> MapTo&lt;Left, Right&gt;(<span class="keyword">this</span> Type ObjectType)</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            var TempManager = IoC.Manager.Bootstrapper.Resolve&lt;<a class="code" href="namespace_utilities.html">Utilities</a>.<a class="code" href="namespace_utilities_1_1_data_types.html">DataTypes</a>.<a class="code" href="namespace_utilities_1_1_data_types_1_1_data_mapper.html">DataMapper</a>.<a class="code" href="class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html">Manager</a>&gt;();</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keywordflow">if</span> (TempManager == null)</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                <span class="keywordflow">return</span> null;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keywordflow">return</span> TempManager.<a class="code" href="class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html#ac9c716e19edaae8ca117248da00ed3ed">Map</a>&lt;<a class="code" href="namespace_utilities_1_1_media.html#aaa6f7b87394bf3bed4ea3527298fef6da945d5e233cf7d6240f6b783b36a374ff">Left</a>, <a class="code" href="namespace_utilities_1_1_media.html#aaa6f7b87394bf3bed4ea3527298fef6da92b09c7c48c520c3c55e497875da437c">Right</a>&gt;();</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        }</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> List&lt;T&gt; To&lt;T&gt;(<span class="keyword">this</span> DataTable Data, Func&lt;T&gt; Creator)</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            where T : <span class="keyword">class</span>,<span class="keyword">new</span>()</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        {</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keywordflow">if</span> (Data == null)</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">new</span> List&lt;T&gt;();</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            Creator = Creator.Check(() =&gt; <span class="keyword">new</span> T());</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            Type TType = typeof(T);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            PropertyInfo[] Properties = TType.GetProperties();</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            List&lt;T&gt; Results = <span class="keyword">new</span> List&lt;T&gt;();</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; Data.Rows.Count; ++x)</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            {</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                T RowObject = Creator();</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; Data.Columns.Count; ++y)</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                {</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                    PropertyInfo Property = Properties.FirstOrDefault(z =&gt; z.Name == Data.Columns[y].ColumnName);</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                    <span class="keywordflow">if</span> (Property != null)</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                        Property.SetValue(RowObject, Data.Rows[x][Data.Columns[y]].To(Property.PropertyType, null), <span class="keyword">new</span> <span class="keywordtype">object</span>[] { });</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                }</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                Results.Add(RowObject);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            }</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;            <span class="keywordflow">return</span> Results;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        }</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> R To&lt;T, R&gt;(<span class="keyword">this</span> T Object, R DefaultValue = <span class="keywordflow">default</span>(R))</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        {</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_utilities_1_1_data_types_1_1_conversion_1_1_manager.html">Manager</a>.To(Object, DefaultValue);</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        }</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">object</span> To&lt;T&gt;(<span class="keyword">this</span> T Object, Type ResultType, <span class="keywordtype">object</span> DefaultValue = null)</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        {</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_utilities_1_1_data_types_1_1_conversion_1_1_manager.html">Manager</a>.To(Object, ResultType, DefaultValue);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        }</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    }</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;}</div>
+<div class="ttc" id="interface_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_1_1_i_type_mapping_html"><div class="ttname"><a href="interface_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_1_1_i_type_mapping.html">Utilities.DataTypes.DataMapper.Interfaces.ITypeMapping</a></div><div class="ttdoc">Type mapping interface </div><div class="ttdef"><b>Definition:</b> <a href="_i_type_mapping_8cs_source.html#l00033">ITypeMapping.cs:33</a></div></div>
+<div class="ttc" id="class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager_html_ac9c716e19edaae8ca117248da00ed3ed"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html#ac9c716e19edaae8ca117248da00ed3ed">Utilities.DataTypes.DataMapper.Manager.Map</a></div><div class="ttdeci">ITypeMapping Map(Type Left, Type Right)</div><div class="ttdoc">Adds or returns a mapping between two types </div><div class="ttdef"><b>Definition:</b> <a href="_data_types_2_data_mapper_2_manager_8cs_source.html#l00072">Manager.cs:72</a></div></div>
 <div class="ttc" id="namespace_system_html"><div class="ttname"><a href="namespace_system.html">System</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_data_types_1_1_data_mapper_html"><div class="ttname"><a href="namespace_utilities_1_1_data_types_1_1_data_mapper.html">Utilities.DataTypes.DataMapper</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_1_1_logging_1_1_base_classes_html_ac848e6004e23702ffc635883d0be4377"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_logging_1_1_base_classes.html#ac848e6004e23702ffc635883d0be4377">Utilities.IO.Logging.BaseClasses.Format</a></div><div class="ttdeci">delegate string Format(string Message, MessageType Type, params object[] args)</div><div class="ttdoc">Delegate used to format the message </div></div>
@@ -207,7 +220,8 @@ $(document).ready(function(){initNavTree('_type_conversion_extensions_8cs_source
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_conversion_1_1_manager_html"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_conversion_1_1_manager.html">Utilities.DataTypes.Conversion.Manager</a></div><div class="ttdoc">Conversion manager </div><div class="ttdef"><b>Definition:</b> <a href="_data_types_2_conversion_2_manager_8cs_source.html#l00034">Manager.cs:34</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_data_types_html"><div class="ttname"><a href="namespace_utilities_1_1_data_types.html">Utilities.DataTypes</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_media_html_aaa6f7b87394bf3bed4ea3527298fef6da945d5e233cf7d6240f6b783b36a374ff"><div class="ttname"><a href="namespace_utilities_1_1_media.html#aaa6f7b87394bf3bed4ea3527298fef6da945d5e233cf7d6240f6b783b36a374ff">Utilities.Media.Left</a></div><div class="ttdoc">Left </div></div>
-<div class="ttc" id="namespace_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_html"><div class="ttname"><a href="namespace_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces.html">Utilities.DataTypes.DataMapper.Interfaces</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_data_mapper_8cs_source.html#l00024">IDataMapper.cs:24</a></div></div>
+<div class="ttc" id="namespace_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_html"><div class="ttname"><a href="namespace_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces.html">Utilities.DataTypes.DataMapper.Interfaces</a></div></div>
+<div class="ttc" id="namespace_utilities_1_1_media_html_aaa6f7b87394bf3bed4ea3527298fef6da92b09c7c48c520c3c55e497875da437c"><div class="ttname"><a href="namespace_utilities_1_1_media.html#aaa6f7b87394bf3bed4ea3527298fef6da92b09c7c48c520c3c55e497875da437c">Utilities.Media.Right</a></div><div class="ttdoc">Right </div></div>
 <div class="ttc" id="namespace_utilities_1_1_data_types_1_1_conversion_html"><div class="ttname"><a href="namespace_utilities_1_1_data_types_1_1_conversion.html">Utilities.DataTypes.Conversion</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -215,7 +229,7 @@ $(document).ready(function(){initNavTree('_type_conversion_extensions_8cs_source
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_ca0426833ed64f488ae0419fd1a98fec.html">DataTypes</a></li><li class="navelem"><a class="el" href="dir_ff08ba1239df36e241ac9aa57b32dcdc.html">ExtensionMethods</a></li><li class="navelem"><a class="el" href="_type_conversion_extensions_8cs.html">TypeConversionExtensions.cs</a></li>
-    <li class="footer">Generated on Fri Apr 24 2015 21:03:31 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Mon Apr 27 2015 23:49:43 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
