@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 using Utilities.DataTypes.Conversion;
@@ -57,7 +58,12 @@ namespace Utilities.DataTypes
         /// <returns>The type mapping</returns>
         public static ITypeMapping MapTo(this Type LeftType, Type RightType)
         {
-            return IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.DataMapper.Manager>().Map(LeftType, RightType);
+            Contract.Requires<ArgumentNullException>(LeftType != null);
+            Contract.Requires<ArgumentNullException>(RightType != null);
+            var TempManager = IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.DataMapper.Manager>();
+            if (TempManager == null)
+                return null;
+            return TempManager.Map(LeftType, RightType);
         }
 
         /// <summary>
@@ -69,7 +75,10 @@ namespace Utilities.DataTypes
         /// <returns>The type mapping</returns>
         public static ITypeMapping<Left, Right> MapTo<Left, Right>(this Left Object)
         {
-            return IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.DataMapper.Manager>().Map<Left, Right>();
+            var TempManager = IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.DataMapper.Manager>();
+            if (TempManager == null)
+                return null;
+            return TempManager.Map<Left, Right>();
         }
 
         /// <summary>
@@ -81,7 +90,10 @@ namespace Utilities.DataTypes
         /// <returns>The type mapping</returns>
         public static ITypeMapping<Left, Right> MapTo<Left, Right>(this Type ObjectType)
         {
-            return IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.DataMapper.Manager>().Map<Left, Right>();
+            var TempManager = IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.DataMapper.Manager>();
+            if (TempManager == null)
+                return null;
+            return TempManager.Map<Left, Right>();
         }
 
         /// <summary>

@@ -19,26 +19,32 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using System;
 using System.Diagnostics.Contracts;
-using Utilities.IoC.Interfaces.Contracts;
+using System.Linq.Expressions;
 
-namespace Utilities.IoC.Interfaces
+namespace Utilities.DataTypes.DataMapper.Interfaces.Contracts
 {
     /// <summary>
-    /// IoC module base class
+    /// ITypeMapping contract class
     /// </summary>
-    [ContractClass(typeof(IModuleContract))]
-    public interface IModule
+    [ContractClassFor(typeof(ITypeMapping))]
+    internal abstract class ITypeMappingContract : ITypeMapping
     {
         /// <summary>
-        /// Order to run this in
+        /// Automatically maps properties that are named the same thing
         /// </summary>
-        int Order { get; }
+        /// <returns></returns>
+        public ITypeMapping AutoMap()
+        {
+            Contract.Ensures(Contract.Result<ITypeMapping>() != null);
+            return null;
+        }
 
-        /// <summary>
-        /// Loads the module using the bootstrapper
-        /// </summary>
-        /// <param name="Bootstrapper">Bootstrapper used to register various objects</param>
-        void Load(IBootstrapper Bootstrapper);
+        public void Copy(object Source, object Destination)
+        {
+            Contract.Requires<ArgumentNullException>(Source != null);
+            Contract.Requires<ArgumentNullException>(Destination != null);
+        }
     }
 }

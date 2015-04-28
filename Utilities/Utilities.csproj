@@ -247,6 +247,7 @@
     <Compile Include="DataTypes\DataMapper\Default\DataMapper.cs" />
     <Compile Include="DataTypes\DataMapper\Default\Mapping.cs" />
     <Compile Include="DataTypes\DataMapper\Default\TypeMapping.cs" />
+    <Compile Include="DataTypes\DataMapper\Interfaces\Contracts\ITypeMappingContract.cs" />
     <Compile Include="DataTypes\DataMapper\Interfaces\IDataMapper.cs" />
     <Compile Include="DataTypes\DataMapper\Interfaces\IMapperModule.cs" />
     <Compile Include="DataTypes\DataMapper\Interfaces\IMapping.cs" />
@@ -301,6 +302,8 @@
     <Compile Include="IoC\BaseClasses\BootstrapperBase.cs" />
     <Compile Include="IoC\Default\DefaultBootstrapper.cs" />
     <Compile Include="IoC\Default\Interfaces\ITypeBuilder.cs" />
+    <Compile Include="IoC\Interfaces\Contracts\IBootstrapperContract.cs" />
+    <Compile Include="IoC\Interfaces\Contracts\IModuleContract.cs" />
     <Compile Include="IoC\Interfaces\IBootstrapper.cs" />
     <Compile Include="IoC\Interfaces\IModule.cs" />
     <Compile Include="IoC\Manager.cs" />

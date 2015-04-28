@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -130,6 +131,7 @@ namespace Utilities.IoC
         /// <returns>The list of</returns>
         private static List<Type> GetTypes(ref ConcurrentBag<Assembly> LoadedAssemblies)
         {
+            Contract.Requires<ArgumentNullException>(LoadedAssemblies != null);
             List<Type> TempTypes = new List<Type>();
             LoadedAssemblies = new ConcurrentBag<Assembly>(LoadedAssemblies.Where(x =>
             {
