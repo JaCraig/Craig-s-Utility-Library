@@ -43,7 +43,10 @@ namespace Utilities.IO
         /// <returns>XML representation of the key information</returns>
         public static string CreateKey(this System.Random Random, bool PrivatePublic)
         {
-            return IoC.Manager.Bootstrapper.Resolve<Manager>().CreateKey(PrivatePublic);
+            var TempManager = IoC.Manager.Bootstrapper.Resolve<Manager>();
+            if (TempManager == null)
+                return "";
+            return TempManager.CreateKey(PrivatePublic);
         }
 
         /// <summary>
@@ -97,7 +100,10 @@ namespace Utilities.IO
             string InitialVector = "OFRna73m*aze01xY",
             int KeySize = 256)
         {
-            return IoC.Manager.Bootstrapper.Resolve<Manager>().Decrypt(Data, Key, AlgorithmUsing, InitialVector, KeySize);
+            var TempManager = IoC.Manager.Bootstrapper.Resolve<Manager>();
+            if (TempManager == null)
+                return new byte[0];
+            return TempManager.Decrypt(Data, Key, AlgorithmUsing, InitialVector, KeySize);
         }
 
         /// <summary>
@@ -111,7 +117,10 @@ namespace Utilities.IO
             Contract.Requires<ArgumentNullException>(Key != null, "Key");
             if (Data == null)
                 return null;
-            return IoC.Manager.Bootstrapper.Resolve<Manager>().Decrypt(Data, Key);
+            var TempManager = IoC.Manager.Bootstrapper.Resolve<Manager>();
+            if (TempManager == null)
+                return new byte[0];
+            return TempManager.Decrypt(Data, Key);
         }
 
         /// <summary>
@@ -125,20 +134,24 @@ namespace Utilities.IO
         /// <returns>A decrypted string</returns>
         public static string Decrypt(this byte[] Input, string Key, Encoding EncodingUsing = null)
         {
-            return IoC.Manager.Bootstrapper.Resolve<Manager>().Decrypt(Input, Key).ToString(EncodingUsing);
+            var TempManager = IoC.Manager.Bootstrapper.Resolve<Manager>();
+            if (TempManager == null)
+                return "";
+            return TempManager.Decrypt(Input, Key).ToString(EncodingUsing);
         }
 
         /// <summary>
         /// Encrypts a byte array using RSA
         /// </summary>
-        /// <param name="Input">
-        /// Input (should be small as anything over 128 bytes can not be decrypted)
-        /// </param>
+        /// <param name="Input">Input (should be small as anything over 128 bytes can not be decrypted)</param>
         /// <param name="Key">Key to use for encryption</param>
         /// <returns>An encrypted string (64bit string)</returns>
         public static string Encrypt(byte[] Input, string Key)
         {
-            return IoC.Manager.Bootstrapper.Resolve<Manager>().Encrypt(Input, Key).ToString(Base64FormattingOptions.None);
+            var TempManager = IoC.Manager.Bootstrapper.Resolve<Manager>();
+            if (TempManager == null)
+                return "";
+            return TempManager.Encrypt(Input, Key).ToString(Base64FormattingOptions.None);
         }
 
         /// <summary>
@@ -149,7 +162,10 @@ namespace Utilities.IO
         /// <returns>The encrypted data</returns>
         public static byte[] Encrypt(this byte[] Data, byte[] Key)
         {
-            return IoC.Manager.Bootstrapper.Resolve<Manager>().Encrypt(Data, Key);
+            var TempManager = IoC.Manager.Bootstrapper.Resolve<Manager>();
+            if (TempManager == null)
+                return new byte[0];
+            return TempManager.Encrypt(Data, Key);
         }
 
         /// <summary>
@@ -203,7 +219,10 @@ namespace Utilities.IO
             string InitialVector = "OFRna73m*aze01xY",
             int KeySize = 256)
         {
-            return IoC.Manager.Bootstrapper.Resolve<Manager>().Encrypt(Data, Key, AlgorithmUsing, InitialVector, KeySize);
+            var TempManager = IoC.Manager.Bootstrapper.Resolve<Manager>();
+            if (TempManager == null)
+                return new byte[0];
+            return TempManager.Encrypt(Data, Key, AlgorithmUsing, InitialVector, KeySize);
         }
 
         /// <summary>
@@ -231,7 +250,10 @@ namespace Utilities.IO
         /// <returns>The hash of the byte array</returns>
         public static byte[] Hash(this byte[] Data, string Algorithm = "SHA1")
         {
-            return IoC.Manager.Bootstrapper.Resolve<Manager>().Hash(Data, Algorithm);
+            var TempManager = IoC.Manager.Bootstrapper.Resolve<Manager>();
+            if (TempManager == null)
+                return new byte[0];
+            return TempManager.Hash(Data, Algorithm);
         }
 
         /// <summary>
@@ -258,7 +280,13 @@ namespace Utilities.IO
         /// <returns>A signed hash of the input (64bit string)</returns>
         public static string SignHash(this string Input, string Key, out string Hash, Encoding EncodingUsing = null)
         {
-            return IoC.Manager.Bootstrapper.Resolve<Manager>().SignHash(Input, Key, out Hash, EncodingUsing);
+            var TempManager = IoC.Manager.Bootstrapper.Resolve<Manager>();
+            if (TempManager == null)
+            {
+                Hash = "";
+                return "";
+            }
+            return TempManager.SignHash(Input, Key, out Hash, EncodingUsing);
         }
 
         /// <summary>
@@ -270,7 +298,10 @@ namespace Utilities.IO
         /// <returns>True if it is verified, false otherwise</returns>
         public static bool VerifyHash(this string Hash, string SignedHash, string Key)
         {
-            return IoC.Manager.Bootstrapper.Resolve<Manager>().VerifyHash(Hash, SignedHash, Key);
+            var TempManager = IoC.Manager.Bootstrapper.Resolve<Manager>();
+            if (TempManager == null)
+                return false;
+            return TempManager.VerifyHash(Hash, SignedHash, Key);
         }
     }
 }

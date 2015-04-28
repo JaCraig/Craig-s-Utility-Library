@@ -43,7 +43,10 @@ namespace Utilities.IO
         public static R Deserialize<R, T>(this T Data, string ContentType = "application/json")
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ContentType), "ContentType");
-            return (R)IoC.Manager.Bootstrapper.Resolve<Manager>().Deserialize<T>(Data, typeof(R), ContentType);
+            var TempManager = IoC.Manager.Bootstrapper.Resolve<Manager>();
+            if (TempManager == null)
+                return default(R);
+            return (R)TempManager.Deserialize<T>(Data, typeof(R), ContentType);
         }
 
         /// <summary>
@@ -58,7 +61,10 @@ namespace Utilities.IO
         {
             if (ContentType == null)
                 ContentType = SerializationType.JSON;
-            return (R)IoC.Manager.Bootstrapper.Resolve<Manager>().Deserialize<T>(Data, typeof(R), ContentType);
+            var TempManager = IoC.Manager.Bootstrapper.Resolve<Manager>();
+            if (TempManager == null)
+                return default(R);
+            return (R)TempManager.Deserialize<T>(Data, typeof(R), ContentType);
         }
 
         /// <summary>
@@ -72,7 +78,10 @@ namespace Utilities.IO
         public static R Serialize<R, T>(this T Object, string ContentType = "application/json")
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ContentType), "ContentType");
-            return IoC.Manager.Bootstrapper.Resolve<Manager>().Serialize<T, R>(Object, ContentType);
+            var TempManager = IoC.Manager.Bootstrapper.Resolve<Manager>();
+            if (TempManager == null)
+                return default(R);
+            return TempManager.Serialize<T, R>(Object, ContentType);
         }
 
         /// <summary>
@@ -87,7 +96,10 @@ namespace Utilities.IO
         {
             if (ContentType == null)
                 ContentType = SerializationType.JSON;
-            return IoC.Manager.Bootstrapper.Resolve<Manager>().Serialize<T, R>(Object, ContentType);
+            var TempManager = IoC.Manager.Bootstrapper.Resolve<Manager>();
+            if (TempManager == null)
+                return default(R);
+            return TempManager.Serialize<T, R>(Object, ContentType);
         }
     }
 
