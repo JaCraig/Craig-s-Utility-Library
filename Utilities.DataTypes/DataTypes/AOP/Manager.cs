@@ -112,6 +112,7 @@ namespace Utilities.DataTypes.AOP
         /// <returns>The types that can be set up</returns>
         private static Type[] FilterTypesToSetup(IEnumerable<Type> enumerable)
         {
+            Contract.Requires<ArgumentNullException>(enumerable != null);
             return enumerable.Where(x => !Classes.ContainsKey(x)
                                 && !x.ContainsGenericParameters
                                 && x.IsClass

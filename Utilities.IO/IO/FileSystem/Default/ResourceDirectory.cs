@@ -132,6 +132,12 @@ namespace Utilities.IO.FileSystem.Default
         }
 
         /// <summary>
+        /// Gets the split path regex.
+        /// </summary>
+        /// <value>The split path regex.</value>
+        private static Regex SplitPathRegex { get { return new Regex(@"^resource://(?<Assembly>[^/]*)/?", RegexOptions.Compiled | RegexOptions.IgnoreCase); } }
+
+        /// <summary>
         /// Gets or sets the assembly this is from.
         /// </summary>
         /// <value>The assembly this is from.</value>
@@ -142,12 +148,6 @@ namespace Utilities.IO.FileSystem.Default
                 return AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.GetName().Name == SplitPathRegex.Match(InternalDirectory).Groups["Assembly"].Value);
             }
         }
-
-        /// <summary>
-        /// Gets the split path regex.
-        /// </summary>
-        /// <value>The split path regex.</value>
-        private Regex SplitPathRegex { get { return new Regex(@"^resource://(?<Assembly>[^/]*)/?", RegexOptions.Compiled | RegexOptions.IgnoreCase); } }
 
         /// <summary>
         /// Copies the directory to the specified parent directory

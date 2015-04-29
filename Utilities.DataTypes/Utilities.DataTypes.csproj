@@ -261,6 +261,9 @@
     <Compile Include="DataTypes\Caching\BaseClasses\CacheBase.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ConcurrentBagExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ConcurrentDictionary.cs" />
+    <Compile Include="DataTypes\DataMapper\Interfaces\Contracts\IDataMapperContract.cs" />
+    <Compile Include="DataTypes\DataMapper\Interfaces\Contracts\IMapperModuleContract.cs" />
+    <Compile Include="DataTypes\DataMapper\Interfaces\Contracts\ITypeMappingContract.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

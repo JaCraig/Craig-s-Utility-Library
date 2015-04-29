@@ -108,8 +108,10 @@ namespace Utilities.DataTypes.Conversion
                 if (ResultType.IsClass)
                 {
                     object ReturnValue = Activator.CreateInstance(ResultType);
-
-                    ObjectType.MapTo(ResultType)
+                    var TempMapping = ObjectType.MapTo(ResultType);
+                    if (TempMapping == null)
+                        return ReturnValue;
+                    TempMapping
                         .AutoMap()
                         .Copy(Item, ReturnValue);
                     return ReturnValue;

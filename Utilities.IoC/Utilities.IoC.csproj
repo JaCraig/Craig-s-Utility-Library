@@ -160,6 +160,8 @@
     <Compile Include="IoC\Interfaces\IModule.cs" />
     <Compile Include="IoC\Manager.cs" />
     <Compile Include="IoC\Default\TypeBuilder.cs" />
+    <Compile Include="IoC\Interfaces\Contracts\IBootstrapperContract.cs" />
+    <Compile Include="IoC\Interfaces\Contracts\IModuleContract.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

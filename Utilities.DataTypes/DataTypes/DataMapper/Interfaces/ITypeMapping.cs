@@ -20,13 +20,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
+using Utilities.DataTypes.DataMapper.Interfaces.Contracts;
 
 namespace Utilities.DataTypes.DataMapper.Interfaces
 {
     /// <summary>
     /// Type mapping interface
     /// </summary>
+    [ContractClass(typeof(ITypeMappingContract))]
     public interface ITypeMapping
     {
         /// <summary>
@@ -47,6 +50,7 @@ namespace Utilities.DataTypes.DataMapper.Interfaces
     /// </summary>
     /// <typeparam name="Left">Left type</typeparam>
     /// <typeparam name="Right">Right type</typeparam>
+    [ContractClass(typeof(ITypeMappingContract<,>))]
     public interface ITypeMapping<Left, Right> : ITypeMapping
     {
         /// <summary>

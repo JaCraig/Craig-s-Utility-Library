@@ -20,12 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Diagnostics.Contracts;
+using Utilities.DataTypes.DataMapper.Interfaces.Contracts;
 
 namespace Utilities.DataTypes.DataMapper.Interfaces
 {
     /// <summary>
     /// Data mapper interface
     /// </summary>
+    [ContractClass(typeof(IDataMapperContract))]
     public interface IDataMapper
     {
         /// <summary>
