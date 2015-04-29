@@ -1,5 +1,9 @@
 var NAVTREEINDEX3 =
 {
+"_sql_db_type_type_converter_8cs.html":[2,0,0,1,5,0,3],
+"_sql_db_type_type_converter_8cs_source.html":[2,0,0,1,5,0,3],
+"_stack_trace_extensions_8cs.html":[2,0,0,1,8,18],
+"_stack_trace_extensions_8cs_source.html":[2,0,0,1,8,18],
 "_state_abbreviation_generator_8cs.html":[2,0,0,8,1,5],
 "_state_abbreviation_generator_8cs_source.html":[2,0,0,8,1,5],
 "_state_generator_8cs.html":[2,0,0,8,1,6],
@@ -245,9 +249,5 @@ var NAVTREEINDEX3 =
 "class_utilities_1_1_data_types_1_1_binary_tree.html#a4f58bbf69b009e58f287373e5cb5b0fd":[1,0,0,1,11,5],
 "class_utilities_1_1_data_types_1_1_binary_tree.html#a60176d6764e07ba27a52378d8217d0b8":[1,0,0,1,11,8],
 "class_utilities_1_1_data_types_1_1_binary_tree.html#a9f2fe712dafef52906000849713acbc0":[1,0,0,1,11,7],
-"class_utilities_1_1_data_types_1_1_binary_tree.html#aacbfb112ae22b488f3256ae6066c2dcb":[1,0,0,1,11,1],
-"class_utilities_1_1_data_types_1_1_binary_tree.html#ab5c0b593517cf6979b576260e2c2f6ca":[1,0,0,1,11,2],
-"class_utilities_1_1_data_types_1_1_binary_tree.html#abe876f90d50daeec4feabda7807e3573":[1,0,0,1,11,16],
-"class_utilities_1_1_data_types_1_1_binary_tree.html#ac5b2bb2f12881eba4fa7bb9ae3e3bc85":[1,0,0,1,11,0],
-"class_utilities_1_1_data_types_1_1_binary_tree.html#ac8cc34cee063be2515ebd3e3ef5c36ac":[1,0,0,1,11,13]
+"class_utilities_1_1_data_types_1_1_binary_tree.html#aacbfb112ae22b488f3256ae6066c2dcb":[1,0,0,1,11,1]
 };
