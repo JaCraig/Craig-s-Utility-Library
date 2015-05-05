@@ -34,6 +34,26 @@ namespace CUL.fastJSON.Tests
             Assert.Equal("{\"A\":5,\"B\":\"ASDF\"}", Serializer.Serialize(Object.GetType(), Object));
         }
 
+        [Fact]
+        public void NullSerialize()
+        {
+            JsonSerializer Serializer = new JsonSerializer();
+            Assert.Equal("", Serializer.Serialize(typeof(object), null));
+            Assert.Equal("", Serializer.Serialize(null, new { A = "" }));
+            Assert.Equal("", Serializer.Serialize(null, null));
+        }
+
+        [Fact]
+        public void NullDeserialize()
+        {
+            JsonSerializer Serializer = new JsonSerializer();
+            Assert.Equal(null, Serializer.Deserialize(typeof(object), null));
+            Assert.Equal(null, Serializer.Deserialize(typeof(object), ""));
+            Assert.Equal(null, Serializer.Deserialize(null, "ASDF"));
+            Assert.Equal(null, Serializer.Deserialize(null, null));
+            Assert.Equal(null, Serializer.Deserialize(null, ""));
+        }
+
         public class TestObject
         {
             public int A { get; set; }

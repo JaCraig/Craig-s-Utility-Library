@@ -32,6 +32,23 @@ namespace CUL.Bender.Tests
             Assert.Equal("<?xml version=\"1.0\" encoding=\"utf-8\"?><TestObject><A>5</A><B>ASDF</B></TestObject>", Serializer.Serialize(Object.GetType(), Object));
         }
 
+        [Fact]
+        public void NullSerialize()
+        {
+            XmlSerializer Temp = new XmlSerializer();
+            Assert.Equal("", Temp.Serialize(typeof(TestObject), null));
+            Assert.Equal("", Temp.Serialize(null, new { A = "" }));
+        }
+
+        [Fact]
+        public void NullDeserialize()
+        {
+            XmlSerializer Temp = new XmlSerializer();
+            Assert.Equal(null, Temp.Deserialize(typeof(TestObject), null));
+            Assert.Equal(null, Temp.Deserialize(typeof(TestObject), ""));
+            Assert.Equal(null, Temp.Deserialize(null, ""));
+        }
+
         public class TestObject
         {
             public int A { get; set; }

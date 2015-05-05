@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Diagnostics.Contracts;
 using Utilities.DataTypes;
 using Utilities.IO.Serializers.BaseClasses;
 
@@ -61,12 +62,9 @@ namespace CUL.Serialization
         /// <returns>The object</returns>
         public override object Deserialize(Type ObjectType, string Data)
         {
-            if (Data == null)
+            if (string.IsNullOrEmpty(Data) || ObjectType == null)
                 return null;
-            byte[] Result = Data.ToByteArray();
-            if (Result == null)
-                return null;
-            return Bender.Deserialize.Xml(Result, ObjectType);
+            return Bender.Deserialize.Xml(Data.ToByteArray(), ObjectType);
         }
 
         /// <summary>
@@ -77,7 +75,7 @@ namespace CUL.Serialization
         /// <returns>The object as a CSV</returns>
         public override string Serialize(Type ObjectType, object Data)
         {
-            if (Data == null)
+            if (Data == null || ObjectType == null)
                 return "";
             return Bender.Serialize.Xml(Data, ObjectType);
         }

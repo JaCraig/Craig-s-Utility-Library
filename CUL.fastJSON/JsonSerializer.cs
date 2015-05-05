@@ -63,10 +63,7 @@ namespace CUL.Serialization
         /// <returns>The object</returns>
         public override object Deserialize(Type ObjectType, string Data)
         {
-            if (Data == null)
-                return null;
-            byte[] Result = Data.ToByteArray();
-            if (Result == null)
+            if (string.IsNullOrEmpty(Data) || ObjectType == null)
                 return null;
             return fastJSON.JSON.ToObject(Data, ObjectType);
         }
@@ -79,7 +76,7 @@ namespace CUL.Serialization
         /// <returns>The object as a JSON string</returns>
         public override string Serialize(Type ObjectType, object Data)
         {
-            if (Data == null)
+            if (Data == null || ObjectType == null)
                 return "";
             string ReturnValue = fastJSON.JSON.ToJSON(Data);
             HttpRequest Request = HttpContext.Current.Chain(x => x.Request);
