@@ -156,7 +156,7 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
             {
                 EmitResult Result = CSharpCompiler.Emit(TempStream);
                 if (!Result.Success)
-                    throw new Exception(Code + System.Environment.NewLine + System.Environment.NewLine + Result.Diagnostics.ToString(x => x.GetMessage(), System.Environment.NewLine));
+                    throw new Exception(Code + System.Environment.NewLine + System.Environment.NewLine + Result.Diagnostics.ToString(x => x.GetMessage() + " : " + x.Location.GetLineSpan().StartLinePosition.Line, System.Environment.NewLine));
                 byte[] MiniAssembly = TempStream.ToArray();
                 Classes.AddIfUnique((x, y) => x.FullName == y.FullName, AppDomain.CurrentDomain.Load(MiniAssembly).GetTypes());
                 AssemblyStream.Write(MiniAssembly, 0, MiniAssembly.Length);

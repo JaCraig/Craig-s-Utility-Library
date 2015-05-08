@@ -141,6 +141,7 @@
     <Compile Include="DataTypes\Fraction.cs" />
     <Compile Include="DataTypes\ListMapping.cs" />
     <Compile Include="DataTypes\Matrix.cs" />
+    <Compile Include="DataTypes\ObservableList.cs" />
     <Compile Include="DataTypes\Patterns\BaseClasses\Singleton.cs" />
     <Compile Include="DataTypes\Patterns\Factory.cs" />
     <Compile Include="DataTypes\PriorityQueue.cs" />

@@ -19,16 +19,26 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using System.Collections.Generic;
+using System.ComponentModel;
+
 namespace Utilities.ORM.Manager.Aspect.Interfaces
 {
     /// <summary>
     /// ORM object interface
     /// </summary>
-    public interface IORMObject
+    public interface IORMObject : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Gets the properties changed.
+        /// </summary>
+        /// <value>The properties changed.</value>
+        IList<string> PropertiesChanged0 { get; set; }
+
         /// <summary>
         /// ORM session that this item came from (used for lazy loading)
         /// </summary>
+        /// <value>The ORM session object.</value>
         Session Session0 { get; set; }
     }
 }

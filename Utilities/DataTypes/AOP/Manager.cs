@@ -37,16 +37,6 @@ namespace Utilities.DataTypes.AOP
     public class Manager
     {
         /// <summary>
-        /// The list of aspects that are being used
-        /// </summary>
-        private static ConcurrentBag<IAspect> Aspects = new ConcurrentBag<IAspect>();
-
-        /// <summary>
-        /// Dictionary containing generated types and associates it with original type
-        /// </summary>
-        private static ConcurrentDictionary<Type, Type> Classes = new ConcurrentDictionary<Type, Type>();
-
-        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="Compiler">The compiler.</param>
@@ -64,6 +54,16 @@ namespace Utilities.DataTypes.AOP
             Compiler.Classes.ForEachParallel(x => Classes.AddOrUpdate(x.BaseType, y => x, (y, z) => x));
             Modules.ForEachParallel(x => x.Setup(this));
         }
+
+        /// <summary>
+        /// The list of aspects that are being used
+        /// </summary>
+        private static ConcurrentBag<IAspect> Aspects = new ConcurrentBag<IAspect>();
+
+        /// <summary>
+        /// Dictionary containing generated types and associates it with original type
+        /// </summary>
+        private static ConcurrentDictionary<Type, Type> Classes = new ConcurrentDictionary<Type, Type>();
 
         /// <summary>
         /// Gets the system's compiler
@@ -103,26 +103,6 @@ namespace Utilities.DataTypes.AOP
         {
             Contract.Requires<ArgumentNullException>(Assembly != null, "Assembly");
             Setup(FilterTypesToSetup(Assembly.Types()));
-        }
-
-        /// <summary>
-        /// Determines whether this instance can setup the specified types.
-        /// </summary>
-        /// <param name="enumerable">The list of types</param>
-        /// <returns>The types that can be set up</returns>
-        private static Type[] FilterTypesToSetup(IEnumerable<Type> enumerable)
-        {
-            Contract.Requires<ArgumentNullException>(enumerable != null);
-            return enumerable.Where(x => !Classes.ContainsKey(x)
-                                && !x.ContainsGenericParameters
-                                && x.IsClass
-                                && (x.IsPublic || x.IsNestedPublic)
-                                && !x.IsSealed
-                                && x.IsVisible
-                                && !x.IsCOMObject
-                                && x.HasDefaultConstructor()
-                                && !string.IsNullOrEmpty(x.Namespace))
-                          .ToArray();
         }
 
         /// <summary>
@@ -177,6 +157,84 @@ namespace Utilities.DataTypes.AOP
                         (x, y) => x);
                 }
             }
+        }
+
+        /// <summary>
+        /// Outputs manager info as a string
+        /// </summary>
+        /// <returns>String version of the manager</returns>
+        public override string ToString()
+        {
+            return "AOP registered classes: " + Classes.Keys.ToString(x => x.Name) + "\r\n";
+        }
+
+        /// <summary>
+        /// Determines whether this instance can setup the specified types.
+        /// </summary>
+        /// <param name="enumerable">The list of types</param>
+        /// <returns>The types that can be set up</returns>
+        private static Type[] FilterTypesToSetup(IEnumerable<Type> enumerable)
+        {
+            Contract.Requires<ArgumentNullException>(enumerable != null);
+            return enumerable.Where(x => !Classes.ContainsKey(x)
+                                && !x.ContainsGenericParameters
+                                && x.IsClass
+                                && (x.IsPublic || x.IsNestedPublic)
+                                && !x.IsSealed
+                                && x.IsVisible
+                                && !x.IsCOMObject
+                                && x.HasDefaultConstructor()
+                                && !string.IsNullOrEmpty(x.Namespace))
+                          .ToArray();
+        }
+
+        private static Assembly[] GetAssemblies(Type Type)
+        {
+            List<Assembly> Types = new List<Assembly>();
+            Type TempType = Type;
+            while (TempType != null)
+            {
+                Types.AddIfUnique(TempType.Assembly.GetReferencedAssemblies().ForEach(x =>
+                {
+                    try
+                    {
+                        return Assembly.Load(x);
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                }).Where(x => x != null));
+                Types.AddIfUnique(TempType.Assembly);
+                TempType.GetInterfaces().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x)));
+                TempType.GetEvents().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x.EventHandlerType)));
+                TempType.GetFields().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x.FieldType)));
+                TempType.GetProperties().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x.PropertyType)));
+                TempType.GetMethods().ForEach(x =>
+                {
+                    Types.AddIfUnique(GetAssembliesSimple(x.ReturnType));
+                    x.GetParameters().ForEach(y => Types.AddIfUnique(GetAssembliesSimple(y.ParameterType)));
+                });
+                TempType = TempType.BaseType;
+                if (TempType == typeof(object))
+                    break;
+            }
+            return Types.ToArray();
+        }
+
+        private static Assembly[] GetAssembliesSimple(Type Type)
+        {
+            List<Assembly> Types = new List<Assembly>();
+            Type TempType = Type;
+            while (TempType != null)
+            {
+                Types.AddIfUnique(TempType.Assembly);
+                TempType.GetInterfaces().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x)));
+                TempType = TempType.BaseType;
+                if (TempType == typeof(object))
+                    break;
+            }
+            return Types.ToArray();
         }
 
         /// <summary>
@@ -320,64 +378,6 @@ namespace Utilities.DataTypes.AOP
             Builder.AppendLine(@"   }
 }");
             return Builder.ToString();
-        }
-
-        /// <summary>
-        /// Outputs manager info as a string
-        /// </summary>
-        /// <returns>String version of the manager</returns>
-        public override string ToString()
-        {
-            return "AOP registered classes: " + Classes.Keys.ToString(x => x.Name) + "\r\n";
-        }
-
-        private static Assembly[] GetAssemblies(Type Type)
-        {
-            List<Assembly> Types = new List<Assembly>();
-            Type TempType = Type;
-            while (TempType != null)
-            {
-                Types.AddIfUnique(TempType.Assembly.GetReferencedAssemblies().ForEach(x =>
-                {
-                    try
-                    {
-                        return Assembly.Load(x);
-                    }
-                    catch
-                    {
-                        return null;
-                    }
-                }).Where(x => x != null));
-                Types.AddIfUnique(TempType.Assembly);
-                TempType.GetInterfaces().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x)));
-                TempType.GetEvents().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x.EventHandlerType)));
-                TempType.GetFields().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x.FieldType)));
-                TempType.GetProperties().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x.PropertyType)));
-                TempType.GetMethods().ForEach(x =>
-                {
-                    Types.AddIfUnique(GetAssembliesSimple(x.ReturnType));
-                    x.GetParameters().ForEach(y => Types.AddIfUnique(GetAssembliesSimple(y.ParameterType)));
-                });
-                TempType = TempType.BaseType;
-                if (TempType == typeof(object))
-                    break;
-            }
-            return Types.ToArray();
-        }
-
-        private static Assembly[] GetAssembliesSimple(Type Type)
-        {
-            List<Assembly> Types = new List<Assembly>();
-            Type TempType = Type;
-            while (TempType != null)
-            {
-                Types.AddIfUnique(TempType.Assembly);
-                TempType.GetInterfaces().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x)));
-                TempType = TempType.BaseType;
-                if (TempType == typeof(object))
-                    break;
-            }
-            return Types.ToArray();
         }
 
         private static string SetupMethod(Type Type, MethodInfo MethodInfo, bool IsProperty)

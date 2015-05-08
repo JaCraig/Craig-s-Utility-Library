@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
@@ -62,7 +63,7 @@ namespace Utilities.ORM.Aspect
         /// <summary>
         /// Usings using
         /// </summary>
-        public ICollection<string> Usings { get { return new string[] { "Utilities.ORM.Manager", "Utilities.ORM.Manager.Aspect.Interfaces" }; } }
+        public ICollection<string> Usings { get { return new string[] { "Utilities.ORM.Manager", "Utilities.ORM.Manager.Aspect.Interfaces", "System.ComponentModel", "System.Runtime.CompilerServices" }; } }
 
         /// <summary>
         /// Fields that have been completed already
@@ -77,6 +78,12 @@ namespace Utilities.ORM.Aspect
         {
             IORMObject TempObject = (IORMObject)Object;
             TempObject.Session0 = new Utilities.ORM.Manager.Session();
+            TempObject.PropertiesChanged0 = new List<string>();
+            TempObject.PropertyChanged += (object sender, PropertyChangedEventArgs e) =>
+            {
+                IORMObject x = (IORMObject)sender;
+                x.PropertiesChanged0.Add(e.PropertyName);
+            };
         }
 
         /// <summary>
@@ -139,6 +146,30 @@ namespace Utilities.ORM.Aspect
         {
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLine(@"public Session Session0{ get; set; }");
+            Builder.AppendLine(@"public IList<string> PropertiesChanged0{ get; set; }");
+            if (!Type.Is<INotifyPropertyChanged>())
+            {
+                Builder.AppendLine(@"private PropertyChangedEventHandler propertyChanged_;
+public event PropertyChangedEventHandler PropertyChanged
+{
+    add
+    {
+        propertyChanged_-=value;
+        propertyChanged_+=value;
+    }
+
+    remove
+    {
+        propertyChanged_-=value;
+    }
+}");
+                Builder.AppendLine(@"private void NotifyPropertyChanged0([CallerMemberName]string propertyName="""")
+{
+    var Handler = propertyChanged_;
+    if (Handler != null)
+        Handler(this, new PropertyChangedEventArgs(propertyName));
+}");
+            }
             Builder.AppendLine(SetupFields(Type));
             return Builder.ToString();
         }
@@ -159,7 +190,8 @@ namespace Utilities.ORM.Aspect
                     IProperty Property = Mapping.Properties.FirstOrDefault(x => x.Name == Method.Name.Replace("set_", ""));
                     if (Fields.Contains(Property))
                     {
-                        Builder.AppendLineFormat("{0}=value;", Property.DerivedFieldName);
+                        Builder.AppendLineFormat("{0}=value;", Property.DerivedFieldName)
+                            .AppendLine("NotifyPropertyChanged0();");
                     }
                 }
             }
