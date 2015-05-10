@@ -103,6 +103,25 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
+        /// Gets or sets the element at the specified index.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns></returns>
+        public new T this[int index]
+        {
+            get
+            {
+                return base[index];
+            }
+
+            set
+            {
+                NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, value, base[index]));
+                base[index] = value;
+            }
+        }
+
+        /// <summary>
         /// Adds an object to the end of the <see cref="T:System.Collections.Generic.List`1"/>.
         /// </summary>
         /// <param name="item">
@@ -112,6 +131,7 @@ namespace Utilities.DataTypes
         public new void Add(T item)
         {
             NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item));
+            NotifyPropertyChanged("Count");
             base.Add(item);
         }
 
@@ -122,6 +142,7 @@ namespace Utilities.DataTypes
         public new void AddRange(IEnumerable<T> collection)
         {
             NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, collection));
+            NotifyPropertyChanged("Count");
             base.AddRange(collection);
         }
 
@@ -131,6 +152,7 @@ namespace Utilities.DataTypes
         public new void Clear()
         {
             NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            NotifyPropertyChanged("Count");
             base.Clear();
         }
 
@@ -145,6 +167,7 @@ namespace Utilities.DataTypes
         public new void Insert(int index, T item)
         {
             NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item, index));
+            NotifyPropertyChanged("Count");
             base.Insert(index, item);
         }
 
@@ -156,6 +179,7 @@ namespace Utilities.DataTypes
         public new void InsertRange(int index, IEnumerable<T> collection)
         {
             NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, collection.ToList(), index));
+            NotifyPropertyChanged("Count");
             base.InsertRange(index, collection);
         }
 
@@ -173,6 +197,7 @@ namespace Utilities.DataTypes
         public new bool Remove(T item)
         {
             NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item));
+            NotifyPropertyChanged("Count");
             return base.Remove(item);
         }
 
@@ -184,6 +209,7 @@ namespace Utilities.DataTypes
         public new int RemoveAll(Predicate<T> match)
         {
             NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, this.Where(x => match(x))));
+            NotifyPropertyChanged("Count");
             return base.RemoveAll(match);
         }
 
@@ -194,6 +220,7 @@ namespace Utilities.DataTypes
         public new void RemoveAt(int index)
         {
             NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, this[index], index));
+            NotifyPropertyChanged("Count");
             base.RemoveAt(index);
         }
 
@@ -207,14 +234,14 @@ namespace Utilities.DataTypes
             NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove,
                                                                                     this.ElementsBetween(index, index + count),
                                                                                     index));
+            NotifyPropertyChanged("Count");
             base.RemoveRange(index, count);
         }
 
         /// <summary>
         /// Notifies the collection changed.
         /// </summary>
-        /// <param name="action">The action.</param>
-        /// <param name="changedItem">The changed item.</param>
+        /// <param name="args">The <see cref="NotifyCollectionChangedEventArgs"/> instance containing the event data.</param>
         protected void NotifyCollectionChanged(NotifyCollectionChangedEventArgs args)
         {
             var Handler = collectionChanged_;

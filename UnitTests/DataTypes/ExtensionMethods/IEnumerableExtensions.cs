@@ -214,6 +214,17 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
+        public void ToObservableList()
+        {
+            ObservableList<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToObservableList(x => x + 10);
+            Assert.Equal(10, Temp[0]);
+            Assert.Equal(10, Temp[1]);
+            Assert.Equal(11, Temp[2]);
+            Assert.Equal(12, Temp[3]);
+            Assert.Equal(13, Temp[4]);
+        }
+
+        [Fact]
         public void ToStringTest()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();

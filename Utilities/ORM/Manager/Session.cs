@@ -225,7 +225,7 @@ namespace Utilities.ORM.Manager
                 }
             }
             if (ReturnValue.Count == 0)
-                return new List<DataType>();
+                return new ObservableList<DataType>();
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
                 IMapping ObjectMapping = MapperProvider[typeof(ObjectType), Source];
@@ -259,7 +259,7 @@ namespace Utilities.ORM.Manager
                     }
                 }
             }
-            return ConvertValues<DataType>(ReturnValue).ToList();
+            return ConvertValues<DataType>(ReturnValue).ToObservableList(x => x);
         }
 
         /// <summary>
@@ -438,6 +438,7 @@ namespace Utilities.ORM.Manager
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             Contract.Requires<ArgumentNullException>(Mapping.Properties != null, "Mapping.Properties");
+            IORMObject ORMObject = Object as IORMObject;
             foreach (IProperty<ObjectType> Property in Mapping.Properties)
             {
                 if (!Property.Cascade &&
@@ -461,6 +462,7 @@ namespace Utilities.ORM.Manager
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             Contract.Requires<ArgumentNullException>(Mapping.Properties != null, "Mapping.Properties");
+            IORMObject ORMObject = Object as IORMObject;
             foreach (IProperty<ObjectType> Property in Mapping.Properties)
             {
                 if (!Property.Cascade &&

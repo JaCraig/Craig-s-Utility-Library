@@ -63,7 +63,19 @@ namespace Utilities.ORM.Aspect
         /// <summary>
         /// Usings using
         /// </summary>
-        public ICollection<string> Usings { get { return new string[] { "Utilities.ORM.Manager", "Utilities.ORM.Manager.Aspect.Interfaces", "System.ComponentModel", "System.Runtime.CompilerServices" }; } }
+        public ICollection<string> Usings
+        {
+            get
+            {
+                return new string[] {
+                    "Utilities.DataTypes",
+                    "Utilities.ORM.Manager",
+                    "Utilities.ORM.Manager.Aspect.Interfaces",
+                    "System.ComponentModel",
+                    "System.Runtime.CompilerServices"
+                };
+            }
+        }
 
         /// <summary>
         /// Fields that have been completed already
@@ -79,6 +91,7 @@ namespace Utilities.ORM.Aspect
             IORMObject TempObject = (IORMObject)Object;
             TempObject.Session0 = new Utilities.ORM.Manager.Session();
             TempObject.PropertiesChanged0 = new List<string>();
+            TempObject.PropertiesLoaded0 = new List<string>();
             TempObject.PropertyChanged += (object sender, PropertyChangedEventArgs e) =>
             {
                 IORMObject x = (IORMObject)sender;
@@ -147,6 +160,7 @@ namespace Utilities.ORM.Aspect
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLine(@"public Session Session0{ get; set; }");
             Builder.AppendLine(@"public IList<string> PropertiesChanged0{ get; set; }");
+            Builder.AppendLine(@"public IList<string> PropertiesLoaded0{ get; set; }");
             if (!Type.Is<INotifyPropertyChanged>())
             {
                 Builder.AppendLine(@"private PropertyChangedEventHandler propertyChanged_;
@@ -212,6 +226,8 @@ public event PropertyChangedEventHandler PropertyChanged
                         Property.Type.GetName(),
                         Property.Name)
                 .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
+                .AppendLineFormat("PropertiesLoaded0.Add(\"{0}\");", Property.Name)
+                .AppendLineFormat("((ObservableList<{1}>){0}).CollectionChanged += (x, y) => NotifyPropertyChanged0();", Property.DerivedFieldName, Property.Type.GetName())
                 .AppendLine("}")
                 .AppendLineFormat("{0}={1};",
                     ReturnValueName,
@@ -233,6 +249,8 @@ public event PropertyChangedEventHandler PropertyChanged
                         Property.Type.GetName(),
                         Property.Name)
                 .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
+                .AppendLineFormat("PropertiesLoaded0.Add(\"{0}\");", Property.Name)
+                .AppendLineFormat("((ObservableList<{1}>){0}).CollectionChanged += (x, y) => NotifyPropertyChanged0();", Property.DerivedFieldName, Property.Type.GetName())
                 .AppendLine("}")
                 .AppendLineFormat("{0}={1};",
                     ReturnValueName,
@@ -254,6 +272,11 @@ public event PropertyChangedEventHandler PropertyChanged
                         Property.Type.GetName(),
                         Property.Name)
                 .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
+                .AppendLineFormat("PropertiesLoaded0.Add(\"{0}\");", Property.Name)
+                .AppendLineFormat("if({0} as INotifyPropertyChanged!=null)", Property.DerivedFieldName)
+                .AppendLine("{")
+                .AppendLineFormat("({0} as INotifyPropertyChanged).PropertyChanged+=(x,y)=>NotifyPropertyChanged0();", Property.DerivedFieldName)
+                .AppendLine("}")
                 .AppendLine("}")
                 .AppendLineFormat("{0}={1};",
                     ReturnValueName,

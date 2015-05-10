@@ -594,6 +594,21 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
+        /// Converts the IEnumerable to an observable list
+        /// </summary>
+        /// <typeparam name="Source">The type of the source.</typeparam>
+        /// <typeparam name="Target">The type of the target.</typeparam>
+        /// <param name="List">The list to convert</param>
+        /// <param name="ConvertingFunction">The converting function.</param>
+        /// <returns>The observable list version of the original list</returns>
+        public static ObservableList<Target> ToObservableList<Source, Target>(this IEnumerable<Source> List, Func<Source, Target> ConvertingFunction)
+        {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(ConvertingFunction != null, "ConvertingFunction");
+            return new ObservableList<Target>(List.ForEach(ConvertingFunction));
+        }
+
+        /// <summary>
         /// Converts the list to a string where each item is seperated by the Seperator
         /// </summary>
         /// <typeparam name="T">Item type</typeparam>
