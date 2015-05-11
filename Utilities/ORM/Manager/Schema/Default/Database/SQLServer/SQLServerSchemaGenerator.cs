@@ -682,7 +682,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                                 Mapping.Properties.Count(x => x.Type == Property.Type) == 1 && Mapping.ObjectType != Property.Type);
                         }
                     }
-                    else if (Property is IManyToOne || Property is IManyToMany || Property is IIEnumerableManyToOne || Property is IListManyToMany || Property is IListManyToOne)
+                    else if (Property is IMultiMapping || Property is ISingleMapping)
                     {
                         SetupJoiningTablesEnumerable(Mappings, Mapping, Property, Key, TempDatabase);
                     }
@@ -772,37 +772,37 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             Contract.Requires<ArgumentNullException>(Table != null, "Table");
             Contract.Requires<ArgumentNullException>(Mapping.IDProperties != null, "Mapping.IDProperties");
-            foreach (IProperty Property in Mapping.IDProperties)
+            Mapping.IDProperties
+                   .ForEach(x =>
             {
-                Table.AddColumn(Property.FieldName,
-                    Property.Type.To(DbType.Int32),
-                    Property.MaxLength,
-                    Property.NotNull,
-                    Property.AutoIncrement,
-                    Property.Index,
+                Table.AddColumn(x.FieldName,
+                    x.Type.To(DbType.Int32),
+                    x.MaxLength,
+                    x.NotNull,
+                    x.AutoIncrement,
+                    x.Index,
                     true,
-                    Property.Unique,
+                    x.Unique,
                     "",
                     "",
                     "");
-            }
-            foreach (IProperty Property in Mapping.Properties)
-            {
-                if (!(Property is IManyToMany || Property is IManyToOne || Property is IMap || Property is IIEnumerableManyToOne || Property is IListManyToMany || Property is IListManyToOne))
-                {
-                    Table.AddColumn(Property.FieldName,
-                    Property.Type.To(DbType.Int32),
-                    Property.MaxLength,
-                    !Property.NotNull,
-                    Property.AutoIncrement,
-                    Property.Index,
-                    false,
-                    Property.Unique,
-                    "",
-                    "",
-                    "");
-                }
-            }
+            });
+            Mapping.Properties
+                   .Where(x => !(x is IMultiMapping || x is ISingleMapping || x is IMap))
+                   .ForEach(x =>
+                   {
+                       Table.AddColumn(x.FieldName,
+                       x.Type.To(DbType.Int32),
+                       x.MaxLength,
+                       !x.NotNull,
+                       x.AutoIncrement,
+                       x.Index,
+                       false,
+                       x.Unique,
+                       "",
+                       "",
+                       "");
+                   });
         }
 
         private static void SetupTables(ListMapping<IDatabase, IMapping> Mappings, IDatabase Key, Schema.Default.Database.Database TempDatabase)

@@ -38,7 +38,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
     /// </summary>
     /// <typeparam name="ClassType">Class type</typeparam>
     /// <typeparam name="DataType">Data type</typeparam>
-    public class ListManyToMany<ClassType, DataType> : PropertyBase<ClassType, List<DataType>, ListManyToMany<ClassType, DataType>>, IListManyToMany
+    public class IListManyToMany<ClassType, DataType> : PropertyBase<ClassType, IList<DataType>, IListManyToMany<ClassType, DataType>>, IIListManyToMany
         where ClassType : class,new()
         where DataType : class,new()
     {
@@ -47,12 +47,12 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// </summary>
         /// <param name="Expression">Expression pointing to the many to many</param>
         /// <param name="Mapping">Mapping the StringID is added to</param>
-        public ListManyToMany(Expression<Func<ClassType, List<DataType>>> Expression, IMapping Mapping)
+        public IListManyToMany(Expression<Func<ClassType, IList<DataType>>> Expression, IMapping Mapping)
             : base(Expression, Mapping)
         {
             Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
             Type = typeof(DataType);
-            SetDefaultValue(() => new List<DataType>());
+            SetDefaultValue(() => new ObservableList<DataType>());
             string Class1 = typeof(ClassType).Name;
             string Class2 = typeof(DataType).Name;
             if (string.Compare(Class1, Class2, StringComparison.Ordinal) < 0)
@@ -79,10 +79,10 @@ namespace Utilities.ORM.Manager.Mapper.Default
                 return Batch;
             if (AspectObject != null)
                 ObjectsSeen.Add(Mapping.IDProperties.FirstOrDefault().GetValue(Object));
-            IEnumerable<DataType> List = CompiledExpression(Object);
-            if (List == null)
+            IEnumerable<DataType> IList = CompiledExpression(Object);
+            if (IList == null)
                 return Batch;
-            foreach (DataType Item in List.Where(x => x != null))
+            foreach (DataType Item in IList.Where(x => x != null))
             {
                 foreach (IProperty<DataType> Property in PropertyMapping.Properties.Where(x => x.Cascade))
                 {
@@ -112,10 +112,10 @@ namespace Utilities.ORM.Manager.Mapper.Default
                 return Batch;
             if (AspectObject != null)
                 ObjectsSeen.Add(Mapping.IDProperties.FirstOrDefault().GetValue(Object));
-            IEnumerable<DataType> List = CompiledExpression(Object);
-            if (List == null)
+            IEnumerable<DataType> IList = CompiledExpression(Object);
+            if (IList == null)
                 return Batch;
-            foreach (DataType Item in List.Where(x => x != null))
+            foreach (DataType Item in IList.Where(x => x != null))
             {
                 foreach (IProperty<DataType> Property in PropertyMapping.Properties)
                 {
@@ -153,10 +153,10 @@ namespace Utilities.ORM.Manager.Mapper.Default
                 return Batch;
             if (AspectObject != null)
                 ObjectsSeen.Add(Mapping.IDProperties.FirstOrDefault().GetValue(Object));
-            IEnumerable<DataType> List = CompiledExpression(Object);
-            if (List == null)
+            IEnumerable<DataType> IList = CompiledExpression(Object);
+            if (IList == null)
                 return Batch;
-            foreach (DataType Item in List.Where(x => x != null))
+            foreach (DataType Item in IList.Where(x => x != null))
             {
                 foreach (IProperty<DataType> Property in PropertyMapping.Properties)
                 {
@@ -172,7 +172,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
                     }
                 }
             }
-            Batch.AddCommand(Provider.Generate<ClassType>(Source, Mapping).JoinsSave<List<DataType>, DataType>(this, Object));
+            Batch.AddCommand(Provider.Generate<ClassType>(Source, Mapping).JoinsSave<IList<DataType>, DataType>(this, Object));
             return Batch;
         }
 
@@ -194,10 +194,10 @@ namespace Utilities.ORM.Manager.Mapper.Default
                 return Batch;
             if (AspectObject != null)
                 ObjectsSeen.Add(Mapping.IDProperties.FirstOrDefault().GetValue(Object));
-            IEnumerable<DataType> List = CompiledExpression(Object);
-            if (List == null)
+            IEnumerable<DataType> IList = CompiledExpression(Object);
+            if (IList == null)
                 return Batch;
-            foreach (DataType Item in List.Where(x => x != null))
+            foreach (DataType Item in IList.Where(x => x != null))
             {
                 foreach (IProperty<DataType> Property in PropertyMapping.Properties.Where(x => x.Cascade))
                 {
@@ -262,7 +262,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
                 return Provider.Batch(Source);
             if (AspectObject != null)
                 ObjectsSeen.Add(Mapping.IDProperties.FirstOrDefault().GetValue(Object));
-            return Provider.Generate<ClassType>(Source, Mapping).JoinsSave<List<DataType>, DataType>(this, Object);
+            return Provider.Generate<ClassType>(Source, Mapping).JoinsSave<IList<DataType>, DataType>(this, Object);
         }
 
         /// <summary>

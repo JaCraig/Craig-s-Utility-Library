@@ -24,7 +24,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
     /// <summary>
     /// ManyToMany interface
     /// </summary>
-    public interface IManyToMany
+    public interface IManyToMany : IMultiMapping
     {
     }
 }

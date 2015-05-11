@@ -201,7 +201,7 @@ namespace Utilities.ORM.Manager
         /// <param name="Object">Object</param>
         /// <param name="PropertyName">Property name</param>
         /// <returns>The appropriate property value</returns>
-        public List<DataType> LoadProperties<ObjectType, DataType>(ObjectType Object, string PropertyName)
+        public IList<DataType> LoadProperties<ObjectType, DataType>(ObjectType Object, string PropertyName)
             where ObjectType : class,new()
             where DataType : class,new()
         {
@@ -402,9 +402,11 @@ namespace Utilities.ORM.Manager
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             Contract.Requires<ArgumentNullException>(Mapping.Properties != null, "Mapping.Properties");
+            IORMObject ORMObject = Object as IORMObject;
             foreach (IProperty<ObjectType> Property in Mapping.Properties.Where(x => x.Cascade))
             {
-                TempBatch.AddCommand(Property.CascadeSave(Object, Source, ObjectsSeen.ToList()));
+                if (ORMObject == null || ORMObject.PropertiesChanged0.Contains(Property.Name))
+                    TempBatch.AddCommand(Property.CascadeSave(Object, Source, ObjectsSeen.ToList()));
             }
         }
 
@@ -441,18 +443,18 @@ namespace Utilities.ORM.Manager
             IORMObject ORMObject = Object as IORMObject;
             foreach (IProperty<ObjectType> Property in Mapping.Properties)
             {
-                if (!Property.Cascade &&
-                    (Property is IManyToMany
-                        || Property is IManyToOne
-                        || Property is IIEnumerableManyToOne
-                        || Property is IListManyToMany
-                        || Property is IListManyToOne))
+                if (ORMObject == null || ORMObject.PropertiesChanged0.Contains(Property.Name))
                 {
-                    TempBatch.AddCommand(Property.JoinsDelete(Object, Source, ObjectsSeen.ToList()));
-                }
-                else if (Property.Cascade)
-                {
-                    TempBatch.AddCommand(Property.CascadeJoinsDelete(Object, Source, ObjectsSeen.ToList()));
+                    if (!Property.Cascade &&
+                        (Property is IMultiMapping
+                            || Property is ISingleMapping))
+                    {
+                        TempBatch.AddCommand(Property.JoinsDelete(Object, Source, ObjectsSeen.ToList()));
+                    }
+                    else if (Property.Cascade)
+                    {
+                        TempBatch.AddCommand(Property.CascadeJoinsDelete(Object, Source, ObjectsSeen.ToList()));
+                    }
                 }
             }
         }
@@ -465,18 +467,18 @@ namespace Utilities.ORM.Manager
             IORMObject ORMObject = Object as IORMObject;
             foreach (IProperty<ObjectType> Property in Mapping.Properties)
             {
-                if (!Property.Cascade &&
-                    (Property is IManyToMany
-                        || Property is IManyToOne
-                        || Property is IIEnumerableManyToOne
-                        || Property is IListManyToMany
-                        || Property is IListManyToOne))
+                if (ORMObject == null || ORMObject.PropertiesChanged0.Contains(Property.Name))
                 {
-                    TempBatch.AddCommand(Property.JoinsSave(Object, Source, ObjectsSeen.ToList()));
-                }
-                else if (Property.Cascade)
-                {
-                    TempBatch.AddCommand(Property.CascadeJoinsSave(Object, Source, ObjectsSeen.ToList()));
+                    if (!Property.Cascade &&
+                        (Property is IMultiMapping
+                            || Property is ISingleMapping))
+                    {
+                        TempBatch.AddCommand(Property.JoinsSave(Object, Source, ObjectsSeen.ToList()));
+                    }
+                    else if (Property.Cascade)
+                    {
+                        TempBatch.AddCommand(Property.CascadeJoinsSave(Object, Source, ObjectsSeen.ToList()));
+                    }
                 }
             }
         }

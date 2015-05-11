@@ -32,32 +32,37 @@ namespace Utilities.DataTypes
     /// Observable List class
     /// </summary>
     /// <typeparam name="T">Object type that the list holds</typeparam>
-    public class ObservableList<T> : List<T>, INotifyCollectionChanged, INotifyPropertyChanged
+    public class ObservableList<T> : IList<T>, INotifyCollectionChanged, INotifyPropertyChanged
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ObservableList{T}"/> class.
+        /// Initializes a virtual instance of the <see cref="ObservableList{T}"/> class.
         /// </summary>
         public ObservableList()
             : base()
         {
+            BaseList = new List<T>();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ObservableList{T}"/> class.
+        /// Initializes a virtual instance of the <see cref="ObservableList{T}"/> class.
         /// </summary>
-        /// <param name="capacity">The number of elements that the new list can initially store.</param>
+        /// <param name="capacity">
+        /// The number of elements that the virtual list can initially store.
+        /// </param>
         public ObservableList(int capacity)
-            : base(capacity)
+            : base()
         {
+            BaseList = new List<T>(capacity);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ObservableList{T}"/> class.
+        /// Initializes a virtual instance of the <see cref="ObservableList{T}"/> class.
         /// </summary>
         /// <param name="collection">The collection.</param>
         public ObservableList(IEnumerable<T> collection)
-            : base(collection)
+            : base()
         {
+            BaseList = new List<T>(collection);
         }
 
         /// <summary>
@@ -66,9 +71,19 @@ namespace Utilities.DataTypes
         private NotifyCollectionChangedEventHandler collectionChanged_;
 
         /// <summary>
+        /// The delegates_
+        /// </summary>
+        private List<NotifyCollectionChangedEventHandler> CollectionChangedDelegates = new List<NotifyCollectionChangedEventHandler>();
+
+        /// <summary>
         /// The property changed
         /// </summary>
         private PropertyChangedEventHandler propertyChanged_;
+
+        /// <summary>
+        /// The property changed delegates
+        /// </summary>
+        private List<PropertyChangedEventHandler> PropertyChangedDelegates = new List<PropertyChangedEventHandler>();
 
         /// <summary>
         /// Occurs when the collection changes.
@@ -78,11 +93,14 @@ namespace Utilities.DataTypes
             add
             {
                 collectionChanged_ -= value;
+                CollectionChangedDelegates.Remove(value);
                 collectionChanged_ += value;
+                CollectionChangedDelegates.Add(value);
             }
             remove
             {
                 collectionChanged_ += value;
+                CollectionChangedDelegates.Add(value);
             }
         }
 
@@ -94,30 +112,56 @@ namespace Utilities.DataTypes
             add
             {
                 propertyChanged_ -= value;
+                PropertyChangedDelegates.Remove(value);
                 propertyChanged_ += value;
+                PropertyChangedDelegates.Add(value);
             }
             remove
             {
                 propertyChanged_ += value;
+                PropertyChangedDelegates.Add(value);
             }
         }
+
+        /// <summary>
+        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// </summary>
+        public int Count
+        {
+            get { return BaseList.Count; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the <see
+        /// cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+        /// </summary>
+        public bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Gets or sets the base list.
+        /// </summary>
+        /// <value>The base list.</value>
+        private List<T> BaseList { get; set; }
 
         /// <summary>
         /// Gets or sets the element at the specified index.
         /// </summary>
         /// <param name="index">The index.</param>
         /// <returns></returns>
-        public new T this[int index]
+        public T this[int index]
         {
             get
             {
-                return base[index];
+                return BaseList[index];
             }
 
             set
             {
-                NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, value, base[index]));
-                base[index] = value;
+                NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, value, BaseList[index]));
+                BaseList[index] = value;
             }
         }
 
@@ -128,32 +172,89 @@ namespace Utilities.DataTypes
         /// The object to be added to the end of the <see
         /// cref="T:System.Collections.Generic.List`1"/>. The value can be null for reference types.
         /// </param>
-        public new void Add(T item)
+        public virtual void Add(T item)
         {
             NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item));
             NotifyPropertyChanged("Count");
-            base.Add(item);
+            BaseList.Add(item);
         }
 
         /// <summary>
         /// Adds the range.
         /// </summary>
         /// <param name="collection">The collection.</param>
-        public new void AddRange(IEnumerable<T> collection)
+        public virtual void AddRange(IEnumerable<T> collection)
         {
             NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, collection));
             NotifyPropertyChanged("Count");
-            base.AddRange(collection);
+            BaseList.AddRange(collection);
         }
 
         /// <summary>
         /// Removes all elements from the <see cref="T:System.Collections.Generic.List`1"/>.
         /// </summary>
-        public new void Clear()
+        public virtual void Clear()
         {
             NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             NotifyPropertyChanged("Count");
-            base.Clear();
+            BaseList.Clear();
+        }
+
+        /// <summary>
+        /// Clears the delegates from the list.
+        /// </summary>
+        public void ClearDelegates()
+        {
+            PropertyChangedDelegates.ForEach(x => propertyChanged_ -= x);
+            PropertyChangedDelegates.Clear();
+            CollectionChangedDelegates.ForEach(x => collectionChanged_ -= x);
+            CollectionChangedDelegates.Clear();
+        }
+
+        /// <summary>
+        /// Determines whether the <see cref="T:System.Collections.Generic.ICollection`1"/> contains
+        /// a specific value.
+        /// </summary>
+        /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+        /// <returns>
+        /// true if <paramref name="item"/> is found in the <see
+        /// cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false.
+        /// </returns>
+        public bool Contains(T item)
+        {
+            return BaseList.Contains(item);
+        }
+
+        /// <summary>
+        /// Copies to.
+        /// </summary>
+        /// <param name="array">The array.</param>
+        /// <param name="arrayIndex">Index of the array.</param>
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            BaseList.CopyTo(array, arrayIndex);
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate
+        /// through the collection.
+        /// </returns>
+        public IEnumerator<T> GetEnumerator()
+        {
+            return BaseList.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Determines the index of a specific item in the <see cref="T:System.Collections.Generic.IList`1"/>.
+        /// </summary>
+        /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.IList`1"/>.</param>
+        /// <returns>The index of <paramref name="item"/> if found in the list; otherwise, -1.</returns>
+        public int IndexOf(T item)
+        {
+            return BaseList.IndexOf(item);
         }
 
         /// <summary>
@@ -164,11 +265,11 @@ namespace Utilities.DataTypes
         /// The zero-based index at which <paramref name="item"/> should be inserted.
         /// </param>
         /// <param name="item">The object to insert. The value can be null for reference types.</param>
-        public new void Insert(int index, T item)
+        public virtual void Insert(int index, T item)
         {
             NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item, index));
             NotifyPropertyChanged("Count");
-            base.Insert(index, item);
+            BaseList.Insert(index, item);
         }
 
         /// <summary>
@@ -176,11 +277,22 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="index">The index.</param>
         /// <param name="collection">The collection.</param>
-        public new void InsertRange(int index, IEnumerable<T> collection)
+        public virtual void InsertRange(int index, IEnumerable<T> collection)
         {
             NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, collection.ToList(), index));
             NotifyPropertyChanged("Count");
-            base.InsertRange(index, collection);
+            BaseList.InsertRange(index, collection);
+        }
+
+        /// <summary>
+        /// Notifies the list that an item in the list has been modified.
+        /// </summary>
+        /// <param name="itemChanged">The item that was changed.</param>
+        public void NotifyObjectChanged(object itemChanged)
+        {
+            var Handler = collectionChanged_;
+            if (Handler != null)
+                Handler(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, itemChanged, itemChanged));
         }
 
         /// <summary>
@@ -194,11 +306,11 @@ namespace Utilities.DataTypes
         /// true if <paramref name="item"/> is successfully removed; otherwise, false. This method
         /// also returns false if <paramref name="item"/> was not found in the <see cref="T:System.Collections.Generic.List`1"/>.
         /// </returns>
-        public new bool Remove(T item)
+        public virtual bool Remove(T item)
         {
             NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item));
             NotifyPropertyChanged("Count");
-            return base.Remove(item);
+            return BaseList.Remove(item);
         }
 
         /// <summary>
@@ -206,22 +318,22 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="match">The match.</param>
         /// <returns></returns>
-        public new int RemoveAll(Predicate<T> match)
+        public virtual int RemoveAll(Predicate<T> match)
         {
             NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, this.Where(x => match(x))));
             NotifyPropertyChanged("Count");
-            return base.RemoveAll(match);
+            return BaseList.RemoveAll(match);
         }
 
         /// <summary>
         /// Removes the element at the specified index of the <see cref="T:System.Collections.Generic.List`1"/>.
         /// </summary>
         /// <param name="index">The zero-based index of the element to remove.</param>
-        public new void RemoveAt(int index)
+        public virtual void RemoveAt(int index)
         {
             NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, this[index], index));
             NotifyPropertyChanged("Count");
-            base.RemoveAt(index);
+            BaseList.RemoveAt(index);
         }
 
         /// <summary>
@@ -229,19 +341,33 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="index">The zero-based starting index of the range of elements to remove.</param>
         /// <param name="count">The number of elements to remove.</param>
-        public new void RemoveRange(int index, int count)
+        public virtual void RemoveRange(int index, int count)
         {
             NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove,
                                                                                     this.ElementsBetween(index, index + count),
                                                                                     index));
             NotifyPropertyChanged("Count");
-            base.RemoveRange(index, count);
+            BaseList.RemoveRange(index, count);
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate
+        /// through the collection.
+        /// </returns>
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return BaseList.GetEnumerator();
         }
 
         /// <summary>
         /// Notifies the collection changed.
         /// </summary>
-        /// <param name="args">The <see cref="NotifyCollectionChangedEventArgs"/> instance containing the event data.</param>
+        /// <param name="args">
+        /// The <see cref="NotifyCollectionChangedEventArgs"/> instance containing the event data.
+        /// </param>
         protected void NotifyCollectionChanged(NotifyCollectionChangedEventArgs args)
         {
             var Handler = collectionChanged_;

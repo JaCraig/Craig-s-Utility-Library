@@ -175,6 +175,22 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
             where D : class,new();
 
         /// <summary>
+        /// Sets up the default load command for a ListManyToMany property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">ListManyToMany property</param>
+        void SetupLoadCommands<D>(IListManyToMany<T, D> Property)
+            where D : class,new();
+
+        /// <summary>
+        /// Setups the load commands.
+        /// </summary>
+        /// <typeparam name="D"></typeparam>
+        /// <param name="Property">The property.</param>
+        void SetupLoadCommands<D>(IListManyToOne<T, D> Property)
+            where D : class,new();
+
+        /// <summary>
         /// Sets up the default load command for a ManyToMany property
         /// </summary>
         /// <typeparam name="D">Data type</typeparam>

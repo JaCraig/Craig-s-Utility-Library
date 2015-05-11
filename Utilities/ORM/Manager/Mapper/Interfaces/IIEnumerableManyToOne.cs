@@ -24,7 +24,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
     /// <summary>
     /// IEnumerableManyToOne interface
     /// </summary>
-    public interface IIEnumerableManyToOne
+    public interface IIEnumerableManyToOne : IMultiMapping
     {
     }
 }

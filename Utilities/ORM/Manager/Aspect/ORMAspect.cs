@@ -131,6 +131,8 @@ namespace Utilities.ORM.Aspect
                             Builder.AppendLine(SetupIEnumerableProperty(ReturnValueName, Property));
                         else if (Property is IListManyToMany || Property is IListManyToOne)
                             Builder.AppendLine(SetupListProperty(ReturnValueName, Property));
+                        else if (Property is IIListManyToMany || Property is IIListManyToOne)
+                            Builder.AppendLine(SetupIListProperty(ReturnValueName, Property));
                         return Builder.ToString();
                     }
                 }
@@ -202,9 +204,10 @@ public event PropertyChangedEventHandler PropertyChanged
                     IProperty Property = Mapping.Properties.FirstOrDefault(x => x.Name == Method.Name.Replace("set_", ""));
                     if (Fields.Contains(Property))
                     {
-                        Builder.AppendLineFormat("{0}=value;", Property.DerivedFieldName)
-                            .AppendLineFormat("NotifyPropertyChanged0(\"{0}\");", Property.Name);
+                        Builder.AppendLineFormat("{0}=value;", Property.DerivedFieldName);
                     }
+                    if (Property != null)
+                        Builder.AppendLineFormat("NotifyPropertyChanged0(\"{0}\");", Property.Name);
                 }
             }
             return Builder.ToString();
@@ -225,6 +228,7 @@ public event PropertyChangedEventHandler PropertyChanged
                         Property.Name)
                 .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
                 .AppendLineFormat("((ObservableList<{1}>){0}).CollectionChanged += (x, y) => NotifyPropertyChanged0(\"{2}\");", Property.DerivedFieldName, Property.Type.GetName(), Property.Name)
+                .AppendLineFormat("((ObservableList<{1}>){0}).ForEach(TempObject => {{ ((IORMObject)TempObject).PropertyChanged += (x, y) => ((ObservableList<{1}>){0}).NotifyObjectChanged(x); }});", Property.DerivedFieldName, Property.Type.GetName())
                 .AppendLine("}")
                 .AppendLineFormat("{0}={1};",
                     ReturnValueName,
@@ -240,13 +244,13 @@ public event PropertyChangedEventHandler PropertyChanged
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
-                .AppendLineFormat("{0}=Session0.LoadProperties<{1},{2}>(this,\"{3}\");",
+                .AppendLineFormat("{0}=Session0.LoadProperties<{1},{2}>(this,\"{3}\").ToList();",
                         Property.DerivedFieldName,
                         Property.Mapping.ObjectType.GetName(),
                         Property.Type.GetName(),
                         Property.Name)
                 .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
-                .AppendLineFormat("((ObservableList<{1}>){0}).CollectionChanged += (x, y) => NotifyPropertyChanged0(\"{2}\");", Property.DerivedFieldName, Property.Type.GetName(), Property.Name)
+                .AppendLineFormat("NotifyPropertyChanged0(\"{0}\");", Property.Name)
                 .AppendLine("}")
                 .AppendLineFormat("{0}={1};",
                     ReturnValueName,
@@ -316,9 +320,47 @@ public event PropertyChangedEventHandler PropertyChanged
                                 Builder.AppendLineFormat("private bool {0};", Property.DerivedFieldName + "Loaded");
                             }
                         }
+                        else if (Property is IIListManyToOne || Property is IIListManyToMany)
+                        {
+                            if (Fields.FirstOrDefault(x => x.DerivedFieldName == Property.DerivedFieldName) == null)
+                            {
+                                Fields.Add(Property);
+                                Builder.AppendLineFormat("private {0} {1};", typeof(IList<>).MakeGenericType(Property.Type).GetName(), Property.DerivedFieldName);
+                                Builder.AppendLineFormat("private bool {0};", Property.DerivedFieldName + "Loaded");
+                            }
+                        }
                     }
                 }
             }
+            return Builder.ToString();
+        }
+
+        /// <summary>
+        /// Setups the i list property.
+        /// </summary>
+        /// <param name="ReturnValueName">Name of the return value.</param>
+        /// <param name="Property">The property.</param>
+        /// <returns></returns>
+        private string SetupIListProperty(string ReturnValueName, IProperty Property)
+        {
+            Contract.Requires<ArgumentNullException>(Property != null, "Property");
+            Contract.Requires<ArgumentNullException>(Property.Mapping != null, "Property.Mapping");
+            Contract.Requires<ArgumentNullException>(Property.Mapping.ObjectType != null, "Property.Mapping.ObjectType");
+            StringBuilder Builder = new StringBuilder();
+            Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
+                .AppendLine("{")
+                .AppendLineFormat("{0}=Session0.LoadProperties<{1},{2}>(this,\"{3}\");",
+                        Property.DerivedFieldName,
+                        Property.Mapping.ObjectType.GetName(),
+                        Property.Type.GetName(),
+                        Property.Name)
+                .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
+                .AppendLineFormat("((ObservableList<{1}>){0}).CollectionChanged += (x, y) => NotifyPropertyChanged0(\"{2}\");", Property.DerivedFieldName, Property.Type.GetName(), Property.Name)
+                .AppendLineFormat("((ObservableList<{1}>){0}).ForEach(TempObject => {{ ((IORMObject)TempObject).PropertyChanged += (x, y) => ((ObservableList<{1}>){0}).NotifyObjectChanged(x); }});", Property.DerivedFieldName, Property.Type.GetName())
+                .AppendLine("}")
+                .AppendLineFormat("{0}={1};",
+                    ReturnValueName,
+                    Property.DerivedFieldName);
             return Builder.ToString();
         }
     }

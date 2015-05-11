@@ -388,7 +388,9 @@ namespace Utilities.ORM.BaseClasses
 
             foreach (IProperty Property in Properties)
             {
-                if (Property is IManyToMany || Property is IManyToOne || Property is IMap || Property is IIEnumerableManyToOne || Property is IListManyToMany || Property is IListManyToOne)
+                if (Property is IMultiMapping
+                    || Property is ISingleMapping
+                    || Property is IMap)
                 {
                     Property.Setup(Source, MappingProvider, QueryProvider);
                 }
