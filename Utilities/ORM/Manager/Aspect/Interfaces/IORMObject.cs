@@ -36,14 +36,6 @@ namespace Utilities.ORM.Manager.Aspect.Interfaces
         IList<string> PropertiesChanged0 { get; set; }
 
         /// <summary>
-        /// Gets or sets the properties loaded.
-        /// </summary>
-        /// <value>
-        /// The properties loaded.
-        /// </value>
-        IList<string> PropertiesLoaded0 { get; set; }
-
-        /// <summary>
         /// ORM session that this item came from (used for lazy loading)
         /// </summary>
         /// <value>The ORM session object.</value>
