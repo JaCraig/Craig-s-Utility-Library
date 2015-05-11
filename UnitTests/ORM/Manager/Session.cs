@@ -727,9 +727,13 @@ namespace UnitTests.ORM.Manager
 
             public virtual IEnumerable<TestClass> ManyToManyIEnumerable { get; set; }
 
+            public virtual IList<TestClass> ManyToManyIList { get; set; }
+
             public virtual List<TestClass> ManyToManyList { get; set; }
 
             public virtual IEnumerable<TestClass> ManyToOneIEnumerable { get; set; }
+
+            public virtual IList<TestClass> ManyToOneIList { get; set; }
 
             public virtual TestClass ManyToOneItem { get; set; }
 
@@ -788,6 +792,8 @@ namespace UnitTests.ORM.Manager
                 ManyToOne(x => x.ManyToOneIEnumerable).SetTableName("ManyToOneIEnumerable").SetCascade();
                 ManyToOne(x => x.ManyToOneList).SetTableName("ManyToOneList").SetCascade();
                 ManyToOne(x => x.ManyToOneItem).SetTableName("ManyToOneList").SetCascade();
+                ManyToOne(x => x.ManyToOneIList).SetTableName("ManyToOneIList").SetCascade();
+                ManyToMany(x => x.ManyToManyIList).SetTableName("ManyToManyIList").SetCascade();
                 Map(x => x.Map).SetCascade();
                 Reference(x => x.BoolReference);
                 Reference(x => x.ByteArrayReference).SetMaxLength(100);
