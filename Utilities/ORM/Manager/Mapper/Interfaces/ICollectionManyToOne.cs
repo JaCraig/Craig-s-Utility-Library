@@ -22,9 +22,9 @@ THE SOFTWARE.*/
 namespace Utilities.ORM.Manager.Mapper.Interfaces
 {
     /// <summary>
-    /// IListManyToOne interface
+    /// ICollectionManyToOne interface
     /// </summary>
-    public interface IIListManyToOne : IMultiMapping
+    public interface ICollectionManyToOne : IMultiMapping
     {
     }
 }

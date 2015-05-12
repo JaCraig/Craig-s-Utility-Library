@@ -120,11 +120,8 @@ namespace Utilities.ORM.Manager.Mapper.Default
                 foreach (IProperty<DataType> Property in PropertyMapping.Properties)
                 {
                     if (!Property.Cascade
-                        && (Property is IManyToMany
-                            || Property is IManyToOne
-                            || Property is IIEnumerableManyToOne
-                            || Property is IListManyToMany
-                            || Property is IListManyToOne))
+                        && (Property is IMultiMapping
+                            || Property is ISingleMapping))
                     {
                         Batch.AddCommand(Property.JoinsDelete(Item, Source, ObjectsSeen.ToList()));
                     }
@@ -164,11 +161,8 @@ namespace Utilities.ORM.Manager.Mapper.Default
                 foreach (IProperty<DataType> Property in PropertyMapping.Properties)
                 {
                     if (!Property.Cascade
-                        && (Property is IManyToMany
-                            || Property is IManyToOne
-                            || Property is IIEnumerableManyToOne
-                            || Property is IListManyToMany
-                            || Property is IListManyToOne))
+                        && (Property is IMultiMapping
+                            || Property is ISingleMapping))
                     {
                         Batch.AddCommand(Property.JoinsSave(Item, Source, ObjectsSeen.ToList()));
                     }

@@ -61,13 +61,13 @@ namespace Utilities.IO.FileSystem.Default
             string ParentDirectory = "";
             if (HttpContext.Current == null)
             {
-                BaseDirectory = Environment.CurrentDirectory;
-                ParentDirectory = new LocalDirectory(Environment.CurrentDirectory).Parent.FullName;
+                BaseDirectory = Environment.CurrentDirectory.Contains("system32") ? AppDomain.CurrentDomain.BaseDirectory : Environment.CurrentDirectory;
+                ParentDirectory = new LocalDirectory(BaseDirectory).Parent.FullName;
             }
             else
             {
                 BaseDirectory = HttpContext.Current.Server.MapPath("~/");
-                ParentDirectory = new LocalDirectory(HttpContext.Current.Server.MapPath("~/")).Parent.FullName;
+                ParentDirectory = new LocalDirectory(BaseDirectory).Parent.FullName;
             }
             if (Path.StartsWith("..\\", StringComparison.OrdinalIgnoreCase))
             {

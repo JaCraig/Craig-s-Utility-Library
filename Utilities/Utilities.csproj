@@ -433,8 +433,12 @@
     <Compile Include="ORM\Interfaces\IObject.cs" />
     <Compile Include="ORM\Manager\Aspect\Interfaces\IORMObject.cs" />
     <Compile Include="ORM\Manager\Aspect\ORMAspect.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ICollectionManyToMany.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ICollectionManyToOne.cs" />
     <Compile Include="ORM\Manager\Mapper\Default\IListManyToMany.cs" />
     <Compile Include="ORM\Manager\Mapper\Default\IListManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\ICollectionManyToMany.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\ICollectionManyToOne.cs" />
     <Compile Include="ORM\Manager\Mapper\Interfaces\IIEnumerableManyToOne.cs" />
     <Compile Include="ORM\Manager\Mapper\Interfaces\IID.cs" />
     <Compile Include="ORM\Manager\Mapper\Interfaces\IIListManyToMany.cs" />

@@ -618,6 +618,10 @@ namespace UnitTests.ORM.Manager
             TempObject.ManyToOneIEnumerable = new TestClass[] { new TestClass(), new TestClass(), new TestClass() };
             TempObject.ManyToOneItem = new TestClass();
             TempObject.ManyToOneList = new TestClass[] { new TestClass(), new TestClass(), new TestClass() }.ToList();
+            TempObject.ManyToOneIList = new TestClass[] { new TestClass(), new TestClass(), new TestClass() }.ToList();
+            TempObject.ManyToManyIList = new TestClass[] { new TestClass(), new TestClass() }.ToList();
+            TempObject.ManyToOneICollection = new TestClass[] { new TestClass(), new TestClass(), new TestClass(), new TestClass() }.ToList();
+            TempObject.ManyToManyICollection = new TestClass[] { new TestClass() }.ToList();
             TempObject.Map = new TestClass();
             TempObject.NullStringReference = null;
             TempObject.ShortReference = 5423;
@@ -640,6 +644,10 @@ namespace UnitTests.ORM.Manager
             Assert.Equal(3, TempObject.ManyToOneIEnumerable.Count());
             Assert.NotNull(TempObject.ManyToOneItem);
             Assert.Equal(3, TempObject.ManyToOneList.Count);
+            Assert.Equal(3, TempObject.ManyToOneIList.Count);
+            Assert.Equal(2, TempObject.ManyToManyIList.Count);
+            Assert.Equal(4, TempObject.ManyToOneICollection.Count);
+            Assert.Equal(1, TempObject.ManyToManyICollection.Count);
             Assert.NotNull(TempObject.Map);
             Assert.Equal(null, TempObject.NullStringReference);
             Assert.Equal(5423, TempObject.ShortReference);
@@ -677,6 +685,10 @@ namespace UnitTests.ORM.Manager
             Item.ManyToOneIEnumerable.First().FloatReference = 13f;
             Item.ManyToOneItem.FloatReference = 14f;
             Item.ManyToOneList = new TestClass[] { new TestClass(), new TestClass() }.ToList();
+            Item.ManyToManyIList.Add(new TestClass() { FloatReference = 15f });
+            Item.ManyToOneIList.Add(new TestClass() { FloatReference = 16f });
+            Item.ManyToManyICollection.Add(new TestClass() { FloatReference = 17f });
+            Item.ManyToOneICollection.Add(new TestClass() { FloatReference = 18f });
             TestObject.Save<TestClass, int>(Item);
 
             Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=SessionTestDatabase;Integrated Security=SSPI;Pooling=false"));
@@ -689,6 +701,10 @@ namespace UnitTests.ORM.Manager
             Assert.Equal(12f, Item.ManyToManyList.Last().FloatReference);
             Assert.Equal(13f, Item.ManyToOneIEnumerable.First().FloatReference);
             Assert.Equal(14f, Item.ManyToOneItem.FloatReference);
+            Assert.Equal(15f, Item.ManyToManyIList.Last().FloatReference);
+            Assert.Equal(16f, Item.ManyToOneIList.Last().FloatReference);
+            Assert.Equal(17f, Item.ManyToManyICollection.Last().FloatReference);
+            Assert.Equal(18f, Item.ManyToOneICollection.Last().FloatReference);
             Assert.Equal(2, Item.ManyToOneList.Count);
         }
 
@@ -734,6 +750,10 @@ namespace UnitTests.ORM.Manager
             public virtual IEnumerable<TestClass> ManyToOneIEnumerable { get; set; }
 
             public virtual IList<TestClass> ManyToOneIList { get; set; }
+
+            public virtual ICollection<TestClass> ManyToOneICollection { get; set; }
+
+            public virtual ICollection<TestClass> ManyToManyICollection { get; set; }
 
             public virtual TestClass ManyToOneItem { get; set; }
 
@@ -794,6 +814,8 @@ namespace UnitTests.ORM.Manager
                 ManyToOne(x => x.ManyToOneItem).SetTableName("ManyToOneList").SetCascade();
                 ManyToOne(x => x.ManyToOneIList).SetTableName("ManyToOneIList").SetCascade();
                 ManyToMany(x => x.ManyToManyIList).SetTableName("ManyToManyIList").SetCascade();
+                ManyToOne(x => x.ManyToOneICollection).SetTableName("ManyToOneICollection").SetCascade();
+                ManyToMany(x => x.ManyToManyICollection).SetTableName("ManyToManyICollection").SetCascade();
                 Map(x => x.Map).SetCascade();
                 Reference(x => x.BoolReference);
                 Reference(x => x.ByteArrayReference).SetMaxLength(100);

@@ -302,6 +302,26 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
         }
 
         /// <summary>
+        /// Sets up the default load command for a map property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">Map property</param>
+        public void SetupLoadCommands<D>(Mapper.Default.IListManyToMany<T, D> Property)
+            where D : class, new()
+        {
+        }
+
+        /// <summary>
+        /// Sets up the default load command for a map property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">Map property</param>
+        public void SetupLoadCommands<D>(Mapper.Default.IListManyToOne<T, D> Property)
+            where D : class, new()
+        {
+        }
+
+        /// <summary>
         /// Generates a batch that will update the data from the object
         /// </summary>
         /// <param name="Object">Object to update</param>
@@ -324,6 +344,26 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
                 TempBatch.AddCommand(Update(Object));
             }
             return TempBatch;
+        }
+
+        /// <summary>
+        /// Sets up the default load command for a map property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">Map property</param>
+        public void SetupLoadCommands<D>(Mapper.Default.ICollectionManyToMany<T, D> Property)
+            where D : class, new()
+        {
+        }
+
+        /// <summary>
+        /// Sets up the default load command for a map property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">Map property</param>
+        public void SetupLoadCommands<D>(Mapper.Default.ICollectionManyToOne<T, D> Property)
+            where D : class, new()
+        {
         }
     }
 }

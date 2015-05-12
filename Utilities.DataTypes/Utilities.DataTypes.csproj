@@ -264,6 +264,7 @@
     <Compile Include="DataTypes\DataMapper\Interfaces\Contracts\IDataMapperContract.cs" />
     <Compile Include="DataTypes\DataMapper\Interfaces\Contracts\IMapperModuleContract.cs" />
     <Compile Include="DataTypes\DataMapper\Interfaces\Contracts\ITypeMappingContract.cs" />
+    <Compile Include="DataTypes\ObservableList.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

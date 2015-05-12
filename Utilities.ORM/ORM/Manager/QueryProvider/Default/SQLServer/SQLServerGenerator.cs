@@ -587,6 +587,53 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         }
 
         /// <summary>
+        /// Sets up the default load command for a map property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">Map property</param>
+        public void SetupLoadCommands<D>(Mapper.Default.IListManyToMany<T, D> Property)
+            where D : class, new()
+        {
+            if (string.IsNullOrEmpty(Property.LoadCommand))
+            {
+                IMapping ForeignMapping = Property.ForeignMapping;
+                Property.SetLoadUsingCommand(string.Format(CultureInfo.CurrentCulture, ForeignMapping.TableName == Mapping.TableName ?
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}2={1}.{3} WHERE {2}.{4}{5}=@0" :
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}={1}.{3} WHERE {2}.{4}{5}=@0",
+                    GetColumns(ForeignMapping),
+                    ForeignMapping.TableName,
+                    Property.TableName,
+                    ForeignMapping.IDProperties.FirstOrDefault().FieldName,
+                    Mapping.TableName,
+                    Mapping.IDProperties.FirstOrDefault().FieldName),
+                CommandType.Text);
+            }
+        }
+
+        /// <summary>
+        /// Sets up the default load command for a map property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">Map property</param>
+        public void SetupLoadCommands<D>(Mapper.Default.IListManyToOne<T, D> Property) where D : class, new()
+        {
+            if (string.IsNullOrEmpty(Property.LoadCommand))
+            {
+                IMapping ForeignMapping = Property.ForeignMapping;
+                Property.SetLoadUsingCommand(string.Format(CultureInfo.CurrentCulture, ForeignMapping.TableName == Mapping.TableName ?
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}2={1}.{3} WHERE {2}.{4}{5}=@0" :
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}={1}.{3} WHERE {2}.{4}{5}=@0",
+                    GetColumns(ForeignMapping),
+                    ForeignMapping.TableName,
+                    Property.TableName,
+                    ForeignMapping.IDProperties.FirstOrDefault().FieldName,
+                    Mapping.TableName,
+                    Mapping.IDProperties.FirstOrDefault().FieldName),
+                CommandType.Text);
+            }
+        }
+
+        /// <summary>
         /// Generates a batch that will update the data from the object
         /// </summary>
         /// <param name="Object">Object to update</param>
@@ -744,6 +791,54 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                     ParameterList,
                     IDProperties),
                 CommandType.Text);
+        }
+
+        /// <summary>
+        /// Sets up the default load command for a map property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">Map property</param>
+        public void SetupLoadCommands<D>(Mapper.Default.ICollectionManyToMany<T, D> Property)
+            where D : class, new()
+        {
+            if (string.IsNullOrEmpty(Property.LoadCommand))
+            {
+                IMapping ForeignMapping = Property.ForeignMapping;
+                Property.SetLoadUsingCommand(string.Format(CultureInfo.CurrentCulture, ForeignMapping.TableName == Mapping.TableName ?
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}2={1}.{3} WHERE {2}.{4}{5}=@0" :
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}={1}.{3} WHERE {2}.{4}{5}=@0",
+                    GetColumns(ForeignMapping),
+                    ForeignMapping.TableName,
+                    Property.TableName,
+                    ForeignMapping.IDProperties.FirstOrDefault().FieldName,
+                    Mapping.TableName,
+                    Mapping.IDProperties.FirstOrDefault().FieldName),
+                CommandType.Text);
+            }
+        }
+
+        /// <summary>
+        /// Sets up the default load command for a map property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">Map property</param>
+        public void SetupLoadCommands<D>(Mapper.Default.ICollectionManyToOne<T, D> Property)
+            where D : class, new()
+        {
+            if (string.IsNullOrEmpty(Property.LoadCommand))
+            {
+                IMapping ForeignMapping = Property.ForeignMapping;
+                Property.SetLoadUsingCommand(string.Format(CultureInfo.CurrentCulture, ForeignMapping.TableName == Mapping.TableName ?
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}2={1}.{3} WHERE {2}.{4}{5}=@0" :
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}={1}.{3} WHERE {2}.{4}{5}=@0",
+                    GetColumns(ForeignMapping),
+                    ForeignMapping.TableName,
+                    Property.TableName,
+                    ForeignMapping.IDProperties.FirstOrDefault().FieldName,
+                    Mapping.TableName,
+                    Mapping.IDProperties.FirstOrDefault().FieldName),
+                CommandType.Text);
+            }
         }
     }
 }

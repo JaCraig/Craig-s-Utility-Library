@@ -22,9 +22,9 @@ THE SOFTWARE.*/
 namespace Utilities.ORM.Manager.Mapper.Interfaces
 {
     /// <summary>
-    /// Map interface
+    /// Single item mapping interface
     /// </summary>
-    public interface IMap
+    public interface ISingleMapping
     {
     }
 }

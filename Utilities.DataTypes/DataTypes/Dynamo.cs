@@ -256,21 +256,69 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
+        /// The get value end_
+        /// </summary>
+        private Action<Dynamo, string, EventArgs.OnEndEventArgs> getValueEnd_;
+
+        /// <summary>
+        /// The get value start_
+        /// </summary>
+        private Action<Dynamo, EventArgs.OnStartEventArgs> getValueStart_;
+
+        /// <summary>
+        /// The property changed_
+        /// </summary>
+        private PropertyChangedEventHandler propertyChanged_;
+
+        /// <summary>
         /// Called when the value/property is found but before it is returned to the caller Sends
         /// (this, PropertyName, EventArgs) to items attached to the event
         /// </summary>
-        public event Action<Dynamo, string, EventArgs.OnEndEventArgs> GetValueEnd;
+        public event Action<Dynamo, string, EventArgs.OnEndEventArgs> GetValueEnd
+        {
+            add
+            {
+                getValueEnd_ -= value;
+                getValueEnd_ += value;
+            }
+            remove
+            {
+                getValueEnd_ -= value;
+            }
+        }
 
         /// <summary>
         /// Called when beginning to get a value/property Sends (this, EventArgs) to items attached
         /// to the event
         /// </summary>
-        public event Action<Dynamo, EventArgs.OnStartEventArgs> GetValueStart;
+        public event Action<Dynamo, EventArgs.OnStartEventArgs> GetValueStart
+        {
+            add
+            {
+                getValueStart_ -= value;
+                getValueStart_ += value;
+            }
+            remove
+            {
+                getValueStart_ -= value;
+            }
+        }
 
         /// <summary>
         /// Property changed event
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged
+        {
+            add
+            {
+                propertyChanged_ -= value;
+                propertyChanged_ += value;
+            }
+            remove
+            {
+                propertyChanged_ -= value;
+            }
+        }
 
         /// <summary>
         /// Change log
@@ -745,8 +793,9 @@ namespace Utilities.DataTypes
         protected object RaiseGetValueEnd(string PropertyName, object Value)
         {
             EventArgs.OnEndEventArgs End = new EventArgs.OnEndEventArgs() { Content = Value };
-            if (GetValueEnd != null)
-                GetValueEnd(this, PropertyName, End);
+            var Handler = getValueEnd_;
+            if (Handler != null)
+                Handler(this, PropertyName, End);
             return End.Stop ? End.Content : null;
         }
 
@@ -761,8 +810,9 @@ namespace Utilities.DataTypes
         protected object RaiseGetValueStart(string PropertyName)
         {
             EventArgs.OnStartEventArgs Start = new EventArgs.OnStartEventArgs() { Content = PropertyName };
-            if (GetValueStart != null)
-                GetValueStart(this, Start);
+            var Handler = getValueStart_;
+            if (Handler != null)
+                Handler(this, Start);
             return Start.Stop ? Start.Content : null;
         }
 
@@ -778,7 +828,7 @@ namespace Utilities.DataTypes
                 ChangeLog.SetValue(PropertyName, new Change(this[PropertyName], NewValue));
             else
                 ChangeLog.SetValue(PropertyName, new Change(NewValue, NewValue));
-            var Handler = PropertyChanged;
+            var Handler = propertyChanged_;
             if (Handler != null)
                 Handler(this, new PropertyChangedEventArgs(PropertyName));
         }

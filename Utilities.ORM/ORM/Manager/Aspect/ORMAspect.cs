@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
@@ -52,7 +53,7 @@ namespace Utilities.ORM.Aspect
         /// <summary>
         /// Assemblies using
         /// </summary>
-        public ICollection<Assembly> AssembliesUsing { get { return new Assembly[] { typeof(ORMAspect).Assembly }; } }
+        public ICollection<Assembly> AssembliesUsing { get { return new Assembly[] { typeof(ORMAspect).Assembly, typeof(INotifyPropertyChanged).Assembly }; } }
 
         /// <summary>
         /// Interfaces using
@@ -62,7 +63,19 @@ namespace Utilities.ORM.Aspect
         /// <summary>
         /// Usings using
         /// </summary>
-        public ICollection<string> Usings { get { return new string[] { "Utilities.ORM.Manager", "Utilities.ORM.Manager.Aspect.Interfaces" }; } }
+        public ICollection<string> Usings
+        {
+            get
+            {
+                return new string[] {
+                    "Utilities.DataTypes",
+                    "Utilities.ORM.Manager",
+                    "Utilities.ORM.Manager.Aspect.Interfaces",
+                    "System.ComponentModel",
+                    "System.Runtime.CompilerServices"
+                };
+            }
+        }
 
         /// <summary>
         /// Fields that have been completed already
@@ -77,6 +90,12 @@ namespace Utilities.ORM.Aspect
         {
             IORMObject TempObject = (IORMObject)Object;
             TempObject.Session0 = new Utilities.ORM.Manager.Session();
+            TempObject.PropertiesChanged0 = new List<string>();
+            TempObject.PropertyChanged += (object sender, PropertyChangedEventArgs e) =>
+            {
+                IORMObject x = (IORMObject)sender;
+                x.PropertiesChanged0.Add(e.PropertyName);
+            };
         }
 
         /// <summary>
@@ -112,6 +131,10 @@ namespace Utilities.ORM.Aspect
                             Builder.AppendLine(SetupIEnumerableProperty(ReturnValueName, Property));
                         else if (Property is IListManyToMany || Property is IListManyToOne)
                             Builder.AppendLine(SetupListProperty(ReturnValueName, Property));
+                        else if (Property is IIListManyToMany || Property is IIListManyToOne)
+                            Builder.AppendLine(SetupIListProperty(ReturnValueName, Property));
+                        else if (Property is ICollectionManyToMany || Property is ICollectionManyToOne)
+                            Builder.AppendLine(SetupICollectionProperty(ReturnValueName, Property));
                         return Builder.ToString();
                     }
                 }
@@ -139,6 +162,30 @@ namespace Utilities.ORM.Aspect
         {
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLine(@"public Session Session0{ get; set; }");
+            Builder.AppendLine(@"public IList<string> PropertiesChanged0{ get; set; }");
+            if (!Type.Is<INotifyPropertyChanged>())
+            {
+                Builder.AppendLine(@"private PropertyChangedEventHandler propertyChanged_;
+public event PropertyChangedEventHandler PropertyChanged
+{
+    add
+    {
+        propertyChanged_-=value;
+        propertyChanged_+=value;
+    }
+
+    remove
+    {
+        propertyChanged_-=value;
+    }
+}");
+                Builder.AppendLine(@"private void NotifyPropertyChanged0([CallerMemberName]string propertyName="""")
+{
+    var Handler = propertyChanged_;
+    if (Handler != null)
+        Handler(this, new PropertyChangedEventArgs(propertyName));
+}");
+            }
             Builder.AppendLine(SetupFields(Type));
             return Builder.ToString();
         }
@@ -161,6 +208,8 @@ namespace Utilities.ORM.Aspect
                     {
                         Builder.AppendLineFormat("{0}=value;", Property.DerivedFieldName);
                     }
+                    if (Property != null)
+                        Builder.AppendLineFormat("NotifyPropertyChanged0(\"{0}\");", Property.Name);
                 }
             }
             return Builder.ToString();
@@ -180,6 +229,8 @@ namespace Utilities.ORM.Aspect
                         Property.Type.GetName(),
                         Property.Name)
                 .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
+                .AppendLineFormat("((ObservableList<{1}>){0}).CollectionChanged += (x, y) => NotifyPropertyChanged0(\"{2}\");", Property.DerivedFieldName, Property.Type.GetName(), Property.Name)
+                .AppendLineFormat("((ObservableList<{1}>){0}).ForEach(TempObject => {{ ((IORMObject)TempObject).PropertyChanged += (x, y) => ((ObservableList<{1}>){0}).NotifyObjectChanged(x); }});", Property.DerivedFieldName, Property.Type.GetName())
                 .AppendLine("}")
                 .AppendLineFormat("{0}={1};",
                     ReturnValueName,
@@ -195,12 +246,13 @@ namespace Utilities.ORM.Aspect
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
-                .AppendLineFormat("{0}=Session0.LoadProperties<{1},{2}>(this,\"{3}\");",
+                .AppendLineFormat("{0}=Session0.LoadProperties<{1},{2}>(this,\"{3}\").ToList();",
                         Property.DerivedFieldName,
                         Property.Mapping.ObjectType.GetName(),
                         Property.Type.GetName(),
                         Property.Name)
                 .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
+                .AppendLineFormat("NotifyPropertyChanged0(\"{0}\");", Property.Name)
                 .AppendLine("}")
                 .AppendLineFormat("{0}={1};",
                     ReturnValueName,
@@ -222,6 +274,10 @@ namespace Utilities.ORM.Aspect
                         Property.Type.GetName(),
                         Property.Name)
                 .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
+                .AppendLineFormat("if({0}!=null)", Property.DerivedFieldName)
+                .AppendLine("{")
+                .AppendLineFormat("({0} as INotifyPropertyChanged).PropertyChanged+=(x,y)=>NotifyPropertyChanged0(\"{1}\");", Property.DerivedFieldName, Property.Name)
+                .AppendLine("}")
                 .AppendLine("}")
                 .AppendLineFormat("{0}={1};",
                     ReturnValueName,
@@ -266,9 +322,85 @@ namespace Utilities.ORM.Aspect
                                 Builder.AppendLineFormat("private bool {0};", Property.DerivedFieldName + "Loaded");
                             }
                         }
+                        else if (Property is IIListManyToOne || Property is IIListManyToMany)
+                        {
+                            if (Fields.FirstOrDefault(x => x.DerivedFieldName == Property.DerivedFieldName) == null)
+                            {
+                                Fields.Add(Property);
+                                Builder.AppendLineFormat("private {0} {1};", typeof(IList<>).MakeGenericType(Property.Type).GetName(), Property.DerivedFieldName);
+                                Builder.AppendLineFormat("private bool {0};", Property.DerivedFieldName + "Loaded");
+                            }
+                        }
+                        else if (Property is ICollectionManyToOne || Property is ICollectionManyToMany)
+                        {
+                            if (Fields.FirstOrDefault(x => x.DerivedFieldName == Property.DerivedFieldName) == null)
+                            {
+                                Fields.Add(Property);
+                                Builder.AppendLineFormat("private {0} {1};", typeof(ICollection<>).MakeGenericType(Property.Type).GetName(), Property.DerivedFieldName);
+                                Builder.AppendLineFormat("private bool {0};", Property.DerivedFieldName + "Loaded");
+                            }
+                        }
                     }
                 }
             }
+            return Builder.ToString();
+        }
+
+        /// <summary>
+        /// Setups the i list property.
+        /// </summary>
+        /// <param name="ReturnValueName">Name of the return value.</param>
+        /// <param name="Property">The property.</param>
+        /// <returns></returns>
+        private string SetupIListProperty(string ReturnValueName, IProperty Property)
+        {
+            Contract.Requires<ArgumentNullException>(Property != null, "Property");
+            Contract.Requires<ArgumentNullException>(Property.Mapping != null, "Property.Mapping");
+            Contract.Requires<ArgumentNullException>(Property.Mapping.ObjectType != null, "Property.Mapping.ObjectType");
+            StringBuilder Builder = new StringBuilder();
+            Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
+                .AppendLine("{")
+                .AppendLineFormat("{0}=Session0.LoadProperties<{1},{2}>(this,\"{3}\");",
+                        Property.DerivedFieldName,
+                        Property.Mapping.ObjectType.GetName(),
+                        Property.Type.GetName(),
+                        Property.Name)
+                .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
+                .AppendLineFormat("((ObservableList<{1}>){0}).CollectionChanged += (x, y) => NotifyPropertyChanged0(\"{2}\");", Property.DerivedFieldName, Property.Type.GetName(), Property.Name)
+                .AppendLineFormat("((ObservableList<{1}>){0}).ForEach(TempObject => {{ ((IORMObject)TempObject).PropertyChanged += (x, y) => ((ObservableList<{1}>){0}).NotifyObjectChanged(x); }});", Property.DerivedFieldName, Property.Type.GetName())
+                .AppendLine("}")
+                .AppendLineFormat("{0}={1};",
+                    ReturnValueName,
+                    Property.DerivedFieldName);
+            return Builder.ToString();
+        }
+
+        /// <summary>
+        /// Setups the i list property.
+        /// </summary>
+        /// <param name="ReturnValueName">Name of the return value.</param>
+        /// <param name="Property">The property.</param>
+        /// <returns></returns>
+        private string SetupICollectionProperty(string ReturnValueName, IProperty Property)
+        {
+            Contract.Requires<ArgumentNullException>(Property != null, "Property");
+            Contract.Requires<ArgumentNullException>(Property.Mapping != null, "Property.Mapping");
+            Contract.Requires<ArgumentNullException>(Property.Mapping.ObjectType != null, "Property.Mapping.ObjectType");
+            StringBuilder Builder = new StringBuilder();
+            Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
+                .AppendLine("{")
+                .AppendLineFormat("{0}=Session0.LoadProperties<{1},{2}>(this,\"{3}\");",
+                        Property.DerivedFieldName,
+                        Property.Mapping.ObjectType.GetName(),
+                        Property.Type.GetName(),
+                        Property.Name)
+                .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
+                .AppendLineFormat("((ObservableList<{1}>){0}).CollectionChanged += (x, y) => NotifyPropertyChanged0(\"{2}\");", Property.DerivedFieldName, Property.Type.GetName(), Property.Name)
+                .AppendLineFormat("((ObservableList<{1}>){0}).ForEach(TempObject => {{ ((IORMObject)TempObject).PropertyChanged += (x, y) => ((ObservableList<{1}>){0}).NotifyObjectChanged(x); }});", Property.DerivedFieldName, Property.Type.GetName())
+                .AppendLine("}")
+                .AppendLineFormat("{0}={1};",
+                    ReturnValueName,
+                    Property.DerivedFieldName);
             return Builder.ToString();
         }
     }

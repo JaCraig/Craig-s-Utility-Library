@@ -244,6 +244,38 @@ namespace Utilities.ORM.BaseClasses
         }
 
         /// <summary>
+        /// Creates a many to many object
+        /// </summary>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <param name="Expression">Expression</param>
+        /// <returns>The many to many object</returns>
+        public IListManyToMany<ClassType, DataType> ManyToMany<DataType>(System.Linq.Expressions.Expression<Func<ClassType, IList<DataType>>> Expression)
+            where DataType : class, new()
+        {
+            if (Expression == null)
+                throw new ArgumentNullException("Expression");
+            IListManyToMany<ClassType, DataType> ReturnValue = new IListManyToMany<ClassType, DataType>(Expression, this);
+            Properties.Add(ReturnValue);
+            return ReturnValue;
+        }
+
+        /// <summary>
+        /// Creates a many to many object
+        /// </summary>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <param name="Expression">Expression</param>
+        /// <returns>The many to many object</returns>
+        public ICollectionManyToMany<ClassType, DataType> ManyToMany<DataType>(System.Linq.Expressions.Expression<Func<ClassType, ICollection<DataType>>> Expression)
+            where DataType : class, new()
+        {
+            if (Expression == null)
+                throw new ArgumentNullException("Expression");
+            ICollectionManyToMany<ClassType, DataType> ReturnValue = new ICollectionManyToMany<ClassType, DataType>(Expression, this);
+            Properties.Add(ReturnValue);
+            return ReturnValue;
+        }
+
+        /// <summary>
         /// Creates a many to one
         /// </summary>
         /// <typeparam name="DataType">Data type</typeparam>
@@ -271,6 +303,38 @@ namespace Utilities.ORM.BaseClasses
             if (Expression == null)
                 throw new ArgumentNullException("Expression");
             IEnumerableManyToOne<ClassType, DataType> ReturnValue = new IEnumerableManyToOne<ClassType, DataType>(Expression, this);
+            Properties.Add(ReturnValue);
+            return ReturnValue;
+        }
+
+        /// <summary>
+        /// Creates a many to one
+        /// </summary>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <param name="Expression">Expression</param>
+        /// <returns>The many to one object</returns>
+        public IListManyToOne<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, IList<DataType>>> Expression)
+            where DataType : class, new()
+        {
+            if (Expression == null)
+                throw new ArgumentNullException("Expression");
+            IListManyToOne<ClassType, DataType> ReturnValue = new IListManyToOne<ClassType, DataType>(Expression, this);
+            Properties.Add(ReturnValue);
+            return ReturnValue;
+        }
+
+        /// <summary>
+        /// Creates a many to one
+        /// </summary>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <param name="Expression">Expression</param>
+        /// <returns>The many to one object</returns>
+        public ICollectionManyToOne<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, ICollection<DataType>>> Expression)
+            where DataType : class, new()
+        {
+            if (Expression == null)
+                throw new ArgumentNullException("Expression");
+            ICollectionManyToOne<ClassType, DataType> ReturnValue = new ICollectionManyToOne<ClassType, DataType>(Expression, this);
             Properties.Add(ReturnValue);
             return ReturnValue;
         }

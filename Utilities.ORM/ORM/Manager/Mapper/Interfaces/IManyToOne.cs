@@ -24,7 +24,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
     /// <summary>
     /// ManyToOne interface
     /// </summary>
-    public interface IManyToOne
+    public interface IManyToOne : ISingleMapping
     {
     }
 }

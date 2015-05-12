@@ -142,7 +142,6 @@ namespace Utilities.Workflow.Manager
         /// </param>
         protected override void Dispose(bool Managed)
         {
-            new System.IO.DirectoryInfo(Environment.CurrentDirectory + "/App_Data/").Create();
             if (FileManager != null && SerializationManager != null)
             {
                 IFile File = FileManager.File("~/App_Data/Workflows.obj");

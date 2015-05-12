@@ -247,6 +247,16 @@
     <Compile Include="ORM\Manager\Schema\Default\Database\SQLServer\Builders\Tables.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Database\SQLServer\Builders\TableTriggers.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Database\SQLServer\Builders\Views.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ICollectionManyToMany.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ICollectionManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\IListManyToMany.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\IListManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\ICollectionManyToMany.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\ICollectionManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IIListManyToMany.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IIListManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IMultiMapping.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\ISingleMapping.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />
