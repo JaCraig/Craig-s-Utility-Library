@@ -91,6 +91,17 @@ namespace Utilities.ORM.Manager.Mapper.Default
         }
 
         /// <summary>
+        /// Gets the name of the type.
+        /// </summary>
+        /// <value>
+        /// The name of the type.
+        /// </value>
+        public override string TypeName
+        {
+            get { return Type.GetName(); }
+        }
+
+        /// <summary>
         /// Called to create a batch that deletes items from the joining tables
         /// </summary>
         /// <param name="Object">Object</param>

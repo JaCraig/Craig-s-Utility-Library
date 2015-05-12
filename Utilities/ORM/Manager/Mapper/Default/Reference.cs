@@ -160,5 +160,16 @@ namespace Utilities.ORM.Manager.Mapper.Default
         public override void Setup(ISourceInfo Source, Mapper.Manager MappingProvider, QueryProvider.Manager QueryProvider)
         {
         }
+
+        /// <summary>
+        /// Gets the name of the type.
+        /// </summary>
+        /// <value>
+        /// The name of the type.
+        /// </value>
+        public override string TypeName
+        {
+            get { return Type.GetName(); }
+        }
     }
 }

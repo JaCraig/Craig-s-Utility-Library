@@ -284,6 +284,14 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         Type Type { get; }
 
         /// <summary>
+        /// Gets the name of the type.
+        /// </summary>
+        /// <value>
+        /// The name of the type.
+        /// </value>
+        string TypeName { get; }
+
+        /// <summary>
         /// Unique
         /// </summary>
         bool Unique { get; }

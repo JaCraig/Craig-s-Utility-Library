@@ -142,6 +142,14 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         public Type Type { get; protected set; }
 
         /// <summary>
+        /// Gets the name of the type.
+        /// </summary>
+        /// <value>
+        /// The name of the type.
+        /// </value>
+        public abstract string TypeName { get; }
+
+        /// <summary>
         /// Unique
         /// </summary>
         public bool Unique { get; private set; }
