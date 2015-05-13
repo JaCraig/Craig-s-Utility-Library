@@ -276,5 +276,16 @@ namespace Utilities.ORM.Manager.Mapper.Default
             ForeignMapping = MappingProvider[Type, Source];
             QueryProvider.Generate<ClassType>(Source, Mapping).SetupLoadCommands(this);
         }
+
+        /// <summary>
+        /// Gets the name of the type.
+        /// </summary>
+        /// <value>
+        /// The name of the type.
+        /// </value>
+        public override string TypeName
+        {
+            get { return typeof(ICollection<>).MakeGenericType(Type).GetName(); }
+        }
     }
 }

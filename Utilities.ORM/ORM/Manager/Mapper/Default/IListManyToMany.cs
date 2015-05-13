@@ -62,6 +62,17 @@ namespace Utilities.ORM.Manager.Mapper.Default
         }
 
         /// <summary>
+        /// Gets the name of the type.
+        /// </summary>
+        /// <value>
+        /// The name of the type.
+        /// </value>
+        public override string TypeName
+        {
+            get { return typeof(IList<>).MakeGenericType(Type).GetName(); }
+        }
+
+        /// <summary>
         /// Does a cascade delete of an object for this property
         /// </summary>
         /// <param name="Object">Object</param>
