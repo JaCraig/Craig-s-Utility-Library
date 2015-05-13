@@ -480,47 +480,54 @@ $(document).ready(function(){initNavTree('_i_enumerable_extensions_8cs_source.ht
 <div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;            <span class="keywordflow">return</span> List.ForEach(ConvertingFunction).ToList();</div>
 <div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;        }</div>
 <div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;</div>
-<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">string</span> ToString&lt;T&gt;(<span class="keyword">this</span> IEnumerable&lt;T&gt; List, Func&lt;T, string&gt; ItemOutput = null, <span class="keywordtype">string</span> Seperator = <span class="stringliteral">&quot;,&quot;</span>)</div>
-<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;        {</div>
-<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;            Contract.Requires&lt;ArgumentNullException&gt;(List != null, <span class="stringliteral">&quot;List&quot;</span>);</div>
-<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;            Seperator = Seperator.Check(<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;            ItemOutput = ItemOutput.Check(x =&gt; x.ToString());</div>
-<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;            StringBuilder Builder = <span class="keyword">new</span> StringBuilder();</div>
-<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;            <span class="keywordtype">string</span> TempSeperator = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;            List.ForEach(x =&gt;</div>
-<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;            {</div>
-<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;                Builder.Append(TempSeperator).Append(ItemOutput(x));</div>
-<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;                TempSeperator = Seperator;</div>
-<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;            });</div>
-<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;            <span class="keywordflow">return</span> Builder.ToString();</div>
-<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;        }</div>
-<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;</div>
-<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;T&gt; Transverse&lt;T&gt;(<span class="keyword">this</span> IEnumerable&lt;T&gt; collection, Func&lt;T, IEnumerable&lt;T&gt;&gt; property)</div>
-<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;        {</div>
-<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;            <span class="keywordflow">if</span> (collection == null)</div>
-<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;                yield <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;</div>
-<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;            <span class="keywordflow">foreach</span> (T item <span class="keywordflow">in</span> collection)</div>
-<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;            {</div>
-<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;                yield <span class="keywordflow">return</span> item;</div>
-<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;</div>
-<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;                <span class="keywordflow">foreach</span> (T inner <span class="keywordflow">in</span> Transverse(property(item), property))</div>
-<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;                    yield <span class="keywordflow">return</span> inner;</div>
-<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;            }</div>
-<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;        }</div>
-<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;</div>
-<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;T&gt; Transverse&lt;T&gt;(<span class="keyword">this</span> T item, Func&lt;T, IEnumerable&lt;T&gt;&gt; property)</div>
-<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;        {</div>
-<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;            <span class="keywordflow">if</span> (item == null)</div>
-<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;                yield <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;</div>
-<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;            yield <span class="keywordflow">return</span> item;</div>
-<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;</div>
-<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;            <span class="keywordflow">foreach</span> (T inner <span class="keywordflow">in</span> Transverse(property(item), property))</div>
-<div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;                yield <span class="keywordflow">return</span> inner;</div>
-<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;        }</div>
-<div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;    }</div>
-<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;}</div>
+<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> ObservableList&lt;Target&gt; ToObservableList&lt;Source, Target&gt;(<span class="keyword">this</span> IEnumerable&lt;Source&gt; List, Func&lt;Source, Target&gt; ConvertingFunction)</div>
+<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;        {</div>
+<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;            Contract.Requires&lt;ArgumentNullException&gt;(List != null, <span class="stringliteral">&quot;List&quot;</span>);</div>
+<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;            Contract.Requires&lt;ArgumentNullException&gt;(ConvertingFunction != null, <span class="stringliteral">&quot;ConvertingFunction&quot;</span>);</div>
+<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> ObservableList&lt;Target&gt;(List.ForEach(ConvertingFunction));</div>
+<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;        }</div>
+<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;</div>
+<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">string</span> ToString&lt;T&gt;(<span class="keyword">this</span> IEnumerable&lt;T&gt; List, Func&lt;T, string&gt; ItemOutput = null, <span class="keywordtype">string</span> Seperator = <span class="stringliteral">&quot;,&quot;</span>)</div>
+<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;        {</div>
+<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;            Contract.Requires&lt;ArgumentNullException&gt;(List != null, <span class="stringliteral">&quot;List&quot;</span>);</div>
+<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;            Seperator = Seperator.Check(<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;            ItemOutput = ItemOutput.Check(x =&gt; x.ToString());</div>
+<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;            StringBuilder Builder = <span class="keyword">new</span> StringBuilder();</div>
+<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;            <span class="keywordtype">string</span> TempSeperator = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;            List.ForEach(x =&gt;</div>
+<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;            {</div>
+<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;                Builder.Append(TempSeperator).Append(ItemOutput(x));</div>
+<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;                TempSeperator = Seperator;</div>
+<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;            });</div>
+<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;            <span class="keywordflow">return</span> Builder.ToString();</div>
+<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;        }</div>
+<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;</div>
+<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;T&gt; Transverse&lt;T&gt;(<span class="keyword">this</span> IEnumerable&lt;T&gt; collection, Func&lt;T, IEnumerable&lt;T&gt;&gt; property)</div>
+<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;        {</div>
+<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;            <span class="keywordflow">if</span> (collection == null)</div>
+<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;                yield <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;</div>
+<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;            <span class="keywordflow">foreach</span> (T item <span class="keywordflow">in</span> collection)</div>
+<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;            {</div>
+<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;                yield <span class="keywordflow">return</span> item;</div>
+<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;</div>
+<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;                <span class="keywordflow">foreach</span> (T inner <span class="keywordflow">in</span> Transverse(property(item), property))</div>
+<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;                    yield <span class="keywordflow">return</span> inner;</div>
+<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;            }</div>
+<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;        }</div>
+<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;</div>
+<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;T&gt; Transverse&lt;T&gt;(<span class="keyword">this</span> T item, Func&lt;T, IEnumerable&lt;T&gt;&gt; property)</div>
+<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;        {</div>
+<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;            <span class="keywordflow">if</span> (item == null)</div>
+<div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;                yield <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;</div>
+<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;            yield <span class="keywordflow">return</span> item;</div>
+<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;</div>
+<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;            <span class="keywordflow">foreach</span> (T inner <span class="keywordflow">in</span> Transverse(property(item), property))</div>
+<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;                yield <span class="keywordflow">return</span> inner;</div>
+<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;        }</div>
+<div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;    }</div>
+<div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;}</div>
 <div class="ttc" id="namespace_system_html"><div class="ttname"><a href="namespace_system.html">System</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_data_types_1_1_comparison_html"><div class="ttname"><a href="namespace_utilities_1_1_data_types_1_1_comparison.html">Utilities.DataTypes.Comparison</a></div><div class="ttdef"><b>Definition:</b> <a href="_generic_comparer_8cs_source.html#l00025">GenericComparer.cs:25</a></div></div>
 <div class="ttc" id="namespace_utilities_html"><div class="ttname"><a href="namespace_utilities.html">Utilities</a></div></div>
@@ -532,7 +539,7 @@ $(document).ready(function(){initNavTree('_i_enumerable_extensions_8cs_source.ht
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_ca0426833ed64f488ae0419fd1a98fec.html">DataTypes</a></li><li class="navelem"><a class="el" href="dir_ff08ba1239df36e241ac9aa57b32dcdc.html">ExtensionMethods</a></li><li class="navelem"><a class="el" href="_i_enumerable_extensions_8cs.html">IEnumerableExtensions.cs</a></li>
-    <li class="footer">Generated on Thu May 7 2015 22:29:26 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Tue May 12 2015 22:37:22 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

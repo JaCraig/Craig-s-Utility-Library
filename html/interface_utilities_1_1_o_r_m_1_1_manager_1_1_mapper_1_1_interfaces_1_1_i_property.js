@@ -39,5 +39,6 @@ var interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_pr
     [ "NotNull", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_property.html#aa7a3ab56c3e6b37e3de0a9bcf8a10dce", null ],
     [ "TableName", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_property.html#ae040f429470681af1e7af419c298979a", null ],
     [ "Type", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_property.html#af620c1dad708b18983d67378bafb0981", null ],
+    [ "TypeName", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_property.html#a80301939e12eb7a823a14482ed53d466", null ],
     [ "Unique", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_property.html#a39f8fdeef3026c9d9bc4ef10010aa672", null ]
 ];

@@ -82,7 +82,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li class="current"><a href="functions_func.html"><span>Functions</span></a></li>
       <li><a href="functions_vars.html"><span>Variables</span></a></li>
       <li><a href="functions_prop.html"><span>Properties</span></a></li>
-      <li><a href="functions_evnt.html"><span>Events</span></a></li>
     </ul>
   </div>
   <div id="navrow4" class="tabs3">
@@ -280,8 +279,12 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 , <a class="el" href="class_utilities_1_1_o_r_m_1_1_aspect_1_1_o_r_m_aspect.html#af78f38133a26c83a76893a2450098527">Utilities.ORM.Aspect.ORMAspect</a>
 , <a class="el" href="class_utilities_1_1_o_r_m_1_1_base_classes_1_1_mapping_base_class.html#a9abc4ee03fc200641456a84ec35ed0de">Utilities.ORM.BaseClasses.MappingBaseClass&lt; ClassType, DatabaseType &gt;</a>
 , <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_base_classes_1_1_property_base.html#ab8044a798d173430780b1aa78682f3ea">Utilities.ORM.Manager.Mapper.BaseClasses.PropertyBase&lt; ClassType, DataType, ReturnType &gt;</a>
+, <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_collection_many_to_many.html#a37403439ef7beae912b8c91f46071dc3">Utilities.ORM.Manager.Mapper.Default.ICollectionManyToMany&lt; ClassType, DataType &gt;</a>
+, <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_collection_many_to_one.html#a5ee4f02fc929a1bf110ccd563d2b92e4">Utilities.ORM.Manager.Mapper.Default.ICollectionManyToOne&lt; ClassType, DataType &gt;</a>
 , <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_d.html#af33b2494278e56e7c34cf6c87a8d1ca5">Utilities.ORM.Manager.Mapper.Default.ID&lt; ClassType, DataType &gt;</a>
 , <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_enumerable_many_to_one.html#a335d0adefbc331bec9e41a6591a2edbe">Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne&lt; ClassType, DataType &gt;</a>
+, <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_list_many_to_many.html#ae900a52ff8a87124630fba56241b2f58">Utilities.ORM.Manager.Mapper.Default.IListManyToMany&lt; ClassType, DataType &gt;</a>
+, <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_list_many_to_one.html#a1e05e516b307252e03606f72324dbe03">Utilities.ORM.Manager.Mapper.Default.IListManyToOne&lt; ClassType, DataType &gt;</a>
 , <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_list_many_to_many.html#a85100bd52cebb6dc3970d7aaddd1d9fb">Utilities.ORM.Manager.Mapper.Default.ListManyToMany&lt; ClassType, DataType &gt;</a>
 , <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_list_many_to_one.html#a10253d640310360f337a72b0093b3c49">Utilities.ORM.Manager.Mapper.Default.ListManyToOne&lt; ClassType, DataType &gt;</a>
 , <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_many_to_many.html#a11cb6f5efe42127289b1e28feb935c9f">Utilities.ORM.Manager.Mapper.Default.ManyToMany&lt; ClassType, DataType &gt;</a>
@@ -327,9 +330,9 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 , <a class="el" href="class_utilities_1_1_o_r_m_1_1_aspect_1_1_o_r_m_aspect.html#aa6b4015bbd5cd8151858fc72cff4eeb7">Utilities.ORM.Aspect.ORMAspect</a>
 </li>
 <li>SetupLoadCommands&lt; D &gt;()
-: <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_l_d_a_p_1_1_l_d_a_p_generator.html#a8332a06c255ade43681d0f36bef3d49b">Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPGenerator&lt; T &gt;</a>
-, <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_s_q_l_server_1_1_s_q_l_server_generator.html#ae4e59e1c714271bb370f6a6355cc61ea">Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerGenerator&lt; T &gt;</a>
-, <a class="el" href="interface_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_interfaces_1_1_i_generator.html#a1172a89eeb1ae4ca8469bd218323bb17">Utilities.ORM.Manager.QueryProvider.Interfaces.IGenerator&lt; T &gt;</a>
+: <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_l_d_a_p_1_1_l_d_a_p_generator.html#a059faa9973bd4293ff97a16b4dd479aa">Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPGenerator&lt; T &gt;</a>
+, <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_s_q_l_server_1_1_s_q_l_server_generator.html#a83ca3756f376a655c9fbfff6d7f3c512">Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerGenerator&lt; T &gt;</a>
+, <a class="el" href="interface_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_interfaces_1_1_i_generator.html#acea4daedea99bf90ef44ac3e36952cf0">Utilities.ORM.Manager.QueryProvider.Interfaces.IGenerator&lt; T &gt;</a>
 </li>
 <li>SetupObject()
 : <a class="el" href="class_utilities_1_1_o_r_m_1_1_object_base_class.html#aca3de4121a6f1087c3acfac90265af09">Utilities.ORM.ObjectBaseClass&lt; ObjectType, IDType &gt;</a>
@@ -339,7 +342,7 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 , <a class="el" href="class_utilities_1_1_o_r_m_1_1_aspect_1_1_o_r_m_aspect.html#ad8ae2f2618877703a47eb9e94fe2e198">Utilities.ORM.Aspect.ORMAspect</a>
 </li>
 <li>SetValue()
-: <a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html#ae8ed8e7a62386c88198cdb3e2564cff7">Utilities.DataTypes.Dynamo&lt; T &gt;</a>
+: <a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html#af85c6acf609ada088938574c88207321">Utilities.DataTypes.Dynamo&lt; T &gt;</a>
 </li>
 <li>Shift()
 : <a class="el" href="class_utilities_1_1_i_o_1_1_encryption_1_1_default_1_1_shift.html#a8be9bf0b575015bdce74f86da5e439d0">Utilities.IO.Encryption.Default.Shift</a>
@@ -348,7 +351,7 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 : <a class="el" href="class_utilities_1_1_i_o_1_1_encryption_1_1_base_classes_1_1_shift_base.html#a359c2c23f2889597afc88fe3f342ac14">Utilities.IO.Encryption.BaseClasses.ShiftBase</a>
 </li>
 <li>ShortGenerator()
-: <a class="el" href="class_utilities_1_1_random_1_1_default_classes_1_1_short_generator.html#ad71c556ef29b89b72ed2f0b61c98daa9">Utilities.Random.DefaultClasses.ShortGenerator</a>
+: <a class="el" href="class_utilities_1_1_random_1_1_default_classes_1_1_short_generator.html#a3e146c419cdb36e316af89ca74dcbe48">Utilities.Random.DefaultClasses.ShortGenerator</a>
 </li>
 <li>SignHash()
 : <a class="el" href="class_utilities_1_1_i_o_1_1_encryption_1_1_base_classes_1_1_asymmetric_base.html#afd980842b50403654e903b0eb164eb2b">Utilities.IO.Encryption.BaseClasses.AsymmetricBase</a>
@@ -477,7 +480,7 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu May 7 2015 22:30:12 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Tue May 12 2015 22:38:06 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

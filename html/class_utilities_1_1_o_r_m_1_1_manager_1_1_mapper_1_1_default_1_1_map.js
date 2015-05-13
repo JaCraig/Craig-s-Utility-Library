@@ -9,5 +9,6 @@ var class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_map =
     [ "GetParameter", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_map.html#a66cc88d71581e7f5d9620ace8f6a4bf0", null ],
     [ "JoinsDelete", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_map.html#a0579c13997dff08c6f6c4384bca7aabc", null ],
     [ "JoinsSave", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_map.html#acf201133af909583a67253c0be76e8d9", null ],
-    [ "Setup", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_map.html#a50f56715c600aa374682d166989aeb55", null ]
+    [ "Setup", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_map.html#a50f56715c600aa374682d166989aeb55", null ],
+    [ "TypeName", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_map.html#a7717a686199479144c6a3c135f540a32", null ]
 ];

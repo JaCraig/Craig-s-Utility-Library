@@ -9,5 +9,6 @@ var class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_many_to_one
     [ "GetParameter", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_many_to_one.html#a1fc4eba32459d974daa5e6933a4afb2f", null ],
     [ "JoinsDelete", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_many_to_one.html#aa71535adc415b821503fe148d9adacb4", null ],
     [ "JoinsSave", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_many_to_one.html#aa8fd81b2814d567bbe3bc90cde273571", null ],
-    [ "Setup", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_many_to_one.html#a071e532a6e0a3d453b9c3505c5c81878", null ]
+    [ "Setup", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_many_to_one.html#a071e532a6e0a3d453b9c3505c5c81878", null ],
+    [ "TypeName", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_many_to_one.html#ae0cd23e803a56c35f0c1e94d28fcbf51", null ]
 ];

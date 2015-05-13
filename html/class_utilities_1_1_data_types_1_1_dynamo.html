@@ -110,7 +110,6 @@ $(document).ready(function(){initNavTree('class_utilities_1_1_data_types_1_1_dyn
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#events">Events</a> &#124;
 <a href="class_utilities_1_1_data_types_1_1_dynamo-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Utilities.DataTypes.Dynamo&lt; T &gt; Class Template Reference</div>  </div>
@@ -271,6 +270,15 @@ Properties</h2></td></tr>
 <tr class="memitem:a9c6e36ef5db948dd63128d8f6619df88"><td class="memItemLeft" align="right" valign="top">override ICollection&lt; object &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html#a9c6e36ef5db948dd63128d8f6619df88">Values</a><code> [get]</code></td></tr>
 <tr class="memdesc:a9c6e36ef5db948dd63128d8f6619df88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the Values  <a href="#a9c6e36ef5db948dd63128d8f6619df88">More...</a><br /></td></tr>
 <tr class="separator:a9c6e36ef5db948dd63128d8f6619df88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72aff0ce92e6e876f001bcd86c2e6600"><td class="memItemLeft" align="right" valign="top">Action&lt; <a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html">Dynamo</a>, string, <a class="el" href="class_utilities_1_1_data_types_1_1_event_args_1_1_on_end_event_args.html">EventArgs.OnEndEventArgs</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html#a72aff0ce92e6e876f001bcd86c2e6600">GetValueEnd</a></td></tr>
+<tr class="memdesc:a72aff0ce92e6e876f001bcd86c2e6600"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the value/property is found but before it is returned to the caller Sends (this, PropertyName, <a class="el" href="namespace_utilities_1_1_data_types_1_1_event_args.html">EventArgs</a>) to items attached to the event  <a href="#a72aff0ce92e6e876f001bcd86c2e6600">More...</a><br /></td></tr>
+<tr class="separator:a72aff0ce92e6e876f001bcd86c2e6600"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48431a903e135c63bed7cca2a3e1e5e1"><td class="memItemLeft" align="right" valign="top">Action&lt; <a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html">Dynamo</a>, <a class="el" href="class_utilities_1_1_data_types_1_1_event_args_1_1_on_start_event_args.html">EventArgs.OnStartEventArgs</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html#a48431a903e135c63bed7cca2a3e1e5e1">GetValueStart</a></td></tr>
+<tr class="memdesc:a48431a903e135c63bed7cca2a3e1e5e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when beginning to get a value/property Sends (this, <a class="el" href="namespace_utilities_1_1_data_types_1_1_event_args.html">EventArgs</a>) to items attached to the event  <a href="#a48431a903e135c63bed7cca2a3e1e5e1">More...</a><br /></td></tr>
+<tr class="separator:a48431a903e135c63bed7cca2a3e1e5e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d38d982c64f22e0e79a76e754926470"><td class="memItemLeft" align="right" valign="top">PropertyChangedEventHandler&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html#a5d38d982c64f22e0e79a76e754926470">PropertyChanged</a></td></tr>
+<tr class="memdesc:a5d38d982c64f22e0e79a76e754926470"><td class="mdescLeft">&#160;</td><td class="mdescRight">Property changed event  <a href="#a5d38d982c64f22e0e79a76e754926470">More...</a><br /></td></tr>
+<tr class="separator:a5d38d982c64f22e0e79a76e754926470"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f0543816b2b7d21e41c564ad7883211"><td class="memItemLeft" align="right" valign="top">ConcurrentDictionary&lt; string, <a class="el" href="class_utilities_1_1_data_types_1_1_change.html">Change</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html#a5f0543816b2b7d21e41c564ad7883211">ChangeLog</a><code> [get]</code></td></tr>
 <tr class="memdesc:a5f0543816b2b7d21e41c564ad7883211"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_utilities_1_1_data_types_1_1_change.html" title="Change class ">Change</a> log  <a href="#a5f0543816b2b7d21e41c564ad7883211">More...</a><br /></td></tr>
 <tr class="separator:a5f0543816b2b7d21e41c564ad7883211"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -289,18 +297,6 @@ Properties</h2></td></tr>
 <tr class="memitem:aaa036bf0a32109bda70828081d48722d"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html#aaa036bf0a32109bda70828081d48722d">this[string key]</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:aaa036bf0a32109bda70828081d48722d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the value associated with the key specified  <a href="#aaa036bf0a32109bda70828081d48722d">More...</a><br /></td></tr>
 <tr class="separator:aaa036bf0a32109bda70828081d48722d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="events"></a>
-Events</h2></td></tr>
-<tr class="memitem:a72aff0ce92e6e876f001bcd86c2e6600"><td class="memItemLeft" align="right" valign="top">Action&lt; <a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html">Dynamo</a>, string, <a class="el" href="class_utilities_1_1_data_types_1_1_event_args_1_1_on_end_event_args.html">EventArgs.OnEndEventArgs</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html#a72aff0ce92e6e876f001bcd86c2e6600">GetValueEnd</a></td></tr>
-<tr class="memdesc:a72aff0ce92e6e876f001bcd86c2e6600"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the value/property is found but before it is returned to the caller Sends (this, PropertyName, <a class="el" href="namespace_utilities_1_1_data_types_1_1_event_args.html">EventArgs</a>) to items attached to the event  <a href="#a72aff0ce92e6e876f001bcd86c2e6600">More...</a><br /></td></tr>
-<tr class="separator:a72aff0ce92e6e876f001bcd86c2e6600"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48431a903e135c63bed7cca2a3e1e5e1"><td class="memItemLeft" align="right" valign="top">Action&lt; <a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html">Dynamo</a>, <a class="el" href="class_utilities_1_1_data_types_1_1_event_args_1_1_on_start_event_args.html">EventArgs.OnStartEventArgs</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html#a48431a903e135c63bed7cca2a3e1e5e1">GetValueStart</a></td></tr>
-<tr class="memdesc:a48431a903e135c63bed7cca2a3e1e5e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when beginning to get a value/property Sends (this, <a class="el" href="namespace_utilities_1_1_data_types_1_1_event_args.html">EventArgs</a>) to items attached to the event  <a href="#a48431a903e135c63bed7cca2a3e1e5e1">More...</a><br /></td></tr>
-<tr class="separator:a48431a903e135c63bed7cca2a3e1e5e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d38d982c64f22e0e79a76e754926470"><td class="memItemLeft" align="right" valign="top">PropertyChangedEventHandler&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html#a5d38d982c64f22e0e79a76e754926470">PropertyChanged</a></td></tr>
-<tr class="memdesc:a5d38d982c64f22e0e79a76e754926470"><td class="mdescLeft">&#160;</td><td class="mdescRight">Property changed event  <a href="#a5d38d982c64f22e0e79a76e754926470">More...</a><br /></td></tr>
-<tr class="separator:a5d38d982c64f22e0e79a76e754926470"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Dynamic object implementation (used when inheriting) </p>
@@ -611,7 +607,7 @@ Events</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00344">344</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00392">392</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -637,7 +633,7 @@ Events</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00353">353</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00401">401</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -656,7 +652,7 @@ Events</h2></td></tr>
 
 <p>Clears the key/value pairs </p>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00361">361</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00409">409</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -683,7 +679,7 @@ Events</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if it is found, false otherwise</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00372">372</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00420">420</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -710,7 +706,7 @@ Events</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if it is found, false otherwise</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00382">382</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00430">430</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -736,7 +732,7 @@ Events</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00391">391</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00439">439</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -773,7 +769,7 @@ Events</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00418">418</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00466">466</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -799,7 +795,7 @@ Events</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00427">427</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00475">475</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -826,7 +822,7 @@ Events</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if they're equal, false otherwise</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00440">440</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00488">488</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -846,7 +842,7 @@ Events</h2></td></tr>
 <p>Gets the dynamic member names </p>
 <dl class="section return"><dt>Returns</dt><dd>The keys used internally</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00452">452</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00500">500</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -866,7 +862,7 @@ Events</h2></td></tr>
 <p>Gets the enumerator for the object </p>
 <dl class="section return"><dt>Returns</dt><dd>The enumerator</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00461">461</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00509">509</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -886,7 +882,7 @@ Events</h2></td></tr>
 <p>Gets the hash code </p>
 <dl class="section return"><dt>Returns</dt><dd>The hash code</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00473">473</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00521">521</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -931,7 +927,7 @@ Events</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00496">496</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00544">544</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -951,7 +947,7 @@ Events</h2></td></tr>
 <p>Not used </p>
 <dl class="section return"><dt>Returns</dt><dd>Null</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00508">508</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00556">556</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1043,7 +1039,7 @@ Events</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The returned value</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00709">709</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00757">757</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1089,7 +1085,7 @@ Events</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns null if the function should continue, any other value should be immediately returned to the user </dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00745">745</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00793">793</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1124,7 +1120,7 @@ Events</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns null if the function should continue, any other value should be immediately returned to the user </dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00761">761</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00810">810</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1169,7 +1165,7 @@ Events</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00774">774</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00824">824</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1203,7 +1199,7 @@ Events</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00517">517</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00565">565</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1230,7 +1226,7 @@ Events</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if it is removed, false otherwise</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00531">531</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00579">579</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1257,7 +1253,7 @@ Events</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if it is removed, false otherwise</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00543">543</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00591">591</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1347,7 +1343,7 @@ Events</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00791">791</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00841">841</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1374,7 +1370,7 @@ Events</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A new <a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html" title="Dynamic object implementation (used when inheriting) ">Dynamo</a> object containing only the keys specified</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00555">555</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00603">603</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1401,7 +1397,7 @@ Events</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The object converted to the type specified</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00592">592</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00640">640</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1427,7 +1423,7 @@ Events</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The object converted to the type specified</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00582">582</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00630">630</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1447,7 +1443,7 @@ Events</h2></td></tr>
 <p>Outputs the object graph </p>
 <dl class="section return"><dt>Returns</dt><dd>The string version of the object</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00605">605</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00653">653</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1485,7 +1481,7 @@ Events</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if it is converted, false otherwise</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00626">626</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00674">674</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1523,7 +1519,7 @@ Events</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if it gets the member, false otherwise</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00638">638</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00686">686</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1561,7 +1557,7 @@ Events</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if it the key is found, false otherwise</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00650">650</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00698">698</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1606,7 +1602,7 @@ Events</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if it invokes, false otherwise</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00662">662</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00710">710</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1651,7 +1647,7 @@ Events</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if it invokes, false otherwise</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00674">674</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00722">722</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1689,7 +1685,7 @@ Events</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if it is set, false otherwise</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00685">685</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00733">733</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1723,7 +1719,7 @@ Events</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00695">695</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00743">743</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1748,7 +1744,7 @@ Events</h2></td></tr>
 
 <p><a class="el" href="class_utilities_1_1_data_types_1_1_change.html" title="Change class ">Change</a> log </p>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00278">278</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00326">326</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1772,7 +1768,55 @@ Events</h2></td></tr>
 
 <p>Number of items </p>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00283">283</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00331">331</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a72aff0ce92e6e876f001bcd86c2e6600"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action&lt;<a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html">Dynamo</a>, string, <a class="el" href="class_utilities_1_1_data_types_1_1_event_args_1_1_on_end_event_args.html">EventArgs.OnEndEventArgs</a>&gt; <a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html">Utilities.DataTypes.Dynamo</a>&lt; T &gt;.GetValueEnd</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">add</span><span class="mlabel">remove</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called when the value/property is found but before it is returned to the caller Sends (this, PropertyName, <a class="el" href="namespace_utilities_1_1_data_types_1_1_event_args.html">EventArgs</a>) to items attached to the event </p>
+
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00278">278</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a48431a903e135c63bed7cca2a3e1e5e1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action&lt;<a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html">Dynamo</a>, <a class="el" href="class_utilities_1_1_data_types_1_1_event_args_1_1_on_start_event_args.html">EventArgs.OnStartEventArgs</a>&gt; <a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html">Utilities.DataTypes.Dynamo</a>&lt; T &gt;.GetValueStart</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">add</span><span class="mlabel">remove</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called when beginning to get a value/property Sends (this, <a class="el" href="namespace_utilities_1_1_data_types_1_1_event_args.html">EventArgs</a>) to items attached to the event </p>
+
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00295">295</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1796,7 +1840,7 @@ Events</h2></td></tr>
 
 <p>Is this read only? </p>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00288">288</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00336">336</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1844,7 +1888,31 @@ Events</h2></td></tr>
 
 <p>Keys </p>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00293">293</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00341">341</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5d38d982c64f22e0e79a76e754926470"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">PropertyChangedEventHandler <a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html">Utilities.DataTypes.Dynamo</a>&lt; T &gt;.PropertyChanged</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">add</span><span class="mlabel">remove</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Property changed event </p>
+
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00311">311</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1875,7 +1943,7 @@ Events</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The object associated with the key</dd></dl>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00328">328</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00376">376</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1923,56 +1991,7 @@ Events</h2></td></tr>
 
 <p>Values </p>
 
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00298">298</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Event Documentation</h2>
-<a class="anchor" id="a72aff0ce92e6e876f001bcd86c2e6600"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Action&lt;<a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html">Dynamo</a>, string, <a class="el" href="class_utilities_1_1_data_types_1_1_event_args_1_1_on_end_event_args.html">EventArgs.OnEndEventArgs</a>&gt; <a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html">Utilities.DataTypes.Dynamo</a>&lt; T &gt;.GetValueEnd</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Called when the value/property is found but before it is returned to the caller Sends (this, PropertyName, <a class="el" href="namespace_utilities_1_1_data_types_1_1_event_args.html">EventArgs</a>) to items attached to the event </p>
-
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00262">262</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a48431a903e135c63bed7cca2a3e1e5e1"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Action&lt;<a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html">Dynamo</a>, <a class="el" href="class_utilities_1_1_data_types_1_1_event_args_1_1_on_start_event_args.html">EventArgs.OnStartEventArgs</a>&gt; <a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html">Utilities.DataTypes.Dynamo</a>&lt; T &gt;.GetValueStart</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Called when beginning to get a value/property Sends (this, <a class="el" href="namespace_utilities_1_1_data_types_1_1_event_args.html">EventArgs</a>) to items attached to the event </p>
-
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00268">268</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a5d38d982c64f22e0e79a76e754926470"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">PropertyChangedEventHandler <a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html">Utilities.DataTypes.Dynamo</a>&lt; T &gt;.PropertyChanged</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Property changed event </p>
-
-<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00273">273</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_dynamo_8cs_source.html#l00346">346</a> of file <a class="el" href="_dynamo_8cs_source.html">Dynamo.cs</a>.</p>
 
 </div>
 </div>
@@ -1985,7 +2004,7 @@ Events</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_utilities.html">Utilities</a></li><li class="navelem"><a class="el" href="namespace_utilities_1_1_data_types.html">DataTypes</a></li><li class="navelem"><a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html">Dynamo</a></li>
-    <li class="footer">Generated on Thu May 7 2015 22:29:42 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Tue May 12 2015 22:37:38 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

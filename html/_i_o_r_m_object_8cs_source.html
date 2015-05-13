@@ -128,23 +128,29 @@ $(document).ready(function(){initNavTree('_i_o_r_m_object_8cs_source.html','');}
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">THE SOFTWARE.*/</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="namespace_utilities_1_1_o_r_m_1_1_manager_1_1_aspect_1_1_interfaces.html">   22</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespace_utilities.html">Utilities</a>.ORM.Manager.Aspect.Interfaces</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{</div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="interface_utilities_1_1_o_r_m_1_1_manager_1_1_aspect_1_1_interfaces_1_1_i_o_r_m_object.html">   27</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">interface </span><a class="code" href="interface_utilities_1_1_o_r_m_1_1_manager_1_1_aspect_1_1_interfaces_1_1_i_o_r_m_object.html">IORMObject</a></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    {</div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="interface_utilities_1_1_o_r_m_1_1_manager_1_1_aspect_1_1_interfaces_1_1_i_o_r_m_object.html#ab860bfea6aac5512fdf702bd2d2f7538">   32</a></span>&#160;        <a class="code" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html">Session</a> Session0 { <span class="keyword">get</span>; set; }</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    }</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Collections.Generic;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.ComponentModel;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="namespace_utilities_1_1_o_r_m_1_1_manager_1_1_aspect_1_1_interfaces.html">   25</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespace_utilities.html">Utilities</a>.ORM.Manager.Aspect.Interfaces</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="interface_utilities_1_1_o_r_m_1_1_manager_1_1_aspect_1_1_interfaces_1_1_i_o_r_m_object.html">   30</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">interface </span><a class="code" href="interface_utilities_1_1_o_r_m_1_1_manager_1_1_aspect_1_1_interfaces_1_1_i_o_r_m_object.html">IORMObject</a> : INotifyPropertyChanged</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    {</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="interface_utilities_1_1_o_r_m_1_1_manager_1_1_aspect_1_1_interfaces_1_1_i_o_r_m_object.html#a26918597f426a7da351a8eb8fe6f02d3">   36</a></span>&#160;        IList&lt;string&gt; PropertiesChanged0 { <span class="keyword">get</span>; set; }</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="interface_utilities_1_1_o_r_m_1_1_manager_1_1_aspect_1_1_interfaces_1_1_i_o_r_m_object.html#ab860bfea6aac5512fdf702bd2d2f7538">   42</a></span>&#160;        <a class="code" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html">Session</a> Session0 { <span class="keyword">get</span>; set; }</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    }</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div>
+<div class="ttc" id="namespace_system_html"><div class="ttname"><a href="namespace_system.html">System</a></div></div>
 <div class="ttc" id="namespace_utilities_html"><div class="ttname"><a href="namespace_utilities.html">Utilities</a></div></div>
 <div class="ttc" id="class_utilities_1_1_o_r_m_1_1_manager_1_1_session_html"><div class="ttname"><a href="class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html">Utilities.ORM.Manager.Session</a></div><div class="ttdoc">Session object </div><div class="ttdef"><b>Definition:</b> <a href="_session_8cs_source.html#l00040">Session.cs:40</a></div></div>
-<div class="ttc" id="interface_utilities_1_1_o_r_m_1_1_manager_1_1_aspect_1_1_interfaces_1_1_i_o_r_m_object_html"><div class="ttname"><a href="interface_utilities_1_1_o_r_m_1_1_manager_1_1_aspect_1_1_interfaces_1_1_i_o_r_m_object.html">Utilities.ORM.Manager.Aspect.Interfaces.IORMObject</a></div><div class="ttdoc">ORM object interface </div><div class="ttdef"><b>Definition:</b> <a href="_i_o_r_m_object_8cs_source.html#l00027">IORMObject.cs:27</a></div></div>
+<div class="ttc" id="interface_utilities_1_1_o_r_m_1_1_manager_1_1_aspect_1_1_interfaces_1_1_i_o_r_m_object_html"><div class="ttname"><a href="interface_utilities_1_1_o_r_m_1_1_manager_1_1_aspect_1_1_interfaces_1_1_i_o_r_m_object.html">Utilities.ORM.Manager.Aspect.Interfaces.IORMObject</a></div><div class="ttdoc">ORM object interface </div><div class="ttdef"><b>Definition:</b> <a href="_i_o_r_m_object_8cs_source.html#l00030">IORMObject.cs:30</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_6d87d97942e6b418edd310c5e32f39d7.html">ORM</a></li><li class="navelem"><a class="el" href="dir_4af2e27a32e910a74beda4483c3d8d9e.html">Manager</a></li><li class="navelem"><a class="el" href="dir_80f2f9da87be15b392625ced98d1a177.html">Aspect</a></li><li class="navelem"><a class="el" href="dir_d0263ffe108267fd16e3a428821c79f2.html">Interfaces</a></li><li class="navelem"><a class="el" href="_i_o_r_m_object_8cs.html">IORMObject.cs</a></li>
-    <li class="footer">Generated on Thu May 7 2015 22:29:30 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Tue May 12 2015 22:37:26 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

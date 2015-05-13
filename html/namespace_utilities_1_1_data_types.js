@@ -18,6 +18,7 @@ var namespace_utilities_1_1_data_types =
     [ "Fraction", "class_utilities_1_1_data_types_1_1_fraction.html", "class_utilities_1_1_data_types_1_1_fraction" ],
     [ "ListMapping", "class_utilities_1_1_data_types_1_1_list_mapping.html", "class_utilities_1_1_data_types_1_1_list_mapping" ],
     [ "Matrix", "class_utilities_1_1_data_types_1_1_matrix.html", "class_utilities_1_1_data_types_1_1_matrix" ],
+    [ "ObservableList", "class_utilities_1_1_data_types_1_1_observable_list.html", "class_utilities_1_1_data_types_1_1_observable_list" ],
     [ "PriorityQueue", "class_utilities_1_1_data_types_1_1_priority_queue.html", "class_utilities_1_1_data_types_1_1_priority_queue" ],
     [ "RingBuffer", "class_utilities_1_1_data_types_1_1_ring_buffer.html", "class_utilities_1_1_data_types_1_1_ring_buffer" ],
     [ "Row", "class_utilities_1_1_data_types_1_1_row.html", "class_utilities_1_1_data_types_1_1_row" ],

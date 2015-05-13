@@ -5,7 +5,7 @@ var class_utilities_1_1_o_r_m_1_1_manager_1_1_session =
     [ "Any< ObjectType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html#a84c8f9f541cc27713324225928c6fb6f", null ],
     [ "Any< ObjectType, IDType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html#a875e318748e706e0c8d98824813b3e6a", null ],
     [ "Delete< ObjectType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html#a3380377d2e2b34ecc27ceed4de546650", null ],
-    [ "LoadProperties< ObjectType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html#a55a423cd3351adb922bb787cf7229493", null ],
+    [ "LoadProperties< ObjectType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html#af096bd44e63d99059d30a3fa4d6595ca", null ],
     [ "LoadProperty< ObjectType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html#ab9b7cc9d44303e74bfa23fbcca5cb0ff", null ],
     [ "PageCount< ObjectType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html#ad6fd383874ca8b7ac930d7514361d1e7", null ],
     [ "Paged< ObjectType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html#a553adcab3353ce32f2c968ad3ff503b7", null ],

@@ -173,6 +173,12 @@ var hierarchy =
       [ "Utilities.DataTypes.RingBuffer< T >", "class_utilities_1_1_data_types_1_1_ring_buffer.html", null ],
       [ "Utilities.DataTypes.RingBuffer< T >", "class_utilities_1_1_data_types_1_1_ring_buffer.html", null ]
     ] ],
+    [ "ICollectionManyToMany", null, [
+      [ "Utilities.ORM.Manager.Mapper.Default.ICollectionManyToMany< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_collection_many_to_many.html", null ]
+    ] ],
+    [ "ICollectionManyToOne", null, [
+      [ "Utilities.ORM.Manager.Mapper.Default.ICollectionManyToOne< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_collection_many_to_one.html", null ]
+    ] ],
     [ "Utilities.ORM.Manager.Schema.Interfaces.IColumn", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_interfaces_1_1_i_column.html", [
       [ "Utilities.ORM.Manager.Schema.Default.Database.Column< T >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_column.html", null ]
     ] ],
@@ -384,9 +390,6 @@ var hierarchy =
     [ "Utilities.ORM.Manager.Mapper.Interfaces.IID", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_i_d.html", [
       [ "Utilities.ORM.Manager.Mapper.Default.ID< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_d.html", null ]
     ] ],
-    [ "Utilities.ORM.Manager.Mapper.Interfaces.IIEnumerableManyToOne", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_i_enumerable_many_to_one.html", [
-      [ "Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_enumerable_many_to_one.html", null ]
-    ] ],
     [ "Utilities.Workflow.Manager.Interfaces.IInvoker< T >", "interface_utilities_1_1_workflow_1_1_manager_1_1_interfaces_1_1_i_invoker.html", [
       [ "Utilities.Workflow.Manager.Interfaces.IOperationInvoker< T >", "interface_utilities_1_1_workflow_1_1_manager_1_1_interfaces_1_1_i_operation_invoker.html", [
         [ "Utilities.Workflow.Manager.OperationInvoker< T >", "class_utilities_1_1_workflow_1_1_manager_1_1_operation_invoker.html", null ]
@@ -396,6 +399,7 @@ var hierarchy =
       ] ]
     ] ],
     [ "IList", null, [
+      [ "Utilities.DataTypes.ObservableList< T >", "class_utilities_1_1_data_types_1_1_observable_list.html", null ],
       [ "Utilities.IO.FileFormats.BaseClasses.StringListFormatBase< FormatType, RecordType >", "class_utilities_1_1_i_o_1_1_file_formats_1_1_base_classes_1_1_string_list_format_base.html", null ],
       [ "Utilities.IO.FileFormats.Delimited.Row", "class_utilities_1_1_i_o_1_1_file_formats_1_1_delimited_1_1_row.html", null ],
       [ "Utilities.IO.FileFormats.RSS.Channel", "class_utilities_1_1_i_o_1_1_file_formats_1_1_r_s_s_1_1_channel.html", null ],
@@ -404,30 +408,18 @@ var hierarchy =
     [ "IList< IField< T >>", null, [
       [ "Utilities.IO.FileFormats.FixedLength.BaseClasses.RecordBase< T >", "class_utilities_1_1_i_o_1_1_file_formats_1_1_fixed_length_1_1_base_classes_1_1_record_base.html", null ]
     ] ],
-    [ "Utilities.ORM.Manager.Mapper.Interfaces.IListManyToMany", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_list_many_to_many.html", [
-      [ "Utilities.ORM.Manager.Mapper.Default.ListManyToMany< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_list_many_to_many.html", null ]
-    ] ],
-    [ "Utilities.ORM.Manager.Mapper.Interfaces.IListManyToOne", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_list_many_to_one.html", [
-      [ "Utilities.ORM.Manager.Mapper.Default.ListManyToOne< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_list_many_to_one.html", null ]
-    ] ],
-    [ "Utilities.ORM.Manager.Mapper.Interfaces.IManyToMany", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_many_to_many.html", [
-      [ "Utilities.ORM.Manager.Mapper.Default.ManyToMany< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_many_to_many.html", null ]
-    ] ],
-    [ "Utilities.ORM.Manager.Mapper.Interfaces.IManyToOne", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_many_to_one.html", [
-      [ "Utilities.ORM.Manager.Mapper.Default.ManyToOne< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_many_to_one.html", null ]
-    ] ],
     [ "Utilities.ORM.Manager.Mapper.Interfaces.IMap", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_map.html", [
       [ "Utilities.ORM.Manager.Mapper.Default.Map< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_map.html", null ]
     ] ],
     [ "Utilities.DataTypes.DataMapper.Interfaces.IMapperModule", "interface_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_1_1_i_mapper_module.html", null ],
-    [ "Utilities.DataTypes.DataMapper.Interfaces.IMapping", "interface_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_1_1_i_mapping.html", [
-      [ "Utilities.DataTypes.DataMapper.Interfaces.IMapping< Left, Right >", "interface_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_1_1_i_mapping.html", null ]
-    ] ],
     [ "IMapping", null, [
       [ "Utilities.ORM.Manager.Mapper.Interfaces.IMapping< ClassType >", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_mapping.html", [
         [ "Utilities.ORM.BaseClasses.MappingBaseClass< ClassType, DatabaseType >", "class_utilities_1_1_o_r_m_1_1_base_classes_1_1_mapping_base_class.html", null ],
         [ "Utilities.ORM.BaseClasses.MappingBaseClass< ClassType, DatabaseType >", "class_utilities_1_1_o_r_m_1_1_base_classes_1_1_mapping_base_class.html", null ]
       ] ]
+    ] ],
+    [ "Utilities.DataTypes.DataMapper.Interfaces.IMapping", "interface_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_1_1_i_mapping.html", [
+      [ "Utilities.DataTypes.DataMapper.Interfaces.IMapping< Left, Right >", "interface_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_1_1_i_mapping.html", null ]
     ] ],
     [ "Utilities.DataTypes.DataMapper.Interfaces.IMapping< Left, Right >", "interface_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_1_1_i_mapping.html", [
       [ "Utilities.DataTypes.DataMapper.BaseClasses.MappingBase< Left, Right >", "class_utilities_1_1_data_types_1_1_data_mapper_1_1_base_classes_1_1_mapping_base.html", [
@@ -460,9 +452,36 @@ var hierarchy =
       [ "Utilities.Profiler.Manager.Module.ProfilerModule", "class_utilities_1_1_profiler_1_1_manager_1_1_module_1_1_profiler_module.html", null ],
       [ "Utilities.Workflow.Manager.Module.WorkflowModule", "class_utilities_1_1_workflow_1_1_manager_1_1_module_1_1_workflow_module.html", null ]
     ] ],
+    [ "Utilities.ORM.Manager.Mapper.Interfaces.IMultiMapping", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_multi_mapping.html", [
+      [ "Utilities.ORM.Manager.Mapper.Interfaces.ICollectionManyToMany", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_collection_many_to_many.html", null ],
+      [ "Utilities.ORM.Manager.Mapper.Interfaces.ICollectionManyToOne", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_collection_many_to_one.html", null ],
+      [ "Utilities.ORM.Manager.Mapper.Interfaces.IIEnumerableManyToOne", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_i_enumerable_many_to_one.html", [
+        [ "Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_enumerable_many_to_one.html", null ]
+      ] ],
+      [ "Utilities.ORM.Manager.Mapper.Interfaces.IIListManyToMany", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_i_list_many_to_many.html", [
+        [ "Utilities.ORM.Manager.Mapper.Default.IListManyToMany< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_list_many_to_many.html", [
+          [ "Utilities.ORM.Manager.Mapper.Default.ListManyToMany< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_list_many_to_many.html", null ]
+        ] ]
+      ] ],
+      [ "Utilities.ORM.Manager.Mapper.Interfaces.IIListManyToOne", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_i_list_many_to_one.html", [
+        [ "Utilities.ORM.Manager.Mapper.Default.IListManyToOne< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_list_many_to_one.html", [
+          [ "Utilities.ORM.Manager.Mapper.Default.ListManyToOne< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_list_many_to_one.html", null ]
+        ] ]
+      ] ],
+      [ "Utilities.ORM.Manager.Mapper.Interfaces.IListManyToMany", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_list_many_to_many.html", null ],
+      [ "Utilities.ORM.Manager.Mapper.Interfaces.IListManyToOne", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_list_many_to_one.html", null ],
+      [ "Utilities.ORM.Manager.Mapper.Interfaces.IManyToMany", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_many_to_many.html", [
+        [ "Utilities.ORM.Manager.Mapper.Default.ManyToMany< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_many_to_many.html", null ]
+      ] ]
+    ] ],
+    [ "INotifyCollectionChanged", null, [
+      [ "Utilities.DataTypes.ObservableList< T >", "class_utilities_1_1_data_types_1_1_observable_list.html", null ]
+    ] ],
     [ "INotifyPropertyChanged", null, [
       [ "Utilities.DataTypes.Dynamo< ConfigClassType >", "class_utilities_1_1_data_types_1_1_dynamo.html", null ],
-      [ "Utilities.DataTypes.Dynamo< T >", "class_utilities_1_1_data_types_1_1_dynamo.html", null ]
+      [ "Utilities.DataTypes.Dynamo< T >", "class_utilities_1_1_data_types_1_1_dynamo.html", null ],
+      [ "Utilities.DataTypes.ObservableList< T >", "class_utilities_1_1_data_types_1_1_observable_list.html", null ],
+      [ "Utilities.ORM.Manager.Aspect.Interfaces.IORMObject", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_aspect_1_1_interfaces_1_1_i_o_r_m_object.html", null ]
     ] ],
     [ "Utilities.ORM.Interfaces.IObject< IDType >", "interface_utilities_1_1_o_r_m_1_1_interfaces_1_1_i_object.html", [
       [ "Utilities.ORM.ObjectBaseClass< ObjectType, IDType >", "class_utilities_1_1_o_r_m_1_1_object_base_class.html", null ]
@@ -470,7 +489,6 @@ var hierarchy =
     [ "Utilities.Workflow.Manager.Interfaces.IOperation< T >", "interface_utilities_1_1_workflow_1_1_manager_1_1_interfaces_1_1_i_operation.html", [
       [ "Utilities.Workflow.Manager.GenericOperation< T >", "class_utilities_1_1_workflow_1_1_manager_1_1_generic_operation.html", null ]
     ] ],
-    [ "Utilities.ORM.Manager.Aspect.Interfaces.IORMObject", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_aspect_1_1_interfaces_1_1_i_o_r_m_object.html", null ],
     [ "IParameter", null, [
       [ "Utilities.ORM.Manager.QueryProvider.Interfaces.IParameter< T >", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_interfaces_1_1_i_parameter.html", null ]
     ] ],
@@ -530,6 +548,11 @@ var hierarchy =
         [ "Utilities.IO.Encryption.Default.Shift", "class_utilities_1_1_i_o_1_1_encryption_1_1_default_1_1_shift.html", null ]
       ] ]
     ] ],
+    [ "Utilities.ORM.Manager.Mapper.Interfaces.ISingleMapping", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_single_mapping.html", [
+      [ "Utilities.ORM.Manager.Mapper.Interfaces.IManyToOne", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_many_to_one.html", [
+        [ "Utilities.ORM.Manager.Mapper.Default.ManyToOne< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_many_to_one.html", null ]
+      ] ]
+    ] ],
     [ "Utilities.ORM.Manager.Schema.Interfaces.ISource", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_interfaces_1_1_i_source.html", [
       [ "Utilities.ORM.Manager.Schema.BaseClasses.SourceBase", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_base_classes_1_1_source_base.html", [
         [ "Utilities.ORM.Manager.Schema.Default.Database.Database", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_database.html", null ]
@@ -587,15 +610,15 @@ var hierarchy =
     [ "Utilities.IO.Logging.BaseClasses.LogBase< DefaultLog >", "class_utilities_1_1_i_o_1_1_logging_1_1_base_classes_1_1_log_base.html", [
       [ "Utilities.IO.Logging.Default.DefaultLog", "class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_log.html", null ]
     ] ],
-    [ "Utilities.DataTypes.AOP.Manager", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html", null ],
     [ "Utilities.IO.Encryption.Manager", "class_utilities_1_1_i_o_1_1_encryption_1_1_manager.html", null ],
     [ "Utilities.ORM.Manager.QueryProvider.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_manager.html", null ],
     [ "Utilities.DataTypes.Conversion.Manager", "class_utilities_1_1_data_types_1_1_conversion_1_1_manager.html", null ],
+    [ "Utilities.IO.Compression.Manager", "class_utilities_1_1_i_o_1_1_compression_1_1_manager.html", null ],
     [ "Utilities.ORM.Manager.Schema.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html", null ],
+    [ "Utilities.DataTypes.AOP.Manager", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html", null ],
     [ "Utilities.IO.Messaging.Manager", "class_utilities_1_1_i_o_1_1_messaging_1_1_manager.html", null ],
     [ "Utilities.IO.Serializers.Manager", "class_utilities_1_1_i_o_1_1_serializers_1_1_manager.html", null ],
     [ "Utilities.DataTypes.DataMapper.Manager", "class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html", null ],
-    [ "Utilities.IO.Compression.Manager", "class_utilities_1_1_i_o_1_1_compression_1_1_manager.html", null ],
     [ "Utilities.DataTypes.Matrix", "class_utilities_1_1_data_types_1_1_matrix.html", null ],
     [ "Utilities.DataTypes.AI.NaiveBayes< T >", "class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html", null ],
     [ "Utilities.ORM.Manager.ORMManager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_o_r_m_manager.html", null ],
@@ -619,11 +642,23 @@ var hierarchy =
     [ "PropertyBase< ClassType, DataType, Reference< ClassType, DataType >>", null, [
       [ "Utilities.ORM.Manager.Mapper.Default.Reference< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_reference.html", null ]
     ] ],
+    [ "PropertyBase< ClassType, ICollection< DataType >, ICollectionManyToMany< ClassType, DataType >>", null, [
+      [ "Utilities.ORM.Manager.Mapper.Default.ICollectionManyToMany< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_collection_many_to_many.html", null ]
+    ] ],
+    [ "PropertyBase< ClassType, ICollection< DataType >, ICollectionManyToOne< ClassType, DataType >>", null, [
+      [ "Utilities.ORM.Manager.Mapper.Default.ICollectionManyToOne< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_collection_many_to_one.html", null ]
+    ] ],
     [ "PropertyBase< ClassType, IEnumerable< DataType >, IEnumerableManyToOne< ClassType, DataType >>", null, [
       [ "Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_enumerable_many_to_one.html", null ]
     ] ],
     [ "PropertyBase< ClassType, IEnumerable< DataType >, ManyToMany< ClassType, DataType >>", null, [
       [ "Utilities.ORM.Manager.Mapper.Default.ManyToMany< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_many_to_many.html", null ]
+    ] ],
+    [ "PropertyBase< ClassType, IList< DataType >, IListManyToMany< ClassType, DataType >>", null, [
+      [ "Utilities.ORM.Manager.Mapper.Default.IListManyToMany< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_list_many_to_many.html", null ]
+    ] ],
+    [ "PropertyBase< ClassType, IList< DataType >, IListManyToOne< ClassType, DataType >>", null, [
+      [ "Utilities.ORM.Manager.Mapper.Default.IListManyToOne< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_list_many_to_one.html", null ]
     ] ],
     [ "PropertyBase< ClassType, List< DataType >, ListManyToMany< ClassType, DataType >>", null, [
       [ "Utilities.ORM.Manager.Mapper.Default.ListManyToMany< ClassType, DataType >", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_list_many_to_many.html", null ]

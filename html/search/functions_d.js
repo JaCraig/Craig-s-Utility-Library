@@ -1,6 +1,7 @@
 var searchData=
 [
   ['objectbaseclass',['ObjectBaseClass',['../class_utilities_1_1_o_r_m_1_1_object_base_class.html#a9f3f4aaa49f0c321dd6ebecb19c60dc8',1,'Utilities::ORM::ObjectBaseClass']]],
+  ['observablelist',['ObservableList',['../class_utilities_1_1_data_types_1_1_observable_list.html#ab6a2eb37fefb412992c64e226c414aba',1,'Utilities.DataTypes.ObservableList.ObservableList()'],['../class_utilities_1_1_data_types_1_1_observable_list.html#a869182b9dcf89108089a9b64a08ded24',1,'Utilities.DataTypes.ObservableList.ObservableList(int capacity)'],['../class_utilities_1_1_data_types_1_1_observable_list.html#abacbf60a128375564a641ae77308454c',1,'Utilities.DataTypes.ObservableList.ObservableList(IEnumerable&lt; T &gt; collection)']]],
   ['on_3c_20exceptiontype_20_3e',['On&lt; ExceptionType &gt;',['../interface_utilities_1_1_workflow_1_1_manager_1_1_interfaces_1_1_i_workflow.html#aea889fe58c796acdc55e2e7a9301bea6',1,'Utilities.Workflow.Manager.Interfaces.IWorkflow.On&lt; ExceptionType &gt;()'],['../class_utilities_1_1_workflow_1_1_manager_1_1_workflow.html#a06f9175a73371e9c7b1c409bcaa6577d',1,'Utilities.Workflow.Manager.Workflow.On&lt; ExceptionType &gt;()']]],
   ['ondeleted',['OnDeleted',['../class_utilities_1_1_o_r_m_1_1_object_base_class.html#ae53e48cc72a5017d3ac97edf69a639dd',1,'Utilities::ORM::ObjectBaseClass']]],
   ['ondeleting',['OnDeleting',['../class_utilities_1_1_o_r_m_1_1_object_base_class.html#a2aaa444f11eac8377bf3fe2f752ef8e0',1,'Utilities::ORM::ObjectBaseClass']]],

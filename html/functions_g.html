@@ -82,7 +82,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_func.html"><span>Functions</span></a></li>
       <li><a href="functions_vars.html"><span>Variables</span></a></li>
       <li><a href="functions_prop.html"><span>Properties</span></a></li>
-      <li><a href="functions_evnt.html"><span>Events</span></a></li>
     </ul>
   </div>
   <div id="navrow4" class="tabs3">
@@ -216,6 +215,7 @@ $(document).ready(function(){initNavTree('functions_g.html','');});
 , <a class="el" href="class_utilities_1_1_data_types_1_1_caching_1_1_default_1_1_session_cache.html#a5066db9ba0a137fcc5a5016567f4a0db">Utilities.DataTypes.Caching.Default.SessionCache</a>
 , <a class="el" href="class_utilities_1_1_data_types_1_1_dynamo.html#a761825f7d8021ce4cd25f14801639cd0">Utilities.DataTypes.Dynamo&lt; T &gt;</a>
 , <a class="el" href="class_utilities_1_1_data_types_1_1_list_mapping.html#aef3c331264488641bca45707757eed80">Utilities.DataTypes.ListMapping&lt; T1, T2 &gt;</a>
+, <a class="el" href="class_utilities_1_1_data_types_1_1_observable_list.html#af381fea0947c5e0389497669def93246">Utilities.DataTypes.ObservableList&lt; T &gt;</a>
 , <a class="el" href="class_utilities_1_1_data_types_1_1_priority_queue.html#adf36aec73410ca1ef321e7dacfd601e0">Utilities.DataTypes.PriorityQueue&lt; T &gt;</a>
 , <a class="el" href="class_utilities_1_1_data_types_1_1_ring_buffer.html#a1ad2431c5c4fac452b15b3fb1aee3fb7">Utilities.DataTypes.RingBuffer&lt; T &gt;</a>
 , <a class="el" href="class_utilities_1_1_data_types_1_1_tag_dictionary.html#a31077a4824d4a489c62804422e1c856c">Utilities.DataTypes.TagDictionary&lt; Key, Value &gt;</a>
@@ -276,14 +276,18 @@ $(document).ready(function(){initNavTree('functions_g.html','');});
 </li>
 <li>GetParameter()
 : <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_base_classes_1_1_property_base.html#a406baec219d4880f6e44c842511bda79">Utilities.ORM.Manager.Mapper.BaseClasses.PropertyBase&lt; ClassType, DataType, ReturnType &gt;</a>
-, <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_d.html#a9b38019886807d9a4a4326bf9fea843d">Utilities.ORM.Manager.Mapper.Default.ID&lt; ClassType, DataType &gt;</a>
+, <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_collection_many_to_many.html#ab730b44ab687c46aa206179f3e5a9311">Utilities.ORM.Manager.Mapper.Default.ICollectionManyToMany&lt; ClassType, DataType &gt;</a>
+, <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_collection_many_to_one.html#acac0e439417dbfe66faf0f01c8704df9">Utilities.ORM.Manager.Mapper.Default.ICollectionManyToOne&lt; ClassType, DataType &gt;</a>
+, <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_d.html#ad45a74a8a9706dac733ca199e7427851">Utilities.ORM.Manager.Mapper.Default.ID&lt; ClassType, DataType &gt;</a>
 , <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_enumerable_many_to_one.html#ac15c3ef2c2d30d865aad80fa6eb419a5">Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne&lt; ClassType, DataType &gt;</a>
+, <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_list_many_to_many.html#a9d589395ac0e61953cd1ee5d3c27ab06">Utilities.ORM.Manager.Mapper.Default.IListManyToMany&lt; ClassType, DataType &gt;</a>
+, <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_list_many_to_one.html#a3fa8a4bdf7a85d7d14a22897f7e91d53">Utilities.ORM.Manager.Mapper.Default.IListManyToOne&lt; ClassType, DataType &gt;</a>
 , <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_list_many_to_many.html#af2d61c36ea8d45eb4e90ead7de3c4b9b">Utilities.ORM.Manager.Mapper.Default.ListManyToMany&lt; ClassType, DataType &gt;</a>
 , <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_list_many_to_one.html#a62b784446747cb9976d657f4cf1d7686">Utilities.ORM.Manager.Mapper.Default.ListManyToOne&lt; ClassType, DataType &gt;</a>
-, <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_many_to_many.html#a5b4d390ef7c48e44fab21639e698788f">Utilities.ORM.Manager.Mapper.Default.ManyToMany&lt; ClassType, DataType &gt;</a>
-, <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_many_to_one.html#a1fc4eba32459d974daa5e6933a4afb2f">Utilities.ORM.Manager.Mapper.Default.ManyToOne&lt; ClassType, DataType &gt;</a>
-, <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_map.html#aefa5ef36c536b84d4d77b8e2dead4638">Utilities.ORM.Manager.Mapper.Default.Map&lt; ClassType, DataType &gt;</a>
-, <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_reference.html#a0ada8e6d740ba2deed904ff91c825bef">Utilities.ORM.Manager.Mapper.Default.Reference&lt; ClassType, DataType &gt;</a>
+, <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_many_to_many.html#a3aef71c5fd0c1350debf44f7807ae607">Utilities.ORM.Manager.Mapper.Default.ManyToMany&lt; ClassType, DataType &gt;</a>
+, <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_many_to_one.html#a8f765461e55b07a7e0d0c348729c0a55">Utilities.ORM.Manager.Mapper.Default.ManyToOne&lt; ClassType, DataType &gt;</a>
+, <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_map.html#a66cc88d71581e7f5d9620ace8f6a4bf0">Utilities.ORM.Manager.Mapper.Default.Map&lt; ClassType, DataType &gt;</a>
+, <a class="el" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_reference.html#a29af4215436a28d5c93d7b1a33b148ff">Utilities.ORM.Manager.Mapper.Default.Reference&lt; ClassType, DataType &gt;</a>
 , <a class="el" href="interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_property.html#a209e2c6adc0ea69bd5aa905a8013c36a">Utilities.ORM.Manager.Mapper.Interfaces.IProperty&lt; ClassType &gt;</a>
 </li>
 <li>GetProvider()
@@ -346,7 +350,7 @@ $(document).ready(function(){initNavTree('functions_g.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu May 7 2015 22:30:11 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Tue May 12 2015 22:38:05 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

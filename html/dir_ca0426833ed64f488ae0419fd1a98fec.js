@@ -35,6 +35,9 @@ var dir_ca0426833ed64f488ae0419fd1a98fec =
     [ "Matrix.cs", "_matrix_8cs.html", [
       [ "Matrix", "class_utilities_1_1_data_types_1_1_matrix.html", "class_utilities_1_1_data_types_1_1_matrix" ]
     ] ],
+    [ "ObservableList.cs", "_observable_list_8cs.html", [
+      [ "ObservableList", "class_utilities_1_1_data_types_1_1_observable_list.html", "class_utilities_1_1_data_types_1_1_observable_list" ]
+    ] ],
     [ "PriorityQueue.cs", "_priority_queue_8cs.html", [
       [ "PriorityQueue", "class_utilities_1_1_data_types_1_1_priority_queue.html", "class_utilities_1_1_data_types_1_1_priority_queue" ]
     ] ],

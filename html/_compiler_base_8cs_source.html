@@ -210,7 +210,7 @@ $(document).ready(function(){initNavTree('_compiler_base_8cs_source.html','');})
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            {</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                EmitResult Result = CSharpCompiler.Emit(TempStream);</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                <span class="keywordflow">if</span> (!Result.Success)</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                    <span class="keywordflow">throw</span> <span class="keyword">new</span> Exception(Code + <a class="code" href="namespace_system.html">System</a>.Environment.NewLine + <a class="code" href="namespace_system.html">System</a>.Environment.NewLine + Result.Diagnostics.ToString(x =&gt; x.GetMessage(), <a class="code" href="namespace_system.html">System</a>.Environment.NewLine));</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                    <span class="keywordflow">throw</span> <span class="keyword">new</span> Exception(Code + <a class="code" href="namespace_system.html">System</a>.Environment.NewLine + <a class="code" href="namespace_system.html">System</a>.Environment.NewLine + Result.Diagnostics.ToString(x =&gt; x.GetMessage() + <span class="stringliteral">&quot; : &quot;</span> + x.Location.GetLineSpan().StartLinePosition.Line, <a class="code" href="namespace_system.html">System</a>.Environment.NewLine));</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                byte[] MiniAssembly = TempStream.ToArray();</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                Classes.AddIfUnique((x, y) =&gt; x.FullName == y.FullName, AppDomain.CurrentDomain.Load(MiniAssembly).GetTypes());</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                AssemblyStream.Write(MiniAssembly, 0, MiniAssembly.Length);</div>
@@ -271,7 +271,7 @@ $(document).ready(function(){initNavTree('_compiler_base_8cs_source.html','');})
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_ca0426833ed64f488ae0419fd1a98fec.html">DataTypes</a></li><li class="navelem"><a class="el" href="dir_20bd034e859ebb71b23c2736496c17c7.html">CodeGen</a></li><li class="navelem"><a class="el" href="dir_d2bb4e37f9dc0f5f1d35686204fa8b84.html">BaseClasses</a></li><li class="navelem"><a class="el" href="_compiler_base_8cs.html">CompilerBase.cs</a></li>
-    <li class="footer">Generated on Thu May 7 2015 22:29:25 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Tue May 12 2015 22:37:21 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

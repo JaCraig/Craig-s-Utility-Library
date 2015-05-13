@@ -11,5 +11,8 @@ var searchData=
   ['normalize',['Normalize',['../class_utilities_1_1_data_types_1_1_vector3.html#a3f33895b14730f78adea5e4e7aaa9ed4',1,'Utilities.DataTypes.Vector3.Normalize()'],['../class_utilities_1_1_media_1_1_r_g_b_histogram.html#aff400be3f456adce458116d065537646',1,'Utilities.Media.RGBHistogram.Normalize()']]],
   ['notemptyattribute',['NotEmptyAttribute',['../class_utilities_1_1_validation_1_1_not_empty_attribute.html#a882ef590dfc739c9eefee1c459541de7',1,'Utilities::Validation::NotEmptyAttribute']]],
   ['notequalparameter',['NotEqualParameter',['../class_utilities_1_1_o_r_m_1_1_parameters_1_1_not_equal_parameter.html#a9915fa3ac73f755f9cfc0c1a26fec5b5',1,'Utilities::ORM::Parameters::NotEqualParameter']]],
+  ['notifycollectionchanged',['NotifyCollectionChanged',['../class_utilities_1_1_data_types_1_1_observable_list.html#a4f98040f249e4a846eaf9bb10d642208',1,'Utilities::DataTypes::ObservableList']]],
+  ['notifyobjectchanged',['NotifyObjectChanged',['../class_utilities_1_1_data_types_1_1_observable_list.html#a64c37ece194ae241e5b03e0b4283263d',1,'Utilities::DataTypes::ObservableList']]],
+  ['notifypropertychanged',['NotifyPropertyChanged',['../class_utilities_1_1_data_types_1_1_observable_list.html#a39ef1b2417eff4ecfd33b14f58c8e379',1,'Utilities::DataTypes::ObservableList']]],
   ['notinrangeattribute',['NotInRangeAttribute',['../class_utilities_1_1_validation_1_1_not_in_range_attribute.html#ae64c8762b75d41d9266576251137fa2b',1,'Utilities::Validation::NotInRangeAttribute']]]
 ];

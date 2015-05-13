@@ -46,14 +46,14 @@ var class_utilities_1_1_data_types_1_1_dynamo =
     [ "ChangeLog", "class_utilities_1_1_data_types_1_1_dynamo.html#a5f0543816b2b7d21e41c564ad7883211", null ],
     [ "ChildValues", "class_utilities_1_1_data_types_1_1_dynamo.html#a1d5c6831df3deaff35bd13e5f5992dc6", null ],
     [ "Count", "class_utilities_1_1_data_types_1_1_dynamo.html#ae286f76254554f599947f27f01b930bc", null ],
+    [ "GetValueEnd", "class_utilities_1_1_data_types_1_1_dynamo.html#a72aff0ce92e6e876f001bcd86c2e6600", null ],
+    [ "GetValueStart", "class_utilities_1_1_data_types_1_1_dynamo.html#a48431a903e135c63bed7cca2a3e1e5e1", null ],
     [ "InternalValues", "class_utilities_1_1_data_types_1_1_dynamo.html#ac1f2f9234917c7d6940a3f980573ca28", null ],
     [ "IsReadOnly", "class_utilities_1_1_data_types_1_1_dynamo.html#a54fb669c033c25272aaa796f773d5fcf", null ],
     [ "Keys", "class_utilities_1_1_data_types_1_1_dynamo.html#a21cd286d188b6e640729373866e60e37", null ],
     [ "Keys", "class_utilities_1_1_data_types_1_1_dynamo.html#a766ad5ab64797bef4670c7032ce26ddd", null ],
+    [ "PropertyChanged", "class_utilities_1_1_data_types_1_1_dynamo.html#a5d38d982c64f22e0e79a76e754926470", null ],
     [ "this[string key]", "class_utilities_1_1_data_types_1_1_dynamo.html#aaa036bf0a32109bda70828081d48722d", null ],
     [ "Values", "class_utilities_1_1_data_types_1_1_dynamo.html#a9c6e36ef5db948dd63128d8f6619df88", null ],
-    [ "Values", "class_utilities_1_1_data_types_1_1_dynamo.html#aea7357ed34463ea2b851f95671f9c97e", null ],
-    [ "GetValueEnd", "class_utilities_1_1_data_types_1_1_dynamo.html#a72aff0ce92e6e876f001bcd86c2e6600", null ],
-    [ "GetValueStart", "class_utilities_1_1_data_types_1_1_dynamo.html#a48431a903e135c63bed7cca2a3e1e5e1", null ],
-    [ "PropertyChanged", "class_utilities_1_1_data_types_1_1_dynamo.html#a5d38d982c64f22e0e79a76e754926470", null ]
+    [ "Values", "class_utilities_1_1_data_types_1_1_dynamo.html#aea7357ed34463ea2b851f95671f9c97e", null ]
 ];

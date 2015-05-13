@@ -43,5 +43,6 @@ var class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_base_classes_1_1_proper
     [ "NotNull", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_base_classes_1_1_property_base.html#a15249244751ec9d451729d54f2cea386", null ],
     [ "TableName", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_base_classes_1_1_property_base.html#a777f5b8fe6842029f7d0aa38e712a4c9", null ],
     [ "Type", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_base_classes_1_1_property_base.html#a7629cbb6e3baf99cb7daa32acf636349", null ],
+    [ "TypeName", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_base_classes_1_1_property_base.html#a97218dcc62a2dc373c830004475ca9c5", null ],
     [ "Unique", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_base_classes_1_1_property_base.html#a8fb24e391098d9ff2e20d42df589827b", null ]
 ];

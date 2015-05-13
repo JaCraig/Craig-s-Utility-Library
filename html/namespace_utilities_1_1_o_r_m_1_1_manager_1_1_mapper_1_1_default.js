@@ -1,7 +1,11 @@
 var namespace_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default =
 [
+    [ "ICollectionManyToMany", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_collection_many_to_many.html", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_collection_many_to_many" ],
+    [ "ICollectionManyToOne", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_collection_many_to_one.html", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_collection_many_to_one" ],
     [ "ID", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_d.html", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_d" ],
     [ "IEnumerableManyToOne", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_enumerable_many_to_one.html", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_enumerable_many_to_one" ],
+    [ "IListManyToMany", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_list_many_to_many.html", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_list_many_to_many" ],
+    [ "IListManyToOne", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_list_many_to_one.html", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_list_many_to_one" ],
     [ "ListManyToMany", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_list_many_to_many.html", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_list_many_to_many" ],
     [ "ListManyToOne", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_list_many_to_one.html", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_list_many_to_one" ],
     [ "ManyToMany", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_many_to_many.html", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_many_to_many" ],
