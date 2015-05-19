@@ -149,6 +149,8 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>Newly created directory</returns>
         public override IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways)
         {
+            if (Directory == null || !Exists)
+                return this;
             DirectoryInfo NewDirectory = new DirectoryInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
             NewDirectory.Create();
             foreach (DirectoryInfo Temp in EnumerateDirectories("*"))
@@ -264,6 +266,8 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Directory"></param>
         public override void MoveTo(IDirectory Directory)
         {
+            if (Directory == null || !Exists)
+                return;
             DirectoryInfo NewDirectory = new DirectoryInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
             NewDirectory.Create();
             foreach (DirectoryInfo Temp in EnumerateDirectories("*"))

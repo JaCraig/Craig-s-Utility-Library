@@ -244,6 +244,7 @@ namespace Utilities.IO.FileSystem.Default
         {
             if (InternalDirectory == null || Directory == null)
                 return;
+            Directory.Create();
             InternalDirectory.MoveTo(Directory.FullName + "\\" + Name);
             InternalDirectory = new System.IO.DirectoryInfo(Directory.FullName + "\\" + Name);
         }

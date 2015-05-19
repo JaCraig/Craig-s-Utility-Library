@@ -142,9 +142,13 @@ namespace Utilities.IO.FileSystem.Default
             if (Directory == null || !Exists)
                 return null;
             Directory.Create();
-            InternalFile.CopyTo(Directory.FullName + "\\" + Name, Overwrite);
-            InternalFile = new System.IO.FileInfo(Directory.FullName + "\\" + Name);
-            return new FileInfo(InternalFile.FullName);
+            FileInfo File = new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
+            if (!File.Exists || Overwrite)
+            {
+                File.Write(ReadBinary());
+                return File;
+            }
+            return this;
         }
 
         /// <summary>
@@ -168,6 +172,7 @@ namespace Utilities.IO.FileSystem.Default
         {
             if (Directory == null || !Exists)
                 return;
+            Directory.Create();
             InternalFile.MoveTo(Directory.FullName + "\\" + Name);
             InternalFile = new System.IO.FileInfo(Directory.FullName + "\\" + Name);
         }

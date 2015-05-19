@@ -149,6 +149,8 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>Newly created directory</returns>
         public override IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways)
         {
+            if (Directory == null)
+                return this;
             string TempName = Name;
             if (TempName == "/")
                 TempName = "index.html";
@@ -214,6 +216,8 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Directory"></param>
         public override void MoveTo(IDirectory Directory)
         {
+            if (Directory == null)
+                return;
             string TempName = Name;
             if (TempName == "/")
                 TempName = "index.html";
