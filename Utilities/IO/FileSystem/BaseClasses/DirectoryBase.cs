@@ -264,9 +264,9 @@ namespace Utilities.IO.FileSystem.BaseClasses
                 }
                 else if (Options == CopyOptions.CopyIfNewer)
                 {
-                    if (File.Exists(Path.Combine(Directory.FullName, TempFile.Name)))
+                    if (new FileInfo(Path.Combine(Directory.FullName, TempFile.Name), UserName, Password, Domain).Exists)
                     {
-                        FileInfo FileInfo = new FileInfo(Path.Combine(Directory.FullName, TempFile.Name));
+                        FileInfo FileInfo = new FileInfo(Path.Combine(Directory.FullName, TempFile.Name), UserName, Password, Domain);
                         if (FileInfo.Modified.CompareTo(TempFile.Modified) < 0)
                             TempFile.CopyTo(Directory, true);
                     }
@@ -281,7 +281,7 @@ namespace Utilities.IO.FileSystem.BaseClasses
                 }
             }
             foreach (IDirectory SubDirectory in EnumerateDirectories())
-                SubDirectory.CopyTo(new DirectoryInfo(Path.Combine(Directory.FullName, SubDirectory.Name)), Options);
+                SubDirectory.CopyTo(new DirectoryInfo(Path.Combine(Directory.FullName, SubDirectory.Name), UserName, Password, Domain), Options);
             return Directory;
         }
 
@@ -379,10 +379,11 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// Moves this directory under another directory
         /// </summary>
         /// <param name="Directory">Directory to move to</param>
-        public virtual void MoveTo(IDirectory Directory)
+        public virtual IDirectory MoveTo(IDirectory Directory)
         {
-            CopyTo(Directory);
+            var ReturnValue = CopyTo(new DirectoryInfo(Path.Combine(Directory.FullName, Name), UserName, Password, Domain));
             Delete();
+            return ReturnValue;
         }
 
         /// <summary>

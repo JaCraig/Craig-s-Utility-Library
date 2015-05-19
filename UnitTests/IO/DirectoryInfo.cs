@@ -110,11 +110,11 @@ namespace UnitTests.IO
         [Fact]
         public void Move()
         {
-            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo("./Test");
-            Utilities.IO.DirectoryInfo Temp2 = new Utilities.IO.DirectoryInfo("./Test2");
+            IDirectory Temp = new Utilities.IO.DirectoryInfo("./Test");
+            IDirectory Temp2 = new Utilities.IO.DirectoryInfo("./Test2");
             Temp.Create();
             Temp2.Create();
-            Temp2.MoveTo(Temp);
+            Temp2 = Temp2.MoveTo(Temp);
             Assert.True(Temp.Exists);
             Assert.True(Temp2.Exists);
             Assert.Equal(Temp, Temp2.Parent);

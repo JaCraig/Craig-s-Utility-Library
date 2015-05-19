@@ -107,14 +107,14 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void Move()
         {
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test");
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp2 = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test2");
+            IDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test");
+            IDirectory Temp2 = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test2");
             Temp.Create();
             Temp2.Create();
-            Temp2.MoveTo(Temp);
+            Temp2 = Temp2.MoveTo(Temp);
             Assert.True(Temp.Exists);
-            Assert.False(Temp2.Exists);
-            Assert.Equal(Temp, Temp2.Parent);
+            Assert.True(Temp2.Exists);
+            Assert.Equal(Temp.FullName, Temp2.Parent.FullName);
             Temp.Delete();
             Assert.False(Temp.Exists);
         }
