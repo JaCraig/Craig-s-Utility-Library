@@ -142,29 +142,6 @@ namespace Utilities.IO.FileSystem.Default
         }
 
         /// <summary>
-        /// Copies the directory to the specified parent directory
-        /// </summary>
-        /// <param name="Directory">Directory to copy to</param>
-        /// <param name="Options">Options</param>
-        /// <returns>Newly created directory</returns>
-        public override IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways)
-        {
-            if (Directory == null || !Exists)
-                return this;
-            DirectoryInfo NewDirectory = new DirectoryInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
-            NewDirectory.Create();
-            foreach (DirectoryInfo Temp in EnumerateDirectories("*"))
-            {
-                Temp.CopyTo(NewDirectory);
-            }
-            foreach (FileInfo Temp in EnumerateFiles("*"))
-            {
-                Temp.CopyTo(NewDirectory, true);
-            }
-            return NewDirectory;
-        }
-
-        /// <summary>
         /// Not used
         /// </summary>
         public override void Create()
@@ -258,27 +235,6 @@ namespace Utilities.IO.FileSystem.Default
                 }
             }
             return Directories;
-        }
-
-        /// <summary>
-        /// Not used
-        /// </summary>
-        /// <param name="Directory"></param>
-        public override void MoveTo(IDirectory Directory)
-        {
-            if (Directory == null || !Exists)
-                return;
-            DirectoryInfo NewDirectory = new DirectoryInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
-            NewDirectory.Create();
-            foreach (DirectoryInfo Temp in EnumerateDirectories("*"))
-            {
-                Temp.MoveTo(NewDirectory);
-            }
-            foreach (FileInfo Temp in EnumerateFiles("*"))
-            {
-                Temp.MoveTo(NewDirectory);
-            }
-            Delete();
         }
 
         /// <summary>

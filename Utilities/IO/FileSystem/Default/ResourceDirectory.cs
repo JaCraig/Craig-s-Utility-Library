@@ -150,46 +150,6 @@ namespace Utilities.IO.FileSystem.Default
         }
 
         /// <summary>
-        /// Copies the directory to the specified parent directory
-        /// </summary>
-        /// <param name="Directory">Directory to copy to</param>
-        /// <param name="Options">Options</param>
-        /// <returns>Newly created directory</returns>
-        public override IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways)
-        {
-            if (InternalDirectory == null || Directory == null)
-                return null;
-            Directory.Create();
-            foreach (IFile TempFile in EnumerateFiles())
-            {
-                if (Options == CopyOptions.CopyAlways)
-                {
-                    TempFile.CopyTo(Directory, true);
-                }
-                else if (Options == CopyOptions.CopyIfNewer)
-                {
-                    if (File.Exists(Path.Combine(Directory.FullName, TempFile.Name)))
-                    {
-                        FileInfo FileInfo = new FileInfo(Path.Combine(Directory.FullName, TempFile.Name));
-                        if (FileInfo.Modified.CompareTo(TempFile.Modified) < 0)
-                            TempFile.CopyTo(Directory, true);
-                    }
-                    else
-                    {
-                        TempFile.CopyTo(Directory, true);
-                    }
-                }
-                else if (Options == CopyOptions.DoNotOverwrite)
-                {
-                    TempFile.CopyTo(Directory, false);
-                }
-            }
-            foreach (IDirectory SubDirectory in EnumerateDirectories("*"))
-                SubDirectory.CopyTo(new DirectoryInfo(Path.Combine(Directory.FullName, SubDirectory.Name)), Options);
-            return Directory;
-        }
-
-        /// <summary>
         /// Not used
         /// </summary>
         public override void Create()
@@ -226,14 +186,6 @@ namespace Utilities.IO.FileSystem.Default
                 return new List<IFile>();
             var Data = AssemblyFrom.GetManifestResourceNames() ?? new string[0];
             return Data.Select(x => new ResourceFile(x, UserName, Password, Domain));
-        }
-
-        /// <summary>
-        /// Not used
-        /// </summary>
-        /// <param name="Directory"></param>
-        public override void MoveTo(IDirectory Directory)
-        {
         }
 
         /// <summary>

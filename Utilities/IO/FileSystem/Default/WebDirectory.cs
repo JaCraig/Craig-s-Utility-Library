@@ -213,23 +213,6 @@ namespace Utilities.IO.FileSystem.Default
         /// <summary>
         /// Not used
         /// </summary>
-        /// <param name="Directory"></param>
-        public override void MoveTo(IDirectory Directory)
-        {
-            if (Directory == null)
-                return;
-            string TempName = Name;
-            if (TempName == "/")
-                TempName = "index.html";
-            FileInfo NewDirectory = new FileInfo(Directory.FullName + "\\" + TempName.Right(TempName.Length - (TempName.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
-            FileInfo OldFile = new FileInfo(TempName, UserName, Password, Domain);
-            NewDirectory.Write(OldFile.Read(), FileMode.Create);
-            Delete();
-        }
-
-        /// <summary>
-        /// Not used
-        /// </summary>
         /// <param name="Name"></param>
         public override void Rename(string Name)
         {

@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Utilities.DataTypes;
 using Utilities.IO.Enums;
 using Utilities.IO.FileSystem.Interfaces;
 
@@ -250,7 +251,39 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <param name="Directory">Directory to copy to</param>
         /// <param name="Options">Copy options</param>
         /// <returns>Returns the new directory</returns>
-        public abstract IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways);
+        public virtual IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways)
+        {
+            if (InternalDirectory == null || Directory == null)
+                return this;
+            Directory.Create();
+            foreach (IFile TempFile in EnumerateFiles())
+            {
+                if (Options == CopyOptions.CopyAlways)
+                {
+                    TempFile.CopyTo(Directory, true);
+                }
+                else if (Options == CopyOptions.CopyIfNewer)
+                {
+                    if (File.Exists(Path.Combine(Directory.FullName, TempFile.Name)))
+                    {
+                        FileInfo FileInfo = new FileInfo(Path.Combine(Directory.FullName, TempFile.Name));
+                        if (FileInfo.Modified.CompareTo(TempFile.Modified) < 0)
+                            TempFile.CopyTo(Directory, true);
+                    }
+                    else
+                    {
+                        TempFile.CopyTo(Directory, true);
+                    }
+                }
+                else if (Options == CopyOptions.DoNotOverwrite)
+                {
+                    TempFile.CopyTo(Directory, false);
+                }
+            }
+            foreach (IDirectory SubDirectory in EnumerateDirectories())
+                SubDirectory.CopyTo(new DirectoryInfo(Path.Combine(Directory.FullName, SubDirectory.Name)), Options);
+            return Directory;
+        }
 
         /// <summary>
         /// Creates the directory
@@ -346,7 +379,11 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// Moves this directory under another directory
         /// </summary>
         /// <param name="Directory">Directory to move to</param>
-        public abstract void MoveTo(IDirectory Directory);
+        public virtual void MoveTo(IDirectory Directory)
+        {
+            CopyTo(Directory);
+            Delete();
+        }
 
         /// <summary>
         /// Renames the directory

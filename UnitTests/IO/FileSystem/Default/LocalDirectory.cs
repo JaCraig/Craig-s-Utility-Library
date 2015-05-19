@@ -25,7 +25,7 @@ using Xunit;
 
 namespace UnitTests.IO.FileSystem.Default
 {
-    public class LocalDirectory:TestingDirectoryFixture
+    public class LocalDirectory : TestingDirectoryFixture
     {
         [Fact]
         public void Clone()
@@ -113,7 +113,7 @@ namespace UnitTests.IO.FileSystem.Default
             Temp2.Create();
             Temp2.MoveTo(Temp);
             Assert.True(Temp.Exists);
-            Assert.True(Temp2.Exists);
+            Assert.False(Temp2.Exists);
             Assert.Equal(Temp, Temp2.Parent);
             Temp.Delete();
             Assert.False(Temp.Exists);
