@@ -145,7 +145,7 @@ namespace Utilities.Workflow.Manager
             if (FileManager != null && SerializationManager != null)
             {
                 IFile File = FileManager.File("~/App_Data/Workflows.obj");
-                if (File != null)
+                if (File != null && !File.Directory.FullName.Contains("system32") && !File.Directory.FullName.Contains("Program Files"))
                     File.Write(SerializationManager.Serialize<byte[]>(this.Workflows, typeof(Dictionary<string, IWorkflow>), SerializationType.Binary.ToString()));
                 FileManager = null;
                 SerializationManager = null;

@@ -49,9 +49,11 @@ namespace Utilities.DataTypes
         /// <param name="Additions">IEnumerables to concat onto the first item</param>
         /// <returns>A new IEnumerable containing all values</returns>
         /// <example>
-        /// <code>int[] TestObject1 = new int[] { 1, 2, 3 }; int[] TestObject2 = new int[] { 4, 5, 6
+        /// <code>
+        /// int[] TestObject1 = new int[] { 1, 2, 3 }; int[] TestObject2 = new int[] { 4, 5, 6
         /// }; int[] TestObject3 = new int[] { 7, 8, 9 }; TestObject1 =
-        /// TestObject1.Concat(TestObject2, TestObject3).ToArray();</code>
+        /// TestObject1.Concat(TestObject2, TestObject3).ToArray();
+        /// </code>
         /// </example>
         public static IEnumerable<T> Concat<T>(this IEnumerable<T> Enumerable1, params IEnumerable<T>[] Additions)
         {
@@ -391,6 +393,68 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
+        /// Does a left join on the two lists
+        /// </summary>
+        /// <typeparam name="T1">The type of outer list.</typeparam>
+        /// <typeparam name="T2">The type of inner list.</typeparam>
+        /// <typeparam name="Key">The type of the key.</typeparam>
+        /// <typeparam name="R">The return type</typeparam>
+        /// <param name="outer">The outer list.</param>
+        /// <param name="inner">The inner list.</param>
+        /// <param name="outerKeySelector">The outer key selector.</param>
+        /// <param name="innerKeySelector">The inner key selector.</param>
+        /// <param name="resultSelector">The result selector.</param>
+        /// <param name="comparer">The comparer (if null, a generic comparer is used).</param>
+        /// <returns>Returns a left join of the two lists</returns>
+        public static IEnumerable<R> LeftJoin<T1, T2, Key, R>(this IEnumerable<T1> outer,
+            IEnumerable<T2> inner,
+            Func<T1, Key> outerKeySelector,
+            Func<T2, Key> innerKeySelector,
+            Func<T1, T2, R> resultSelector,
+            IEqualityComparer<Key> comparer = null)
+        {
+            Contract.Requires<ArgumentNullException>(inner != null, "inner");
+            Contract.Requires<ArgumentNullException>(outerKeySelector != null, "outerKeySelector");
+            Contract.Requires<ArgumentNullException>(innerKeySelector != null, "innerKeySelector");
+            Contract.Requires<ArgumentNullException>(resultSelector != null, "resultSelector");
+
+            comparer = comparer ?? new GenericEqualityComparer<Key>();
+            return outer.ForEach(x => new { left = x, right = inner.FirstOrDefault(y => comparer.Equals(innerKeySelector(y), outerKeySelector(x))) })
+                        .ForEach(x => resultSelector(x.left, x.right));
+        }
+
+        /// <summary>
+        /// Does an outer join on the two lists
+        /// </summary>
+        /// <typeparam name="T1">The type of outer list.</typeparam>
+        /// <typeparam name="T2">The type of inner list.</typeparam>
+        /// <typeparam name="Key">The type of the key.</typeparam>
+        /// <typeparam name="R">The return type</typeparam>
+        /// <param name="outer">The outer list.</param>
+        /// <param name="inner">The inner list.</param>
+        /// <param name="outerKeySelector">The outer key selector.</param>
+        /// <param name="innerKeySelector">The inner key selector.</param>
+        /// <param name="resultSelector">The result selector.</param>
+        /// <param name="comparer">The comparer (if null, a generic comparer is used).</param>
+        /// <returns>Returns an outer join of the two lists</returns>
+        public static IEnumerable<R> OuterJoin<T1, T2, Key, R>(this IEnumerable<T1> outer,
+            IEnumerable<T2> inner,
+            Func<T1, Key> outerKeySelector,
+            Func<T2, Key> innerKeySelector,
+            Func<T1, T2, R> resultSelector,
+            IEqualityComparer<Key> comparer = null)
+        {
+            Contract.Requires<ArgumentNullException>(inner != null, "inner");
+            Contract.Requires<ArgumentNullException>(outerKeySelector != null, "outerKeySelector");
+            Contract.Requires<ArgumentNullException>(innerKeySelector != null, "innerKeySelector");
+            Contract.Requires<ArgumentNullException>(resultSelector != null, "resultSelector");
+
+            var Left = outer.LeftJoin(inner, outerKeySelector, innerKeySelector, resultSelector);
+            var Right = outer.RightJoin(inner, outerKeySelector, innerKeySelector, resultSelector);
+            return Left.Union(Right);
+        }
+
+        /// <summary>
         /// Determines the position of an object if it is present, otherwise it returns -1
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
@@ -412,6 +476,37 @@ namespace Utilities.DataTypes
                 ++Count;
             }
             return -1;
+        }
+
+        /// <summary>
+        /// Does a right join on the two lists
+        /// </summary>
+        /// <typeparam name="T1">The type of outer list.</typeparam>
+        /// <typeparam name="T2">The type of inner list.</typeparam>
+        /// <typeparam name="Key">The type of the key.</typeparam>
+        /// <typeparam name="R">The return type</typeparam>
+        /// <param name="outer">The outer list.</param>
+        /// <param name="inner">The inner list.</param>
+        /// <param name="outerKeySelector">The outer key selector.</param>
+        /// <param name="innerKeySelector">The inner key selector.</param>
+        /// <param name="resultSelector">The result selector.</param>
+        /// <param name="comparer">The comparer (if null, a generic comparer is used).</param>
+        /// <returns>Returns a right join of the two lists</returns>
+        public static IEnumerable<R> RightJoin<T1, T2, Key, R>(this IEnumerable<T1> outer,
+            IEnumerable<T2> inner,
+            Func<T1, Key> outerKeySelector,
+            Func<T2, Key> innerKeySelector,
+            Func<T1, T2, R> resultSelector,
+            IEqualityComparer<Key> comparer = null)
+        {
+            Contract.Requires<ArgumentNullException>(outer != null, "outer");
+            Contract.Requires<ArgumentNullException>(outerKeySelector != null, "outerKeySelector");
+            Contract.Requires<ArgumentNullException>(innerKeySelector != null, "innerKeySelector");
+            Contract.Requires<ArgumentNullException>(resultSelector != null, "resultSelector");
+
+            comparer = comparer ?? new GenericEqualityComparer<Key>();
+            return inner.ForEach(x => new { left = outer.FirstOrDefault(y => comparer.Equals(innerKeySelector(x), outerKeySelector(y))), right = x })
+                        .ForEach(x => resultSelector(x.left, x.right));
         }
 
         /// <summary>

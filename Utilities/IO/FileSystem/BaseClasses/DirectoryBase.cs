@@ -23,7 +23,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Utilities.DataTypes;
 using Utilities.IO.Enums;
 using Utilities.IO.FileSystem.Interfaces;
 
@@ -264,9 +263,9 @@ namespace Utilities.IO.FileSystem.BaseClasses
                 }
                 else if (Options == CopyOptions.CopyIfNewer)
                 {
-                    if (new FileInfo(Path.Combine(Directory.FullName, TempFile.Name), UserName, Password, Domain).Exists)
+                    if (new FileInfo(Directory.FullName + "\\" + TempFile.Name.Replace("/", "").Replace("\\", ""), UserName, Password, Domain).Exists)
                     {
-                        FileInfo FileInfo = new FileInfo(Path.Combine(Directory.FullName, TempFile.Name), UserName, Password, Domain);
+                        FileInfo FileInfo = new FileInfo(Directory.FullName + "\\" + TempFile.Name.Replace("/", "").Replace("\\", ""), UserName, Password, Domain);
                         if (FileInfo.Modified.CompareTo(TempFile.Modified) < 0)
                             TempFile.CopyTo(Directory, true);
                     }
@@ -281,7 +280,7 @@ namespace Utilities.IO.FileSystem.BaseClasses
                 }
             }
             foreach (IDirectory SubDirectory in EnumerateDirectories())
-                SubDirectory.CopyTo(new DirectoryInfo(Path.Combine(Directory.FullName, SubDirectory.Name), UserName, Password, Domain), Options);
+                SubDirectory.CopyTo(new DirectoryInfo(Directory.FullName + "\\" + SubDirectory.Name.Replace("/", "").Replace("\\", ""), UserName, Password, Domain), Options);
             return Directory;
         }
 
@@ -381,7 +380,7 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <param name="Directory">Directory to move to</param>
         public virtual IDirectory MoveTo(IDirectory Directory)
         {
-            var ReturnValue = CopyTo(new DirectoryInfo(Path.Combine(Directory.FullName, Name), UserName, Password, Domain));
+            var ReturnValue = CopyTo(new DirectoryInfo(Directory.FullName + "\\" + Name.Replace("/", "").Replace("\\", ""), UserName, Password, Domain));
             Delete();
             return ReturnValue;
         }

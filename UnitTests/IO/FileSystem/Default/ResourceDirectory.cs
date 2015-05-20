@@ -44,13 +44,34 @@ namespace UnitTests.IO.FileSystem.Default
         }
 
         [Fact]
+        public void Copy()
+        {
+            IDirectory Temp = new Utilities.IO.FileSystem.Default.ResourceDirectory("resource://UnitTests/");
+            IDirectory Temp2 = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test/");
+            Temp2.Create();
+            while (!Temp2.Exists) { }
+            Temp = Temp.CopyTo(Temp2);
+            Assert.True(Temp.Exists);
+            Assert.True(Temp2.Exists);
+            int Count = 0;
+            foreach (var Files in Temp2.EnumerateFiles())
+            {
+                Assert.NotEqual(0, Files.Length);
+                ++Count;
+            }
+            Assert.Equal(1, Count);
+            Temp2.Delete();
+            while (Temp2.Exists) ;
+        }
+
+        [Fact]
         public void Creation()
         {
             Utilities.IO.FileSystem.Default.ResourceDirectory Temp = new Utilities.IO.FileSystem.Default.ResourceDirectory("resource://UnitTests/");
             Assert.NotNull(Temp);
             Assert.True(Temp.Exists);
             Assert.Equal("resource://UnitTests/", Temp.FullName);
-            Assert.Equal("resource://UnitTests/", Temp.Name);
+            Assert.Equal("UnitTests", Temp.Name);
             Assert.Null(Temp.Parent);
         }
 
@@ -75,6 +96,28 @@ namespace UnitTests.IO.FileSystem.Default
             Assert.True(Temp <= Temp2);
             Assert.True(Temp >= Temp2);
             Assert.False(Temp != Temp2);
+        }
+
+        [Fact]
+        public void Move()
+        {
+            IDirectory Temp = new Utilities.IO.FileSystem.Default.ResourceDirectory("resource://UnitTests/");
+            IDirectory Temp2 = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test/");
+            Temp2.Create();
+            while (!Temp2.Exists) { }
+            Temp = Temp.MoveTo(Temp2);
+            Assert.True(Temp.Exists);
+            Assert.True(Temp2.Exists);
+            Assert.Equal(Temp2.FullName, Temp.Parent.FullName + "\\");
+            int Count = 0;
+            foreach (var Files in Temp.EnumerateFiles())
+            {
+                Assert.NotEqual(0, Files.Length);
+                ++Count;
+            }
+            Assert.Equal(1, Count);
+            Temp2.Delete();
+            while (Temp2.Exists) ;
         }
     }
 }

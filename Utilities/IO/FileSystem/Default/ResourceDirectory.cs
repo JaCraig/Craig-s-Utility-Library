@@ -25,7 +25,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Utilities.IO.Enums;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
 
@@ -101,7 +100,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override string Name
         {
-            get { return InternalDirectory; }
+            get { return SplitPathRegex.Match(InternalDirectory).Groups["Assembly"].Value; }
         }
 
         /// <summary>
@@ -185,7 +184,7 @@ namespace Utilities.IO.FileSystem.Default
             if (AssemblyFrom == null)
                 return new List<IFile>();
             var Data = AssemblyFrom.GetManifestResourceNames() ?? new string[0];
-            return Data.Select(x => new ResourceFile(x, UserName, Password, Domain));
+            return Data.Select(x => new ResourceFile(FullName + x, UserName, Password, Domain));
         }
 
         /// <summary>

@@ -235,6 +235,8 @@
     <Compile Include="DataTypes\CodeGen\Module\CompilerModule.cs" />
     <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
     <Compile Include="DataTypes\Comparison\GenericEqualityComparer.cs" />
+    <Compile Include="DataTypes\Comparison\SimpleComparer.cs" />
+    <Compile Include="DataTypes\Comparison\SimpleEqualityComparer.cs" />
     <Compile Include="DataTypes\Conversion\Converters\BaseClasses\TypeConverterBase.cs" />
     <Compile Include="DataTypes\Conversion\Converters\DbTypeTypeConverter.cs" />
     <Compile Include="DataTypes\Conversion\Converters\Interfaces\IConverter.cs" />

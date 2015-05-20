@@ -27,7 +27,7 @@ using Xunit;
 
 namespace UnitTests.IO.FileSystem.Default
 {
-    public class WebDirectory:TestingDirectoryFixture
+    public class WebDirectory : TestingDirectoryFixture
     {
         [Fact]
         public void Clone()
@@ -54,6 +54,13 @@ namespace UnitTests.IO.FileSystem.Default
             Temp.CopyTo(Temp2);
             Assert.True(Temp.Exists);
             Assert.True(Temp2.Exists);
+            int Count = 0;
+            foreach (var Files in Temp2.EnumerateFiles())
+            {
+                Assert.NotEqual(0, Files.Length);
+                ++Count;
+            }
+            Assert.Equal(1, Count);
             Temp2.Delete();
         }
 
@@ -110,6 +117,13 @@ namespace UnitTests.IO.FileSystem.Default
             Assert.Throws<WebException>(() => Temp.MoveTo(Temp2));
             Assert.True(Temp.Exists);
             Assert.True(Temp2.Exists);
+            int Count = 0;
+            foreach (var Files in Temp2.EnumerateFiles())
+            {
+                Assert.NotEqual(0, Files.Length);
+                ++Count;
+            }
+            Assert.Equal(1, Count);
             Temp2.Delete();
         }
     }

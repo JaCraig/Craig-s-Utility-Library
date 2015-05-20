@@ -146,6 +146,46 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
+        public void LeftJoin()
+        {
+            var Temp1 = new[]{
+                new {A="A",ID=1},
+                new {A="B",ID=2},
+                new {A="C",ID=3}
+            };
+            var Temp2 = new[]{
+                new {B="D",ID=1},
+                new {B="E",ID=2}
+            };
+            var Result = Temp1.LeftJoin(Temp2, x => x.ID, x => x.ID, (x, y) => new { A = x == null ? "" : x.A, B = y == null ? "" : y.B }).ToList();
+            Assert.Equal(3, Result.Count);
+            Assert.True(Result.Any(x => x.A == "A" && x.B == "D"));
+            Assert.True(Result.Any(x => x.A == "B" && x.B == "E"));
+            Assert.True(Result.Any(x => x.A == "C" && x.B == ""));
+        }
+
+        [Fact]
+        public void OuterJoin()
+        {
+            var Temp1 = new[]{
+                new {A="A",ID=1},
+                new {A="B",ID=2},
+                new {A="C",ID=3}
+            };
+            var Temp2 = new[]{
+                new {B="D",ID=1},
+                new {B="E",ID=2},
+                new {B="F",ID=4}
+            };
+            var Result = Temp1.OuterJoin(Temp2, x => x.ID, x => x.ID, (x, y) => new { A = x == null ? "" : x.A, B = y == null ? "" : y.B }).ToList();
+            Assert.Equal(4, Result.Count);
+            Assert.True(Result.Any(x => x.A == "A" && x.B == "D"));
+            Assert.True(Result.Any(x => x.A == "B" && x.B == "E"));
+            Assert.True(Result.Any(x => x.A == "C" && x.B == ""));
+            Assert.True(Result.Any(x => x.A == "" && x.B == "F"));
+        }
+
+        [Fact]
         public void PositionOf()
         {
             Assert.Equal(0, new int[] { 1, 2, 3 }.PositionOf(1));
@@ -159,6 +199,25 @@ namespace UnitTests.DataTypes.ExtensionMethods
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             foreach (int Value in Temp.Remove(x => x == 0))
                 Assert.NotEqual(0, Value);
+        }
+
+        [Fact]
+        public void RightJoin()
+        {
+            var Temp2 = new[]{
+                new {A="A",ID=1},
+                new {A="B",ID=2},
+                new {A="C",ID=3}
+            };
+            var Temp1 = new[]{
+                new {B="D",ID=1},
+                new {B="E",ID=2}
+            };
+            var Result = Temp1.RightJoin(Temp2, x => x.ID, x => x.ID, (x, y) => new { A = y == null ? "" : y.A, B = x == null ? "" : x.B }).ToList();
+            Assert.Equal(3, Result.Count);
+            Assert.True(Result.Any(x => x.A == "A" && x.B == "D"));
+            Assert.True(Result.Any(x => x.A == "B" && x.B == "E"));
+            Assert.True(Result.Any(x => x.A == "C" && x.B == ""));
         }
 
         [Fact]

@@ -155,7 +155,7 @@ namespace Utilities.IO.FileSystem.Default
             if (TempName == "/")
                 TempName = "index.html";
             FileInfo NewDirectory = new FileInfo(Directory.FullName + "\\" + TempName.Right(TempName.Length - (TempName.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
-            FileInfo OldFile = new FileInfo(TempName, UserName, Password, Domain);
+            FileInfo OldFile = new FileInfo(InternalDirectory.AbsoluteUri, UserName, Password, Domain);
             NewDirectory.Write(OldFile.Read(), FileMode.Create);
             return Directory;
         }
@@ -263,8 +263,7 @@ namespace Utilities.IO.FileSystem.Default
 
         /// <summary>
         /// Sets up any credentials (basic authentication, for OAuth, please use the OAuth class to
-        /// create the
-        /// URL)
+        /// create the URL)
         /// </summary>
         /// <param name="Request">The web request object</param>
         private void SetupCredentials(HttpWebRequest Request)
