@@ -173,6 +173,14 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>The newly created file</returns>
         public override IFile CopyTo(IDirectory Directory, bool Overwrite)
         {
+            if (Directory == null || !Exists)
+                return this;
+            FileInfo File = new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
+            if (!File.Exists || Overwrite)
+            {
+                File.Write(ReadBinary());
+                return File;
+            }
             return this;
         }
 
@@ -191,6 +199,10 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Directory">Not used</param>
         public override void MoveTo(IDirectory Directory)
         {
+            if (Directory == null || !Exists)
+                return;
+            new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain).Write(ReadBinary());
+            Delete();
         }
 
         /// <summary>

@@ -23,7 +23,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Utilities.IO.Enums;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
 
@@ -133,46 +132,6 @@ namespace Utilities.IO.FileSystem.Default
         }
 
         /// <summary>
-        /// Copies the directory to the specified parent directory
-        /// </summary>
-        /// <param name="Directory">Directory to copy to</param>
-        /// <param name="Options">Copy options</param>
-        /// <returns>The newly created directory</returns>
-        public override IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways)
-        {
-            if (InternalDirectory == null || Directory == null)
-                return null;
-            Directory.Create();
-            foreach (IFile TempFile in EnumerateFiles())
-            {
-                if (Options == CopyOptions.CopyAlways)
-                {
-                    TempFile.CopyTo(Directory, true);
-                }
-                else if (Options == CopyOptions.CopyIfNewer)
-                {
-                    if (File.Exists(Path.Combine(Directory.FullName, TempFile.Name)))
-                    {
-                        FileInfo FileInfo = new FileInfo(Path.Combine(Directory.FullName, TempFile.Name));
-                        if (FileInfo.Modified.CompareTo(TempFile.Modified) < 0)
-                            TempFile.CopyTo(Directory, true);
-                    }
-                    else
-                    {
-                        TempFile.CopyTo(Directory, true);
-                    }
-                }
-                else if (Options == CopyOptions.DoNotOverwrite)
-                {
-                    TempFile.CopyTo(Directory, false);
-                }
-            }
-            foreach (IDirectory SubDirectory in EnumerateDirectories())
-                SubDirectory.CopyTo(new DirectoryInfo(Path.Combine(Directory.FullName, SubDirectory.Name)), Options);
-            return Directory;
-        }
-
-        /// <summary>
         /// Creates the directory
         /// </summary>
         public override void Create()
@@ -234,18 +193,6 @@ namespace Utilities.IO.FileSystem.Default
                     yield return new LocalFile(File);
                 }
             }
-        }
-
-        /// <summary>
-        /// Moves this directory under another directory
-        /// </summary>
-        /// <param name="Directory">Directory to move to</param>
-        public override void MoveTo(IDirectory Directory)
-        {
-            if (InternalDirectory == null || Directory == null)
-                return;
-            InternalDirectory.MoveTo(Directory.FullName + "\\" + Name);
-            InternalDirectory = new System.IO.DirectoryInfo(Directory.FullName + "\\" + Name);
         }
 
         /// <summary>

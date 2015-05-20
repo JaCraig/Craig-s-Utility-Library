@@ -363,11 +363,11 @@ namespace Utilities.IO
         /// Moves the directory to the specified parent directory
         /// </summary>
         /// <param name="Directory">Directory to move to</param>
-        public void MoveTo(IDirectory Directory)
+        public IDirectory MoveTo(IDirectory Directory)
         {
             if (InternalDirectory == null || Directory == null)
-                return;
-            InternalDirectory.MoveTo(Directory);
+                return this;
+            return InternalDirectory.MoveTo(Directory);
         }
 
         /// <summary>

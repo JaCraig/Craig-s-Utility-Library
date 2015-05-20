@@ -129,7 +129,7 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// Moves the directory to the specified parent directory
         /// </summary>
         /// <param name="Directory">Directory to move to</param>
-        void MoveTo(IDirectory Directory);
+        IDirectory MoveTo(IDirectory Directory);
 
         /// <summary>
         /// Renames the directory

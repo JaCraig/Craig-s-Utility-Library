@@ -25,7 +25,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Utilities.IO.Enums;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
 
@@ -101,7 +100,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override string Name
         {
-            get { return InternalDirectory; }
+            get { return SplitPathRegex.Match(InternalDirectory).Groups["Assembly"].Value; }
         }
 
         /// <summary>
@@ -150,17 +149,6 @@ namespace Utilities.IO.FileSystem.Default
         }
 
         /// <summary>
-        /// Copies the directory to the specified parent directory
-        /// </summary>
-        /// <param name="Directory">Directory to copy to</param>
-        /// <param name="Options">Options</param>
-        /// <returns>Newly created directory</returns>
-        public override IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways)
-        {
-            return this;
-        }
-
-        /// <summary>
         /// Not used
         /// </summary>
         public override void Create()
@@ -196,15 +184,7 @@ namespace Utilities.IO.FileSystem.Default
             if (AssemblyFrom == null)
                 return new List<IFile>();
             var Data = AssemblyFrom.GetManifestResourceNames() ?? new string[0];
-            return Data.Select(x => new ResourceFile(x, UserName, Password, Domain));
-        }
-
-        /// <summary>
-        /// Not used
-        /// </summary>
-        /// <param name="Directory"></param>
-        public override void MoveTo(IDirectory Directory)
-        {
+            return Data.Select(x => new ResourceFile(FullName + x, UserName, Password, Domain));
         }
 
         /// <summary>

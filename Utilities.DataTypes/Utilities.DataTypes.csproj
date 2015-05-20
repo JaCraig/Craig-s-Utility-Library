@@ -265,6 +265,8 @@
     <Compile Include="DataTypes\DataMapper\Interfaces\Contracts\IMapperModuleContract.cs" />
     <Compile Include="DataTypes\DataMapper\Interfaces\Contracts\ITypeMappingContract.cs" />
     <Compile Include="DataTypes\ObservableList.cs" />
+    <Compile Include="DataTypes\Comparison\SimpleComparer.cs" />
+    <Compile Include="DataTypes\Comparison\SimpleEqualityComparer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

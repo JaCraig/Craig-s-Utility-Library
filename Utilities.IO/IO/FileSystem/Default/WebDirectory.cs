@@ -149,11 +149,13 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>Newly created directory</returns>
         public override IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways)
         {
+            if (Directory == null)
+                return this;
             string TempName = Name;
             if (TempName == "/")
                 TempName = "index.html";
             FileInfo NewDirectory = new FileInfo(Directory.FullName + "\\" + TempName.Right(TempName.Length - (TempName.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
-            FileInfo OldFile = new FileInfo(TempName, UserName, Password, Domain);
+            FileInfo OldFile = new FileInfo(InternalDirectory.AbsoluteUri, UserName, Password, Domain);
             NewDirectory.Write(OldFile.Read(), FileMode.Create);
             return Directory;
         }
@@ -211,21 +213,6 @@ namespace Utilities.IO.FileSystem.Default
         /// <summary>
         /// Not used
         /// </summary>
-        /// <param name="Directory"></param>
-        public override void MoveTo(IDirectory Directory)
-        {
-            string TempName = Name;
-            if (TempName == "/")
-                TempName = "index.html";
-            FileInfo NewDirectory = new FileInfo(Directory.FullName + "\\" + TempName.Right(TempName.Length - (TempName.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
-            FileInfo OldFile = new FileInfo(TempName, UserName, Password, Domain);
-            NewDirectory.Write(OldFile.Read(), FileMode.Create);
-            Delete();
-        }
-
-        /// <summary>
-        /// Not used
-        /// </summary>
         /// <param name="Name"></param>
         public override void Rename(string Name)
         {
@@ -276,8 +263,7 @@ namespace Utilities.IO.FileSystem.Default
 
         /// <summary>
         /// Sets up any credentials (basic authentication, for OAuth, please use the OAuth class to
-        /// create the
-        /// URL)
+        /// create the URL)
         /// </summary>
         /// <param name="Request">The web request object</param>
         private void SetupCredentials(HttpWebRequest Request)
