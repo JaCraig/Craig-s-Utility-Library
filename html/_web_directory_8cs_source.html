@@ -205,119 +205,109 @@ $(document).ready(function(){initNavTree('_web_directory_8cs_source.html','');})
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html">IDirectory</a> CopyTo(<a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html">IDirectory</a> Directory, <a class="code" href="namespace_utilities_1_1_i_o_1_1_enums.html#a36a8e5e7d142dd236fb3795ff078594a">CopyOptions</a> Options = <a class="code" href="namespace_utilities_1_1_i_o_1_1_enums.html#a36a8e5e7d142dd236fb3795ff078594a">CopyOptions</a>.CopyAlways)</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        {</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            <span class="keywordtype">string</span> TempName = Name;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            <span class="keywordflow">if</span> (TempName == <span class="stringliteral">&quot;/&quot;</span>)</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                TempName = <span class="stringliteral">&quot;index.html&quot;</span>;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            FileInfo NewDirectory = <span class="keyword">new</span> FileInfo(Directory.<a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html#abd8e5633719f53721ee4327901c352a2">FullName</a> + <span class="stringliteral">&quot;\\&quot;</span> + TempName.Right(TempName.Length - (TempName.LastIndexOf(<span class="stringliteral">&quot;/&quot;</span>, StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            FileInfo OldFile = <span class="keyword">new</span> FileInfo(TempName, UserName, Password, Domain);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            NewDirectory.Write(OldFile.Read(), FileMode.Create);</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            <span class="keywordflow">return</span> Directory;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        }</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> Create()</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        {</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            HttpWebRequest Request = WebRequest.<a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html#a55efa33c81b8c058c08efb51525f0d87">Create</a>(InternalDirectory) as HttpWebRequest;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;            Request.Method = <span class="stringliteral">&quot;POST&quot;</span>;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            Request.ContentType = <span class="stringliteral">&quot;text/xml&quot;</span>;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;            SetupData(Request, <span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            SetupCredentials(Request);</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            SendRequest(Request);</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        }</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> <a class="code" href="namespace_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_enums.html#a5fa39672baeae364bdfe9cdea857b157af2a6c498fb90ee345d997f888fce3b18">Delete</a>()</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        {</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;            <span class="keywordflow">if</span> (InternalDirectory == null)</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;            HttpWebRequest Request = WebRequest.Create(InternalDirectory) as HttpWebRequest;</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            Request.Method = <span class="stringliteral">&quot;DELETE&quot;</span>;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            Request.ContentType = <span class="stringliteral">&quot;text/xml&quot;</span>;</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            SetupData(Request, <span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            SetupCredentials(Request);</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            SendRequest(Request);</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        }</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> IEnumerable&lt;IDirectory&gt; EnumerateDirectories(<span class="keywordtype">string</span> SearchPattern, SearchOption Options = SearchOption.TopDirectoryOnly)</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        {</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> List&lt;WebDirectory&gt;();</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        }</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> IEnumerable&lt;IFile&gt; EnumerateFiles(<span class="keywordtype">string</span> SearchPattern = <span class="stringliteral">&quot;*&quot;</span>, SearchOption Options = SearchOption.TopDirectoryOnly)</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        {</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> List&lt;WebFile&gt;();</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        }</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> MoveTo(<a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html">IDirectory</a> Directory)</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        {</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;            <span class="keywordtype">string</span> TempName = Name;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;            <span class="keywordflow">if</span> (TempName == <span class="stringliteral">&quot;/&quot;</span>)</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;                TempName = <span class="stringliteral">&quot;index.html&quot;</span>;</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;            FileInfo NewDirectory = <span class="keyword">new</span> FileInfo(Directory.<a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html#abd8e5633719f53721ee4327901c352a2">FullName</a> + <span class="stringliteral">&quot;\\&quot;</span> + TempName.Right(TempName.Length - (TempName.LastIndexOf(<span class="stringliteral">&quot;/&quot;</span>, StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, <a class="code" href="namespace_utilities_1_1_validation.html#a6eee0e05a64d1d4aba235d7f7c127aa2aeae639a70006feff484a39363c977e24">Domain</a>);</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;            FileInfo OldFile = <span class="keyword">new</span> FileInfo(TempName, UserName, Password, Domain);</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;            NewDirectory.Write(OldFile.Read(), FileMode.Create);</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;            <a class="code" href="namespace_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_enums.html#a5fa39672baeae364bdfe9cdea857b157af2a6c498fb90ee345d997f888fce3b18">Delete</a>();</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        }</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> Rename(<span class="keywordtype">string</span> Name)</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        {</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        }</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">string</span> SendRequest(HttpWebRequest Request)</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        {</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;            Contract.Requires&lt;ArgumentNullException&gt;(Request != null, <span class="stringliteral">&quot;Request&quot;</span>);</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;            <span class="keyword">using</span> (HttpWebResponse Response = Request.GetResponse() as HttpWebResponse)</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;            {</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;                <span class="keywordflow">if</span> (Response.StatusCode != HttpStatusCode.OK)</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;                <span class="keyword">using</span> (StreamReader Reader = <span class="keyword">new</span> StreamReader(Response.GetResponseStream()))</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;                {</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;                    <span class="keywordflow">return</span> Reader.ReadToEnd();</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;                }</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            }</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        }</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">void</span> SetupData(HttpWebRequest Request, <span class="keywordtype">string</span> Data)</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        {</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            Contract.Requires&lt;ArgumentNullException&gt;(Request != null, <span class="stringliteral">&quot;Request&quot;</span>);</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;            <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrEmpty(Data))</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            {</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                Request.ContentLength = 0;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;            }</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            byte[] ByteData = Data.ToByteArray();</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;            <span class="keywordflow">if</span> (ByteData != null)</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;            {</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                Request.ContentLength = ByteData.Length;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                <span class="keyword">using</span> (Stream RequestStream = Request.GetRequestStream())</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;                {</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                    RequestStream.Write(ByteData, 0, ByteData.Length);</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                }</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;            }</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        }</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> SetupCredentials(HttpWebRequest Request)</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        {</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;            <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrEmpty(UserName) &amp;&amp; !<span class="keywordtype">string</span>.IsNullOrEmpty(Password))</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;            {</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;                Request.Credentials = <span class="keyword">new</span> NetworkCredential(UserName, Password);</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;            }</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        }</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    }</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;}</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            <span class="keywordflow">if</span> (Directory == null)</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">this</span>;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;            <span class="keywordtype">string</span> TempName = Name;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            <span class="keywordflow">if</span> (TempName == <span class="stringliteral">&quot;/&quot;</span>)</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                TempName = <span class="stringliteral">&quot;index.html&quot;</span>;</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            FileInfo NewDirectory = <span class="keyword">new</span> FileInfo(Directory.<a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html#abd8e5633719f53721ee4327901c352a2">FullName</a> + <span class="stringliteral">&quot;\\&quot;</span> + TempName.Right(TempName.Length - (TempName.LastIndexOf(<span class="stringliteral">&quot;/&quot;</span>, StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            FileInfo OldFile = <span class="keyword">new</span> FileInfo(TempName, UserName, Password, Domain);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            NewDirectory.Write(OldFile.Read(), FileMode.Create);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            <span class="keywordflow">return</span> Directory;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        }</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> Create()</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        {</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            HttpWebRequest Request = WebRequest.<a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html#a55efa33c81b8c058c08efb51525f0d87">Create</a>(InternalDirectory) as HttpWebRequest;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;            Request.Method = <span class="stringliteral">&quot;POST&quot;</span>;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            Request.ContentType = <span class="stringliteral">&quot;text/xml&quot;</span>;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            SetupData(Request, <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;            SetupCredentials(Request);</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;            SendRequest(Request);</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        }</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> <a class="code" href="namespace_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_enums.html#a5fa39672baeae364bdfe9cdea857b157af2a6c498fb90ee345d997f888fce3b18">Delete</a>()</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        {</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;            <span class="keywordflow">if</span> (InternalDirectory == null)</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            HttpWebRequest Request = WebRequest.Create(InternalDirectory) as HttpWebRequest;</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            Request.Method = <span class="stringliteral">&quot;DELETE&quot;</span>;</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            Request.ContentType = <span class="stringliteral">&quot;text/xml&quot;</span>;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            SetupData(Request, <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            SetupCredentials(Request);</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            SendRequest(Request);</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        }</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> IEnumerable&lt;IDirectory&gt; EnumerateDirectories(<span class="keywordtype">string</span> SearchPattern, SearchOption Options = SearchOption.TopDirectoryOnly)</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        {</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> List&lt;WebDirectory&gt;();</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        }</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> IEnumerable&lt;IFile&gt; EnumerateFiles(<span class="keywordtype">string</span> SearchPattern = <span class="stringliteral">&quot;*&quot;</span>, SearchOption Options = SearchOption.TopDirectoryOnly)</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        {</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> List&lt;WebFile&gt;();</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        }</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> Rename(<span class="keywordtype">string</span> Name)</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        {</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        }</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">string</span> SendRequest(HttpWebRequest Request)</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        {</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;            Contract.Requires&lt;ArgumentNullException&gt;(Request != null, <span class="stringliteral">&quot;Request&quot;</span>);</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            <span class="keyword">using</span> (HttpWebResponse Response = Request.GetResponse() as HttpWebResponse)</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;            {</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;                <span class="keywordflow">if</span> (Response.StatusCode != HttpStatusCode.OK)</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;                <span class="keyword">using</span> (StreamReader Reader = <span class="keyword">new</span> StreamReader(Response.GetResponseStream()))</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;                {</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;                    <span class="keywordflow">return</span> Reader.ReadToEnd();</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;                }</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;            }</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        }</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">void</span> SetupData(HttpWebRequest Request, <span class="keywordtype">string</span> Data)</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        {</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            Contract.Requires&lt;ArgumentNullException&gt;(Request != null, <span class="stringliteral">&quot;Request&quot;</span>);</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrEmpty(Data))</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;            {</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;                Request.ContentLength = 0;</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;            }</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;            byte[] ByteData = Data.ToByteArray();</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            <span class="keywordflow">if</span> (ByteData != null)</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            {</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                Request.ContentLength = ByteData.Length;</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                <span class="keyword">using</span> (Stream RequestStream = Request.GetRequestStream())</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                {</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                    RequestStream.Write(ByteData, 0, ByteData.Length);</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                }</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;            }</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        }</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> SetupCredentials(HttpWebRequest Request)</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        {</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;            <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrEmpty(UserName) &amp;&amp; !<span class="keywordtype">string</span>.IsNullOrEmpty(Password))</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;            {</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                Request.Credentials = <span class="keyword">new</span> NetworkCredential(UserName, Password);</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;            }</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        }</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    }</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;}</div>
 <div class="ttc" id="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory_html"><div class="ttname"><a href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html">Utilities.IO.FileSystem.Interfaces.IDirectory</a></div><div class="ttdoc">Represents a directory </div><div class="ttdef"><b>Definition:</b> <a href="_i_directory_8cs_source.html#l00032">IDirectory.cs:32</a></div></div>
 <div class="ttc" id="namespace_system_html"><div class="ttname"><a href="namespace_system.html">System</a></div></div>
 <div class="ttc" id="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_directory_html_a1125096d9f512836986a05ed28873edb"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_directory.html#a1125096d9f512836986a05ed28873edb">Utilities.IO.FileSystem.Default.WebDirectory.WebDirectory</a></div><div class="ttdeci">WebDirectory()</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_web_directory_8cs_source.html#l00043">WebDirectory.cs:43</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_1_1_file_system_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_file_system.html">Utilities.IO.FileSystem</a></div></div>
 <div class="ttc" id="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_directory_html_ab18377ae9a5be0c4f5f04f614ad13ff0"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_directory.html#ab18377ae9a5be0c4f5f04f614ad13ff0">Utilities.IO.FileSystem.Default.WebDirectory.WebDirectory</a></div><div class="ttdeci">WebDirectory(string Path, string UserName=&quot;&quot;, string Password=&quot;&quot;, string Domain=&quot;&quot;)</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_web_directory_8cs_source.html#l00055">WebDirectory.cs:55</a></div></div>
-<div class="ttc" id="class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_directory_base_html"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_directory_base.html">Utilities.IO.FileSystem.BaseClasses.DirectoryBase</a></div><div class="ttdoc">Directory base class </div><div class="ttdef"><b>Definition:</b> <a href="_directory_base_8cs_source.html#l00038">DirectoryBase.cs:38</a></div></div>
+<div class="ttc" id="class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_directory_base_html"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_directory_base.html">Utilities.IO.FileSystem.BaseClasses.DirectoryBase</a></div><div class="ttdoc">Directory base class </div><div class="ttdef"><b>Definition:</b> <a href="_directory_base_8cs_source.html#l00039">DirectoryBase.cs:39</a></div></div>
 <div class="ttc" id="namespace_utilities_html"><div class="ttname"><a href="namespace_utilities.html">Utilities</a></div></div>
-<div class="ttc" id="namespace_utilities_1_1_validation_html_a6eee0e05a64d1d4aba235d7f7c127aa2aeae639a70006feff484a39363c977e24"><div class="ttname"><a href="namespace_utilities_1_1_validation.html#a6eee0e05a64d1d4aba235d7f7c127aa2aeae639a70006feff484a39363c977e24">Utilities.Validation.Domain</a></div><div class="ttdoc">Domain </div></div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_1_1_enums_html_a36a8e5e7d142dd236fb3795ff078594a"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_enums.html#a36a8e5e7d142dd236fb3795ff078594a">Utilities.IO.Enums.CopyOptions</a></div><div class="ttdeci">CopyOptions</div><div class="ttdoc">Options used in directory copying </div><div class="ttdef"><b>Definition:</b> <a href="_copy_options_8cs_source.html#l00027">CopyOptions.cs:27</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_data_types_html"><div class="ttname"><a href="namespace_utilities_1_1_data_types.html">Utilities.DataTypes</a></div></div>
 <div class="ttc" id="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory_html_abd8e5633719f53721ee4327901c352a2"><div class="ttname"><a href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html#abd8e5633719f53721ee4327901c352a2">Utilities.IO.FileSystem.Interfaces.IDirectory.FullName</a></div><div class="ttdeci">string FullName</div><div class="ttdoc">Full path to the directory </div><div class="ttdef"><b>Definition:</b> <a href="_i_directory_8cs_source.html#l00052">IDirectory.cs:52</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o.html">Utilities.IO</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_1_1_enums_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_enums.html">Utilities.IO.Enums</a></div><div class="ttdef"><b>Definition:</b> <a href="_copy_options_8cs_source.html#l00022">CopyOptions.cs:22</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_file_system_1_1_interfaces.html">Utilities.IO.FileSystem.Interfaces</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_directory_8cs_source.html#l00027">IDirectory.cs:27</a></div></div>
-<div class="ttc" id="namespace_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_file_system_1_1_base_classes.html">Utilities.IO.FileSystem.BaseClasses</a></div><div class="ttdef"><b>Definition:</b> <a href="_directory_base_8cs_source.html#l00029">DirectoryBase.cs:29</a></div></div>
+<div class="ttc" id="namespace_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_file_system_1_1_base_classes.html">Utilities.IO.FileSystem.BaseClasses</a></div><div class="ttdef"><b>Definition:</b> <a href="_directory_base_8cs_source.html#l00030">DirectoryBase.cs:30</a></div></div>
 <div class="ttc" id="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_directory_html"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_directory.html">Utilities.IO.FileSystem.Default.WebDirectory</a></div><div class="ttdoc">Directory class </div><div class="ttdef"><b>Definition:</b> <a href="_web_directory_8cs_source.html#l00038">WebDirectory.cs:38</a></div></div>
 <div class="ttc" id="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_directory_html_addccc48c9b8750ea9ff0b570473eedec"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_directory.html#addccc48c9b8750ea9ff0b570473eedec">Utilities.IO.FileSystem.Default.WebDirectory.WebDirectory</a></div><div class="ttdeci">WebDirectory(Uri Directory, string UserName=&quot;&quot;, string Password=&quot;&quot;, string Domain=&quot;&quot;)</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_web_directory_8cs_source.html#l00067">WebDirectory.cs:67</a></div></div>
 <div class="ttc" id="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory_html_a55efa33c81b8c058c08efb51525f0d87"><div class="ttname"><a href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html#a55efa33c81b8c058c08efb51525f0d87">Utilities.IO.FileSystem.Interfaces.IDirectory.Create</a></div><div class="ttdeci">void Create()</div><div class="ttdoc">Creates the directory if it does not currently exist </div></div>
@@ -328,7 +318,7 @@ $(document).ready(function(){initNavTree('_web_directory_8cs_source.html','');})
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_cdffdb722b1f3b30993d9a14c7e19da9.html">IO</a></li><li class="navelem"><a class="el" href="dir_dd846de6290642c8890e926ebf368f0a.html">FileSystem</a></li><li class="navelem"><a class="el" href="dir_907aa97e1531825d990413d236dd34b6.html">Default</a></li><li class="navelem"><a class="el" href="_web_directory_8cs.html">WebDirectory.cs</a></li>
-    <li class="footer">Generated on Wed May 13 2015 18:26:39 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Tue May 19 2015 21:26:48 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
