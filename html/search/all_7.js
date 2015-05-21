@@ -9,6 +9,7 @@ var searchData=
   ['hasherbase',['HasherBase',['../class_utilities_1_1_i_o_1_1_encryption_1_1_base_classes_1_1_hasher_base.html',1,'Utilities::IO::Encryption::BaseClasses']]],
   ['hasherbase',['HasherBase',['../class_utilities_1_1_i_o_1_1_encryption_1_1_base_classes_1_1_hasher_base.html#a88c776d6a2565fab59b78d52f34afeae',1,'Utilities::IO::Encryption::BaseClasses::HasherBase']]],
   ['hasherbase_2ecs',['HasherBase.cs',['../_hasher_base_8cs.html',1,'']]],
+  ['hashfunction',['HashFunction',['../class_utilities_1_1_data_types_1_1_comparison_1_1_simple_equality_comparer.html#af1cff15ed6574d92e64960039678ed13',1,'Utilities::DataTypes::Comparison::SimpleEqualityComparer']]],
   ['hcard',['HCard',['../class_utilities_1_1_i_o_1_1_file_formats_1_1_v_card.html#a6bc96ef7089f9c49c7ebd5bb4875b6e6',1,'Utilities::IO::FileFormats::VCard']]],
   ['height',['Height',['../class_utilities_1_1_data_types_1_1_matrix.html#ae5ff07aed48598bed3b8cc44a0facd85',1,'Utilities.DataTypes.Matrix.Height()'],['../class_utilities_1_1_i_o_1_1_file_formats_1_1_r_s_s_1_1_thumbnail.html#a659d93f587b6912592ff93f27f426351',1,'Utilities.IO.FileFormats.RSS.Thumbnail.Height()'],['../class_utilities_1_1_media_1_1_filter.html#a8de315da8f7f12c81a959d58db70b342',1,'Utilities.Media.Filter.Height()']]],
   ['high',['High',['../namespace_utilities_1_1_media.html#a5753f3abf780e76ab382811d26f7b156a655d20c1ca69519ca647684edbb2db35',1,'Utilities::Media']]],
@@ -20,8 +21,8 @@ var searchData=
   ['htmlextensions_2ecs',['HTMLExtensions.cs',['../_web_2_extension_methods_2_h_t_m_l_extensions_8cs.html',1,'']]],
   ['htmlformatting',['HTMLFormatting',['../class_utilities_1_1_random_1_1_string_generators_1_1_lorem_ipsum_generator.html#a8df9222d39e4fe7be0584426970b7c9a',1,'Utilities::Random::StringGenerators::LoremIpsumGenerator']]],
   ['httpcontextextensions_2ecs',['HTTPContextExtensions.cs',['../_h_t_t_p_context_extensions_8cs.html',1,'']]],
-  ['httpfilesystem',['HttpFileSystem',['../class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_http_file_system.html',1,'Utilities::IO::FileSystem::Default']]],
   ['httpfilesystem',['HttpFileSystem',['../class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_http_file_system.html#a248e87aa5e61b3ea7e20d3f8d18f2746',1,'Utilities::IO::FileSystem::Default::HttpFileSystem']]],
+  ['httpfilesystem',['HttpFileSystem',['../class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_http_file_system.html',1,'Utilities::IO::FileSystem::Default']]],
   ['httpfilesystem_2ecs',['HttpFileSystem.cs',['../_http_file_system_8cs.html',1,'']]],
   ['httprequestextensions_2ecs',['HTTPRequestExtensions.cs',['../_h_t_t_p_request_extensions_8cs.html',1,'']]]
 ];

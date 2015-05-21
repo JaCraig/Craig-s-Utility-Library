@@ -15,6 +15,8 @@ var searchData=
   ['shift',['Shift',['../class_utilities_1_1_i_o_1_1_encryption_1_1_default_1_1_shift.html',1,'Utilities::IO::Encryption::Default']]],
   ['shiftbase',['ShiftBase',['../class_utilities_1_1_i_o_1_1_encryption_1_1_base_classes_1_1_shift_base.html',1,'Utilities::IO::Encryption::BaseClasses']]],
   ['shortgenerator',['ShortGenerator',['../class_utilities_1_1_random_1_1_default_classes_1_1_short_generator.html',1,'Utilities::Random::DefaultClasses']]],
+  ['simplecomparer',['SimpleComparer',['../class_utilities_1_1_data_types_1_1_comparison_1_1_simple_comparer.html',1,'Utilities::DataTypes::Comparison']]],
+  ['simpleequalitycomparer',['SimpleEqualityComparer',['../class_utilities_1_1_data_types_1_1_comparison_1_1_simple_equality_comparer.html',1,'Utilities::DataTypes::Comparison']]],
   ['singleton',['Singleton',['../class_utilities_1_1_data_types_1_1_patterns_1_1_base_classes_1_1_singleton.html',1,'Utilities::DataTypes::Patterns::BaseClasses']]],
   ['smtpsystem',['SMTPSystem',['../class_utilities_1_1_i_o_1_1_messaging_1_1_default_1_1_s_m_t_p_system.html',1,'Utilities::IO::Messaging::Default']]],
   ['soapserializer',['SOAPSerializer',['../class_utilities_1_1_i_o_1_1_serializers_1_1_default_1_1_s_o_a_p_serializer.html',1,'Utilities::IO::Serializers::Default']]],

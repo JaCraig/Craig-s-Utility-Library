@@ -196,7 +196,8 @@ var hierarchy =
       [ "Utilities.ORM.ObjectBaseClass< ObjectType, IDType >", "class_utilities_1_1_o_r_m_1_1_object_base_class.html", null ]
     ] ],
     [ "IComparer", null, [
-      [ "Utilities.DataTypes.Comparison.GenericComparer< T >", "class_utilities_1_1_data_types_1_1_comparison_1_1_generic_comparer.html", null ]
+      [ "Utilities.DataTypes.Comparison.GenericComparer< T >", "class_utilities_1_1_data_types_1_1_comparison_1_1_generic_comparer.html", null ],
+      [ "Utilities.DataTypes.Comparison.SimpleComparer< T >", "class_utilities_1_1_data_types_1_1_comparison_1_1_simple_comparer.html", null ]
     ] ],
     [ "Utilities.IO.Compression.Interfaces.ICompressor", "interface_utilities_1_1_i_o_1_1_compression_1_1_interfaces_1_1_i_compressor.html", [
       [ "Utilities.IO.Compression.BaseClasses.CompressorBase", "class_utilities_1_1_i_o_1_1_compression_1_1_base_classes_1_1_compressor_base.html", [
@@ -302,7 +303,8 @@ var hierarchy =
       [ "Utilities.ORM.Manager.SourceProvider.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_source_provider_1_1_manager.html", null ]
     ] ],
     [ "IEqualityComparer", null, [
-      [ "Utilities.DataTypes.Comparison.GenericEqualityComparer< T >", "class_utilities_1_1_data_types_1_1_comparison_1_1_generic_equality_comparer.html", null ]
+      [ "Utilities.DataTypes.Comparison.GenericEqualityComparer< T >", "class_utilities_1_1_data_types_1_1_comparison_1_1_generic_equality_comparer.html", null ],
+      [ "Utilities.DataTypes.Comparison.SimpleEqualityComparer< T >", "class_utilities_1_1_data_types_1_1_comparison_1_1_simple_equality_comparer.html", null ]
     ] ],
     [ "IEquatable", null, [
       [ "Utilities.IO.FileFormats.Interfaces.IFormat< FormatType, ContentType >", "interface_utilities_1_1_i_o_1_1_file_formats_1_1_interfaces_1_1_i_format.html", null ],
@@ -612,12 +614,12 @@ var hierarchy =
     ] ],
     [ "Utilities.IO.Encryption.Manager", "class_utilities_1_1_i_o_1_1_encryption_1_1_manager.html", null ],
     [ "Utilities.ORM.Manager.QueryProvider.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_manager.html", null ],
+    [ "Utilities.IO.Messaging.Manager", "class_utilities_1_1_i_o_1_1_messaging_1_1_manager.html", null ],
     [ "Utilities.DataTypes.Conversion.Manager", "class_utilities_1_1_data_types_1_1_conversion_1_1_manager.html", null ],
-    [ "Utilities.IO.Compression.Manager", "class_utilities_1_1_i_o_1_1_compression_1_1_manager.html", null ],
     [ "Utilities.ORM.Manager.Schema.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html", null ],
     [ "Utilities.DataTypes.AOP.Manager", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html", null ],
-    [ "Utilities.IO.Messaging.Manager", "class_utilities_1_1_i_o_1_1_messaging_1_1_manager.html", null ],
     [ "Utilities.IO.Serializers.Manager", "class_utilities_1_1_i_o_1_1_serializers_1_1_manager.html", null ],
+    [ "Utilities.IO.Compression.Manager", "class_utilities_1_1_i_o_1_1_compression_1_1_manager.html", null ],
     [ "Utilities.DataTypes.DataMapper.Manager", "class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html", null ],
     [ "Utilities.DataTypes.Matrix", "class_utilities_1_1_data_types_1_1_matrix.html", null ],
     [ "Utilities.DataTypes.AI.NaiveBayes< T >", "class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html", null ],

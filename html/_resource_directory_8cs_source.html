@@ -134,120 +134,118 @@ $(document).ready(function(){initNavTree('_resource_directory_8cs_source.html','
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Linq;</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Reflection;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Text.RegularExpressions;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_utilities.html">Utilities</a>.<a class="code" href="namespace_utilities_1_1_i_o.html">IO</a>.<a class="code" href="namespace_utilities_1_1_i_o_1_1_enums.html">Enums</a>;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_utilities.html">Utilities</a>.<a class="code" href="namespace_utilities_1_1_i_o.html">IO</a>.<a class="code" href="namespace_utilities_1_1_i_o_1_1_file_system.html">FileSystem</a>.<a class="code" href="namespace_utilities_1_1_i_o_1_1_file_system_1_1_base_classes.html">BaseClasses</a>;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_utilities.html">Utilities</a>.<a class="code" href="namespace_utilities_1_1_i_o.html">IO</a>.<a class="code" href="namespace_utilities_1_1_i_o_1_1_file_system.html">FileSystem</a>.<a class="code" href="namespace_utilities_1_1_i_o_1_1_file_system_1_1_interfaces.html">Interfaces</a>;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespace_utilities.html">Utilities</a>.IO.FileSystem.Default</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html">   37</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html">ResourceDirectory</a> : <a class="code" href="class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_directory_base.html">DirectoryBase</a>&lt;string, ResourceDirectory&gt;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    {</div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a39ec8f3ec756881d9d62e7ce34704e0f">   42</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a39ec8f3ec756881d9d62e7ce34704e0f">ResourceDirectory</a>()</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            : base()</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        }</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a86f43f2abf1eaaee68d1ed4013ba910c">   54</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a86f43f2abf1eaaee68d1ed4013ba910c">ResourceDirectory</a>(<span class="keywordtype">string</span> Path, <span class="keywordtype">string</span> UserName = <span class="stringliteral">&quot;&quot;</span>, <span class="keywordtype">string</span> Password = <span class="stringliteral">&quot;&quot;</span>, <span class="keywordtype">string</span> Domain = <span class="stringliteral">&quot;&quot;</span>)</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            : base(Path, UserName, Password, Domain)</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> DateTime Accessed</div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a4f5ce3ad107621fed53c129f8f9a6767">   63</a></span>&#160;        {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> DateTime.Now; }</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        }</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> DateTime Created</div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#ae12c0b6815ffec56f68e6d3c2f821827">   71</a></span>&#160;        {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> DateTime.Now; }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">bool</span> Exists</div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a98983a0ba898e2f5f92e2de7929dd17c">   79</a></span>&#160;        {</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> <span class="keyword">true</span>; }</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        }</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">string</span> FullName</div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a7646dd09ea5f69844543f19373f678de">   87</a></span>&#160;        {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> InternalDirectory; }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        }</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> DateTime Modified</div>
-<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#af023e7f49b8120b4c23e8763fcebcb01">   95</a></span>&#160;        {</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> DateTime.Now; }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        }</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">string</span> Name</div>
-<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a4981cb7932db69795dd855160dc43b8b">  103</a></span>&#160;        {</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> InternalDirectory; }</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        }</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html">IDirectory</a> Parent</div>
-<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a654ddc144a34e2ca9225f30961e8f2a7">  111</a></span>&#160;        {</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            <span class="keyword">get</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            {</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                <span class="keywordflow">return</span> null;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            }</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        }</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html">IDirectory</a> Root</div>
-<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a168561a4aae23cf99dc87972f32b5097">  122</a></span>&#160;        {</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> <span class="keyword">this</span>; }</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        }</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">long</span> Size</div>
-<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a8154ed3db98e2a7a385ccd11658b38f9">  130</a></span>&#160;        {</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> 0; }</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        }</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> Regex SplitPathRegex { <span class="keyword">get</span> { <span class="keywordflow">return</span> <span class="keyword">new</span> Regex(<span class="stringliteral">@&quot;^resource://(?&lt;Assembly&gt;[^/]*)/?&quot;</span>, RegexOptions.Compiled | RegexOptions.IgnoreCase); } }</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        <span class="keyword">private</span> Assembly AssemblyFrom</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        {</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;            <span class="keyword">get</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;            {</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                <span class="keywordflow">return</span> AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x =&gt; x.GetName().Name == SplitPathRegex.Match(InternalDirectory).Groups[<span class="stringliteral">&quot;Assembly&quot;</span>].Value);</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            }</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        }</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> Create()</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        {</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        }</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> <a class="code" href="namespace_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_enums.html#a5fa39672baeae364bdfe9cdea857b157af2a6c498fb90ee345d997f888fce3b18">Delete</a>()</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        {</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        }</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> IEnumerable&lt;IDirectory&gt; EnumerateDirectories(<span class="keywordtype">string</span> SearchPattern, SearchOption Options = SearchOption.TopDirectoryOnly)</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        {</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> List&lt;ResourceDirectory&gt;();</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        }</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> IEnumerable&lt;IFile&gt; EnumerateFiles(<span class="keywordtype">string</span> SearchPattern = <span class="stringliteral">&quot;*&quot;</span>, SearchOption Options = SearchOption.TopDirectoryOnly)</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        {</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            <span class="keywordflow">if</span> (AssemblyFrom == null)</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">new</span> List&lt;IFile&gt;();</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            var Data = AssemblyFrom.GetManifestResourceNames() ?? <span class="keyword">new</span> <span class="keywordtype">string</span>[0];</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            <span class="keywordflow">return</span> Data.Select(x =&gt; <span class="keyword">new</span> ResourceFile(x, UserName, Password, Domain));</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        }</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> Rename(<span class="keywordtype">string</span> Name)</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        {</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        }</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    }</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;}</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_utilities.html">Utilities</a>.<a class="code" href="namespace_utilities_1_1_i_o.html">IO</a>.<a class="code" href="namespace_utilities_1_1_i_o_1_1_file_system.html">FileSystem</a>.<a class="code" href="namespace_utilities_1_1_i_o_1_1_file_system_1_1_base_classes.html">BaseClasses</a>;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_utilities.html">Utilities</a>.<a class="code" href="namespace_utilities_1_1_i_o.html">IO</a>.<a class="code" href="namespace_utilities_1_1_i_o_1_1_file_system.html">FileSystem</a>.<a class="code" href="namespace_utilities_1_1_i_o_1_1_file_system_1_1_interfaces.html">Interfaces</a>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespace_utilities.html">Utilities</a>.IO.FileSystem.Default</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html">   36</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html">ResourceDirectory</a> : <a class="code" href="class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_directory_base.html">DirectoryBase</a>&lt;string, ResourceDirectory&gt;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    {</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a39ec8f3ec756881d9d62e7ce34704e0f">   41</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a39ec8f3ec756881d9d62e7ce34704e0f">ResourceDirectory</a>()</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            : base()</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        }</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a86f43f2abf1eaaee68d1ed4013ba910c">   53</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a86f43f2abf1eaaee68d1ed4013ba910c">ResourceDirectory</a>(<span class="keywordtype">string</span> Path, <span class="keywordtype">string</span> UserName = <span class="stringliteral">&quot;&quot;</span>, <span class="keywordtype">string</span> Password = <span class="stringliteral">&quot;&quot;</span>, <span class="keywordtype">string</span> Domain = <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            : base(Path, UserName, Password, Domain)</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> DateTime Accessed</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a4f5ce3ad107621fed53c129f8f9a6767">   62</a></span>&#160;        {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> DateTime.Now; }</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> DateTime Created</div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#ae12c0b6815ffec56f68e6d3c2f821827">   70</a></span>&#160;        {</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> DateTime.Now; }</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">bool</span> Exists</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a98983a0ba898e2f5f92e2de7929dd17c">   78</a></span>&#160;        {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> <span class="keyword">true</span>; }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">string</span> FullName</div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a7646dd09ea5f69844543f19373f678de">   86</a></span>&#160;        {</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> InternalDirectory; }</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        }</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> DateTime Modified</div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#af023e7f49b8120b4c23e8763fcebcb01">   94</a></span>&#160;        {</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> DateTime.Now; }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">string</span> Name</div>
+<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a4981cb7932db69795dd855160dc43b8b">  102</a></span>&#160;        {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> SplitPathRegex.Match(InternalDirectory).Groups[<span class="stringliteral">&quot;Assembly&quot;</span>].Value; }</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        }</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html">IDirectory</a> Parent</div>
+<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a654ddc144a34e2ca9225f30961e8f2a7">  110</a></span>&#160;        {</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            <span class="keyword">get</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            {</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                <span class="keywordflow">return</span> null;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            }</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        }</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html">IDirectory</a> Root</div>
+<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a168561a4aae23cf99dc87972f32b5097">  121</a></span>&#160;        {</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> <span class="keyword">this</span>; }</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        }</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">long</span> Size</div>
+<div class="line"><a name="l00129"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a8154ed3db98e2a7a385ccd11658b38f9">  129</a></span>&#160;        {</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> 0; }</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        }</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> Regex SplitPathRegex { <span class="keyword">get</span> { <span class="keywordflow">return</span> <span class="keyword">new</span> Regex(<span class="stringliteral">@&quot;^resource://(?&lt;Assembly&gt;[^/]*)/?&quot;</span>, RegexOptions.Compiled | RegexOptions.IgnoreCase); } }</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        <span class="keyword">private</span> Assembly AssemblyFrom</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        {</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;            <span class="keyword">get</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;            {</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                <span class="keywordflow">return</span> AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x =&gt; x.GetName().Name == SplitPathRegex.Match(InternalDirectory).Groups[<span class="stringliteral">&quot;Assembly&quot;</span>].Value);</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;            }</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        }</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> Create()</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        {</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        }</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> <a class="code" href="namespace_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_enums.html#a5fa39672baeae364bdfe9cdea857b157af2a6c498fb90ee345d997f888fce3b18">Delete</a>()</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        {</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        }</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> IEnumerable&lt;IDirectory&gt; EnumerateDirectories(<span class="keywordtype">string</span> SearchPattern, SearchOption Options = SearchOption.TopDirectoryOnly)</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        {</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> List&lt;ResourceDirectory&gt;();</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        }</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> IEnumerable&lt;IFile&gt; EnumerateFiles(<span class="keywordtype">string</span> SearchPattern = <span class="stringliteral">&quot;*&quot;</span>, SearchOption Options = SearchOption.TopDirectoryOnly)</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        {</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            <span class="keywordflow">if</span> (AssemblyFrom == null)</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">new</span> List&lt;IFile&gt;();</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            var Data = AssemblyFrom.GetManifestResourceNames() ?? <span class="keyword">new</span> <span class="keywordtype">string</span>[0];</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            <span class="keywordflow">return</span> Data.Select(x =&gt; <span class="keyword">new</span> ResourceFile(FullName + x, UserName, Password, Domain));</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        }</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> Rename(<span class="keywordtype">string</span> Name)</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        {</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        }</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    }</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;}</div>
 <div class="ttc" id="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory_html"><div class="ttname"><a href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html">Utilities.IO.FileSystem.Interfaces.IDirectory</a></div><div class="ttdoc">Represents a directory </div><div class="ttdef"><b>Definition:</b> <a href="_i_directory_8cs_source.html#l00032">IDirectory.cs:32</a></div></div>
 <div class="ttc" id="namespace_system_html"><div class="ttname"><a href="namespace_system.html">System</a></div></div>
-<div class="ttc" id="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory_html"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html">Utilities.IO.FileSystem.Default.ResourceDirectory</a></div><div class="ttdoc">Directory class </div><div class="ttdef"><b>Definition:</b> <a href="_resource_directory_8cs_source.html#l00037">ResourceDirectory.cs:37</a></div></div>
+<div class="ttc" id="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory_html"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html">Utilities.IO.FileSystem.Default.ResourceDirectory</a></div><div class="ttdoc">Directory class </div><div class="ttdef"><b>Definition:</b> <a href="_resource_directory_8cs_source.html#l00036">ResourceDirectory.cs:36</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_1_1_file_system_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_file_system.html">Utilities.IO.FileSystem</a></div></div>
-<div class="ttc" id="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory_html_a39ec8f3ec756881d9d62e7ce34704e0f"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a39ec8f3ec756881d9d62e7ce34704e0f">Utilities.IO.FileSystem.Default.ResourceDirectory.ResourceDirectory</a></div><div class="ttdeci">ResourceDirectory()</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_resource_directory_8cs_source.html#l00042">ResourceDirectory.cs:42</a></div></div>
-<div class="ttc" id="class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_directory_base_html"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_directory_base.html">Utilities.IO.FileSystem.BaseClasses.DirectoryBase</a></div><div class="ttdoc">Directory base class </div><div class="ttdef"><b>Definition:</b> <a href="_directory_base_8cs_source.html#l00039">DirectoryBase.cs:39</a></div></div>
+<div class="ttc" id="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory_html_a39ec8f3ec756881d9d62e7ce34704e0f"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a39ec8f3ec756881d9d62e7ce34704e0f">Utilities.IO.FileSystem.Default.ResourceDirectory.ResourceDirectory</a></div><div class="ttdeci">ResourceDirectory()</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_resource_directory_8cs_source.html#l00041">ResourceDirectory.cs:41</a></div></div>
+<div class="ttc" id="class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_directory_base_html"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_directory_base.html">Utilities.IO.FileSystem.BaseClasses.DirectoryBase</a></div><div class="ttdoc">Directory base class </div><div class="ttdef"><b>Definition:</b> <a href="_directory_base_8cs_source.html#l00038">DirectoryBase.cs:38</a></div></div>
 <div class="ttc" id="namespace_utilities_html"><div class="ttname"><a href="namespace_utilities.html">Utilities</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o.html">Utilities.IO</a></div></div>
-<div class="ttc" id="namespace_utilities_1_1_i_o_1_1_enums_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_enums.html">Utilities.IO.Enums</a></div><div class="ttdef"><b>Definition:</b> <a href="_copy_options_8cs_source.html#l00022">CopyOptions.cs:22</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_file_system_1_1_interfaces.html">Utilities.IO.FileSystem.Interfaces</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_directory_8cs_source.html#l00027">IDirectory.cs:27</a></div></div>
-<div class="ttc" id="namespace_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_file_system_1_1_base_classes.html">Utilities.IO.FileSystem.BaseClasses</a></div><div class="ttdef"><b>Definition:</b> <a href="_directory_base_8cs_source.html#l00030">DirectoryBase.cs:30</a></div></div>
-<div class="ttc" id="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory_html_a86f43f2abf1eaaee68d1ed4013ba910c"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a86f43f2abf1eaaee68d1ed4013ba910c">Utilities.IO.FileSystem.Default.ResourceDirectory.ResourceDirectory</a></div><div class="ttdeci">ResourceDirectory(string Path, string UserName=&quot;&quot;, string Password=&quot;&quot;, string Domain=&quot;&quot;)</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_resource_directory_8cs_source.html#l00054">ResourceDirectory.cs:54</a></div></div>
+<div class="ttc" id="namespace_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_file_system_1_1_base_classes.html">Utilities.IO.FileSystem.BaseClasses</a></div><div class="ttdef"><b>Definition:</b> <a href="_directory_base_8cs_source.html#l00029">DirectoryBase.cs:29</a></div></div>
+<div class="ttc" id="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory_html_a86f43f2abf1eaaee68d1ed4013ba910c"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_resource_directory.html#a86f43f2abf1eaaee68d1ed4013ba910c">Utilities.IO.FileSystem.Default.ResourceDirectory.ResourceDirectory</a></div><div class="ttdeci">ResourceDirectory(string Path, string UserName=&quot;&quot;, string Password=&quot;&quot;, string Domain=&quot;&quot;)</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_resource_directory_8cs_source.html#l00053">ResourceDirectory.cs:53</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_enums_html_a5fa39672baeae364bdfe9cdea857b157af2a6c498fb90ee345d997f888fce3b18"><div class="ttname"><a href="namespace_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_enums.html#a5fa39672baeae364bdfe9cdea857b157af2a6c498fb90ee345d997f888fce3b18">Utilities.ORM.Manager.Schema.Enums.Delete</a></div><div class="ttdoc">Delete </div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -255,7 +253,7 @@ $(document).ready(function(){initNavTree('_resource_directory_8cs_source.html','
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_cdffdb722b1f3b30993d9a14c7e19da9.html">IO</a></li><li class="navelem"><a class="el" href="dir_dd846de6290642c8890e926ebf368f0a.html">FileSystem</a></li><li class="navelem"><a class="el" href="dir_907aa97e1531825d990413d236dd34b6.html">Default</a></li><li class="navelem"><a class="el" href="_resource_directory_8cs.html">ResourceDirectory.cs</a></li>
-    <li class="footer">Generated on Tue May 19 2015 21:26:48 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Wed May 20 2015 20:10:38 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

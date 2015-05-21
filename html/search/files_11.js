@@ -10,6 +10,8 @@ var searchData=
   ['set_2ecs',['Set.cs',['../_set_8cs.html',1,'']]],
   ['shift_2ecs',['Shift.cs',['../_shift_8cs.html',1,'']]],
   ['shiftbase_2ecs',['ShiftBase.cs',['../_shift_base_8cs.html',1,'']]],
+  ['simplecomparer_2ecs',['SimpleComparer.cs',['../_simple_comparer_8cs.html',1,'']]],
+  ['simpleequalitycomparer_2ecs',['SimpleEqualityComparer.cs',['../_simple_equality_comparer_8cs.html',1,'']]],
   ['singleton_2ecs',['Singleton.cs',['../_singleton_8cs.html',1,'']]],
   ['smtpsystem_2ecs',['SMTPSystem.cs',['../_s_m_t_p_system_8cs.html',1,'']]],
   ['soapserializer_2ecs',['SOAPSerializer.cs',['../_s_o_a_p_serializer_8cs.html',1,'']]],

@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['table',['Table',['../class_utilities_1_1_data_types_1_1_table.html',1,'Utilities::DataTypes']]],
   ['table',['Table',['../class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_table.html',1,'Utilities::ORM::Manager::Schema::Default::Database']]],
+  ['table',['Table',['../class_utilities_1_1_data_types_1_1_table.html',1,'Utilities::DataTypes']]],
   ['table',['Table',['../class_utilities_1_1_data_types_1_1_table.html#abf3a738cf98d7481469da9533c0ef922',1,'Utilities.DataTypes.Table.Table(params string[] ColumnNames)'],['../class_utilities_1_1_data_types_1_1_table.html#ae2ae0a2b9ed59563da57eb0c13da9f16',1,'Utilities.DataTypes.Table.Table(IDataReader Reader)'],['../class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_table.html#ae94b9c60de08f7ead852118fb33c8af3',1,'Utilities.ORM.Manager.Schema.Default.Database.Table.Table()']]],
   ['table_2ecs',['Table.cs',['../_data_types_2_table_8cs.html',1,'']]],
   ['table_2ecs',['Table.cs',['../_o_r_m_2_manager_2_schema_2_default_2_database_2_table_8cs.html',1,'']]],
