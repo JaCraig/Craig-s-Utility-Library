@@ -78,7 +78,73 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="Input">input image</param>
         /// <returns>Returns a separate image with the filter applied</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
+        public virtual SwiftBitmap ApplyFilter(SwiftBitmap Input)
+        {
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
+            SwiftBitmap Result = new SwiftBitmap(Input.Width, Input.Height);
+            Input.Lock();
+            Result.Lock();
+            Parallel.For(0, Input.Width, x =>
+            {
+                for (int y = 0; y < Input.Height; ++y)
+                {
+                    int RValue = 0;
+                    int GValue = 0;
+                    int BValue = 0;
+                    int Weight = 0;
+                    int XCurrent = -Width / 2;
+                    for (int x2 = 0; x2 < Width; ++x2)
+                    {
+                        if (XCurrent + x < Input.Width && XCurrent + x >= 0)
+                        {
+                            int YCurrent = -Height / 2;
+                            for (int y2 = 0; y2 < Height; ++y2)
+                            {
+                                if (YCurrent + y < Input.Height && YCurrent + y >= 0)
+                                {
+                                    Color Pixel = Input.GetPixel(XCurrent + x, YCurrent + y);
+                                    RValue += MyFilter[x2, y2] * Pixel.R;
+                                    GValue += MyFilter[x2, y2] * Pixel.G;
+                                    BValue += MyFilter[x2, y2] * Pixel.B;
+                                    Weight += MyFilter[x2, y2];
+                                }
+                                ++YCurrent;
+                            }
+                        }
+                        ++XCurrent;
+                    }
+                    Color MeanPixel = Input.GetPixel(x, y);
+                    if (Weight == 0)
+                        Weight = 1;
+                    if (Weight > 0)
+                    {
+                        if (Absolute)
+                        {
+                            RValue = System.Math.Abs(RValue);
+                            GValue = System.Math.Abs(GValue);
+                            BValue = System.Math.Abs(BValue);
+                        }
+                        RValue = (RValue / Weight) + Offset;
+                        RValue = RValue.Clamp(255, 0);
+                        GValue = (GValue / Weight) + Offset;
+                        GValue = GValue.Clamp(255, 0);
+                        BValue = (BValue / Weight) + Offset;
+                        BValue = BValue.Clamp(255, 0);
+                        MeanPixel = Color.FromArgb(RValue, GValue, BValue);
+                    }
+                    Result.SetPixel(x, y, MeanPixel);
+                }
+            });
+            Input.Unlock();
+            Result.Unlock();
+            return Result;
+        }
+
+        /// <summary>
+        /// Applies the filter to the input image
+        /// </summary>
+        /// <param name="Input">input image</param>
+        /// <returns>Returns a separate image with the filter applied</returns>
         public virtual Bitmap ApplyFilter(Bitmap Input)
         {
             Contract.Requires<ArgumentNullException>(Input != null, "Input");
