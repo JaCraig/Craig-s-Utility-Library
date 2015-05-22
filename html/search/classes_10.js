@@ -46,6 +46,7 @@ var searchData=
   ['stringnotequalparameter',['StringNotEqualParameter',['../class_utilities_1_1_o_r_m_1_1_parameters_1_1_string_not_equal_parameter.html',1,'Utilities::ORM::Parameters']]],
   ['stringparameter',['StringParameter',['../class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_string_parameter.html',1,'Utilities::ORM::Manager::QueryProvider::Default']]],
   ['stringtemplate',['StringTemplate',['../class_utilities_1_1_data_types_1_1_string_template.html',1,'Utilities::DataTypes']]],
+  ['swiftbitmap',['SwiftBitmap',['../class_utilities_1_1_media_1_1_swift_bitmap.html',1,'Utilities::Media']]],
   ['symmetric',['Symmetric',['../class_utilities_1_1_i_o_1_1_encryption_1_1_default_1_1_symmetric.html',1,'Utilities::IO::Encryption::Default']]],
   ['symmetricbase',['SymmetricBase',['../class_utilities_1_1_i_o_1_1_encryption_1_1_base_classes_1_1_symmetric_base.html',1,'Utilities::IO::Encryption::BaseClasses']]],
   ['systemconfig',['SystemConfig',['../class_utilities_1_1_configuration_1_1_manager_1_1_default_1_1_system_config.html',1,'Utilities::Configuration::Manager::Default']]]

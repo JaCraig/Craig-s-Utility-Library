@@ -40,6 +40,7 @@ var searchData=
   ['stringnotequalparameter_2ecs',['StringNotEqualParameter.cs',['../_string_not_equal_parameter_8cs.html',1,'']]],
   ['stringparameter_2ecs',['StringParameter.cs',['../_string_parameter_8cs.html',1,'']]],
   ['stringtemplate_2ecs',['StringTemplate.cs',['../_string_template_8cs.html',1,'']]],
+  ['swiftbitmap_2ecs',['SwiftBitmap.cs',['../_swift_bitmap_8cs.html',1,'']]],
   ['symmetric_2ecs',['Symmetric.cs',['../_symmetric_8cs.html',1,'']]],
   ['symmetricbase_2ecs',['SymmetricBase.cs',['../_symmetric_base_8cs.html',1,'']]],
   ['systemconfig_2ecs',['SystemConfig.cs',['../_system_config_8cs.html',1,'']]]

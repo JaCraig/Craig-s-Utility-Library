@@ -1,5 +1,7 @@
 var NAVTREEINDEX5 =
 {
+"class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html#a2337d96d22a7d40d1a190929e333b6ed":[1,0,0,1,6,4,3],
+"class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html#a27fde93fde087d2e46fa65114cc30a57":[1,0,0,1,6,4,0],
 "class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html#a5161e27c1b48ba8b9c39f755740cb317":[1,0,0,1,6,4,2],
 "class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html#aadef705bba4cef9042a45f02a29ff3a1":[1,0,0,1,6,4,4],
 "class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html#ac9c716e19edaae8ca117248da00ed3ed":[1,0,0,1,6,4,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX5 =
 "class_utilities_1_1_data_types_1_1_row.html#a4a500b17c6941fdb88b5bbd4ecb50848":[1,0,0,1,21,0],
 "class_utilities_1_1_data_types_1_1_row.html#a64765f707c828e9043ace7b583fe39b5":[1,0,0,1,21,3],
 "class_utilities_1_1_data_types_1_1_row.html#a8f3a22aab16f4fc131f2424af301a224":[1,0,0,1,21,5],
-"class_utilities_1_1_data_types_1_1_set.html":[1,0,0,1,22],
-"class_utilities_1_1_data_types_1_1_set.html#a215a812340629558fae0c5bba0d699d9":[1,0,0,1,22,7],
-"class_utilities_1_1_data_types_1_1_set.html#a2cfcf404c22ba0f2e50e77d4a34907a8":[1,0,0,1,22,1]
+"class_utilities_1_1_data_types_1_1_set.html":[1,0,0,1,22]
 };

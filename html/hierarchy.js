@@ -165,7 +165,8 @@ var hierarchy =
       [ "Utilities.IO.FileSystem.Interfaces.IFile", "interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_file.html", [
         [ "Utilities.IO.FileInfo", "class_utilities_1_1_i_o_1_1_file_info.html", null ],
         [ "Utilities.IO.FileSystem.BaseClasses.FileBase< InternalFileType, FileType >", "class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_file_base.html", null ]
-      ] ]
+      ] ],
+      [ "Utilities.Media.SwiftBitmap", "class_utilities_1_1_media_1_1_swift_bitmap.html", null ]
     ] ],
     [ "ICollection", null, [
       [ "Utilities.DataTypes.Bag< T >", "class_utilities_1_1_data_types_1_1_bag.html", null ],
@@ -278,6 +279,7 @@ var hierarchy =
         [ "Utilities.IO.Messaging.BaseClasses.MessageBase", "class_utilities_1_1_i_o_1_1_messaging_1_1_base_classes_1_1_message_base.html", [
           [ "Utilities.IO.EmailMessage", "class_utilities_1_1_i_o_1_1_email_message.html", null ]
         ] ],
+        [ "Utilities.Media.SwiftBitmap", "class_utilities_1_1_media_1_1_swift_bitmap.html", null ],
         [ "Utilities.Profiler.Manager.Manager", "class_utilities_1_1_profiler_1_1_manager_1_1_manager.html", null ],
         [ "Utilities.Profiler.Profiler", "class_utilities_1_1_profiler_1_1_profiler.html", null ],
         [ "Utilities.Workflow.Manager.Manager", "class_utilities_1_1_workflow_1_1_manager_1_1_manager.html", null ]
@@ -612,14 +614,14 @@ var hierarchy =
     [ "Utilities.IO.Logging.BaseClasses.LogBase< DefaultLog >", "class_utilities_1_1_i_o_1_1_logging_1_1_base_classes_1_1_log_base.html", [
       [ "Utilities.IO.Logging.Default.DefaultLog", "class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_log.html", null ]
     ] ],
+    [ "Utilities.DataTypes.AOP.Manager", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html", null ],
     [ "Utilities.IO.Encryption.Manager", "class_utilities_1_1_i_o_1_1_encryption_1_1_manager.html", null ],
     [ "Utilities.ORM.Manager.QueryProvider.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_manager.html", null ],
-    [ "Utilities.IO.Messaging.Manager", "class_utilities_1_1_i_o_1_1_messaging_1_1_manager.html", null ],
+    [ "Utilities.IO.Compression.Manager", "class_utilities_1_1_i_o_1_1_compression_1_1_manager.html", null ],
     [ "Utilities.DataTypes.Conversion.Manager", "class_utilities_1_1_data_types_1_1_conversion_1_1_manager.html", null ],
     [ "Utilities.ORM.Manager.Schema.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html", null ],
-    [ "Utilities.DataTypes.AOP.Manager", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html", null ],
+    [ "Utilities.IO.Messaging.Manager", "class_utilities_1_1_i_o_1_1_messaging_1_1_manager.html", null ],
     [ "Utilities.IO.Serializers.Manager", "class_utilities_1_1_i_o_1_1_serializers_1_1_manager.html", null ],
-    [ "Utilities.IO.Compression.Manager", "class_utilities_1_1_i_o_1_1_compression_1_1_manager.html", null ],
     [ "Utilities.DataTypes.DataMapper.Manager", "class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html", null ],
     [ "Utilities.DataTypes.Matrix", "class_utilities_1_1_data_types_1_1_matrix.html", null ],
     [ "Utilities.DataTypes.AI.NaiveBayes< T >", "class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html", null ],
