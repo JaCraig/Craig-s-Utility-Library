@@ -23,12 +23,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using UnitTests.Fixtures;
+using UnitTests.IO;
 using Utilities.Media;
 using Xunit;
 
 namespace UnitTests.Media.Image.ExtensionMethods
 {
-    public class BitmapExtensions :TestingDirectoryFixture
+    public class BitmapExtensions : TestingDirectoryFixture
     {
         [Fact]
         public void AddNoise()
@@ -45,12 +46,11 @@ namespace UnitTests.Media.Image.ExtensionMethods
         [Fact]
         public void AdjustBrightness()
         {
-            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            using (Utilities.Media.SwiftBitmap TestObject = new Utilities.Media.SwiftBitmap(@"..\..\Data\Image\Lenna.jpg"))
             {
-                using (Bitmap Image = TestObject.AdjustBrightness(40, @".\Testing\LennaBrightness.jpg"))
-                {
-                    Assert.NotNull(Image);
-                }
+                new Utilities.IO.DirectoryInfo(@".\Results\").Create();
+                TestObject.AdjustBrightness(40).Save(@".\Results\LennaBrightness.jpg");
+                Assert.True(new Utilities.IO.FileInfo(@".\Results\LennaBrightness.jpg").ReadBinary().SequenceEqual(new Utilities.IO.FileInfo(@"..\..\BitmapResults\SwiftBitmapApplyMatrixResult.jpg").ReadBinary()));
             }
         }
 
@@ -108,12 +108,10 @@ namespace UnitTests.Media.Image.ExtensionMethods
         [Fact]
         public void BlackAndWhite()
         {
-            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            using (Utilities.Media.SwiftBitmap TestObject = new Utilities.Media.SwiftBitmap(@"..\..\Data\Image\Lenna.jpg"))
             {
-                using (Bitmap Image = TestObject.BlackAndWhite(@".\Testing\LennaBlackAndWhite.jpg"))
-                {
-                    Assert.NotNull(Image);
-                }
+                TestObject.BlackAndWhite().Save(@".\Results\LennaBlackAndWhite.jpg");
+                Assert.NotNull(Image);
             }
         }
 

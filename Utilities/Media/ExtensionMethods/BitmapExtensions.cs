@@ -108,67 +108,49 @@ namespace Utilities.Media
         /// <summary>
         /// adds noise to the image
         /// </summary>
-        /// <param name="OriginalImage">Image to add noise to</param>
-        /// <param name="FileName">Location to save the Bitmap to (optional)</param>
+        /// <param name="Image">The image to add noise to</param>
         /// <param name="Amount">Amount of noise to add (defaults to 10)</param>
-        /// <returns>New Bitmap object with the noise added</returns>
-        public static Bitmap AddNoise(this Bitmap OriginalImage, int Amount = 10, string FileName = "")
+        /// <returns>
+        /// New Bitmap object with the noise added
+        /// </returns>
+        public static SwiftBitmap AddNoise(this SwiftBitmap Image, int Amount = 10)
         {
-            Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
-            BitmapData NewData = NewBitmap.LockImage();
-            BitmapData OldData = OriginalImage.LockImage();
-            int NewPixelSize = NewData.GetPixelSize();
-            int OldPixelSize = OldData.GetPixelSize();
-            int Height = NewBitmap.Height;
-            int Width = NewBitmap.Width;
-            Parallel.For(0, Width, x =>
+            Contract.Requires<ArgumentNullException>(Image != null, "Image");
+            Image.Lock();
+            Parallel.For(0, Image.Width, x =>
             {
-                for (int y = 0; y < Height; ++y)
+                for (int y = 0; y < Image.Height; ++y)
                 {
-                    Color CurrentPixel = OldData.GetPixel(x, y, OldPixelSize);
+                    Color CurrentPixel = Image.GetPixel(x, y);
                     int R = CurrentPixel.R + Random.Random.ThreadSafeNext(-Amount, Amount + 1);
                     int G = CurrentPixel.G + Random.Random.ThreadSafeNext(-Amount, Amount + 1);
                     int B = CurrentPixel.B + Random.Random.ThreadSafeNext(-Amount, Amount + 1);
-                    R = R.Clamp(255, 0);
-                    G = G.Clamp(255, 0);
-                    B = B.Clamp(255, 0);
-                    Color TempValue = Color.FromArgb(R, G, B);
-                    NewData.SetPixel(x, y, TempValue, NewPixelSize);
+                    Color TempValue = Color.FromArgb(R.Clamp(255, 0), G.Clamp(255, 0), B.Clamp(255, 0));
+                    Image.SetPixel(x, y, TempValue);
                 }
             });
-            NewBitmap.UnlockImage(NewData);
-            OriginalImage.UnlockImage(OldData);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
+            return Image.Unlock();
         }
 
         /// <summary>
         /// Adjusts the brightness
         /// </summary>
         /// <param name="Image">Image to change</param>
-        /// <param name="FileName">File to save to</param>
-        /// <param name="Value"></param>
-        /// <returns>A bitmap object</returns>
-        public static Bitmap AdjustBrightness(this Bitmap Image, int Value = 0, string FileName = "")
+        /// <param name="Value">The value.</param>
+        /// <returns>
+        /// Modified Image object
+        /// </returns>
+        public static SwiftBitmap AdjustBrightness(this SwiftBitmap Image, int Value = 0)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
             float FinalValue = (float)Value / 255.0f;
-            ColorMatrix TempMatrix = new ColorMatrix();
-            TempMatrix.Matrix = new float[][]{
+            return Image.ApplyMatrix(new ColorMatrix(new float[][]{
                             new float[] {1, 0, 0, 0, 0},
                             new float[] {0, 1, 0, 0, 0},
                             new float[] {0, 0, 1, 0, 0},
                             new float[] {0, 0, 0, 1, 0},
                             new float[] {FinalValue, FinalValue, FinalValue, 1, 1}
-                        };
-            Bitmap NewBitmap = TempMatrix.Apply(Image);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
+                        }));
         }
 
         /// <summary>
@@ -176,45 +158,33 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="OriginalImage">Image to change</param>
         /// <param name="Value">Used to set the contrast (-100 to 100)</param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>A bitmap object</returns>
-        public static Bitmap AdjustContrast(this Bitmap OriginalImage, float Value = 0, string FileName = "")
+        /// <returns>
+        /// A bitmap object
+        /// </returns>
+        public static SwiftBitmap AdjustContrast(this SwiftBitmap OriginalImage, float Value = 0)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
-            BitmapData NewData = NewBitmap.LockImage();
-            BitmapData OldData = OriginalImage.LockImage();
-            int NewPixelSize = NewData.GetPixelSize();
-            int OldPixelSize = OldData.GetPixelSize();
+            OriginalImage.Lock();
             Value = (100.0f + Value) / 100.0f;
             Value *= Value;
-            int Width = NewBitmap.Width;
-            int Height = NewBitmap.Height;
-
-            Parallel.For(0, Width, x =>
+            Parallel.For(0, OriginalImage.Width, x =>
             {
-                for (int y = 0; y < Height; ++y)
+                for (int y = 0; y < OriginalImage.Height; ++y)
                 {
-                    Color Pixel = OldData.GetPixel(x, y, OldPixelSize);
+                    Color Pixel = OriginalImage.GetPixel(x, y);
                     float Red = Pixel.R / 255.0f;
                     float Green = Pixel.G / 255.0f;
                     float Blue = Pixel.B / 255.0f;
                     Red = (((Red - 0.5f) * Value) + 0.5f) * 255.0f;
                     Green = (((Green - 0.5f) * Value) + 0.5f) * 255.0f;
                     Blue = (((Blue - 0.5f) * Value) + 0.5f) * 255.0f;
-                    NewData.SetPixel(x, y,
+                    OriginalImage.SetPixel(x, y,
                         Color.FromArgb(((int)Red).Clamp(255, 0),
                         ((int)Green).Clamp(255, 0),
-                        ((int)Blue).Clamp(255, 0)),
-                        NewPixelSize);
+                        ((int)Blue).Clamp(255, 0)));
                 }
             });
-            NewBitmap.UnlockImage(NewData);
-            OriginalImage.UnlockImage(OldData);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
+            return OriginalImage.Unlock();
         }
 
         /// <summary>
@@ -222,133 +192,68 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="OriginalImage">Image to change</param>
         /// <param name="Value">Used to build the gamma ramp (usually .2 to 5)</param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>A bitmap object</returns>
-        public static Bitmap AdjustGamma(this Bitmap OriginalImage, float Value = 1.0f, string FileName = "")
+        /// <returns>
+        /// A bitmap object
+        /// </returns>
+        public static SwiftBitmap AdjustGamma(this SwiftBitmap OriginalImage, float Value = 1.0f)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
-            BitmapData NewData = NewBitmap.LockImage();
-            BitmapData OldData = OriginalImage.LockImage();
-            int NewPixelSize = NewData.GetPixelSize();
-            int OldPixelSize = OldData.GetPixelSize();
-
+            OriginalImage.Lock();
             int[] Ramp = new int[256];
             Parallel.For(0, 256, x =>
             {
                 Ramp[x] = ((int)((255.0 * System.Math.Pow(x / 255.0, 1.0 / Value)) + 0.5)).Clamp(255, 0);
             });
-            int Width = NewBitmap.Width;
-            int Height = NewBitmap.Height;
-
-            Parallel.For(0, Width, x =>
+            Parallel.For(0, OriginalImage.Width, x =>
             {
-                for (int y = 0; y < Height; ++y)
+                for (int y = 0; y < OriginalImage.Height; ++y)
                 {
-                    Color Pixel = OldData.GetPixel(x, y, OldPixelSize);
+                    Color Pixel = OriginalImage.GetPixel(x, y);
                     int Red = Ramp[Pixel.R];
                     int Green = Ramp[Pixel.G];
                     int Blue = Ramp[Pixel.B];
-                    NewData.SetPixel(x, y, Color.FromArgb(Red, Green, Blue), NewPixelSize);
+                    OriginalImage.SetPixel(x, y, Color.FromArgb(Red, Green, Blue));
                 }
             });
-
-            NewBitmap.UnlockImage(NewData);
-            OriginalImage.UnlockImage(OldData);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
-        }
-
-        /// <summary>
-        /// ands two images
-        /// </summary>
-        /// <param name="Image1">Image to manipulate</param>
-        /// <param name="Image2">Image to manipulate</param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>A bitmap image</returns>
-        public static Bitmap And(this Bitmap Image1, Bitmap Image2, string FileName = "")
-        {
-            Contract.Requires<ArgumentNullException>(Image1 != null, "Image1");
-            Contract.Requires<ArgumentNullException>(Image2 != null, "Image2");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            Bitmap NewBitmap = new Bitmap(Image1.Width, Image1.Height);
-            BitmapData NewData = NewBitmap.LockImage();
-            BitmapData OldData1 = Image1.LockImage();
-            BitmapData OldData2 = Image2.LockImage();
-            int NewPixelSize = NewData.GetPixelSize();
-            int OldPixelSize1 = OldData1.GetPixelSize();
-            int OldPixelSize2 = OldData2.GetPixelSize();
-            int Width = NewBitmap.Width;
-            int Height = NewBitmap.Height;
-            Parallel.For(0, Width, x =>
-            {
-                for (int y = 0; y < Height; ++y)
-                {
-                    Color Pixel1 = OldData1.GetPixel(x, y, OldPixelSize1);
-                    Color Pixel2 = OldData2.GetPixel(x, y, OldPixelSize2);
-                    NewData.SetPixel(x, y,
-                        Color.FromArgb(Pixel1.R & Pixel2.R,
-                            Pixel1.G & Pixel2.G,
-                            Pixel1.B & Pixel2.B),
-                        NewPixelSize);
-                }
-            });
-            NewBitmap.UnlockImage(NewData);
-            Image1.UnlockImage(OldData1);
-            Image2.UnlockImage(OldData2);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
+            return OriginalImage.Unlock();
         }
 
         /// <summary>
         /// Converts an Bitmap to black and white
         /// </summary>
         /// <param name="Image">Image to change</param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>A bitmap object of the black and white image</returns>
-        public static Bitmap BlackAndWhite(this Bitmap Image, string FileName = "")
+        /// <returns>
+        /// A bitmap object of the black and white image
+        /// </returns>
+        public static SwiftBitmap BlackAndWhite(this SwiftBitmap Image)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            ColorMatrix TempMatrix = new ColorMatrix();
-            TempMatrix.Matrix = new float[][]{
+            return Image.ApplyMatrix(new ColorMatrix(new float[][]{
                             new float[] {.3f, .3f, .3f, 0, 0},
                             new float[] {.59f, .59f, .59f, 0, 0},
                             new float[] {.11f, .11f, .11f, 0, 0},
                             new float[] {0, 0, 0, 1, 0},
                             new float[] {0, 0, 0, 0, 1}
-                        };
-            Bitmap NewBitmap = TempMatrix.Apply(Image);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
+                        }));
         }
 
         /// <summary>
         /// Gets the blue filter for an image
         /// </summary>
         /// <param name="Image">Image to change</param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>A bitmap object</returns>
-        public static Bitmap BlueFilter(this Bitmap Image, string FileName = "")
+        /// <returns>
+        /// A bitmap object
+        /// </returns>
+        public static SwiftBitmap BlueFilter(this SwiftBitmap Image)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            ColorMatrix TempMatrix = new ColorMatrix();
-            TempMatrix.Matrix = new float[][]{
+            return Image.ApplyMatrix(new ColorMatrix(new float[][]{
                             new float[] {0, 0, 0, 0, 0},
                             new float[] {0, 0, 0, 0, 0},
                             new float[] {0, 0, 1, 0, 0},
                             new float[] {0, 0, 0, 1, 0},
                             new float[] {0, 0, 0, 0, 1}
-                        };
-            Bitmap NewBitmap = TempMatrix.Apply(Image);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
+                        }));
         }
 
         /// <summary>
@@ -356,20 +261,17 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="Image">Image to manipulate</param>
         /// <param name="Size">Size of the aperture</param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>A bitmap object</returns>
-        public static Bitmap BoxBlur(this Bitmap Image, int Size = 3, string FileName = "")
+        /// <returns>
+        /// A bitmap object
+        /// </returns>
+        public static SwiftBitmap BoxBlur(this SwiftBitmap Image, int Size = 3)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
             Filter TempFilter = new Filter(Size, Size);
             for (int x = 0; x < Size; ++x)
                 for (int y = 0; y < Size; ++y)
                     TempFilter.MyFilter[x, y] = 1;
-            Bitmap NewBitmap = TempFilter.ApplyFilter(Image);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
+            return TempFilter.ApplyFilter(Image);
         }
 
         /// <summary>
@@ -379,7 +281,7 @@ namespace Utilities.Media
         /// <param name="Image">Image to create a bump map from</param>
         /// <param name="Invert">Inverts the direction of the bump map</param>
         /// <returns>The resulting bump map</returns>
-        public static Bitmap BumpMap(this Bitmap Image, Direction Direction = Direction.TopBottom, bool Invert = false)
+        public static SwiftBitmap BumpMap(this SwiftBitmap Image, Direction Direction = Direction.TopBottom, bool Invert = false)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
             Filter EdgeDetectionFilter = new Filter(3, 3);
@@ -438,10 +340,7 @@ namespace Utilities.Media
                 }
             }
             EdgeDetectionFilter.Offset = 127;
-            using (Bitmap TempImage = EdgeDetectionFilter.ApplyFilter(Image))
-            {
-                return TempImage.BlackAndWhite();
-            }
+            return EdgeDetectionFilter.ApplyFilter(Image).BlackAndWhite();
         }
 
         /// <summary>
@@ -451,77 +350,22 @@ namespace Utilities.Media
         /// <param name="Colors">Color array to use for the image</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>The colorized image</returns>
-        public static Bitmap Colorize(this Bitmap OriginalImage, Color[] Colors, string FileName = "")
+        public static SwiftBitmap Colorize(this SwiftBitmap OriginalImage, Color[] Colors)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
             Contract.Requires<ArgumentNullException>(Colors != null, "Colors");
             if (Colors.Length < 256)
-                return new Bitmap(1, 1);
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
-            BitmapData NewData = NewBitmap.LockImage();
-            BitmapData OldData = OriginalImage.LockImage();
-            int NewPixelSize = NewData.GetPixelSize();
-            int OldPixelSize = OldData.GetPixelSize();
-            int Width = OriginalImage.Width;
-            int Height = OriginalImage.Height;
-            Parallel.For(0, Width, x =>
+                return new SwiftBitmap(1, 1);
+            OriginalImage.Lock();
+            Parallel.For(0, OriginalImage.Width, x =>
             {
-                for (int y = 0; y < Height; ++y)
+                for (int y = 0; y < OriginalImage.Height; ++y)
                 {
-                    int ColorUsing = OldData.GetPixel(x, y, OldPixelSize).R;
-                    NewData.SetPixel(x, y, Colors[ColorUsing], NewPixelSize);
+                    int ColorUsing = OriginalImage.GetPixel(x, y).R;
+                    OriginalImage.SetPixel(x, y, Colors[ColorUsing]);
                 }
             });
-            NewBitmap.UnlockImage(NewData);
-            OriginalImage.UnlockImage(OldData);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
-        }
-
-        /// <summary>
-        /// Crops an image
-        /// </summary>
-        /// <param name="ImageUsing">Image to crop</param>
-        /// <param name="Width">Width of the cropped image</param>
-        /// <param name="Height">Height of the cropped image</param>
-        /// <param name="VAlignment">The verticle alignment of the cropping (top or bottom)</param>
-        /// <param name="HAlignment">The horizontal alignment of the cropping (left or right)</param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>A Bitmap object of the cropped image</returns>
-        public static Bitmap Crop(this Bitmap ImageUsing, int Width, int Height, Align VAlignment, Align HAlignment, string FileName = "")
-        {
-            Contract.Requires<ArgumentNullException>(ImageUsing != null, "ImageUsing");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            Bitmap TempBitmap = ImageUsing;
-            System.Drawing.Rectangle TempRectangle = new System.Drawing.Rectangle();
-            TempRectangle.Height = Height;
-            TempRectangle.Width = Width;
-            if (VAlignment == Align.Top)
-            {
-                TempRectangle.Y = 0;
-            }
-            else
-            {
-                TempRectangle.Y = TempBitmap.Height - Height;
-                if (TempRectangle.Y < 0)
-                    TempRectangle.Y = 0;
-            }
-            if (HAlignment == Align.Left)
-            {
-                TempRectangle.X = 0;
-            }
-            else
-            {
-                TempRectangle.X = TempBitmap.Width - Width;
-                if (TempRectangle.X < 0)
-                    TempRectangle.X = 0;
-            }
-            Bitmap NewBitmap = TempBitmap.Clone(TempRectangle, TempBitmap.PixelFormat);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
+            return OriginalImage.Unlock();
         }
 
         /// <summary>
@@ -529,55 +373,47 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="OriginalImage">Image to manipulate</param>
         /// <param name="Size">Size of the aperture</param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>A Bitmap object of the resulting image</returns>
-        public static Bitmap Dilate(this Bitmap OriginalImage, int Size, string FileName = "")
+        /// <returns>
+        /// A Bitmap object of the resulting image
+        /// </returns>
+        public static SwiftBitmap Dilate(this SwiftBitmap OriginalImage, int Size)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
-            BitmapData NewData = NewBitmap.LockImage();
-            BitmapData OldData = OriginalImage.LockImage();
-            int NewPixelSize = NewData.GetPixelSize();
-            int OldPixelSize = OldData.GetPixelSize();
-            int ApetureMin = -(Size / 2);
-            int ApetureMax = (Size / 2);
-            int Width = NewBitmap.Width;
-            int Height = NewBitmap.Height;
-            Parallel.For(0, Width, x =>
+            using (SwiftBitmap TempImage = (SwiftBitmap)OriginalImage.Clone())
             {
-                for (int y = 0; y < Height; ++y)
+                OriginalImage.Lock();
+                int ApetureMin = -(Size / 2);
+                int ApetureMax = (Size / 2);
+                Parallel.For(0, OriginalImage.Width, x =>
                 {
-                    int RValue = 0;
-                    int GValue = 0;
-                    int BValue = 0;
-                    for (int x2 = ApetureMin; x2 < ApetureMax; ++x2)
+                    for (int y = 0; y < OriginalImage.Height; ++y)
                     {
-                        int TempX = x + x2;
-                        if (TempX >= 0 && TempX < Width)
+                        int RValue = 0;
+                        int GValue = 0;
+                        int BValue = 0;
+                        for (int x2 = ApetureMin; x2 < ApetureMax; ++x2)
                         {
-                            for (int y2 = ApetureMin; y2 < ApetureMax; ++y2)
+                            int TempX = x + x2;
+                            if (TempX >= 0 && TempX < OriginalImage.Width)
                             {
-                                int TempY = y + y2;
-                                if (TempY >= 0 && TempY < Height)
+                                for (int y2 = ApetureMin; y2 < ApetureMax; ++y2)
                                 {
-                                    Color TempColor = OldData.GetPixel(TempX, TempY, OldPixelSize);
-                                    RValue = RValue.Max(TempColor.R);
-                                    GValue = GValue.Max(TempColor.G);
-                                    BValue = BValue.Max(TempColor.B);
+                                    int TempY = y + y2;
+                                    if (TempY >= 0 && TempY < OriginalImage.Height)
+                                    {
+                                        Color TempColor = OriginalImage.GetPixel(TempX, TempY);
+                                        RValue = RValue.Max(TempColor.R);
+                                        GValue = GValue.Max(TempColor.G);
+                                        BValue = BValue.Max(TempColor.B);
+                                    }
                                 }
                             }
                         }
+                        TempImage.SetPixel(x, y, Color.FromArgb(RValue, GValue, BValue));
                     }
-                    Color TempPixel = Color.FromArgb(RValue, GValue, BValue);
-                    NewData.SetPixel(x, y, TempPixel, NewPixelSize);
-                }
-            });
-            NewBitmap.UnlockImage(NewData);
-            OriginalImage.UnlockImage(OldData);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
+                });
+                return OriginalImage.Unlock().Copy(TempImage);
+            }
         }
 
         /// <summary>
@@ -590,66 +426,31 @@ namespace Utilities.Media
         /// <param name="Height">Height of the box</param>
         /// <param name="Width">Width of the box</param>
         /// <param name="CornerRadius">Radius of the corners</param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>The bitmap with the rounded box on it</returns>
-        public static Bitmap DrawRoundedRectangle(this Bitmap Image, Color BoxColor, int XPosition, int YPosition,
-            int Height, int Width, int CornerRadius, string FileName = "")
+        /// <returns>
+        /// The bitmap with the rounded box on it
+        /// </returns>
+        public static SwiftBitmap DrawRoundedRectangle(this SwiftBitmap Image, Color BoxColor, int XPosition, int YPosition,
+            int Height, int Width, int CornerRadius)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
             Contract.Requires<ArgumentNullException>(BoxColor != null, "BoxColor");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            Bitmap NewBitmap = new Bitmap(Image, Image.Width, Image.Height);
-            using (Graphics NewGraphics = Graphics.FromImage(NewBitmap))
+            using (Pen BoxPen = new Pen(BoxColor))
             {
-                using (Pen BoxPen = new Pen(BoxColor))
+                using (GraphicsPath Path = new GraphicsPath())
                 {
-                    using (GraphicsPath Path = new GraphicsPath())
-                    {
-                        Path.AddLine(XPosition + CornerRadius, YPosition, XPosition + Width - (CornerRadius * 2), YPosition);
-                        Path.AddArc(XPosition + Width - (CornerRadius * 2), YPosition, CornerRadius * 2, CornerRadius * 2, 270, 90);
-                        Path.AddLine(XPosition + Width, YPosition + CornerRadius, XPosition + Width, YPosition + Height - (CornerRadius * 2));
-                        Path.AddArc(XPosition + Width - (CornerRadius * 2), YPosition + Height - (CornerRadius * 2), CornerRadius * 2, CornerRadius * 2, 0, 90);
-                        Path.AddLine(XPosition + Width - (CornerRadius * 2), YPosition + Height, XPosition + CornerRadius, YPosition + Height);
-                        Path.AddArc(XPosition, YPosition + Height - (CornerRadius * 2), CornerRadius * 2, CornerRadius * 2, 90, 90);
-                        Path.AddLine(XPosition, YPosition + Height - (CornerRadius * 2), XPosition, YPosition + CornerRadius);
-                        Path.AddArc(XPosition, YPosition, CornerRadius * 2, CornerRadius * 2, 180, 90);
-                        Path.CloseFigure();
-                        NewGraphics.DrawPath(BoxPen, Path);
-                    }
+                    Path.AddLine(XPosition + CornerRadius, YPosition, XPosition + Width - (CornerRadius * 2), YPosition);
+                    Path.AddArc(XPosition + Width - (CornerRadius * 2), YPosition, CornerRadius * 2, CornerRadius * 2, 270, 90);
+                    Path.AddLine(XPosition + Width, YPosition + CornerRadius, XPosition + Width, YPosition + Height - (CornerRadius * 2));
+                    Path.AddArc(XPosition + Width - (CornerRadius * 2), YPosition + Height - (CornerRadius * 2), CornerRadius * 2, CornerRadius * 2, 0, 90);
+                    Path.AddLine(XPosition + Width - (CornerRadius * 2), YPosition + Height, XPosition + CornerRadius, YPosition + Height);
+                    Path.AddArc(XPosition, YPosition + Height - (CornerRadius * 2), CornerRadius * 2, CornerRadius * 2, 90, 90);
+                    Path.AddLine(XPosition, YPosition + Height - (CornerRadius * 2), XPosition, YPosition + CornerRadius);
+                    Path.AddArc(XPosition, YPosition, CornerRadius * 2, CornerRadius * 2, 180, 90);
+                    Path.CloseFigure();
+                    Image.DrawPath(BoxPen, Path);
                 }
             }
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
-        }
-
-        /// <summary>
-        /// Draws text on an Bitmap within the bounding box specified.
-        /// </summary>
-        /// <param name="Image">Image to draw on</param>
-        /// <param name="TextToDraw">The text to draw on the image</param>
-        /// <param name="FontToUse">Font in which to draw the text</param>
-        /// <param name="BrushUsing">Defines the brush using</param>
-        /// <param name="BoxToDrawWithin">Rectangle to draw the Bitmap within</param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>A bitmap object with the text drawn on it</returns>
-        public static Bitmap DrawText(this Bitmap Image, string TextToDraw,
-            Font FontToUse, Brush BrushUsing, RectangleF BoxToDrawWithin,
-            string FileName = "")
-        {
-            Contract.Requires<ArgumentNullException>(Image != null, "Image");
-            Contract.Requires<ArgumentNullException>(FontToUse != null, "FontToUse");
-            Contract.Requires<ArgumentNullException>(BrushUsing != null, "BrushUsing");
-            Contract.Requires<ArgumentNullException>(BoxToDrawWithin != null, "BoxToDrawWithin");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            Bitmap NewBitmap = new Bitmap(Image, Image.Width, Image.Height);
-            using (Graphics TempGraphics = Graphics.FromImage(NewBitmap))
-            {
-                TempGraphics.DrawString(TextToDraw, FontToUse, BrushUsing, BoxToDrawWithin);
-            }
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
+            return Image;
         }
 
         /// <summary>
@@ -658,50 +459,45 @@ namespace Utilities.Media
         /// <param name="OriginalImage">Image to do edge detection on</param>
         /// <param name="Threshold">Decides what is considered an edge</param>
         /// <param name="EdgeColor">Color of the edge</param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>A bitmap which has the edges drawn on it</returns>
-        public static Bitmap EdgeDetection(this Bitmap OriginalImage, float Threshold, Color EdgeColor, string FileName = "")
+        /// <returns>
+        /// A bitmap which has the edges drawn on it
+        /// </returns>
+        public static SwiftBitmap EdgeDetection(this SwiftBitmap OriginalImage, float Threshold, Color EdgeColor)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
             Contract.Requires<ArgumentNullException>(EdgeColor != null, "EdgeColor");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            Bitmap NewBitmap = new Bitmap(OriginalImage, OriginalImage.Width, OriginalImage.Height);
-            BitmapData NewData = NewBitmap.LockImage();
-            BitmapData OldData = OriginalImage.LockImage();
-            int NewPixelSize = NewData.GetPixelSize();
-            int OldPixelSize = OldData.GetPixelSize();
-            int Width = NewBitmap.Width;
-            int Height = NewBitmap.Height;
-            Parallel.For(0, Width, x =>
+            using (SwiftBitmap NewImage = (SwiftBitmap)OriginalImage.Clone())
             {
-                for (int y = 0; y < Height; ++y)
+                NewImage.Lock();
+                OriginalImage.Lock();
+                Parallel.For(0, OriginalImage.Width, x =>
                 {
-                    Color CurrentColor = OldData.GetPixel(x, y, OldPixelSize);
-                    if (y < Height - 1 && x < Width - 1)
+                    for (int y = 0; y < OriginalImage.Height; ++y)
                     {
-                        Color TempColor = OldData.GetPixel(x + 1, y + 1, OldPixelSize);
-                        if (Distance(CurrentColor.R, TempColor.R, CurrentColor.G, TempColor.G, CurrentColor.B, TempColor.B) > Threshold)
-                            NewData.SetPixel(x, y, EdgeColor, NewPixelSize);
+                        Color CurrentColor = OriginalImage.GetPixel(x, y);
+                        if (y < OriginalImage.Height - 1 && x < OriginalImage.Width - 1)
+                        {
+                            Color TempColor = OriginalImage.GetPixel(x + 1, y + 1);
+                            if (Distance(CurrentColor.R, TempColor.R, CurrentColor.G, TempColor.G, CurrentColor.B, TempColor.B) > Threshold)
+                                NewImage.SetPixel(x, y, EdgeColor);
+                        }
+                        else if (y < OriginalImage.Height - 1)
+                        {
+                            Color TempColor = OriginalImage.GetPixel(x, y + 1);
+                            if (Distance(CurrentColor.R, TempColor.R, CurrentColor.G, TempColor.G, CurrentColor.B, TempColor.B) > Threshold)
+                                NewImage.SetPixel(x, y, EdgeColor);
+                        }
+                        else if (x < OriginalImage.Width - 1)
+                        {
+                            Color TempColor = OriginalImage.GetPixel(x + 1, y);
+                            if (Distance(CurrentColor.R, TempColor.R, CurrentColor.G, TempColor.G, CurrentColor.B, TempColor.B) > Threshold)
+                                NewImage.SetPixel(x, y, EdgeColor);
+                        }
                     }
-                    else if (y < Height - 1)
-                    {
-                        Color TempColor = OldData.GetPixel(x, y + 1, OldPixelSize);
-                        if (Distance(CurrentColor.R, TempColor.R, CurrentColor.G, TempColor.G, CurrentColor.B, TempColor.B) > Threshold)
-                            NewData.SetPixel(x, y, EdgeColor, NewPixelSize);
-                    }
-                    else if (x < Width - 1)
-                    {
-                        Color TempColor = OldData.GetPixel(x + 1, y, OldPixelSize);
-                        if (Distance(CurrentColor.R, TempColor.R, CurrentColor.G, TempColor.G, CurrentColor.B, TempColor.B) > Threshold)
-                            NewData.SetPixel(x, y, EdgeColor, NewPixelSize);
-                    }
-                }
-            });
-            NewBitmap.UnlockImage(NewData);
-            OriginalImage.UnlockImage(OldData);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
+                });
+                NewImage.Unlock();
+                return OriginalImage.Unlock().Copy(NewImage);
+            }
         }
 
         /// <summary>
@@ -909,24 +705,19 @@ namespace Utilities.Media
         /// Gets the Green filter for an image
         /// </summary>
         /// <param name="Image">Image to change</param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>A bitmap object</returns>
-        public static Bitmap GreenFilter(this Bitmap Image, string FileName = "")
+        /// <returns>
+        /// A bitmap object
+        /// </returns>
+        public static SwiftBitmap GreenFilter(this SwiftBitmap Image)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            ColorMatrix TempMatrix = new ColorMatrix();
-            TempMatrix.Matrix = new float[][]{
+            return Image.ApplyMatrix(new ColorMatrix(new float[][]{
                             new float[] {0, 0, 0, 0, 0},
                             new float[] {0, 1, 0, 0, 0},
                             new float[] {0, 0, 0, 0, 0},
                             new float[] {0, 0, 0, 1, 0},
                             new float[] {0, 0, 0, 0, 1}
-                        };
-            Bitmap NewBitmap = TempMatrix.Apply(Image);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
+                        }));
         }
 
         /// <summary>
@@ -1513,22 +1304,16 @@ namespace Utilities.Media
         /// <param name="Image">Image to change</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap image</returns>
-        public static Bitmap RedFilter(this Bitmap Image, string FileName = "")
+        public static SwiftBitmap RedFilter(this SwiftBitmap Image, string FileName = "")
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            ColorMatrix TempMatrix = new ColorMatrix();
-            TempMatrix.Matrix = new float[][]{
+            return Image.ApplyMatrix(new ColorMatrix(new float[][]{
                             new float[] {1, 0, 0, 0, 0},
                             new float[] {0, 0, 0, 0, 0},
                             new float[] {0, 0, 0, 0, 0},
                             new float[] {0, 0, 0, 1, 0},
                             new float[] {0, 0, 0, 0, 1}
-                        };
-            Bitmap NewBitmap = TempMatrix.Apply(Image);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
+                        }));
         }
 
         /// <summary>
@@ -1628,22 +1413,16 @@ namespace Utilities.Media
         /// <param name="Image">Image to change</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap object of the sepia tone image</returns>
-        public static Bitmap SepiaTone(this Bitmap Image, string FileName = "")
+        public static SwiftBitmap SepiaTone(this SwiftBitmap Image, string FileName = "")
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            ColorMatrix TempMatrix = new ColorMatrix();
-            TempMatrix.Matrix = new float[][]{
+            return Image.ApplyMatrix(new ColorMatrix(new float[][]{
                             new float[] {.393f, .349f, .272f, 0, 0},
                             new float[] {.769f, .686f, .534f, 0, 0},
                             new float[] {.189f, .168f, .131f, 0, 0},
                             new float[] {0, 0, 0, 1, 0},
                             new float[] {0, 0, 0, 0, 1}
-                        };
-            Bitmap NewBitmap = TempMatrix.Apply(Image);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
+                        }));
         }
 
         /// <summary>

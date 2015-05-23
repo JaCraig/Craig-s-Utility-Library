@@ -420,7 +420,6 @@
     <Compile Include="IO\Serializers\Interfaces\ISerializer.cs" />
     <Compile Include="IO\Serializers\Manager.cs" />
     <Compile Include="IO\Serializers\Module\SerializationModule.cs" />
-    <Compile Include="Media\ColorMatrix.cs" />
     <Compile Include="Media\ExtensionMethods\BitmapExtensions.cs" />
     <Compile Include="Media\ExtensionMethods\ScreenExtensions.cs" />
     <Compile Include="Media\Filter.cs" />
