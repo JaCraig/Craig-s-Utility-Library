@@ -422,7 +422,6 @@
     <Compile Include="IO\Serializers\Module\SerializationModule.cs" />
     <Compile Include="Media\ExtensionMethods\BitmapExtensions.cs" />
     <Compile Include="Media\ExtensionMethods\ScreenExtensions.cs" />
-    <Compile Include="Media\Filter.cs" />
     <Compile Include="Media\Procedural\CellularMap.cs" />
     <Compile Include="Media\Procedural\CellularTexture.cs" />
     <Compile Include="Media\Procedural\FaultFormation.cs" />
