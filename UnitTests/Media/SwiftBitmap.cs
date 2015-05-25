@@ -26,12 +26,13 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnitTests.Fixtures;
 using Utilities.IO;
 using Xunit;
 
 namespace UnitTests.Media
 {
-    public class SwiftBitmap
+    public class SwiftBitmap : TestingDirectoryFixture
     {
         [Fact]
         public void Create()
@@ -74,7 +75,6 @@ namespace UnitTests.Media
         {
             using (Utilities.Media.SwiftBitmap Temp = new Utilities.Media.SwiftBitmap(@"..\..\Data\Image\Lenna.jpg"))
             {
-                new DirectoryInfo(@".\Testing\").Create();
                 Temp.Save(@".\Testing\SwiftBitmapSaveResult.jpg");
                 Assert.True(new FileInfo(@".\Testing\SwiftBitmapSaveResult.jpg").ReadBinary().SequenceEqual(new FileInfo(@"..\..\BitmapResults\SwiftBitmapSaveResult.jpg").ReadBinary()));
             }
@@ -85,8 +85,7 @@ namespace UnitTests.Media
         {
             using (Utilities.Media.SwiftBitmap Temp = new Utilities.Media.SwiftBitmap(@"..\..\Data\Image\Lenna.jpg"))
             {
-                new DirectoryInfo(@".\Testing\").Create();
-                Temp.ApplyMatrix(new ColorMatrix(new float[][]{
+                Temp.ApplyColorMatrix(new ColorMatrix(new float[][]{
                             new float[] {1, 0, 0, 0, 0},
                             new float[] {0, 1, 0, 0, 0},
                             new float[] {0, 0, 1, 0, 0},
@@ -105,11 +104,42 @@ namespace UnitTests.Media
             {
                 using (Utilities.Media.SwiftBitmap TestObject2 = new Utilities.Media.SwiftBitmap(@"..\..\Data\Image\Image2.jpg"))
                 {
-                    new DirectoryInfo(@".\Testing\").Create();
                     using (Utilities.Media.SwiftBitmap Temp2 = Temp & TestObject2)
                     {
-                        Temp2.Save(@".\Testing\SwiftBitmapAndMatrixResult.jpg");
-                        Assert.True(new FileInfo(@".\Testing\SwiftBitmapAndMatrixResult.jpg").ReadBinary().SequenceEqual(new FileInfo(@"..\..\BitmapResults\SwiftBitmapAndMatrixResult.jpg").ReadBinary()));
+                        Temp2.Save(@".\Testing\SwiftBitmapAndResult.jpg");
+                        Assert.True(new FileInfo(@".\Testing\SwiftBitmapAndResult.jpg").ReadBinary().SequenceEqual(new FileInfo(@"..\..\BitmapResults\SwiftBitmapAndResult.jpg").ReadBinary()));
+                    }
+                }
+            }
+        }
+
+        [Fact]
+        public void Or()
+        {
+            using (Utilities.Media.SwiftBitmap Temp = new Utilities.Media.SwiftBitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Utilities.Media.SwiftBitmap TestObject2 = new Utilities.Media.SwiftBitmap(@"..\..\Data\Image\Image2.jpg"))
+                {
+                    using (Utilities.Media.SwiftBitmap Temp2 = Temp | TestObject2)
+                    {
+                        Temp2.Save(@".\Testing\SwiftBitmapOrResult.jpg");
+                        Assert.True(new FileInfo(@".\Testing\SwiftBitmapOrResult.jpg").ReadBinary().SequenceEqual(new FileInfo(@"..\..\BitmapResults\SwiftBitmapOrResult.jpg").ReadBinary()));
+                    }
+                }
+            }
+        }
+
+        [Fact]
+        public void XOr()
+        {
+            using (Utilities.Media.SwiftBitmap Temp = new Utilities.Media.SwiftBitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Utilities.Media.SwiftBitmap TestObject2 = new Utilities.Media.SwiftBitmap(@"..\..\Data\Image\Image2.jpg"))
+                {
+                    using (Utilities.Media.SwiftBitmap Temp2 = Temp ^ TestObject2)
+                    {
+                        Temp2.Save(@".\Testing\SwiftBitmapXOrResult.jpg");
+                        Assert.True(new FileInfo(@".\Testing\SwiftBitmapXOrResult.jpg").ReadBinary().SequenceEqual(new FileInfo(@"..\..\BitmapResults\SwiftBitmapXOrResult.jpg").ReadBinary()));
                     }
                 }
             }
@@ -120,7 +150,6 @@ namespace UnitTests.Media
         {
             using (Utilities.Media.SwiftBitmap Temp = new Utilities.Media.SwiftBitmap(@"..\..\Data\Image\Lenna.jpg"))
             {
-                new DirectoryInfo(@".\Testing\").Create();
                 Temp.Crop(100, 100, Utilities.Media.Align.Top, Utilities.Media.Align.Left)
                     .Save(@".\Testing\SwiftBitmapCropResult.jpg");
                 Assert.True(new FileInfo(@".\Testing\SwiftBitmapCropResult.jpg").ReadBinary().SequenceEqual(new FileInfo(@"..\..\BitmapResults\SwiftBitmapCropResult.jpg").ReadBinary()));

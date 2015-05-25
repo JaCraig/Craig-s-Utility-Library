@@ -46,12 +46,11 @@ namespace Utilities.Media.Procedural
         /// <param name="Seed">Random seed</param>
         /// <returns>An image containing perlin noise</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
-        public static Bitmap Generate(int Width, int Height, int MaxRGBValue, int MinRGBValue,
+        public static SwiftBitmap Generate(int Width, int Height, int MaxRGBValue, int MinRGBValue,
             float Frequency, float Amplitude, float Persistance, int Octaves, int Seed)
         {
-            Bitmap ReturnValue = new Bitmap(Width, Height);
-            BitmapData ImageData = ReturnValue.LockImage();
-            int ImagePixelSize = ImageData.GetPixelSize();
+            SwiftBitmap ReturnValue = new SwiftBitmap(Width, Height);
+            ReturnValue.Lock();
             float[,] Noise = GenerateNoise(Seed, Width, Height);
             for (int x = 0; x < Width; ++x)
             {
@@ -61,11 +60,10 @@ namespace Utilities.Media.Procedural
                     Value = (Value * 0.5f) + 0.5f;
                     Value *= 255;
                     int RGBValue = ((int)Value).Clamp(MaxRGBValue, MinRGBValue);
-                    ImageData.SetPixel(x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue), ImagePixelSize);
+                    ReturnValue.SetPixel(x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue));
                 }
             }
-            ReturnValue.UnlockImage(ImageData);
-            return ReturnValue;
+            return ReturnValue.Unlock();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Return")]

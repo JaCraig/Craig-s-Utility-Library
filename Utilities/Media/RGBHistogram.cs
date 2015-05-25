@@ -131,6 +131,8 @@ namespace Utilities.Media
         public virtual void LoadImage(SwiftBitmap ImageUsing)
         {
             Contract.Requires<ArgumentNullException>(ImageUsing != null, "ImageUsing");
+            Width = ImageUsing.Width;
+            Height = ImageUsing.Height;
             ImageUsing.Lock();
             R.Clear();
             G.Clear();

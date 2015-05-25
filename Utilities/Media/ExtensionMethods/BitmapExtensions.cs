@@ -95,10 +95,10 @@ namespace Utilities.Media
     }
 
     /// <summary>
-    /// Bitmap extensions
+    /// SwiftBitmap extensions
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public static class BitmapExtensions
+    public static class SwiftBitmapExtensions
     {
         /// <summary>
         /// Characters used for ASCII art
@@ -111,7 +111,7 @@ namespace Utilities.Media
         /// <param name="Image">The image to add noise to</param>
         /// <param name="Amount">Amount of noise to add (defaults to 10)</param>
         /// <returns>
-        /// New Bitmap object with the noise added
+        /// New SwiftBitmap object with the noise added
         /// </returns>
         public static SwiftBitmap AddNoise(this SwiftBitmap Image, int Amount = 10)
         {
@@ -159,7 +159,7 @@ namespace Utilities.Media
         /// <param name="OriginalImage">Image to change</param>
         /// <param name="Value">Used to set the contrast (-100 to 100)</param>
         /// <returns>
-        /// A bitmap object
+        /// A SwiftBitmap object
         /// </returns>
         public static SwiftBitmap AdjustContrast(this SwiftBitmap OriginalImage, float Value = 0)
         {
@@ -193,7 +193,7 @@ namespace Utilities.Media
         /// <param name="OriginalImage">Image to change</param>
         /// <param name="Value">Used to build the gamma ramp (usually .2 to 5)</param>
         /// <returns>
-        /// A bitmap object
+        /// A SwiftBitmap object
         /// </returns>
         public static SwiftBitmap AdjustGamma(this SwiftBitmap OriginalImage, float Value = 1.0f)
         {
@@ -219,11 +219,11 @@ namespace Utilities.Media
         }
 
         /// <summary>
-        /// Converts an Bitmap to black and white
+        /// Converts an SwiftBitmap to black and white
         /// </summary>
         /// <param name="Image">Image to change</param>
         /// <returns>
-        /// A bitmap object of the black and white image
+        /// A SwiftBitmap object of the black and white image
         /// </returns>
         public static SwiftBitmap BlackAndWhite(this SwiftBitmap Image)
         {
@@ -242,7 +242,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="Image">Image to change</param>
         /// <returns>
-        /// A bitmap object
+        /// A SwiftBitmap object
         /// </returns>
         public static SwiftBitmap BlueFilter(this SwiftBitmap Image)
         {
@@ -262,7 +262,7 @@ namespace Utilities.Media
         /// <param name="Image">Image to manipulate</param>
         /// <param name="Size">Size of the aperture</param>
         /// <returns>
-        /// A bitmap object
+        /// A SwiftBitmap object
         /// </returns>
         public static SwiftBitmap BoxBlur(this SwiftBitmap Image, int Size = 3)
         {
@@ -336,8 +336,9 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="OriginalImage">Black and white image</param>
         /// <param name="Colors">Color array to use for the image</param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>The colorized image</returns>
+        /// <returns>
+        /// The colorized image
+        /// </returns>
         public static SwiftBitmap Colorize(this SwiftBitmap OriginalImage, Color[] Colors)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
@@ -362,7 +363,7 @@ namespace Utilities.Media
         /// <param name="OriginalImage">Image to manipulate</param>
         /// <param name="Size">Size of the aperture</param>
         /// <returns>
-        /// A Bitmap object of the resulting image
+        /// A SwiftBitmap object of the resulting image
         /// </returns>
         public static SwiftBitmap Dilate(this SwiftBitmap OriginalImage, int Size)
         {
@@ -370,6 +371,7 @@ namespace Utilities.Media
             using (SwiftBitmap TempImage = (SwiftBitmap)OriginalImage.Clone())
             {
                 OriginalImage.Lock();
+                TempImage.Lock();
                 int ApetureMin = -(Size / 2);
                 int ApetureMax = (Size / 2);
                 Parallel.For(0, OriginalImage.Width, x =>
@@ -400,12 +402,13 @@ namespace Utilities.Media
                         TempImage.SetPixel(x, y, Color.FromArgb(RValue, GValue, BValue));
                     }
                 });
+                TempImage.Unlock();
                 return OriginalImage.Unlock().Copy(TempImage);
             }
         }
 
         /// <summary>
-        /// Draws a rounded rectangle on a bitmap
+        /// Draws a rounded rectangle on a SwiftBitmap
         /// </summary>
         /// <param name="Image">Image to draw on</param>
         /// <param name="BoxColor">The color that the box should be</param>
@@ -415,7 +418,7 @@ namespace Utilities.Media
         /// <param name="Width">Width of the box</param>
         /// <param name="CornerRadius">Radius of the corners</param>
         /// <returns>
-        /// The bitmap with the rounded box on it
+        /// The SwiftBitmap with the rounded box on it
         /// </returns>
         public static SwiftBitmap DrawRoundedRectangle(this SwiftBitmap Image, Color BoxColor, int XPosition, int YPosition,
             int Height, int Width, int CornerRadius)
@@ -448,7 +451,7 @@ namespace Utilities.Media
         /// <param name="Threshold">Decides what is considered an edge</param>
         /// <param name="EdgeColor">Color of the edge</param>
         /// <returns>
-        /// A bitmap which has the edges drawn on it
+        /// A SwiftBitmap which has the edges drawn on it
         /// </returns>
         public static SwiftBitmap EdgeDetection(this SwiftBitmap OriginalImage, float Threshold, Color EdgeColor)
         {
@@ -493,7 +496,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="Image">Image to manipulate</param>
         /// <returns>
-        /// A bitmap image
+        /// A SwiftBitmap image
         /// </returns>
         public static SwiftBitmap Emboss(this SwiftBitmap Image)
         {
@@ -510,16 +513,16 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="OriginalImage">Image to manipulate</param>
         /// <returns>
-        /// The resulting bitmap image
+        /// The resulting SwiftBitmap image
         /// </returns>
         public static SwiftBitmap Equalize(this SwiftBitmap OriginalImage)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
-            using (SwiftBitmap NewBitmap = new SwiftBitmap(OriginalImage.Width, OriginalImage.Height))
+            using (SwiftBitmap NewSwiftBitmap = new SwiftBitmap(OriginalImage.Width, OriginalImage.Height))
             {
                 RGBHistogram TempHistogram = new RGBHistogram(OriginalImage);
                 TempHistogram.Equalize();
-                NewBitmap.Lock();
+                NewSwiftBitmap.Lock();
                 OriginalImage.Lock();
                 Parallel.For(0, OriginalImage.Width, x =>
                 {
@@ -532,11 +535,11 @@ namespace Utilities.Media
                         NewR = NewR.Clamp(255, 0);
                         NewG = NewG.Clamp(255, 0);
                         NewB = NewB.Clamp(255, 0);
-                        NewBitmap.SetPixel(x, y, Color.FromArgb(NewR, NewG, NewB));
+                        NewSwiftBitmap.SetPixel(x, y, Color.FromArgb(NewR, NewG, NewB));
                     }
                 });
-                NewBitmap.Unlock();
-                return OriginalImage.Unlock().Copy(NewBitmap);
+                NewSwiftBitmap.Unlock();
+                return OriginalImage.Unlock().Copy(NewSwiftBitmap);
             }
         }
 
@@ -546,7 +549,7 @@ namespace Utilities.Media
         /// <param name="Image">Image to manipulate</param>
         /// <param name="Size">Size of the aperture</param>
         /// <returns>
-        /// The resulting bitmap
+        /// The resulting SwiftBitmap
         /// </returns>
         public static SwiftBitmap GaussianBlur(this SwiftBitmap Image, int Size = 3)
         {
@@ -559,7 +562,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="Image">Image to change</param>
         /// <returns>
-        /// A bitmap object
+        /// A SwiftBitmap object
         /// </returns>
         public static SwiftBitmap GreenFilter(this SwiftBitmap Image)
         {
@@ -579,14 +582,14 @@ namespace Utilities.Media
         /// <param name="OriginalImage">Image to manipulate</param>
         /// <param name="MaxJitter">Maximum number of pixels the item can move</param>
         /// <returns>
-        /// A bitmap object
+        /// A SwiftBitmap object
         /// </returns>
         public static SwiftBitmap Jitter(this SwiftBitmap OriginalImage, int MaxJitter = 5)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
-            using (SwiftBitmap NewBitmap = new SwiftBitmap(OriginalImage.Width, OriginalImage.Height))
+            using (SwiftBitmap NewSwiftBitmap = new SwiftBitmap(OriginalImage.Width, OriginalImage.Height))
             {
-                NewBitmap.Lock();
+                NewSwiftBitmap.Lock();
                 OriginalImage.Lock();
                 Parallel.For(0, OriginalImage.Width, x =>
                 {
@@ -599,11 +602,11 @@ namespace Utilities.Media
                         NewX = NewX.Clamp(OriginalImage.Width - 1, 0);
                         NewY = NewY.Clamp(OriginalImage.Height - 1, 0);
 
-                        NewBitmap.SetPixel(x, y, OriginalImage.GetPixel(NewX, NewY));
+                        NewSwiftBitmap.SetPixel(x, y, OriginalImage.GetPixel(NewX, NewY));
                     }
                 });
-                NewBitmap.Unlock();
-                return OriginalImage.Unlock().Copy(NewBitmap);
+                NewSwiftBitmap.Unlock();
+                return OriginalImage.Unlock().Copy(NewSwiftBitmap);
             }
         }
 
@@ -613,21 +616,21 @@ namespace Utilities.Media
         /// <param name="OriginalImage">Image to manipulate</param>
         /// <param name="Size">Size of the aperture</param>
         /// <returns>
-        /// A bitmap object
+        /// A SwiftBitmap object
         /// </returns>
         public static SwiftBitmap KuwaharaBlur(this SwiftBitmap OriginalImage, int Size = 3)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
-            using (SwiftBitmap NewBitmap = new SwiftBitmap(OriginalImage.Width, OriginalImage.Height))
+            using (SwiftBitmap NewSwiftBitmap = new SwiftBitmap(OriginalImage.Width, OriginalImage.Height))
             {
-                NewBitmap.Lock();
+                NewSwiftBitmap.Lock();
                 OriginalImage.Lock();
                 int[] ApetureMinX = { -(Size / 2), 0, -(Size / 2), 0 };
                 int[] ApetureMaxX = { 0, (Size / 2), 0, (Size / 2) };
                 int[] ApetureMinY = { -(Size / 2), -(Size / 2), 0, 0 };
                 int[] ApetureMaxY = { 0, 0, (Size / 2), (Size / 2) };
-                int Width = NewBitmap.Width;
-                int Height = NewBitmap.Height;
+                int Width = NewSwiftBitmap.Width;
+                int Height = NewSwiftBitmap.Height;
                 Parallel.For(0, Width, x =>
                 {
                     for (int y = 0; y < Height; ++y)
@@ -694,11 +697,11 @@ namespace Utilities.Media
                         Color MeanPixel = Color.FromArgb(RValues[j] / NumPixels[j],
                             GValues[j] / NumPixels[j],
                             BValues[j] / NumPixels[j]);
-                        NewBitmap.SetPixel(x, y, MeanPixel);
+                        NewSwiftBitmap.SetPixel(x, y, MeanPixel);
                     }
                 });
-                NewBitmap.Unlock();
-                return OriginalImage.Unlock().Copy(NewBitmap);
+                NewSwiftBitmap.Unlock();
+                return OriginalImage.Unlock().Copy(NewSwiftBitmap);
             }
         }
 
@@ -707,7 +710,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="Image">Image to manipulate</param>
         /// <returns>
-        /// A bitmap object
+        /// A SwiftBitmap object
         /// </returns>
         public static SwiftBitmap LaplaceEdgeDetection(this SwiftBitmap Image)
         {
@@ -727,19 +730,19 @@ namespace Utilities.Media
         /// <param name="OriginalImage">Image to manipulate</param>
         /// <param name="Size">Size of the aperture</param>
         /// <returns>
-        /// A bitmap image
+        /// A SwiftBitmap image
         /// </returns>
         public static SwiftBitmap MedianFilter(this SwiftBitmap OriginalImage, int Size = 3)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
-            using (SwiftBitmap NewBitmap = new SwiftBitmap(OriginalImage.Width, OriginalImage.Height))
+            using (SwiftBitmap NewSwiftBitmap = new SwiftBitmap(OriginalImage.Width, OriginalImage.Height))
             {
-                NewBitmap.Lock();
+                NewSwiftBitmap.Lock();
                 OriginalImage.Lock();
                 int ApetureMin = -(Size / 2);
                 int ApetureMax = (Size / 2);
-                int Width = NewBitmap.Width;
-                int Height = NewBitmap.Height;
+                int Width = NewSwiftBitmap.Width;
+                int Height = NewSwiftBitmap.Height;
                 Parallel.For(0, Width, x =>
                 {
                     for (int y = 0; y < Height; ++y)
@@ -768,11 +771,11 @@ namespace Utilities.Media
                         Color MedianPixel = Color.FromArgb(RValues.Median(),
                             GValues.Median(),
                             BValues.Median());
-                        NewBitmap.SetPixel(x, y, MedianPixel);
+                        NewSwiftBitmap.SetPixel(x, y, MedianPixel);
                     }
                 });
-                NewBitmap.Unlock();
-                return OriginalImage.Unlock().Copy(NewBitmap);
+                NewSwiftBitmap.Unlock();
+                return OriginalImage.Unlock().Copy(NewSwiftBitmap);
             }
         }
 
@@ -781,28 +784,28 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="OriginalImage">Image to manipulate</param>
         /// <returns>
-        /// A bitmap image
+        /// A SwiftBitmap image
         /// </returns>
         public static SwiftBitmap Negative(this SwiftBitmap OriginalImage)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
-            using (SwiftBitmap NewBitmap = new SwiftBitmap(OriginalImage.Width, OriginalImage.Height))
+            using (SwiftBitmap NewSwiftBitmap = new SwiftBitmap(OriginalImage.Width, OriginalImage.Height))
             {
-                NewBitmap.Lock();
+                NewSwiftBitmap.Lock();
                 OriginalImage.Lock();
-                int Width = NewBitmap.Width;
-                int Height = NewBitmap.Height;
+                int Width = NewSwiftBitmap.Width;
+                int Height = NewSwiftBitmap.Height;
                 Parallel.For(0, Width, x =>
                 {
                     for (int y = 0; y < Height; ++y)
                     {
                         Color CurrentPixel = OriginalImage.GetPixel(x, y);
                         Color TempValue = Color.FromArgb(255 - CurrentPixel.R, 255 - CurrentPixel.G, 255 - CurrentPixel.B);
-                        NewBitmap.SetPixel(x, y, TempValue);
+                        NewSwiftBitmap.SetPixel(x, y, TempValue);
                     }
                 });
-                NewBitmap.Unlock();
-                return OriginalImage.Unlock().Copy(NewBitmap);
+                NewSwiftBitmap.Unlock();
+                return OriginalImage.Unlock().Copy(NewSwiftBitmap);
             }
         }
 
@@ -862,26 +865,26 @@ namespace Utilities.Media
         /// <param name="OriginalImage">Image to pixelate</param>
         /// <param name="PixelSize">Size of the "pixels" in pixels</param>
         /// <returns>
-        /// A bitmap image
+        /// A SwiftBitmap image
         /// </returns>
         public static SwiftBitmap Pixelate(this SwiftBitmap OriginalImage, int PixelSize = 5)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
-            using (SwiftBitmap NewBitmap = new SwiftBitmap(OriginalImage.Width, OriginalImage.Height))
+            using (SwiftBitmap NewSwiftBitmap = new SwiftBitmap(OriginalImage.Width, OriginalImage.Height))
             {
-                NewBitmap.Lock();
+                NewSwiftBitmap.Lock();
                 OriginalImage.Lock();
-                for (int x = 0; x < NewBitmap.Width; x += (PixelSize / 2))
+                for (int x = 0; x < NewSwiftBitmap.Width; x += (PixelSize / 2))
                 {
-                    int MinX = (x - (PixelSize / 2)).Clamp(NewBitmap.Width, 0);
-                    int MaxX = (x + (PixelSize / 2)).Clamp(NewBitmap.Width, 0);
-                    for (int y = 0; y < NewBitmap.Height; y += (PixelSize / 2))
+                    int MinX = (x - (PixelSize / 2)).Clamp(NewSwiftBitmap.Width, 0);
+                    int MaxX = (x + (PixelSize / 2)).Clamp(NewSwiftBitmap.Width, 0);
+                    for (int y = 0; y < NewSwiftBitmap.Height; y += (PixelSize / 2))
                     {
                         int RValue = 0;
                         int GValue = 0;
                         int BValue = 0;
-                        int MinY = (y - (PixelSize / 2)).Clamp(NewBitmap.Height, 0);
-                        int MaxY = (y + (PixelSize / 2)).Clamp(NewBitmap.Height, 0);
+                        int MinY = (y - (PixelSize / 2)).Clamp(NewSwiftBitmap.Height, 0);
+                        int MaxY = (y + (PixelSize / 2)).Clamp(NewSwiftBitmap.Height, 0);
                         for (int x2 = MinX; x2 < MaxX; ++x2)
                         {
                             for (int y2 = MinY; y2 < MaxY; ++y2)
@@ -900,13 +903,13 @@ namespace Utilities.Media
                         {
                             for (int y2 = MinY; y2 < MaxY; ++y2)
                             {
-                                NewBitmap.SetPixel(x2, y2, TempPixel);
+                                NewSwiftBitmap.SetPixel(x2, y2, TempPixel);
                             }
                         });
                     }
                 }
-                NewBitmap.Unlock();
-                return OriginalImage.Unlock().Copy(NewBitmap);
+                NewSwiftBitmap.Unlock();
+                return OriginalImage.Unlock().Copy(NewSwiftBitmap);
             }
         }
 
@@ -915,7 +918,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="Image">Image to change</param>
         /// <returns>
-        /// A bitmap image
+        /// A SwiftBitmap image
         /// </returns>
         public static SwiftBitmap RedFilter(this SwiftBitmap Image)
         {
@@ -930,11 +933,11 @@ namespace Utilities.Media
         }
 
         /// <summary>
-        /// Converts an Bitmap to sepia tone
+        /// Converts an SwiftBitmap to sepia tone
         /// </summary>
         /// <param name="Image">Image to change</param>
         /// <returns>
-        /// A bitmap object of the sepia tone image
+        /// A SwiftBitmap object of the sepia tone image
         /// </returns>
         public static SwiftBitmap SepiaTone(this SwiftBitmap Image)
         {
@@ -953,7 +956,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="Image">Image to manipulate</param>
         /// <returns>
-        /// A bitmap image
+        /// A SwiftBitmap image
         /// </returns>
         public static SwiftBitmap Sharpen(this SwiftBitmap Image)
         {
@@ -970,7 +973,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="Image">Image to manipulate</param>
         /// <returns>
-        /// A bitmap image
+        /// A SwiftBitmap image
         /// </returns>
         public static SwiftBitmap SharpenLess(this SwiftBitmap Image)
         {
@@ -991,17 +994,17 @@ namespace Utilities.Media
         /// <param name="XDirection">Determines if this should be done in the X direction</param>
         /// <param name="YDirection">Determines if this should be done in the Y direction</param>
         /// <returns>
-        /// A bitmap which has been modified
+        /// A SwiftBitmap which has been modified
         /// </returns>
         public static SwiftBitmap SinWave(this SwiftBitmap OriginalImage, float Amplitude, float Frequency, bool XDirection, bool YDirection)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
-            using (SwiftBitmap NewBitmap = new SwiftBitmap(OriginalImage.Width, OriginalImage.Height))
+            using (SwiftBitmap NewSwiftBitmap = new SwiftBitmap(OriginalImage.Width, OriginalImage.Height))
             {
-                NewBitmap.Lock();
+                NewSwiftBitmap.Lock();
                 OriginalImage.Lock();
-                int Width = NewBitmap.Width;
-                int Height = NewBitmap.Height;
+                int Width = NewSwiftBitmap.Width;
+                int Height = NewSwiftBitmap.Height;
                 Parallel.For(0, Width, x =>
                 {
                     for (int y = 0; y < Height; ++y)
@@ -1022,11 +1025,11 @@ namespace Utilities.Media
                             Value1 -= Height;
                         while (Value2 >= Width)
                             Value2 -= Width;
-                        NewBitmap.SetPixel(x, y, OriginalImage.GetPixel((int)Value2, (int)Value1));
+                        NewSwiftBitmap.SetPixel(x, y, OriginalImage.GetPixel((int)Value2, (int)Value1));
                     }
                 });
-                NewBitmap.Unlock();
-                return OriginalImage.Unlock().Copy(NewBitmap);
+                NewSwiftBitmap.Unlock();
+                return OriginalImage.Unlock().Copy(NewSwiftBitmap);
             }
         }
 
@@ -1036,21 +1039,21 @@ namespace Utilities.Media
         /// <param name="OriginalImage">Image to manipulate</param>
         /// <param name="Size">Size of the aperture</param>
         /// <returns>
-        /// The resulting bitmap
+        /// The resulting SwiftBitmap
         /// </returns>
         public static SwiftBitmap SNNBlur(this SwiftBitmap OriginalImage, int Size = 3)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
-            using (SwiftBitmap NewBitmap = new SwiftBitmap(OriginalImage.Width, OriginalImage.Height))
+            using (SwiftBitmap NewSwiftBitmap = new SwiftBitmap(OriginalImage.Width, OriginalImage.Height))
             {
-                NewBitmap.Lock();
+                NewSwiftBitmap.Lock();
                 OriginalImage.Lock();
                 int ApetureMinX = -(Size / 2);
                 int ApetureMaxX = (Size / 2);
                 int ApetureMinY = -(Size / 2);
                 int ApetureMaxY = (Size / 2);
-                int Width = NewBitmap.Width;
-                int Height = NewBitmap.Height;
+                int Width = NewSwiftBitmap.Width;
+                int Height = NewSwiftBitmap.Height;
                 Parallel.For(0, Width, x =>
                 {
                     for (int y = 0; y < Height; ++y)
@@ -1095,11 +1098,11 @@ namespace Utilities.Media
                         Color MeanPixel = Color.FromArgb(RValue / NumPixels,
                             GValue / NumPixels,
                             BValue / NumPixels);
-                        NewBitmap.SetPixel(x, y, MeanPixel);
+                        NewSwiftBitmap.SetPixel(x, y, MeanPixel);
                     }
                 });
-                NewBitmap.Unlock();
-                return OriginalImage.Unlock().Copy(NewBitmap);
+                NewSwiftBitmap.Unlock();
+                return OriginalImage.Unlock().Copy(NewSwiftBitmap);
             }
         }
 
@@ -1108,71 +1111,47 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="Input">Image to manipulate</param>
         /// <returns>
-        /// A bitmap image
+        /// A SwiftBitmap image
         /// </returns>
         public static SwiftBitmap SobelEdgeDetection(this SwiftBitmap Input)
         {
             Contract.Requires<ArgumentNullException>(Input != null, "Input");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            using (Bitmap TempImage = Input.BlackAndWhite())
+            Input.BlackAndWhite();
+            using (SwiftBitmap TempImageX = ((SwiftBitmap)Input.Clone()).ApplyConvolutionFilter(new int[][]{
+                            new int[] {-1, 0, 1},
+                            new int[] {-2, 0, 2},
+                            new int[] {-1, 0, 1}
+                        }, true))
             {
-                Filter TempFilter = new Filter(3, 3);
-                TempFilter.MyFilter[0, 0] = -1;
-                TempFilter.MyFilter[0, 1] = 0;
-                TempFilter.MyFilter[0, 2] = 1;
-                TempFilter.MyFilter[1, 0] = -2;
-                TempFilter.MyFilter[1, 1] = 0;
-                TempFilter.MyFilter[1, 2] = 2;
-                TempFilter.MyFilter[2, 0] = -1;
-                TempFilter.MyFilter[2, 1] = 0;
-                TempFilter.MyFilter[2, 2] = 1;
-                TempFilter.Absolute = true;
-                using (Bitmap TempImageX = TempFilter.ApplyFilter(TempImage))
+                using (SwiftBitmap TempImageY = ((SwiftBitmap)Input.Clone()).ApplyConvolutionFilter(new int[][]{
+                            new int[] {1, 2, 1},
+                            new int[] {0, 0, 0},
+                            new int[] {-1, -2, -1}
+                        }, true))
                 {
-                    TempFilter = new Filter(3, 3);
-                    TempFilter.MyFilter[0, 0] = 1;
-                    TempFilter.MyFilter[0, 1] = 2;
-                    TempFilter.MyFilter[0, 2] = 1;
-                    TempFilter.MyFilter[1, 0] = 0;
-                    TempFilter.MyFilter[1, 1] = 0;
-                    TempFilter.MyFilter[1, 2] = 0;
-                    TempFilter.MyFilter[2, 0] = -1;
-                    TempFilter.MyFilter[2, 1] = -2;
-                    TempFilter.MyFilter[2, 2] = -1;
-                    TempFilter.Absolute = true;
-                    using (Bitmap TempImageY = TempFilter.ApplyFilter(TempImage))
+                    using (SwiftBitmap NewBitmap = new SwiftBitmap(Input.Width, Input.Height))
                     {
-                        using (Bitmap NewBitmap = new Bitmap(TempImage.Width, TempImage.Height))
+                        NewBitmap.Lock();
+                        TempImageX.Lock();
+                        TempImageY.Lock();
+                        int Width = NewBitmap.Width;
+                        int Height = NewBitmap.Height;
+                        Parallel.For(0, Width, x =>
                         {
-                            BitmapData NewData = NewBitmap.LockImage();
-                            BitmapData OldData1 = TempImageX.LockImage();
-                            BitmapData OldData2 = TempImageY.LockImage();
-                            int NewPixelSize = NewData.GetPixelSize();
-                            int OldPixelSize1 = OldData1.GetPixelSize();
-                            int OldPixelSize2 = OldData2.GetPixelSize();
-                            int Width = NewBitmap.Width;
-                            int Height = NewBitmap.Height;
-                            Parallel.For(0, Width, x =>
+                            for (int y = 0; y < Height; ++y)
                             {
-                                for (int y = 0; y < Height; ++y)
-                                {
-                                    Color Pixel1 = OldData1.GetPixel(x, y, OldPixelSize1);
-                                    Color Pixel2 = OldData2.GetPixel(x, y, OldPixelSize2);
-                                    NewData.SetPixel(x, y,
-                                        Color.FromArgb((Pixel1.R + Pixel2.R).Clamp(255, 0),
-                                            (Pixel1.G + Pixel2.G).Clamp(255, 0),
-                                            (Pixel1.B + Pixel2.B).Clamp(255, 0)),
-                                        NewPixelSize);
-                                }
-                            });
-                            NewBitmap.UnlockImage(NewData);
-                            TempImageX.UnlockImage(OldData1);
-                            TempImageY.UnlockImage(OldData2);
-                            Bitmap NewBitmap2 = NewBitmap.Negative();
-                            if (!string.IsNullOrEmpty(FileName))
-                                NewBitmap2.Save(FileName, FormatUsing);
-                            return NewBitmap2;
-                        }
+                                Color Pixel1 = TempImageX.GetPixel(x, y);
+                                Color Pixel2 = TempImageY.GetPixel(x, y);
+                                NewBitmap.SetPixel(x, y,
+                                    Color.FromArgb((Pixel1.R + Pixel2.R).Clamp(255, 0),
+                                        (Pixel1.G + Pixel2.G).Clamp(255, 0),
+                                        (Pixel1.B + Pixel2.B).Clamp(255, 0)));
+                            }
+                        });
+                        NewBitmap.Unlock();
+                        TempImageY.Unlock();
+                        TempImageX.Unlock();
+                        return Input.Copy(NewBitmap).Negative();
                     }
                 }
             }
@@ -1182,118 +1161,98 @@ namespace Utilities.Media
         /// Sobel emboss function
         /// </summary>
         /// <param name="Image">Image to manipulate</param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>A bitmap image</returns>
-        public static Bitmap SobelEmboss(this Bitmap Image)
+        /// <returns>
+        /// A SwiftBitmap image
+        /// </returns>
+        public static SwiftBitmap SobelEmboss(this SwiftBitmap Image)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            Filter TempFilter = new Filter(3, 3);
-            TempFilter.MyFilter[0, 0] = -1;
-            TempFilter.MyFilter[0, 1] = 0;
-            TempFilter.MyFilter[0, 2] = 1;
-            TempFilter.MyFilter[1, 0] = -2;
-            TempFilter.MyFilter[1, 1] = 0;
-            TempFilter.MyFilter[1, 2] = 2;
-            TempFilter.MyFilter[2, 0] = -1;
-            TempFilter.MyFilter[2, 1] = 0;
-            TempFilter.MyFilter[2, 2] = 1;
-            TempFilter.Offset = 127;
-            Bitmap NewBitmap = TempFilter.ApplyFilter(Image);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
+            return Image.ApplyConvolutionFilter(new int[][]{
+                            new int[] {-1, 0, 1},
+                            new int[] {-2, 0, 2},
+                            new int[] {-1, 0, 1}
+                        }, offset: 127);
         }
 
         /// <summary>
         /// Stretches the contrast
         /// </summary>
         /// <param name="OriginalImage">Image to manipulate</param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>A bitmap image</returns>
-        public static Bitmap StretchContrast(this Bitmap OriginalImage)
+        /// <returns>
+        /// A SwiftBitmap image
+        /// </returns>
+        public static SwiftBitmap StretchContrast(this SwiftBitmap OriginalImage)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
-            BitmapData NewData = NewBitmap.LockImage();
-            BitmapData OldData = OriginalImage.LockImage();
-            int NewPixelSize = NewData.GetPixelSize();
-            int OldPixelSize = OldData.GetPixelSize();
-            Color MinValue;
-            Color MaxValue;
-            GetMinMaxPixel(out MinValue, out MaxValue, OldData, OldPixelSize);
-            int Width = NewBitmap.Width;
-            int Height = NewBitmap.Height;
-            Parallel.For(0, Width, x =>
+            using (SwiftBitmap NewBitmap = new SwiftBitmap(OriginalImage.Width, OriginalImage.Height))
             {
-                for (int y = 0; y < Height; ++y)
+                NewBitmap.Lock();
+                OriginalImage.Lock();
+                Color MinValue;
+                Color MaxValue;
+                GetMinMaxPixel(out MinValue, out MaxValue, OriginalImage);
+                int Width = NewBitmap.Width;
+                int Height = NewBitmap.Height;
+                Parallel.For(0, Width, x =>
                 {
-                    Color CurrentPixel = OldData.GetPixel(x, y, OldPixelSize);
-                    Color TempValue = Color.FromArgb(Map(CurrentPixel.R, MinValue.R, MaxValue.R),
-                        Map(CurrentPixel.G, MinValue.G, MaxValue.G),
-                        Map(CurrentPixel.B, MinValue.B, MaxValue.B));
-                    NewData.SetPixel(x, y, TempValue, NewPixelSize);
-                }
-            });
-            NewBitmap.UnlockImage(NewData);
-            OriginalImage.UnlockImage(OldData);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
+                    for (int y = 0; y < Height; ++y)
+                    {
+                        Color CurrentPixel = OriginalImage.GetPixel(x, y);
+                        Color TempValue = Color.FromArgb(Map(CurrentPixel.R, MinValue.R, MaxValue.R),
+                            Map(CurrentPixel.G, MinValue.G, MaxValue.G),
+                            Map(CurrentPixel.B, MinValue.B, MaxValue.B));
+                        NewBitmap.SetPixel(x, y, TempValue);
+                    }
+                });
+                NewBitmap.Unlock();
+                return OriginalImage.Unlock().Copy(NewBitmap);
+            }
         }
 
         /// <summary>
         /// Does threshold manipulation of the image
         /// </summary>
         /// <param name="OriginalImage">Image to transform</param>
-        /// <param name="Threshold">
-        /// Float defining the threshold at which to set the pixel to black vs white.
-        /// </param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>A bitmap object containing the new image</returns>
-        public static Bitmap Threshold(this Bitmap OriginalImage, float Threshold = 0.5f)
+        /// <param name="Threshold">Float defining the threshold at which to set the pixel to black vs white.</param>
+        /// <returns>
+        /// A SwiftBitmap object containing the new image
+        /// </returns>
+        public static SwiftBitmap Threshold(this SwiftBitmap OriginalImage, float Threshold = 0.5f)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
-            BitmapData NewData = NewBitmap.LockImage();
-            BitmapData OldData = OriginalImage.LockImage();
-            int NewPixelSize = NewData.GetPixelSize();
-            int OldPixelSize = OldData.GetPixelSize();
-            int Width = NewBitmap.Width;
-            int Height = NewBitmap.Height;
-            Parallel.For(0, Width, x =>
+            using (SwiftBitmap NewSwiftBitmap = new SwiftBitmap(OriginalImage.Width, OriginalImage.Height))
             {
-                for (int y = 0; y < Height; ++y)
+                NewSwiftBitmap.Lock();
+                OriginalImage.Lock();
+                int Width = NewSwiftBitmap.Width;
+                int Height = NewSwiftBitmap.Height;
+                Parallel.For(0, Width, x =>
                 {
-                    Color TempColor = OldData.GetPixel(x, y, OldPixelSize);
-                    if ((TempColor.R + TempColor.G + TempColor.B) / 755.0f > Threshold)
-                        NewData.SetPixel(x, y, Color.White, NewPixelSize);
-                    else
-                        NewData.SetPixel(x, y, Color.Black, NewPixelSize);
-                }
-            });
-            NewBitmap.UnlockImage(NewData);
-            OriginalImage.UnlockImage(OldData);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
+                    for (int y = 0; y < Height; ++y)
+                    {
+                        Color TempColor = OriginalImage.GetPixel(x, y);
+                        if ((TempColor.R + TempColor.G + TempColor.B) / 755.0f > Threshold)
+                            NewSwiftBitmap.SetPixel(x, y, Color.White);
+                        else
+                            NewSwiftBitmap.SetPixel(x, y, Color.Black);
+                    }
+                });
+                NewSwiftBitmap.Unlock();
+                return OriginalImage.Unlock().Copy(NewSwiftBitmap);
+            }
         }
 
         /// <summary>
-        /// Converts an Bitmap to ASCII art
+        /// Converts an SwiftBitmap to ASCII art
         /// </summary>
-        /// <param name="Input">The Bitmap you wish to convert</param>
+        /// <param name="Input">The SwiftBitmap you wish to convert</param>
         /// <returns>A string containing the art</returns>
-        public static string ToASCIIArt(this Bitmap Input)
+        public static string ToASCIIArt(this SwiftBitmap Input)
         {
             Contract.Requires<ArgumentNullException>(Input != null, "Input");
             bool ShowLine = true;
-            using (Bitmap TempImage = Input.BlackAndWhite())
+            using (SwiftBitmap TempImage = ((SwiftBitmap)Input.Clone()).BlackAndWhite().Lock())
             {
-                BitmapData OldData = TempImage.LockImage();
-                int OldPixelSize = OldData.GetPixelSize();
                 StringBuilder Builder = new StringBuilder();
                 for (int x = 0; x < TempImage.Height; ++x)
                 {
@@ -1301,7 +1260,7 @@ namespace Utilities.Media
                     {
                         if (ShowLine)
                         {
-                            Color CurrentPixel = OldData.GetPixel(y, x, OldPixelSize);
+                            Color CurrentPixel = TempImage.GetPixel(y, x);
                             Builder.Append(_ASCIICharacters[((CurrentPixel.R * _ASCIICharacters.Length) / 255)]);
                         }
                     }
@@ -1315,25 +1274,8 @@ namespace Utilities.Media
                         ShowLine = true;
                     }
                 }
-                TempImage.UnlockImage(OldData);
+                TempImage.Unlock();
                 return Builder.ToString();
-            }
-        }
-
-        /// <summary>
-        /// Converts an Bitmap to a base64 string and returns it
-        /// </summary>
-        /// <param name="Image">Image to convert</param>
-        /// <param name="DesiredFormat">Desired Bitmap format (defaults to Jpeg)</param>
-        /// <returns>The Bitmap in base64 string format</returns>
-        public static string ToBase64(this System.Drawing.Image Image, ImageFormat DesiredFormat = null)
-        {
-            Contract.Requires<ArgumentNullException>(Image != null, "Image");
-            DesiredFormat = DesiredFormat.Check(ImageFormat.Jpeg);
-            using (MemoryStream Stream = new MemoryStream())
-            {
-                Image.Save(Stream, DesiredFormat);
-                return Stream.ToArray().ToString(Base64FormattingOptions.None);
             }
         }
 
@@ -1344,47 +1286,42 @@ namespace Utilities.Media
         /// <param name="Roughness">Roughness of the movement</param>
         /// <param name="Power">How strong the movement is</param>
         /// <param name="Seed">Random seed</param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>A bitmap object containing the new image</returns>
-        public static Bitmap Turbulence(this Bitmap OriginalImage, int Roughness = 8, float Power = 5.0f, int Seed = 25123864)
+        /// <returns>
+        /// A SwiftBitmap object containing the new image
+        /// </returns>
+        public static SwiftBitmap Turbulence(this SwiftBitmap OriginalImage, int Roughness = 8, float Power = 5.0f, int Seed = 25123864)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
             int Width = OriginalImage.Width;
             int Height = OriginalImage.Height;
-            BitmapData OriginalData = OriginalImage.LockImage();
-            int OriginalPixelSize = OriginalData.GetPixelSize();
-            Bitmap NewBitmap = new Bitmap(Width, Height);
-            BitmapData ReturnData = NewBitmap.LockImage();
-            int ReturnPixelSize = ReturnData.GetPixelSize();
-            using (Bitmap XNoise = PerlinNoise.Generate(Width, Height, 255, 0, 0.0625f, 1.0f, 0.5f, Roughness, Seed))
+            OriginalImage.Lock();
+            using (SwiftBitmap NewSwiftBitmap = new SwiftBitmap(Width, Height))
             {
-                BitmapData XNoiseData = XNoise.LockImage();
-                int XNoisePixelSize = XNoiseData.GetPixelSize();
-                using (Bitmap YNoise = PerlinNoise.Generate(Width, Height, 255, 0, 0.0625f, 1.0f, 0.5f, Roughness, Seed * 2))
+                NewSwiftBitmap.Lock();
+                using (SwiftBitmap XNoise = PerlinNoise.Generate(Width, Height, 255, 0, 0.0625f, 1.0f, 0.5f, Roughness, Seed))
                 {
-                    BitmapData YNoiseData = YNoise.LockImage();
-                    int YNoisePixelSize = YNoiseData.GetPixelSize();
-                    Parallel.For(0, Height, y =>
+                    XNoise.Lock();
+                    using (SwiftBitmap YNoise = PerlinNoise.Generate(Width, Height, 255, 0, 0.0625f, 1.0f, 0.5f, Roughness, Seed * 2))
                     {
-                        for (int x = 0; x < Width; ++x)
+                        YNoise.Lock();
+                        Parallel.For(0, Height, y =>
                         {
-                            float XDistortion = x + (GetHeight(x, y, XNoiseData, XNoisePixelSize) * Power);
-                            float YDistortion = y + (GetHeight(x, y, YNoiseData, YNoisePixelSize) * Power);
-                            int X1 = ((int)XDistortion).Clamp(Width - 1, 0);
-                            int Y1 = ((int)YDistortion).Clamp(Height - 1, 0);
-                            ReturnData.SetPixel(x, y, OriginalData.GetPixel(X1, Y1, OriginalPixelSize), ReturnPixelSize);
-                        }
-                    });
-                    YNoise.UnlockImage(YNoiseData);
+                            for (int x = 0; x < Width; ++x)
+                            {
+                                float XDistortion = x + (GetHeight(x, y, XNoise) * Power);
+                                float YDistortion = y + (GetHeight(x, y, YNoise) * Power);
+                                int X1 = ((int)XDistortion).Clamp(Width - 1, 0);
+                                int Y1 = ((int)YDistortion).Clamp(Height - 1, 0);
+                                NewSwiftBitmap.SetPixel(x, y, OriginalImage.GetPixel(X1, Y1));
+                            }
+                        });
+                        YNoise.Unlock();
+                    }
+                    XNoise.Unlock();
                 }
-                XNoise.UnlockImage(XNoiseData);
+                NewSwiftBitmap.Unlock();
+                return OriginalImage.Unlock().Copy(NewSwiftBitmap);
             }
-            NewBitmap.UnlockImage(ReturnData);
-            UnlockImage(OriginalImage, OriginalData);
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
         }
 
         /// <summary>
@@ -1392,25 +1329,22 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="Image">image to add the watermark to</param>
         /// <param name="WatermarkImage">Watermark image</param>
-        /// <param name="Opacity">
-        /// Opacity of the watermark (1.0 to 0.0 with 1 being completely visible and 0 being invisible)
-        /// </param>
+        /// <param name="Opacity">Opacity of the watermark (1.0 to 0.0 with 1 being completely visible and 0 being invisible)</param>
         /// <param name="X">X position in pixels for the watermark</param>
         /// <param name="Y">Y position in pixels for the watermark</param>
-        /// <param name="KeyColor">
-        /// Transparent color used in watermark image, set to null if not used
-        /// </param>
-        /// <param name="FileName">File to save to</param>
-        /// <returns>The results in the form of a bitmap object</returns>
-        public static Bitmap Watermark(this Bitmap Image, Bitmap WatermarkImage, float Opacity, int X, int Y, Color KeyColor)
+        /// <param name="KeyColor">Transparent color used in watermark image, set to null if not used</param>
+        /// <returns>
+        /// The results in the form of a SwiftBitmap object
+        /// </returns>
+        public static SwiftBitmap Watermark(this SwiftBitmap Image, SwiftBitmap WatermarkImage, float Opacity, int X, int Y, Color KeyColor)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
             Contract.Requires<ArgumentNullException>(WatermarkImage != null, "WatermarkImage");
-            ImageFormat FormatUsing = FileName.GetImageFormat();
-            Bitmap NewBitmap = new Bitmap(Image, Image.Width, Image.Height);
-            using (Graphics NewGraphics = Graphics.FromImage(NewBitmap))
+            using (SwiftBitmap NewSwiftBitmap = new SwiftBitmap(Image.Width, Image.Height).Copy(Image))
             {
-                float[][] FloatColorMatrix ={
+                using (Graphics NewGraphics = Graphics.FromImage(NewSwiftBitmap.InternalBitmap))
+                {
+                    float[][] FloatColorMatrix ={
                             new float[] {1, 0, 0, 0, 0},
                             new float[] {0, 1, 0, 0, 0},
                             new float[] {0, 0, 1, 0, 0},
@@ -1418,24 +1352,23 @@ namespace Utilities.Media
                             new float[] {0, 0, 0, 0, 1}
                         };
 
-                System.Drawing.Imaging.ColorMatrix NewColorMatrix = new System.Drawing.Imaging.ColorMatrix(FloatColorMatrix);
-                using (ImageAttributes Attributes = new ImageAttributes())
-                {
-                    Attributes.SetColorMatrix(NewColorMatrix);
-                    if (KeyColor != null)
+                    System.Drawing.Imaging.ColorMatrix NewColorMatrix = new System.Drawing.Imaging.ColorMatrix(FloatColorMatrix);
+                    using (ImageAttributes Attributes = new ImageAttributes())
                     {
-                        Attributes.SetColorKey(KeyColor, KeyColor);
+                        Attributes.SetColorMatrix(NewColorMatrix);
+                        if (KeyColor != null)
+                        {
+                            Attributes.SetColorKey(KeyColor, KeyColor);
+                        }
+                        NewGraphics.DrawImage(WatermarkImage.InternalBitmap,
+                            new System.Drawing.Rectangle(X, Y, WatermarkImage.Width, WatermarkImage.Height),
+                            0, 0, WatermarkImage.Width, WatermarkImage.Height,
+                            GraphicsUnit.Pixel,
+                            Attributes);
                     }
-                    NewGraphics.DrawImage(WatermarkImage,
-                        new System.Drawing.Rectangle(X, Y, WatermarkImage.Width, WatermarkImage.Height),
-                        0, 0, WatermarkImage.Width, WatermarkImage.Height,
-                        GraphicsUnit.Pixel,
-                        Attributes);
                 }
+                return Image.Copy(NewSwiftBitmap);
             }
-            if (!string.IsNullOrEmpty(FileName))
-                NewBitmap.Save(FileName, FormatUsing);
-            return NewBitmap;
         }
 
         private static double Distance(int R1, int R2, int G1, int G2, int B1, int B2)
@@ -1443,10 +1376,10 @@ namespace Utilities.Media
             return ((double)(((R1 - R2) * (R1 - R2)) + ((G1 - G2) * (G1 - G2)) + ((B1 - B2) * (B1 - B2)))).Sqrt();
         }
 
-        private static float GetHeight(int x, int y, BitmapData BlackAndWhiteData, int BlackAndWhitePixelSize)
+        private static float GetHeight(int x, int y, SwiftBitmap BlackAndWhiteData)
         {
             Contract.Requires<ArgumentNullException>(BlackAndWhiteData != null, "BlackAndWhiteData");
-            Color TempColor = BlackAndWhiteData.GetPixel(x, y, BlackAndWhitePixelSize);
+            Color TempColor = BlackAndWhiteData.GetPixel(x, y);
             return GetHeight(TempColor);
         }
 
@@ -1455,7 +1388,7 @@ namespace Utilities.Media
             return (float)Color.R / 255.0f;
         }
 
-        private static void GetMinMaxPixel(out Color Min, out Color Max, BitmapData ImageData, int PixelSize)
+        private static void GetMinMaxPixel(out Color Min, out Color Max, SwiftBitmap ImageData)
         {
             Contract.Requires<ArgumentNullException>(ImageData != null, "ImageData");
             int MinR = 255, MinG = 255, MinB = 255;
@@ -1464,7 +1397,7 @@ namespace Utilities.Media
             {
                 for (int y = 0; y < ImageData.Height; ++y)
                 {
-                    Color TempImage = ImageData.GetPixel(x, y, PixelSize);
+                    Color TempImage = ImageData.GetPixel(x, y);
                     if (MinR > TempImage.R)
                         MinR = TempImage.R;
                     if (MaxR < TempImage.R)

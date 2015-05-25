@@ -31,9 +31,9 @@ namespace UnitTests.Media.Image.Procedural
         [Fact]
         public void Generate()
         {
-            using (Bitmap TempBitmap = Utilities.Media.Procedural.FaultFormation.Generate(100, 100, 10, 7453457))
+            using (Utilities.Media.SwiftBitmap TempBitmap = Utilities.Media.Procedural.FaultFormation.Generate(100, 100, 10, 7453457))
             {
-                TempBitmap.Save(@".\Testing\FaultFormation.jpg", ImageFormat.Jpeg);
+                TempBitmap.Save(@".\Testing\FaultFormation.jpg");
                 Assert.NotNull(TempBitmap);
             }
         }

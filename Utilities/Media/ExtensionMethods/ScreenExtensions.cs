@@ -41,17 +41,17 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="Screen">Screen to get the screenshot from</param>
         /// <param name="FileName">Name of the file to save the screenshot (optional)</param>
-        /// <returns>Returns a bitmap containing the screen shot</returns>
+        /// <returns>Returns a SwiftBitmap containing the screen shot</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static Bitmap TakeScreenShot(this Screen Screen, string FileName = "")
         {
             Contract.Requires<ArgumentNullException>(Screen != null, "Screen");
-            Bitmap TempBitmap = new Bitmap(Screen.Bounds.Width > 1 ? Screen.Bounds.Width : 1, Screen.Bounds.Height > 1 ? Screen.Bounds.Height : 1, PixelFormat.Format32bppArgb);
+            Bitmap TempSwiftBitmap = new Bitmap(Screen.Bounds.Width > 1 ? Screen.Bounds.Width : 1, Screen.Bounds.Height > 1 ? Screen.Bounds.Height : 1, PixelFormat.Format32bppArgb);
             try
             {
                 if (Screen.Bounds.Width > 1 && Screen.Bounds.Height > 1)
                 {
-                    using (Graphics TempGraphics = Graphics.FromImage(TempBitmap))
+                    using (Graphics TempGraphics = Graphics.FromImage(TempSwiftBitmap))
                     {
                         TempGraphics.CopyFromScreen(Screen.Bounds.X, Screen.Bounds.Y, 0, 0, Screen.Bounds.Size, CopyPixelOperation.SourceCopy);
                     }
@@ -59,8 +59,8 @@ namespace Utilities.Media
             }
             catch { }
             if (!string.IsNullOrEmpty(FileName))
-                TempBitmap.Save(FileName);
-            return TempBitmap;
+                TempSwiftBitmap.Save(FileName);
+            return TempSwiftBitmap;
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="Screens">Screens to get the screenshot from</param>
         /// <param name="FileName">Name of the file to save the screenshot (optional)</param>
-        /// <returns>Returns a bitmap containing the screen shot</returns>
+        /// <returns>Returns a SwiftBitmap containing the screen shot</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static Bitmap TakeScreenShot(this IEnumerable<Screen> Screens, string FileName = "")
         {
@@ -77,12 +77,12 @@ namespace Utilities.Media
             Rectangle TotalScreenRect = Rectangle.Empty;
             foreach (Screen CurrentScreen in Screen.AllScreens)
                 TotalScreenRect = Rectangle.Union(TotalScreenRect, CurrentScreen.Bounds);
-            Bitmap TempBitmap = new Bitmap(TotalScreenRect.Width > 1 ? TotalScreenRect.Width : 1, TotalScreenRect.Height > 1 ? TotalScreenRect.Width : 1, PixelFormat.Format32bppArgb);
+            Bitmap TempSwiftBitmap = new Bitmap(TotalScreenRect.Width > 1 ? TotalScreenRect.Width : 1, TotalScreenRect.Height > 1 ? TotalScreenRect.Width : 1, PixelFormat.Format32bppArgb);
             try
             {
                 if (TotalScreenRect.Width > 1 && TotalScreenRect.Height > 1)
                 {
-                    using (Graphics TempGraphics = Graphics.FromImage(TempBitmap))
+                    using (Graphics TempGraphics = Graphics.FromImage(TempSwiftBitmap))
                     {
                         TempGraphics.CopyFromScreen(TotalScreenRect.X, TotalScreenRect.Y, 0, 0, TotalScreenRect.Size, CopyPixelOperation.SourceCopy);
                     }
@@ -90,8 +90,8 @@ namespace Utilities.Media
             }
             catch { }
             if (!string.IsNullOrEmpty(FileName))
-                TempBitmap.Save(FileName);
-            return TempBitmap;
+                TempSwiftBitmap.Save(FileName);
+            return TempSwiftBitmap;
         }
     }
 }

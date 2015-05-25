@@ -35,7 +35,7 @@ using Utilities.DataTypes.Patterns.BaseClasses;
 namespace Utilities.Media
 {
     /// <summary>
-    /// Bitmap wrapper. Helps make bitmap access faster and a bit simpler.
+    /// Bitmap wrapper. Helps make Bitmap access faster and a bit simpler.
     /// </summary>
     public class SwiftBitmap : SafeDisposableBaseClass, ICloneable
     {
@@ -99,9 +99,9 @@ namespace Utilities.Media
         public int Height { get; private set; }
 
         /// <summary>
-        /// Gets the internal bitmap.
+        /// Gets the internal Bitmap.
         /// </summary>
-        /// <value>The internal bitmap.</value>
+        /// <value>The internal Bitmap.</value>
         public Bitmap InternalBitmap { get; private set; }
 
         /// <summary>
@@ -322,6 +322,18 @@ namespace Utilities.Media
         }
 
         /// <summary>
+        /// Fills the image with the specified color.
+        /// </summary>
+        /// <param name="color">The color.</param>
+        /// <returns>This</returns>
+        public SwiftBitmap Fill(Color color)
+        {
+            Unlock();
+            SetPixels(0, 0, (Width * Height).Times(x => color).ToArray());
+            return this;
+        }
+
+        /// <summary>
         /// Sets the pixel.
         /// </summary>
         /// <param name="x">The x position</param>
@@ -382,25 +394,25 @@ namespace Utilities.Media
         /// <summary>
         /// Copies the image from one image to this one.
         /// </summary>
-        /// <param name="bitmap">The bitmap to copy from.</param>
+        /// <param name="SwiftBitmap">The SwiftBitmap to copy from.</param>
         /// <returns>
         /// This
         /// </returns>
-        public unsafe SwiftBitmap Copy(SwiftBitmap bitmap)
+        public unsafe SwiftBitmap Copy(SwiftBitmap SwiftBitmap)
         {
-            if (bitmap == null)
+            if (SwiftBitmap == null)
                 return this;
             Unlock();
             if (InternalBitmap != null)
             {
                 InternalBitmap.Dispose();
             }
-            InternalBitmap = (Bitmap)bitmap.InternalBitmap.Clone();
+            InternalBitmap = (Bitmap)SwiftBitmap.InternalBitmap.Clone();
             return this;
         }
 
         /// <summary>
-        /// Resizes an Bitmap to a certain height
+        /// Resizes an SwiftBitmap to a certain height
         /// </summary>
         /// <param name="Width">New width for the final image</param>
         /// <param name="Height">New height for the final image</param>
@@ -411,7 +423,8 @@ namespace Utilities.Media
         public SwiftBitmap Resize(int Width, int Height, Quality Quality = Quality.Low)
         {
             Unlock();
-            using (Graphics NewGraphics = Graphics.FromImage(InternalBitmap))
+            Bitmap TempBitmap = new Bitmap(Width, Height);
+            using (Graphics NewGraphics = Graphics.FromImage(TempBitmap))
             {
                 if (Quality == Quality.High)
                 {
@@ -427,11 +440,13 @@ namespace Utilities.Media
                 }
                 NewGraphics.DrawImage(InternalBitmap, new System.Drawing.Rectangle(0, 0, Width, Height));
             }
+            InternalBitmap.Dispose();
+            InternalBitmap = TempBitmap;
             return this;
         }
 
         /// <summary>
-        /// Unlocks this bitmap
+        /// Unlocks this SwiftBitmap
         /// </summary>
         /// <returns>This</returns>
         public unsafe SwiftBitmap Unlock()
@@ -590,6 +605,23 @@ namespace Utilities.Media
         }
 
         /// <summary>
+        /// Converts an SwiftBitmap to a base64 string and returns it
+        /// </summary>
+        /// <param name="desiredFormat">Desired SwiftBitmap format (defaults to Jpeg)</param>
+        /// <returns>
+        /// The SwiftBitmap in base64 string format
+        /// </returns>
+        public string ToString(ImageFormat desiredFormat)
+        {
+            desiredFormat = desiredFormat.Check(ImageFormat.Jpeg);
+            using (MemoryStream Stream = new MemoryStream())
+            {
+                InternalBitmap.Save(Stream, desiredFormat);
+                return Stream.ToArray().ToString(Base64FormattingOptions.None);
+            }
+        }
+
+        /// <summary>
         /// Draws the path specified
         /// </summary>
         /// <param name="pen">The pen to use.</param>
@@ -651,7 +683,8 @@ namespace Utilities.Media
         public SwiftBitmap Rotate(float DegreesToRotate)
         {
             Unlock();
-            using (Graphics NewGraphics = Graphics.FromImage(InternalBitmap))
+            Bitmap TempBitmap = new Bitmap(Width, Height);
+            using (Graphics NewGraphics = Graphics.FromImage(TempBitmap))
             {
                 NewGraphics.TranslateTransform((float)Width / 2.0f, (float)Height / 2.0f);
                 NewGraphics.RotateTransform(DegreesToRotate);
@@ -661,6 +694,8 @@ namespace Utilities.Media
                     new System.Drawing.Rectangle(0, 0, Width, Height),
                     GraphicsUnit.Pixel);
             }
+            InternalBitmap.Dispose();
+            InternalBitmap = TempBitmap;
             return this;
         }
 
@@ -700,7 +735,7 @@ namespace Utilities.Media
         }
 
         /// <summary>
-        /// Returns the Bitmap format this file is using
+        /// Returns the SwiftBitmap format this file is using
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
         /// <returns>The image format</returns>

@@ -21,6 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using Ironman.Core.Assets.Enums;
+using Ironman.Core.Assets.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -28,8 +30,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Ironman.Core.Assets.Enums;
-using Ironman.Core.Assets.Interfaces;
 using Utilities.DataTypes;
 using Utilities.IO;
 using Utilities.Media;
@@ -106,34 +106,34 @@ namespace Ironman.Core.Assets.Filters
                         }
                         else
                         {
-                            using (Bitmap TempImage = new Bitmap(File.FullName))
+                            using (SwiftBitmap TempImage = new SwiftBitmap(File.FullName))
                             {
                                 string MIMEType = "image/jpeg";
                                 string Content = "";
                                 if (File.FullName.ToUpperInvariant().EndsWith(".PNG"))
                                 {
                                     MIMEType = "image/png";
-                                    Content = TempImage.ToBase64(ImageFormat.Png);
+                                    Content = TempImage.ToString(ImageFormat.Png);
                                 }
                                 else if (File.FullName.ToUpperInvariant().EndsWith(".JPG") || File.FullName.ToUpperInvariant().EndsWith(".JPEG"))
                                 {
                                     MIMEType = "image/jpeg";
-                                    Content = TempImage.ToBase64(ImageFormat.Jpeg);
+                                    Content = TempImage.ToString(ImageFormat.Jpeg);
                                 }
                                 else if (File.FullName.ToUpperInvariant().EndsWith(".GIF"))
                                 {
                                     MIMEType = "image/gif";
-                                    Content = TempImage.ToBase64(ImageFormat.Gif);
+                                    Content = TempImage.ToString(ImageFormat.Gif);
                                 }
                                 else if (File.FullName.ToUpperInvariant().EndsWith(".TIFF"))
                                 {
                                     MIMEType = "image/tiff";
-                                    Content = TempImage.ToBase64(ImageFormat.Tiff);
+                                    Content = TempImage.ToString(ImageFormat.Tiff);
                                 }
                                 else if (File.FullName.ToUpperInvariant().EndsWith(".BMP"))
                                 {
                                     MIMEType = "image/bmp";
-                                    Content = TempImage.ToBase64(ImageFormat.Bmp);
+                                    Content = TempImage.ToString(ImageFormat.Bmp);
                                 }
                                 Asset.Content = Asset.Content.Replace(MatchString, "url(data:" + MIMEType + ";base64," + Content + ")");
                             }

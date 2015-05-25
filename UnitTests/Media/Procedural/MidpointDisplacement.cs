@@ -26,14 +26,14 @@ using Xunit;
 
 namespace UnitTests.Media.Image.Procedural
 {
-    public class MidpointDisplacement :TestingDirectoryFixture
+    public class MidpointDisplacement : TestingDirectoryFixture
     {
         [Fact]
         public void Generate()
         {
-            using (Bitmap TempBitmap = Utilities.Media.Procedural.MidpointDisplacement.Generate(100, 100, 10, 7, 6, 50, 7453457))
+            using (Utilities.Media.SwiftBitmap TempBitmap = Utilities.Media.Procedural.MidpointDisplacement.Generate(100, 100, 10, 7, 6, 50, 7453457))
             {
-                TempBitmap.Save(@".\Testing\MidpointDisplacement.jpg", ImageFormat.Jpeg);
+                TempBitmap.Save(@".\Testing\MidpointDisplacement.jpg");
                 Assert.NotNull(TempBitmap);
             }
         }

@@ -43,15 +43,15 @@ namespace Utilities.Media.Procedural
         /// <param name="Seed">Random seed</param>
         /// <returns>An image containing "cracks"</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
-        public static Bitmap Generate(int Width, int Height, int NumberOfCracks, int Iterations,
+        public static SwiftBitmap Generate(int Width, int Height, int NumberOfCracks, int Iterations,
             int MaxChange, int MaxLength, int Seed)
         {
             Contract.Requires<ArgumentException>(NumberOfCracks >= 0, "Number of cracks should be greater than 0");
             Contract.Requires<ArgumentException>(Width >= 0, "Width must be greater than or equal to 0");
             Contract.Requires<ArgumentException>(Height >= 0, "Height must be greater than or equal to 0");
-            Bitmap ReturnValue = new Bitmap(Width, Height);
+            SwiftBitmap ReturnValue = new SwiftBitmap(Width, Height);
             List<Line> Lines = GenerateLines(Width, Height, NumberOfCracks, Iterations, MaxChange, MaxLength, Seed);
-            using (Graphics ReturnGraphic = Graphics.FromImage(ReturnValue))
+            using (Graphics ReturnGraphic = Graphics.FromImage(ReturnValue.InternalBitmap))
             {
                 foreach (Line Line in Lines)
                 {

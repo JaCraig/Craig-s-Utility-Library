@@ -26,14 +26,14 @@ using Xunit;
 
 namespace UnitTests.Media.Image.Procedural
 {
-    public class CellularTexture :TestingDirectoryFixture
+    public class CellularTexture : TestingDirectoryFixture
     {
         [Fact]
         public void Generate()
         {
-            using (Bitmap TempBitmap = Utilities.Media.Procedural.CellularTexture.Generate(100, 100, 10, 7453457))
+            using (Utilities.Media.SwiftBitmap TempBitmap = Utilities.Media.Procedural.CellularTexture.Generate(100, 100, 10, 7453457))
             {
-                TempBitmap.Save(@".\Testing\CellularTexture.jpg", ImageFormat.Jpeg);
+                TempBitmap.Save(@".\Testing\CellularTexture.jpg");
                 Assert.NotNull(TempBitmap);
             }
         }
