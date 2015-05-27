@@ -23,6 +23,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 using Utilities.DataTypes;
 
 namespace Utilities.Media
@@ -40,7 +41,7 @@ namespace Utilities.Media
         /// Constructor
         /// </summary>
         /// <param name="Image">Image to load</param>
-        public RGBHistogram(Bitmap Image = null)
+        public RGBHistogram(SwiftBitmap Image = null)
         {
             R = new float[256];
             G = new float[256];
@@ -127,27 +128,26 @@ namespace Utilities.Media
         /// Loads an image
         /// </summary>
         /// <param name="ImageUsing">Image to load</param>
-        public virtual void LoadImage(Bitmap ImageUsing)
+        public virtual void LoadImage(SwiftBitmap ImageUsing)
         {
             Contract.Requires<ArgumentNullException>(ImageUsing != null, "ImageUsing");
-            BitmapData OldData = ImageUsing.LockImage();
-            int PixelSize = OldData.GetPixelSize();
             Width = ImageUsing.Width;
             Height = ImageUsing.Height;
+            ImageUsing.Lock();
             R.Clear();
             G.Clear();
             B.Clear();
-            for (int x = 0; x < Width; ++x)
+            for (int x = 0; x < ImageUsing.Width; ++x)
             {
-                for (int y = 0; y < Height; ++y)
+                for (int y = 0; y < ImageUsing.Height; ++y)
                 {
-                    Color TempColor = OldData.GetPixel(x, y, PixelSize);
+                    Color TempColor = ImageUsing.GetPixel(x, y);
                     ++R[(int)TempColor.R];
                     ++G[(int)TempColor.G];
                     ++B[(int)TempColor.B];
                 }
             }
-            ImageUsing.UnlockImage(OldData);
+            ImageUsing.Unlock();
         }
 
         /// <summary>

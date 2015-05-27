@@ -39,7 +39,7 @@ namespace Utilities.Media.Procedural
         /// <param name="Seed">Random seed</param>
         /// <returns>Returns an image of a cellular texture</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body")]
-        public static Bitmap Generate(int Width, int Height, int NumberOfPoints, int Seed)
+        public static SwiftBitmap Generate(int Width, int Height, int NumberOfPoints, int Seed)
         {
             float[,] DistanceBuffer = new float[Width, Height];
             float MinimumDistance = float.MaxValue;
@@ -48,9 +48,8 @@ namespace Utilities.Media.Procedural
             MaxDistance = Map.MaxDistance;
             MinimumDistance = Map.MinDistance;
             DistanceBuffer = Map.Distances;
-            Bitmap ReturnValue = new Bitmap(Width, Height);
-            BitmapData ImageData = ReturnValue.LockImage();
-            int ImagePixelSize = ImageData.GetPixelSize();
+            SwiftBitmap ReturnValue = new SwiftBitmap(Width, Height);
+            ReturnValue.Lock();
             for (int x = 0; x < Width; ++x)
             {
                 for (int y = 0; y < Height; ++y)
@@ -58,11 +57,10 @@ namespace Utilities.Media.Procedural
                     float Value = GetHeight(x, y, DistanceBuffer, MinimumDistance, MaxDistance);
                     Value *= 255;
                     int RGBValue = ((int)Value).Clamp(255, 0);
-                    ImageData.SetPixel(x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue), ImagePixelSize);
+                    ReturnValue.SetPixel(x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue));
                 }
             }
-            ReturnValue.UnlockImage(ImageData);
-            return ReturnValue;
+            return ReturnValue.Unlock();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "2#")]

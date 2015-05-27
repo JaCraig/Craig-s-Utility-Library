@@ -157,16 +157,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Media\ColorMatrix.cs" />
     <Compile Include="Media\ExtensionMethods\BitmapExtensions.cs" />
     <Compile Include="Media\ExtensionMethods\ScreenExtensions.cs" />
-    <Compile Include="Media\Filter.cs" />
     <Compile Include="Media\Procedural\CellularMap.cs" />
     <Compile Include="Media\Procedural\CellularTexture.cs" />
     <Compile Include="Media\Procedural\FaultFormation.cs" />
     <Compile Include="Media\Procedural\MidpointDisplacement.cs" />
     <Compile Include="Media\Procedural\PerlinNoise.cs" />
     <Compile Include="Media\RGBHistogram.cs" />
+    <Compile Include="Media\SwiftBitmap.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

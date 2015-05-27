@@ -449,8 +449,8 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(innerKeySelector != null, "innerKeySelector");
             Contract.Requires<ArgumentNullException>(resultSelector != null, "resultSelector");
 
-            var Left = outer.LeftJoin(inner, outerKeySelector, innerKeySelector, resultSelector);
-            var Right = outer.RightJoin(inner, outerKeySelector, innerKeySelector, resultSelector);
+            var Left = outer.LeftJoin(inner, outerKeySelector, innerKeySelector, resultSelector, comparer);
+            var Right = outer.RightJoin(inner, outerKeySelector, innerKeySelector, resultSelector, comparer);
             return Left.Union(Right);
         }
 

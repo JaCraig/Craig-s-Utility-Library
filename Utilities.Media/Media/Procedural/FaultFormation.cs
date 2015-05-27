@@ -39,7 +39,7 @@ namespace Utilities.Media.Procedural
         /// <param name="Seed">Random seed</param>
         /// <returns>An image from the resulting faults</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body")]
-        public static Bitmap Generate(int Width, int Height, int NumberFaults, int Seed)
+        public static SwiftBitmap Generate(int Width, int Height, int NumberFaults, int Seed)
         {
             float[,] Heights = new float[Width, Height];
             float IncreaseVal = 0.1f;
@@ -48,9 +48,8 @@ namespace Utilities.Media.Procedural
             {
                 IncreaseVal = GenerateFault(Width, Height, NumberFaults, Heights, IncreaseVal, Generator);
             }
-            Bitmap ReturnValue = new Bitmap(Width, Height);
-            BitmapData ImageData = ReturnValue.LockImage();
-            int ImagePixelSize = ImageData.GetPixelSize();
+            SwiftBitmap ReturnValue = new SwiftBitmap(Width, Height);
+            ReturnValue.Lock();
             for (int x = 0; x < Width; ++x)
             {
                 for (int y = 0; y < Height; ++y)
@@ -59,11 +58,10 @@ namespace Utilities.Media.Procedural
                     Value = (Value * 0.5f) + 0.5f;
                     Value *= 255;
                     int RGBValue = ((int)Value).Clamp(255, 0);
-                    ImageData.SetPixel(x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue), ImagePixelSize);
+                    ReturnValue.SetPixel(x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue));
                 }
             }
-            ReturnValue.UnlockImage(ImageData);
-            return ReturnValue;
+            return ReturnValue.Unlock();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "3#")]

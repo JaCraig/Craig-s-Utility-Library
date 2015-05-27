@@ -154,7 +154,10 @@ namespace Utilities.IoC
             List<FileInfo> Files = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).GetFiles("*.dll", SearchOption.TopDirectoryOnly)
                                                                                               .Where(x => !x.Name.Equals("CULGeneratedTypes.dll", StringComparison.InvariantCultureIgnoreCase))
                                                                                               .ToList();
-            if (!new DirectoryInfo(".").FullName.Contains("Program Files") && !new DirectoryInfo(".").FullName.Contains("system32"))
+            if (!new DirectoryInfo(".").FullName.Contains(System.Environment.GetFolderPath(Environment.SpecialFolder.SystemX86))
+                    && !new DirectoryInfo(".").FullName.Contains(System.Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles))
+                    && !new DirectoryInfo(".").FullName.Contains(System.Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86))
+                    && !new DirectoryInfo(".").FullName.Contains(System.Environment.GetFolderPath(Environment.SpecialFolder.System)))
             {
                 Files.AddRange(new DirectoryInfo(".").GetFiles("*.dll", SearchOption.TopDirectoryOnly)
                                                      .Where(x => !x.Name.Equals("CULGeneratedTypes.dll", StringComparison.InvariantCultureIgnoreCase)));
