@@ -13,7 +13,6 @@ var searchData=
   ['citygenerator_2ecs',['CityGenerator.cs',['../_city_generator_8cs.html',1,'']]],
   ['classgenerator_2ecs',['ClassGenerator.cs',['../_class_generator_8cs.html',1,'']]],
   ['colorgenerator_2ecs',['ColorGenerator.cs',['../_color_generator_8cs.html',1,'']]],
-  ['colormatrix_2ecs',['ColorMatrix.cs',['../_color_matrix_8cs.html',1,'']]],
   ['column_2ecs',['Column.cs',['../_column_8cs.html',1,'']]],
   ['command_2ecs',['Command.cs',['../_command_8cs.html',1,'']]],
   ['companygenerator_2ecs',['CompanyGenerator.cs',['../_company_generator_8cs.html',1,'']]],

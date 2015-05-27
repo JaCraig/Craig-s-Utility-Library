@@ -137,7 +137,7 @@ $(document).ready(function(){initNavTree('_cellular_texture_8cs_source.html','')
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span>CellularTexture</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    {</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        [<a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Reliability&quot;</span>, <span class="stringliteral">&quot;CA2000:Dispose objects before losing scope&quot;</span>), <a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Performance&quot;</span>, <span class="stringliteral">&quot;CA1814:PreferJaggedArraysOverMultidimensional&quot;</span>, MessageId = <span class="stringliteral">&quot;Body&quot;</span>)]</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> Bitmap Generate(<span class="keywordtype">int</span> Width, <span class="keywordtype">int</span> Height, <span class="keywordtype">int</span> NumberOfPoints, <span class="keywordtype">int</span> Seed)</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> SwiftBitmap Generate(<span class="keywordtype">int</span> Width, <span class="keywordtype">int</span> Height, <span class="keywordtype">int</span> NumberOfPoints, <span class="keywordtype">int</span> Seed)</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        {</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordtype">float</span>[,] DistanceBuffer = <span class="keyword">new</span> <span class="keywordtype">float</span>[Width, Height];</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keywordtype">float</span> MinimumDistance = <span class="keywordtype">float</span>.MaxValue;</div>
@@ -146,33 +146,31 @@ $(document).ready(function(){initNavTree('_cellular_texture_8cs_source.html','')
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            MaxDistance = Map.MaxDistance;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            MinimumDistance = Map.MinDistance;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            DistanceBuffer = Map.Distances;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            Bitmap ReturnValue = <span class="keyword">new</span> Bitmap(Width, Height);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            BitmapData ImageData = ReturnValue.LockImage();</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keywordtype">int</span> ImagePixelSize = ImageData.GetPixelSize();</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; Width; ++x)</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; Height; ++y)</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                    <span class="keywordtype">float</span> Value = GetHeight(x, y, DistanceBuffer, MinimumDistance, MaxDistance);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                    Value *= 255;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                    <span class="keywordtype">int</span> RGBValue = ((int)Value).Clamp(255, 0);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                    ImageData.SetPixel(x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue), ImagePixelSize);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            ReturnValue.UnlockImage(ImageData);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">return</span> ReturnValue;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        }</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        [<a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Performance&quot;</span>, <span class="stringliteral">&quot;CA1814:PreferJaggedArraysOverMultidimensional&quot;</span>, MessageId = <span class="stringliteral">&quot;2#&quot;</span>)]</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">float</span> GetHeight(<span class="keywordtype">float</span> X, <span class="keywordtype">float</span> Y, <span class="keywordtype">float</span>[,] DistanceBuffer,</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keywordtype">float</span> MinimumDistance, <span class="keywordtype">float</span> MaxDistance)</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keywordflow">if</span> (DistanceBuffer == null)</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                <span class="keywordflow">return</span> 0.0f;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keywordflow">return</span> (DistanceBuffer[(<span class="keywordtype">int</span>)X, (<span class="keywordtype">int</span>)Y] - MinimumDistance) / (MaxDistance - MinimumDistance);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            SwiftBitmap ReturnValue = <span class="keyword">new</span> SwiftBitmap(Width, Height);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            ReturnValue.Lock();</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; Width; ++x)</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; Height; ++y)</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                    <span class="keywordtype">float</span> Value = GetHeight(x, y, DistanceBuffer, MinimumDistance, MaxDistance);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                    Value *= 255;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                    <span class="keywordtype">int</span> RGBValue = ((int)Value).Clamp(255, 0);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                    ReturnValue.SetPixel(x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue));</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            }</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keywordflow">return</span> ReturnValue.Unlock();</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        [<a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Performance&quot;</span>, <span class="stringliteral">&quot;CA1814:PreferJaggedArraysOverMultidimensional&quot;</span>, MessageId = <span class="stringliteral">&quot;2#&quot;</span>)]</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">float</span> GetHeight(<span class="keywordtype">float</span> X, <span class="keywordtype">float</span> Y, <span class="keywordtype">float</span>[,] DistanceBuffer,</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keywordtype">float</span> MinimumDistance, <span class="keywordtype">float</span> MaxDistance)</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        {</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keywordflow">if</span> (DistanceBuffer == null)</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                <span class="keywordflow">return</span> 0.0f;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keywordflow">return</span> (DistanceBuffer[(<span class="keywordtype">int</span>)X, (<span class="keywordtype">int</span>)Y] - MinimumDistance) / (MaxDistance - MinimumDistance);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        }</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    }</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}</div>
 <div class="ttc" id="namespace_system_html"><div class="ttname"><a href="namespace_system.html">System</a></div></div>
 <div class="ttc" id="namespace_utilities_html"><div class="ttname"><a href="namespace_utilities.html">Utilities</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_data_types_html"><div class="ttname"><a href="namespace_utilities_1_1_data_types.html">Utilities.DataTypes</a></div></div>
@@ -182,7 +180,7 @@ $(document).ready(function(){initNavTree('_cellular_texture_8cs_source.html','')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_7ba1ae5b3988c571c02a9d1c2c91e331.html">Media</a></li><li class="navelem"><a class="el" href="dir_a3eed4b998e4ac151013a330af78a718.html">Procedural</a></li><li class="navelem"><a class="el" href="_cellular_texture_8cs.html">CellularTexture.cs</a></li>
-    <li class="footer">Generated on Fri May 22 2015 18:24:56 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Tue May 26 2015 21:12:45 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

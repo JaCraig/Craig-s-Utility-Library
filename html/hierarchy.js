@@ -54,7 +54,6 @@ var hierarchy =
     [ "Utilities.IO.FileFormats.Delimited.Cell", "class_utilities_1_1_i_o_1_1_file_formats_1_1_delimited_1_1_cell.html", null ],
     [ "Utilities.Media.Procedural.CellularMap", "class_utilities_1_1_media_1_1_procedural_1_1_cellular_map.html", null ],
     [ "Utilities.DataTypes.Change", "class_utilities_1_1_data_types_1_1_change.html", null ],
-    [ "Utilities.Media.ColorMatrix", "class_utilities_1_1_media_1_1_color_matrix.html", null ],
     [ "Utilities.Configuration.Manager.BaseClasses.Config< ClassType >", "class_utilities_1_1_configuration_1_1_manager_1_1_base_classes_1_1_config.html", [
       [ "Utilities.Configuration.JSONConfig< ClassType >", "class_utilities_1_1_configuration_1_1_j_s_o_n_config.html", null ],
       [ "Utilities.Configuration.XMLConfig< ClassType >", "class_utilities_1_1_configuration_1_1_x_m_l_config.html", null ]
@@ -117,7 +116,6 @@ var hierarchy =
     [ "Utilities.IO.FileSystem.BaseClasses.FileBase< Uri, WebFile >", "class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_file_base.html", [
       [ "Utilities.IO.FileSystem.Default.WebFile", "class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_file.html", null ]
     ] ],
-    [ "Utilities.Media.Filter", "class_utilities_1_1_media_1_1_filter.html", null ],
     [ "Utilities.IO.FileFormats.BaseClasses.FormatBase< FormatType, string >", "class_utilities_1_1_i_o_1_1_file_formats_1_1_base_classes_1_1_format_base.html", [
       [ "Utilities.IO.FileFormats.BaseClasses.StringFormatBase< FormatType >", "class_utilities_1_1_i_o_1_1_file_formats_1_1_base_classes_1_1_string_format_base.html", [
         [ "Utilities.IO.FileFormats.BaseClasses.StringListFormatBase< FormatType, RecordType >", "class_utilities_1_1_i_o_1_1_file_formats_1_1_base_classes_1_1_string_list_format_base.html", null ]
@@ -614,15 +612,15 @@ var hierarchy =
     [ "Utilities.IO.Logging.BaseClasses.LogBase< DefaultLog >", "class_utilities_1_1_i_o_1_1_logging_1_1_base_classes_1_1_log_base.html", [
       [ "Utilities.IO.Logging.Default.DefaultLog", "class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_log.html", null ]
     ] ],
-    [ "Utilities.DataTypes.AOP.Manager", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html", null ],
+    [ "Utilities.ORM.Manager.Schema.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html", null ],
     [ "Utilities.IO.Encryption.Manager", "class_utilities_1_1_i_o_1_1_encryption_1_1_manager.html", null ],
     [ "Utilities.ORM.Manager.QueryProvider.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_manager.html", null ],
-    [ "Utilities.IO.Compression.Manager", "class_utilities_1_1_i_o_1_1_compression_1_1_manager.html", null ],
     [ "Utilities.DataTypes.Conversion.Manager", "class_utilities_1_1_data_types_1_1_conversion_1_1_manager.html", null ],
-    [ "Utilities.ORM.Manager.Schema.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html", null ],
     [ "Utilities.IO.Messaging.Manager", "class_utilities_1_1_i_o_1_1_messaging_1_1_manager.html", null ],
+    [ "Utilities.DataTypes.AOP.Manager", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html", null ],
     [ "Utilities.IO.Serializers.Manager", "class_utilities_1_1_i_o_1_1_serializers_1_1_manager.html", null ],
     [ "Utilities.DataTypes.DataMapper.Manager", "class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html", null ],
+    [ "Utilities.IO.Compression.Manager", "class_utilities_1_1_i_o_1_1_compression_1_1_manager.html", null ],
     [ "Utilities.DataTypes.Matrix", "class_utilities_1_1_data_types_1_1_matrix.html", null ],
     [ "Utilities.DataTypes.AI.NaiveBayes< T >", "class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html", null ],
     [ "Utilities.ORM.Manager.ORMManager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_o_r_m_manager.html", null ],

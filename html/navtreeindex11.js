@@ -1,11 +1,5 @@
 var NAVTREEINDEX11 =
 {
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_database_batch.html#a13633edea5272cd330446cb23bbfa851":[1,0,0,5,3,3,1,3,2],
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_database_batch.html#a1d386fda6500e55875531d58c1b5dfec":[1,0,0,5,3,3,1,3,5],
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_database_batch.html#a39ba854d55259acf8fb3033e9a748f2e":[1,0,0,5,3,3,1,3,8],
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_database_batch.html#a533f0a2ad7897c9cfdddde3ad79b2954":[1,0,0,5,3,3,1,3,10],
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_database_batch.html#a53627a2baa2939a2f3f08c716d0bfa28":[1,0,0,5,3,3,1,3,6],
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_database_batch.html#a6eda5d3ac352c2105a06075a57dd8fcd":[1,0,0,5,3,3,1,3,3],
 "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_database_batch.html#a78027e3354283e964e5432c9191987f1":[1,0,0,5,3,3,1,3,4],
 "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_database_batch.html#a981aec10df9bb207fda7a7f8e7004f25":[1,0,0,5,3,3,1,3,1],
 "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_database_batch.html#a9cb4fd1c29c5a8e9562fef5ca544ebb0":[1,0,0,5,3,3,1,3,7],
@@ -249,5 +243,11 @@ var NAVTREEINDEX11 =
 "class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html#a3380377d2e2b34ecc27ceed4de546650":[1,0,0,5,3,7,4],
 "class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html#a553adcab3353ce32f2c968ad3ff503b7":[1,0,0,5,3,7,8],
 "class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html#a7ba32641e24ae7e3b468dfceb80a1db4":[1,0,0,5,3,7,11],
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html#a82fa93fd640401c833e7225c305fcbb0":[1,0,0,5,3,7,0]
+"class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html#a82fa93fd640401c833e7225c305fcbb0":[1,0,0,5,3,7,0],
+"class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html#a8424ae5cae749c323b09bba3c750d48f":[1,0,0,5,3,7,12],
+"class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html#a84c8f9f541cc27713324225928c6fb6f":[1,0,0,5,3,7,2],
+"class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html#a875e318748e706e0c8d98824813b3e6a":[1,0,0,5,3,7,3],
+"class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html#aa0642be42238c743d0b19dcd6467c6d5":[1,0,0,5,3,7,9],
+"class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html#ab9b7cc9d44303e74bfa23fbcca5cb0ff":[1,0,0,5,3,7,6],
+"class_utilities_1_1_o_r_m_1_1_manager_1_1_session.html#abf55d5ac95ed3f39984263cb446fa627":[1,0,0,5,3,7,1]
 };

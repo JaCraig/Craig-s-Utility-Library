@@ -1,9 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"_i_symmetric_8cs.html":[2,0,0,2,1,2,3],
-"_i_symmetric_8cs_source.html":[2,0,0,2,1,2,3],
-"_i_table_8cs.html":[2,0,0,5,3,4,3,4],
-"_i_table_8cs_source.html":[2,0,0,5,3,4,3,4],
 "_i_trigger_8cs.html":[2,0,0,5,3,4,3,5],
 "_i_trigger_8cs_source.html":[2,0,0,5,3,4,3,5],
 "_i_type_builder_8cs.html":[2,0,0,3,1,0,0],
@@ -203,8 +199,8 @@ var NAVTREEINDEX2 =
 "_property_base_8cs_source.html":[2,0,0,5,3,1,0,0],
 "_query_provider_8cs.html":[2,0,0,5,5],
 "_query_provider_8cs_source.html":[2,0,0,5,5],
-"_r_g_b_histogram_8cs.html":[2,0,0,4,4],
-"_r_g_b_histogram_8cs_source.html":[2,0,0,4,4],
+"_r_g_b_histogram_8cs.html":[2,0,0,4,2],
+"_r_g_b_histogram_8cs_source.html":[2,0,0,4,2],
 "_r_s_a_8cs.html":[2,0,0,2,1,1,1],
 "_r_s_a_8cs_source.html":[2,0,0,2,1,1,1],
 "_random_2_interfaces_2_i_generator_8cs.html":[2,0,0,8,4,0],
@@ -249,5 +245,9 @@ var NAVTREEINDEX2 =
 "_safe_disposable_base_class_8cs.html":[2,0,0,1,10,0,0],
 "_safe_disposable_base_class_8cs_source.html":[2,0,0,1,10,0,0],
 "_screen_extensions_8cs.html":[2,0,0,4,0,1],
-"_screen_extensions_8cs_source.html":[2,0,0,4,0,1]
+"_screen_extensions_8cs_source.html":[2,0,0,4,0,1],
+"_serialization_extensions_8cs.html":[2,0,0,2,3,6],
+"_serialization_extensions_8cs_source.html":[2,0,0,2,3,6],
+"_serialization_module_8cs.html":[2,0,0,2,8,3,0],
+"_serialization_module_8cs_source.html":[2,0,0,2,8,3,0]
 };

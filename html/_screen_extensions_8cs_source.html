@@ -145,12 +145,12 @@ $(document).ready(function(){initNavTree('_screen_extensions_8cs_source.html',''
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> Bitmap TakeScreenShot(<span class="keyword">this</span> Screen Screen, <span class="keywordtype">string</span> FileName = <span class="stringliteral">&quot;&quot;</span>)</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        {</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            Contract.Requires&lt;ArgumentNullException&gt;(Screen != null, <span class="stringliteral">&quot;Screen&quot;</span>);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            Bitmap TempBitmap = <span class="keyword">new</span> Bitmap(Screen.Bounds.Width &gt; 1 ? Screen.Bounds.Width : 1, Screen.Bounds.Height &gt; 1 ? Screen.Bounds.Height : 1, PixelFormat.Format32bppArgb);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            Bitmap TempSwiftBitmap = <span class="keyword">new</span> Bitmap(Screen.Bounds.Width &gt; 1 ? Screen.Bounds.Width : 1, Screen.Bounds.Height &gt; 1 ? Screen.Bounds.Height : 1, PixelFormat.Format32bppArgb);</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordflow">try</span></div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            {</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                <span class="keywordflow">if</span> (Screen.Bounds.Width &gt; 1 &amp;&amp; Screen.Bounds.Height &gt; 1)</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                    <span class="keyword">using</span> (Graphics TempGraphics = Graphics.FromImage(TempBitmap))</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                    <span class="keyword">using</span> (Graphics TempGraphics = Graphics.FromImage(TempSwiftBitmap))</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                    {</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                        TempGraphics.CopyFromScreen(Screen.Bounds.X, Screen.Bounds.Y, 0, 0, Screen.Bounds.Size, CopyPixelOperation.SourceCopy);</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                    }</div>
@@ -158,8 +158,8 @@ $(document).ready(function(){initNavTree('_screen_extensions_8cs_source.html',''
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            }</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">catch</span> { }</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrEmpty(FileName))</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                TempBitmap.Save(FileName);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keywordflow">return</span> TempBitmap;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                TempSwiftBitmap.Save(FileName);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keywordflow">return</span> TempSwiftBitmap;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        }</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        [<a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Reliability&quot;</span>, <span class="stringliteral">&quot;CA2000:Dispose objects before losing scope&quot;</span>), <a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Design&quot;</span>, <span class="stringliteral">&quot;CA1031:DoNotCatchGeneralExceptionTypes&quot;</span>)]</div>
@@ -169,12 +169,12 @@ $(document).ready(function(){initNavTree('_screen_extensions_8cs_source.html',''
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            Rectangle TotalScreenRect = Rectangle.Empty;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keywordflow">foreach</span> (Screen CurrentScreen <span class="keywordflow">in</span> Screen.AllScreens)</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                TotalScreenRect = Rectangle.Union(TotalScreenRect, CurrentScreen.Bounds);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            Bitmap TempBitmap = <span class="keyword">new</span> Bitmap(TotalScreenRect.Width &gt; 1 ? TotalScreenRect.Width : 1, TotalScreenRect.Height &gt; 1 ? TotalScreenRect.Width : 1, PixelFormat.Format32bppArgb);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            Bitmap TempSwiftBitmap = <span class="keyword">new</span> Bitmap(TotalScreenRect.Width &gt; 1 ? TotalScreenRect.Width : 1, TotalScreenRect.Height &gt; 1 ? TotalScreenRect.Width : 1, PixelFormat.Format32bppArgb);</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keywordflow">try</span></div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            {</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                <span class="keywordflow">if</span> (TotalScreenRect.Width &gt; 1 &amp;&amp; TotalScreenRect.Height &gt; 1)</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                    <span class="keyword">using</span> (Graphics TempGraphics = Graphics.FromImage(TempBitmap))</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                    <span class="keyword">using</span> (Graphics TempGraphics = Graphics.FromImage(TempSwiftBitmap))</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                    {</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                        TempGraphics.CopyFromScreen(TotalScreenRect.X, TotalScreenRect.Y, 0, 0, TotalScreenRect.Size, CopyPixelOperation.SourceCopy);</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                    }</div>
@@ -182,8 +182,8 @@ $(document).ready(function(){initNavTree('_screen_extensions_8cs_source.html',''
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            }</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            <span class="keywordflow">catch</span> { }</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrEmpty(FileName))</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                TempBitmap.Save(FileName);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keywordflow">return</span> TempBitmap;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                TempSwiftBitmap.Save(FileName);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keywordflow">return</span> TempSwiftBitmap;</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        }</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    }</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}</div>
@@ -195,7 +195,7 @@ $(document).ready(function(){initNavTree('_screen_extensions_8cs_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_7ba1ae5b3988c571c02a9d1c2c91e331.html">Media</a></li><li class="navelem"><a class="el" href="dir_b6de256b60418d6fc7dbfde63e93056e.html">ExtensionMethods</a></li><li class="navelem"><a class="el" href="_screen_extensions_8cs.html">ScreenExtensions.cs</a></li>
-    <li class="footer">Generated on Fri May 22 2015 18:24:56 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Tue May 26 2015 21:12:45 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

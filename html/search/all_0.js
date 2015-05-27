@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['absolute',['Absolute',['../class_utilities_1_1_media_1_1_filter.html#a3cd011579a0d29da5fb6907c6ebd2ecd',1,'Utilities::Media::Filter']]],
   ['absolutefilesystem_2ecs',['AbsoluteFileSystem.cs',['../_absolute_file_system_8cs.html',1,'']]],
   ['absolutelocalfilesystem',['AbsoluteLocalFileSystem',['../class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_absolute_local_file_system.html',1,'Utilities::IO::FileSystem::Default']]],
   ['absolutelocalfilesystem',['AbsoluteLocalFileSystem',['../class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_absolute_local_file_system.html#a69d8061b5e4776c30d741e14b5d050bf',1,'Utilities::IO::FileSystem::Default::AbsoluteLocalFileSystem']]],
@@ -47,9 +46,8 @@ var searchData=
   ['aopmodule',['AOPModule',['../class_utilities_1_1_data_types_1_1_a_o_p_1_1_module_1_1_a_o_p_module.html',1,'Utilities::DataTypes::AOP::Module']]],
   ['aopmodule_2ecs',['AOPModule.cs',['../_a_o_p_module_8cs.html',1,'']]],
   ['appcontainer',['AppContainer',['../class_utilities_1_1_io_c_1_1_base_classes_1_1_bootstrapper_base.html#a401e2c011a220c7939a228016e3006ed',1,'Utilities.IoC.BaseClasses.BootstrapperBase.AppContainer()'],['../class_utilities_1_1_io_c_1_1_default_1_1_default_bootstrapper.html#a6da9d4bf911d9ef844a0d5eda3ef2116',1,'Utilities.IoC.Default.DefaultBootstrapper.AppContainer()']]],
-  ['apply',['Apply',['../class_utilities_1_1_media_1_1_color_matrix.html#a203309301ddb0615cbf1f53a55a35bd8',1,'Utilities::Media::ColorMatrix']]],
-  ['applyfilter',['ApplyFilter',['../class_utilities_1_1_media_1_1_filter.html#a9b971e4502bcd11c8db7b99b299f9c22',1,'Utilities.Media.Filter.ApplyFilter(SwiftBitmap Input)'],['../class_utilities_1_1_media_1_1_filter.html#a4b6974923af927f9503c4299e323e88f',1,'Utilities.Media.Filter.ApplyFilter(Bitmap Input)']]],
-  ['applymatrix',['ApplyMatrix',['../class_utilities_1_1_media_1_1_swift_bitmap.html#a4feff8166936e778efa1718e017c027f',1,'Utilities.Media.SwiftBitmap.ApplyMatrix(System.Drawing.Imaging.ColorMatrix matrix)'],['../class_utilities_1_1_media_1_1_swift_bitmap.html#aee4f819c925ae45628a20c7f0a18f77a',1,'Utilities.Media.SwiftBitmap.ApplyMatrix(float[][] matrix)']]],
+  ['applycolormatrix',['ApplyColorMatrix',['../class_utilities_1_1_media_1_1_swift_bitmap.html#af377e9b2419704ba48f6d22e8517940c',1,'Utilities.Media.SwiftBitmap.ApplyColorMatrix(System.Drawing.Imaging.ColorMatrix matrix)'],['../class_utilities_1_1_media_1_1_swift_bitmap.html#a9f88ba1d2e8bc86f8ad97bc8db3bd1c9',1,'Utilities.Media.SwiftBitmap.ApplyColorMatrix(float[][] matrix)']]],
+  ['applyconvolutionfilter',['ApplyConvolutionFilter',['../class_utilities_1_1_media_1_1_swift_bitmap.html#a21be91abe927a2e0c912f470339ab29e',1,'Utilities::Media::SwiftBitmap']]],
   ['appsettings',['AppSettings',['../class_utilities_1_1_configuration_1_1_manager_1_1_default_1_1_system_config.html#a3dc5040b548f98150c58dbb01f2d1eb9',1,'Utilities::Configuration::Manager::Default::SystemConfig']]],
   ['array',['Array',['../class_utilities_1_1_data_types_1_1_vector3.html#a856ff3bf2336b25cf575adf9bbbd5fa4',1,'Utilities::DataTypes::Vector3']]],
   ['arrayextensions_2ecs',['ArrayExtensions.cs',['../_array_extensions_8cs.html',1,'']]],

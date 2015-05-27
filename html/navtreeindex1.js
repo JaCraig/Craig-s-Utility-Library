@@ -1,7 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"_event_args_8cs.html":[2,0,0,1,7,0],
-"_event_args_8cs_source.html":[2,0,0,1,7,0],
 "_excel_8cs.html":[2,0,0,2,4,5],
 "_excel_8cs_source.html":[2,0,0,2,4,5],
 "_exception_extensions_8cs.html":[2,0,0,1,8,6],
@@ -30,8 +28,6 @@ var NAVTREEINDEX1 =
 "_file_system_module_8cs_source.html":[2,0,0,2,5,3,0],
 "_file_system_query_provider_8cs.html":[2,0,0,5,3,3,1,0,1],
 "_file_system_query_provider_8cs_source.html":[2,0,0,5,3,3,1,0,1],
-"_filter_8cs.html":[2,0,0,4,3],
-"_filter_8cs_source.html":[2,0,0,4,3],
 "_fixed_length_base_8cs.html":[2,0,0,2,4,2,0,1],
 "_fixed_length_base_8cs_source.html":[2,0,0,2,4,2,0,1],
 "_format_base_8cs.html":[2,0,0,2,4,0,0],
@@ -249,5 +245,9 @@ var NAVTREEINDEX1 =
 "_i_string_formatter_8cs.html":[2,0,0,1,9,0,0],
 "_i_string_formatter_8cs_source.html":[2,0,0,1,9,0,0],
 "_i_string_generator_8cs.html":[2,0,0,8,4,1],
-"_i_string_generator_8cs_source.html":[2,0,0,8,4,1]
+"_i_string_generator_8cs_source.html":[2,0,0,8,4,1],
+"_i_symmetric_8cs.html":[2,0,0,2,1,2,3],
+"_i_symmetric_8cs_source.html":[2,0,0,2,1,2,3],
+"_i_table_8cs.html":[2,0,0,5,3,4,3,4],
+"_i_table_8cs_source.html":[2,0,0,5,3,4,3,4]
 };

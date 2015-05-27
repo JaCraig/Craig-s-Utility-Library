@@ -69,8 +69,6 @@ var NAVTREEINDEX0 =
 "_class_generator_8cs_source.html":[2,0,0,8,2,1],
 "_color_generator_8cs.html":[2,0,0,8,2,2],
 "_color_generator_8cs_source.html":[2,0,0,8,2,2],
-"_color_matrix_8cs.html":[2,0,0,4,2],
-"_color_matrix_8cs_source.html":[2,0,0,4,2],
 "_column_8cs.html":[2,0,0,5,3,4,1,0,1],
 "_column_8cs_source.html":[2,0,0,5,3,4,1,0,1],
 "_command_8cs.html":[2,0,0,5,3,3,1,3],
@@ -249,5 +247,7 @@ var NAVTREEINDEX0 =
 "_enum_generator_8cs.html":[2,0,0,8,2,5],
 "_enum_generator_8cs_source.html":[2,0,0,8,2,5],
 "_equal_parameter_8cs.html":[2,0,0,5,4,2],
-"_equal_parameter_8cs_source.html":[2,0,0,5,4,2]
+"_equal_parameter_8cs_source.html":[2,0,0,5,4,2],
+"_event_args_8cs.html":[2,0,0,1,7,0],
+"_event_args_8cs_source.html":[2,0,0,1,7,0]
 };

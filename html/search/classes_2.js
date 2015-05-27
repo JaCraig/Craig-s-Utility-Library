@@ -14,7 +14,6 @@ var searchData=
   ['citygenerator',['CityGenerator',['../class_utilities_1_1_random_1_1_contact_info_generators_1_1_city_generator.html',1,'Utilities::Random::ContactInfoGenerators']]],
   ['classgenerator',['ClassGenerator',['../class_utilities_1_1_random_1_1_default_classes_1_1_class_generator.html',1,'Utilities::Random::DefaultClasses']]],
   ['colorgenerator',['ColorGenerator',['../class_utilities_1_1_random_1_1_default_classes_1_1_color_generator.html',1,'Utilities::Random::DefaultClasses']]],
-  ['colormatrix',['ColorMatrix',['../class_utilities_1_1_media_1_1_color_matrix.html',1,'Utilities::Media']]],
   ['column',['Column',['../class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_column.html',1,'Utilities::ORM::Manager::Schema::Default::Database']]],
   ['command',['Command',['../class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_command.html',1,'Utilities::ORM::Manager::QueryProvider::Default']]],
   ['companygenerator',['CompanyGenerator',['../class_utilities_1_1_random_1_1_name_generators_1_1_company_generator.html',1,'Utilities::Random::NameGenerators']]],

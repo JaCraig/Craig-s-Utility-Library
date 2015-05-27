@@ -139,83 +139,81 @@ $(document).ready(function(){initNavTree('_perlin_noise_8cs_source.html','');});
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span>PerlinNoise</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    {</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        [<a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Reliability&quot;</span>, <span class="stringliteral">&quot;CA2000:Dispose objects before losing scope&quot;</span>)]</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> Bitmap Generate(<span class="keywordtype">int</span> Width, <span class="keywordtype">int</span> Height, <span class="keywordtype">int</span> MaxRGBValue, <span class="keywordtype">int</span> MinRGBValue,</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> SwiftBitmap Generate(<span class="keywordtype">int</span> Width, <span class="keywordtype">int</span> Height, <span class="keywordtype">int</span> MaxRGBValue, <span class="keywordtype">int</span> MinRGBValue,</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordtype">float</span> Frequency, <span class="keywordtype">float</span> Amplitude, <span class="keywordtype">float</span> Persistance, <span class="keywordtype">int</span> Octaves, <span class="keywordtype">int</span> Seed)</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            Bitmap ReturnValue = <span class="keyword">new</span> Bitmap(Width, Height);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            BitmapData ImageData = ReturnValue.LockImage();</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordtype">int</span> ImagePixelSize = ImageData.GetPixelSize();</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordtype">float</span>[,] Noise = GenerateNoise(Seed, Width, Height);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; Width; ++x)</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; Height; ++y)</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                    <span class="keywordtype">float</span> Value = GetValue(x, y, Width, Height, Frequency, Amplitude, Persistance, Octaves, Noise);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                    Value = (Value * 0.5f) + 0.5f;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                    Value *= 255;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                    <span class="keywordtype">int</span> RGBValue = ((int)Value).Clamp(MaxRGBValue, MinRGBValue);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                    ImageData.SetPixel(x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue), ImagePixelSize);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                }</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            }</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            ReturnValue.UnlockImage(ImageData);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keywordflow">return</span> ReturnValue;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        [<a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Performance&quot;</span>, <span class="stringliteral">&quot;CA1814:PreferJaggedArraysOverMultidimensional&quot;</span>, MessageId = <span class="stringliteral">&quot;Body&quot;</span>), <a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Performance&quot;</span>, <span class="stringliteral">&quot;CA1814:PreferJaggedArraysOverMultidimensional&quot;</span>, MessageId = <span class="stringliteral">&quot;Return&quot;</span>)]</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">float</span>[,] GenerateNoise(<span class="keywordtype">int</span> Seed, <span class="keywordtype">int</span> Width, <span class="keywordtype">int</span> Height)</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keywordtype">float</span>[,] Noise = <span class="keyword">new</span> <span class="keywordtype">float</span>[Width, Height];</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <a class="code" href="namespace_system.html">System</a>.Random RandomGenerator = <span class="keyword">new</span> <a class="code" href="namespace_system.html">System</a>.Random(Seed);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; Width; ++x)</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            {</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; Height; ++y)</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                {</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                    Noise[x, y] = ((float)(RandomGenerator.NextDouble()) - 0.5f) * 2.0f;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                }</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            }</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordflow">return</span> Noise;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        }</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        [<a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Performance&quot;</span>, <span class="stringliteral">&quot;CA1814:PreferJaggedArraysOverMultidimensional&quot;</span>, MessageId = <span class="stringliteral">&quot;4#&quot;</span>)]</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">float</span> GetSmoothNoise(<span class="keywordtype">float</span> X, <span class="keywordtype">float</span> Y, <span class="keywordtype">int</span> Width, <span class="keywordtype">int</span> Height, <span class="keywordtype">float</span>[,] Noise)</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        {</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keywordflow">if</span> (Noise == null)</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                <span class="keywordflow">return</span> 0.0f;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            <span class="keywordtype">float</span> FractionX = X - (int)X;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="keywordtype">float</span> FractionY = Y - (int)Y;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="keywordtype">int</span> X1 = ((int)X + Width) % Width;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keywordtype">int</span> Y1 = ((int)Y + Height) % Height;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="keywordtype">int</span> X2 = ((int)X + Width - 1) % Width;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keywordtype">int</span> Y2 = ((int)Y + Height - 1) % Height;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keywordtype">float</span> FinalValue = 0.0f;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            FinalValue += FractionX * FractionY * Noise[X1, Y1];</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            FinalValue += FractionX * (1 - FractionY) * Noise[X1, Y2];</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            FinalValue += (1 - FractionX) * FractionY * Noise[X2, Y1];</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            FinalValue += (1 - FractionX) * (1 - FractionY) * Noise[X2, Y2];</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keywordflow">return</span> FinalValue;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        }</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        [<a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Performance&quot;</span>, <span class="stringliteral">&quot;CA1814:PreferJaggedArraysOverMultidimensional&quot;</span>, MessageId = <span class="stringliteral">&quot;8#&quot;</span>)]</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">float</span> GetValue(<span class="keywordtype">int</span> X, <span class="keywordtype">int</span> Y, <span class="keywordtype">int</span> Width, <span class="keywordtype">int</span> Height, <span class="keywordtype">float</span> Frequency, <span class="keywordtype">float</span> Amplitude,</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keywordtype">float</span> Persistance, <span class="keywordtype">int</span> Octaves, <span class="keywordtype">float</span>[,] Noise)</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        {</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            Contract.Requires&lt;ArgumentException&gt;(Octaves &gt;= 0, <span class="stringliteral">&quot;Octaves should be greater than or equal to 0&quot;</span>);</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            <span class="keywordflow">if</span> (Noise == null)</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                <span class="keywordflow">return</span> 0.0f;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <span class="keywordtype">float</span> FinalValue = 0.0f;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; Octaves; ++i)</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            {</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                FinalValue += GetSmoothNoise(X * Frequency, Y * Frequency, Width, Height, Noise) * Amplitude;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                Frequency *= 2.0f;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                Amplitude *= Persistance;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            }</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            FinalValue = FinalValue.Clamp(1.0f, -1.0f);</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <span class="keywordflow">return</span> FinalValue;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        }</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    }</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;}</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            SwiftBitmap ReturnValue = <span class="keyword">new</span> SwiftBitmap(Width, Height);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            ReturnValue.Lock();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordtype">float</span>[,] Noise = GenerateNoise(Seed, Width, Height);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; Width; ++x)</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; Height; ++y)</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                    <span class="keywordtype">float</span> Value = GetValue(x, y, Width, Height, Frequency, Amplitude, Persistance, Octaves, Noise);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                    Value = (Value * 0.5f) + 0.5f;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                    Value *= 255;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                    <span class="keywordtype">int</span> RGBValue = ((int)Value).Clamp(MaxRGBValue, MinRGBValue);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                    ReturnValue.SetPixel(x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue));</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keywordflow">return</span> ReturnValue.Unlock();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        [<a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Performance&quot;</span>, <span class="stringliteral">&quot;CA1814:PreferJaggedArraysOverMultidimensional&quot;</span>, MessageId = <span class="stringliteral">&quot;Body&quot;</span>), <a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Performance&quot;</span>, <span class="stringliteral">&quot;CA1814:PreferJaggedArraysOverMultidimensional&quot;</span>, MessageId = <span class="stringliteral">&quot;Return&quot;</span>)]</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">float</span>[,] GenerateNoise(<span class="keywordtype">int</span> Seed, <span class="keywordtype">int</span> Width, <span class="keywordtype">int</span> Height)</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keywordtype">float</span>[,] Noise = <span class="keyword">new</span> <span class="keywordtype">float</span>[Width, Height];</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <a class="code" href="namespace_system.html">System</a>.Random RandomGenerator = <span class="keyword">new</span> <a class="code" href="namespace_system.html">System</a>.Random(Seed);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; Width; ++x)</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; Height; ++y)</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                    Noise[x, y] = ((float)(RandomGenerator.NextDouble()) - 0.5f) * 2.0f;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keywordflow">return</span> Noise;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        [<a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Performance&quot;</span>, <span class="stringliteral">&quot;CA1814:PreferJaggedArraysOverMultidimensional&quot;</span>, MessageId = <span class="stringliteral">&quot;4#&quot;</span>)]</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">float</span> GetSmoothNoise(<span class="keywordtype">float</span> X, <span class="keywordtype">float</span> Y, <span class="keywordtype">int</span> Width, <span class="keywordtype">int</span> Height, <span class="keywordtype">float</span>[,] Noise)</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        {</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <span class="keywordflow">if</span> (Noise == null)</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                <span class="keywordflow">return</span> 0.0f;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keywordtype">float</span> FractionX = X - (int)X;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keywordtype">float</span> FractionY = Y - (int)Y;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            <span class="keywordtype">int</span> X1 = ((int)X + Width) % Width;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="keywordtype">int</span> Y1 = ((int)Y + Height) % Height;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="keywordtype">int</span> X2 = ((int)X + Width - 1) % Width;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keywordtype">int</span> Y2 = ((int)Y + Height - 1) % Height;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keywordtype">float</span> FinalValue = 0.0f;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            FinalValue += FractionX * FractionY * Noise[X1, Y1];</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            FinalValue += FractionX * (1 - FractionY) * Noise[X1, Y2];</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            FinalValue += (1 - FractionX) * FractionY * Noise[X2, Y1];</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            FinalValue += (1 - FractionX) * (1 - FractionY) * Noise[X2, Y2];</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <span class="keywordflow">return</span> FinalValue;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        }</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        [<a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Performance&quot;</span>, <span class="stringliteral">&quot;CA1814:PreferJaggedArraysOverMultidimensional&quot;</span>, MessageId = <span class="stringliteral">&quot;8#&quot;</span>)]</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">float</span> GetValue(<span class="keywordtype">int</span> X, <span class="keywordtype">int</span> Y, <span class="keywordtype">int</span> Width, <span class="keywordtype">int</span> Height, <span class="keywordtype">float</span> Frequency, <span class="keywordtype">float</span> Amplitude,</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keywordtype">float</span> Persistance, <span class="keywordtype">int</span> Octaves, <span class="keywordtype">float</span>[,] Noise)</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        {</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            Contract.Requires&lt;ArgumentException&gt;(Octaves &gt;= 0, <span class="stringliteral">&quot;Octaves should be greater than or equal to 0&quot;</span>);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keywordflow">if</span> (Noise == null)</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                <span class="keywordflow">return</span> 0.0f;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            <span class="keywordtype">float</span> FinalValue = 0.0f;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; Octaves; ++i)</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            {</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                FinalValue += GetSmoothNoise(X * Frequency, Y * Frequency, Width, Height, Noise) * Amplitude;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                Frequency *= 2.0f;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                Amplitude *= Persistance;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            }</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            FinalValue = FinalValue.Clamp(1.0f, -1.0f);</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            <span class="keywordflow">return</span> FinalValue;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        }</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    }</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;}</div>
 <div class="ttc" id="namespace_system_html"><div class="ttname"><a href="namespace_system.html">System</a></div></div>
 <div class="ttc" id="namespace_utilities_html"><div class="ttname"><a href="namespace_utilities.html">Utilities</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_data_types_html"><div class="ttname"><a href="namespace_utilities_1_1_data_types.html">Utilities.DataTypes</a></div></div>
@@ -225,7 +223,7 @@ $(document).ready(function(){initNavTree('_perlin_noise_8cs_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_7ba1ae5b3988c571c02a9d1c2c91e331.html">Media</a></li><li class="navelem"><a class="el" href="dir_a3eed4b998e4ac151013a330af78a718.html">Procedural</a></li><li class="navelem"><a class="el" href="_perlin_noise_8cs.html">PerlinNoise.cs</a></li>
-    <li class="footer">Generated on Fri May 22 2015 18:24:56 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Tue May 26 2015 21:12:45 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
