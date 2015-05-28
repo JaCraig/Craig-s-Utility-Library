@@ -19,11 +19,15 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using System.Diagnostics.Contracts;
+using Utilities.IO.FileSystem.Interfaces.Contracts;
+
 namespace Utilities.IO.FileSystem.Interfaces
 {
     /// <summary>
     /// Interface for the file system
     /// </summary>
+    [ContractClass(typeof(IFileSystemContract))]
     public interface IFileSystem
     {
         /// <summary>

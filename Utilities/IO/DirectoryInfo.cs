@@ -229,7 +229,7 @@ namespace Utilities.IO
         public IDirectory CopyTo(IDirectory Directory, Enums.CopyOptions Options = CopyOptions.CopyAlways)
         {
             if (InternalDirectory == null || Directory == null)
-                return null;
+                return this;
             return InternalDirectory.CopyTo(Directory, Options);
         }
 

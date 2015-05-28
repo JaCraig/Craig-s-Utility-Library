@@ -20,14 +20,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
+using Utilities.IO.FileSystem.Interfaces.Contracts;
 
 namespace Utilities.IO.FileSystem.Interfaces
 {
     /// <summary>
     /// Represents an individual file
     /// </summary>
+    [ContractClass(typeof(IFileContract))]
     public interface IFile : IComparable<IFile>, IComparable, IEquatable<IFile>, ICloneable
     {
         /// <summary>
@@ -118,9 +121,7 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// </summary>
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">File mode</param>
-        /// <param name="Encoding">
-        /// Encoding that the content should be saved as (default is UTF8)
-        /// </param>
+        /// <param name="Encoding">Encoding that the content should be saved as (default is UTF8)</param>
         /// <returns>The result of the write or original content</returns>
         string Write(string Content, FileMode Mode = FileMode.Create, Encoding Encoding = null);
 

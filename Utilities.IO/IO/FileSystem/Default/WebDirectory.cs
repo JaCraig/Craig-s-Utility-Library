@@ -251,13 +251,10 @@ namespace Utilities.IO.FileSystem.Default
                 return;
             }
             byte[] ByteData = Data.ToByteArray();
-            if (ByteData != null)
+            Request.ContentLength = ByteData.Length;
+            using (Stream RequestStream = Request.GetRequestStream())
             {
-                Request.ContentLength = ByteData.Length;
-                using (Stream RequestStream = Request.GetRequestStream())
-                {
-                    RequestStream.Write(ByteData, 0, ByteData.Length);
-                }
+                RequestStream.Write(ByteData, 0, ByteData.Length);
             }
         }
 

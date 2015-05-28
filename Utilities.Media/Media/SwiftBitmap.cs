@@ -92,11 +92,45 @@ namespace Utilities.Media
             Width = InternalBitmap.Width;
         }
 
+        private IEnumerable<string> htmlPalette_;
+
         /// <summary>
         /// Gets or sets the height.
         /// </summary>
         /// <value>The height.</value>
         public int Height { get; private set; }
+
+        /// <summary>
+        /// Gets a palette listing in HTML string format
+        /// </summary>
+        /// <value>A list containing HTML color values (ex: #041845)</value>
+        public IEnumerable<string> HTMLPalette
+        {
+            get
+            {
+                Contract.Requires<NullReferenceException>(InternalBitmap != null);
+                if (htmlPalette_ != null)
+                    return htmlPalette_;
+                if (InternalBitmap.Palette != null && InternalBitmap.Palette.Entries.Length > 0)
+                {
+                    return InternalBitmap.Palette.Entries.Distinct((x, y) => x == y).Select(x => ColorTranslator.ToHtml(x));
+                }
+                ConcurrentDictionary<string, int> ReturnArray = new ConcurrentDictionary<string, int>();
+                Lock();
+                Parallel.For(0, Width, x =>
+                {
+                    for (int y = 0; y < Height; ++y)
+                    {
+                        ReturnArray.AddOrUpdate(ColorTranslator.ToHtml(GetPixel(x, y)),
+                            z => 0,
+                            (z, a) => 0);
+                    }
+                });
+                Unlock();
+                htmlPalette_ = ReturnArray.Keys;
+                return htmlPalette_;
+            }
+        }
 
         /// <summary>
         /// Gets the internal Bitmap.
@@ -130,6 +164,99 @@ namespace Utilities.Media
         protected int PixelSize { get; private set; }
 
         /// <summary>
+        /// Implements the operator &amp;.
+        /// </summary>
+        /// <param name="Image1">The first image.</param>
+        /// <param name="Image2">The second image</param>
+        /// <returns>The result of the operator.</returns>
+        public static SwiftBitmap operator &(SwiftBitmap Image1, SwiftBitmap Image2)
+        {
+            Contract.Requires<ArgumentNullException>(Image1 != null, "Image1");
+            Contract.Requires<ArgumentNullException>(Image2 != null, "Image2");
+            Image1.Lock();
+            Image2.Lock();
+            SwiftBitmap Result = new SwiftBitmap(Image1.Width, Image1.Height);
+            Result.Lock();
+            Parallel.For(0, Result.Width, x =>
+            {
+                for (int y = 0; y < Result.Height; ++y)
+                {
+                    Color Pixel1 = Image1.GetPixel(x, y);
+                    Color Pixel2 = Image2.GetPixel(x, y);
+                    Result.SetPixel(x, y,
+                        Color.FromArgb(Pixel1.R & Pixel2.R,
+                            Pixel1.G & Pixel2.G,
+                            Pixel1.B & Pixel2.B));
+                }
+            });
+            Image2.Unlock();
+            Image1.Unlock();
+            return Result.Unlock();
+        }
+
+        /// <summary>
+        /// Implements the operator ^.
+        /// </summary>
+        /// <param name="Image1">The first image.</param>
+        /// <param name="Image2">The second image</param>
+        /// <returns>The result of the operator.</returns>
+        public static SwiftBitmap operator ^(SwiftBitmap Image1, SwiftBitmap Image2)
+        {
+            Contract.Requires<ArgumentNullException>(Image1 != null, "Image1");
+            Contract.Requires<ArgumentNullException>(Image2 != null, "Image2");
+            Image1.Lock();
+            Image2.Lock();
+            SwiftBitmap Result = new SwiftBitmap(Image1.Width, Image1.Height);
+            Result.Lock();
+            Parallel.For(0, Result.Width, x =>
+            {
+                for (int y = 0; y < Result.Height; ++y)
+                {
+                    Color Pixel1 = Image1.GetPixel(x, y);
+                    Color Pixel2 = Image2.GetPixel(x, y);
+                    Result.SetPixel(x, y,
+                        Color.FromArgb(Pixel1.R ^ Pixel2.R,
+                            Pixel1.G ^ Pixel2.G,
+                            Pixel1.B ^ Pixel2.B));
+                }
+            });
+            Image2.Unlock();
+            Image1.Unlock();
+            return Result.Unlock();
+        }
+
+        /// <summary>
+        /// Implements the operator |.
+        /// </summary>
+        /// <param name="Image1">The first image.</param>
+        /// <param name="Image2">The second image</param>
+        /// <returns>The result of the operator.</returns>
+        public static SwiftBitmap operator |(SwiftBitmap Image1, SwiftBitmap Image2)
+        {
+            Contract.Requires<ArgumentNullException>(Image1 != null, "Image1");
+            Contract.Requires<ArgumentNullException>(Image2 != null, "Image2");
+            Image1.Lock();
+            Image2.Lock();
+            SwiftBitmap Result = new SwiftBitmap(Image1.Width, Image1.Height);
+            Result.Lock();
+            Parallel.For(0, Result.Width, x =>
+            {
+                for (int y = 0; y < Result.Height; ++y)
+                {
+                    Color Pixel1 = Image1.GetPixel(x, y);
+                    Color Pixel2 = Image2.GetPixel(x, y);
+                    Result.SetPixel(x, y,
+                        Color.FromArgb(Pixel1.R | Pixel2.R,
+                            Pixel1.G | Pixel2.G,
+                            Pixel1.B | Pixel2.B));
+                }
+            });
+            Image2.Unlock();
+            Image1.Unlock();
+            return Result.Unlock();
+        }
+
+        /// <summary>
         /// Applies the matrix.
         /// </summary>
         /// <param name="matrix">The matrix.</param>
@@ -137,6 +264,7 @@ namespace Utilities.Media
         public SwiftBitmap ApplyColorMatrix(System.Drawing.Imaging.ColorMatrix matrix)
         {
             Contract.Requires<ArgumentNullException>(matrix != null);
+            Contract.Requires<NullReferenceException>(InternalBitmap != null);
             Unlock();
             using (Graphics NewGraphics = Graphics.FromImage(InternalBitmap))
             {
@@ -161,6 +289,7 @@ namespace Utilities.Media
         public SwiftBitmap ApplyColorMatrix(float[][] matrix)
         {
             Contract.Requires<ArgumentNullException>(matrix != null);
+            Contract.Requires<NullReferenceException>(InternalBitmap != null);
             return ApplyColorMatrix(new System.Drawing.Imaging.ColorMatrix(matrix));
         }
 
@@ -170,11 +299,10 @@ namespace Utilities.Media
         /// <param name="filter">The filter.</param>
         /// <param name="absolute">if set to <c>true</c> then the absolute value is used</param>
         /// <param name="offset">The offset to use for each pixel</param>
-        /// <returns>
-        /// Returns the image with the filter applied
-        /// </returns>
+        /// <returns>Returns the image with the filter applied</returns>
         public SwiftBitmap ApplyConvolutionFilter(int[][] filter, bool absolute = false, int offset = 0)
         {
+            Contract.Requires<NullReferenceException>(InternalBitmap != null);
             using (SwiftBitmap Result = new SwiftBitmap(Width, Height))
             {
                 Lock();
@@ -247,6 +375,103 @@ namespace Utilities.Media
         }
 
         /// <summary>
+        /// Copies the image from one image to this one.
+        /// </summary>
+        /// <param name="SwiftBitmap">The SwiftBitmap to copy from.</param>
+        /// <returns>This</returns>
+        public unsafe SwiftBitmap Copy(SwiftBitmap SwiftBitmap)
+        {
+            Contract.Requires<NullReferenceException>(InternalBitmap != null);
+            if (SwiftBitmap == null)
+                return this;
+            Unlock();
+            InternalBitmap.Dispose();
+            InternalBitmap = (Bitmap)SwiftBitmap.InternalBitmap.Clone();
+            return this;
+        }
+
+        /// <summary>
+        /// Crops the image by the specified width/height
+        /// </summary>
+        /// <param name="Width">The width.</param>
+        /// <param name="Height">The height.</param>
+        /// <param name="VAlignment">The v alignment.</param>
+        /// <param name="HAlignment">The h alignment.</param>
+        /// <returns></returns>
+        public SwiftBitmap Crop(int Width, int Height, Align VAlignment, Align HAlignment)
+        {
+            Contract.Requires<NullReferenceException>(InternalBitmap != null);
+            Unlock();
+            System.Drawing.Rectangle TempRectangle = new System.Drawing.Rectangle();
+            TempRectangle.Height = Height;
+            TempRectangle.Width = Width;
+            TempRectangle.Y = VAlignment == Align.Top ? 0 : this.Height - Height;
+            if (TempRectangle.Y < 0)
+                TempRectangle.Y = 0;
+            TempRectangle.X = HAlignment == Align.Left ? 0 : this.Width - Width;
+            if (TempRectangle.X < 0)
+                TempRectangle.X = 0;
+            var TempHolder = InternalBitmap.Clone(TempRectangle, InternalBitmap.PixelFormat);
+            InternalBitmap.Dispose();
+            InternalBitmap = TempHolder;
+            return this;
+        }
+
+        /// <summary>
+        /// Draws the path specified
+        /// </summary>
+        /// <param name="pen">The pen to use.</param>
+        /// <param name="path">The path to draw</param>
+        /// <returns>This</returns>
+        public SwiftBitmap DrawPath(Pen pen, GraphicsPath path)
+        {
+            Contract.Requires<ArgumentNullException>(pen != null);
+            Contract.Requires<ArgumentNullException>(path != null);
+            Contract.Requires<NullReferenceException>(InternalBitmap != null);
+            Unlock();
+            using (Graphics NewGraphics = Graphics.FromImage(InternalBitmap))
+            {
+                NewGraphics.DrawPath(pen, path);
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// Draws the text specified
+        /// </summary>
+        /// <param name="TextToDraw">The text to draw.</param>
+        /// <param name="FontToUse">The font to use.</param>
+        /// <param name="BrushUsing">The brush to use.</param>
+        /// <param name="BoxToDrawWithin">The box to draw within.</param>
+        /// <returns>This</returns>
+        public SwiftBitmap DrawText(string TextToDraw,
+            Font FontToUse, Brush BrushUsing, RectangleF BoxToDrawWithin)
+        {
+            Contract.Requires<ArgumentNullException>(FontToUse != null, "FontToUse");
+            Contract.Requires<ArgumentNullException>(BrushUsing != null, "BrushUsing");
+            Contract.Requires<ArgumentNullException>(BoxToDrawWithin != null, "BoxToDrawWithin");
+            Contract.Requires<NullReferenceException>(InternalBitmap != null);
+            Unlock();
+            using (Graphics TempGraphics = Graphics.FromImage(InternalBitmap))
+            {
+                TempGraphics.DrawString(TextToDraw, FontToUse, BrushUsing, BoxToDrawWithin);
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// Fills the image with the specified color.
+        /// </summary>
+        /// <param name="color">The color.</param>
+        /// <returns>This</returns>
+        public SwiftBitmap Fill(Color color)
+        {
+            Contract.Requires<NullReferenceException>(Data != null);
+            SetPixels(0, 0, (Width * Height).Times(x => color).ToArray());
+            return this;
+        }
+
+        /// <summary>
         /// Gets the pixel.
         /// </summary>
         /// <param name="x">The x position</param>
@@ -293,18 +518,74 @@ namespace Utilities.Media
         }
 
         /// <summary>
-        /// Gets the size of the pixel.
+        /// Resizes an SwiftBitmap to a certain height
         /// </summary>
-        /// <returns>The size of the pixel in bytes</returns>
-        private int GetPixelSize()
+        /// <param name="Width">New width for the final image</param>
+        /// <param name="Height">New height for the final image</param>
+        /// <param name="Quality">Quality of the resizing</param>
+        /// <returns>This</returns>
+        public SwiftBitmap Resize(int Width, int Height, Quality Quality = Quality.Low)
         {
-            if (Data.PixelFormat == PixelFormat.Format24bppRgb)
-                return 3;
-            else if (Data.PixelFormat == PixelFormat.Format32bppArgb
-                || Data.PixelFormat == PixelFormat.Format32bppPArgb
-                || Data.PixelFormat == PixelFormat.Format32bppRgb)
-                return 4;
-            return 0;
+            Contract.Requires<NullReferenceException>(InternalBitmap != null);
+            Unlock();
+            Bitmap TempBitmap = new Bitmap(Width, Height);
+            using (Graphics NewGraphics = Graphics.FromImage(TempBitmap))
+            {
+                if (Quality == Quality.High)
+                {
+                    NewGraphics.CompositingQuality = CompositingQuality.HighQuality;
+                    NewGraphics.SmoothingMode = SmoothingMode.HighQuality;
+                    NewGraphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                }
+                else
+                {
+                    NewGraphics.CompositingQuality = CompositingQuality.HighSpeed;
+                    NewGraphics.SmoothingMode = SmoothingMode.HighSpeed;
+                    NewGraphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+                }
+                NewGraphics.DrawImage(InternalBitmap, new System.Drawing.Rectangle(0, 0, Width, Height));
+            }
+            InternalBitmap.Dispose();
+            InternalBitmap = TempBitmap;
+            return this;
+        }
+
+        /// <summary>
+        /// Rotates and/or flips the image
+        /// </summary>
+        /// <param name="flipType">Type of flip/rotation to do</param>
+        /// <returns>This</returns>
+        public SwiftBitmap Rotate(RotateFlipType flipType)
+        {
+            Contract.Requires<NullReferenceException>(InternalBitmap != null);
+            Unlock();
+            InternalBitmap.RotateFlip(flipType);
+            return this;
+        }
+
+        /// <summary>
+        /// Rotates an image
+        /// </summary>
+        /// <param name="DegreesToRotate">Degrees to rotate the image</param>
+        /// <returns>This</returns>
+        public SwiftBitmap Rotate(float DegreesToRotate)
+        {
+            Contract.Requires<NullReferenceException>(InternalBitmap != null);
+            Unlock();
+            Bitmap TempBitmap = new Bitmap(Width, Height);
+            using (Graphics NewGraphics = Graphics.FromImage(TempBitmap))
+            {
+                NewGraphics.TranslateTransform((float)Width / 2.0f, (float)Height / 2.0f);
+                NewGraphics.RotateTransform(DegreesToRotate);
+                NewGraphics.TranslateTransform(-(float)Width / 2.0f, -(float)Height / 2.0f);
+                NewGraphics.DrawImage(InternalBitmap,
+                    new System.Drawing.Rectangle(0, 0, Width, Height),
+                    new System.Drawing.Rectangle(0, 0, Width, Height),
+                    GraphicsUnit.Pixel);
+            }
+            InternalBitmap.Dispose();
+            InternalBitmap = TempBitmap;
+            return this;
         }
 
         /// <summary>
@@ -318,18 +599,6 @@ namespace Utilities.Media
             Contract.Requires<NullReferenceException>(InternalBitmap != null);
             Unlock();
             InternalBitmap.Save(fileName, GetImageFormat(fileName));
-            return this;
-        }
-
-        /// <summary>
-        /// Fills the image with the specified color.
-        /// </summary>
-        /// <param name="color">The color.</param>
-        /// <returns>This</returns>
-        public SwiftBitmap Fill(Color color)
-        {
-            Unlock();
-            SetPixels(0, 0, (Width * Height).Times(x => color).ToArray());
             return this;
         }
 
@@ -392,57 +661,19 @@ namespace Utilities.Media
         }
 
         /// <summary>
-        /// Copies the image from one image to this one.
+        /// Converts an SwiftBitmap to a base64 string and returns it
         /// </summary>
-        /// <param name="SwiftBitmap">The SwiftBitmap to copy from.</param>
-        /// <returns>
-        /// This
-        /// </returns>
-        public unsafe SwiftBitmap Copy(SwiftBitmap SwiftBitmap)
+        /// <param name="desiredFormat">Desired SwiftBitmap format (defaults to Jpeg)</param>
+        /// <returns>The SwiftBitmap in base64 string format</returns>
+        public string ToString(ImageFormat desiredFormat)
         {
-            if (SwiftBitmap == null)
-                return this;
-            Unlock();
-            if (InternalBitmap != null)
+            Contract.Requires<NullReferenceException>(InternalBitmap != null);
+            desiredFormat = desiredFormat.Check(ImageFormat.Jpeg);
+            using (MemoryStream Stream = new MemoryStream())
             {
-                InternalBitmap.Dispose();
+                InternalBitmap.Save(Stream, desiredFormat);
+                return Stream.ToArray().ToString(Base64FormattingOptions.None);
             }
-            InternalBitmap = (Bitmap)SwiftBitmap.InternalBitmap.Clone();
-            return this;
-        }
-
-        /// <summary>
-        /// Resizes an SwiftBitmap to a certain height
-        /// </summary>
-        /// <param name="Width">New width for the final image</param>
-        /// <param name="Height">New height for the final image</param>
-        /// <param name="Quality">Quality of the resizing</param>
-        /// <returns>
-        /// This
-        /// </returns>
-        public SwiftBitmap Resize(int Width, int Height, Quality Quality = Quality.Low)
-        {
-            Unlock();
-            Bitmap TempBitmap = new Bitmap(Width, Height);
-            using (Graphics NewGraphics = Graphics.FromImage(TempBitmap))
-            {
-                if (Quality == Quality.High)
-                {
-                    NewGraphics.CompositingQuality = CompositingQuality.HighQuality;
-                    NewGraphics.SmoothingMode = SmoothingMode.HighQuality;
-                    NewGraphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                }
-                else
-                {
-                    NewGraphics.CompositingQuality = CompositingQuality.HighSpeed;
-                    NewGraphics.SmoothingMode = SmoothingMode.HighSpeed;
-                    NewGraphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-                }
-                NewGraphics.DrawImage(InternalBitmap, new System.Drawing.Rectangle(0, 0, Width, Height));
-            }
-            InternalBitmap.Dispose();
-            InternalBitmap = TempBitmap;
-            return this;
         }
 
         /// <summary>
@@ -480,261 +711,6 @@ namespace Utilities.Media
         }
 
         /// <summary>
-        /// Crops the image by the specified width/height
-        /// </summary>
-        /// <param name="Width">The width.</param>
-        /// <param name="Height">The height.</param>
-        /// <param name="VAlignment">The v alignment.</param>
-        /// <param name="HAlignment">The h alignment.</param>
-        /// <returns></returns>
-        public SwiftBitmap Crop(int Width, int Height, Align VAlignment, Align HAlignment)
-        {
-            Unlock();
-            System.Drawing.Rectangle TempRectangle = new System.Drawing.Rectangle();
-            TempRectangle.Height = Height;
-            TempRectangle.Width = Width;
-            TempRectangle.Y = VAlignment == Align.Top ? 0 : this.Height - Height;
-            if (TempRectangle.Y < 0)
-                TempRectangle.Y = 0;
-            TempRectangle.X = HAlignment == Align.Left ? 0 : this.Width - Width;
-            if (TempRectangle.X < 0)
-                TempRectangle.X = 0;
-            var TempHolder = InternalBitmap.Clone(TempRectangle, InternalBitmap.PixelFormat);
-            InternalBitmap.Dispose();
-            InternalBitmap = TempHolder;
-            return this;
-        }
-
-        /// <summary>
-        /// Implements the operator ^.
-        /// </summary>
-        /// <param name="Image1">The first image.</param>
-        /// <param name="Image2">The second image</param>
-        /// <returns>
-        /// The result of the operator.
-        /// </returns>
-        public static SwiftBitmap operator ^(SwiftBitmap Image1, SwiftBitmap Image2)
-        {
-            Contract.Requires<ArgumentNullException>(Image1 != null, "Image1");
-            Contract.Requires<ArgumentNullException>(Image2 != null, "Image2");
-            Image1.Lock();
-            Image2.Lock();
-            SwiftBitmap Result = new SwiftBitmap(Image1.Width, Image1.Height);
-            Result.Lock();
-            Parallel.For(0, Result.Width, x =>
-            {
-                for (int y = 0; y < Result.Height; ++y)
-                {
-                    Color Pixel1 = Image1.GetPixel(x, y);
-                    Color Pixel2 = Image2.GetPixel(x, y);
-                    Result.SetPixel(x, y,
-                        Color.FromArgb(Pixel1.R ^ Pixel2.R,
-                            Pixel1.G ^ Pixel2.G,
-                            Pixel1.B ^ Pixel2.B));
-                }
-            });
-            Image2.Unlock();
-            Image1.Unlock();
-            return Result.Unlock();
-        }
-
-        /// <summary>
-        /// Implements the operator |.
-        /// </summary>
-        /// <param name="Image1">The first image.</param>
-        /// <param name="Image2">The second image</param>
-        /// <returns>
-        /// The result of the operator.
-        /// </returns>
-        public static SwiftBitmap operator |(SwiftBitmap Image1, SwiftBitmap Image2)
-        {
-            Contract.Requires<ArgumentNullException>(Image1 != null, "Image1");
-            Contract.Requires<ArgumentNullException>(Image2 != null, "Image2");
-            Image1.Lock();
-            Image2.Lock();
-            SwiftBitmap Result = new SwiftBitmap(Image1.Width, Image1.Height);
-            Result.Lock();
-            Parallel.For(0, Result.Width, x =>
-            {
-                for (int y = 0; y < Result.Height; ++y)
-                {
-                    Color Pixel1 = Image1.GetPixel(x, y);
-                    Color Pixel2 = Image2.GetPixel(x, y);
-                    Result.SetPixel(x, y,
-                        Color.FromArgb(Pixel1.R | Pixel2.R,
-                            Pixel1.G | Pixel2.G,
-                            Pixel1.B | Pixel2.B));
-                }
-            });
-            Image2.Unlock();
-            Image1.Unlock();
-            return Result.Unlock();
-        }
-
-        /// <summary>
-        /// Implements the operator &amp;.
-        /// </summary>
-        /// <param name="Image1">The first image.</param>
-        /// <param name="Image2">The second image</param>
-        /// <returns>
-        /// The result of the operator.
-        /// </returns>
-        public static SwiftBitmap operator &(SwiftBitmap Image1, SwiftBitmap Image2)
-        {
-            Contract.Requires<ArgumentNullException>(Image1 != null, "Image1");
-            Contract.Requires<ArgumentNullException>(Image2 != null, "Image2");
-            Image1.Lock();
-            Image2.Lock();
-            SwiftBitmap Result = new SwiftBitmap(Image1.Width, Image1.Height);
-            Result.Lock();
-            Parallel.For(0, Result.Width, x =>
-            {
-                for (int y = 0; y < Result.Height; ++y)
-                {
-                    Color Pixel1 = Image1.GetPixel(x, y);
-                    Color Pixel2 = Image2.GetPixel(x, y);
-                    Result.SetPixel(x, y,
-                        Color.FromArgb(Pixel1.R & Pixel2.R,
-                            Pixel1.G & Pixel2.G,
-                            Pixel1.B & Pixel2.B));
-                }
-            });
-            Image2.Unlock();
-            Image1.Unlock();
-            return Result.Unlock();
-        }
-
-        /// <summary>
-        /// Converts an SwiftBitmap to a base64 string and returns it
-        /// </summary>
-        /// <param name="desiredFormat">Desired SwiftBitmap format (defaults to Jpeg)</param>
-        /// <returns>
-        /// The SwiftBitmap in base64 string format
-        /// </returns>
-        public string ToString(ImageFormat desiredFormat)
-        {
-            desiredFormat = desiredFormat.Check(ImageFormat.Jpeg);
-            using (MemoryStream Stream = new MemoryStream())
-            {
-                InternalBitmap.Save(Stream, desiredFormat);
-                return Stream.ToArray().ToString(Base64FormattingOptions.None);
-            }
-        }
-
-        /// <summary>
-        /// Draws the path specified
-        /// </summary>
-        /// <param name="pen">The pen to use.</param>
-        /// <param name="path">The path to draw</param>
-        /// <returns>This</returns>
-        public SwiftBitmap DrawPath(Pen pen, GraphicsPath path)
-        {
-            Contract.Requires<ArgumentNullException>(pen != null);
-            Contract.Requires<ArgumentNullException>(path != null);
-            Unlock();
-            using (Graphics NewGraphics = Graphics.FromImage(InternalBitmap))
-            {
-                NewGraphics.DrawPath(pen, path);
-            }
-            return this;
-        }
-
-        /// <summary>
-        /// Draws the text specified
-        /// </summary>
-        /// <param name="TextToDraw">The text to draw.</param>
-        /// <param name="FontToUse">The font to use.</param>
-        /// <param name="BrushUsing">The brush to use.</param>
-        /// <param name="BoxToDrawWithin">The box to draw within.</param>
-        /// <returns>This</returns>
-        public SwiftBitmap DrawText(string TextToDraw,
-            Font FontToUse, Brush BrushUsing, RectangleF BoxToDrawWithin)
-        {
-            Contract.Requires<ArgumentNullException>(FontToUse != null, "FontToUse");
-            Contract.Requires<ArgumentNullException>(BrushUsing != null, "BrushUsing");
-            Contract.Requires<ArgumentNullException>(BoxToDrawWithin != null, "BoxToDrawWithin");
-            Unlock();
-            using (Graphics TempGraphics = Graphics.FromImage(InternalBitmap))
-            {
-                TempGraphics.DrawString(TextToDraw, FontToUse, BrushUsing, BoxToDrawWithin);
-            }
-            return this;
-        }
-
-        /// <summary>
-        /// Rotates and/or flips the image
-        /// </summary>
-        /// <param name="flipType">Type of flip/rotation to do</param>
-        /// <returns>This</returns>
-        public SwiftBitmap Rotate(RotateFlipType flipType)
-        {
-            Unlock();
-            InternalBitmap.RotateFlip(flipType);
-            return this;
-        }
-
-        /// <summary>
-        /// Rotates an image
-        /// </summary>
-        /// <param name="DegreesToRotate">Degrees to rotate the image</param>
-        /// <returns>
-        /// This
-        /// </returns>
-        public SwiftBitmap Rotate(float DegreesToRotate)
-        {
-            Unlock();
-            Bitmap TempBitmap = new Bitmap(Width, Height);
-            using (Graphics NewGraphics = Graphics.FromImage(TempBitmap))
-            {
-                NewGraphics.TranslateTransform((float)Width / 2.0f, (float)Height / 2.0f);
-                NewGraphics.RotateTransform(DegreesToRotate);
-                NewGraphics.TranslateTransform(-(float)Width / 2.0f, -(float)Height / 2.0f);
-                NewGraphics.DrawImage(InternalBitmap,
-                    new System.Drawing.Rectangle(0, 0, Width, Height),
-                    new System.Drawing.Rectangle(0, 0, Width, Height),
-                    GraphicsUnit.Pixel);
-            }
-            InternalBitmap.Dispose();
-            InternalBitmap = TempBitmap;
-            return this;
-        }
-
-        private IEnumerable<string> htmlPalette_;
-
-        /// <summary>
-        /// Gets a palette listing in HTML string format
-        /// </summary>
-        /// <value>
-        /// A list containing HTML color values (ex: #041845)
-        /// </value>
-        public IEnumerable<string> HTMLPalette
-        {
-            get
-            {
-                if (htmlPalette_ != null)
-                    return htmlPalette_;
-                if (InternalBitmap.Palette != null && InternalBitmap.Palette.Entries.Length > 0)
-                {
-                    return InternalBitmap.Palette.Entries.Distinct((x, y) => x == y).Select(x => ColorTranslator.ToHtml(x));
-                }
-                ConcurrentDictionary<string, int> ReturnArray = new ConcurrentDictionary<string, int>();
-                Lock();
-                Parallel.For(0, Width, x =>
-                {
-                    for (int y = 0; y < Height; ++y)
-                    {
-                        ReturnArray.AddOrUpdate(ColorTranslator.ToHtml(GetPixel(x, y)),
-                            z => 0,
-                            (z, a) => 0);
-                    }
-                });
-                Unlock();
-                htmlPalette_ = ReturnArray.Keys;
-                return htmlPalette_;
-            }
-        }
-
-        /// <summary>
         /// Returns the SwiftBitmap format this file is using
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
@@ -754,6 +730,22 @@ namespace Utilities.Media
             if (fileName.EndsWith("gif", StringComparison.InvariantCultureIgnoreCase))
                 return ImageFormat.Gif;
             return ImageFormat.Bmp;
+        }
+
+        /// <summary>
+        /// Gets the size of the pixel.
+        /// </summary>
+        /// <returns>The size of the pixel in bytes</returns>
+        private int GetPixelSize()
+        {
+            Contract.Requires<NullReferenceException>(Data != null);
+            if (Data.PixelFormat == PixelFormat.Format24bppRgb)
+                return 3;
+            else if (Data.PixelFormat == PixelFormat.Format32bppArgb
+                || Data.PixelFormat == PixelFormat.Format32bppPArgb
+                || Data.PixelFormat == PixelFormat.Format32bppRgb)
+                return 4;
+            return 0;
         }
     }
 }

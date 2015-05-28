@@ -21,14 +21,17 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using Utilities.IO.Enums;
+using Utilities.IO.FileSystem.Interfaces.Contracts;
 
 namespace Utilities.IO.FileSystem.Interfaces
 {
     /// <summary>
     /// Represents a directory
     /// </summary>
+    [ContractClass(typeof(IDirectoryContract))]
     public interface IDirectory : IComparable<IDirectory>, IEnumerable<IFile>, IComparable, IEquatable<IDirectory>, ICloneable
     {
         /// <summary>

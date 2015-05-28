@@ -288,20 +288,16 @@ namespace Utilities.IO.FileSystem.Default
                 return;
             }
             byte[] ByteData = Data.ToByteArray();
-            if (ByteData != null)
+            Request.ContentLength = ByteData.Length;
+            using (Stream RequestStream = Request.GetRequestStream())
             {
-                Request.ContentLength = ByteData.Length;
-                using (Stream RequestStream = Request.GetRequestStream())
-                {
-                    RequestStream.Write(ByteData, 0, ByteData.Length);
-                }
+                RequestStream.Write(ByteData, 0, ByteData.Length);
             }
         }
 
         /// <summary>
         /// Sets up any credentials (basic authentication, for OAuth, please use the OAuth class to
-        /// create the
-        /// URL)
+        /// create the URL)
         /// </summary>
         /// <param name="Request">The web request object</param>
         private void SetupCredentials(HttpWebRequest Request)

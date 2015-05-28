@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-DataTypes</id>
-		<version>4.0.269-beta</version>
+		<version>4.0.271-beta</version>
 		<title>Craig's Utility Library DataTypes Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -15,7 +15,7 @@
 		<copyright>Copyright 2011</copyright>
 		<tags>utility utilities</tags>
 		<dependencies>
-			<dependency id="CraigsUtilityLibrary-IoC" version="[4.0.269-beta]" />
+			<dependency id="CraigsUtilityLibrary-IoC" version="[4.0.271-beta]" />
 			<dependency id="Microsoft.CodeAnalysis.CSharp" version="[1.0.0-rc2]" />
 		</dependencies>
 		<references>

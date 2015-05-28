@@ -386,6 +386,9 @@
     <Compile Include="IO\FileSystem\Default\ResourceFileSystem.cs" />
     <Compile Include="IO\FileSystem\Default\WebDirectory.cs" />
     <Compile Include="IO\FileSystem\Default\WebFile.cs" />
+    <Compile Include="IO\FileSystem\Interfaces\Contracts\IDirectoryContract.cs" />
+    <Compile Include="IO\FileSystem\Interfaces\Contracts\IFileContract.cs" />
+    <Compile Include="IO\FileSystem\Interfaces\Contracts\IFileSystemContract.cs" />
     <Compile Include="IO\FileSystem\Interfaces\IDirectory.cs" />
     <Compile Include="IO\FileSystem\Interfaces\IFile.cs" />
     <Compile Include="IO\FileSystem\Interfaces\IFileSystem.cs" />
