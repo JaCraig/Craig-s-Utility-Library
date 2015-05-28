@@ -275,26 +275,23 @@ $(document).ready(function(){initNavTree('_web_directory_8cs_source.html','');})
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;            }</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;            byte[] ByteData = Data.ToByteArray();</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            <span class="keywordflow">if</span> (ByteData != null)</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            {</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                Request.ContentLength = ByteData.Length;</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                <span class="keyword">using</span> (Stream RequestStream = Request.GetRequestStream())</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                {</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                    RequestStream.Write(ByteData, 0, ByteData.Length);</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                }</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;            }</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        }</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> SetupCredentials(HttpWebRequest Request)</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        {</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;            <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrEmpty(UserName) &amp;&amp; !<span class="keywordtype">string</span>.IsNullOrEmpty(Password))</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;            {</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                Request.Credentials = <span class="keyword">new</span> NetworkCredential(UserName, Password);</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;            }</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        }</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    }</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;}</div>
-<div class="ttc" id="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory_html"><div class="ttname"><a href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html">Utilities.IO.FileSystem.Interfaces.IDirectory</a></div><div class="ttdoc">Represents a directory </div><div class="ttdef"><b>Definition:</b> <a href="_i_directory_8cs_source.html#l00032">IDirectory.cs:32</a></div></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            Request.ContentLength = ByteData.Length;</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            <span class="keyword">using</span> (Stream RequestStream = Request.GetRequestStream())</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;            {</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                RequestStream.Write(ByteData, 0, ByteData.Length);</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            }</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        }</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> SetupCredentials(HttpWebRequest Request)</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        {</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;            <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrEmpty(UserName) &amp;&amp; !<span class="keywordtype">string</span>.IsNullOrEmpty(Password))</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;            {</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                Request.Credentials = <span class="keyword">new</span> NetworkCredential(UserName, Password);</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;            }</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        }</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    }</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;}</div>
+<div class="ttc" id="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory_html"><div class="ttname"><a href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html">Utilities.IO.FileSystem.Interfaces.IDirectory</a></div><div class="ttdoc">Represents a directory </div><div class="ttdef"><b>Definition:</b> <a href="_i_directory_8cs_source.html#l00035">IDirectory.cs:35</a></div></div>
 <div class="ttc" id="namespace_system_html"><div class="ttname"><a href="namespace_system.html">System</a></div></div>
 <div class="ttc" id="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_directory_html_a1125096d9f512836986a05ed28873edb"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_directory.html#a1125096d9f512836986a05ed28873edb">Utilities.IO.FileSystem.Default.WebDirectory.WebDirectory</a></div><div class="ttdeci">WebDirectory()</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_web_directory_8cs_source.html#l00043">WebDirectory.cs:43</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_1_1_file_system_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_file_system.html">Utilities.IO.FileSystem</a></div></div>
@@ -303,10 +300,10 @@ $(document).ready(function(){initNavTree('_web_directory_8cs_source.html','');})
 <div class="ttc" id="namespace_utilities_html"><div class="ttname"><a href="namespace_utilities.html">Utilities</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_1_1_enums_html_a36a8e5e7d142dd236fb3795ff078594a"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_enums.html#a36a8e5e7d142dd236fb3795ff078594a">Utilities.IO.Enums.CopyOptions</a></div><div class="ttdeci">CopyOptions</div><div class="ttdoc">Options used in directory copying </div><div class="ttdef"><b>Definition:</b> <a href="_copy_options_8cs_source.html#l00027">CopyOptions.cs:27</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_data_types_html"><div class="ttname"><a href="namespace_utilities_1_1_data_types.html">Utilities.DataTypes</a></div></div>
-<div class="ttc" id="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory_html_abd8e5633719f53721ee4327901c352a2"><div class="ttname"><a href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html#abd8e5633719f53721ee4327901c352a2">Utilities.IO.FileSystem.Interfaces.IDirectory.FullName</a></div><div class="ttdeci">string FullName</div><div class="ttdoc">Full path to the directory </div><div class="ttdef"><b>Definition:</b> <a href="_i_directory_8cs_source.html#l00052">IDirectory.cs:52</a></div></div>
+<div class="ttc" id="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory_html_abd8e5633719f53721ee4327901c352a2"><div class="ttname"><a href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html#abd8e5633719f53721ee4327901c352a2">Utilities.IO.FileSystem.Interfaces.IDirectory.FullName</a></div><div class="ttdeci">string FullName</div><div class="ttdoc">Full path to the directory </div><div class="ttdef"><b>Definition:</b> <a href="_i_directory_8cs_source.html#l00055">IDirectory.cs:55</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o.html">Utilities.IO</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_1_1_enums_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_enums.html">Utilities.IO.Enums</a></div><div class="ttdef"><b>Definition:</b> <a href="_copy_options_8cs_source.html#l00022">CopyOptions.cs:22</a></div></div>
-<div class="ttc" id="namespace_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_file_system_1_1_interfaces.html">Utilities.IO.FileSystem.Interfaces</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_directory_8cs_source.html#l00027">IDirectory.cs:27</a></div></div>
+<div class="ttc" id="namespace_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_file_system_1_1_interfaces.html">Utilities.IO.FileSystem.Interfaces</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_file_system_1_1_base_classes.html">Utilities.IO.FileSystem.BaseClasses</a></div><div class="ttdef"><b>Definition:</b> <a href="_directory_base_8cs_source.html#l00029">DirectoryBase.cs:29</a></div></div>
 <div class="ttc" id="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_directory_html"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_directory.html">Utilities.IO.FileSystem.Default.WebDirectory</a></div><div class="ttdoc">Directory class </div><div class="ttdef"><b>Definition:</b> <a href="_web_directory_8cs_source.html#l00038">WebDirectory.cs:38</a></div></div>
 <div class="ttc" id="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_directory_html_addccc48c9b8750ea9ff0b570473eedec"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_web_directory.html#addccc48c9b8750ea9ff0b570473eedec">Utilities.IO.FileSystem.Default.WebDirectory.WebDirectory</a></div><div class="ttdeci">WebDirectory(Uri Directory, string UserName=&quot;&quot;, string Password=&quot;&quot;, string Domain=&quot;&quot;)</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_web_directory_8cs_source.html#l00067">WebDirectory.cs:67</a></div></div>
@@ -318,7 +315,7 @@ $(document).ready(function(){initNavTree('_web_directory_8cs_source.html','');})
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_cdffdb722b1f3b30993d9a14c7e19da9.html">IO</a></li><li class="navelem"><a class="el" href="dir_dd846de6290642c8890e926ebf368f0a.html">FileSystem</a></li><li class="navelem"><a class="el" href="dir_907aa97e1531825d990413d236dd34b6.html">Default</a></li><li class="navelem"><a class="el" href="_web_directory_8cs.html">WebDirectory.cs</a></li>
-    <li class="footer">Generated on Tue May 26 2015 23:11:19 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Thu May 28 2015 18:31:40 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

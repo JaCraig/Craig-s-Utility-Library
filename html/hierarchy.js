@@ -158,7 +158,8 @@ var hierarchy =
       ] ],
       [ "Utilities.IO.FileSystem.Interfaces.IDirectory", "interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html", [
         [ "Utilities.IO.DirectoryInfo", "class_utilities_1_1_i_o_1_1_directory_info.html", null ],
-        [ "Utilities.IO.FileSystem.BaseClasses.DirectoryBase< InternalDirectoryType, DirectoryType >", "class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_directory_base.html", null ]
+        [ "Utilities.IO.FileSystem.BaseClasses.DirectoryBase< InternalDirectoryType, DirectoryType >", "class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_directory_base.html", null ],
+        [ "Utilities.IO.FileSystem.Interfaces.Contracts.IDirectoryContract", "class_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_contracts_1_1_i_directory_contract.html", null ]
       ] ],
       [ "Utilities.IO.FileSystem.Interfaces.IFile", "interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_file.html", [
         [ "Utilities.IO.FileInfo", "class_utilities_1_1_i_o_1_1_file_info.html", null ],
@@ -316,7 +317,8 @@ var hierarchy =
     ] ],
     [ "Utilities.IO.FileSystem.Interfaces.IFileSystem", "interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_file_system.html", [
       [ "Utilities.IO.FileSystem.BaseClasses.FileSystemBase", "class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_file_system_base.html", null ],
-      [ "Utilities.IO.FileSystem.BaseClasses.LocalFileSystemBase", "class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_local_file_system_base.html", null ]
+      [ "Utilities.IO.FileSystem.BaseClasses.LocalFileSystemBase", "class_utilities_1_1_i_o_1_1_file_system_1_1_base_classes_1_1_local_file_system_base.html", null ],
+      [ "Utilities.IO.FileSystem.Interfaces.Contracts.IFileSystemContract", "class_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_contracts_1_1_i_file_system_contract.html", null ]
     ] ],
     [ "Utilities.DataTypes.Patterns.IFluentInterface", "interface_utilities_1_1_data_types_1_1_patterns_1_1_i_fluent_interface.html", [
       [ "Utilities.ORM.Manager.Mapper.Interfaces.IProperty< ClassType >", "interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_property.html", null ],
@@ -612,14 +614,14 @@ var hierarchy =
     [ "Utilities.IO.Logging.BaseClasses.LogBase< DefaultLog >", "class_utilities_1_1_i_o_1_1_logging_1_1_base_classes_1_1_log_base.html", [
       [ "Utilities.IO.Logging.Default.DefaultLog", "class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_log.html", null ]
     ] ],
-    [ "Utilities.ORM.Manager.Schema.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html", null ],
     [ "Utilities.IO.Encryption.Manager", "class_utilities_1_1_i_o_1_1_encryption_1_1_manager.html", null ],
-    [ "Utilities.ORM.Manager.QueryProvider.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_manager.html", null ],
-    [ "Utilities.DataTypes.Conversion.Manager", "class_utilities_1_1_data_types_1_1_conversion_1_1_manager.html", null ],
     [ "Utilities.IO.Messaging.Manager", "class_utilities_1_1_i_o_1_1_messaging_1_1_manager.html", null ],
-    [ "Utilities.DataTypes.AOP.Manager", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html", null ],
-    [ "Utilities.IO.Serializers.Manager", "class_utilities_1_1_i_o_1_1_serializers_1_1_manager.html", null ],
     [ "Utilities.DataTypes.DataMapper.Manager", "class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html", null ],
+    [ "Utilities.ORM.Manager.QueryProvider.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_manager.html", null ],
+    [ "Utilities.DataTypes.AOP.Manager", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html", null ],
+    [ "Utilities.ORM.Manager.Schema.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html", null ],
+    [ "Utilities.DataTypes.Conversion.Manager", "class_utilities_1_1_data_types_1_1_conversion_1_1_manager.html", null ],
+    [ "Utilities.IO.Serializers.Manager", "class_utilities_1_1_i_o_1_1_serializers_1_1_manager.html", null ],
     [ "Utilities.IO.Compression.Manager", "class_utilities_1_1_i_o_1_1_compression_1_1_manager.html", null ],
     [ "Utilities.DataTypes.Matrix", "class_utilities_1_1_data_types_1_1_matrix.html", null ],
     [ "Utilities.DataTypes.AI.NaiveBayes< T >", "class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html", null ],

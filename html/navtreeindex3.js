@@ -1,5 +1,11 @@
 var NAVTREEINDEX3 =
 {
+"_screen_extensions_8cs.html":[2,0,0,4,0,1],
+"_screen_extensions_8cs_source.html":[2,0,0,4,0,1],
+"_serialization_extensions_8cs.html":[2,0,0,2,3,6],
+"_serialization_extensions_8cs_source.html":[2,0,0,2,3,6],
+"_serialization_module_8cs.html":[2,0,0,2,8,3,0],
+"_serialization_module_8cs_source.html":[2,0,0,2,8,3,0],
 "_serializer_base_8cs.html":[2,0,0,2,8,0,0],
 "_serializer_base_8cs_source.html":[2,0,0,2,8,0,0],
 "_session_8cs.html":[2,0,0,5,3,7],
@@ -243,11 +249,5 @@ var NAVTREEINDEX3 =
 "class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html#af693f941025da3d43ec662a4647d6b83":[1,0,0,1,0,0,10],
 "class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html":[1,0,0,1,1,2],
 "class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html#a5bce17c272e2b336c940057afd126642":[1,0,0,1,1,2,4],
-"class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html#a643cf48cbc5df7df6446ae42b308b6a8":[1,0,0,1,1,2,3],
-"class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html#a77ffa4e6fc9c170fa7b7d803daffb9fd":[1,0,0,1,1,2,0],
-"class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html#a7a3ff007407acfb187d7901d517e937e":[1,0,0,1,1,2,2],
-"class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html#a8f38f663126ce4a377d6eef0c9c26f7d":[1,0,0,1,1,2,1],
-"class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html#ab3cb52ed25b9bbc0297bf014e7860b7e":[1,0,0,1,1,2,5],
-"class_utilities_1_1_data_types_1_1_a_o_p_1_1_module_1_1_a_o_p_module.html":[1,0,0,1,1,1,0],
-"class_utilities_1_1_data_types_1_1_a_o_p_1_1_module_1_1_a_o_p_module.html#a0365092891cc45fd17b0a4a71f2a2f47":[1,0,0,1,1,1,0,1]
+"class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html#a643cf48cbc5df7df6446ae42b308b6a8":[1,0,0,1,1,2,3]
 };
