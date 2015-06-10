@@ -34,7 +34,7 @@ namespace Utilities.Profiler.Manager.Default
         /// <param name="time">The time.</param>
         /// <param name="memory">The memory.</param>
         /// <param name="cpuUsage">The cpu usage.</param>
-        public Entry(long time, float memory, float cpuUsage)
+        public Entry(double time, float memory, float cpuUsage)
         {
             this.Time = time;
             this.Memory = memory;
@@ -57,6 +57,6 @@ namespace Utilities.Profiler.Manager.Default
         /// Total time that the profiler has taken (in milliseconds)
         /// </summary>
         /// <value>The time.</value>
-        public long Time { get; private set; }
+        public double Time { get; private set; }
     }
 }

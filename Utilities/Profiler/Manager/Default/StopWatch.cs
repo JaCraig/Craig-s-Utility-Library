@@ -38,7 +38,7 @@ namespace Utilities.Profiler.Manager.Default
         /// <summary>
         /// Returns the elapsed time
         /// </summary>
-        public virtual long ElapsedTime { get { return Watch.ElapsedMilliseconds; } }
+        public virtual double ElapsedTime { get { return Watch.Elapsed.TotalMilliseconds; } }
 
         /// <summary>
         /// Internal stop watch

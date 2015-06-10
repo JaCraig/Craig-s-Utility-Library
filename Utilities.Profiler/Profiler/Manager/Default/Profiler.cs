@@ -216,7 +216,7 @@ namespace Utilities.Profiler.Manager.Default
         /// Gets or sets the last counter time.
         /// </summary>
         /// <value>The last counter time.</value>
-        private static long LastCounterTime { get; set; }
+        private static double LastCounterTime { get; set; }
 
         /// <summary>
         /// Gets the memory value.

@@ -42,6 +42,6 @@ namespace Utilities.Profiler.Manager.Interfaces
         /// Total time that the profiler has taken (in milliseconds)
         /// </summary>
         /// <value>The time.</value>
-        long Time { get; }
+        double Time { get; }
     }
 }
