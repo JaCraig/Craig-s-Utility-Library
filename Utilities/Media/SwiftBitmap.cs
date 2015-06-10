@@ -414,6 +414,8 @@ namespace Utilities.Media
             var TempHolder = InternalBitmap.Clone(TempRectangle, InternalBitmap.PixelFormat);
             InternalBitmap.Dispose();
             InternalBitmap = TempHolder;
+            this.Width = Width;
+            this.Height = Height;
             return this;
         }
 
@@ -547,6 +549,8 @@ namespace Utilities.Media
             }
             InternalBitmap.Dispose();
             InternalBitmap = TempBitmap;
+            this.Width = Width;
+            this.Height = Height;
             return this;
         }
 
