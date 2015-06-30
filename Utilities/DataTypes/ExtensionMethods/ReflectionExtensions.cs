@@ -32,22 +32,6 @@ using System.Text;
 namespace Utilities.DataTypes
 {
     /// <summary>
-    /// Version info
-    /// </summary>
-    public enum VersionInfo
-    {
-        /// <summary>
-        /// Short version
-        /// </summary>
-        ShortVersion = 1,
-
-        /// <summary>
-        /// Long version
-        /// </summary>
-        LongVersion = 2
-    }
-
-    /// <summary>
     /// Reflection oriented extensions
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -844,7 +828,7 @@ namespace Utilities.DataTypes
             Type ObjectType = Object.GetType();
             foreach (PropertyInfo Property in ObjectType.GetProperties())
             {
-                TempValue.Append(HTMLOutput ? "<tr><td>" : "").Append(Property.Name).Append(HTMLOutput ? "</td><td>" : "\t\t\t\t");
+                TempValue.Append(HTMLOutput ? "<tr><td>" : System.Environment.NewLine).Append(Property.Name).Append(HTMLOutput ? "</td><td>" : "\t\t\t\t");
                 ParameterInfo[] Parameters = Property.GetIndexParameters();
                 if (Property.CanRead && Parameters.Length == 0)
                 {
@@ -875,8 +859,8 @@ namespace Utilities.DataTypes
             PropertyInfo[] Properties = ObjectType.GetProperties();
             foreach (PropertyInfo Property in Properties)
             {
-                TempValue.Append(HTMLOutput ? "<tr><td>" : "").Append(Property.Name).Append(HTMLOutput ? "</td><td>" : "\t\t\t\t");
-                if (Property.GetIndexParameters().Length == 0)
+                TempValue.Append(HTMLOutput ? "<tr><td>" : System.Environment.NewLine).Append(Property.Name).Append(HTMLOutput ? "</td><td>" : "\t\t\t\t");
+                if (Property.CanRead && Property.GetIndexParameters().Length == 0)
                 {
                     try
                     {
@@ -965,5 +949,21 @@ namespace Utilities.DataTypes
             });
             return ReturnValues;
         }
+    }
+
+    /// <summary>
+    /// Version info
+    /// </summary>
+    public enum VersionInfo
+    {
+        /// <summary>
+        /// Short version
+        /// </summary>
+        ShortVersion = 1,
+
+        /// <summary>
+        /// Long version
+        /// </summary>
+        LongVersion = 2
     }
 }

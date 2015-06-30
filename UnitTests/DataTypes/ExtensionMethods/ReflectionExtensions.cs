@@ -73,6 +73,21 @@ namespace UnitTests.Reflection.ExtensionMethods
         }
 
         [Fact]
+        public void DumpPropertiesWithNoHtmlTest()
+        {
+            List<int> TestObject = new List<int>();
+            for (int x = 0; x < 10; ++x)
+                TestObject.Add(x);
+
+            string Output = "Property Name\t\t\t\tProperty Value" + System.Environment.NewLine +
+                            "Capacity\t\t\t\t16" + System.Environment.NewLine +
+                            "Count\t\t\t\t10" + System.Environment.NewLine +
+                            "Item\t\t\t\t";
+
+            Assert.Equal(Output, TestObject.ToString(false));
+        }
+
+        [Fact]
         public void GetAttribute()
         {
             TestingAttribute TestObject = typeof(TestClass).Attribute<TestingAttribute>();
@@ -263,11 +278,11 @@ namespace UnitTests.Reflection.ExtensionMethods
             Value = 1; Value2 = 2;
         }
 
-        public string Value3 = "ASDF";
-
         public int Value { get; set; }
 
         public int Value2 { get; set; }
+
+        public string Value3 = "ASDF";
     }
 
     public class TestClass2 : TestInterface
