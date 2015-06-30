@@ -725,26 +725,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static string ToString(this object Object, bool HTMLOutput)
         {
             Contract.Requires<ArgumentNullException>(Object != null, "Object");
-            StringBuilder TempValue = new StringBuilder();
-            TempValue.Append(HTMLOutput ? "<table><thead><tr><th>Property Name</th><th>Property Value</th></tr></thead><tbody>" : "Property Name\t\t\t\tProperty Value");
-            Type ObjectType = Object.GetType();
-            foreach (PropertyInfo Property in ObjectType.GetProperties())
-            {
-                TempValue.Append(HTMLOutput ? "<tr><td>" : "").Append(Property.Name).Append(HTMLOutput ? "</td><td>" : "\t\t\t\t");
-                ParameterInfo[] Parameters = Property.GetIndexParameters();
-                if (Property.CanRead && Parameters.Length == 0)
-                {
-                    try
-                    {
-                        object Value = Property.GetValue(Object, null);
-                        TempValue.Append(Value == null ? "null" : Value.ToString());
-                    }
-                    catch { }
-                }
-                TempValue.Append(HTMLOutput ? "</td></tr>" : "");
-            }
-            TempValue.Append(HTMLOutput ? "</tbody></table>" : "");
-            return TempValue.ToString();
+            return Dump(Object.GetType(), Object, HTMLOutput);
         }
 
         /// <summary>
@@ -758,19 +739,35 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static string ToString(this Type ObjectType, bool HTMLOutput)
         {
             Contract.Requires<ArgumentNullException>(ObjectType != null, "ObjectType");
+            return Dump(ObjectType, null, HTMLOutput);
+        }
+
+        /// <summary>
+        /// Dumps the properties names and current values
+        /// from an objectType
+        /// </summary>
+        /// <param name="ObjectType">Object type to dunp</param>
+        /// <param name="Object">Object to dunp, if this is null then for static classes, else for an instance object </param>
+        /// <param name="HTMLOutput">Should this be output as an HTML string</param>
+        /// <returns></returns>
+        private static string Dump(Type ObjectType, object Object, bool HTMLOutput)
+        {
+            Contract.Requires<ArgumentNullException>(ObjectType != null, "ObjectType");
             StringBuilder TempValue = new StringBuilder();
             TempValue.Append(HTMLOutput ? "<table><thead><tr><th>Property Name</th><th>Property Value</th></tr></thead><tbody>" : "Property Name\t\t\t\tProperty Value");
             PropertyInfo[] Properties = ObjectType.GetProperties();
             foreach (PropertyInfo Property in Properties)
             {
-                TempValue.Append(HTMLOutput ? "<tr><td>" : "").Append(Property.Name).Append(HTMLOutput ? "</td><td>" : "\t\t\t\t");
-                if (Property.GetIndexParameters().Length == 0)
+                TempValue.Append(HTMLOutput ? "<tr><td>" : System.Environment.NewLine).Append(Property.Name).Append(HTMLOutput ? "</td><td>" : "\t\t\t\t");
+                if (Property.CanRead && Property.GetIndexParameters().Length == 0)
                 {
                     try
                     {
-                        TempValue.Append(Property.GetValue(null, null) == null ? "null" : Property.GetValue(null, null).ToString());
+                        object Value = Property.GetValue(Object, null);
+                        TempValue.Append(Value == null ? "null" : Value.ToString());
                     }
-                    catch { }
+                    catch
+                    { }
                 }
                 TempValue.Append(HTMLOutput ? "</td></tr>" : "");
             }
