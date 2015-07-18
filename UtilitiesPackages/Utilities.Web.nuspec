@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-Web</id>
-		<version>3.4.0188</version>
+		<version>3.4.0199</version>
 		<title>Craig's Utility Library Web Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -14,13 +14,13 @@
 		<copyright>Copyright 2011</copyright>
 		<tags>utility utilities</tags>
 		<dependencies>
-			<dependency id="CraigsUtilityLibrary-Compression" version="[3.4.0182]" />
-			<dependency id="CraigsUtilityLibrary-DataTypes" version="[3.4.0182]" />
-			<dependency id="CraigsUtilityLibrary-Encryption" version="[3.4.0182]" />
-			<dependency id="CraigsUtilityLibrary-FileFormats" version="[3.4.0182]" />
-			<dependency id="CraigsUtilityLibrary-IO" version="[3.4.0182]" />
-			<dependency id="CraigsUtilityLibrary-Random" version="[3.4.0182]" />
-			<dependency id="CraigsUtilityLibrary-Reflection" version="[3.4.0182]" />
+			<dependency id="CraigsUtilityLibrary-Compression" version="[3.4.0199]" />
+			<dependency id="CraigsUtilityLibrary-DataTypes" version="[3.4.0199]" />
+			<dependency id="CraigsUtilityLibrary-Encryption" version="[3.4.0199]" />
+			<dependency id="CraigsUtilityLibrary-FileFormats" version="[3.4.0199]" />
+			<dependency id="CraigsUtilityLibrary-IO" version="[3.4.0199]" />
+			<dependency id="CraigsUtilityLibrary-Random" version="[3.4.0199]" />
+			<dependency id="CraigsUtilityLibrary-Reflection" version="[3.4.0199]" />
 		</dependencies>
 		<references>
 			<reference file="Utilities.Web.dll" />

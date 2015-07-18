@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-Profiler</id>
-		<version>3.4.0188</version>
+		<version>3.4.0199</version>
 		<title>Craig's Utility Library Profiler Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -14,10 +14,10 @@
 		<copyright>Copyright 2011</copyright>
 		<tags>utility utilities</tags>
 		<dependencies>
-			<dependency id="CraigsUtilityLibrary-Caching" version="[3.4.0182]" />
-			<dependency id="CraigsUtilityLibrary-DataTypes" version="[3.4.0182]" />
-			<dependency id="CraigsUtilityLibrary-Environment" version="[3.4.0182]" />
-			<dependency id="CraigsUtilityLibrary-Math" version="[3.4.0182]" />
+			<dependency id="CraigsUtilityLibrary-Caching" version="[3.4.0199]" />
+			<dependency id="CraigsUtilityLibrary-DataTypes" version="[3.4.0199]" />
+			<dependency id="CraigsUtilityLibrary-Environment" version="[3.4.0199]" />
+			<dependency id="CraigsUtilityLibrary-Math" version="[3.4.0199]" />
 		</dependencies>
 		<references>
 			<reference file="Utilities.Profiler.dll" />
