@@ -634,10 +634,9 @@ namespace Utilities.DataTypes
             DataTable ReturnValue = new DataTable();
             ReturnValue.Locale = CultureInfo.CurrentCulture;
             int Count = 0;
-            foreach (object Item in List)
-            {
+            var i = List.GetEnumerator();
+            while (i.MoveNext())
                 ++Count;
-            }
             if (List == null || Count == 0)
                 return ReturnValue;
             IEnumerator ListEnumerator = List.GetEnumerator();

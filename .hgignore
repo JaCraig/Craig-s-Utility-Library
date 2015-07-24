@@ -21,3 +21,5 @@ TestResults/Utilities.TE.Tests.mdf
 */obj/*
 */bin/*
 packages/*
+.vs/*
+*/Bin/*
