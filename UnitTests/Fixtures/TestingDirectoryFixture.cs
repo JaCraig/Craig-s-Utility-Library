@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,8 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.IO;
-using Utilities.IO.ExtensionMethods;
+using Utilities.IO;
 using Xunit;
 
 namespace UnitTests.Fixtures
@@ -32,11 +31,15 @@ namespace UnitTests.Fixtures
         public TestingDirectoryFixture()
         {
             new DirectoryInfo(@".\Testing").Create();
+            new DirectoryInfo(@".\App_Data").Create();
+            new DirectoryInfo(@".\Logs").Create();
         }
 
         public void Dispose()
         {
-            new DirectoryInfo(@".\Testing").DeleteAll();
+            new DirectoryInfo(@".\Testing").Delete();
+            new DirectoryInfo(@".\App_Data").Delete();
+            new DirectoryInfo(@".\Logs").Delete();
         }
     }
 }

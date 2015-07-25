@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,24 +19,19 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
+using System.ComponentModel;
 
-#endregion
-
-namespace Utilities.Profiler.ExtensionMethods
+namespace Utilities.Profiler
 {
     /// <summary>
     /// Holds timing/profiling related extensions
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class TimerExtensions
     {
-        #region Functions
-
-        #region Time
-
         /// <summary>
-        /// Times an action and places 
+        /// Times an action and places
         /// </summary>
         /// <param name="ActionToTime">Action to time</param>
         /// <param name="FunctionName">Name to associate with the action</param>
@@ -49,7 +44,7 @@ namespace Utilities.Profiler.ExtensionMethods
         }
 
         /// <summary>
-        /// Times an action and places 
+        /// Times an action and places
         /// </summary>
         /// <typeparam name="T">Action input type</typeparam>
         /// <param name="ActionToTime">Action to time</param>
@@ -64,7 +59,7 @@ namespace Utilities.Profiler.ExtensionMethods
         }
 
         /// <summary>
-        /// Times an action and places 
+        /// Times an action and places
         /// </summary>
         /// <typeparam name="T1">Action input type 1</typeparam>
         /// <typeparam name="T2">Action input type 2</typeparam>
@@ -81,7 +76,7 @@ namespace Utilities.Profiler.ExtensionMethods
         }
 
         /// <summary>
-        /// Times an action and places 
+        /// Times an action and places
         /// </summary>
         /// <typeparam name="T1">Action input type 1</typeparam>
         /// <typeparam name="T2">Action input type 2</typeparam>
@@ -100,7 +95,7 @@ namespace Utilities.Profiler.ExtensionMethods
         }
 
         /// <summary>
-        /// Times an action and places 
+        /// Times an action and places
         /// </summary>
         /// <param name="FuncToTime">Action to time</param>
         /// <param name="FunctionName">Name to associate with the action</param>
@@ -115,7 +110,7 @@ namespace Utilities.Profiler.ExtensionMethods
         }
 
         /// <summary>
-        /// Times an action and places 
+        /// Times an action and places
         /// </summary>
         /// <param name="FuncToTime">Action to time</param>
         /// <param name="FunctionName">Name to associate with the action</param>
@@ -132,7 +127,7 @@ namespace Utilities.Profiler.ExtensionMethods
         }
 
         /// <summary>
-        /// Times an action and places 
+        /// Times an action and places
         /// </summary>
         /// <param name="FuncToTime">Action to time</param>
         /// <param name="FunctionName">Name to associate with the action</param>
@@ -151,7 +146,7 @@ namespace Utilities.Profiler.ExtensionMethods
         }
 
         /// <summary>
-        /// Times an action and places 
+        /// Times an action and places
         /// </summary>
         /// <param name="FuncToTime">Action to time</param>
         /// <param name="FunctionName">Name to associate with the action</param>
@@ -170,9 +165,5 @@ namespace Utilities.Profiler.ExtensionMethods
             using (new Profiler(FunctionName))
                 return FuncToTime(Object1, Object2, Object3);
         }
-
-        #endregion
-
-        #endregion
     }
 }

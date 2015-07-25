@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using Utilities.DataTypes.ExtensionMethods;
+using Utilities.DataTypes;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
 
@@ -25,7 +25,7 @@ namespace Utilities.Random.DefaultClasses
             foreach (PropertyInfo Property in ObjectType.GetProperties())
             {
                 GeneratorAttributeBase Attribute = Property.Attribute<GeneratorAttributeBase>();
-                if(Attribute!=null)
+                if (Attribute != null)
                     ReturnItem.Property(Property, Attribute.NextObj(Rand));
             }
             return ReturnItem;

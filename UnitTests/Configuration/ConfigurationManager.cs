@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,53 +19,30 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using UnitTests.Fixtures;
-using Utilities.Configuration;
-using Utilities.Configuration.Interfaces;
 using Xunit;
 
 namespace UnitTests.Configuration
 {
-    public class ConfigurationManager : TestingDirectoryFixture
+    public class ConfigurationManager
     {
         [Fact]
-        public void AssemblyTest()
+        public void Get()
         {
-            Utilities.Configuration.ConfigurationManager.RegisterConfigFile(typeof(TestConfig).Assembly);
-            Assert.True(Utilities.Configuration.ConfigurationManager.ContainsConfigFile<TestConfig>("TestConfig"));
-            IConfig Config = Utilities.Configuration.ConfigurationManager.GetConfigFile<TestConfig>("TestConfig");
-            Assert.NotNull(Config);
-            Assert.Equal("TestConfig", Config.Name);
-        }
-
-        public void SetFixture(TestingDirectoryFixture data)
-        {
+            Utilities.Configuration.Manager.Default.SystemConfig Temp = Utilities.Configuration.ConfigurationManager.Get<Utilities.Configuration.Manager.Default.SystemConfig>(Utilities.Configuration.ConfigurationSystem.Default);
+            Assert.NotNull(Temp);
+            Assert.Equal(1, Temp.AppSettings.Count);
+            Assert.Equal(2, Temp.ConnectionStrings.Count);
+            Assert.Equal("Default", Temp.Name);
         }
 
         [Fact]
-        public void SingleTest()
+        public void Get2()
         {
-            Utilities.Configuration.ConfigurationManager.RegisterConfigFile<TestConfig>();
-            Assert.True(Utilities.Configuration.ConfigurationManager.ContainsConfigFile<TestConfig>("TestConfig"));
-            IConfig Config = Utilities.Configuration.ConfigurationManager.GetConfigFile<TestConfig>("TestConfig");
-            Assert.NotNull(Config);
-            Assert.Equal("TestConfig", Config.Name);
-        }
-    }
-
-    public class TestConfig : Config<TestConfig>
-    {
-        public override string Name
-        {
-            get { return "TestConfig"; }
-        }
-    }
-
-    public class TestConfig2 : Config<TestConfig2>
-    {
-        public override string Name
-        {
-            get { return "TestConfig2"; }
+            Utilities.Configuration.Manager.Default.SystemConfig Temp = Utilities.Configuration.ConfigurationManager.Get<Utilities.Configuration.Manager.Default.SystemConfig>();
+            Assert.NotNull(Temp);
+            Assert.Equal(1, Temp.AppSettings.Count);
+            Assert.Equal(2, Temp.ConnectionStrings.Count);
+            Assert.Equal("Default", Temp.Name);
         }
     }
 }

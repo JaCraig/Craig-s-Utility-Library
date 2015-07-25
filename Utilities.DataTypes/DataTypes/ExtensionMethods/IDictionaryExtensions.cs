@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,25 +19,44 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Threading.Tasks;
 using Utilities.DataTypes.Comparison;
-#endregion
 
-namespace Utilities.DataTypes.ExtensionMethods
+namespace Utilities.DataTypes
 {
     /// <summary>
     /// IDictionary extensions
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class IDictionaryExtensions
     {
-        #region Functions
-
-        #region GetValue
+        /// <summary>
+        /// Copies the dictionary to another dictionary.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="Dictionary">The dictionary.</param>
+        /// <param name="Target">The target dictionary.</param>
+        /// <returns>
+        /// This
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">Thrown if the dictionary is null</exception>
+        public static IDictionary<TKey, TValue> CopyTo<TKey, TValue>(this IDictionary<TKey, TValue> Dictionary, IDictionary<TKey, TValue> Target)
+        {
+            Contract.Requires<ArgumentNullException>(Dictionary != null, "Dictionary");
+            Contract.Requires<ArgumentNullException>(Target != null, "Target");
+            foreach (KeyValuePair<TKey, TValue> Pair in Dictionary)
+            {
+                Target.SetValue(Pair.Key, Pair.Value);
+            }
+            return Dictionary;
+        }
 
         /// <summary>
         /// Gets the value from a dictionary or the default value if it isn't found
@@ -47,7 +66,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Dictionary">Dictionary to get the value from</param>
         /// <param name="Key">Key to look for</param>
         /// <param name="Default">Default value if the key is not found</param>
-        /// <returns>The value associated with the key or the default value if the key is not found</returns>
+        /// <returns>
+        /// The value associated with the key or the default value if the key is not found
+        /// </returns>
         /// <exception cref="System.ArgumentNullException">Thrown if the dictionary is null</exception>
         public static TValue GetValue<TKey, TValue>(this IDictionary<TKey, TValue> Dictionary, TKey Key, TValue Default = default(TValue))
         {
@@ -55,10 +76,6 @@ namespace Utilities.DataTypes.ExtensionMethods
             TValue ReturnValue = Default;
             return Dictionary.TryGetValue(Key, out ReturnValue) ? ReturnValue : Default;
         }
-
-        #endregion
-
-        #region SetValue
 
         /// <summary>
         /// Sets the value in a dictionary
@@ -80,10 +97,6 @@ namespace Utilities.DataTypes.ExtensionMethods
             return Dictionary;
         }
 
-        #endregion
-
-        #region Sort
-
         /// <summary>
         /// Sorts a dictionary
         /// </summary>
@@ -95,7 +108,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static IDictionary<T1, T2> Sort<T1, T2>(this IDictionary<T1, T2> Dictionary, IComparer<T1> Comparer = null)
             where T1 : IComparable
         {
-            Contract.Requires<ArgumentNullException>(Dictionary!= null, "Dictionary");
+            Contract.Requires<ArgumentNullException>(Dictionary != null, "Dictionary");
             return Dictionary.Sort(x => x.Key, Comparer);
         }
 
@@ -114,11 +127,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             Contract.Requires<ArgumentNullException>(Dictionary != null, "Dictionary");
             Contract.Requires<ArgumentNullException>(OrderBy != null, "OrderBy");
-            return Dictionary.OrderBy(OrderBy, Comparer.Check(()=>new GenericComparer<T3>())).ToDictionary(x => x.Key, x => x.Value);
+            return Dictionary.OrderBy(OrderBy, Comparer.Check(() => new GenericComparer<T3>())).ToDictionary(x => x.Key, x => x.Value);
         }
-
-        #endregion
-
-        #endregion
     }
 }

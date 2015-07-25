@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,10 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using Utilities.IO.Logging.Enums;
-#endregion
 
 namespace Utilities.IO.Logging.Interfaces
 {
@@ -31,16 +29,19 @@ namespace Utilities.IO.Logging.Interfaces
     /// </summary>
     public interface ILog : IDisposable
     {
-        #region Functions
+        /// <summary>
+        /// Name of the logger
+        /// </summary>
+        string Name { get; }
 
         /// <summary>
         /// Logs a message
         /// </summary>
         /// <param name="Message">Message text</param>
         /// <param name="Type">Message type</param>
-        /// <param name="args">Any additional arguments that will be used in formatting the message</param>
+        /// <param name="args">
+        /// Any additional arguments that will be used in formatting the message
+        /// </param>
         void LogMessage(string Message, MessageType Type, params object[] args);
-
-        #endregion
     }
 }

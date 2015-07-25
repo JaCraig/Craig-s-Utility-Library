@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>CUL.JSON.Net</id>
+		<version>4.0.283-beta</version>
+		<title>Craig's Utility Library JSON.Net Support</title>
+		<authors>James Craig</authors>
+		<owners>James Craig</owners>
+		<licenseUrl>https://github.com/JaCraig/Craig-s-Utility-Library/blob/master/LICENSE</licenseUrl>
+		<projectUrl>https://github.com/JaCraig/Craig-s-Utility-Library</projectUrl>
+		<requireLicenseAcceptance>true</requireLicenseAcceptance>
+		<description>Craig's Utility Library is one of the largest collections of utility classes and extension methods for .Net. It includes code to help with tasks including encryption, compression, serialization, file management, email, image manipulation, SQL, various file formats (CSV, iCal, etc.), randomization, validation, math related classes, various data types, reflection, code gen, events, code profiling, etc.</description>
+		<summary>This adds support for JSON.Net as the serializer for JSON that the library uses</summary>
+		<releaseNotes>This version is a complete rewrite of the current system from 3.X branch. This will break all of your code, so don't update unless you're a brave soul.</releaseNotes>
+		<copyright>Copyright 2011</copyright>
+		<tags>utility utilities</tags>
+		<references>
+			<reference file="CUL.JSON.Net.dll" />
+		</references>
+		<dependencies>
+            <dependency id="Newtonsoft.Json" version="[7.0.1]" />
+			<dependency id="CraigsUtilityLibrary" version="[4.0.283-beta]" />
+        </dependencies>
+	</metadata>
+	<files>
+		<file src="lib\CUL.JSON.Net.dll" target="lib\net40" />
+		<file src="lib\CUL.JSON.Net.pdb" target="lib\net40" />
+		<file src="lib\CUL.JSON.Net.xml" target="lib\net40" />
+	</files>
+</package>

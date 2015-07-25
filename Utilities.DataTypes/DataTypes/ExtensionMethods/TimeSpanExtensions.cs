@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,21 +19,29 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 
-#endregion
-
-namespace Utilities.DataTypes.ExtensionMethods
+namespace Utilities.DataTypes
 {
     /// <summary>
     /// TimeSpan extension methods
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class TimeSpanExtensions
     {
-        #region Extension Methods
-
-        #region DaysRemainder
+        /// <summary>
+        /// Averages a list of TimeSpans
+        /// </summary>
+        /// <param name="List">List of TimeSpans</param>
+        /// <returns>The average value</returns>
+        public static TimeSpan Average(this IEnumerable<TimeSpan> List)
+        {
+            List = List.Check(new List<TimeSpan>());
+            return List.Any() ? new TimeSpan((long)List.Average(x => x.Ticks)) : new TimeSpan(0);
+        }
 
         /// <summary>
         /// Days in the TimeSpan minus the months and years
@@ -45,10 +53,6 @@ namespace Utilities.DataTypes.ExtensionMethods
             return (DateTime.MinValue + Span).Day - 1;
         }
 
-        #endregion
-
-        #region Months
-
         /// <summary>
         /// Months in the TimeSpan
         /// </summary>
@@ -59,27 +63,9 @@ namespace Utilities.DataTypes.ExtensionMethods
             return (DateTime.MinValue + Span).Month - 1;
         }
 
-        #endregion
-
-        #region Years
-
         /// <summary>
-        /// Years in the TimeSpan
-        /// </summary>
-        /// <param name="Span">TimeSpan to get the years from</param>
-        /// <returns>The number of years that the TimeSpan has</returns>
-        public static int Years(this TimeSpan Span)
-        {
-            return (DateTime.MinValue + Span).Year - 1;
-        }
-
-        #endregion
-
-        #region ToStringFull
-
-        /// <summary>
-        /// Converts the input to a string in this format:
-        /// (Years) years, (Months) months, (DaysRemainder) days, (Hours) hours, (Minutes) minutes, (Seconds) seconds
+        /// Converts the input to a string in this format: (Years) years, (Months) months,
+        /// (DaysRemainder) days, (Hours) hours, (Minutes) minutes, (Seconds) seconds
         /// </summary>
         /// <param name="Input">Input TimeSpan</param>
         /// <returns>The TimeSpan as a string</returns>
@@ -96,8 +82,14 @@ namespace Utilities.DataTypes.ExtensionMethods
             return Result;
         }
 
-        #endregion
-
-        #endregion
+        /// <summary>
+        /// Years in the TimeSpan
+        /// </summary>
+        /// <param name="Span">TimeSpan to get the years from</param>
+        /// <returns>The number of years that the TimeSpan has</returns>
+        public static int Years(this TimeSpan Span)
+        {
+            return (DateTime.MinValue + Span).Year - 1;
+        }
     }
-} 
+}

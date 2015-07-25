@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,11 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using Utilities.Random.Interfaces;
-
-#endregion
 
 namespace Utilities.Random.BaseClasses
 {
@@ -31,14 +28,14 @@ namespace Utilities.Random.BaseClasses
     /// Attribute base class for generators
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
-    public abstract class GeneratorAttributeBase : System.Attribute,IGenerator
+    public abstract class GeneratorAttributeBase : System.Attribute, IGenerator
     {
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="Min">Minimum value</param>
         /// <param name="Max">Maximum value</param>
-        protected GeneratorAttributeBase(object Min,object Max)
+        protected GeneratorAttributeBase(object Min, object Max)
             : base()
         {
             this.Min = Min;
@@ -46,14 +43,14 @@ namespace Utilities.Random.BaseClasses
         }
 
         /// <summary>
-        /// Minimum allowed
-        /// </summary>
-        public virtual object Min { get; protected set; }
-
-        /// <summary>
         /// Maximum allowed
         /// </summary>
         public virtual object Max { get; protected set; }
+
+        /// <summary>
+        /// Minimum allowed
+        /// </summary>
+        public virtual object Min { get; protected set; }
 
         /// <summary>
         /// Generates next object

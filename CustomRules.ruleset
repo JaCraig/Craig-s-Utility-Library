@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Copy of Microsoft All Rules" Description="This rule set contains all rules. Running this rule set may result in a large number of warnings being reported. Use this rule set to get a comprehensive picture of all issues in your code. This can help you decide which of the more focused rule sets are most appropriate to run for your projects." ToolsVersion="10.0">
+  <IncludeAll Action="Warning" />
+  <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+    <Rule Id="CA1020" Action="None" />
+    <Rule Id="CA1300" Action="None" />
+    <Rule Id="CA1301" Action="None" />
+    <Rule Id="CA1302" Action="None" />
+    <Rule Id="CA1303" Action="None" />
+    <Rule Id="CA1304" Action="None" />
+    <Rule Id="CA1305" Action="None" />
+    <Rule Id="CA1306" Action="None" />
+    <Rule Id="CA1307" Action="None" />
+    <Rule Id="CA1308" Action="None" />
+    <Rule Id="CA1309" Action="None" />
+    <Rule Id="CA1400" Action="None" />
+    <Rule Id="CA1401" Action="None" />
+    <Rule Id="CA1402" Action="None" />
+    <Rule Id="CA1403" Action="None" />
+    <Rule Id="CA1404" Action="None" />
+    <Rule Id="CA1405" Action="None" />
+    <Rule Id="CA1406" Action="None" />
+    <Rule Id="CA1407" Action="None" />
+    <Rule Id="CA1408" Action="None" />
+    <Rule Id="CA1409" Action="None" />
+    <Rule Id="CA1410" Action="None" />
+    <Rule Id="CA1411" Action="None" />
+    <Rule Id="CA1412" Action="None" />
+    <Rule Id="CA1413" Action="None" />
+    <Rule Id="CA1414" Action="None" />
+    <Rule Id="CA1415" Action="None" />
+    <Rule Id="CA1500" Action="None" />
+    <Rule Id="CA1501" Action="None" />
+    <Rule Id="CA1502" Action="None" />
+    <Rule Id="CA1504" Action="None" />
+    <Rule Id="CA1505" Action="None" />
+    <Rule Id="CA1506" Action="None" />
+    <Rule Id="CA1600" Action="None" />
+    <Rule Id="CA1601" Action="None" />
+    <Rule Id="CA1700" Action="None" />
+    <Rule Id="CA1701" Action="None" />
+    <Rule Id="CA1702" Action="None" />
+    <Rule Id="CA1703" Action="None" />
+    <Rule Id="CA1704" Action="None" />
+    <Rule Id="CA1707" Action="None" />
+    <Rule Id="CA1708" Action="None" />
+    <Rule Id="CA1709" Action="None" />
+    <Rule Id="CA1710" Action="None" />
+    <Rule Id="CA1711" Action="None" />
+    <Rule Id="CA1712" Action="None" />
+    <Rule Id="CA1713" Action="None" />
+    <Rule Id="CA1714" Action="None" />
+    <Rule Id="CA1715" Action="None" />
+    <Rule Id="CA1716" Action="None" />
+    <Rule Id="CA1717" Action="None" />
+    <Rule Id="CA1719" Action="None" />
+    <Rule Id="CA1720" Action="None" />
+    <Rule Id="CA1721" Action="None" />
+    <Rule Id="CA1722" Action="None" />
+    <Rule Id="CA1724" Action="None" />
+    <Rule Id="CA1725" Action="None" />
+    <Rule Id="CA1726" Action="None" />
+    <Rule Id="CA1900" Action="None" />
+    <Rule Id="CA1901" Action="None" />
+    <Rule Id="CA1903" Action="None" />
+    <Rule Id="CA2101" Action="None" />
+    <Rule Id="CA2204" Action="None" />
+  </Rules>
+</RuleSet>

@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,139 +19,102 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Reflection;
-using System.Text;
-using Utilities.Configuration.Interfaces;
-using Utilities.DataTypes.ExtensionMethods;
-#endregion
+using Utilities.Configuration.Manager.Interfaces;
 
 namespace Utilities.Configuration
 {
     /// <summary>
-    /// Config manager
+    /// Configuration manager
     /// </summary>
-    public class ConfigurationManager
+    public static class ConfigurationManager
     {
-        #region Constructor
+        /// <summary>
+        /// Gets or sets the configuration manager.
+        /// </summary>
+        /// <value>The configuration manager.</value>
+        private static Utilities.Configuration.Manager.Manager ConfigManager { get; set; }
 
+        /// <summary>
+        /// Gets the config file specified
+        /// </summary>
+        /// <typeparam name="T">The config type</typeparam>
+        /// <param name="System">Configuration system to pull from</param>
+        /// <param name="Name">
+        /// Name of the config file (Defaults to "Default" which is the web.config/app.config file
+        /// if using the default config system)
+        /// </param>
+        /// <returns>The config file specified</returns>
+        public static T Get<T>(ConfigurationSystem System, string Name = "Default")
+            where T : IConfig, new()
+        {
+            Contract.Requires<ArgumentNullException>(System != null, "The config system can not be null.");
+            if (ConfigManager == null)
+                ConfigManager = IoC.Manager.Bootstrapper.Resolve<Utilities.Configuration.Manager.Manager>();
+            return ConfigManager.Get(System).Config<T>(Name);
+        }
+
+        /// <summary>
+        /// Gets the config file specified
+        /// </summary>
+        /// <typeparam name="T">The config type</typeparam>
+        /// <param name="Name">
+        /// Name of the config file (Defaults to "Default" which is the web.config/app.config file
+        /// if using the default config system)
+        /// </param>
+        /// <returns>The config file specified</returns>
+        public static T Get<T>(string Name = "Default")
+            where T : IConfig, new()
+        {
+            return Get<T>(ConfigurationSystem.Default, Name);
+        }
+    }
+
+    /// <summary>
+    /// Configuration system enum
+    /// </summary>
+    public class ConfigurationSystem
+    {
         /// <summary>
         /// Constructor
         /// </summary>
-        public ConfigurationManager()
+        /// <param name="Name">Name</param>
+        protected ConfigurationSystem(string Name)
         {
-            
-        }
-
-        #endregion
-
-        #region Public Functions
-
-        #region RegisterConfigFile
-
-        /// <summary>
-        /// Registers a config file
-        /// </summary>
-        /// <typeparam name="ConfigType">The config object type to register</typeparam>
-        public static void RegisterConfigFile<ConfigType>() where ConfigType : Config<ConfigType>, new()
-        {
-            RegisterConfigFile(new ConfigType());
+            this.Name = Name;
         }
 
         /// <summary>
-        /// Registers a config file
+        /// Default
         /// </summary>
-        /// <param name="ConfigObject">Config object to register</param>
-        public static void RegisterConfigFile(IConfig ConfigObject)
+        /// <value>The default.</value>
+        public static ConfigurationSystem Default { get { return new ConfigurationSystem("Default"); } }
+
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        /// <value>The name.</value>
+        private string Name { get; set; }
+
+        /// <summary>
+        /// Converts the object to a string implicitly
+        /// </summary>
+        /// <param name="Object">Object to convert</param>
+        /// <returns>The string version of the configuration system type</returns>
+        public static implicit operator string(ConfigurationSystem Object)
         {
-            Contract.Requires<ArgumentNullException>(ConfigObject != null, "ConfigObject");
-            if (ConfigFiles.ContainsKey(ConfigObject.Name)) return;
-            ConfigObject.Load();
-            ConfigFiles.Add(ConfigObject.Name, ConfigObject);
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            return Object.ToString();
         }
 
         /// <summary>
-        /// Registers a set of config file
+        /// Returns the name of the serialization type
         /// </summary>
-        /// <param name="ConfigObjects">Config objects to register</param>
-        public static void RegisterConfigFile(IEnumerable<IConfig> ConfigObjects)
-        {
-            Contract.Requires<ArgumentNullException>(ConfigObjects != null, "ConfigObjects");
-            foreach (IConfig ConfigObject in ConfigObjects)
-                RegisterConfigFile(ConfigObject);
-        }
-
-        /// <summary>
-        /// Registers all config files in an assembly
-        /// </summary>
-        /// <param name="AssemblyContainingConfig">Assembly to search</param>
-        public static void RegisterConfigFile(Assembly AssemblyContainingConfig)
-        {
-            Contract.Requires<ArgumentNullException>(AssemblyContainingConfig != null, "AssemblyContainingConfig");
-            RegisterConfigFile(AssemblyContainingConfig.Objects<IConfig>());
-        }
-
-        #endregion
-
-        #region GetConfigFile
-
-        /// <summary>
-        /// Gets a specified config file
-        /// </summary>
-        /// <typeparam name="T">Type of the config object</typeparam>
-        /// <param name="Name">Name of the config object</param>
-        /// <returns>The config object specified</returns>
-        public static T GetConfigFile<T>(string Name)
-        {
-            Contract.Requires<ArgumentException>(ContainsConfigFile<T>(Name), "The config object was not found or was not of the type specified.");
-            return (T)ConfigFiles[Name];
-        }
-
-        #endregion
-
-        #region ContainsConfigFile
-
-        /// <summary>
-        /// Determines if a specified config file is registered
-        /// </summary>
-        /// <typeparam name="T">Type of the config object</typeparam>
-        /// <param name="Name">Name of the config object</param>
-        /// <returns>The config object specified</returns>
-        [Pure]
-        public static bool ContainsConfigFile<T>(string Name)
-        {
-            return ConfigFiles.ContainsKey(Name) && ConfigFiles[Name] is T;
-        }
-
-        #endregion
-
-        #region ToString
-
-        /// <summary>
-        /// Outputs all of the configuration items as an HTML list
-        /// </summary>
-        /// <returns>All configs as a string list</returns>
+        /// <returns>Name</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("<ul>").Append("<li>").Append(ConfigFiles.Count).Append("</li>");
-            foreach (string Name in ConfigFiles.Keys)
-                Builder.Append("<li>").Append(Name).Append(":").Append(ConfigFiles[Name].GetType().FullName).Append("</li>");
-            Builder.Append("</ul>");
-            return Builder.ToString();
+            return Name;
         }
-
-        #endregion
-
-        #endregion
-
-        #region Private fields
-
-        private static Dictionary<string, IConfig> ConfigFiles = new Dictionary<string, IConfig>();
-
-        #endregion
     }
 }

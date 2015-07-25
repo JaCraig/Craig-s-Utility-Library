@@ -2,22 +2,42 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary</id>
-		<version>3.4.0199</version>
+		<version>4.0.283-beta</version>
 		<title>Craig's Utility Library</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
-		<licenseUrl>http://cul.codeplex.com/license</licenseUrl>
-		<projectUrl>http://cul.codeplex.com/</projectUrl>
+		<licenseUrl>https://github.com/JaCraig/Craig-s-Utility-Library/blob/master/LICENSE</licenseUrl>
+		<projectUrl>https://github.com/JaCraig/Craig-s-Utility-Library</projectUrl>
 		<requireLicenseAcceptance>true</requireLicenseAcceptance>
-		<description>Craig's Utility Library is one of the largest collections of utility classes and extension methods for .Net. It includes code to help with tasks including encryption, compression, serialization, file management, email, image manipulation, Active Directory, Exchange, SQL, various file formats (CSV, iCal, etc.), Cisco phone apps, WMI queries, randomization, math related classes, various data types, OAuth, OpenID, REST, reflection, code gen, various web services (Twitter, Hulu, Netflix, etc.), events, speech synthesis, speech recognition, code profiling, etc. Note that this is the package that will be updated going forward.</description>
-		<releaseNotes>This includes code from the nightly build once all unit tests are passed (as such it should contain the latest code)</releaseNotes>
+		<description>Craig's Utility Library is one of the largest collections of utility classes and extension methods for .Net. It includes code to help with tasks including encryption, compression, serialization, file management, email, image manipulation, SQL, various file formats (CSV, iCal, etc.), randomization, validation, math related classes, various data types, reflection, code gen, events, code profiling, etc.</description>
+		<summary>One of the largest collections of utility classes and extension methods for .Net</summary>
+		<releaseNotes>This version is a complete rewrite of the current system. This will break all of your code, so don't update unless you're a brave soul.</releaseNotes>
 		<copyright>Copyright 2011</copyright>
 		<tags>utility utilities</tags>
 		<references>
 			<reference file="Utilities.dll" />
 		</references>
+		<frameworkAssemblies>
+			<frameworkAssembly assemblyName="System" targetFramework="net40" />
+			<frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework="net40" />
+			<frameworkAssembly assemblyName="System.configuration" targetFramework="net40" />
+			<frameworkAssembly assemblyName="System.Core" targetFramework="net40" />
+			<frameworkAssembly assemblyName="System.Data" targetFramework="net40" />
+			<frameworkAssembly assemblyName="System.Data.DataSetExtensions" targetFramework="net40" />
+			<frameworkAssembly assemblyName="System.Data.Entity.Design" targetFramework="net40" />
+			<frameworkAssembly assemblyName="System.Drawing" targetFramework="net40" />
+			<frameworkAssembly assemblyName="System.DirectoryServices" targetFramework="net40" />
+			<frameworkAssembly assemblyName="System.Runtime.Serialization" targetFramework="net40" />
+			<frameworkAssembly assemblyName="System.Runtime.Serialization.Formatters.Soap" targetFramework="net40" />
+			<frameworkAssembly assemblyName="System.Web" targetFramework="net40" />
+			<frameworkAssembly assemblyName="System.Windows.Forms" targetFramework="net40" />
+			<frameworkAssembly assemblyName="System.Xml" targetFramework="net40" />
+			<frameworkAssembly assemblyName="System.Xml.Linq" targetFramework="net40" />
+		</frameworkAssemblies>
 		<dependencies>
-            <dependency id="Microsoft.AspNet.Mvc" version="[5.2.3]" />
+            <dependency id="Microsoft.CodeAnalysis.CSharp" version="[1.0.0]" />
+			<dependency id="Microsoft.Web.Infrastructure" version="[1.0.0.0]" />
+			<dependency id="Microsoft.AspNet.Mvc" version="[5.2.3]" />
         </dependencies>
 	</metadata>
 	<files>
@@ -26,6 +46,5 @@
 		<file src="lib\Utilities.xml" target="lib\net40" />
 		<file src="lib\CodeContracts\Utilities.Contracts.dll" target="lib\net40\CodeContracts" />
 		<file src="lib\CodeContracts\Utilities.Contracts.pdb" target="lib\net40\CodeContracts" />
-		<file src="readme.txt" target="readme.txt" />
 	</files>
 </package>

@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System.ComponentModel.DataAnnotations;
-using Utilities.Validation.ExtensionMethods;
-using Utilities.Validation.Rules;
+using Utilities.Validation;
+
 using Xunit;
 
 namespace UnitTests.Validation.Rules
@@ -47,16 +47,16 @@ namespace UnitTests.Validation.Rules
 
     public class IsClass
     {
-        [Is(Utilities.Validation.Rules.Enums.IsValid.CreditCard)]
+        [Is(Utilities.Validation.IsValid.CreditCard)]
         public string ItemA { get; set; }
 
-        [Is(Utilities.Validation.Rules.Enums.IsValid.Decimal)]
+        [Is(Utilities.Validation.IsValid.Decimal)]
         public string ItemB { get; set; }
 
-        [Is(Utilities.Validation.Rules.Enums.IsValid.Domain)]
+        [Is(Utilities.Validation.IsValid.Domain)]
         public string ItemC { get; set; }
 
-        [Is(Utilities.Validation.Rules.Enums.IsValid.Integer)]
+        [Is(Utilities.Validation.IsValid.Integer)]
         public string ItemD { get; set; }
     }
 }

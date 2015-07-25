@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,17 +20,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
-using Utilities.DataTypes.ExtensionMethods;
+using Utilities.DataTypes;
 using Xunit;
 
 namespace UnitTests.DataTypes.ExtensionMethods
 {
     public class IEnumerableExtensions
     {
+        [Fact]
+        public void Distinct()
+        {
+            List<int> Temp = new int[] { 0, 0, 1, 2, 1, 3, 5, 2 }.ToList();
+            List<int> Results = new int[] { 0, 1, 2, 3, 5 }.ToList();
+            Assert.Equal(Results, Temp.Distinct((x, y) => x == y));
+        }
+
         [Fact]
         public void ElementsBetween()
         {
@@ -41,11 +50,11 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void ForEachParallelTest()
         {
-            StringBuilder Builder = new StringBuilder(30);
+            ConcurrentBag<int> Builder = new ConcurrentBag<int>();
             int[] Temp = new int[] { 0, 0, 1, 2, 3 };
-            Temp.ForEachParallel(x => Builder.Append(x));
-            Assert.Equal(5, Builder.ToString().Length);
-            string OrderedString = new string(Builder.ToString().OrderBy(x => x).ToArray());
+            Temp.ForEachParallel(x => Builder.Add(x));
+            Assert.Equal(5, Builder.Count);
+            string OrderedString = new string(Builder.OrderBy(x => x).ToString(x => x.ToString(), "").ToArray());
             Assert.Equal("00123", OrderedString);
         }
 
@@ -137,6 +146,46 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
+        public void LeftJoin()
+        {
+            var Temp1 = new[]{
+                new {A="A",ID=1},
+                new {A="B",ID=2},
+                new {A="C",ID=3}
+            };
+            var Temp2 = new[]{
+                new {B="D",ID=1},
+                new {B="E",ID=2}
+            };
+            var Result = Temp1.LeftJoin(Temp2, x => x.ID, x => x.ID, (x, y) => new { A = x == null ? "" : x.A, B = y == null ? "" : y.B }).ToList();
+            Assert.Equal(3, Result.Count);
+            Assert.True(Result.Any(x => x.A == "A" && x.B == "D"));
+            Assert.True(Result.Any(x => x.A == "B" && x.B == "E"));
+            Assert.True(Result.Any(x => x.A == "C" && x.B == ""));
+        }
+
+        [Fact]
+        public void OuterJoin()
+        {
+            var Temp1 = new[]{
+                new {A="A",ID=1},
+                new {A="B",ID=2},
+                new {A="C",ID=3}
+            };
+            var Temp2 = new[]{
+                new {B="D",ID=1},
+                new {B="E",ID=2},
+                new {B="F",ID=4}
+            };
+            var Result = Temp1.OuterJoin(Temp2, x => x.ID, x => x.ID, (x, y) => new { A = x == null ? "" : x.A, B = y == null ? "" : y.B }).ToList();
+            Assert.Equal(4, Result.Count);
+            Assert.True(Result.Any(x => x.A == "A" && x.B == "D"));
+            Assert.True(Result.Any(x => x.A == "B" && x.B == "E"));
+            Assert.True(Result.Any(x => x.A == "C" && x.B == ""));
+            Assert.True(Result.Any(x => x.A == "" && x.B == "F"));
+        }
+
+        [Fact]
         public void PositionOf()
         {
             Assert.Equal(0, new int[] { 1, 2, 3 }.PositionOf(1));
@@ -150,6 +199,25 @@ namespace UnitTests.DataTypes.ExtensionMethods
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             foreach (int Value in Temp.Remove(x => x == 0))
                 Assert.NotEqual(0, Value);
+        }
+
+        [Fact]
+        public void RightJoin()
+        {
+            var Temp2 = new[]{
+                new {A="A",ID=1},
+                new {A="B",ID=2},
+                new {A="C",ID=3}
+            };
+            var Temp1 = new[]{
+                new {B="D",ID=1},
+                new {B="E",ID=2}
+            };
+            var Result = Temp1.RightJoin(Temp2, x => x.ID, x => x.ID, (x, y) => new { A = y == null ? "" : y.A, B = x == null ? "" : x.B }).ToList();
+            Assert.Equal(3, Result.Count);
+            Assert.True(Result.Any(x => x.A == "A" && x.B == "D"));
+            Assert.True(Result.Any(x => x.A == "B" && x.B == "E"));
+            Assert.True(Result.Any(x => x.A == "C" && x.B == ""));
         }
 
         [Fact]
@@ -183,8 +251,8 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ToDataTable()
         {
             List<PreDataTable> Temp = new PreDataTable[] { new PreDataTable { ID = 1, Value = "A" }, new PreDataTable { ID = 2, Value = "B" }, new PreDataTable { ID = 3, Value = "C" } }.ToList();
-            Temp.ToDataTable();
-            DataTable Temp2 = Temp.ToDataTable();
+            Temp.To();
+            DataTable Temp2 = Temp.To();
             Assert.Equal(1, Temp2.Rows[0].ItemArray[0]);
             Assert.Equal("A", Temp2.Rows[0].ItemArray[1]);
             Assert.Equal(2, Temp2.Rows[1].ItemArray[0]);
@@ -205,11 +273,29 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
+        public void ToObservableList()
+        {
+            ObservableList<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToObservableList(x => x + 10);
+            Assert.Equal(10, Temp[0]);
+            Assert.Equal(10, Temp[1]);
+            Assert.Equal(11, Temp[2]);
+            Assert.Equal(12, Temp[3]);
+            Assert.Equal(13, Temp[4]);
+        }
+
+        [Fact]
         public void ToStringTest()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             Assert.Equal("0,0,1,2,3", Temp.ToString(Seperator: ","));
             Assert.NotEqual("0,0,1,2,3", Temp.ToString());
+        }
+
+        [Fact]
+        public void Transverse()
+        {
+            TraverseClass TestObject = new TraverseClass() { Children = new TraverseClass[] { new TraverseClass(), new TraverseClass(), new TraverseClass(), new TraverseClass() }.ToList() };
+            Assert.Equal(5, TestObject.Transverse(x => x.Children).Count());
         }
 
         [Fact]
@@ -272,5 +358,15 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             return base.ToString();
         }
+    }
+
+    public class TraverseClass
+    {
+        public TraverseClass()
+        {
+            Children = new List<TraverseClass>();
+        }
+
+        public List<TraverseClass> Children { get; set; }
     }
 }

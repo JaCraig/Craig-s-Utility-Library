@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,8 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Utilities.DataTypes.ExtensionMethods;
+using UnitTests.Fixtures;
+using Utilities.DataTypes;
 using Xunit;
 
 namespace UnitTests.Reflection.ExtensionMethods
@@ -38,7 +39,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         int Value2 { get; set; }
     }
 
-    public class ReflectionExtensions
+    public class ReflectionExtensions : TestingDirectoryFixture
     {
         [Fact]
         public void CallMethodTest()
@@ -102,15 +103,15 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Fact]
         public void GetNameTest()
         {
-            Assert.Equal("TestClass", typeof(TestClass).GetName());
-            Assert.Equal("TestClass2", typeof(TestClass2).GetName());
-            Assert.Equal("TestClass3<Int32>", typeof(TestClass3<int>).GetName());
+            Assert.Equal("UnitTests.Reflection.ExtensionMethods.TestClass", typeof(TestClass).GetName());
+            Assert.Equal("UnitTests.Reflection.ExtensionMethods.TestClass2", typeof(TestClass2).GetName());
+            Assert.Equal("UnitTests.Reflection.ExtensionMethods.TestClass3<System.Int32>", typeof(TestClass3<int>).GetName());
         }
 
         [Fact]
         public void GetObjectsTest()
         {
-            Assert.Equal(2, new DirectoryInfo(@".\").Objects<TestInterface>()
+            Assert.Equal(2, new DirectoryInfo(@".\").Objects<TestInterface>(false)
                                                     .Count());
         }
 
@@ -136,7 +137,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         public void GetPropertySetterTest()
         {
             Expression<Func<TestClass, int>> TestObject = x => x.Value;
-            Expression<Action<TestClass, int>> TestObject2 = TestObject.PropertySetter();
+            Expression<Action<TestClass, int>> TestObject2 = TestObject.PropertySetter<TestClass, int>();
             TestClass TestObject3 = new TestClass();
             TestObject2.Compile()(TestObject3, 10);
             Assert.Equal(10, TestObject3.Value);
@@ -146,7 +147,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         public void GetPropertySetterTest2()
         {
             Expression<Func<TestClass4, int>> TestObject = x => x.Temp.Value;
-            Expression<Action<TestClass4, int>> TestObject2 = TestObject.PropertySetter();
+            Expression<Action<TestClass4, int>> TestObject2 = TestObject.PropertySetter<TestClass4, int>();
             TestClass4 TestObject3 = new TestClass4();
             TestObject2.Compile()(TestObject3, 10);
             Assert.Equal(10, TestObject3.Temp.Value);
@@ -201,7 +202,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Fact]
         public void LoadAssembliesTest()
         {
-            Assert.Equal(15, new DirectoryInfo(@".\").LoadAssemblies().Count());
+            Assert.Equal(21, new DirectoryInfo(@".\").LoadAssemblies().Count());
         }
 
         [Fact]
@@ -265,7 +266,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Fact]
         public void VersionInfo2()
         {
-            Assert.Equal("Microsoft.Web.Infrastructure: 1.0\r\nSystem.Web.Helpers: 3.0\r\nSystem.Web.Mvc: 5.2\r\nSystem.Web.Razor: 3.0\r\nSystem.Web.WebPages: 3.0\r\nSystem.Web.WebPages.Deployment: 3.0\r\nSystem.Web.WebPages.Razor: 3.0\r\nUnitTests: 1.0\r\nUtilities: 1.0\r\nxunit.abstractions: 2.0\r\nxunit.assert: 2.0\r\nxunit.core: 2.0\r\nxunit.execution.desktop: 2.0\r\nxunit.runner.utility.desktop: 2.0\r\nxunit.runner.visualstudio.testadapter: 2.0\r\n", new DirectoryInfo(@".\").LoadAssemblies().ToString(VersionInfo.ShortVersion));
+            Assert.Equal("Microsoft.CodeAnalysis: 1.0\r\nMicrosoft.CodeAnalysis.CSharp: 1.0\r\nMicrosoft.VisualStudio.TestPlatform.ObjectModel: 12.0\r\nMicrosoft.Web.Infrastructure: 1.0\r\nmsdia120typelib_clr0200: 12.0\r\nSystem.Collections.Immutable: 1.1\r\nSystem.Reflection.Metadata: 1.0\r\nSystem.Web.Helpers: 3.0\r\nSystem.Web.Mvc: 5.2\r\nSystem.Web.Razor: 3.0\r\nSystem.Web.WebPages: 3.0\r\nSystem.Web.WebPages.Deployment: 3.0\r\nSystem.Web.WebPages.Razor: 3.0\r\nUnitTests: 1.0\r\nUtilities: 4.0\r\nxunit.abstractions: 2.0\r\nxunit.assert: 2.0\r\nxunit.core: 2.0\r\nxunit.execution.desktop: 2.0\r\nxunit.runner.utility.desktop: 2.0\r\nxunit.runner.visualstudio.testadapter: 2.0\r\n", new DirectoryInfo(@".\").LoadAssemblies().ToString(VersionInfo.ShortVersion));
         }
     }
 
@@ -277,11 +278,11 @@ namespace UnitTests.Reflection.ExtensionMethods
             Value = 1; Value2 = 2;
         }
 
-        public string Value3 = "ASDF";
-
         public int Value { get; set; }
 
         public int Value2 { get; set; }
+
+        public string Value3 = "ASDF";
     }
 
     public class TestClass2 : TestInterface

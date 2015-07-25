@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,11 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using Utilities.Random.BaseClasses;
-using Utilities.Random.ExtensionMethods;
 using Utilities.Random.Interfaces;
-#endregion
 
 namespace Utilities.Random.ContactInfoGenerators
 {
@@ -32,16 +29,23 @@ namespace Utilities.Random.ContactInfoGenerators
     /// </summary>
     public class StateGenerator : GeneratorAttributeBase, IGenerator<string>
     {
-        #region Constructors
+        private string[] StatesAndDistricts = { "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado",
+                                                  "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho",
+                                                  "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine",
+                                                  "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi",
+                                                  "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
+                                                  "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma",
+                                                  "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota",
+                                                  "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia",
+                                                  "Wisconsin", "Wyoming", "District of Columbia" };
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public StateGenerator() : base("", "") { }
-
-        #endregion
-
-        #region Functions
+        public StateGenerator()
+            : base("", "")
+        {
+        }
 
         /// <summary>
         /// Generates a random value of the specified type
@@ -74,21 +78,5 @@ namespace Utilities.Random.ContactInfoGenerators
         {
             return Next(Rand);
         }
-
-        #endregion
-
-        #region Private Variables
-
-        private string[] StatesAndDistricts = { "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado",
-                                                  "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho",
-                                                  "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine",
-                                                  "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi",
-                                                  "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
-                                                  "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma",
-                                                  "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota",
-                                                  "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia",
-                                                  "Wisconsin", "Wyoming", "District of Columbia" };
-
-        #endregion
     }
 }

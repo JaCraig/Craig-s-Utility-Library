@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,12 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System.Text;
 using Utilities.Random.BaseClasses;
-using Utilities.Random.ExtensionMethods;
 using Utilities.Random.Interfaces;
-#endregion
 
 namespace Utilities.Random.StringGenerators
 {
@@ -33,34 +30,20 @@ namespace Utilities.Random.StringGenerators
     /// </summary>
     public class PatternGenerator : GeneratorAttributeBase, IGenerator<string>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Pattern">
-        /// Pattern to use:
-        /// # = Number
-        /// @ = Alpha character
-        /// </param>
+        /// <param name="Pattern">Pattern to use: # = Number @ = Alpha character</param>
         public PatternGenerator(string Pattern)
             : base("", "")
         {
             this.Pattern = Pattern;
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Pattern to use
         /// </summary>
         public virtual string Pattern { get; protected set; }
-
-        #endregion
-
-        #region Functions
 
         /// <summary>
         /// Generates a random value of the specified type
@@ -111,7 +94,5 @@ namespace Utilities.Random.StringGenerators
         {
             return Next(Rand);
         }
-
-        #endregion
     }
 }

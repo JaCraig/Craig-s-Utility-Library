@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,13 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-#endregion
 
 namespace Utilities.Random.StringGenerators
 {
@@ -34,14 +32,14 @@ namespace Utilities.Random.StringGenerators
     /// </summary>
     public class RegexStringGenerator : GeneratorAttributeBase, IGenerator<string>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="Length">Length of the string to generate</param>
         /// <param name="AllowedCharacters">Characters that are allowed</param>
-        /// <param name="NumberOfNonAlphaNumericsAllowed">Number of non alphanumeric characters to allow</param>
+        /// <param name="NumberOfNonAlphaNumericsAllowed">
+        /// Number of non alphanumeric characters to allow
+        /// </param>
         public RegexStringGenerator(int Length, string AllowedCharacters = ".", int NumberOfNonAlphaNumericsAllowed = int.MaxValue)
             : base("", "")
         {
@@ -50,9 +48,10 @@ namespace Utilities.Random.StringGenerators
             this.NumberOfNonAlphaNumericsAllowed = NumberOfNonAlphaNumericsAllowed;
         }
 
-        #endregion
-
-        #region Properties
+        /// <summary>
+        /// Characters allowed
+        /// </summary>
+        public virtual string AllowedCharacters { get; protected set; }
 
         /// <summary>
         /// Length to generate
@@ -60,18 +59,9 @@ namespace Utilities.Random.StringGenerators
         public virtual int Length { get; protected set; }
 
         /// <summary>
-        /// Characters allowed
-        /// </summary>
-        public virtual string AllowedCharacters { get; protected set; }
-
-        /// <summary>
         /// Number of non alpha numeric characters allowed
         /// </summary>
         public virtual int NumberOfNonAlphaNumericsAllowed { get; protected set; }
-
-        #endregion
-
-        #region Functions
 
         /// <summary>
         /// Generates a random value of the specified type
@@ -126,7 +116,5 @@ namespace Utilities.Random.StringGenerators
         {
             return Next(Rand);
         }
-
-        #endregion
     }
 }

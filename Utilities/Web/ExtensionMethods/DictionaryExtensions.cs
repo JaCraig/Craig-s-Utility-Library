@@ -19,25 +19,20 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Text;
 
-#endregion
-
-namespace Utilities.Web.ExtensionMethods
+namespace Utilities.Web
 {
     /// <summary>
     /// Extensions for Dictionary classes
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class DictionaryExtensions
     {
-        #region Functions
-
-        #region ToQueryString
-
         /// <summary>
         /// Converts the IDictionary to a query string
         /// </summary>
@@ -58,9 +53,5 @@ namespace Utilities.Web.ExtensionMethods
             }
             return Builder.ToString();
         }
-
-        #endregion
-
-        #endregion
     }
 }

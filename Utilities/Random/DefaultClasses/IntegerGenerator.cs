@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,15 +19,81 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
-using Utilities.DataTypes.ExtensionMethods;
+using Utilities.DataTypes;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-#endregion
 
 namespace Utilities.Random.DefaultClasses
 {
+    /// <summary>
+    /// Byte generator
+    /// </summary>
+    public class ByteGenerator : GeneratorAttributeBase
+    {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Min">Min value</param>
+        /// <param name="Max">Max value</param>
+        public ByteGenerator(byte Min, byte Max)
+            : base(Min, Max)
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public ByteGenerator()
+            : base(0, byte.MaxValue)
+        {
+        }
+
+        /// <summary>
+        /// Creates the next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
+        public override object NextObj(System.Random Rand)
+        {
+            return new IntegerGenerator<byte>().Next(Rand, (byte)Min, (byte)Max);
+        }
+    }
+
+    /// <summary>
+    /// Char generator
+    /// </summary>
+    public class CharGenerator : GeneratorAttributeBase
+    {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Min">Min value</param>
+        /// <param name="Max">Max value</param>
+        public CharGenerator(char Min, char Max)
+            : base(Min, Max)
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public CharGenerator()
+            : base(0, char.MaxValue)
+        {
+        }
+
+        /// <summary>
+        /// Creates the next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
+        public override object NextObj(System.Random Rand)
+        {
+            return new IntegerGenerator<char>().Next(Rand, (char)Min, (char)Max);
+        }
+    }
+
     /// <summary>
     /// Randomly generates ints
     /// </summary>
@@ -66,86 +132,6 @@ namespace Utilities.Random.DefaultClasses
         }
     }
 
-    #region Integer generators
-
-    #region ByteGenerator
-
-    /// <summary>
-    /// Byte generator
-    /// </summary>
-    public class ByteGenerator : GeneratorAttributeBase
-    {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Min">Min value</param>
-        /// <param name="Max">Max value</param>
-        public ByteGenerator(byte Min, byte Max)
-            : base(Min, Max)
-        {
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public ByteGenerator()
-            : base(0, byte.MaxValue)
-        {
-        }
-
-        /// <summary>
-        /// Creates the next object
-        /// </summary>
-        /// <param name="Rand">Random number generator</param>
-        /// <returns>The next object</returns>
-        public override object NextObj(System.Random Rand)
-        {
-            return new IntegerGenerator<byte>().Next(Rand, (byte)Min, (byte)Max);
-        }
-    }
-
-    #endregion
-
-    #region CharGenerator
-
-    /// <summary>
-    /// Char generator
-    /// </summary>
-    public class CharGenerator : GeneratorAttributeBase
-    {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Min">Min value</param>
-        /// <param name="Max">Max value</param>
-        public CharGenerator(char Min, char Max)
-            : base(Min, Max)
-        {
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public CharGenerator()
-            : base(0, char.MaxValue)
-        {
-        }
-
-        /// <summary>
-        /// Creates the next object
-        /// </summary>
-        /// <param name="Rand">Random number generator</param>
-        /// <returns>The next object</returns>
-        public override object NextObj(System.Random Rand)
-        {
-            return new IntegerGenerator<char>().Next(Rand, (char)Min, (char)Max);
-        }
-    }
-
-    #endregion
-
-    #region IntGenerator
-
     /// <summary>
     /// Int generator
     /// </summary>
@@ -180,10 +166,6 @@ namespace Utilities.Random.DefaultClasses
         }
     }
 
-    #endregion
-
-    #region LongGenerator
-
     /// <summary>
     /// Long generator
     /// </summary>
@@ -217,10 +199,6 @@ namespace Utilities.Random.DefaultClasses
             return new IntegerGenerator<long>().Next(Rand, (long)Min, (long)Max);
         }
     }
-
-    #endregion
-
-    #region SByteGenerator
 
     /// <summary>
     /// sbyte generator
@@ -257,10 +235,6 @@ namespace Utilities.Random.DefaultClasses
         }
     }
 
-    #endregion
-
-    #region ShortGenerator
-
     /// <summary>
     /// Short generator
     /// </summary>
@@ -294,10 +268,6 @@ namespace Utilities.Random.DefaultClasses
             return new IntegerGenerator<short>().Next(Rand, (short)Min, (short)Max);
         }
     }
-
-    #endregion
-
-    #region UIntGenerator
 
     /// <summary>
     /// uint generator
@@ -334,10 +304,6 @@ namespace Utilities.Random.DefaultClasses
         }
     }
 
-    #endregion
-
-    #region ULongGenerator
-
     /// <summary>
     /// ulong generator
     /// </summary>
@@ -373,10 +339,6 @@ namespace Utilities.Random.DefaultClasses
         }
     }
 
-    #endregion
-
-    #region UShortGenerator
-
     /// <summary>
     /// ushort generator
     /// </summary>
@@ -411,8 +373,4 @@ namespace Utilities.Random.DefaultClasses
             return new IntegerGenerator<ushort>().Next(Rand, (ushort)Min, (ushort)Max);
         }
     }
-
-    #endregion
-
-    #endregion
 }

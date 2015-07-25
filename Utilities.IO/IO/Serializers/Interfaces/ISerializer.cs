@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,32 +19,56 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
-
-#endregion
 
 namespace Utilities.IO.Serializers.Interfaces
 {
     /// <summary>
     /// Serializer interface
     /// </summary>
-    /// <typeparam name="T">Type that the object is serialized to/from</typeparam>
-    public interface ISerializer<T>
+    public interface ISerializer
     {
         /// <summary>
-        /// Serializes the object
+        /// Content type associated with this serializer (MIME type)
         /// </summary>
-        /// <param name="Object">Object to serialize</param>
-        /// <returns>The serialized object</returns>
-        T Serialize(object Object);
+        string ContentType { get; }
 
+        /// <summary>
+        /// File ending associated with the serializer
+        /// </summary>
+        string FileType { get; }
+
+        /// <summary>
+        /// Name of the serializer
+        /// </summary>
+        string Name { get; }
+
+        /// <summary>
+        /// Return type for the serialized data
+        /// </summary>
+        Type ReturnType { get; }
+    }
+
+    /// <summary>
+    /// Serializer interface
+    /// </summary>
+    /// <typeparam name="T">Object type returned</typeparam>
+    public interface ISerializer<T> : ISerializer
+    {
         /// <summary>
         /// Deserializes the data
         /// </summary>
         /// <param name="ObjectType">Object type</param>
         /// <param name="Data">Data to deserialize</param>
-        /// <returns>The resulting object</returns>
-        object Deserialize(T Data, Type ObjectType);
+        /// <returns>The deserialized data</returns>
+        object Deserialize(Type ObjectType, T Data);
+
+        /// <summary>
+        /// Serializes the object
+        /// </summary>
+        /// <param name="ObjectType">Object type</param>
+        /// <param name="Data">Data to serialize</param>
+        /// <returns>The serialized data</returns>
+        T Serialize(Type ObjectType, object Data);
     }
 }

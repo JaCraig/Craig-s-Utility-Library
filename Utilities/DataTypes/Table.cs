@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,30 +19,98 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Linq;
-#endregion
 
 namespace Utilities.DataTypes
 {
+    /// <summary>
+    /// Holds an individual row
+    /// </summary>
+    public class Row
+    {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="ColumnNames">Column names</param>
+        /// <param name="ColumnValues">Column values</param>
+        /// <param name="ColumnNameHash">Column name hash</param>
+        public Row(Hashtable ColumnNameHash, string[] ColumnNames, params object[] ColumnValues)
+        {
+            Contract.Requires<ArgumentNullException>(ColumnValues != null, "ColumnValues");
+            this.ColumnNameHash = ColumnNameHash;
+            this.ColumnNames = ColumnNames;
+            this.ColumnValues = (object[])ColumnValues.Clone();
+        }
+
+        /// <summary>
+        /// Column names
+        /// </summary>
+        public Hashtable ColumnNameHash { get; private set; }
+
+        /// <summary>
+        /// Column names
+        /// </summary>
+        public string[] ColumnNames { get; protected set; }
+
+        /// <summary>
+        /// Column values
+        /// </summary>
+        public object[] ColumnValues { get; protected set; }
+
+        /// <summary>
+        /// Returns a column based on the column name specified
+        /// </summary>
+        /// <param name="ColumnName">Column name to search for</param>
+        /// <returns>The value specified</returns>
+        public object this[string ColumnName]
+        {
+            get
+            {
+                Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ColumnName), "ColumnName");
+                Contract.Requires<NullReferenceException>(ColumnNameHash != null, "ColumnNameHash");
+                Contract.Requires<NullReferenceException>(ColumnValues != null, "ColumnValues");
+                int Column = (int)ColumnNameHash[ColumnName];//.PositionOf(ColumnName);
+                if (Column <= -1)
+                    throw new ArgumentOutOfRangeException(ColumnName + " is not present in the row");
+                return this[Column];
+            }
+        }
+
+        /// <summary>
+        /// Returns a column based on the value specified
+        /// </summary>
+        /// <param name="Column">Column number</param>
+        /// <returns>The value specified</returns>
+        public object this[int Column]
+        {
+            get
+            {
+                Contract.Requires<ArgumentOutOfRangeException>(Column >= 0, "Column");
+                Contract.Requires<NullReferenceException>(ColumnValues != null, "ColumnValues");
+                if (ColumnValues.Length <= Column)
+                    return null;
+                return ColumnValues[Column];
+            }
+        }
+    }
+
     /// <summary>
     /// Holds tabular information
     /// </summary>
     public class Table
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="ColumnNames">Column names</param>
         public Table(params string[] ColumnNames)
         {
+            Contract.Requires<ArgumentNullException>(ColumnNames != null, "ColumnNames");
             this.ColumnNames = (string[])ColumnNames.Clone();
             this.Rows = new List<Row>();
             this.ColumnNameHash = new Hashtable();
@@ -60,6 +128,8 @@ namespace Utilities.DataTypes
         /// <param name="Reader">Data reader to get the data from</param>
         public Table(IDataReader Reader)
         {
+            Contract.Requires<ArgumentNullException>(Reader != null, "Reader");
+            Contract.Requires<ArgumentOutOfRangeException>(Reader.FieldCount >= 0, "Reader.FieldCount needs to have at least 0 fields");
             this.ColumnNames = new string[Reader.FieldCount];
             for (int x = 0; x < Reader.FieldCount; ++x)
             {
@@ -84,20 +154,15 @@ namespace Utilities.DataTypes
             }
         }
 
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Column names for the table
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public string[] ColumnNames { get; protected set; }
-
         /// <summary>
         /// Column Name hash table
         /// </summary>
         public Hashtable ColumnNameHash { get; private set; }
+
+        /// <summary>
+        /// Column names for the table
+        /// </summary>
+        public string[] ColumnNames { get; protected set; }
 
         /// <summary>
         /// Rows within the table
@@ -113,13 +178,10 @@ namespace Utilities.DataTypes
         {
             get
             {
+                Contract.Requires<NullReferenceException>(Rows != null, "Rows");
                 return Rows.Count > RowNumber ? Rows.ElementAt(RowNumber) : null;
             }
         }
-
-        #endregion
-
-        #region Functions
 
         /// <summary>
         /// Adds a row using the objects passed in
@@ -128,86 +190,10 @@ namespace Utilities.DataTypes
         /// <returns>This</returns>
         public virtual Table AddRow(params object[] Objects)
         {
+            Contract.Requires<ArgumentNullException>(Objects != null, "Objects");
+            Contract.Requires<ArgumentNullException>(Rows != null, "Rows");
             this.Rows.Add(new Row(ColumnNameHash, ColumnNames, Objects));
             return this;
         }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// Holds an individual row
-    /// </summary>
-    public class Row
-    {
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="ColumnNames">Column names</param>
-        /// <param name="ColumnValues">Column values</param>
-        /// <param name="ColumnNameHash">Column name hash</param>
-        public Row(Hashtable ColumnNameHash, string[] ColumnNames, params object[] ColumnValues)
-        {
-            this.ColumnNameHash = ColumnNameHash;
-            this.ColumnNames = ColumnNames;
-            this.ColumnValues = (object[])ColumnValues.Clone();
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Column names
-        /// </summary>
-        public Hashtable ColumnNameHash { get; private set; }
-
-        /// <summary>
-        /// Column names
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public string[] ColumnNames { get; protected set; }
-
-        /// <summary>
-        /// Column values
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public object[] ColumnValues { get; protected set; }
-
-        /// <summary>
-        /// Returns a column based on the column name specified
-        /// </summary>
-        /// <param name="ColumnName">Column name to search for</param>
-        /// <returns>The value specified</returns>
-        public object this[string ColumnName]
-        {
-            get
-            {
-                int Column = (int)ColumnNameHash[ColumnName];//.PositionOf(ColumnName);
-                if (Column == -1)
-                    throw new ArgumentOutOfRangeException(ColumnName + " is not present in the row");
-                return this[Column];
-            }
-        }
-
-        /// <summary>
-        /// Returns a column based on the value specified
-        /// </summary>
-        /// <param name="Column">Column number</param>
-        /// <returns>The value specified</returns>
-        public object this[int Column]
-        {
-            get
-            {
-                Contract.Requires<ArgumentOutOfRangeException>(Column >= 0, "Column");
-                if (ColumnValues.Length <= Column)
-                    return null;
-                return ColumnValues[Column];
-            }
-        }
-
-        #endregion
     }
 }

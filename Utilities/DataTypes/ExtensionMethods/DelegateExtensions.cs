@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,24 +19,18 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
+using System.ComponentModel;
 using System.Threading;
 
-
-#endregion
-
-namespace Utilities.DataTypes.ExtensionMethods
+namespace Utilities.DataTypes
 {
     /// <summary>
     /// Extensions for Func, Action, and EventHandler
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class DelegateExtensions
     {
-        #region Functions
-
-        #region Async
-
         /// <summary>
         /// Runs an action async
         /// </summary>
@@ -45,10 +39,6 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             new Thread(Action.Invoke).Start();
         }
-
-        #endregion
-
-        #region Raise
 
         /// <summary>
         /// Safely calls the specified action
@@ -72,8 +62,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static void Raise<T>(this EventHandler<T> Delegate, object Sender, T EventArg)
             where T : System.EventArgs
         {
-            if (Delegate != null)
-                Delegate(Sender, EventArg);
+            EventHandler<T> TempDelegate = Delegate;
+            if (TempDelegate != null)
+                TempDelegate(Sender, EventArg);
         }
 
         /// <summary>
@@ -90,9 +81,5 @@ namespace Utilities.DataTypes.ExtensionMethods
                 return Delegate(EventArgs);
             return default(T2);
         }
-
-        #endregion
-
-        #endregion
     }
 }

@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,11 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
+using System.Globalization;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-#endregion
 
 namespace Utilities.Random.DefaultClasses
 {
@@ -35,7 +34,20 @@ namespace Utilities.Random.DefaultClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        public DateTimeGenerator() : base(DateTime.MinValue, DateTime.MaxValue) { }
+        public DateTimeGenerator()
+            : base(DateTime.MinValue, DateTime.MaxValue)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DateTimeGenerator"/> class.
+        /// </summary>
+        /// <param name="Min">The minimum.</param>
+        /// <param name="Max">The maximum.</param>
+        public DateTimeGenerator(string Min, string Max)
+            : base(DateTime.Parse(Min, CultureInfo.CurrentCulture), DateTime.Parse(Max, CultureInfo.CurrentCulture))
+        {
+        }
 
         /// <summary>
         /// Generates a random value of the specified type

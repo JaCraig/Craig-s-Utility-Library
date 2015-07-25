@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,15 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Threading;
 using Utilities.DataTypes.Comparison;
-using Utilities.DataTypes.ExtensionMethods;
-#endregion
 
 namespace Utilities.DataTypes
 {
@@ -37,7 +34,7 @@ namespace Utilities.DataTypes
     /// <typeparam name="T">Type of the data it holds</typeparam>
     public class RingBuffer<T> : ICollection<T>, ICollection
     {
-        #region Constructor
+        private object Root;
 
         /// <summary>
         /// Constructor
@@ -54,6 +51,7 @@ namespace Utilities.DataTypes
         /// <param name="AllowOverflow">Is overflow allowed (defaults to false)</param>
         public RingBuffer(int MaxCapacity, bool AllowOverflow = false)
         {
+            Contract.Requires<ArgumentException>(MaxCapacity > 0, "Max capacity must be above 0");
             Count = 0;
             IsReadOnly = false;
             this.AllowOverflow = AllowOverflow;
@@ -64,9 +62,10 @@ namespace Utilities.DataTypes
             Buffer = new T[MaxCapacity];
         }
 
-        #endregion
-
-        #region Properties
+        /// <summary>
+        /// Is overflow allowed?
+        /// </summary>
+        public bool AllowOverflow { get; protected set; }
 
         /// <summary>
         /// Item count for the circular buffer
@@ -79,9 +78,9 @@ namespace Utilities.DataTypes
         public bool IsReadOnly { get; protected set; }
 
         /// <summary>
-        /// Is overflow allowed?
+        /// Is this synchronized?
         /// </summary>
-        public bool AllowOverflow { get; protected set; }
+        public bool IsSynchronized { get; protected set; }
 
         /// <summary>
         /// Maximum capacity
@@ -89,14 +88,9 @@ namespace Utilities.DataTypes
         public int MaxCapacity { get; protected set; }
 
         /// <summary>
-        /// Is this synchronized?
-        /// </summary>
-        public bool IsSynchronized { get; protected set; }
-
-        /// <summary>
         /// Sync root
         /// </summary>
-        public object SyncRoot 
+        public object SyncRoot
         {
             get
             {
@@ -105,12 +99,10 @@ namespace Utilities.DataTypes
                 return Root;
             }
         }
-        private object Root;
 
         /// <summary>
         /// Buffer that the circular buffer uses
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         protected T[] Buffer { get; set; }
 
         /// <summary>
@@ -144,11 +136,16 @@ namespace Utilities.DataTypes
             }
         }
 
-        #endregion
-
-        #region Functions
-
-        #region Add
+        /// <summary>
+        /// Converts the object to a string
+        /// </summary>
+        /// <param name="Value">Value to convert</param>
+        /// <returns>The value as a string</returns>
+        public static implicit operator string(RingBuffer<T> Value)
+        {
+            Contract.Requires<ArgumentNullException>(Value != null, "Value");
+            return Value.ToString();
+        }
 
         /// <summary>
         /// Adds an item to the buffer
@@ -173,6 +170,7 @@ namespace Utilities.DataTypes
         /// <param name="Items">Items to add</param>
         public virtual void Add(IEnumerable<T> Items)
         {
+            Contract.Requires<ArgumentNullException>(Items != null, "Items");
             Items.ForEach(x => Add(x));
         }
 
@@ -184,14 +182,11 @@ namespace Utilities.DataTypes
         /// <param name="offset">Offset to start at</param>
         public virtual void Add(T[] buffer, int offset, int count)
         {
+            Contract.Requires<ArgumentNullException>(buffer != null, "buffer");
             Contract.Requires<ArgumentOutOfRangeException>(count <= buffer.Length - offset, "buffer");
             for (int x = offset; x < offset + count; ++x)
                 Add(buffer[x]);
         }
-
-        #endregion
-
-        #region Clear
 
         /// <summary>
         /// Clears the buffer
@@ -204,10 +199,6 @@ namespace Utilities.DataTypes
             for (int x = 0; x < MaxCapacity; ++x)
                 Buffer[x] = default(T);
         }
-
-        #endregion
-
-        #region Constains
 
         /// <summary>
         /// Determines if the buffer contains the item
@@ -228,10 +219,6 @@ namespace Utilities.DataTypes
             }
             return false;
         }
-        
-        #endregion
-
-        #region CopyTo
 
         /// <summary>
         /// Copies the buffer to an array
@@ -273,10 +260,6 @@ namespace Utilities.DataTypes
             }
         }
 
-        #endregion
-
-        #region GetEnumerator
-
         /// <summary>
         /// Gets the enumerator for the buffer
         /// </summary>
@@ -301,10 +284,6 @@ namespace Utilities.DataTypes
         {
             return (IEnumerator)GetEnumerator();
         }
-
-        #endregion
-
-        #region Remove
 
         /// <summary>
         /// Reads the next item from the buffer
@@ -369,6 +348,7 @@ namespace Utilities.DataTypes
         /// <returns>The number of items that were read</returns>
         public virtual int Remove(T[] array, int offset, int count)
         {
+            Contract.Requires<ArgumentException>(array != null, "array");
             Contract.Requires<ArgumentOutOfRangeException>(Count <= array.Length - offset, "array");
             if (Count == 0)
                 return 0;
@@ -387,10 +367,6 @@ namespace Utilities.DataTypes
             return MaxLength;
         }
 
-        #endregion
-
-        #region Skip
-
         /// <summary>
         /// Skips ahead in the buffer
         /// </summary>
@@ -405,10 +381,6 @@ namespace Utilities.DataTypes
                 ReadPosition %= MaxCapacity;
         }
 
-        #endregion
-
-        #region ToString
-
         /// <summary>
         /// Returns the buffer as a string
         /// </summary>
@@ -417,19 +389,5 @@ namespace Utilities.DataTypes
         {
             return Buffer.ToString<T>();
         }
-
-        /// <summary>
-        /// Converts the object to a string
-        /// </summary>
-        /// <param name="Value">Value to convert</param>
-        /// <returns>The value as a string</returns>
-        public static implicit operator string(RingBuffer<T> Value)
-        {
-            return Value.ToString();
-        }
-
-        #endregion
-
-        #endregion
     }
 }

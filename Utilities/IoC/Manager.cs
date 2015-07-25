@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,136 +19,219 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
+using System.Linq;
 using System.Reflection;
-using Utilities.DataTypes.ExtensionMethods;
-using Utilities.IoC.Mappings;
-using Utilities.IoC.Mappings.Interfaces;
-using Utilities.IoC.Providers;
-
-#endregion
+using Utilities.IoC.Default;
+using Utilities.IoC.Interfaces;
 
 namespace Utilities.IoC
 {
     /// <summary>
-    /// Manager class
+    /// IoC manager class
     /// </summary>
-    public class Manager
+    public class Manager : IDisposable
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        protected Manager()
         {
-            if (ProviderManager==null)
-                ProviderManager = new ProviderManager();
-            if (MappingManager==null)
-                MappingManager = new MappingManager(ProviderManager);
+            ConcurrentBag<Assembly> LoadedAssemblies = LoadAssemblies();
+            List<Type> LoadedTypes = GetTypes(ref LoadedAssemblies);
+            List<Type> Bootstrappers = LoadedTypes.Where(x => x.GetInterfaces().Contains(typeof(IBootstrapper))
+                                                                    && x.IsClass
+                                                                    && !x.IsAbstract
+                                                                    && !x.ContainsGenericParameters
+                                                                    && !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase))
+                                                   .ToList();
+            if (Bootstrappers.Count == 0)
+            {
+                Bootstrappers.Add(typeof(DefaultBootstrapper));
+            }
+            InternalBootstrapper = (IBootstrapper)Activator.CreateInstance(Bootstrappers[0], LoadedAssemblies, LoadedTypes);
+            InternalBootstrapper.RegisterAll<IModule>();
+            foreach (IModule Module in InternalBootstrapper.ResolveAll<IModule>().OrderBy(x => x.Order))
+            {
+                Module.Load(InternalBootstrapper);
+            }
         }
 
-        #endregion
+        private static Manager _Instance = new Manager();
 
-        #region Functions
-
-        /// <summary>
-        /// Loads all mapping modules found within the assembly
-        /// </summary>
-        /// <param name="ModuleAssembly">Module assembly</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public void Setup(Assembly ModuleAssembly)
-        {
-            ProviderManager.Setup(ModuleAssembly);
-            MappingManager.Setup(ModuleAssembly);
-        }
+        private static object Temp = 1;
 
         /// <summary>
-        /// Loads all mapping modules found within the assemblies
+        /// Gets the instance of the manager
         /// </summary>
-        /// <param name="ModuleAssemblies">Module assemblies</param>
-        public void Setup(IEnumerable<Assembly> ModuleAssemblies)
+        public static IBootstrapper Bootstrapper
         {
-            ModuleAssemblies.ForEach(x => Setup(x));
-        }
-
-        /// <summary>
-        /// Loads all mapping modules found within a specific directory
-        /// </summary>
-        /// <param name="Directory">Directory to scan for modules</param>
-        /// <param name="ScanSubDirectories">Determines if sub directories should be scanned</param>
-        public void Setup(string Directory, bool ScanSubDirectories = true)
-        {
-            Setup(new DirectoryInfo(Directory).LoadAssemblies(ScanSubDirectories));
-        }
-
-        /// <summary>
-        /// Creates an object of the specified type
-        /// </summary>
-        /// <typeparam name="ServiceType">Service type</typeparam>
-        /// <returns>An object of the specified type</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public ServiceType Get<ServiceType>()
-        {
-            return (ServiceType)Get(typeof(ServiceType));
+            get
+            {
+                if (_Instance == null)
+                {
+                    lock (Temp)
+                    {
+                        if (_Instance == null)
+                        {
+                            _Instance = new Manager();
+                        }
+                    }
+                }
+                return _Instance.InternalBootstrapper;
+            }
         }
 
         /// <summary>
-        /// Creates an object of the specified type associated with the attribute type
+        /// Bootstrapper object
         /// </summary>
-        /// <typeparam name="ServiceType">Service type</typeparam>
-        /// <typeparam name="AttributeType">Attribute type</typeparam>
-        /// <returns>An object of the specified type</returns>
-        public ServiceType Get<ServiceType, AttributeType>()
+        protected IBootstrapper InternalBootstrapper { get; private set; }
+
+        /// <summary>
+        /// Disposes of the object
+        /// </summary>
+        public void Dispose()
         {
-            return (ServiceType)Get(typeof(ServiceType), typeof(AttributeType));
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
-        /// Creates an object of the specified type
+        /// Displays information about the IoC container in string form
         /// </summary>
-        /// <param name="ServiceType">Service type</param>
-        /// <returns>An object of the specified type</returns>
-        public static object Get(Type ServiceType)
+        /// <returns>Information about the IoC container</returns>
+        public override string ToString()
         {
-            IMapping Mapping = MappingManager.GetMapping(ServiceType);
-            if (Mapping==null)
-                throw new ArgumentException("ServiceType not found in mappings");
-            return Mapping.Implementation.Create();
+            return Bootstrapper.Name;
         }
 
         /// <summary>
-        /// Creates an object of the specified type associated with the attribute type
+        /// Disposes of the object
         /// </summary>
-        /// <param name="ServiceType">Service type</param>
-        /// <param name="AttributeType">Attribute type</param>
-        /// <returns>An object of the specified type</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public object Get(Type ServiceType, Type AttributeType)
+        /// <param name="Managed">
+        /// Determines if all objects should be disposed or just managed objects
+        /// </param>
+        protected virtual void Dispose(bool Managed)
         {
-            IMapping Mapping = MappingManager.GetMapping(ServiceType, AttributeType);
-            if (Mapping==null)
-                throw new ArgumentException("ServiceType not found in mappings");
-            return Mapping.Implementation.Create();
+            if (InternalBootstrapper != null)
+            {
+                InternalBootstrapper.Dispose();
+                InternalBootstrapper = null;
+            }
         }
 
-        #endregion
-
-        #region Properties
+        /// <summary>
+        /// Gets the types available
+        /// </summary>
+        /// <param name="LoadedAssemblies">The loaded assemblies.</param>
+        /// <returns>The list of</returns>
+        private static List<Type> GetTypes(ref ConcurrentBag<Assembly> LoadedAssemblies)
+        {
+            Contract.Requires<ArgumentNullException>(LoadedAssemblies != null);
+            List<Type> TempTypes = new List<Type>();
+            LoadedAssemblies = new ConcurrentBag<Assembly>(LoadedAssemblies.Where(x =>
+            {
+                try
+                {
+                    TempTypes.AddRange(x.GetTypes());
+                }
+                catch (ReflectionTypeLoadException) { return false; }
+                return true;
+            }));
+            return TempTypes;
+        }
 
         /// <summary>
-        /// Provider manager
+        /// Loads the assemblies.
         /// </summary>
-        protected static ProviderManager ProviderManager { get; set; }
+        /// <returns>The list of assemblies that the system has loaded</returns>
+        private static ConcurrentBag<Assembly> LoadAssemblies()
+        {
+            List<FileInfo> Files = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).GetFiles("*.dll", SearchOption.TopDirectoryOnly)
+                                                                                              .Where(x => !x.Name.Equals("CULGeneratedTypes.dll", StringComparison.InvariantCultureIgnoreCase))
+                                                                                              .ToList();
+            if (!new DirectoryInfo(".").FullName.Contains(System.Environment.GetFolderPath(Environment.SpecialFolder.SystemX86))
+                    && !new DirectoryInfo(".").FullName.Contains(System.Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles))
+                    && !new DirectoryInfo(".").FullName.Contains(System.Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86))
+                    && !new DirectoryInfo(".").FullName.Contains(System.Environment.GetFolderPath(Environment.SpecialFolder.System)))
+            {
+                Files.AddRange(new DirectoryInfo(".").GetFiles("*.dll", SearchOption.TopDirectoryOnly)
+                                                     .Where(x => !x.Name.Equals("CULGeneratedTypes.dll", StringComparison.InvariantCultureIgnoreCase)));
+            }
+            Files = Files.Distinct().ToList();
+            List<Assembly> LoadedAssemblies = new List<Assembly>(AppDomain.CurrentDomain.GetAssemblies());
+            LoadAssemblies(LoadedAssemblies, Files.Select(x => AssemblyName.GetAssemblyName(x.FullName)).ToArray());
+            FileInfo GeneratedFile = new FileInfo(AppDomain.CurrentDomain.BaseDirectory + "\\CULGeneratedTypes.dll");
+            if (GeneratedFile.Exists
+                && !LoadedAssemblies.Any(x => !x.FullName.Contains("vshost32")
+                                            && !x.IsDynamic
+                                            && new System.IO.FileInfo(x.Location).LastWriteTime > GeneratedFile.LastWriteTime))
+            {
+                LoadAssemblies(LoadedAssemblies, AssemblyName.GetAssemblyName(GeneratedFile.FullName));
+            }
+            return new ConcurrentBag<Assembly>(LoadedAssemblies.Distinct(new AssemblyComparer()));
+        }
 
         /// <summary>
-        /// Mapping manager
+        /// Loads the assemblies.
         /// </summary>
-        protected static MappingManager MappingManager { get; set; }
+        /// <param name="Assemblies">The assemblies.</param>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        private static void LoadAssemblies(List<Assembly> Assemblies, params AssemblyName[] assemblyName)
+        {
+            if (assemblyName == null)
+                return;
+            foreach (var Name in assemblyName.Where(x => x != null
+                                                      && !x.FullName.StartsWith("System.", StringComparison.InvariantCultureIgnoreCase)
+                                                      && !x.FullName.StartsWith("Microsoft.", StringComparison.InvariantCultureIgnoreCase)
+                                                      && !Assemblies.Any(y => string.Equals(y.FullName, x.FullName, StringComparison.InvariantCultureIgnoreCase))))
+            {
+                Assembly TempAssembly = AppDomain.CurrentDomain.Load(Name);
+                Assemblies.Add(TempAssembly);
+                LoadAssemblies(Assemblies, TempAssembly.GetReferencedAssemblies());
+            }
+        }
 
-        #endregion
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        ~Manager()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// Assembly comparer
+        /// </summary>
+        private class AssemblyComparer : IEqualityComparer<Assembly>
+        {
+            /// <summary>
+            /// Determines whether the specified objects are equal.
+            /// </summary>
+            /// <param name="x">The first object of type System.Reflection.Assembly to compare.</param>
+            /// <param name="y">The second object of type System.Reflection.Assembly to compare.</param>
+            /// <returns>true if the specified objects are equal; otherwise, false.</returns>
+            public bool Equals(Assembly x, Assembly y)
+            {
+                return string.Equals(x.FullName, y.FullName, StringComparison.InvariantCultureIgnoreCase);
+            }
+
+            /// <summary>
+            /// Returns a hash code for this instance.
+            /// </summary>
+            /// <param name="obj">The object.</param>
+            /// <returns>
+            /// A hash code for this instance, suitable for use in hashing algorithms and data
+            /// structures like a hash table.
+            /// </returns>
+            public int GetHashCode(Assembly obj)
+            {
+                return obj.GetHashCode();
+            }
+        }
     }
 }

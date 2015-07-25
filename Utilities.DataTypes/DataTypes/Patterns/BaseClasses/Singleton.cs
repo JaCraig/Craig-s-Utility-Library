@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,10 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Reflection;
-#endregion
 
 namespace Utilities.DataTypes.Patterns.BaseClasses
 {
@@ -30,26 +28,18 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
     /// Base class used for singletons
     /// </summary>
     /// <typeparam name="T">The class type</typeparam>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1053:StaticHolderTypesShouldNotHaveConstructors")]
     public class Singleton<T> where T : class
     {
-        #region Constructor
+        private static T _Instance = null;
+
+        private static object Temp = 1;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        protected Singleton() { }
-
-        #endregion
-
-        #region Private Variables
-
-        private static T _Instance = null;
-        private static object Temp = 1;
-
-        #endregion
-
-        #region Properties
+        protected Singleton()
+        {
+        }
 
         /// <summary>
         /// Gets the instance of the singleton
@@ -75,7 +65,5 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
                 return _Instance;
             }
         }
-
-        #endregion
     }
 }

@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,22 +19,18 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-#endregion Usings
-
-namespace Utilities.Validation.ExtensionMethods
+namespace Utilities.Validation
 {
     /// <summary>
     /// Object extensions
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ObjectExtensions
     {
-        #region TryValidate
-
         /// <summary>
         /// Determines if the object is valid
         /// </summary>
@@ -49,23 +45,17 @@ namespace Utilities.Validation.ExtensionMethods
             return Validator.TryValidateObject(Object, new ValidationContext(Object, null, null), Results, true);
         }
 
-        #endregion TryValidate
-
-        #region Validate
-
         /// <summary>
         /// Determines if the object is valid
         /// </summary>
         /// <typeparam name="ObjectType">Object type</typeparam>
         /// <param name="Object">Object to validate</param>
-        /// <exception cref="System.ComponentModel.DataAnnotations.ValidationException"></exception>
+        /// <exception cref="System.ComponentModel.DataAnnotations.ValidationException"/>
         public static void Validate<ObjectType>(this ObjectType Object)
         {
             if (Object == null)
                 return;
             Validator.ValidateObject(Object, new ValidationContext(Object, null, null), true);
         }
-
-        #endregion Validate
     }
 }

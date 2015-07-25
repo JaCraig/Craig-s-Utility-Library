@@ -15,4 +15,11 @@ Utilities/CraigsUtilityLibrary.3.0.nupkg
 *.nupkg
 .git/*
 ct.ignore
+*.coverage
+TestResults/Utilities.TE.Tests_log.ldf
+TestResults/Utilities.TE.Tests.mdf
+*/obj/*
+*/bin/*
 packages/*
+.vs/*
+*/Bin/*

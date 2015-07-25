@@ -19,11 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.ComponentModel.DataAnnotations;
-using Utilities.Validation.Rules;
-#endregion
+using Utilities.Validation;
 
 namespace Utilities.ORM.Interfaces
 {
@@ -32,19 +30,10 @@ namespace Utilities.ORM.Interfaces
     /// </summary>
     public interface IObject<IDType>
     {
-        #region Properties
-
         /// <summary>
-        /// ID
+        /// Is this item active?
         /// </summary>
-        IDType ID { get; set; }
-
-        /// <summary>
-        /// Date last modified
-        /// </summary>
-        [Required()]
-        [Between("1/1/1900", "1/1/2100", "Date modified is not valid")]
-        DateTime DateModified { get; set; }
+        bool Active { get; set; }
 
         /// <summary>
         /// Date created
@@ -54,10 +43,15 @@ namespace Utilities.ORM.Interfaces
         DateTime DateCreated { get; set; }
 
         /// <summary>
-        /// Is this item active?
+        /// Date last modified
         /// </summary>
-        bool Active { get; set; }
+        [Required()]
+        [Between("1/1/1900", "1/1/2100", "Date modified is not valid")]
+        DateTime DateModified { get; set; }
 
-        #endregion
+        /// <summary>
+        /// ID
+        /// </summary>
+        IDType ID { get; set; }
     }
 }

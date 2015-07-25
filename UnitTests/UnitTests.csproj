@@ -1,23 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\xunit.runner.visualstudio.2.0.0\build\net20\xunit.runner.visualstudio.props" Condition="Exists('..\packages\xunit.runner.visualstudio.2.0.0\build\net20\xunit.runner.visualstudio.props')" />
-  <Import Project="..\packages\xunit.core.2.0.0\build\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props" Condition="Exists('..\packages\xunit.core.2.0.0\build\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props')" />
+  <Import Project="..\packages\xunit.core.2.1.0-beta3-build3029\build\portable-net45+dnxcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props" Condition="Exists('..\packages\xunit.core.2.1.0-beta3-build3029\build\portable-net45+dnxcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props')" />
+  <Import Project="..\packages\xunit.runner.visualstudio.2.1.0-beta3-build1069\build\net20\xunit.runner.visualstudio.props" Condition="Exists('..\packages\xunit.runner.visualstudio.2.1.0-beta3-build1069\build\net20\xunit.runner.visualstudio.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{6830C59C-3E74-4F20-BEC5-7A194FC9BE7E}</ProjectGuid>
+    <ProjectGuid>{8DAE7D5D-741C-42A2-94B3-D241412F060D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UnitTests</RootNamespace>
     <AssemblyName>UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <NuGetPackageImportStamp>74564ced</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,8 +26,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -37,17 +34,11 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualStudio.TestPlatform.ObjectModel">
+      <HintPath>..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\CommonExtensions\Microsoft\TestWindow\Microsoft.VisualStudio.TestPlatform.ObjectModel.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -56,6 +47,8 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
@@ -83,40 +76,53 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Serialization" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="xunit.assert">
-      <HintPath>..\packages\xunit.assert.2.0.0\lib\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.assert.dll</HintPath>
+    <Reference Include="xunit.assert, Version=2.1.0.3029, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.assert.2.1.0-beta3-build3029\lib\portable-net45+dnxcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.assert.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="xunit.core">
-      <HintPath>..\packages\xunit.extensibility.core.2.0.0\lib\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.dll</HintPath>
+    <Reference Include="xunit.core, Version=2.1.0.3029, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.extensibility.core.2.1.0-beta3-build3029\lib\portable-net45+dnxcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\Anagram.cs" />
-    <Compile Include="AI\NaiveBayes.cs" />
-    <Compile Include="Caching\Cache.cs" />
-    <Compile Include="Compression\ExtensionMethods\CompressionExtensions.cs" />
-    <Compile Include="Configuration\Config.cs" />
     <Compile Include="Configuration\ConfigurationManager.cs" />
-    <Compile Include="DataMapper\Mapping.cs" />
-    <Compile Include="DataMapper\MappingManager.cs" />
-    <Compile Include="DataMapper\TypeMapping.cs" />
+    <Compile Include="Configuration\Manager\Default\ConfigSystem.cs" />
+    <Compile Include="Configuration\Manager\Default\SystemConfig.cs" />
+    <Compile Include="Configuration\JSONConfig.cs" />
+    <Compile Include="Configuration\XMLConfig.cs" />
+    <Compile Include="DataTypes\AI\NaiveBayes.cs" />
+    <Compile Include="DataTypes\AOP\Manager.cs" />
     <Compile Include="DataTypes\Bag.cs" />
     <Compile Include="DataTypes\BTree.cs" />
+    <Compile Include="DataTypes\Caching\Default\Cache.cs" />
+    <Compile Include="DataTypes\Caching\Manager.cs" />
+    <Compile Include="DataTypes\CodeGen\Compiler.cs" />
     <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
     <Compile Include="DataTypes\Comparison\GenericEqualityComparer.cs" />
-    <Compile Include="DataTypes\Conversion\Converters\DbTypeTypeConverter.cs" />
-    <Compile Include="DataTypes\Conversion\Converters\GenericConverter.cs" />
-    <Compile Include="DataTypes\Conversion\Converters\SqlDbTypeToDbType.cs" />
-    <Compile Include="DataTypes\Conversion\Converters\SqlDbTypeToType.cs" />
+    <Compile Include="DataTypes\Comparison\SimpleComparer.cs" />
+    <Compile Include="DataTypes\Comparison\SimpleEqualityComparer.cs" />
+    <Compile Include="DataTypes\Conversion\Converter\DbTypeTypeConverter.cs" />
+    <Compile Include="DataTypes\Conversion\Converter\ExpandoTypeConverter.cs" />
+    <Compile Include="DataTypes\Conversion\Converter\SqlDbTypeConverter.cs" />
     <Compile Include="DataTypes\Conversion\Manager.cs" />
-    <Compile Include="DataTypes\Conversion\ObjectConverter.cs" />
+    <Compile Include="DataTypes\DataMapper\Default\DataMapper.cs" />
+    <Compile Include="DataTypes\DataMapper\Default\Mapping.cs" />
+    <Compile Include="DataTypes\DataMapper\Default\TypeMapping.cs" />
+    <Compile Include="DataTypes\DataMapper\Manager.cs" />
     <Compile Include="DataTypes\DateSpan.cs" />
+    <Compile Include="DataTypes\Dynamic\Dynamo.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\CacheExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ConcurrentBagExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ConcurrentDictionaryExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DateTimeExtension.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ExceptionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\GenericObjectExtensions.cs" />
@@ -125,156 +131,140 @@
     <Compile Include="DataTypes\ExtensionMethods\IDictionaryExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\IEnumerableExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\MatchCollectionExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\MathExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\PermutationExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\PredicateExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ProcessExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ReflectionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\StreamExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\StringExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\TimeSpanExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\TypeConversion.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ValueType.cs" />
+    <Compile Include="DataTypes\Fraction.cs" />
     <Compile Include="DataTypes\ListMapping.cs" />
+    <Compile Include="DataTypes\Matrix.cs" />
+    <Compile Include="DataTypes\ObservableList.cs" />
     <Compile Include="DataTypes\Patterns\BaseClasses\Singleton.cs" />
     <Compile Include="DataTypes\Patterns\Factory.cs" />
     <Compile Include="DataTypes\PriorityQueue.cs" />
     <Compile Include="DataTypes\RingBuffer.cs" />
+    <Compile Include="DataTypes\Set.cs" />
     <Compile Include="DataTypes\StringTemplate.cs" />
     <Compile Include="DataTypes\Table.cs" />
     <Compile Include="DataTypes\TagDictionary.cs" />
     <Compile Include="DataTypes\Threading\TaskQueue.cs" />
-    <Compile Include="Encryption\ExtensionMethods\HashExtensions.cs" />
-    <Compile Include="Encryption\ExtensionMethods\ShiftExtensions.cs" />
-    <Compile Include="Encryption\ExtensionMethods\SymmetricEncryption.cs" />
-    <Compile Include="Environment\ArgsParser.cs" />
-    <Compile Include="Environment\ExtensionMethods\ProcessExtensions.cs" />
-    <Compile Include="Environment\Option.cs" />
-    <Compile Include="FileFormats\Cisco\Directory.cs" />
-    <Compile Include="FileFormats\Cisco\DirectoryEntry.cs" />
-    <Compile Include="FileFormats\Cisco\Error.cs" />
-    <Compile Include="FileFormats\Cisco\Execute.cs" />
-    <Compile Include="FileFormats\Cisco\ExecuteItem.cs" />
-    <Compile Include="FileFormats\Cisco\GraphicMenuItem.cs" />
-    <Compile Include="FileFormats\Cisco\Image.cs" />
-    <Compile Include="FileFormats\Cisco\Input.cs" />
-    <Compile Include="FileFormats\Cisco\InputItem.cs" />
-    <Compile Include="FileFormats\Cisco\Menu.cs" />
-    <Compile Include="FileFormats\Cisco\MenuItem.cs" />
-    <Compile Include="FileFormats\Cisco\SoftKeyItem.cs" />
-    <Compile Include="FileFormats\Cisco\Status.cs" />
-    <Compile Include="FileFormats\Cisco\Text.cs" />
-    <Compile Include="FileFormats\CSV\CSV.cs" />
-    <Compile Include="FileFormats\ExtensionMethods\ExtensionMethods.cs" />
-    <Compile Include="FileFormats\FixedLength\FixedLength.cs" />
-    <Compile Include="FileFormats\GenericDelimited\GenericDelimited.cs" />
-    <Compile Include="FileFormats\INI\INI.cs" />
-    <Compile Include="FileFormats\PipeDelimited\PipeDelimited.cs" />
-    <Compile Include="FileFormats\VCalendar.cs" />
-    <Compile Include="FileFormats\Zip\ZipFile.cs" />
-    <Compile Include="Fixtures\LoggingManagerFixture.cs" />
+    <Compile Include="DataTypes\Vector3.cs" />
     <Compile Include="Fixtures\TestingDirectoryFixture.cs" />
+    <Compile Include="IoC\Default\DefaultBootstrapper.cs" />
+    <Compile Include="IoC\Default\TypeBuilder.cs" />
     <Compile Include="IoC\Manager.cs" />
-    <Compile Include="IO\ExtensionMethods\Directory.cs" />
-    <Compile Include="IO\ExtensionMethods\File.cs" />
-    <Compile Include="IO\ExtensionMethods\Serialization.cs" />
-    <Compile Include="IO\ExtensionMethods\String.cs" />
-    <Compile Include="IO\ExtensionMethods\UriTest.cs" />
-    <Compile Include="IO\Logging\ConsoleLog.cs" />
-    <Compile Include="IO\Logging\FileLog.cs" />
-    <Compile Include="IO\Logging\LoggingManager.cs" />
-    <Compile Include="LDAP\Directory.cs" />
-    <Compile Include="Math\ExtensionMethods\MathExtensions.cs" />
-    <Compile Include="Math\ExtensionMethods\PermutationExtensions.cs" />
-    <Compile Include="Math\ExtensionMethods\PredicateExtensions.cs" />
-    <Compile Include="Math\Fraction.cs" />
-    <Compile Include="Math\Geometry\Circle.cs" />
-    <Compile Include="Math\Geometry\Rectangle.cs" />
-    <Compile Include="Math\Matrix.cs" />
-    <Compile Include="Math\Set.cs" />
-    <Compile Include="Math\Vector3.cs" />
-    <Compile Include="Media\Image\ExtensionMethods\BitmapExtensions.cs" />
-    <Compile Include="Media\Image\ExtensionMethods\ScreenshotExtensions.cs" />
-    <Compile Include="Media\Image\Procedural\CellularTexture.cs" />
-    <Compile Include="Media\Image\Procedural\FaultFormation.cs" />
-    <Compile Include="Media\Image\Procedural\MidpointDisplacement.cs" />
+    <Compile Include="IO\Compression\Default\DeflateCompressor.cs" />
+    <Compile Include="IO\Compression\Default\GZipCompressor.cs" />
+    <Compile Include="IO\Compression\Manager.cs" />
+    <Compile Include="IO\DirectoryInfo.cs" />
+    <Compile Include="IO\EmailMessage.cs" />
+    <Compile Include="IO\ExtensionMethods\CompressionExtension.cs" />
+    <Compile Include="IO\ExtensionMethods\DelimitedExtensions.cs" />
+    <Compile Include="IO\ExtensionMethods\EncryptionExtensions.cs" />
+    <Compile Include="IO\ExtensionMethods\HTMLExtensions.cs" />
+    <Compile Include="IO\ExtensionMethods\SerializationExtensions.cs" />
+    <Compile Include="IO\FileFormats\Delimited.cs" />
+    <Compile Include="IO\FileFormats\Excel.cs" />
+    <Compile Include="IO\FileFormats\FixedLength.cs" />
+    <Compile Include="IO\FileFormats\INI.cs" />
+    <Compile Include="IO\FileFormats\VCalendar.cs" />
+    <Compile Include="IO\FileInfo.cs" />
+    <Compile Include="IO\FileSystem\Default\AbsoluteFileSystem.cs" />
+    <Compile Include="IO\FileSystem\Default\HttpFileSystem.cs" />
+    <Compile Include="IO\FileSystem\Default\LocalDirectory.cs" />
+    <Compile Include="IO\FileSystem\Default\LocalFile.cs" />
+    <Compile Include="IO\FileSystem\Default\NetworkFileSystem.cs" />
+    <Compile Include="IO\FileSystem\Default\RelativeLocalFileSystem.cs" />
+    <Compile Include="IO\FileSystem\Default\ResourceDirectory.cs" />
+    <Compile Include="IO\FileSystem\Default\ResourceFile.cs" />
+    <Compile Include="IO\FileSystem\Default\WebDirectory.cs" />
+    <Compile Include="IO\FileSystem\Default\WebFile.cs" />
+    <Compile Include="IO\FileSystem\Manager.cs" />
+    <Compile Include="IO\Log.cs" />
+    <Compile Include="IO\Logging\Default\DefaultLog.cs" />
+    <Compile Include="IO\Logging\Default\DefaultLogger.cs" />
+    <Compile Include="IO\Logging\Manager.cs" />
+    <Compile Include="IO\Messaging\Default\DefaultFormatter.cs" />
+    <Compile Include="IO\Messaging\Default\SMTPSystem.cs" />
+    <Compile Include="IO\Messaging\Manager.cs" />
+    <Compile Include="IO\Serializers\Default\BinarySerializer.cs" />
+    <Compile Include="IO\Serializers\Default\CsvSerializer.cs" />
+    <Compile Include="IO\Serializers\Default\JSONSerializer.cs" />
+    <Compile Include="IO\Serializers\Default\SOAPSerializer.cs" />
+    <Compile Include="IO\Serializers\Default\XMLSerializer.cs" />
+    <Compile Include="IO\Serializers\Manager.cs" />
+    <Compile Include="Media\ExtensionMethods\BitmapExtensions.cs" />
+    <Compile Include="Media\ExtensionMethods\ScreenshotExtensions.cs" />
+    <Compile Include="Media\Procedural\CellularTexture.cs" />
+    <Compile Include="Media\Procedural\FaultFormation.cs" />
+    <Compile Include="Media\Procedural\MidpointDisplacement.cs" />
+    <Compile Include="Media\SwiftBitmap.cs" />
     <Compile Include="ORM\DatabaseBaseClass.cs" />
-    <Compile Include="ORM\ListTest\Config\ListTestConfig.cs" />
-    <Compile Include="ORM\ListTest\Models\Mappings\Project2Mapping.cs" />
-    <Compile Include="ORM\ListTest\Models\Mappings\Task2Mapping.cs" />
-    <Compile Include="ORM\ListTest\Models\Project2.cs" />
-    <Compile Include="ORM\ListTest\Models\Task2.cs" />
-    <Compile Include="ORM\ListTest\ORMListTest.cs" />
-    <Compile Include="ORM\StringIDTest\Models\Mappings\Project3Mapping.cs" />
-    <Compile Include="ORM\StringIDTest\Models\Mappings\Task3Mapping.cs" />
-    <Compile Include="ORM\StringIDTest\Models\Project3.cs" />
-    <Compile Include="ORM\StringIDTest\Models\Task3.cs" />
-    <Compile Include="ORM\StringIDTest\StringIDTest.cs" />
-    <Compile Include="ORM\Test1\Config\Test1Config.cs" />
-    <Compile Include="ORM\Test1\Models\Account.cs" />
-    <Compile Include="ORM\Test1\Models\Group.cs" />
-    <Compile Include="ORM\Test1\Models\Item.cs" />
-    <Compile Include="ORM\Test1\Models\Mappings\AccountMapping.cs" />
-    <Compile Include="ORM\Test1\Models\Mappings\GroupMapping.cs" />
-    <Compile Include="ORM\Test1\Models\Mappings\ItemMapping.cs" />
-    <Compile Include="ORM\Test1\Models\Mappings\OfficeMapping.cs" />
-    <Compile Include="ORM\Test1\Models\Mappings\RoleMapping.cs" />
-    <Compile Include="ORM\Test1\Models\Mappings\UserMapping.cs" />
-    <Compile Include="ORM\Test1\Models\Office.cs" />
-    <Compile Include="ORM\Test1\Models\Role.cs" />
-    <Compile Include="ORM\Test1\Models\User.cs" />
-    <Compile Include="ORM\Test1\ORMTest1.cs" />
-    <Compile Include="ORM\Test2\Config\Test2Config.cs" />
-    <Compile Include="ORM\Test2\Models\Mappings\ProjectMapping.cs" />
-    <Compile Include="ORM\Test2\Models\Mappings\TaskMapping.cs" />
-    <Compile Include="ORM\Test2\Models\Project.cs" />
-    <Compile Include="ORM\Test2\Models\Task.cs" />
-    <Compile Include="ORM\Test2\ORMTest2.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ID.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\IEnumerableManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ListManyToMany.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ListManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ManyToMany.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\Map.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\Reference.cs" />
+    <Compile Include="ORM\Manager\Mapper\Manager.cs" />
+    <Compile Include="ORM\Manager\ORMManager.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\Command.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\DatabaseBatch.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\LDAP\LDAPBatch.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\LDAP\LDAPGenerator.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\LDAP\LDAPQueryProvider.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\Parameter.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\SQLServer\SQLServerGenerator.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\SQLServer\SQLServerQueryProvider.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\StringParameter.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Manager.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Column.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Database.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Function.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\LDAP\LDAPSchemaGenerator.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\SQLServer\SQLServerSchemaGenerator.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\StoredProcedure.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Table.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Trigger.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\View.cs" />
+    <Compile Include="ORM\Manager\Schema\Manager.cs" />
+    <Compile Include="ORM\Manager\Session.cs" />
+    <Compile Include="ORM\Manager\SourceProvider\DefaultDatabase.cs" />
+    <Compile Include="ORM\Manager\SourceProvider\Manager.cs" />
+    <Compile Include="ORM\Manager\SourceProvider\SourceInfo.cs" />
+    <Compile Include="ORM\Parameters\AndParameter.cs" />
+    <Compile Include="ORM\Parameters\BetweenParameter.cs" />
+    <Compile Include="ORM\Parameters\EqualParameter.cs" />
+    <Compile Include="ORM\Parameters\LikeParameter.cs" />
+    <Compile Include="ORM\Parameters\NotEqualParameter.cs" />
+    <Compile Include="ORM\Parameters\OrParameter.cs" />
+    <Compile Include="ORM\Parameters\StringEqualParamter.cs" />
+    <Compile Include="ORM\Parameters\StringNotEqualParameter.cs" />
+    <Compile Include="ORM\QueryProvider.cs" />
     <Compile Include="Profiler\ExtensionMethods\TimerExtensions.cs" />
-    <Compile Include="Profiler\Profiler.cs" />
-    <Compile Include="Profiler\StopWatch.cs" />
+    <Compile Include="Profiler\Manager\Default\Profiler.cs" />
+    <Compile Include="Profiler\Manager\Default\StopWatch.cs" />
+    <Compile Include="Profiler\Manager\Manager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Random\DefaultClasses\BoolGenerator.cs" />
     <Compile Include="Random\DefaultClasses\ColorGenerator.cs" />
     <Compile Include="Random\DefaultClasses\DateTimeGenerator.cs" />
     <Compile Include="Random\DefaultClasses\DecimalGenerator.cs" />
     <Compile Include="Random\DefaultClasses\EnumGenerator.cs" />
+    <Compile Include="Random\DefaultClasses\GuidGeneratorTests.cs" />
     <Compile Include="Random\DefaultClasses\IntegerGenerator.cs" />
     <Compile Include="Random\DefaultClasses\TimeSpanGenerator.cs" />
     <Compile Include="Random\ExtensionMethods\RandomExtensions.cs" />
     <Compile Include="Random\Random.cs" />
-    <Compile Include="Reflection\AOP\AOPManager.cs" />
-    <Compile Include="Reflection\Emit\Assembly.cs" />
-    <Compile Include="Reflection\Emit\ConstantBuilder.cs" />
-    <Compile Include="Reflection\Emit\ConstructorBuilder.cs" />
-    <Compile Include="Reflection\Emit\DefaultConstructorBuilder.cs" />
-    <Compile Include="Reflection\Emit\DefaultPropertyBuilder.cs" />
-    <Compile Include="Reflection\Emit\EnumBuilder.cs" />
-    <Compile Include="Reflection\Emit\FieldBuilder.cs" />
-    <Compile Include="Reflection\Emit\LocalBuilder.cs" />
-    <Compile Include="Reflection\Emit\MethodBuilder.cs" />
-    <Compile Include="Reflection\Emit\ParameterBuilder.cs" />
-    <Compile Include="Reflection\Emit\PropertyBuilder.cs" />
-    <Compile Include="Reflection\Emit\TypeBuilder.cs" />
-    <Compile Include="DataTypes\ExtensionMethods\ReflectionExtensions.cs" />
-    <Compile Include="SQL\Command.cs" />
-    <Compile Include="SQL\DataClasses\Column.cs" />
-    <Compile Include="SQL\DataClasses\Database.cs" />
-    <Compile Include="SQL\DataClasses\Function.cs" />
-    <Compile Include="SQL\DataClasses\StoredProcedure.cs" />
-    <Compile Include="SQL\DataClasses\Table.cs" />
-    <Compile Include="SQL\DataClasses\Trigger.cs" />
-    <Compile Include="SQL\DataClasses\View.cs" />
-    <Compile Include="SQL\MicroORM\Database.cs" />
-    <Compile Include="SQL\MicroORM\Mapping.cs" />
-    <Compile Include="SQL\MicroORM\MicroORM.cs" />
-    <Compile Include="SQL\ParameterTypes\AndParameter.cs" />
-    <Compile Include="SQL\ParameterTypes\BetweenParameter.cs" />
-    <Compile Include="SQL\ParameterTypes\EqualParameter.cs" />
-    <Compile Include="SQL\ParameterTypes\LikeParameter.cs" />
-    <Compile Include="SQL\ParameterTypes\NotEqualParameter.cs" />
-    <Compile Include="SQL\ParameterTypes\OrParameter.cs" />
-    <Compile Include="SQL\ParameterTypes\StringEqualParamter.cs" />
-    <Compile Include="SQL\ParameterTypes\StringNotEqualParameter.cs" />
-    <Compile Include="SQL\SQLCommand.cs" />
-    <Compile Include="SQL\SQLHelper.cs" />
-    <Compile Include="SQL\SQLServer\SQLServer.cs" />
-    <Compile Include="Validation\Extensions\ObjectExtensions.cs" />
+    <Compile Include="Validation\ExtensionMethods\ObjectExtensions.cs" />
     <Compile Include="Validation\Rules\Between.cs" />
     <Compile Include="Validation\Rules\Cascade.cs" />
     <Compile Include="Validation\Rules\Compare.cs" />
@@ -285,52 +275,49 @@
     <Compile Include="Validation\Rules\Is.cs" />
     <Compile Include="Validation\Rules\MaxLength.cs" />
     <Compile Include="Validation\Rules\MinLength.cs" />
-    <Compile Include="Validation\Rules\NotInRange.cs" />
     <Compile Include="Validation\Rules\NotEmpty.cs" />
-    <Compile Include="Web\ExtensionMethods\DictionaryExtensions.cs" />
-    <Compile Include="Web\ExtensionMethods\HTMLExtensions.cs" />
-    <Compile Include="Web\ExtensionMethods\IPAddressExtensions.cs" />
-    <Compile Include="Web\ExtensionMethods\MinificationExtensions.cs" />
-    <Compile Include="Web\ExtensionMethods\NameValueCollectionExtensions.cs" />
-    <Compile Include="Web\ExtensionMethods\Streams\UglyStream.cs" />
-    <Compile Include="Web\Google\StaticMaps\Map.cs" />
-    <Compile Include="Web\WebPageThumbnail\WebPageThumbnail.cs" />
+    <Compile Include="Validation\Rules\NotInRange.cs" />
+    <Compile Include="Web\DictionaryExtensions.cs" />
+    <Compile Include="Web\HTMLExtensions.cs" />
+    <Compile Include="Web\IPAddressExtensions.cs" />
+    <Compile Include="Web\MinificationExtensions.cs" />
+    <Compile Include="Web\NameValueCollectionExtensions.cs" />
+    <Compile Include="Web\Streams\UglyStream.cs" />
+    <Compile Include="Workflow\GenericConstraint.cs" />
+    <Compile Include="Workflow\GenericOperation.cs" />
+    <Compile Include="Workflow\Manager.cs" />
+    <Compile Include="Workflow\OperationInvoker.cs" />
+    <Compile Include="Workflow\Workflow.cs" />
+    <Compile Include="Workflow\WorkflowInvoker.cs" />
+    <Compile Include="Workflow\WorkflowNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
-      <Project>{57A7AF88-994B-46A5-BB9D-46ED06757B3F}</Project>
+      <Project>{8cbb9127-9e86-4deb-a2a0-ee2f8db946fc}</Project>
       <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\Image2.jpg" />
-    <Content Include="Data\Image\Lenna.jpg" />
-    <Content Include="Data\Testing\Test.txt" />
-    <Content Include="Data\Web\HanselmanSite.html" />
-    <Content Include="Data\Web\RandomCSS.css" />
-    <Content Include="Data\Web\RandomJS.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Data\FileFormats\TestFile.ini" />
-    <None Include="Data\Test.bat" />
-    <None Include="Key.snk" />
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFile.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TextFile1.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\xunit.core.2.0.0\build\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.core.2.0.0\build\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props'))" />
-    <Error Condition="!Exists('..\packages\xunit.runner.visualstudio.2.0.0\build\net20\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.runner.visualstudio.2.0.0\build\net20\xunit.runner.visualstudio.props'))" />
+    <Error Condition="!Exists('..\packages\xunit.runner.visualstudio.2.1.0-beta3-build1069\build\net20\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.runner.visualstudio.2.1.0-beta3-build1069\build\net20\xunit.runner.visualstudio.props'))" />
+    <Error Condition="!Exists('..\packages\xunit.core.2.1.0-beta3-build3029\build\portable-net45+dnxcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.core.2.1.0-beta3-build3029\build\portable-net45+dnxcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

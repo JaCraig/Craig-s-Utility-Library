@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,24 +19,82 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 
-#endregion
-
-namespace Utilities.DataTypes.ExtensionMethods
+namespace Utilities.DataTypes
 {
+    /// <summary>
+    /// Date comparison type
+    /// </summary>
+    [Flags]
+    public enum DateCompare
+    {
+        /// <summary>
+        /// In the future
+        /// </summary>
+        InFuture = 1,
+
+        /// <summary>
+        /// In the past
+        /// </summary>
+        InPast = 2,
+
+        /// <summary>
+        /// Today
+        /// </summary>
+        Today = 4,
+
+        /// <summary>
+        /// Weekday
+        /// </summary>
+        WeekDay = 8,
+
+        /// <summary>
+        /// Weekend
+        /// </summary>
+        WeekEnd = 16
+    }
+
+    /// <summary>
+    /// Time frame
+    /// </summary>
+    public enum TimeFrame
+    {
+        /// <summary>
+        /// Day
+        /// </summary>
+        Day,
+
+        /// <summary>
+        /// Week
+        /// </summary>
+        Week,
+
+        /// <summary>
+        /// Month
+        /// </summary>
+        Month,
+
+        /// <summary>
+        /// Quarter
+        /// </summary>
+        Quarter,
+
+        /// <summary>
+        /// Year
+        /// </summary>
+        Year
+    }
+
     /// <summary>
     /// DateTime extension methods
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class DateTimeExtensions
     {
-        #region Extension Methods
-
-        #region AddWeeks
-
         /// <summary>
         /// Adds the number of weeks to the date
         /// </summary>
@@ -47,10 +105,6 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             return Date.AddDays(NumberOfWeeks * 7);
         }
-
-        #endregion
-
-        #region Age
 
         /// <summary>
         /// Calculates age based on date supplied
@@ -65,16 +119,14 @@ namespace Utilities.DataTypes.ExtensionMethods
             return (CalculateFrom - Date).Years();
         }
 
-        #endregion
-
-        #region BeginningOf
-
         /// <summary>
         /// Beginning of a specific time frame
         /// </summary>
         /// <param name="Date">Date to base off of</param>
         /// <param name="TimeFrame">Time frame to use</param>
-        /// <param name="Culture">Culture to use for calculating (defaults to the current culture)</param>
+        /// <param name="Culture">
+        /// Culture to use for calculating (defaults to the current culture)
+        /// </param>
         /// <returns>The beginning of a specific time frame</returns>
         public static DateTime BeginningOf(this DateTime Date, TimeFrame TimeFrame, CultureInfo Culture = null)
         {
@@ -95,7 +147,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// </summary>
         /// <param name="Date">Date to base off of</param>
         /// <param name="TimeFrame">Time frame to use</param>
-        /// <param name="Culture">Culture to use for calculating (defaults to the current culture)</param>
+        /// <param name="Culture">
+        /// Culture to use for calculating (defaults to the current culture)
+        /// </param>
         /// <param name="StartOfQuarter1">Start of the first quarter</param>
         /// <returns>The beginning of a specific time frame</returns>
         public static DateTime BeginningOf(this DateTime Date, TimeFrame TimeFrame, DateTime StartOfQuarter1, CultureInfo Culture = null)
@@ -112,16 +166,14 @@ namespace Utilities.DataTypes.ExtensionMethods
             return StartOfQuarter1.AddMonths(9).Date;
         }
 
-        #endregion
-
-        #region DaysIn
-
         /// <summary>
         /// Gets the number of days in the time frame specified based on the date
         /// </summary>
         /// <param name="Date">Date</param>
         /// <param name="TimeFrame">Time frame to calculate the number of days from</param>
-        /// <param name="Culture">Culture to use for calculating (defaults to the current culture)</param>
+        /// <param name="Culture">
+        /// Culture to use for calculating (defaults to the current culture)
+        /// </param>
         /// <returns>The number of days in the time frame</returns>
         public static int DaysIn(this DateTime Date, TimeFrame TimeFrame, CultureInfo Culture = null)
         {
@@ -142,7 +194,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// </summary>
         /// <param name="Date">Date</param>
         /// <param name="TimeFrame">Time frame to calculate the number of days from</param>
-        /// <param name="Culture">Culture to use for calculating (defaults to the current culture)</param>
+        /// <param name="Culture">
+        /// Culture to use for calculating (defaults to the current culture)
+        /// </param>
         /// <param name="StartOfQuarter1">Start of the first quarter</param>
         /// <returns>The number of days in the time frame</returns>
         public static int DaysIn(this DateTime Date, TimeFrame TimeFrame, DateTime StartOfQuarter1, CultureInfo Culture = null)
@@ -153,16 +207,14 @@ namespace Utilities.DataTypes.ExtensionMethods
             return Date.EndOf(TimeFrame.Quarter, Culture).DayOfYear - StartOfQuarter1.DayOfYear;
         }
 
-        #endregion
-
-        #region DaysLeftIn
-
         /// <summary>
         /// Gets the number of days left in the time frame specified based on the date
         /// </summary>
         /// <param name="Date">Date</param>
         /// <param name="TimeFrame">Time frame to calculate the number of days left</param>
-        /// <param name="Culture">Culture to use for calculating (defaults to the current culture)</param>
+        /// <param name="Culture">
+        /// Culture to use for calculating (defaults to the current culture)
+        /// </param>
         /// <returns>The number of days left in the time frame</returns>
         public static int DaysLeftIn(this DateTime Date, TimeFrame TimeFrame, CultureInfo Culture = null)
         {
@@ -178,13 +230,14 @@ namespace Utilities.DataTypes.ExtensionMethods
             return Date.DaysIn(TimeFrame.Year, Culture) - Date.DayOfYear;
         }
 
-
         /// <summary>
         /// Gets the number of days left in the time frame specified based on the date
         /// </summary>
         /// <param name="Date">Date</param>
         /// <param name="TimeFrame">Time frame to calculate the number of days left</param>
-        /// <param name="Culture">Culture to use for calculating (defaults to the current culture)</param>
+        /// <param name="Culture">
+        /// Culture to use for calculating (defaults to the current culture)
+        /// </param>
         /// <param name="StartOfQuarter1">Start of the first quarter</param>
         /// <returns>The number of days left in the time frame</returns>
         public static int DaysLeftIn(this DateTime Date, TimeFrame TimeFrame, DateTime StartOfQuarter1, CultureInfo Culture = null)
@@ -195,17 +248,18 @@ namespace Utilities.DataTypes.ExtensionMethods
             return Date.DaysIn(TimeFrame.Quarter, StartOfQuarter1, Culture) - (Date.DayOfYear - StartOfQuarter1.DayOfYear);
         }
 
-        #endregion
-
-        #region EndOf
-
         /// <summary>
         /// End of a specific time frame
         /// </summary>
         /// <param name="Date">Date to base off of</param>
         /// <param name="TimeFrame">Time frame to use</param>
-        /// <param name="Culture">Culture to use for calculating (defaults to the current culture)</param>
-        /// <returns>The end of a specific time frame (TimeFrame.Day is the only one that sets the time to 12:59:59 PM, all else are the beginning of the day)</returns>
+        /// <param name="Culture">
+        /// Culture to use for calculating (defaults to the current culture)
+        /// </param>
+        /// <returns>
+        /// The end of a specific time frame (TimeFrame.Day is the only one that sets the time to
+        /// 12: 59:59 PM, all else are the beginning of the day)
+        /// </returns>
         public static DateTime EndOf(this DateTime Date, TimeFrame TimeFrame, CultureInfo Culture = null)
         {
             Culture = Culture.Check(CultureInfo.CurrentCulture);
@@ -225,9 +279,14 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// </summary>
         /// <param name="Date">Date to base off of</param>
         /// <param name="TimeFrame">Time frame to use</param>
-        /// <param name="Culture">Culture to use for calculating (defaults to the current culture)</param>
+        /// <param name="Culture">
+        /// Culture to use for calculating (defaults to the current culture)
+        /// </param>
         /// <param name="StartOfQuarter1">Start of the first quarter</param>
-        /// <returns>The end of a specific time frame (TimeFrame.Day is the only one that sets the time to 12:59:59 PM, all else are the beginning of the day)</returns>
+        /// <returns>
+        /// The end of a specific time frame (TimeFrame.Day is the only one that sets the time to
+        /// 12: 59:59 PM, all else are the beginning of the day)
+        /// </returns>
         public static DateTime EndOf(this DateTime Date, TimeFrame TimeFrame, DateTime StartOfQuarter1, CultureInfo Culture = null)
         {
             if (TimeFrame != TimeFrame.Quarter)
@@ -242,15 +301,13 @@ namespace Utilities.DataTypes.ExtensionMethods
             return StartOfQuarter1.AddYears(1).AddDays(-1).Date;
         }
 
-        #endregion
-        
-        #region Is
-
         /// <summary>
         /// Determines if the date fulfills the comparison
         /// </summary>
         /// <param name="Date">Date to check</param>
-        /// <param name="Comparison">Comparison type (can be combined, so you can do weekday in the future, etc)</param>
+        /// <param name="Comparison">
+        /// Comparison type (can be combined, so you can do weekday in the future, etc)
+        /// </param>
         /// <returns>True if it is, false otherwise</returns>
         public static bool Is(this DateTime Date, DateCompare Comparison)
         {
@@ -267,24 +324,15 @@ namespace Utilities.DataTypes.ExtensionMethods
             return true;
         }
 
-        #endregion
-        
-        #region LocalTimeZone
-
         /// <summary>
         /// Gets the local time zone
         /// </summary>
         /// <param name="Date">Date object</param>
         /// <returns>The local time zone</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "Date")]
         public static TimeZoneInfo LocalTimeZone(this DateTime Date)
         {
             return TimeZoneInfo.Local;
         }
-
-        #endregion
-
-        #region SetTime
 
         /// <summary>
         /// Sets the time portion of a specific date
@@ -309,10 +357,6 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             return Date.Date.Add(Time);
         }
-
-        #endregion
-
-        #region To
 
         /// <summary>
         /// Converts a DateTime to a specific time zone
@@ -362,20 +406,12 @@ namespace Utilities.DataTypes.ExtensionMethods
             return new DateTime((Date * TimeSpan.TicksPerSecond) + Epoch.Ticks, DateTimeKind.Utc);
         }
 
-        #endregion
-
-        #region ToString
-
         /// <summary>
-        /// Converts the DateTime object to string describing, relatively how long ago or how far in the future
-        /// the input is based off of another DateTime object specified.
-        /// ex: 
-        /// Input=March 21, 2013
-        /// Epoch=March 22, 2013
-        /// returns "1 day ago"
-        /// Input=March 22, 2013
-        /// Epoch=March 21, 2013
-        /// returns "1 day from now"
+        /// Converts the DateTime object to string describing, relatively how long ago or how far in
+        /// the future the input is based off of another DateTime object specified.
+        /// ex:
+        /// Input=March 21, 2013 Epoch=March 22, 2013 returns "1 day ago" Input=March 22, 2013
+        /// Epoch=March 21, 2013 returns "1 day from now"
         /// </summary>
         /// <param name="Input">Input</param>
         /// <param name="Epoch">DateTime object that the input is comparred to</param>
@@ -387,10 +423,6 @@ namespace Utilities.DataTypes.ExtensionMethods
             return Epoch > Input ? (Epoch - Input).ToStringFull() + " ago" : (Input - Epoch).ToStringFull() + " from now";
         }
 
-        #endregion
-
-        #region UTCOffset
-
         /// <summary>
         /// Gets the UTC offset
         /// </summary>
@@ -400,68 +432,5 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             return (Date - Date.ToUniversalTime()).TotalHours;
         }
-
-        #endregion
-
-        #endregion
     }
-
-    #region Enums
-
-    /// <summary>
-    /// Date comparison type
-    /// </summary>
-    [Flags]
-    public enum DateCompare
-    {
-        /// <summary>
-        /// In the future
-        /// </summary>
-        InFuture=1,
-        /// <summary>
-        /// In the past
-        /// </summary>
-        InPast=2,
-        /// <summary>
-        /// Today
-        /// </summary>
-        Today=4,
-        /// <summary>
-        /// Weekday
-        /// </summary>
-        WeekDay=8,
-        /// <summary>
-        /// Weekend
-        /// </summary>
-        WeekEnd=16
-    }
-
-    /// <summary>
-    /// Time frame
-    /// </summary>
-    public enum TimeFrame
-    {
-        /// <summary>
-        /// Day
-        /// </summary>
-        Day,
-        /// <summary>
-        /// Week
-        /// </summary>
-        Week,
-        /// <summary>
-        /// Month
-        /// </summary>
-        Month,
-        /// <summary>
-        /// Quarter
-        /// </summary>
-        Quarter,
-        /// <summary>
-        /// Year
-        /// </summary>
-        Year
-    }
-
-    #endregion
 }

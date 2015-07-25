@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,6 @@ using System.Linq;
 using Utilities.DataTypes;
 using Xunit;
 
-
 namespace UnitTests.DataTypes
 {
     public class RingBuffer
@@ -33,7 +32,7 @@ namespace UnitTests.DataTypes
         public void RandomTest()
         {
             RingBuffer<int> TestObject = new RingBuffer<int>(10);
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
+            System.Random Rand = new System.Random();
             int Value = 0;
             for (int x = 0; x < 10; ++x)
             {
@@ -43,7 +42,7 @@ namespace UnitTests.DataTypes
                 Assert.Equal(Value, TestObject.Remove());
             }
             Assert.Equal(0, TestObject.Count);
-            System.Collections.Generic.List<int> Values=new System.Collections.Generic.List<int>();
+            System.Collections.Generic.List<int> Values = new System.Collections.Generic.List<int>();
             for (int x = 0; x < 10; ++x)
             {
                 Values.Add(Rand.Next());

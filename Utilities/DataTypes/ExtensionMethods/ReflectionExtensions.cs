@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,10 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
@@ -30,50 +29,49 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
-#endregion
-
-namespace Utilities.DataTypes.ExtensionMethods
+namespace Utilities.DataTypes
 {
     /// <summary>
     /// Reflection oriented extensions
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ReflectionExtensions
     {
-        #region Functions
-
-        #region Attribute
-
         /// <summary>
         /// Gets the attribute from the item
         /// </summary>
         /// <typeparam name="T">Attribute type</typeparam>
         /// <param name="Provider">Attribute provider</param>
-        /// <param name="Inherit">When true, it looks up the heirarchy chain for the inherited custom attributes</param>
+        /// <param name="Inherit">
+        /// When true, it looks up the heirarchy chain for the inherited custom attributes
+        /// </param>
         /// <returns>Attribute specified if it exists</returns>
         public static T Attribute<T>(this ICustomAttributeProvider Provider, bool Inherit = true) where T : Attribute
         {
-            return Provider.IsDefined(typeof(T), Inherit) ? Provider.Attributes<T>(Inherit)[0] : default(T);
+            Contract.Requires<ArgumentNullException>(Provider != null, "Provider");
+            if (Provider.IsDefined(typeof(T), Inherit))
+            {
+                T[] Attributes = Provider.Attributes<T>(Inherit);
+                if (Attributes.Length > 0)
+                    return Attributes[0];
+            }
+            return default(T);
         }
-
-        #endregion
-
-        #region Attributes
 
         /// <summary>
         /// Gets the attributes from the item
         /// </summary>
         /// <typeparam name="T">Attribute type</typeparam>
         /// <param name="Provider">Attribute provider</param>
-        /// <param name="Inherit">When true, it looks up the heirarchy chain for the inherited custom attributes</param>
+        /// <param name="Inherit">
+        /// When true, it looks up the heirarchy chain for the inherited custom attributes
+        /// </param>
         /// <returns>Array of attributes</returns>
         public static T[] Attributes<T>(this ICustomAttributeProvider Provider, bool Inherit = true) where T : Attribute
         {
+            Contract.Requires<ArgumentNullException>(Provider != null, "Provider");
             return Provider.IsDefined(typeof(T), Inherit) ? Provider.GetCustomAttributes(typeof(T), Inherit).ToArray(x => (T)x) : new T[0];
         }
-
-        #endregion
-
-        #region Call
 
         /// <summary>
         /// Calls a method on an object
@@ -99,9 +97,103 @@ namespace Utilities.DataTypes.ExtensionMethods
             return (ReturnType)Method.Invoke(Object, InputVariables);
         }
 
-        #endregion
+        /// <summary>
+        /// Calls a method on an object
+        /// </summary>
+        /// <param name="MethodName">Method name</param>
+        /// <param name="Object">Object to call the method on</param>
+        /// <param name="InputVariables">(Optional)input variables for the method</param>
+        /// <typeparam name="ReturnType">Return type expected</typeparam>
+        /// <typeparam name="GenericType1">Generic method type 1</typeparam>
+        /// <returns>The returned value of the method</returns>
+        public static ReturnType Call<GenericType1, ReturnType>(this object Object, string MethodName, params object[] InputVariables)
+        {
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(MethodName), "MethodName");
+            if (InputVariables == null)
+                InputVariables = new object[0];
+            Type ObjectType = Object.GetType();
+            Type[] MethodInputTypes = new Type[InputVariables.Length];
+            for (int x = 0; x < InputVariables.Length; ++x)
+                MethodInputTypes[x] = InputVariables[x].GetType();
+            MethodInfo Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
+            if (Method == null)
+                throw new InvalidOperationException("Could not find method " + MethodName + " with the appropriate input variables.");
+            Method = Method.MakeGenericMethod(typeof(GenericType1));
+            return Object.Call<ReturnType>(Method, InputVariables);
+        }
 
-        #region Create
+        /// <summary>
+        /// Calls a method on an object
+        /// </summary>
+        /// <param name="MethodName">Method name</param>
+        /// <param name="Object">Object to call the method on</param>
+        /// <param name="InputVariables">(Optional)input variables for the method</param>
+        /// <typeparam name="ReturnType">Return type expected</typeparam>
+        /// <typeparam name="GenericType1">Generic method type 1</typeparam>
+        /// <typeparam name="GenericType2">Generic method type 2</typeparam>
+        /// <returns>The returned value of the method</returns>
+        public static ReturnType Call<GenericType1, GenericType2, ReturnType>(this object Object, string MethodName, params object[] InputVariables)
+        {
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(MethodName), "MethodName");
+            if (InputVariables == null)
+                InputVariables = new object[0];
+            Type ObjectType = Object.GetType();
+            Type[] MethodInputTypes = new Type[InputVariables.Length];
+            for (int x = 0; x < InputVariables.Length; ++x)
+                MethodInputTypes[x] = InputVariables[x].GetType();
+            MethodInfo Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
+            if (Method == null)
+                throw new InvalidOperationException("Could not find method " + MethodName + " with the appropriate input variables.");
+            Method = Method.MakeGenericMethod(typeof(GenericType1), typeof(GenericType2));
+            return Object.Call<ReturnType>(Method, InputVariables);
+        }
+
+        /// <summary>
+        /// Calls a method on an object
+        /// </summary>
+        /// <param name="MethodName">Method name</param>
+        /// <param name="Object">Object to call the method on</param>
+        /// <param name="InputVariables">(Optional)input variables for the method</param>
+        /// <typeparam name="ReturnType">Return type expected</typeparam>
+        /// <typeparam name="GenericType1">Generic method type 1</typeparam>
+        /// <typeparam name="GenericType2">Generic method type 2</typeparam>
+        /// <typeparam name="GenericType3">Generic method type 3</typeparam>
+        /// <returns>The returned value of the method</returns>
+        public static ReturnType Call<GenericType1, GenericType2, GenericType3, ReturnType>(this object Object, string MethodName, params object[] InputVariables)
+        {
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(MethodName), "MethodName");
+            if (InputVariables == null)
+                InputVariables = new object[0];
+            Type ObjectType = Object.GetType();
+            Type[] MethodInputTypes = new Type[InputVariables.Length];
+            for (int x = 0; x < InputVariables.Length; ++x)
+                MethodInputTypes[x] = InputVariables[x].GetType();
+            MethodInfo Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
+            if (Method == null)
+                throw new InvalidOperationException("Could not find method " + MethodName + " with the appropriate input variables.");
+            Method = Method.MakeGenericMethod(typeof(GenericType1), typeof(GenericType2), typeof(GenericType3));
+            return Object.Call<ReturnType>(Method, InputVariables);
+        }
+
+        /// <summary>
+        /// Calls a method on an object
+        /// </summary>
+        /// <param name="Method">Method</param>
+        /// <param name="Object">Object to call the method on</param>
+        /// <param name="InputVariables">(Optional)input variables for the method</param>
+        /// <typeparam name="ReturnType">Return type expected</typeparam>
+        /// <returns>The returned value of the method</returns>
+        public static ReturnType Call<ReturnType>(this object Object, MethodInfo Method, params object[] InputVariables)
+        {
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            Contract.Requires<ArgumentNullException>(Method != null, "Method");
+            if (InputVariables == null)
+                InputVariables = new object[0];
+            return (ReturnType)Method.Invoke(Object, InputVariables);
+        }
 
         /// <summary>
         /// Creates an instance of the type and casts it to the specified type
@@ -110,7 +202,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Type">Type to create an instance of</param>
         /// <param name="args">Arguments sent into the constructor</param>
         /// <returns>The newly created instance of the type</returns>
-        public static ClassType Create<ClassType>(this Type Type,params object[] args)
+        public static ClassType Create<ClassType>(this Type Type, params object[] args)
         {
             Contract.Requires<ArgumentNullException>(Type != null, "Type");
             return (ClassType)Type.Create(args);
@@ -153,13 +245,8 @@ namespace Utilities.DataTypes.ExtensionMethods
             return Types.ForEach(x => x.Create(args));
         }
 
-        #endregion
-
-        #region GetName
-
         /// <summary>
-        /// Returns the type's name (Actual C# name, not the funky version from
-        /// the Name property)
+        /// Returns the type's name (Actual C# name, not the funky version from the Name property)
         /// </summary>
         /// <param name="ObjectType">Type to get the name of</param>
         /// <returns>string name of the type</returns>
@@ -173,10 +260,12 @@ namespace Utilities.DataTypes.ExtensionMethods
             }
             else
             {
+                Output.Append(ObjectType.DeclaringType == null ? ObjectType.Namespace : ObjectType.DeclaringType.GetName())
+                    .Append(".");
                 if (ObjectType.Name.Contains("`"))
                 {
                     Type[] GenericTypes = ObjectType.GetGenericArguments();
-                    Output.Append(ObjectType.Name.Remove(ObjectType.Name.IndexOf("`", StringComparison.InvariantCulture)))
+                    Output.Append(ObjectType.Name.Remove(ObjectType.Name.IndexOf("`", StringComparison.OrdinalIgnoreCase)))
                         .Append("<");
                     string Seperator = "";
                     foreach (Type GenericType in GenericTypes)
@@ -191,12 +280,8 @@ namespace Utilities.DataTypes.ExtensionMethods
                     Output.Append(ObjectType.Name);
                 }
             }
-            return Output.ToString();
+            return Output.ToString().Replace("&", "");
         }
-
-        #endregion
-        
-        #region HasDefaultConstructor
 
         /// <summary>
         /// Determines if the type has a default constructor
@@ -209,10 +294,6 @@ namespace Utilities.DataTypes.ExtensionMethods
             return Type.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
                         .Any(x => x.GetParameters().Length == 0);
         }
-
-        #endregion
-
-        #region Is
 
         /// <summary>
         /// Determines if an object is of a specific type
@@ -238,6 +319,8 @@ namespace Utilities.DataTypes.ExtensionMethods
             Contract.Requires<ArgumentNullException>(Type != null, "Type");
             if (ObjectType == null)
                 return false;
+            if (Type == typeof(object))
+                return true;
             if (Type == ObjectType || ObjectType.GetInterfaces().Any(x => x == Type))
                 return true;
             if (ObjectType.BaseType == null)
@@ -245,9 +328,29 @@ namespace Utilities.DataTypes.ExtensionMethods
             return ObjectType.BaseType.Is(Type);
         }
 
-        #endregion
+        /// <summary>
+        /// Determines if an object is of a specific type
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <typeparam name="BaseObjectType">Base object type</typeparam>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool Is<BaseObjectType>(this object Object)
+        {
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            return Object.Is(typeof(BaseObjectType));
+        }
 
-        #region Load
+        /// <summary>
+        /// Determines if an object is of a specific type
+        /// </summary>
+        /// <param name="ObjectType">Object type</param>
+        /// <typeparam name="BaseObjectType">Base object type</typeparam>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool Is<BaseObjectType>(this Type ObjectType)
+        {
+            Contract.Requires<ArgumentNullException>(ObjectType != null, "ObjectType");
+            return ObjectType.Is(typeof(BaseObjectType));
+        }
 
         /// <summary>
         /// Loads an assembly by its name
@@ -264,10 +367,6 @@ namespace Utilities.DataTypes.ExtensionMethods
             catch (BadImageFormatException) { return null; }
         }
 
-        #endregion
-
-        #region LoadAssemblies
-
         /// <summary>
         /// Loads assemblies within a directory and returns them in an array.
         /// </summary>
@@ -276,6 +375,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>Array of assemblies in the directory</returns>
         public static IEnumerable<Assembly> LoadAssemblies(this DirectoryInfo Directory, bool Recursive = false)
         {
+            Contract.Requires<ArgumentNullException>(Directory != null, "Directory");
             List<Assembly> Assemblies = new List<Assembly>();
             foreach (FileInfo File in Directory.GetFiles("*.dll", Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
             {
@@ -283,42 +383,21 @@ namespace Utilities.DataTypes.ExtensionMethods
                 {
                     Assemblies.Add(AssemblyName.GetAssemblyName(File.FullName).Load());
                 }
-                catch(BadImageFormatException) { }
+                catch (BadImageFormatException) { }
             }
             return Assemblies;
         }
-
-        #endregion
-
-        #region MarkedWith
-
-        /// <summary>
-        /// Goes through a list of types and determines if they're marked with a specific attribute
-        /// </summary>
-        /// <typeparam name="T">Attribute type</typeparam>
-        /// <param name="Types">Types to check</param>
-        /// <param name="Inherit">When true, it looks up the heirarchy chain for the inherited custom attributes</param>
-        /// <returns>The list of types that are marked with an attribute</returns>
-        public static IEnumerable<Type> MarkedWith<T>(this IEnumerable<Type> Types, bool Inherit = true) 
-            where T : Attribute
-        {
-            if(Types==null)
-                return null;
-            return Types.Where(x => x.IsDefined(typeof(T), Inherit) && !x.IsAbstract);
-        }
-
-        #endregion
-
-        #region MakeShallowCopy
 
         /// <summary>
         /// Makes a shallow copy of the object
         /// </summary>
         /// <param name="Object">Object to copy</param>
-        /// <param name="SimpleTypesOnly">If true, it only copies simple types (no classes, only items like int, string, etc.), false copies everything.</param>
+        /// <param name="SimpleTypesOnly">
+        /// If true, it only copies simple types (no classes, only items like int, string, etc.),
+        /// false copies everything.
+        /// </param>
         /// <returns>A copy of the object</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        public static T MakeShallowCopy<T>(this T Object, bool SimpleTypesOnly=false)
+        public static T MakeShallowCopy<T>(this T Object, bool SimpleTypesOnly = false)
         {
             if (Object == null)
                 return default(T);
@@ -328,15 +407,15 @@ namespace Utilities.DataTypes.ExtensionMethods
             {
                 try
                 {
-                        if (Property.CanRead 
-                                && Property.CanWrite
-                                && SimpleTypesOnly 
-                                && Property.PropertyType.IsValueType)
-                            Property.SetValue(ClassInstance, Property.GetValue(Object, null), null);
-                        else if (!SimpleTypesOnly
-                                    &&Property.CanRead 
-                                    && Property.CanWrite)
-                            Property.SetValue(ClassInstance, Property.GetValue(Object, null), null);
+                    if (Property.CanRead
+                            && Property.CanWrite
+                            && SimpleTypesOnly
+                            && Property.PropertyType.IsValueType)
+                        Property.SetValue(ClassInstance, Property.GetValue(Object, null), null);
+                    else if (!SimpleTypesOnly
+                                && Property.CanRead
+                                && Property.CanWrite)
+                        Property.SetValue(ClassInstance, Property.GetValue(Object, null), null);
                 }
                 catch { }
             }
@@ -345,9 +424,9 @@ namespace Utilities.DataTypes.ExtensionMethods
             {
                 try
                 {
-                    if (SimpleTypesOnly&&Field.IsPublic)
+                    if (SimpleTypesOnly && Field.IsPublic)
                         Field.SetValue(ClassInstance, Field.GetValue(Object));
-                    else if(!SimpleTypesOnly&&Field.IsPublic)
+                    else if (!SimpleTypesOnly && Field.IsPublic)
                         Field.SetValue(ClassInstance, Field.GetValue(Object));
                 }
                 catch { }
@@ -356,56 +435,68 @@ namespace Utilities.DataTypes.ExtensionMethods
             return ClassInstance;
         }
 
-        #endregion
-
-        #region Objects
-
         /// <summary>
-        /// Returns an instance of all classes that it finds within an assembly
-        /// that are of the specified base type/interface.
+        /// Goes through a list of types and determines if they're marked with a specific attribute
         /// </summary>
-        /// <typeparam name="ClassType">Base type/interface searching for</typeparam>
-        /// <param name="Assembly">Assembly to search within</param>
-        /// <returns>A list of objects that are of the type specified</returns>
-        public static IEnumerable<ClassType> Objects<ClassType>(this Assembly Assembly)
+        /// <typeparam name="T">Attribute type</typeparam>
+        /// <param name="Types">Types to check</param>
+        /// <param name="Inherit">
+        /// When true, it looks up the heirarchy chain for the inherited custom attributes
+        /// </param>
+        /// <returns>The list of types that are marked with an attribute</returns>
+        public static IEnumerable<Type> MarkedWith<T>(this IEnumerable<Type> Types, bool Inherit = true)
+            where T : Attribute
         {
-            Contract.Requires<ArgumentNullException>(Assembly != null, "Assembly");
-            return Assembly.Types<ClassType>().Where(x => !x.ContainsGenericParameters).Create<ClassType>();
+            if (Types == null)
+                return null;
+            return Types.Where(x => x.IsDefined(typeof(T), Inherit) && !x.IsAbstract);
         }
 
         /// <summary>
-        /// Returns an instance of all classes that it finds within a group of assemblies
-        /// that are of the specified base type/interface.
+        /// Returns an instance of all classes that it finds within an assembly that are of the
+        /// specified base type/interface.
+        /// </summary>
+        /// <typeparam name="ClassType">Base type/interface searching for</typeparam>
+        /// <param name="Assembly">Assembly to search within</param>
+        /// <param name="Args">Args used to create the object</param>
+        /// <returns>A list of objects that are of the type specified</returns>
+        public static IEnumerable<ClassType> Objects<ClassType>(this Assembly Assembly, params object[] Args)
+        {
+            Contract.Requires<ArgumentNullException>(Assembly != null, "Assembly");
+            return Assembly.Types<ClassType>().Where(x => !x.ContainsGenericParameters).Create<ClassType>(Args);
+        }
+
+        /// <summary>
+        /// Returns an instance of all classes that it finds within a group of assemblies that are
+        /// of the specified base type/interface.
         /// </summary>
         /// <typeparam name="ClassType">Base type/interface searching for</typeparam>
         /// <param name="Assemblies">Assemblies to search within</param>
+        /// <param name="Args">Args used to create the object</param>
         /// <returns>A list of objects that are of the type specified</returns>
-        public static IEnumerable<ClassType> Objects<ClassType>(this IEnumerable<Assembly> Assemblies)
+        public static IEnumerable<ClassType> Objects<ClassType>(this IEnumerable<Assembly> Assemblies, params object[] Args)
         {
             Contract.Requires<ArgumentNullException>(Assemblies != null, "Assemblies");
             List<ClassType> ReturnValues = new List<ClassType>();
-            foreach (Assembly Assembly in Assemblies.Where(x => x != null))
-                ReturnValues.AddRange(Assembly.Objects<ClassType>());
+            foreach (Assembly Assembly in Assemblies)
+                ReturnValues.AddRange(Assembly.Objects<ClassType>(Args));
             return ReturnValues;
         }
 
         /// <summary>
-        /// Returns an instance of all classes that it finds within a directory
-        /// that are of the specified base type/interface.
+        /// Returns an instance of all classes that it finds within a directory that are of the
+        /// specified base type/interface.
         /// </summary>
         /// <typeparam name="ClassType">Base type/interface searching for</typeparam>
         /// <param name="Directory">Directory to search within</param>
         /// <param name="Recursive">Should this be recursive</param>
+        /// <param name="Args">Args used to create the object</param>
         /// <returns>A list of objects that are of the type specified</returns>
-        public static IEnumerable<ClassType> Objects<ClassType>(this DirectoryInfo Directory, bool Recursive = false)
+        public static IEnumerable<ClassType> Objects<ClassType>(this DirectoryInfo Directory, bool Recursive, params object[] Args)
         {
             Contract.Requires<ArgumentNullException>(Directory != null, "Directory");
-            return Directory.LoadAssemblies(Recursive).Objects<ClassType>();
+            return Directory.LoadAssemblies(Recursive).Objects<ClassType>(Args);
         }
-
-        #endregion
-
-        #region Property
 
         /// <summary>
         /// Gets the value of property
@@ -443,6 +534,8 @@ namespace Utilities.DataTypes.ExtensionMethods
                     return null;
             }
             DestinationProperty = TempObjectType.GetProperty(Properties[Properties.Length - 1]);
+            if (DestinationProperty == null)
+                throw new NullReferenceException("PropertyInfo can't be null");
             return TempObject.Property(DestinationProperty);
         }
 
@@ -489,13 +582,11 @@ namespace Utilities.DataTypes.ExtensionMethods
                     return Object;
             }
             DestinationProperty = TempObjectType.GetProperty(Properties[Properties.Length - 1]);
+            if (DestinationProperty == null)
+                throw new NullReferenceException("PropertyInfo can't be null");
             TempObject.Property(DestinationProperty, Value, Format);
             return Object;
         }
-
-        #endregion
-
-        #region PropertyGetter
 
         /// <summary>
         /// Gets a lambda expression that calls a specific property's getter function
@@ -506,6 +597,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>A lambda expression that calls a specific property's getter function</returns>
         public static Expression<Func<ClassType, DataType>> PropertyGetter<ClassType, DataType>(this PropertyInfo Property)
         {
+            Contract.Requires<ArgumentNullException>(Property != null, "Property");
             if (!Property.PropertyType.Is(typeof(DataType)))
                 throw new ArgumentException("Property is not of the type specified");
             if (!Property.DeclaringType.Is(typeof(ClassType)) && !typeof(ClassType).Is(Property.DeclaringType))
@@ -528,12 +620,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>A lambda expression that calls a specific property's getter function</returns>
         public static Expression<Func<ClassType, object>> PropertyGetter<ClassType>(this PropertyInfo Property)
         {
+            Contract.Requires<ArgumentNullException>(Property != null, "Property");
             return Property.PropertyGetter<ClassType, object>();
         }
-
-        #endregion
-
-        #region PropertyName
 
         /// <summary>
         /// Gets a property name
@@ -542,6 +631,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The name of the property</returns>
         public static string PropertyName(this LambdaExpression Expression)
         {
+            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
             if (Expression.Body is UnaryExpression && Expression.Body.NodeType == ExpressionType.Convert)
             {
                 MemberExpression Temp = (MemberExpression)((UnaryExpression)Expression.Body).Operand;
@@ -565,10 +655,6 @@ namespace Utilities.DataTypes.ExtensionMethods
             return TempExpression.Expression.PropertyName() + TempExpression.Member.Name + ".";
         }
 
-        #endregion
-
-        #region PropertySetter
-
         /// <summary>
         /// Gets a lambda expression that calls a specific property's setter function
         /// </summary>
@@ -576,14 +662,17 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <typeparam name="DataType">Data type expecting</typeparam>
         /// <param name="Property">Property</param>
         /// <returns>A lambda expression that calls a specific property's setter function</returns>
-        public static Expression<Action<ClassType, DataType>> PropertySetter<ClassType, DataType>(this Expression<Func<ClassType, DataType>> Property)
+        public static Expression<Action<ClassType, DataType>> PropertySetter<ClassType, DataType>(this LambdaExpression Property)//Expression<Func<ClassType, DataType>> Property)
         {
             Contract.Requires<ArgumentNullException>(Property != null, "Property");
             string PropertyName = Property.PropertyName();
             string[] SplitName = PropertyName.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
+            if (SplitName.Length == 0)
+                return null;
             PropertyInfo PropertyInfo = typeof(ClassType).GetProperty(SplitName[0]);
             ParameterExpression ObjectInstance = Expression.Parameter(PropertyInfo.DeclaringType, "x");
             ParameterExpression PropertySet = Expression.Parameter(typeof(DataType), "y");
+            ConstantExpression DefaultConstant = Expression.Constant(((object)null).To(PropertyInfo.PropertyType, null), PropertyInfo.PropertyType);
             MethodCallExpression SetterCall = null;
             MemberExpression PropertyGet = null;
             if (SplitName.Length > 1)
@@ -592,23 +681,36 @@ namespace Utilities.DataTypes.ExtensionMethods
                 for (int x = 1; x < SplitName.Length - 1; ++x)
                 {
                     PropertyInfo = PropertyInfo.PropertyType.GetProperty(SplitName[x]);
+                    if (PropertyInfo == null)
+                        throw new NullReferenceException("PropertyInfo can't be null");
                     PropertyGet = Expression.Property(PropertyGet, PropertyInfo);
                 }
                 PropertyInfo = PropertyInfo.PropertyType.GetProperty(SplitName[SplitName.Length - 1]);
             }
-            if (PropertyInfo.PropertyType != typeof(DataType))
+            MethodInfo SetMethod = PropertyInfo.GetSetMethod();
+            if (SetMethod != null)
             {
-                UnaryExpression Convert = Expression.Convert(PropertySet, PropertyInfo.PropertyType);
+                if (PropertyInfo.PropertyType != typeof(DataType))
+                {
+                    MethodInfo ConversionMethod = typeof(TypeConversionExtensions).GetMethods().FirstOrDefault(x => x.ContainsGenericParameters
+                        && x.GetGenericArguments().Length == 2
+                        && x.Name == "To"
+                        && x.GetParameters().Length == 2);
+                    ConversionMethod = ConversionMethod.MakeGenericMethod(typeof(DataType), PropertyInfo.PropertyType);
+                    MethodCallExpression Convert = Expression.Call(ConversionMethod, PropertySet, DefaultConstant);
+                    if (PropertyGet == null)
+                        SetterCall = Expression.Call(ObjectInstance, SetMethod, Convert);
+                    else
+                        SetterCall = Expression.Call(PropertyGet, SetMethod, Convert);
+                    return Expression.Lambda<Action<ClassType, DataType>>(SetterCall, ObjectInstance, PropertySet);
+                }
                 if (PropertyGet == null)
-                    SetterCall = Expression.Call(ObjectInstance, PropertyInfo.GetSetMethod(), Convert);
+                    SetterCall = Expression.Call(ObjectInstance, SetMethod, PropertySet);
                 else
-                    SetterCall = Expression.Call(PropertyGet, PropertyInfo.GetSetMethod(), Convert);
-                return Expression.Lambda<Action<ClassType, DataType>>(SetterCall, ObjectInstance, PropertySet);
+                    SetterCall = Expression.Call(PropertyGet, SetMethod, PropertySet);
             }
-            if (PropertyGet == null)
-                SetterCall = Expression.Call(ObjectInstance, PropertyInfo.GetSetMethod(), PropertySet);
             else
-                SetterCall = Expression.Call(PropertyGet, PropertyInfo.GetSetMethod(), PropertySet);
+                return Expression.Lambda<Action<ClassType, DataType>>(Expression.Empty(), ObjectInstance, PropertySet);
             return Expression.Lambda<Action<ClassType, DataType>>(SetterCall, ObjectInstance, PropertySet);
         }
 
@@ -618,22 +720,20 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <typeparam name="ClassType">Class type</typeparam>
         /// <param name="Property">Property</param>
         /// <returns>A lambda expression that calls a specific property's setter function</returns>
-        public static Expression<Action<ClassType, object>> PropertySetter<ClassType>(this Expression<Func<ClassType, object>> Property)
+        public static Expression<Action<ClassType, object>> PropertySetter<ClassType>(this LambdaExpression Property)
         {
+            Contract.Requires<ArgumentNullException>(Property != null, "Property");
             return Property.PropertySetter<ClassType, object>();
         }
-
-        #endregion
-
-        #region PropertyType
 
         /// <summary>
         /// Gets a property's type
         /// </summary>
         /// <param name="Object">object who contains the property</param>
-        /// <param name="PropertyPath">Path of the property (ex: Prop1.Prop2.Prop3 would be
-        /// the Prop1 of the source object, which then has a Prop2 on it, which in turn
-        /// has a Prop3 on it.)</param>
+        /// <param name="PropertyPath">
+        /// Path of the property (ex: Prop1.Prop2.Prop3 would be the Prop1 of the source object,
+        /// which then has a Prop2 on it, which in turn has a Prop3 on it.)
+        /// </param>
         /// <returns>The type of the property specified or null if it can not be reached.</returns>
         public static Type PropertyType(this object Object, string PropertyPath)
         {
@@ -646,9 +746,10 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// Gets a property's type
         /// </summary>
         /// <param name="ObjectType">Object type</param>
-        /// <param name="PropertyPath">Path of the property (ex: Prop1.Prop2.Prop3 would be
-        /// the Prop1 of the source object, which then has a Prop2 on it, which in turn
-        /// has a Prop3 on it.)</param>
+        /// <param name="PropertyPath">
+        /// Path of the property (ex: Prop1.Prop2.Prop3 would be the Prop1 of the source object,
+        /// which then has a Prop2 on it, which in turn has a Prop3 on it.)
+        /// </param>
         /// <returns>The type of the property specified or null if it can not be reached.</returns>
         public static Type PropertyType(this Type ObjectType, string PropertyPath)
         {
@@ -663,10 +764,6 @@ namespace Utilities.DataTypes.ExtensionMethods
             }
             return ObjectType;
         }
-
-        #endregion
-        
-        #region ToString
 
         /// <summary>
         /// Gets the version information in a string format
@@ -696,8 +793,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The version information as a string</returns>
         public static string ToString(this IEnumerable<Assembly> Assemblies, VersionInfo InfoType)
         {
+            Contract.Requires<ArgumentNullException>(Assemblies != null, "Assemblies");
             StringBuilder Builder = new StringBuilder();
-            Assemblies.Where(x=>x!=null).OrderBy(x => x.FullName).ForEach<Assembly>(x => Builder.AppendLine(x.GetName().Name + ": " + x.ToString(InfoType)));
+            Assemblies.OrderBy(x => x.FullName).ForEach<Assembly>(x => Builder.AppendLine(x.GetName().Name + ": " + x.ToString(InfoType)));
             return Builder.ToString();
         }
 
@@ -709,9 +807,10 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>An HTML formatted string containing the assembly information</returns>
         public static string ToString(this IEnumerable<Assembly> Assemblies, bool HTMLOutput)
         {
+            Contract.Requires<ArgumentNullException>(Assemblies != null, "Assemblies");
             StringBuilder Builder = new StringBuilder();
             Builder.Append(HTMLOutput ? "<strong>Assembly Information</strong><br />" : "Assembly Information\r\n");
-            Assemblies.Where(x => x != null).ForEach<Assembly>(x => Builder.Append(x.ToString(HTMLOutput)));
+            Assemblies.ForEach<Assembly>(x => Builder.Append(x.ToString(HTMLOutput)));
             return Builder.ToString();
         }
 
@@ -721,36 +820,38 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Object">Object to dunp</param>
         /// <param name="HTMLOutput">Determines if the output should be HTML or not</param>
         /// <returns>An HTML formatted table containing the information about the object</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static string ToString(this object Object, bool HTMLOutput)
         {
             Contract.Requires<ArgumentNullException>(Object != null, "Object");
-            return Dump(Object.GetType(), Object, HTMLOutput);
+            StringBuilder TempValue = new StringBuilder();
+            TempValue.Append(HTMLOutput ? "<table><thead><tr><th>Property Name</th><th>Property Value</th></tr></thead><tbody>" : "Property Name\t\t\t\tProperty Value");
+            Type ObjectType = Object.GetType();
+            foreach (PropertyInfo Property in ObjectType.GetProperties())
+            {
+                TempValue.Append(HTMLOutput ? "<tr><td>" : System.Environment.NewLine).Append(Property.Name).Append(HTMLOutput ? "</td><td>" : "\t\t\t\t");
+                ParameterInfo[] Parameters = Property.GetIndexParameters();
+                if (Property.CanRead && Parameters.Length == 0)
+                {
+                    try
+                    {
+                        object Value = Property.GetValue(Object, null);
+                        TempValue.Append(Value == null ? "null" : Value.ToString());
+                    }
+                    catch { }
+                }
+                TempValue.Append(HTMLOutput ? "</td></tr>" : "");
+            }
+            TempValue.Append(HTMLOutput ? "</tbody></table>" : "");
+            return TempValue.ToString();
         }
 
         /// <summary>
-        /// Dumps the properties names and current values
-        /// from an object type (used for static classes)
+        /// Dumps the properties names and current values from an object type (used for static classes)
         /// </summary>
         /// <param name="ObjectType">Object type to dunp</param>
         /// <param name="HTMLOutput">Should this be output as an HTML string</param>
         /// <returns>An HTML formatted table containing the information about the object type</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static string ToString(this Type ObjectType, bool HTMLOutput)
-        {
-            Contract.Requires<ArgumentNullException>(ObjectType != null, "ObjectType");
-            return Dump(ObjectType, null, HTMLOutput);
-        }
-
-        /// <summary>
-        /// Dumps the properties names and current values
-        /// from an objectType
-        /// </summary>
-        /// <param name="ObjectType">Object type to dunp</param>
-        /// <param name="Object">Object to dunp, if this is null then for static classes, else for an instance object </param>
-        /// <param name="HTMLOutput">Should this be output as an HTML string</param>
-        /// <returns></returns>
-        private static string Dump(Type ObjectType, object Object, bool HTMLOutput)
         {
             Contract.Requires<ArgumentNullException>(ObjectType != null, "ObjectType");
             StringBuilder TempValue = new StringBuilder();
@@ -763,21 +864,15 @@ namespace Utilities.DataTypes.ExtensionMethods
                 {
                     try
                     {
-                        object Value = Property.GetValue(Object, null);
-                        TempValue.Append(Value == null ? "null" : Value.ToString());
+                        TempValue.Append(Property.GetValue(null, null) == null ? "null" : Property.GetValue(null, null).ToString());
                     }
-                    catch
-                    { }
+                    catch { }
                 }
                 TempValue.Append(HTMLOutput ? "</td></tr>" : "");
             }
             TempValue.Append(HTMLOutput ? "</tbody></table>" : "");
             return TempValue.ToString();
         }
-
-        #endregion
-
-        #region Types
 
         /// <summary>
         /// Gets a list of types based on an interface
@@ -831,16 +926,30 @@ namespace Utilities.DataTypes.ExtensionMethods
             Contract.Requires<ArgumentNullException>(Assemblies != null, "Assemblies");
             Contract.Requires<ArgumentNullException>(BaseType != null, "BaseType");
             List<Type> ReturnValues = new List<Type>();
-            Assemblies.Where(x => x != null).ForEach(y => ReturnValues.AddRange(y.Types(BaseType)));
+            Assemblies.ForEach(y => ReturnValues.AddRange(y.Types(BaseType)));
             return ReturnValues;
         }
 
-        #endregion
-
-        #endregion
+        /// <summary>
+        /// Gets a list of types in the assemblies specified
+        /// </summary>
+        /// <param name="Assemblies">Assemblies to check</param>
+        /// <returns>List of types</returns>
+        public static IEnumerable<Type> Types(this IEnumerable<Assembly> Assemblies)
+        {
+            Contract.Requires<ArgumentNullException>(Assemblies != null, "Assemblies");
+            List<Type> ReturnValues = new List<Type>();
+            Assemblies.ForEach(y =>
+            {
+                try
+                {
+                    ReturnValues.AddRange(y.GetTypes());
+                }
+                catch (ReflectionTypeLoadException) { }
+            });
+            return ReturnValues;
+        }
     }
-
-    #region Enums
 
     /// <summary>
     /// Version info
@@ -851,11 +960,10 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// Short version
         /// </summary>
         ShortVersion = 1,
+
         /// <summary>
         /// Long version
         /// </summary>
         LongVersion = 2
     }
-
-    #endregion
 }

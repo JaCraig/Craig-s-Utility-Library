@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,11 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using Utilities.Random.BaseClasses;
-using Utilities.Random.ExtensionMethods;
 using Utilities.Random.Interfaces;
-#endregion
 
 namespace Utilities.Random.NameGenerators
 {
@@ -32,16 +29,45 @@ namespace Utilities.Random.NameGenerators
     /// </summary>
     public class MaleFirstNameGenerator : GeneratorAttributeBase, IGenerator<string>
     {
-        #region Constructors
+        private string[] MaleFirstNames = { "Jacob", "Mason", "William", "Jayden", "Noah", "Michael", "Ethan",
+                                              "Alexander", "Aiden", "Daniel", "Anthony", "Matthew", "Elijah", "Joshua",
+                                              "Liam", "Andrew", "James", "David", "Benjamin", "Logan", "Christopher", "Joseph",
+                                              "Jackson", "Gabriel", "Ryan", "Samuel", "John", "Nathan", "Lucas", "Christian",
+                                              "Jonathan", "Caleb", "Dylan", "Landon", "Isaac", "Gavin", "Brayden", "Tyler",
+                                              "Luke", "Evan", "Carter", "Nicholas", "Isaiah", "Owen", "Jack", "Jordan",
+                                              "Brandon", "Wyatt", "Julian", "Aaron", "Jeremiah", "Angel", "Cameron", "Connor",
+                                              "Hunter", "Adrian", "Henry", "Eli", "Justin", "Austin", "Robert", "Charles",
+                                              "Thomas", "Zachary", "Jose", "Levi", "Kevin", "Sebastian", "Chase", "Ayden",
+                                              "Jason", "Ian", "Blake", "Colton", "Bentley", "Dominic", "Xavier", "Oliver",
+                                              "Parker", "Josiah", "Adam", "Cooper", "Brody", "Nathaniel", "Carson", "Jaxon",
+                                              "Tristan", "Luis", "Juan", "Hayden", "Carlos", "Jesus", "Nolan", "Cole", "Alex",
+                                              "Max", "Grayson", "Bryson", "Diego", "Jaden", "Vincent", "Easton", "Eric", "Micah",
+                                              "Kayden", "Jace", "Aidan", "Ryder", "Ashton", "Bryan", "Riley", "Hudson", "Asher",
+                                              "Bryce", "Miles", "Kaleb", "Giovanni", "Antonio", "Kaden", "Colin", "Kyle",
+                                              "Brian", "Timothy", "Steven", "Sean", "Miguel", "Richard", "Ivan", "Jake",
+                                              "Alejandro", "Santiago", "Axel", "Joel", "Maxwell", "Brady", "Caden", "Preston",
+                                              "Damian", "Elias", "Jaxson", "Jesse", "Victor", "Patrick", "Jonah", "Marcus",
+                                              "Rylan", "Emmanuel", "Edward", "Leonardo", "Cayden", "Grant", "Jeremy", "Braxton",
+                                              "Gage", "Jude", "Wesley", "Devin", "Roman", "Mark", "Camden", "Kaiden", "Oscar",
+                                              "Alan", "Malachi", "George", "Peyton", "Leo", "Nicolas", "Maddox", "Kenneth",
+                                              "Mateo", "Sawyer", "Collin", "Conner", "Cody", "Andres", "Declan", "Lincoln",
+                                              "Bradley", "Trevor", "Derek", "Tanner", "Silas", "Eduardo", "Seth", "Jaiden",
+                                              "Paul", "Jorge", "Cristian", "Garrett", "Travis", "Abraham", "Omar", "Javier",
+                                              "Ezekiel", "Tucker", "Harrison", "Peter", "Damien", "Greyson", "Avery", "Kai",
+                                              "Weston", "Ezra", "Xander", "Jaylen", "Corbin", "Fernando", "Calvin", "Jameson",
+                                              "Francisco", "Maximus", "Josue", "Ricardo", "Shane", "Trenton", "Cesar", "Chance",
+                                              "Drake", "Zane", "Israel", "Emmett", "Jayce", "Mario", "Landen", "Kingston",
+                                              "Spencer", "Griffin", "Stephen", "Manuel", "Theodore", "Erick", "Braylon",
+                                              "Raymond", "Edwin", "Charlie", "Abel", "Myles", "Bennett", "Johnathan", "Andre",
+                                              "Alexis", "Edgar", "Troy", "Zion", "Jeffrey", "Hector", "Shawn", "Lukas", "Amir" };
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public MaleFirstNameGenerator() : base("", "") { }
-
-        #endregion
-
-        #region Functions
+        public MaleFirstNameGenerator()
+            : base("", "")
+        {
+        }
 
         /// <summary>
         /// Generates a random value of the specified type
@@ -74,43 +100,5 @@ namespace Utilities.Random.NameGenerators
         {
             return Next(Rand);
         }
-
-        #endregion
-
-        #region Private Variables
-
-        private string[] MaleFirstNames = { "Jacob", "Mason", "William", "Jayden", "Noah", "Michael", "Ethan",
-                                              "Alexander", "Aiden", "Daniel", "Anthony", "Matthew", "Elijah", "Joshua",
-                                              "Liam", "Andrew", "James", "David", "Benjamin", "Logan", "Christopher", "Joseph",
-                                              "Jackson", "Gabriel", "Ryan", "Samuel", "John", "Nathan", "Lucas", "Christian",
-                                              "Jonathan", "Caleb", "Dylan", "Landon", "Isaac", "Gavin", "Brayden", "Tyler",
-                                              "Luke", "Evan", "Carter", "Nicholas", "Isaiah", "Owen", "Jack", "Jordan",
-                                              "Brandon", "Wyatt", "Julian", "Aaron", "Jeremiah", "Angel", "Cameron", "Connor",
-                                              "Hunter", "Adrian", "Henry", "Eli", "Justin", "Austin", "Robert", "Charles",
-                                              "Thomas", "Zachary", "Jose", "Levi", "Kevin", "Sebastian", "Chase", "Ayden",
-                                              "Jason", "Ian", "Blake", "Colton", "Bentley", "Dominic", "Xavier", "Oliver",
-                                              "Parker", "Josiah", "Adam", "Cooper", "Brody", "Nathaniel", "Carson", "Jaxon",
-                                              "Tristan", "Luis", "Juan", "Hayden", "Carlos", "Jesus", "Nolan", "Cole", "Alex",
-                                              "Max", "Grayson", "Bryson", "Diego", "Jaden", "Vincent", "Easton", "Eric", "Micah",
-                                              "Kayden", "Jace", "Aidan", "Ryder", "Ashton", "Bryan", "Riley", "Hudson", "Asher",
-                                              "Bryce", "Miles", "Kaleb", "Giovanni", "Antonio", "Kaden", "Colin", "Kyle",
-                                              "Brian", "Timothy", "Steven", "Sean", "Miguel", "Richard", "Ivan", "Jake",
-                                              "Alejandro", "Santiago", "Axel", "Joel", "Maxwell", "Brady", "Caden", "Preston",
-                                              "Damian", "Elias", "Jaxson", "Jesse", "Victor", "Patrick", "Jonah", "Marcus", 
-                                              "Rylan", "Emmanuel", "Edward", "Leonardo", "Cayden", "Grant", "Jeremy", "Braxton",
-                                              "Gage", "Jude", "Wesley", "Devin", "Roman", "Mark", "Camden", "Kaiden", "Oscar",
-                                              "Alan", "Malachi", "George", "Peyton", "Leo", "Nicolas", "Maddox", "Kenneth",
-                                              "Mateo", "Sawyer", "Collin", "Conner", "Cody", "Andres", "Declan", "Lincoln", 
-                                              "Bradley", "Trevor", "Derek", "Tanner", "Silas", "Eduardo", "Seth", "Jaiden",
-                                              "Paul", "Jorge", "Cristian", "Garrett", "Travis", "Abraham", "Omar", "Javier", 
-                                              "Ezekiel", "Tucker", "Harrison", "Peter", "Damien", "Greyson", "Avery", "Kai", 
-                                              "Weston", "Ezra", "Xander", "Jaylen", "Corbin", "Fernando", "Calvin", "Jameson",
-                                              "Francisco", "Maximus", "Josue", "Ricardo", "Shane", "Trenton", "Cesar", "Chance",
-                                              "Drake", "Zane", "Israel", "Emmett", "Jayce", "Mario", "Landen", "Kingston",
-                                              "Spencer", "Griffin", "Stephen", "Manuel", "Theodore", "Erick", "Braylon",
-                                              "Raymond", "Edwin", "Charlie", "Abel", "Myles", "Bennett", "Johnathan", "Andre",
-                                              "Alexis", "Edgar", "Troy", "Zion", "Jeffrey", "Hector", "Shawn", "Lukas", "Amir" };
-
-        #endregion
     }
 }

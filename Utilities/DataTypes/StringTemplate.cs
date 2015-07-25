@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using System.Runtime.Serialization;
 using System.Security;
-using Utilities.DataTypes.ExtensionMethods;
-
-#endregion
 
 namespace Utilities.DataTypes
 {
@@ -37,8 +33,6 @@ namespace Utilities.DataTypes
     [Serializable]
     public class StringTemplate : Dictionary<string, string>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -62,14 +56,10 @@ namespace Utilities.DataTypes
         {
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Template
+        /// Ending signifier of a key
         /// </summary>
-        public string Template { get; protected set; }
+        public string KeyEnd { get; protected set; }
 
         /// <summary>
         /// Beginning signifier of a key
@@ -77,13 +67,32 @@ namespace Utilities.DataTypes
         public string KeyStart { get; protected set; }
 
         /// <summary>
-        /// Ending signifier of a key
+        /// Template
         /// </summary>
-        public string KeyEnd { get; protected set; }
+        public string Template { get; protected set; }
 
-        #endregion
+        /// <summary>
+        /// Converts the object to a string
+        /// </summary>
+        /// <param name="Value">Value to convert</param>
+        /// <returns>The value as a string</returns>
+        public static implicit operator string(StringTemplate Value)
+        {
+            Contract.Requires<ArgumentNullException>(Value != null, "Value");
+            return Value.ToString();
+        }
 
-        #region Functions
+        /// <summary>
+        /// Implements the ISerializable interface and returns the data needed to serialize the
+        /// dictionary instance
+        /// </summary>
+        /// <param name="info">Serialization info</param>
+        /// <param name="context">Streaming context</param>
+        [SecurityCritical]
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+        }
 
         /// <summary>
         /// Applies the key/values to the template and returns the resulting string
@@ -93,29 +102,5 @@ namespace Utilities.DataTypes
         {
             return Template.ToString(this.ToArray(x => new KeyValuePair<string, string>(KeyStart + x.Key + KeyEnd, x.Value)));
         }
-
-        /// <summary>
-        /// Implements the ISerializable interface and returns the data needed to serialize the dictionary instance
-        /// </summary>
-        /// <param name="info">Serialization info</param>
-        /// <param name="context">Streaming context</param>
-        [SecurityCritical]
-        [SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")]
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-        }
-
-        /// <summary>
-        /// Converts the object to a string
-        /// </summary>
-        /// <param name="Value">Value to convert</param>
-        /// <returns>The value as a string</returns>
-        public static implicit operator string(StringTemplate Value)
-        {
-            return Value.ToString();
-        }
-
-        #endregion
     }
 }

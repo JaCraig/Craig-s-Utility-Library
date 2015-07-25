@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,8 +21,8 @@ THE SOFTWARE.*/
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using Utilities.Validation.ExtensionMethods;
-using Utilities.Validation.Rules.Enums;
+using Utilities.Validation;
+
 using Xunit;
 
 namespace UnitTests.Validation.Rules
@@ -49,25 +49,25 @@ namespace UnitTests.Validation.Rules
 
     public class CompareClass
     {
-        [Utilities.Validation.Rules.Compare(1, ComparisonType.Equal)]
+        [Utilities.Validation.Compare(1, ComparisonType.Equal)]
         public int ItemA { get; set; }
 
-        [Utilities.Validation.Rules.Compare(2.0f, ComparisonType.GreaterThan)]
+        [Utilities.Validation.Compare(2.0f, ComparisonType.GreaterThan)]
         public float ItemB { get; set; }
 
-        [Utilities.Validation.Rules.Compare("1/1/1900", ComparisonType.GreaterThanOrEqual)]
+        [Utilities.Validation.Compare("1/1/1900", ComparisonType.GreaterThanOrEqual)]
         public DateTime ItemC { get; set; }
 
-        [Utilities.Validation.Rules.Compare("A", ComparisonType.LessThan)]
+        [Utilities.Validation.Compare("A", ComparisonType.LessThan)]
         public string ItemD { get; set; }
 
-        [Utilities.Validation.Rules.Compare(0, ComparisonType.LessThanOrEqual)]
+        [Utilities.Validation.Compare(0, ComparisonType.LessThanOrEqual)]
         public long ItemE { get; set; }
 
-        [Utilities.Validation.Rules.Compare("1/1/2100", ComparisonType.NotEqual)]
+        [Utilities.Validation.Compare("1/1/2100", ComparisonType.NotEqual)]
         public DateTime ItemF { get; set; }
 
-        [Utilities.Validation.Rules.Compare(double.NaN, ComparisonType.NotEqual)]
+        [Utilities.Validation.Compare(double.NaN, ComparisonType.NotEqual)]
         public double NaNTest { get; set; }
     }
 }

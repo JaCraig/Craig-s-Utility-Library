@@ -19,34 +19,34 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using System.Text;
 using System.Web;
-using Utilities.DataTypes.ExtensionMethods;
+using Utilities.DataTypes;
 
-#endregion
-
-namespace Utilities.Web.ExtensionMethods
+namespace Utilities.Web
 {
     /// <summary>
     /// HttpContext extensions
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class HTTPContextExtensions
     {
-        #region Functions
-
-        #region DumpAllInformation
-
         /// <summary>
-        /// Dumps a lot of information about the request to a string (Request, Response, Session, Cookies, Cache, and Application state)
+        /// Dumps a lot of information about the request to a string (Request, Response, Session,
+        /// Cookies, Cache, and Application state)
         /// </summary>
         /// <param name="Context">HttpContext</param>
         /// <param name="HTMLOutput">Determines if this should be HTML output or not</param>
         /// <returns>The exported data</returns>
         public static string DumpAllInformation(this HttpContext Context, bool HTMLOutput = false)
         {
+            if (Context == null)
+                return "";
             string HTMLTemplate = "<strong>Request Variables</strong><br />{Request}<br /><br /><strong>Response Variables</strong><br />{Response}<br /><br /><strong>Server Variables</strong><br />{Server}<br /><br /><strong>Session Variables</strong><br />{Session}<br /><br /><strong>Cookie Variables</strong><br />{Cookie}<br /><br /><strong>Cache Variables</strong><br />{Cache}<br /><br /><strong>Application Variables</strong><br />{Application}";
             string NormalTemplate = "Request Variables\r\n{Request}\r\n\r\nResponse Variables\r\n{Response}\r\n\r\nServer Variables\r\n{Server}\r\n\r\nSession Variables\r\n{Session}\r\n\r\nCookie Variables\r\n{Cookie}\r\n\r\nCache Variables\r\n{Cache}\r\n\r\nApplication Variables\r\n{Application}";
             KeyValuePair<string, string>[] Values = new KeyValuePair<string, string>[]{new KeyValuePair<string,string>("{Request}",Context.Request.DumpRequestVariable(HTMLOutput)),
@@ -59,10 +59,6 @@ namespace Utilities.Web.ExtensionMethods
             return HTMLOutput ? HTMLTemplate.ToString(Values) : NormalTemplate.ToString(Values);
         }
 
-        #endregion
-
-        #region DumpApplicationState
-
         /// <summary>
         /// Dumps the values found in the Application State
         /// </summary>
@@ -71,6 +67,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>A string containing the application state information</returns>
         public static string DumpApplicationState(this System.Web.UI.Page Page, bool HTMLOutput = false)
         {
+            Contract.Requires<ArgumentNullException>(Page != null, "Page");
             return Page.Application.DumpApplicationState(HTMLOutput);
         }
 
@@ -82,6 +79,8 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>A string containing the application state information</returns>
         public static string DumpApplicationState(this HttpApplicationState Input, bool HTMLOutput = false)
         {
+            if (Input == null)
+                return "";
             StringBuilder String = new StringBuilder();
             foreach (string Key in Input.Keys)
             {
@@ -94,10 +93,6 @@ namespace Utilities.Web.ExtensionMethods
             return String.ToString();
         }
 
-        #endregion
-
-        #region DumpCache
-
         /// <summary>
         /// Dumps the values found in the cache
         /// </summary>
@@ -106,6 +101,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>A string containing the cache information</returns>
         public static string DumpCache(this System.Web.UI.Page Page, bool HTMLOutput = false)
         {
+            Contract.Requires<ArgumentNullException>(Page != null, "Page");
             return Page.Cache.DumpCache(HTMLOutput);
         }
 
@@ -117,6 +113,8 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>A string containing the cache information</returns>
         public static string DumpCache(this System.Web.Caching.Cache Input, bool HTMLOutput = false)
         {
+            if (Input == null)
+                return "";
             StringBuilder String = new StringBuilder();
             foreach (DictionaryEntry Entry in Input)
             {
@@ -129,10 +127,6 @@ namespace Utilities.Web.ExtensionMethods
             return String.ToString();
         }
 
-        #endregion
-
-        #region DumpCookies
-
         /// <summary>
         /// Dumps the values found in the cookies sent by the user
         /// </summary>
@@ -141,6 +135,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>A string containing the cookie information</returns>
         public static string DumpCookies(this System.Web.UI.Page Page, bool HTMLOutput = false)
         {
+            Contract.Requires<ArgumentNullException>(Page != null, "Page");
             return Page.Request.Cookies.DumpCookies(HTMLOutput);
         }
 
@@ -152,6 +147,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>A string containing the cookie information</returns>
         public static string DumpCookies(this HttpCookieCollection Input, bool HTMLOutput = false)
         {
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
             StringBuilder String = new StringBuilder();
             String.Append(HTMLOutput ? "<table><thead><tr><th>Name</th><th>Sub Name</th><th>Value</th></tr></thead><tbody>" : "Name\t\tSub Name\t\tValue\r\n");
             foreach (string Key in Input.Keys)
@@ -181,10 +177,6 @@ namespace Utilities.Web.ExtensionMethods
             return String.ToString();
         }
 
-        #endregion
-
-        #region DumpRequestVariable
-
         /// <summary>
         /// Dumps information about the request variable
         /// </summary>
@@ -193,6 +185,8 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>a string containing the information</returns>
         public static string DumpRequestVariable(this HttpRequest Request, bool HTMLOutput = false)
         {
+            if (Request == null)
+                return "";
             return Request.ToString(HTMLOutput);
         }
 
@@ -204,12 +198,9 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>a string containing the information</returns>
         public static string DumpRequestVariable(this System.Web.UI.Page Page, bool HTMLOutput = false)
         {
+            Contract.Requires<ArgumentNullException>(Page != null, "Page");
             return Page.Request.ToString(HTMLOutput);
         }
-
-        #endregion
-
-        #region DumpResponseVariable
 
         /// <summary>
         /// Dumps information about the response variable
@@ -219,6 +210,8 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>a string containing the information</returns>
         public static string DumpResponseVariable(this HttpResponse Response, bool HTMLOutput = false)
         {
+            if (Response == null)
+                return "";
             return Response.ToString(HTMLOutput);
         }
 
@@ -230,12 +223,9 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>a string containing the information</returns>
         public static string DumpResponseVariable(this System.Web.UI.Page Page, bool HTMLOutput = false)
         {
+            Contract.Requires<ArgumentNullException>(Page != null, "Page");
             return Page.Response.DumpResponseVariable(HTMLOutput);
         }
-
-        #endregion
-
-        #region DumpServerVars
 
         /// <summary>
         /// Gets the server variables and dumps them out
@@ -245,6 +235,8 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>a string containing an HTML formatted list of the server variables</returns>
         public static string DumpServerVars(this HttpRequest Request, bool HTMLOutput = false)
         {
+            if (Request == null)
+                return "";
             StringBuilder String = new StringBuilder();
             String.Append(HTMLOutput ? "<table><thead><tr><th>Property Name</th><th>Value</th></tr></thead><tbody>" : "Property Name\t\tValue\r\n");
             foreach (string Key in Request.ServerVariables.Keys)
@@ -265,12 +257,9 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>A string containing an HTML formatted list of the server variables</returns>
         public static string DumpServerVars(this System.Web.UI.Page Page, bool HTMLOutput = false)
         {
+            Contract.Requires<ArgumentNullException>(Page != null, "Page");
             return Page.Request.DumpServerVars(HTMLOutput);
         }
-
-        #endregion
-
-        #region DumpSession
 
         /// <summary>
         /// Dumps the values found in the session
@@ -280,6 +269,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>A string containing the session information</returns>
         public static string DumpSession(this System.Web.UI.Page Page, bool HTMLOutput = false)
         {
+            Contract.Requires<ArgumentNullException>(Page != null, "Page");
             return Page.Session.DumpSession(HTMLOutput);
         }
 
@@ -291,6 +281,8 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>A string containing the session information</returns>
         public static string DumpSession(this System.Web.SessionState.HttpSessionState Input, bool HTMLOutput = false)
         {
+            if (Input == null)
+                return "";
             StringBuilder String = new StringBuilder();
             foreach (string Key in Input.Keys)
             {
@@ -302,9 +294,5 @@ namespace Utilities.Web.ExtensionMethods
             }
             return String.ToString();
         }
-
-        #endregion
-
-        #endregion
     }
 }

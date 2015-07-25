@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 using Utilities.DataTypes;
 using Xunit;
 
-
 namespace UnitTests.DataTypes
 {
     public class PriorityQueue
@@ -31,11 +30,11 @@ namespace UnitTests.DataTypes
         public void RandomTest()
         {
             PriorityQueue<int> TestObject = new PriorityQueue<int>();
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
-            int Value=0;
+            System.Random Rand = new System.Random();
+            int Value = 0;
             for (int x = 0; x < 10; ++x)
             {
-                Value=Rand.Next();
+                Value = Rand.Next();
                 TestObject.Add(x, Value);
                 Assert.Equal(Value, TestObject.Peek());
             }
@@ -46,10 +45,10 @@ namespace UnitTests.DataTypes
                 TestObject.Add(x, Value);
                 Assert.Equal(HighestValue, TestObject.Peek());
             }
-            int Count=0;
-            foreach(int Priority in TestObject.Keys)
+            int Count = 0;
+            foreach (int Priority in TestObject.Keys)
             {
-                foreach(int Item in TestObject[Priority])
+                foreach (int Item in TestObject[Priority])
                 {
                     ++Count;
                 }

@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,8 +21,6 @@ THE SOFTWARE.*/
 
 using System.Linq;
 using Utilities.DataTypes;
-using Utilities.Random.ExtensionMethods;
-using Utilities.Random.StringGenerators;
 using Xunit;
 
 namespace UnitTests.DataTypes
@@ -30,19 +28,29 @@ namespace UnitTests.DataTypes
     public class ListMapping
     {
         [Fact]
+        public void ContainsTest()
+        {
+            ListMapping<string, int> TestObject = new ListMapping<string, int>();
+            TestObject.Add("A", 0);
+            TestObject.Add("A", 1);
+            Assert.True(TestObject.Contains("A", 0));
+            Assert.False(TestObject.Contains("A", 2));
+        }
+
+        [Fact]
         public void RandomTest()
         {
             ListMapping<string, int> TestObject = new ListMapping<string, int>();
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
+            System.Random Rand = new System.Random();
             for (int x = 0; x < 10; ++x)
             {
-                string Name = Rand.Next<string>(new RegexStringGenerator(10));
+                string Name = x.ToString();
                 for (int y = 0; y < 5; ++y)
                 {
-                    int Value=Rand.Next();
+                    int Value = Rand.Next();
                     TestObject.Add(Name, Value);
-                    Assert.Equal(y + 1, TestObject[Name].Count);
-                    Assert.Equal(Value, TestObject[Name].ElementAt(y));
+                    Assert.Equal(y + 1, TestObject[Name].Count());
+                    Assert.True(TestObject[Name].Contains(Value));
                 }
             }
             Assert.Equal(10, TestObject.Count);
@@ -55,18 +63,8 @@ namespace UnitTests.DataTypes
             TestObject.Add("A", 0);
             TestObject.Add("A", 1);
             TestObject.Remove("A", 0);
-            Assert.Equal(1, TestObject["A"].Count);
+            Assert.Equal(1, TestObject["A"].Count());
             Assert.Equal(1, TestObject["A"].FirstOrDefault());
-        }
-
-        [Fact]
-        public void ContainsTest()
-        {
-            ListMapping<string, int> TestObject = new ListMapping<string, int>();
-            TestObject.Add("A", 0);
-            TestObject.Add("A", 1);
-            Assert.True(TestObject.Contains("A", 0));
-            Assert.False(TestObject.Contains("A", 2));
         }
     }
 }

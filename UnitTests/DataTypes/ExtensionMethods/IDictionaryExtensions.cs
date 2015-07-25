@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,13 +20,35 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System.Collections.Generic;
-using Utilities.DataTypes.ExtensionMethods;
+using System.Linq;
+using Utilities.DataTypes;
 using Xunit;
 
 namespace UnitTests.DataTypes.ExtensionMethods
 {
     public class IDictionaryExtensions
     {
+        [Fact]
+        public void CopyToTest()
+        {
+            IDictionary<string, int> Test = new Dictionary<string, int>();
+            IDictionary<string, int> Test2 = new Dictionary<string, int>();
+            Test.Add("Q", 4);
+            Test.Add("Z", 2);
+            Test.Add("C", 3);
+            Test.Add("A", 1);
+            Test.CopyTo(Test2);
+            string Value = "";
+            int Value2 = 0;
+            foreach (string Key in Test2.Keys.OrderBy(x => x))
+            {
+                Value += Key;
+                Value2 += Test2[Key];
+            }
+            Assert.Equal("ACQZ", Value);
+            Assert.Equal(10, Value2);
+        }
+
         [Fact]
         public void GetValue()
         {
@@ -54,21 +76,6 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
-        public void SortTest()
-        {
-            IDictionary<string, int> Test = new Dictionary<string, int>();
-            Test.Add("Q", 4);
-            Test.Add("Z", 2);
-            Test.Add("C", 3);
-            Test.Add("A", 1);
-            Test = Test.Sort();
-            string Value = "";
-            foreach (string Key in Test.Keys)
-                Value += Key;
-            Assert.Equal("ACQZ", Value);
-        }
-
-        [Fact]
         public void SortByValueTest()
         {
             IDictionary<string, int> Test = new Dictionary<string, int>();
@@ -81,6 +88,21 @@ namespace UnitTests.DataTypes.ExtensionMethods
             foreach (string Key in Test.Keys)
                 Value += Test[Key].ToString();
             Assert.Equal("1234", Value);
+        }
+
+        [Fact]
+        public void SortTest()
+        {
+            IDictionary<string, int> Test = new Dictionary<string, int>();
+            Test.Add("Q", 4);
+            Test.Add("Z", 2);
+            Test.Add("C", 3);
+            Test.Add("A", 1);
+            Test = Test.Sort();
+            string Value = "";
+            foreach (string Key in Test.Keys)
+                Value += Key;
+            Assert.Equal("ACQZ", Value);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,11 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using Utilities.Random.BaseClasses;
-using Utilities.Random.ExtensionMethods;
 using Utilities.Random.Interfaces;
-#endregion
 
 namespace Utilities.Random.NameGenerators
 {
@@ -32,16 +29,56 @@ namespace Utilities.Random.NameGenerators
     /// </summary>
     public class FemaleFirstNameGenerator : GeneratorAttributeBase, IGenerator<string>
     {
-        #region Constructors
+        private string[] FemaleFirstNames = { "Sophia", "Isabella", "Emma", "Olivia", "Ava", "Emily",
+                                                "Abigail", "Madison", "Mia", "Chloe", "Elizabeth",
+                                                "Ella", "Addison", "Natalie", "Lily", "Grace", "Samantha"
+                                                , "Avery", "Sofia", "Aubrey", "Brooklyn", "Lillian",
+                                                "Victoria", "Evelyn", "Hannah", "Alexis", "Charlotte",
+                                                "Zoey", "Leah", "Amelia", "Zoe", "Hailey", "Layla",
+                                                "Gabriella", "Nevaeh", "Kaylee", "Alyssa", "Anna", "Sarah",
+                                                "Allison", "Savannah", "Ashley", "Audrey", "Taylor",
+                                                "Brianna", "Aaliyah", "Riley", "Camila", "Khloe", "Claire",
+                                                "Sophie", "Arianna", "Peyton", "Harper", "Alexa", "Makayla",
+                                                "Julia", "Kylie", "Kayla", "Bella", "Katherine", "Lauren",
+                                                "Gianna", "Maya", "Sydney", "Serenity", "Kimberly", "Mackenzie",
+                                                "Autumn", "Jocelyn", "Faith", "Lucy", "Stella", "Jasmine",
+                                                "Morgan", "Alexandra", "Trinity", "Molly", "Madelyn",
+                                                "Scarlett", "Andrea", "Genesis", "Eva", "Ariana", "Madeline",
+                                                "Brooke", "Caroline", "Bailey", "Melanie", "Kennedy",
+                                                "Destiny", "Maria", "Naomi", "London", "Payton", "Lydia",
+                                                "Ellie", "Mariah", "Aubree", "Kaitlyn", "Violet", "Rylee",
+                                                "Lilly", "Angelina", "Katelyn", "Mya", "Paige", "Natalia",
+                                                "Ruby", "Piper", "Annabelle", "Mary", "Jade", "Isabelle",
+                                                "Liliana", "Nicole", "Rachel", "Vanessa", "Gabrielle", "Jessica",
+                                                "Jordyn", "Reagan", "Kendall", "Sadie", "Valeria", "Brielle",
+                                                "Lyla", "Isabel", "Brooklynn", "Reese", "Sara", "Adriana",
+                                                "Aliyah", "Jennifer", "Mckenzie", "Gracie", "Nora", "Kylee",
+                                                "Makenzie", "Izabella", "Laila", "Alice", "Amy", "Michelle",
+                                                "Skylar", "Stephanie", "Juliana", "Rebecca", "Jayla", "Eleanor",
+                                                "Clara", "Giselle", "Valentina", "Vivian", "Alaina", "Eliana",
+                                                "Aria", "Valerie", "Haley", "Elena", "Catherine", "Elise", "Lila",
+                                                "Megan", "Gabriela", "Daisy", "Jada", "Daniela", "Penelope",
+                                                "Jenna", "Ashlyn", "Delilah", "Summer", "Mila", "Kate", "Keira",
+                                                "Adrianna", "Hadley", "Julianna", "Maci", "Eden", "Josephine",
+                                                "Aurora", "Melissa", "Hayden", "Alana", "Margaret", "Quinn",
+                                                "Angela", "Brynn", "Alivia", "Katie", "Ryleigh", "Kinley",
+                                                "Paisley", "Jordan", "Aniyah", "Allie", "Miranda", "Jacquelin",
+                                                "Melody", "Willow", "Diana", "Cora", "Alexandria", "Mikayla",
+                                                "Danielle", "Londyn", "Addyson", "Amaya", "Hazel", "Callie",
+                                                "Teagan", "Adalyn", "Ximena", "Angel", "Kinsley", "Shelby",
+                                                "Makenna", "Ariel", "Jillian", "Chelsea", "Alayna", "Harmony",
+                                                "Sienna", "Amanda", "Presley", "Maggie", "Tessa", "Leila", "Hope",
+                                                "Genevieve", "Erin", "Briana", "Delaney", "Esther", "Kathryn",
+                                                "Ana", "Mckenna", "Camille", "Cecilia", "Lucia", "Lola", "Leilani",
+                                                "Leslie", "Ashlynn", "Kayleigh", "Alondra", "Alison", "Haylee" };
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public FemaleFirstNameGenerator() : base("","") { }
-
-        #endregion
-
-        #region Functions
+        public FemaleFirstNameGenerator()
+            : base("", "")
+        {
+        }
 
         /// <summary>
         /// Generates a random value of the specified type
@@ -74,54 +111,5 @@ namespace Utilities.Random.NameGenerators
         {
             return Next(Rand);
         }
-
-        #endregion
-
-        #region Private Variables
-
-        private string[] FemaleFirstNames = { "Sophia", "Isabella", "Emma", "Olivia", "Ava", "Emily",
-                                                "Abigail", "Madison", "Mia", "Chloe", "Elizabeth",
-                                                "Ella", "Addison", "Natalie", "Lily", "Grace", "Samantha"
-                                                , "Avery", "Sofia", "Aubrey", "Brooklyn", "Lillian",
-                                                "Victoria", "Evelyn", "Hannah", "Alexis", "Charlotte",
-                                                "Zoey", "Leah", "Amelia", "Zoe", "Hailey", "Layla", 
-                                                "Gabriella", "Nevaeh", "Kaylee", "Alyssa", "Anna", "Sarah",
-                                                "Allison", "Savannah", "Ashley", "Audrey", "Taylor", 
-                                                "Brianna", "Aaliyah", "Riley", "Camila", "Khloe", "Claire",
-                                                "Sophie", "Arianna", "Peyton", "Harper", "Alexa", "Makayla",
-                                                "Julia", "Kylie", "Kayla", "Bella", "Katherine", "Lauren",
-                                                "Gianna", "Maya", "Sydney", "Serenity", "Kimberly", "Mackenzie",
-                                                "Autumn", "Jocelyn", "Faith", "Lucy", "Stella", "Jasmine", 
-                                                "Morgan", "Alexandra", "Trinity", "Molly", "Madelyn", 
-                                                "Scarlett", "Andrea", "Genesis", "Eva", "Ariana", "Madeline", 
-                                                "Brooke", "Caroline", "Bailey", "Melanie", "Kennedy", 
-                                                "Destiny", "Maria", "Naomi", "London", "Payton", "Lydia", 
-                                                "Ellie", "Mariah", "Aubree", "Kaitlyn", "Violet", "Rylee", 
-                                                "Lilly", "Angelina", "Katelyn", "Mya", "Paige", "Natalia", 
-                                                "Ruby", "Piper", "Annabelle", "Mary", "Jade", "Isabelle", 
-                                                "Liliana", "Nicole", "Rachel", "Vanessa", "Gabrielle", "Jessica",
-                                                "Jordyn", "Reagan", "Kendall", "Sadie", "Valeria", "Brielle", 
-                                                "Lyla", "Isabel", "Brooklynn", "Reese", "Sara", "Adriana", 
-                                                "Aliyah", "Jennifer", "Mckenzie", "Gracie", "Nora", "Kylee", 
-                                                "Makenzie", "Izabella", "Laila", "Alice", "Amy", "Michelle", 
-                                                "Skylar", "Stephanie", "Juliana", "Rebecca", "Jayla", "Eleanor", 
-                                                "Clara", "Giselle", "Valentina", "Vivian", "Alaina", "Eliana", 
-                                                "Aria", "Valerie", "Haley", "Elena", "Catherine", "Elise", "Lila",
-                                                "Megan", "Gabriela", "Daisy", "Jada", "Daniela", "Penelope", 
-                                                "Jenna", "Ashlyn", "Delilah", "Summer", "Mila", "Kate", "Keira",
-                                                "Adrianna", "Hadley", "Julianna", "Maci", "Eden", "Josephine", 
-                                                "Aurora", "Melissa", "Hayden", "Alana", "Margaret", "Quinn", 
-                                                "Angela", "Brynn", "Alivia", "Katie", "Ryleigh", "Kinley", 
-                                                "Paisley", "Jordan", "Aniyah", "Allie", "Miranda", "Jacquelin",
-                                                "Melody", "Willow", "Diana", "Cora", "Alexandria", "Mikayla", 
-                                                "Danielle", "Londyn", "Addyson", "Amaya", "Hazel", "Callie", 
-                                                "Teagan", "Adalyn", "Ximena", "Angel", "Kinsley", "Shelby", 
-                                                "Makenna", "Ariel", "Jillian", "Chelsea", "Alayna", "Harmony", 
-                                                "Sienna", "Amanda", "Presley", "Maggie", "Tessa", "Leila", "Hope",
-                                                "Genevieve", "Erin", "Briana", "Delaney", "Esther", "Kathryn", 
-                                                "Ana", "Mckenna", "Camille", "Cecilia", "Lucia", "Lola", "Leilani",
-                                                "Leslie", "Ashlynn", "Kayleigh", "Alondra", "Alison", "Haylee" };
-
-        #endregion
     }
 }

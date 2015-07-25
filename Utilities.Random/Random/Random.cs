@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,20 +19,20 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
-
-#endregion
+using System.Diagnostics.Contracts;
 
 namespace Utilities.Random
 {
     /// <summary>
-    /// Utility class for handling random
-    /// information.
+    /// Utility class for handling random information.
     /// </summary>
     public class Random : System.Random
     {
-        #region Constructors
+        private static Random GlobalSeed = new Random();
+
+        [ThreadStatic]
+        private static Random Local;
 
         /// <summary>
         /// Constructor
@@ -51,20 +51,6 @@ namespace Utilities.Random
         {
         }
 
-        #endregion
-
-        #region Private Variables
-
-        private static Random GlobalSeed = new Random();
-        [ThreadStatic]
-        private static Random Local;
-
-        #endregion
-
-        #region Static Functions
-
-        #region ThreadSafeNext
-
         /// <summary>
         /// A thread safe version of a random number generation
         /// </summary>
@@ -73,6 +59,7 @@ namespace Utilities.Random
         /// <returns>A randomly generated value</returns>
         public static int ThreadSafeNext(int Min = int.MinValue, int Max = int.MaxValue)
         {
+            Contract.Requires<ArgumentException>(Min <= Max);
             if (Local == null)
             {
                 int Seed;
@@ -82,9 +69,5 @@ namespace Utilities.Random
             }
             return Local.Next(Min, Max);
         }
-
-        #endregion
-
-        #endregion
     }
 }

@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,92 +19,66 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Utilities.DataTypes;
+using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.IO.Logging.Enums;
 using Utilities.IO.Logging.Interfaces;
-#endregion
 
 namespace Utilities.IO.Logging.BaseClasses
 {
     /// <summary>
+    /// Delegate used to format the message
+    /// </summary>
+    /// <param name="Message">Message to format</param>
+    /// <param name="Type">Type of message</param>
+    /// <param name="args">Args to insert into the message</param>
+    /// <returns>The formatted message</returns>
+    public delegate string Format(string Message, MessageType Type, params object[] args);
+
+    /// <summary>
     /// Base class for logs
     /// </summary>
     /// <typeparam name="LogType">Log type</typeparam>
-    public class LogBase<LogType> : ILog, IDisposable where LogType : LogBase<LogType>
+    public abstract class LogBase<LogType> : SafeDisposableBaseClass, ILog
+        where LogType : LogBase<LogType>
     {
-        #region Constructors
-
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Start">Action called when the log is created</param>
-        public LogBase(Action<LogType> Start)
+        /// <param name="Name">Name of the log</param>
+        protected LogBase(string Name)
         {
-            this.Start = Start;
-            Start((LogType)this);
+            this.Name = Name;
+            this.Log = new ConcurrentDictionary<MessageType, Action<string>>();
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Called when the log is "opened"
+        /// Name of the log
         /// </summary>
-        protected virtual Action<LogType> Start { get; set; }
+        public string Name { get; private set; }
 
         /// <summary>
         /// Called when the log is "closed"
         /// </summary>
-        protected virtual Action<LogType> End { get; set; }
-
-        /// <summary>
-        /// Called to log the current message
-        /// </summary>
-        protected Dictionary<MessageType, Action<string>> Log { get { return Log_; } }
-
-        /// <summary>
-        /// Called to log the current message
-        /// </summary>
-        private Dictionary<MessageType, Action<string>> Log_ = new Dictionary<MessageType, Action<string>>();
+        protected Action<LogType> End { get; set; }
 
         /// <summary>
         /// Format message function
         /// </summary>
         protected Format FormatMessage { get; set; }
 
-        #endregion
-
-        #region Interface Functions
+        /// <summary>
+        /// Called to log the current message
+        /// </summary>
+        protected IDictionary<MessageType, Action<string>> Log { get; private set; }
 
         /// <summary>
-        /// Disposes the object
+        /// Called when the log is "opened"
         /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Disposes of the objects
-        /// </summary>
-        /// <param name="Disposing">True to dispose of all resources, false only disposes of native resources</param>
-        protected virtual void Dispose(bool Disposing)
-        {
-            if(Disposing)
-                End((LogType)this);
-        }
-
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        ~LogBase()
-        {
-            Dispose(false);
-        }
+        protected Action<LogType> Start { get; set; }
 
         /// <summary>
         /// Logs a message
@@ -116,18 +90,28 @@ namespace Utilities.IO.Logging.BaseClasses
         {
             Message = FormatMessage(Message, Type, args);
             if (Log.ContainsKey(Type))
-                Log[Type](Message);
+                Log.GetValue(Type, x => { })(Message);
         }
 
-        #endregion
-    }
+        /// <summary>
+        /// String representation of the logger
+        /// </summary>
+        /// <returns>The name of the logger</returns>
+        public override string ToString()
+        {
+            return Name;
+        }
 
-    /// <summary>
-    /// Delegate used to format the message
-    /// </summary>
-    /// <param name="Message">Message to format</param>
-    /// <param name="Type">Type of message</param>
-    /// <param name="args">Args to insert into the message</param>
-    /// <returns>The formatted message</returns>
-    public delegate string Format(string Message, MessageType Type, params object[] args);
+        /// <summary>
+        /// Disposes of the objects
+        /// </summary>
+        /// <param name="Disposing">
+        /// True to dispose of all resources, false only disposes of native resources
+        /// </param>
+        protected override void Dispose(bool Disposing)
+        {
+            if (Disposing)
+                End((LogType)this);
+        }
+    }
 }

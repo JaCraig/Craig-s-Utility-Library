@@ -19,28 +19,30 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Globalization;
-using System.IO;
 using System.IO.Compression;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using Utilities.Compression.ExtensionMethods.Enums;
-using Utilities.IO.ExtensionMethods;
-using Utilities.Web.ExtensionMethods.Streams;
-#endregion
+using Utilities.IO;
+using Utilities.Web.Streams;
 
-namespace Utilities.Web.ExtensionMethods
+namespace Utilities.Web
 {
     /// <summary>
     /// Set of HTML related extensions (and HTTP related)
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class HTMLExtensions
     {
-        #region AbsoluteRoot
+        private const string DEFLATE = "deflate";
+
+        private const string GZIP = "gzip";
+
+        private static readonly Regex STRIP_HTML_REGEX = new Regex("<[^>]*>", RegexOptions.Compiled);
 
         /// <summary>
         /// Returns the absolute root
@@ -64,11 +66,6 @@ namespace Utilities.Web.ExtensionMethods
             return Context.Items["absoluteurl"] as Uri;
         }
 
-
-        #endregion
-
-        #region AddScriptFile
-
         /// <summary>
         /// Adds a script file to the header of the current page
         /// </summary>
@@ -77,14 +74,11 @@ namespace Utilities.Web.ExtensionMethods
         public static void AddScriptFile(this System.Web.UI.Page Page, FileInfo File)
         {
             Contract.Requires<ArgumentNullException>(File != null, "File");
-            Contract.Requires<FileNotFoundException>(File.Exists, "File does not exist");
+            Contract.Requires<System.IO.FileNotFoundException>(File.Exists, "File does not exist");
+            Contract.Requires<ArgumentNullException>(Page != null, "Page");
             if (!Page.ClientScript.IsClientScriptIncludeRegistered(typeof(System.Web.UI.Page), File.FullName))
                 Page.ClientScript.RegisterClientScriptInclude(typeof(System.Web.UI.Page), File.FullName, File.FullName);
         }
-
-        #endregion
-
-        #region ContainsHTML
 
         /// <summary>
         /// Decides if the string contains HTML
@@ -107,18 +101,17 @@ namespace Utilities.Web.ExtensionMethods
             return Input.Exists ? Input.Read().ContainsHTML() : false;
         }
 
-        #endregion
-
-        #region HTTPCompress
-
         /// <summary>
         /// Adds HTTP compression to the current context
         /// </summary>
         /// <param name="Context">Current context</param>
-        /// <param name="RemovePrettyPrinting">Sets the response filter to a special stream that
-        /// removes pretty printing from content</param>
-        /// <param name="Type">The minification type to use (defaults to HTML if RemovePrettyPrinting 
-        /// is set to true, but can also deal with CSS and Javascript)</param>
+        /// <param name="RemovePrettyPrinting">
+        /// Sets the response filter to a special stream that removes pretty printing from content
+        /// </param>
+        /// <param name="Type">
+        /// The minification type to use (defaults to HTML if RemovePrettyPrinting is set to true,
+        /// but can also deal with CSS and Javascript)
+        /// </param>
         public static void HTTPCompress(this HttpContextBase Context, bool RemovePrettyPrinting = false, MinificationType Type = MinificationType.HTML)
         {
             Contract.Requires<ArgumentNullException>(Context != null, "Context");
@@ -156,10 +149,13 @@ namespace Utilities.Web.ExtensionMethods
         /// Adds HTTP compression to the current context
         /// </summary>
         /// <param name="Context">Current context</param>
-        /// <param name="RemovePrettyPrinting">Sets the response filter to a special stream that
-        /// removes pretty printing from content</param>
-        /// <param name="Type">The minification type to use (defaults to HTML if RemovePrettyPrinting 
-        /// is set to true, but can also deal with CSS and Javascript)</param>
+        /// <param name="RemovePrettyPrinting">
+        /// Sets the response filter to a special stream that removes pretty printing from content
+        /// </param>
+        /// <param name="Type">
+        /// The minification type to use (defaults to HTML if RemovePrettyPrinting is set to true,
+        /// but can also deal with CSS and Javascript)
+        /// </param>
         public static void HTTPCompress(this HttpContext Context, bool RemovePrettyPrinting = false, MinificationType Type = MinificationType.HTML)
         {
             Contract.Requires<ArgumentNullException>(Context != null, "Context");
@@ -193,13 +189,8 @@ namespace Utilities.Web.ExtensionMethods
             }
         }
 
-        #endregion
-
-        #region IsEncodingAccepted
-
         /// <summary>
-        /// Checks the request headers to see if the specified
-        /// encoding is accepted by the client.
+        /// Checks the request headers to see if the specified encoding is accepted by the client.
         /// </summary>
         public static bool IsEncodingAccepted(this HttpContextBase Context, string Encoding)
         {
@@ -209,8 +200,7 @@ namespace Utilities.Web.ExtensionMethods
         }
 
         /// <summary>
-        /// Checks the request headers to see if the specified
-        /// encoding is accepted by the client.
+        /// Checks the request headers to see if the specified encoding is accepted by the client.
         /// </summary>
         public static bool IsEncodingAccepted(this HttpContext Context, string Encoding)
         {
@@ -218,10 +208,6 @@ namespace Utilities.Web.ExtensionMethods
                 return false;
             return Context.Request.Headers["Accept-encoding"] != null && Context.Request.Headers["Accept-encoding"].Contains(Encoding);
         }
-
-        #endregion
-
-        #region RelativeRoot
 
         /// <summary>
         /// Gets the relative root of the web site
@@ -244,10 +230,6 @@ namespace Utilities.Web.ExtensionMethods
         {
             return VirtualPathUtility.ToAbsolute("~/");
         }
-        
-        #endregion
-
-        #region RemoveURLIllegalCharacters
 
         /// <summary>
         /// Removes illegal characters (used in uri's, etc.)
@@ -275,10 +257,6 @@ namespace Utilities.Web.ExtensionMethods
             return Input.URLEncode().Replace("%", string.Empty);
         }
 
-        #endregion
-
-        #region SetEncoding
-
         /// <summary>
         /// Adds the specified encoding to the response headers.
         /// </summary>
@@ -300,10 +278,6 @@ namespace Utilities.Web.ExtensionMethods
             Contract.Requires<ArgumentNullException>(Context != null, "Context");
             Context.Response.AppendHeader("Content-encoding", Encoding);
         }
-
-        #endregion
-
-        #region StripHTML
 
         /// <summary>
         /// Removes HTML elements from a string
@@ -327,13 +301,9 @@ namespace Utilities.Web.ExtensionMethods
         public static string StripHTML(this FileInfo HTML)
         {
             Contract.Requires<ArgumentNullException>(HTML != null, "HTML");
-            Contract.Requires<FileNotFoundException>(HTML.Exists, "File does not exist");
+            Contract.Requires<System.IO.FileNotFoundException>(HTML.Exists, "File does not exist");
             return HTML.Read().StripHTML();
         }
-
-        #endregion
-
-        #region URLDecode
 
         /// <summary>
         /// URL decodes a string
@@ -347,10 +317,6 @@ namespace Utilities.Web.ExtensionMethods
             return HttpUtility.UrlDecode(Input);
         }
 
-        #endregion
-
-        #region URLEncode
-
         /// <summary>
         /// URL encodes a string
         /// </summary>
@@ -363,20 +329,6 @@ namespace Utilities.Web.ExtensionMethods
             return HttpUtility.UrlEncode(Input);
         }
 
-        #endregion
-
-        #region Private Functions
-
-        /// <summary>
-        /// Removes extra hyphens from a string
-        /// </summary>
-        /// <param name="Input">string to be stripped</param>
-        /// <returns>Stripped string</returns>
-        private static string RemoveExtraHyphen(string Input)
-        {
-            return new Regex(@"[-]{2,}", RegexOptions.None).Replace(Input, "-");
-        }
-
         /// <summary>
         /// Removes special characters (Diacritics) from the string
         /// </summary>
@@ -384,6 +336,8 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>Stripped string</returns>
         private static string RemoveDiacritics(string Input)
         {
+            if (string.IsNullOrEmpty(Input))
+                return Input;
             string Normalized = Input.Normalize(NormalizationForm.FormD);
             StringBuilder Builder = new StringBuilder();
             for (int i = 0; i < Normalized.Length; i++)
@@ -395,15 +349,16 @@ namespace Utilities.Web.ExtensionMethods
             return Builder.ToString();
         }
 
-        #endregion
-
-        #region Variables
-        private static readonly Regex STRIP_HTML_REGEX = new Regex("<[^>]*>", RegexOptions.Compiled);
-        #endregion
-
-        #region Constants
-        private const string GZIP = "gzip";
-        private const string DEFLATE = "deflate";
-        #endregion
+        /// <summary>
+        /// Removes extra hyphens from a string
+        /// </summary>
+        /// <param name="Input">string to be stripped</param>
+        /// <returns>Stripped string</returns>
+        private static string RemoveExtraHyphen(string Input)
+        {
+            if (string.IsNullOrEmpty(Input))
+                return Input;
+            return new Regex(@"[-]{2,}", RegexOptions.None).Replace(Input, "-");
+        }
     }
 }

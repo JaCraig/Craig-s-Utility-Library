@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,24 +19,26 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System.IO;
 using UnitTests.Fixtures;
-using Utilities.DataTypes.ExtensionMethods;
-using Utilities.IO.ExtensionMethods;
+using Utilities.DataTypes;
+using Utilities.IO;
 using Xunit;
 
 namespace UnitTests.DataTypes.ExtensionMethods
 {
-    public class StreamExtensions: TestingDirectoryFixture
+    public class StreamExtensions :TestingDirectoryFixture
     {
-        public StreamExtensions() { new DirectoryInfo(@"..\..\Data\Testing").CopyTo(@".\Testing"); }
+        public StreamExtensions()
+        {
+            new DirectoryInfo(@"..\..\Data\Testing").CopyTo(new DirectoryInfo(@".\Testing"));
+        }
 
         [Fact]
         public void ReadAll()
         {
-            new FileInfo(@".\Testing\Test.txt").Save("This is a test");
-            FileInfo File = new FileInfo(@".\Testing\Test.txt");
-            using (FileStream Test = File.OpenRead())
+            new FileInfo(@".\Testing\Test.txt").Write("This is a test");
+            System.IO.FileInfo File = new System.IO.FileInfo(@".\Testing\Test.txt");
+            using (System.IO.FileStream Test = File.OpenRead())
             {
                 Assert.Equal("This is a test", Test.ReadAll());
             }
@@ -45,9 +47,9 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void ReadAllBinary()
         {
-            new FileInfo(@".\Testing\Test.txt").Save("This is a test");
-            FileInfo File = new FileInfo(@".\Testing\Test.txt");
-            using (FileStream Test = File.OpenRead())
+            new FileInfo(@".\Testing\Test.txt").Write("This is a test");
+            System.IO.FileInfo File = new System.IO.FileInfo(@".\Testing\Test.txt");
+            using (System.IO.FileStream Test = File.OpenRead())
             {
                 byte[] Content = Test.ReadAllBinary();
                 Assert.Equal("This is a test", System.Text.Encoding.ASCII.GetString(Content, 0, Content.Length));
@@ -57,9 +59,9 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void ReadAllBinary2()
         {
-            using(MemoryStream Test=new MemoryStream())
+            using (System.IO.MemoryStream Test = new System.IO.MemoryStream())
             {
-                Test.Write("This is a test".ToByteArray(),0,"This is a test".Length);
+                Test.Write("This is a test".ToByteArray(), 0, "This is a test".Length);
                 byte[] Content = Test.ReadAllBinary();
                 Assert.Equal("This is a test", System.Text.Encoding.ASCII.GetString(Content, 0, Content.Length));
             }
@@ -67,7 +69,6 @@ namespace UnitTests.DataTypes.ExtensionMethods
 
         public void SetFixture(TestingDirectoryFixture data)
         {
-            
         }
     }
 }

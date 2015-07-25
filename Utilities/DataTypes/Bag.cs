@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,13 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using Utilities.DataTypes.ExtensionMethods;
-
-#endregion
 
 namespace Utilities.DataTypes
 {
@@ -35,19 +32,45 @@ namespace Utilities.DataTypes
     /// <typeparam name="T">Type of data within the bag</typeparam>
     public class Bag<T> : ICollection<T>
     {
-        #region Constructors
-
         /// <summary>
         /// Constructor
         /// </summary>
         public Bag()
         {
-            Items = new Dictionary<T, int>();
+            Items = new ConcurrentDictionary<T, int>();
         }
 
-        #endregion
+        /// <summary>
+        /// Number of items in the bag
+        /// </summary>
+        public virtual int Count
+        {
+            get { return Items.Count; }
+        }
 
-        #region ICollection<T> Members
+        /// <summary>
+        /// Is this read only?
+        /// </summary>
+        public virtual bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Actual internal container
+        /// </summary>
+        protected ConcurrentDictionary<T, int> Items { get; private set; }
+
+        /// <summary>
+        /// Gets a specified item
+        /// </summary>
+        /// <param name="index">Item to get</param>
+        /// <returns>The number of this item in the bag</returns>
+        public virtual int this[T index]
+        {
+            get { return Items.GetValue(index); }
+            set { Items.SetValue(index, value); }
+        }
 
         /// <summary>
         /// Adds an item to the bag
@@ -55,10 +78,7 @@ namespace Utilities.DataTypes
         /// <param name="item">Item to add</param>
         public virtual void Add(T item)
         {
-            if (Items.ContainsKey(item))
-                ++Items[item];
-            else
-                Items.Add(item, 1);
+            Items.SetValue(item, Items.GetValue(item, 0) + 1);
         }
 
         /// <summary>
@@ -90,36 +110,6 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Number of items in the bag
-        /// </summary>
-        public virtual int Count
-        {
-            get { return Items.Count; }
-        }
-
-        /// <summary>
-        /// Is this read only?
-        /// </summary>
-        public virtual bool IsReadOnly
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// Removes an item from the bag
-        /// </summary>
-        /// <param name="item">Item to remove</param>
-        /// <returns>True if it is removed, false otherwise</returns>
-        public virtual bool Remove(T item)
-        {
-            return Items.Remove(item);
-        }
-
-        #endregion
-
-        #region IEnumerable<T> Members
-
-        /// <summary>
         /// Gets the enumerator
         /// </summary>
         /// <returns>The enumerator</returns>
@@ -129,9 +119,16 @@ namespace Utilities.DataTypes
                 yield return Key;
         }
 
-        #endregion
-
-        #region IEnumerable Members
+        /// <summary>
+        /// Removes an item from the bag
+        /// </summary>
+        /// <param name="item">Item to remove</param>
+        /// <returns>True if it is removed, false otherwise</returns>
+        public virtual bool Remove(T item)
+        {
+            int Value = 0;
+            return Items.TryRemove(item, out Value);
+        }
 
         /// <summary>
         /// Gets the enumerator
@@ -142,27 +139,5 @@ namespace Utilities.DataTypes
             foreach (T Key in this.Items.Keys)
                 yield return Key;
         }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets a specified item
-        /// </summary>
-        /// <param name="index">Item to get</param>
-        /// <returns>The number of this item in the bag</returns>
-        public virtual int this[T index]
-        {
-            get { return Items[index]; }
-            set { Items[index] = value; }
-        }
-
-        /// <summary>
-        /// Actual internal container
-        /// </summary>
-        protected Dictionary<T, int> Items { get; private set; }
-
-        #endregion
     }
 }

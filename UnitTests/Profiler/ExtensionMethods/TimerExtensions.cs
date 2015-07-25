@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Threading;
-using Utilities.Profiler.ExtensionMethods;
+using Utilities.Profiler;
 using Xunit;
 
 namespace UnitTests.Profiler.ExtensionMethods

@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,8 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using Utilities.DataTypes;
-using Utilities.Random.ExtensionMethods;
-using Utilities.Random.StringGenerators;
 using Xunit;
 
 namespace UnitTests.DataTypes
@@ -32,12 +30,12 @@ namespace UnitTests.DataTypes
         public void RandomTest()
         {
             Bag<string> BagObject = new Bag<string>();
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
+            System.Random Rand = new System.Random();
             for (int x = 0; x < 10; ++x)
             {
-                string Value = Rand.Next<string>(new RegexStringGenerator(10));
+                string Value = x.ToString();
                 int Count = Rand.Next(1, 10);
-                for(int y=0;y<Count;++y)
+                for (int y = 0; y < Count; ++y)
                     BagObject.Add(Value);
                 Assert.Equal(Count, BagObject[Value]);
             }

@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,8 @@ THE SOFTWARE.*/
 
 using System.Collections.Generic;
 using System.Linq;
-using Utilities.DataTypes.ExtensionMethods;
+using System.Text;
+using Utilities.DataTypes;
 using Xunit;
 
 namespace UnitTests.DataTypes.ExtensionMethods
@@ -54,6 +55,59 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.True(TestObject.AddIfUnique(7));
             Assert.True(TestObject.AddIfUnique(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }));
             Assert.Equal(8, TestObject.Count);
+            TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
+            Assert.False(TestObject.AddIfUnique((x, y) => x == y, 1));
+            Assert.True(TestObject.AddIfUnique((x, y) => x == y, 7));
+            Assert.True(TestObject.AddIfUnique((x, y) => x == y, new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }));
+            Assert.Equal(8, TestObject.Count);
+        }
+
+        [Fact]
+        public void AddRange()
+        {
+            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
+            List<int> Results = TestObject.Add(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).ToList();
+            Assert.Equal(14, Results.Count);
+            Assert.Equal(14, TestObject.Count);
+        }
+
+        [Fact]
+        public void ForTest()
+        {
+            StringBuilder Builder = new StringBuilder();
+            int[] Temp = new int[] { 0, 0, 1, 2, 3 };
+            Temp.For(0, Temp.Length - 1, (x, y) => Builder.Append(y));
+            Assert.Equal("00123", Builder.ToString());
+            Builder = new StringBuilder();
+            Temp.For(0, Temp.Length - 1, (x, y) => Builder.Append(x));
+            Assert.Equal("01234", Builder.ToString());
+        }
+
+        [Fact]
+        public void ForTest2()
+        {
+            StringBuilder Builder = new StringBuilder();
+            int[] Temp = new int[] { 0, 0, 1, 2, 3 };
+            int[] Temp2 = Temp.For(0, Temp.Length - 1, (x, y) => x + y).ToArray();
+            Assert.Equal(new int[] { 0, 1, 3, 5, 7 }, Temp2);
+        }
+
+        [Fact]
+        public void RemoveRange()
+        {
+            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
+            Assert.Equal(0, TestObject.Remove(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).Count);
+        }
+
+        [Fact]
+        public void RemoveRange2()
+        {
+            int[] TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
+            Assert.Equal(0, TestObject.Remove(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).Count);
+            TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
+            Assert.Equal(1, TestObject.Remove(new int[] { 1, 2, 3, 4, 5 }).Count);
+            TestObject = new int[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6 };
+            Assert.Equal(1, TestObject.Remove(new int[] { 1, 2, 3, 4, 5 }).Count);
         }
 
         [Fact]
@@ -74,33 +128,6 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(3, TestObject.Count());
             foreach (int Item in TestObject)
                 Assert.False(Item % 2 == 0);
-        }
-
-        [Fact]
-        public void AddRange()
-        {
-            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
-            List<int> Results = TestObject.Add(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).ToList();
-            Assert.Equal(14, Results.Count);
-            Assert.Equal(14, TestObject.Count);
-        }
-
-        [Fact]
-        public void RemoveRange()
-        {
-            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
-            Assert.Equal(0, TestObject.Remove(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).Count);
-        }
-
-        [Fact]
-        public void RemoveRange2()
-        {
-            int[] TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
-            Assert.Equal(0, TestObject.Remove(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).Count);
-            TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
-            Assert.Equal(1, TestObject.Remove(new int[] { 1, 2, 3, 4, 5 }).Count);
-            TestObject = new int[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6 };
-            Assert.Equal(1, TestObject.Remove(new int[] { 1, 2, 3, 4, 5 }).Count);
         }
     }
 }

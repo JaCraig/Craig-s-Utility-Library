@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,99 +19,125 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
+using System.ComponentModel;
 using System.Data;
-
-#endregion
+using System.Data.SqlClient;
+using Utilities.DataTypes.Conversion.Converters.BaseClasses;
 
 namespace Utilities.DataTypes.Conversion.Converters
 {
     /// <summary>
-    /// DbType to Type converter
+    /// DbType converter
     /// </summary>
-    public class DbTypeTypeConverter : Utilities.DataTypes.Conversion.ConverterBase<Type, DbType>
+    public class DbTypeTypeConverter : TypeConverterBase<DbType>
     {
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Manager">Manager</param>
-        public DbTypeTypeConverter(Manager Manager) : base(Manager) { }
-
-        /// <summary>
-        /// Converts the object to the specified type
-        /// </summary>
-        /// <param name="Item">Object to convert</param>
-        /// <param name="ReturnType">Return type</param>
-        /// <returns>The object as the type specified</returns>
-        public override object To(Type Item, Type ReturnType)
+        public DbTypeTypeConverter()
+            : base()
         {
-            if (Item.IsEnum) return To(Enum.GetUnderlyingType(Item), ReturnType);
-            else if (Item == typeof(byte)) return DbType.Byte;
-            else if (Item == typeof(sbyte)) return DbType.SByte;
-            else if (Item == typeof(short)) return DbType.Int16;
-            else if (Item == typeof(ushort)) return DbType.UInt16;
-            else if (Item == typeof(int)) return DbType.Int32;
-            else if (Item == typeof(uint)) return DbType.UInt32;
-            else if (Item == typeof(long)) return DbType.Int64;
-            else if (Item == typeof(ulong)) return DbType.UInt64;
-            else if (Item == typeof(float)) return DbType.Single;
-            else if (Item == typeof(double)) return DbType.Double;
-            else if (Item == typeof(decimal)) return DbType.Decimal;
-            else if (Item == typeof(bool)) return DbType.Boolean;
-            else if (Item == typeof(string)) return DbType.String;
-            else if (Item == typeof(char)) return DbType.StringFixedLength;
-            else if (Item == typeof(Guid)) return DbType.Guid;
-            else if (Item == typeof(DateTime)) return DbType.DateTime2;
-            else if (Item == typeof(DateTimeOffset)) return DbType.DateTimeOffset;
-            else if (Item == typeof(byte[])) return DbType.Binary;
-            else if (Item == typeof(byte?)) return DbType.Byte;
-            else if (Item == typeof(sbyte?)) return DbType.SByte;
-            else if (Item == typeof(short?)) return DbType.Int16;
-            else if (Item == typeof(ushort?)) return DbType.UInt16;
-            else if (Item == typeof(int?)) return DbType.Int32;
-            else if (Item == typeof(uint?)) return DbType.UInt32;
-            else if (Item == typeof(long?)) return DbType.Int64;
-            else if (Item == typeof(ulong?)) return DbType.UInt64;
-            else if (Item == typeof(float?)) return DbType.Single;
-            else if (Item == typeof(double?)) return DbType.Double;
-            else if (Item == typeof(decimal?)) return DbType.Decimal;
-            else if (Item == typeof(bool?)) return DbType.Boolean;
-            else if (Item == typeof(char?)) return DbType.StringFixedLength;
-            else if (Item == typeof(Guid?)) return DbType.Guid;
-            else if (Item == typeof(DateTime?)) return DbType.DateTime2;
-            else if (Item == typeof(DateTimeOffset?)) return DbType.DateTimeOffset;
-            return DbType.Int32;
+            ConvertToTypes.Add(typeof(Type), DbTypeToType);
+            ConvertToTypes.Add(typeof(SqlDbType), DbTypeToSqlDbType);
+            ConvertFromTypes.Add(typeof(Type).GetType(), TypeToDbType);
+            ConvertFromTypes.Add(typeof(SqlDbType), SqlDbTypeToDbType);
         }
 
         /// <summary>
-        /// Converts the object to the specified type
+        /// Internal converter
         /// </summary>
-        /// <param name="Item">Object to convert</param>
-        /// <param name="ReturnType">Return type</param>
-        /// <returns>The object as the type specified</returns>
-        public override object To(DbType Item, Type ReturnType)
+        protected override TypeConverter InternalConverter { get { return new EnumConverter(typeof(DbType)); } }
+
+        private static object DbTypeToSqlDbType(object value)
         {
-            if (Item == DbType.Byte) return typeof(byte);
-            else if (Item == DbType.SByte) return typeof(sbyte);
-            else if (Item == DbType.Int16) return typeof(short);
-            else if (Item == DbType.UInt16) return typeof(ushort);
-            else if (Item == DbType.Int32) return typeof(int);
-            else if (Item == DbType.UInt32) return typeof(uint);
-            else if (Item == DbType.Int64) return typeof(long);
-            else if (Item == DbType.UInt64) return typeof(ulong);
-            else if (Item == DbType.Single) return typeof(float);
-            else if (Item == DbType.Double) return typeof(double);
-            else if (Item == DbType.Decimal) return typeof(decimal);
-            else if (Item == DbType.Boolean) return typeof(bool);
-            else if (Item == DbType.String) return typeof(string);
-            else if (Item == DbType.StringFixedLength) return typeof(char);
-            else if (Item == DbType.Guid) return typeof(Guid);
-            else if (Item == DbType.DateTime2) return typeof(DateTime);
-            else if (Item == DbType.DateTime) return typeof(DateTime);
-            else if (Item == DbType.DateTimeOffset) return typeof(DateTimeOffset);
-            else if (Item == DbType.Binary) return typeof(byte[]);
+            if (!(value is DbType))
+                return SqlDbType.Int;
+            DbType TempValue = (DbType)value;
+            SqlParameter Parameter = new SqlParameter();
+            Parameter.DbType = TempValue;
+            return Parameter.SqlDbType;
+        }
+
+        private static object DbTypeToType(object value)
+        {
+            if (!(value is DbType))
+                return typeof(int);
+            DbType TempValue = (DbType)value;
+            if (TempValue == DbType.Byte) return typeof(byte);
+            else if (TempValue == DbType.SByte) return typeof(sbyte);
+            else if (TempValue == DbType.Int16) return typeof(short);
+            else if (TempValue == DbType.UInt16) return typeof(ushort);
+            else if (TempValue == DbType.Int32) return typeof(int);
+            else if (TempValue == DbType.UInt32) return typeof(uint);
+            else if (TempValue == DbType.Int64) return typeof(long);
+            else if (TempValue == DbType.UInt64) return typeof(ulong);
+            else if (TempValue == DbType.Single) return typeof(float);
+            else if (TempValue == DbType.Double) return typeof(double);
+            else if (TempValue == DbType.Decimal) return typeof(decimal);
+            else if (TempValue == DbType.Boolean) return typeof(bool);
+            else if (TempValue == DbType.String) return typeof(string);
+            else if (TempValue == DbType.StringFixedLength) return typeof(char);
+            else if (TempValue == DbType.Guid) return typeof(Guid);
+            else if (TempValue == DbType.DateTime2) return typeof(DateTime);
+            else if (TempValue == DbType.DateTime) return typeof(DateTime);
+            else if (TempValue == DbType.DateTimeOffset) return typeof(DateTimeOffset);
+            else if (TempValue == DbType.Binary) return typeof(byte[]);
             return typeof(int);
+        }
+
+        private static object SqlDbTypeToDbType(object sqlDbType)
+        {
+            if (!(sqlDbType is SqlDbType))
+                return DbType.Int32;
+            SqlDbType Temp = (SqlDbType)sqlDbType;
+            SqlParameter Parameter = new SqlParameter();
+            Parameter.SqlDbType = Temp;
+            return Parameter.DbType;
+        }
+
+        private static object TypeToDbType(object Object)
+        {
+            Type TempValue = Object as Type;
+            if (TempValue == null)
+                return DbType.Int32;
+            if (TempValue.IsEnum)
+                TempValue = Enum.GetUnderlyingType(TempValue);
+            if (TempValue == typeof(byte)) return DbType.Byte;
+            else if (TempValue == typeof(sbyte)) return DbType.SByte;
+            else if (TempValue == typeof(short)) return DbType.Int16;
+            else if (TempValue == typeof(ushort)) return DbType.UInt16;
+            else if (TempValue == typeof(int)) return DbType.Int32;
+            else if (TempValue == typeof(uint)) return DbType.UInt32;
+            else if (TempValue == typeof(long)) return DbType.Int64;
+            else if (TempValue == typeof(ulong)) return DbType.UInt64;
+            else if (TempValue == typeof(float)) return DbType.Single;
+            else if (TempValue == typeof(double)) return DbType.Double;
+            else if (TempValue == typeof(decimal)) return DbType.Decimal;
+            else if (TempValue == typeof(bool)) return DbType.Boolean;
+            else if (TempValue == typeof(string)) return DbType.String;
+            else if (TempValue == typeof(char)) return DbType.StringFixedLength;
+            else if (TempValue == typeof(Guid)) return DbType.Guid;
+            else if (TempValue == typeof(DateTime)) return DbType.DateTime2;
+            else if (TempValue == typeof(DateTimeOffset)) return DbType.DateTimeOffset;
+            else if (TempValue == typeof(byte[])) return DbType.Binary;
+            else if (TempValue == typeof(byte?)) return DbType.Byte;
+            else if (TempValue == typeof(sbyte?)) return DbType.SByte;
+            else if (TempValue == typeof(short?)) return DbType.Int16;
+            else if (TempValue == typeof(ushort?)) return DbType.UInt16;
+            else if (TempValue == typeof(int?)) return DbType.Int32;
+            else if (TempValue == typeof(uint?)) return DbType.UInt32;
+            else if (TempValue == typeof(long?)) return DbType.Int64;
+            else if (TempValue == typeof(ulong?)) return DbType.UInt64;
+            else if (TempValue == typeof(float?)) return DbType.Single;
+            else if (TempValue == typeof(double?)) return DbType.Double;
+            else if (TempValue == typeof(decimal?)) return DbType.Decimal;
+            else if (TempValue == typeof(bool?)) return DbType.Boolean;
+            else if (TempValue == typeof(char?)) return DbType.StringFixedLength;
+            else if (TempValue == typeof(Guid?)) return DbType.Guid;
+            else if (TempValue == typeof(DateTime?)) return DbType.DateTime2;
+            else if (TempValue == typeof(DateTimeOffset?)) return DbType.DateTimeOffset;
+            return DbType.Int32;
         }
     }
 }

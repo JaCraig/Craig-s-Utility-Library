@@ -19,19 +19,17 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
+using System.ComponentModel;
 using System.Net;
-#endregion
 
-namespace Utilities.Web.ExtensionMethods
+namespace Utilities.Web
 {
     /// <summary>
     /// Extensions related to IP addresses
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class IPAddressExtensions
     {
-        #region GetHostName
-
         /// <summary>
         /// Gets the host name based off of an IP address
         /// </summary>
@@ -51,7 +49,5 @@ namespace Utilities.Web.ExtensionMethods
         {
             return Dns.GetHostEntry(IP).HostName;
         }
-
-        #endregion
     }
 }

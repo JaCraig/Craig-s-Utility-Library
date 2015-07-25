@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,10 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-#endregion
 
 namespace Utilities.Random.NameGenerators
 {
@@ -31,8 +29,6 @@ namespace Utilities.Random.NameGenerators
     /// </summary>
     public class FemaleNameGenerator : GeneratorAttributeBase, IGenerator<string>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -49,14 +45,10 @@ namespace Utilities.Random.NameGenerators
             this.LastName = LastName;
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Should a prefix be generated?
+        /// Should a last name be generated?
         /// </summary>
-        public virtual bool Prefix { get; protected set; }
+        public virtual bool LastName { get; protected set; }
 
         /// <summary>
         /// Should a middle name be generated?
@@ -64,18 +56,14 @@ namespace Utilities.Random.NameGenerators
         public virtual bool MiddleName { get; protected set; }
 
         /// <summary>
+        /// Should a prefix be generated?
+        /// </summary>
+        public virtual bool Prefix { get; protected set; }
+
+        /// <summary>
         /// Should a suffix be generated?
         /// </summary>
         public virtual bool Suffix { get; protected set; }
-
-        /// <summary>
-        /// Should a last name be generated?
-        /// </summary>
-        public virtual bool LastName { get; protected set; }
-
-        #endregion
-
-        #region Functions
 
         /// <summary>
         /// Generates a random value of the specified type
@@ -112,7 +100,5 @@ namespace Utilities.Random.NameGenerators
         {
             return Next(Rand);
         }
-
-        #endregion
     }
 }

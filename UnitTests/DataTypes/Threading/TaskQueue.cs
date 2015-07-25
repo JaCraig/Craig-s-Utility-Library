@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using Utilities.DataTypes.ExtensionMethods;
+using Utilities.DataTypes;
 using Xunit;
 
 namespace UnitTests.DataTypes.Threading
@@ -30,7 +30,7 @@ namespace UnitTests.DataTypes.Threading
         [Fact]
         public void BasicTasks()
         {
-            using (Utilities.DataTypes.Threading.TaskQueue<string> Tasks = new Utilities.DataTypes.Threading.TaskQueue<string>(3, x => Console.WriteLine(x)))
+            using (Utilities.DataTypes.TaskQueue<string> Tasks = new Utilities.DataTypes.TaskQueue<string>(3, x => Console.WriteLine(x)))
             {
                 10.Times(x => Tasks.Enqueue("This is a test #" + x));
             }

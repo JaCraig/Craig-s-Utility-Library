@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,24 +19,20 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Utilities.DataTypes.Comparison;
-#endregion
 
-namespace Utilities.DataTypes.ExtensionMethods
+namespace Utilities.DataTypes
 {
     /// <summary>
     /// IComparable extensions
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class IComparableExtensions
     {
-        #region Functions
-
-        #region Between
-
         /// <summary>
         /// Checks if an item is between two values
         /// </summary>
@@ -44,18 +40,16 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Value">Value to check</param>
         /// <param name="Min">Minimum value</param>
         /// <param name="Max">Maximum value</param>
-        /// <param name="Comparer">Comparer used to compare the values (defaults to GenericComparer)"</param>
+        /// <param name="Comparer">
+        /// Comparer used to compare the values (defaults to GenericComparer)"
+        /// </param>
         /// <returns>True if it is between the values, false otherwise</returns>
-        public static bool Between<T>(this T Value, T Min, T Max, IComparer<T> Comparer = null) 
+        public static bool Between<T>(this T Value, T Min, T Max, IComparer<T> Comparer = null)
             where T : IComparable
         {
-            Comparer = Comparer.Check(()=>new GenericComparer<T>());
+            Comparer = Comparer.Check(() => new GenericComparer<T>());
             return Comparer.Compare(Max, Value) >= 0 && Comparer.Compare(Value, Min) >= 0;
         }
-
-        #endregion
-
-        #region Clamp
 
         /// <summary>
         /// Clamps a value between two values
@@ -65,20 +59,16 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Min">Min value it can be (inclusive)</param>
         /// <param name="Comparer">Comparer to use (defaults to GenericComparer)</param>
         /// <returns>The value set between Min and Max</returns>
-        public static T Clamp<T>(this T Value, T Max, T Min, IComparer<T> Comparer = null) 
+        public static T Clamp<T>(this T Value, T Max, T Min, IComparer<T> Comparer = null)
             where T : IComparable
         {
-            Comparer = Comparer.Check(()=>new GenericComparer<T>());
+            Comparer = Comparer.Check(() => new GenericComparer<T>());
             if (Comparer.Compare(Max, Value) < 0)
                 return Max;
             if (Comparer.Compare(Value, Min) < 0)
                 return Min;
             return Value;
         }
-
-        #endregion
-
-        #region Max
 
         /// <summary>
         /// Returns the maximum value between the two
@@ -90,13 +80,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static T Max<T>(this T InputA, T InputB, IComparer<T> Comparer = null)
             where T : IComparable
         {
-            Comparer = Comparer.Check(()=>new GenericComparer<T>());
+            Comparer = Comparer.Check(() => new GenericComparer<T>());
             return Comparer.Compare(InputA, InputB) < 0 ? InputB : InputA;
         }
-
-        #endregion
-
-        #region Min
 
         /// <summary>
         /// Returns the minimum value between the two
@@ -108,12 +94,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static T Min<T>(this T InputA, T InputB, IComparer<T> Comparer = null)
             where T : IComparable
         {
-            Comparer = Comparer.Check(()=>new GenericComparer<T>());
+            Comparer = Comparer.Check(() => new GenericComparer<T>());
             return Comparer.Compare(InputA, InputB) > 0 ? InputB : InputA;
         }
-
-        #endregion
-
-        #endregion
     }
 }

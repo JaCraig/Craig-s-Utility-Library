@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,11 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections.Generic;
-using Utilities.DataTypes.ExtensionMethods;
-#endregion
 
 namespace Utilities.DataTypes.Patterns
 {
@@ -34,8 +31,6 @@ namespace Utilities.DataTypes.Patterns
     /// <typeparam name="T">The class type that you want created</typeparam>
     public class Factory<Key, T>
     {
-        #region Constructors
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -44,38 +39,10 @@ namespace Utilities.DataTypes.Patterns
             Constructors = new Dictionary<Key, Func<T>>();
         }
 
-        #endregion
-
-        #region Protected Variables
-
         /// <summary>
         /// List of constructors/initializers
         /// </summary>
         protected Dictionary<Key, Func<T>> Constructors { get; private set; }
-
-        #endregion
-
-        #region Public Functions
-
-        /// <summary>
-        /// Registers an item
-        /// </summary>
-        /// <param name="Key">Item to register</param>
-        /// <param name="Result">The object to be returned</param>
-        public virtual void Register(Key Key, T Result)
-        {
-            Register(Key, () => Result);
-        }
-
-        /// <summary>
-        /// Registers an item
-        /// </summary>
-        /// <param name="Key">Item to register</param>
-        /// <param name="Constructor">The function to call when creating the item</param>
-        public virtual void Register(Key Key, Func<T> Constructor)
-        {
-            Constructors.SetValue(Key, Constructor);
-        }
 
         /// <summary>
         /// Creates an instance associated with the key
@@ -97,6 +64,24 @@ namespace Utilities.DataTypes.Patterns
             return Constructors.ContainsKey(Key);
         }
 
-        #endregion
+        /// <summary>
+        /// Registers an item
+        /// </summary>
+        /// <param name="Key">Item to register</param>
+        /// <param name="Result">The object to be returned</param>
+        public virtual void Register(Key Key, T Result)
+        {
+            Register(Key, () => Result);
+        }
+
+        /// <summary>
+        /// Registers an item
+        /// </summary>
+        /// <param name="Key">Item to register</param>
+        /// <param name="Constructor">The function to call when creating the item</param>
+        public virtual void Register(Key Key, Func<T> Constructor)
+        {
+            Constructors.SetValue(Key, Constructor);
+        }
     }
 }

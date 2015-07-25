@@ -1,18 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9D3780AF-92CE-480F-A815-0D0E9CE61AB3}</ProjectGuid>
+    <ProjectGuid>{6F747CA9-FE9C-417C-BD5B-6CBA0775CE83}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Utilities.ORM</RootNamespace>
     <AssemblyName>Utilities.ORM</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -25,7 +23,10 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>bin\Debug\Utilities.ORM.XML</DocumentationFile>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\CustomRules.ruleset</CodeAnalysisRuleSet>
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
     <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
     <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
@@ -47,7 +48,7 @@
     <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
     <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
     <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
-    <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
     <CodeContractsCustomRewriterAssembly />
     <CodeContractsCustomRewriterClass />
     <CodeContractsLibPaths />
@@ -60,7 +61,15 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <CodeContractsAssertsToContractsCheckBox>True</CodeContractsAssertsToContractsCheckBox>
+    <CodeContractsRedundantTests>True</CodeContractsRedundantTests>
+    <CodeContractsMissingPublicEnsuresAsWarnings>False</CodeContractsMissingPublicEnsuresAsWarnings>
+    <CodeContractsInferEnsuresAutoProperties>True</CodeContractsInferEnsuresAutoProperties>
+    <CodeContractsSuggestAssumptionsForCallees>False</CodeContractsSuggestAssumptionsForCallees>
+    <CodeContractsNecessaryEnsures>True</CodeContractsNecessaryEnsures>
+    <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
+    <CodeContractsSkipAnalysisIfCannotConnectToCache>False</CodeContractsSkipAnalysisIfCannotConnectToCache>
+    <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -69,7 +78,10 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>bin\Release\Utilities.ORM.XML</DocumentationFile>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\CustomRules.ruleset</CodeAnalysisRuleSet>
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
     <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
     <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
@@ -91,7 +103,7 @@
     <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
     <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
     <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
-    <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
     <CodeContractsCustomRewriterAssembly />
     <CodeContractsCustomRewriterClass />
     <CodeContractsLibPaths />
@@ -104,7 +116,15 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <CodeContractsAssertsToContractsCheckBox>True</CodeContractsAssertsToContractsCheckBox>
+    <CodeContractsRedundantTests>True</CodeContractsRedundantTests>
+    <CodeContractsMissingPublicEnsuresAsWarnings>False</CodeContractsMissingPublicEnsuresAsWarnings>
+    <CodeContractsInferEnsuresAutoProperties>True</CodeContractsInferEnsuresAutoProperties>
+    <CodeContractsSuggestAssumptionsForCallees>False</CodeContractsSuggestAssumptionsForCallees>
+    <CodeContractsNecessaryEnsures>True</CodeContractsNecessaryEnsures>
+    <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
+    <CodeContractsSkipAnalysisIfCannotConnectToCache>False</CodeContractsSkipAnalysisIfCannotConnectToCache>
+    <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -119,7 +139,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
@@ -146,45 +168,113 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ORM\Mapping\BaseClasses\PropertyBase.cs" />
-    <Compile Include="ORM\Mapping\Interfaces\IID.cs" />
-    <Compile Include="ORM\Mapping\Interfaces\IIEnumerableManyToOne.cs" />
-    <Compile Include="ORM\Mapping\Interfaces\IManyToMany.cs" />
-    <Compile Include="ORM\Mapping\Interfaces\IManyToOne.cs" />
-    <Compile Include="ORM\Mapping\Interfaces\IMap.cs" />
-    <Compile Include="ORM\Mapping\Interfaces\IMappingManager.cs" />
-    <Compile Include="ORM\Mapping\Interfaces\IReference.cs" />
-    <Compile Include="ORM\Mapping\Mapping.cs" />
-    <Compile Include="ORM\Mapping\Interfaces\IMapping.cs" />
-    <Compile Include="ORM\Mapping\Interfaces\IProperty.cs" />
-    <Compile Include="ORM\Mapping\MappingManager.cs" />
-    <Compile Include="ORM\Mapping\PropertyTypes\ID.cs" />
-    <Compile Include="ORM\Mapping\PropertyTypes\IEnumerableManyToOne.cs" />
-    <Compile Include="ORM\Mapping\PropertyTypes\ManyToMany.cs" />
-    <Compile Include="ORM\Mapping\PropertyTypes\ManyToOne.cs" />
-    <Compile Include="ORM\Mapping\PropertyTypes\Map.cs" />
-    <Compile Include="ORM\Mapping\PropertyTypes\Reference.cs" />
-    <Compile Include="ORM\Mapping\PropertyTypes\StringID.cs" />
-    <Compile Include="ORM\Mapping\PropertyTypes\StringReference.cs" />
-    <Compile Include="ORM\QueryProviders\Interfaces\IDatabase.cs" />
-    <Compile Include="ORM\QueryProviders\Default.cs" />
-    <Compile Include="ORM\Aspect\Interfaces\IORMObject.cs" />
-    <Compile Include="ORM\Aspect\ORMAspect.cs" />
-    <Compile Include="ORM\ORM.cs" />
-    <Compile Include="ORM\Session.cs" />
-    <Compile Include="ORM\Database\DatabaseManager.cs" />
+    <Compile Include="ORM\BaseClasses\MappingBaseClass.cs" />
+    <Compile Include="ORM\BaseClasses\ObjectBaseClass.cs" />
     <Compile Include="ORM\Interfaces\IObject.cs" />
-    <Compile Include="ORM\ObjectBaseClass.cs" />
-    <Compile Include="ORM\Mapping\Interfaces\IListManyToMany.cs" />
-    <Compile Include="ORM\Mapping\Interfaces\IListManyToOne.cs" />
-    <Compile Include="ORM\Mapping\PropertyTypes\ListManyToMany.cs" />
-    <Compile Include="ORM\Mapping\PropertyTypes\ListManyToOne.cs" />
-    <Compile Include="ORM\ExtensionMethods\IEnumerableExtensions.cs" />
+    <Compile Include="ORM\Manager\Aspect\Interfaces\IORMObject.cs" />
+    <Compile Include="ORM\Manager\Aspect\ORMAspect.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IIEnumerableManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IID.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IListManyToMany.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IListManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IManyToMany.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IMap.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IReference.cs" />
+    <Compile Include="ORM\Manager\Module\ORMModule.cs" />
+    <Compile Include="ORM\Manager\ORMManager.cs" />
+    <Compile Include="ORM\Manager\Session.cs" />
+    <Compile Include="ORM\Manager\SourceProvider\DefaultDatabase.cs" />
+    <Compile Include="ORM\Manager\SourceProvider\Manager.cs" />
+    <Compile Include="ORM\Manager\SourceProvider\SourceInfo.cs" />
+    <Compile Include="ORM\Manager\SourceProvider\Interfaces\ISourceInfo.cs" />
+    <Compile Include="ORM\Parameters\BetweenParameter.cs" />
+    <Compile Include="ORM\Parameters\EqualParameter.cs" />
+    <Compile Include="ORM\ExtensionMethods\DbCommandExtensions.cs" />
+    <Compile Include="ORM\ExtensionMethods\IDataReaderExtensions.cs" />
+    <Compile Include="ORM\Interfaces\IDatabase.cs" />
+    <Compile Include="ORM\Parameters\AndParameter.cs" />
+    <Compile Include="ORM\Parameters\LikeParameter.cs" />
+    <Compile Include="ORM\Manager\Mapper\BaseClasses\PropertyBase.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ID.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\IEnumerableManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ListManyToMany.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ListManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ManyToMany.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\Map.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\Reference.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IMapping.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IProperty.cs" />
+    <Compile Include="ORM\Manager\Mapper\Manager.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\BaseClasses\DatabaseQueryProviderBase.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\BaseClasses\ParameterBase.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\Command.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\DatabaseBatch.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\Parameter.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\SQLServer\SQLServerGenerator.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\SQLServer\SQLServerQueryProvider.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\StringParameter.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Interfaces\ICommand.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Interfaces\IBatch.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Interfaces\IGenerator.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Interfaces\IParameter.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Interfaces\IQueryProvider.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Manager.cs" />
+    <Compile Include="ORM\Manager\Schema\BaseClasses\SourceBase.cs" />
+    <Compile Include="ORM\Manager\Schema\BaseClasses\TableBase.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Database\Column.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Database\Database.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Database\Function.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Database\SQLServer\SQLServerSchemaGenerator.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Database\StoredProcedure.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Database\Table.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Database\Trigger.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Database\View.cs" />
+    <Compile Include="ORM\Manager\Schema\Enums\TriggerType.cs" />
+    <Compile Include="ORM\Manager\Schema\Interfaces\IColumn.cs" />
+    <Compile Include="ORM\Manager\Schema\Interfaces\IFunction.cs" />
+    <Compile Include="ORM\Manager\Schema\Interfaces\ISchemaGenerator.cs" />
+    <Compile Include="ORM\Manager\Schema\Interfaces\ISource.cs" />
+    <Compile Include="ORM\Manager\Schema\Interfaces\ITable.cs" />
+    <Compile Include="ORM\Manager\Schema\Interfaces\ITrigger.cs" />
+    <Compile Include="ORM\Manager\Schema\Manager.cs" />
+    <Compile Include="ORM\Parameters\NotEqualParameter.cs" />
+    <Compile Include="ORM\Parameters\OrParameter.cs" />
+    <Compile Include="ORM\Parameters\StringEqualParameter.cs" />
+    <Compile Include="ORM\Parameters\StringNotEqualParameter.cs" />
+    <Compile Include="ORM\QueryProvider.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\FileSystem\FileSystemGenerator.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\FileSystem\FileSystemQueryProvider.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\LDAP\LDAPBatch.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\LDAP\LDAPGenerator.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\LDAP\LDAPQueryProvider.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\LDAP\LDAPSchema.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Database\SQLServer\Builders\Functions.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Database\SQLServer\Builders\Interfaces\IBuilder.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Database\SQLServer\Builders\StoredProcedureColumns.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Database\SQLServer\Builders\StoredProcedures.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Database\SQLServer\Builders\TableColumns.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Database\SQLServer\Builders\TableForeignKeys.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Database\SQLServer\Builders\Tables.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Database\SQLServer\Builders\TableTriggers.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Database\SQLServer\Builders\Views.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ICollectionManyToMany.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ICollectionManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\IListManyToMany.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\IListManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\ICollectionManyToMany.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\ICollectionManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IIListManyToMany.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IIListManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IMultiMapping.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\ISingleMapping.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />
@@ -192,19 +282,19 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities.DataTypes\Utilities.DataTypes.csproj">
-      <Project>{5E5DA221-FBD5-415D-B521-0BEF59AD24A5}</Project>
+      <Project>{39cbc271-2e89-43c0-984e-f4cca7c710f4}</Project>
       <Name>Utilities.DataTypes</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Utilities.Reflection\Utilities.Reflection.csproj">
-      <Project>{CB6FE6D5-5D42-4E95-A365-41304BA931C7}</Project>
-      <Name>Utilities.Reflection</Name>
+    <ProjectReference Include="..\Utilities.IoC\Utilities.IoC.csproj">
+      <Project>{55b9e604-6c35-410d-80d8-86eca3bd20fb}</Project>
+      <Name>Utilities.IoC</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Utilities.SQL\Utilities.SQL.csproj">
-      <Project>{C47DBD66-BFF5-43B3-9293-EC48C06AADE3}</Project>
-      <Name>Utilities.SQL</Name>
+    <ProjectReference Include="..\Utilities.Random\Utilities.Random.csproj">
+      <Project>{c98fb416-28e2-4876-a3f6-02c89533c9af}</Project>
+      <Name>Utilities.Random</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities.Validation\Utilities.Validation.csproj">
-      <Project>{EF933948-E8F5-4B57-9A7B-1C92BEBCA670}</Project>
+      <Project>{6026bba0-4253-4e5b-91f6-ce3099c97b97}</Project>
       <Name>Utilities.Validation</Name>
     </ProjectReference>
   </ItemGroup>
