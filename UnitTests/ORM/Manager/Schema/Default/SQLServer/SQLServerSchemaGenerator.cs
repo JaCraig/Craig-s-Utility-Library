@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using Utilities.ORM.Manager.Schema.Default.Database;
 using Utilities.ORM.Manager.Schema.Interfaces;
 using Xunit;
 
@@ -30,11 +29,6 @@ namespace UnitTests.ORM.Manager.Schema.Default.SQLServer
 {
     public class SQLServerSchemaGenerator : DatabaseBaseClass
     {
-        public SQLServerSchemaGenerator()
-            : base()
-        {
-        }
-
         [Fact]
         public void Create()
         {

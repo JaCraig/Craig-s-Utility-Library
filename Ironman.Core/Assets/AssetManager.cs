@@ -19,8 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
+using Ironman.Core.Assets.Enums;
+using Ironman.Core.Assets.Interfaces;
+using Ironman.Core.Assets.Transformers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -28,16 +29,9 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Hosting;
-using System.Web.Mvc;
 using System.Web.Optimization;
-using Ironman.Core.Assets.Enums;
-using Ironman.Core.Assets.Interfaces;
-using Ironman.Core.Assets.Transformers;
 using Utilities.DataTypes;
 using Utilities.IO;
-using Utilities.IoC.Interfaces;
-
-#endregion Usings
 
 namespace Ironman.Core.Assets
 {
@@ -113,11 +107,11 @@ namespace Ironman.Core.Assets
         /// <returns>The asset type</returns>
         public AssetType DetermineType(string Path)
         {
-            AssetType Type = Translators.FirstOrDefault(x => Path.EndsWith(x.FileTypeAccepts))
+            AssetType Type = Translators.FirstOrDefault(x => Path.EndsWith(x.FileTypeAccepts, StringComparison.Ordinal))
                               .Chain(x => x.TranslatesTo, AssetType.Unknown);
-            if (Type == AssetType.Unknown && Path.EndsWith("css"))
+            if (Type == AssetType.Unknown && Path.EndsWith("css", StringComparison.Ordinal))
                 return AssetType.CSS;
-            else if (Type == AssetType.Unknown && Path.EndsWith("js"))
+            else if (Type == AssetType.Unknown && Path.EndsWith("js", StringComparison.Ordinal))
                 return AssetType.Javascript;
             return Type;
         }
@@ -155,10 +149,10 @@ namespace Ironman.Core.Assets
             System.Collections.Generic.List<BundleFile> Files = new System.Collections.Generic.List<BundleFile>();
             foreach (IAsset Asset in Assets)
             {
-                if (Asset.Path.StartsWith("~") || Asset.Path.StartsWith("/"))
+                if (Asset.Path.StartsWith("~", StringComparison.Ordinal) || Asset.Path.StartsWith("/", StringComparison.Ordinal))
                 {
                     Files.Add(new BundleFile(Asset.Path, new VirtualFileHack(Asset.Path)));
-                    Files.Add(Asset.Included.Where(x => x.Path.StartsWith("~") || x.Path.StartsWith("/")).Select(x => new BundleFile(x.Path, new VirtualFileHack(x.Path))));
+                    Files.Add(Asset.Included.Where(x => x.Path.StartsWith("~", StringComparison.Ordinal) || x.Path.StartsWith("/", StringComparison.Ordinal)).Select(x => new BundleFile(x.Path, new VirtualFileHack(x.Path))));
                 }
             }
             Response.Content = Content;

@@ -31,14 +31,6 @@ namespace Utilities.DataTypes.DataMapper.Default
     public class DataMapper : DataMapperBase
     {
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public DataMapper()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// The name of the data mapper
         /// </summary>
         public override string Name { get { return "Default"; } }

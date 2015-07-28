@@ -33,7 +33,51 @@ namespace Utilities.Random.StringGenerators
     /// </summary>
     public class LoremIpsumGenerator : GeneratorAttributeBase, IGenerator<string>
     {
-        private string[] Words = new string[] { "consetetur", "sadipscing", "elitr", "sed", "diam", "nonumy", "eirmod",
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="NumberOfParagraphs">Number of paragraphs</param>
+        /// <param name="MaxSentenceLength">Maximum sentence length</param>
+        /// <param name="MinSentenceLength">Minimum sentence length</param>
+        /// <param name="NumberOfSentences">Number of sentences per paragraph</param>
+        /// <param name="HTMLFormatting">Determines if this should use HTML formatting or not</param>
+        public LoremIpsumGenerator(int NumberOfParagraphs = 1, int NumberOfSentences = 1,
+            int MinSentenceLength = 4, int MaxSentenceLength = 10, bool HTMLFormatting = false)
+            : base("", "")
+        {
+            this.NumberOfParagraphs = NumberOfParagraphs;
+            this.NumberOfSentences = NumberOfSentences;
+            this.MinSentenceLength = MinSentenceLength;
+            this.MaxSentenceLength = MaxSentenceLength;
+            this.HTMLFormatting = HTMLFormatting;
+        }
+
+        /// <summary>
+        /// Should the sentence use HTML formatting?
+        /// </summary>
+        public virtual bool HTMLFormatting { get; protected set; }
+
+        /// <summary>
+        /// Maximum sentence length
+        /// </summary>
+        public virtual int MaxSentenceLength { get; protected set; }
+
+        /// <summary>
+        /// Minimum sentence length
+        /// </summary>
+        public virtual int MinSentenceLength { get; protected set; }
+
+        /// <summary>
+        /// Number of paragraphs
+        /// </summary>
+        public virtual int NumberOfParagraphs { get; protected set; }
+
+        /// <summary>
+        /// Number of sentences
+        /// </summary>
+        public virtual int NumberOfSentences { get; protected set; }
+
+        private string[] Words = { "consetetur", "sadipscing", "elitr", "sed", "diam", "nonumy", "eirmod",
         "tempor", "invidunt", "ut", "labore", "et", "dolore", "magna", "aliquyam", "erat", "sed", "diam", "voluptua",
         "at", "vero", "eos", "et", "accusam", "et", "justo", "duo", "dolores", "et", "ea", "rebum", "stet", "clita",
         "kasd", "gubergren", "no", "sea", "takimata", "sanctus", "est", "lorem", "ipsum", "dolor", "sit", "amet",
@@ -78,50 +122,6 @@ namespace Utilities.Random.StringGenerators
         "nonumy", "eirmod", "tempor", "invidunt", "ut", "labore", "et", "dolore", "magna", "aliquyam", "erat", "sed",
         "diam", "voluptua", "at", "vero", "eos", "et", "accusam", "et", "justo", "duo", "dolores", "et", "ea",
         "rebum", "stet", "clita", "kasd", "gubergren", "no", "sea", "takimata", "sanctus", "est", "lorem", "ipsum" };
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="NumberOfParagraphs">Number of paragraphs</param>
-        /// <param name="MaxSentenceLength">Maximum sentence length</param>
-        /// <param name="MinSentenceLength">Minimum sentence length</param>
-        /// <param name="NumberOfSentences">Number of sentences per paragraph</param>
-        /// <param name="HTMLFormatting">Determines if this should use HTML formatting or not</param>
-        public LoremIpsumGenerator(int NumberOfParagraphs = 1, int NumberOfSentences = 1,
-            int MinSentenceLength = 4, int MaxSentenceLength = 10, bool HTMLFormatting = false)
-            : base("", "")
-        {
-            this.NumberOfParagraphs = NumberOfParagraphs;
-            this.NumberOfSentences = NumberOfSentences;
-            this.MinSentenceLength = MinSentenceLength;
-            this.MaxSentenceLength = MaxSentenceLength;
-            this.HTMLFormatting = HTMLFormatting;
-        }
-
-        /// <summary>
-        /// Should the sentence use HTML formatting?
-        /// </summary>
-        public virtual bool HTMLFormatting { get; protected set; }
-
-        /// <summary>
-        /// Maximum sentence length
-        /// </summary>
-        public virtual int MaxSentenceLength { get; protected set; }
-
-        /// <summary>
-        /// Minimum sentence length
-        /// </summary>
-        public virtual int MinSentenceLength { get; protected set; }
-
-        /// <summary>
-        /// Number of paragraphs
-        /// </summary>
-        public virtual int NumberOfParagraphs { get; protected set; }
-
-        /// <summary>
-        /// Number of sentences
-        /// </summary>
-        public virtual int NumberOfSentences { get; protected set; }
 
         /// <summary>
         /// Generates a random value of the specified type

@@ -29,14 +29,6 @@ namespace Utilities.IO.FileSystem.Default
     public class AbsoluteLocalFileSystem : LocalFileSystemBase
     {
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public AbsoluteLocalFileSystem()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Name of the file system
         /// </summary>
         public override string Name { get { return "Absolute Local"; } }

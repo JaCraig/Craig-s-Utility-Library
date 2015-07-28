@@ -31,14 +31,6 @@ namespace Utilities.IO.Compression.Default
     public class DeflateCompressor : CompressorBase
     {
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public DeflateCompressor()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Name
         /// </summary>
         public override string Name

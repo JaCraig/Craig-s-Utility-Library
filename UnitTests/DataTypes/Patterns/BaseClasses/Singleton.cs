@@ -60,10 +60,6 @@ namespace UnitTests.DataTypes.Patterns.BaseClasses
 
     public class TestClass2 : Singleton<TestClass2>
     {
-        public TestClass2()
-        {
-        }
-
         public void Function()
         {
         }

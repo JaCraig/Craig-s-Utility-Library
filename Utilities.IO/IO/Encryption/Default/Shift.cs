@@ -29,14 +29,6 @@ namespace Utilities.IO.Encryption.Default
     public class Shift : ShiftBase
     {
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public Shift()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Name
         /// </summary>
         public override string Name

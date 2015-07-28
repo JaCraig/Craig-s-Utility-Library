@@ -50,15 +50,15 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
                 AssemblyDirectory;
             this.AssemblyName = AssemblyName;
             this.Optimize = Optimize;
-            this.Classes = new List<Type>();
-            System.IO.FileInfo CurrentFile = new System.IO.FileInfo(this.AssemblyDirectory + "\\" + this.AssemblyName + ".dll");
-            this.RegenerateAssembly = (!CurrentFile.Exists
+            Classes = new List<Type>();
+            var CurrentFile = new FileInfo(this.AssemblyDirectory + "\\" + this.AssemblyName + ".dll");
+            RegenerateAssembly = (!CurrentFile.Exists
                                       || AppDomain.CurrentDomain.GetAssemblies()
                                                                 .Where(x => !x.FullName.Contains("vshost32") && !x.IsDynamic && !string.IsNullOrEmpty(x.Location))
                                                                 .Any(x => new System.IO.FileInfo(x.Location).LastWriteTime > CurrentFile.LastWriteTime));
             if (string.IsNullOrEmpty(this.AssemblyDirectory)
-                || !new System.IO.FileInfo(this.AssemblyDirectory + "\\" + this.AssemblyName + ".dll").Exists
-                || this.RegenerateAssembly)
+                || !new FileInfo(this.AssemblyDirectory + "\\" + this.AssemblyName + ".dll").Exists
+                || RegenerateAssembly)
             {
                 AssemblyStream = new MemoryStream();
             }

@@ -76,7 +76,7 @@ namespace Utilities.IO.Encryption.BaseClasses
         public byte[] Decrypt(byte[] Data, DeriveBytes Key, string Algorithm = "AES", string InitialVector = "OFRna73m*aze01xY", int KeySize = 256)
         {
             if (string.IsNullOrEmpty(InitialVector))
-                throw new ArgumentNullException("InitialVector");
+                throw new ArgumentNullException(nameof(InitialVector));
             if (Data == null)
                 return null;
             using (SymmetricAlgorithm SymmetricKey = GetProvider(Algorithm))
@@ -159,7 +159,7 @@ namespace Utilities.IO.Encryption.BaseClasses
         public byte[] Encrypt(byte[] Data, DeriveBytes Key, string Algorithm = "AES", string InitialVector = "OFRna73m*aze01xY", int KeySize = 256)
         {
             if (string.IsNullOrEmpty(InitialVector))
-                throw new ArgumentNullException("InitialVector");
+                throw new ArgumentNullException(nameof(InitialVector));
             if (Data == null)
                 return null;
             using (SymmetricAlgorithm SymmetricKey = GetProvider(Algorithm))

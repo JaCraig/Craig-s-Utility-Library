@@ -20,14 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,64 +34,6 @@ using Utilities.Media.Procedural;
 
 namespace Utilities.Media
 {
-    /// <summary>
-    /// Enum defining alignment
-    /// </summary>
-    public enum Align
-    {
-        /// <summary>
-        /// Top
-        /// </summary>
-        Top,
-
-        /// <summary>
-        /// Bottom
-        /// </summary>
-        Bottom,
-
-        /// <summary>
-        /// Left
-        /// </summary>
-        Left,
-
-        /// <summary>
-        /// Right
-        /// </summary>
-        Right
-    }
-
-    /// <summary>
-    /// Direction
-    /// </summary>
-    public enum Direction
-    {
-        /// <summary>
-        /// Top to bottom
-        /// </summary>
-        TopBottom = 0,
-
-        /// <summary>
-        /// Left to right
-        /// </summary>
-        LeftRight
-    };
-
-    /// <summary>
-    /// Enum defining quality
-    /// </summary>
-    public enum Quality
-    {
-        /// <summary>
-        /// High
-        /// </summary>
-        High,
-
-        /// <summary>
-        /// Low
-        /// </summary>
-        Low
-    }
-
     /// <summary>
     /// SwiftBitmap extensions
     /// </summary>
@@ -110,9 +50,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="Image">The image to add noise to</param>
         /// <param name="Amount">Amount of noise to add (defaults to 10)</param>
-        /// <returns>
-        /// New SwiftBitmap object with the noise added
-        /// </returns>
+        /// <returns>New SwiftBitmap object with the noise added</returns>
         public static SwiftBitmap AddNoise(this SwiftBitmap Image, int Amount = 10)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
@@ -137,9 +75,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="Image">Image to change</param>
         /// <param name="Value">The value.</param>
-        /// <returns>
-        /// Modified Image object
-        /// </returns>
+        /// <returns>Modified Image object</returns>
         public static SwiftBitmap AdjustBrightness(this SwiftBitmap Image, int Value = 0)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
@@ -158,9 +94,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="OriginalImage">Image to change</param>
         /// <param name="Value">Used to set the contrast (-100 to 100)</param>
-        /// <returns>
-        /// A SwiftBitmap object
-        /// </returns>
+        /// <returns>A SwiftBitmap object</returns>
         public static SwiftBitmap AdjustContrast(this SwiftBitmap OriginalImage, float Value = 0)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
@@ -192,9 +126,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="OriginalImage">Image to change</param>
         /// <param name="Value">Used to build the gamma ramp (usually .2 to 5)</param>
-        /// <returns>
-        /// A SwiftBitmap object
-        /// </returns>
+        /// <returns>A SwiftBitmap object</returns>
         public static SwiftBitmap AdjustGamma(this SwiftBitmap OriginalImage, float Value = 1.0f)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
@@ -222,9 +154,7 @@ namespace Utilities.Media
         /// Converts an SwiftBitmap to black and white
         /// </summary>
         /// <param name="Image">Image to change</param>
-        /// <returns>
-        /// A SwiftBitmap object of the black and white image
-        /// </returns>
+        /// <returns>A SwiftBitmap object of the black and white image</returns>
         public static SwiftBitmap BlackAndWhite(this SwiftBitmap Image)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
@@ -241,9 +171,7 @@ namespace Utilities.Media
         /// Gets the blue filter for an image
         /// </summary>
         /// <param name="Image">Image to change</param>
-        /// <returns>
-        /// A SwiftBitmap object
-        /// </returns>
+        /// <returns>A SwiftBitmap object</returns>
         public static SwiftBitmap BlueFilter(this SwiftBitmap Image)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
@@ -261,9 +189,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="Image">Image to manipulate</param>
         /// <param name="Size">Size of the aperture</param>
-        /// <returns>
-        /// A SwiftBitmap object
-        /// </returns>
+        /// <returns>A SwiftBitmap object</returns>
         public static SwiftBitmap BoxBlur(this SwiftBitmap Image, int Size = 3)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
@@ -336,9 +262,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="OriginalImage">Black and white image</param>
         /// <param name="Colors">Color array to use for the image</param>
-        /// <returns>
-        /// The colorized image
-        /// </returns>
+        /// <returns>The colorized image</returns>
         public static SwiftBitmap Colorize(this SwiftBitmap OriginalImage, Color[] Colors)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
@@ -362,9 +286,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="OriginalImage">Image to manipulate</param>
         /// <param name="Size">Size of the aperture</param>
-        /// <returns>
-        /// A SwiftBitmap object of the resulting image
-        /// </returns>
+        /// <returns>A SwiftBitmap object of the resulting image</returns>
         public static SwiftBitmap Dilate(this SwiftBitmap OriginalImage, int Size)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
@@ -417,14 +339,11 @@ namespace Utilities.Media
         /// <param name="Height">Height of the box</param>
         /// <param name="Width">Width of the box</param>
         /// <param name="CornerRadius">Radius of the corners</param>
-        /// <returns>
-        /// The SwiftBitmap with the rounded box on it
-        /// </returns>
+        /// <returns>The SwiftBitmap with the rounded box on it</returns>
         public static SwiftBitmap DrawRoundedRectangle(this SwiftBitmap Image, Color BoxColor, int XPosition, int YPosition,
             int Height, int Width, int CornerRadius)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
-            Contract.Requires<ArgumentNullException>(BoxColor != null, "BoxColor");
             using (Pen BoxPen = new Pen(BoxColor))
             {
                 using (GraphicsPath Path = new GraphicsPath())
@@ -450,13 +369,10 @@ namespace Utilities.Media
         /// <param name="OriginalImage">Image to do edge detection on</param>
         /// <param name="Threshold">Decides what is considered an edge</param>
         /// <param name="EdgeColor">Color of the edge</param>
-        /// <returns>
-        /// A SwiftBitmap which has the edges drawn on it
-        /// </returns>
+        /// <returns>A SwiftBitmap which has the edges drawn on it</returns>
         public static SwiftBitmap EdgeDetection(this SwiftBitmap OriginalImage, float Threshold, Color EdgeColor)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
-            Contract.Requires<ArgumentNullException>(EdgeColor != null, "EdgeColor");
             using (SwiftBitmap NewImage = (SwiftBitmap)OriginalImage.Clone())
             {
                 NewImage.Lock();
@@ -495,9 +411,7 @@ namespace Utilities.Media
         /// Emboss function
         /// </summary>
         /// <param name="Image">Image to manipulate</param>
-        /// <returns>
-        /// A SwiftBitmap image
-        /// </returns>
+        /// <returns>A SwiftBitmap image</returns>
         public static SwiftBitmap Emboss(this SwiftBitmap Image)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
@@ -512,9 +426,7 @@ namespace Utilities.Media
         /// Uses an RGB histogram to equalize the image
         /// </summary>
         /// <param name="OriginalImage">Image to manipulate</param>
-        /// <returns>
-        /// The resulting SwiftBitmap image
-        /// </returns>
+        /// <returns>The resulting SwiftBitmap image</returns>
         public static SwiftBitmap Equalize(this SwiftBitmap OriginalImage)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
@@ -548,9 +460,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="Image">Image to manipulate</param>
         /// <param name="Size">Size of the aperture</param>
-        /// <returns>
-        /// The resulting SwiftBitmap
-        /// </returns>
+        /// <returns>The resulting SwiftBitmap</returns>
         public static SwiftBitmap GaussianBlur(this SwiftBitmap Image, int Size = 3)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
@@ -561,9 +471,7 @@ namespace Utilities.Media
         /// Gets the Green filter for an image
         /// </summary>
         /// <param name="Image">Image to change</param>
-        /// <returns>
-        /// A SwiftBitmap object
-        /// </returns>
+        /// <returns>A SwiftBitmap object</returns>
         public static SwiftBitmap GreenFilter(this SwiftBitmap Image)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
@@ -581,9 +489,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="OriginalImage">Image to manipulate</param>
         /// <param name="MaxJitter">Maximum number of pixels the item can move</param>
-        /// <returns>
-        /// A SwiftBitmap object
-        /// </returns>
+        /// <returns>A SwiftBitmap object</returns>
         public static SwiftBitmap Jitter(this SwiftBitmap OriginalImage, int MaxJitter = 5)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
@@ -615,9 +521,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="OriginalImage">Image to manipulate</param>
         /// <param name="Size">Size of the aperture</param>
-        /// <returns>
-        /// A SwiftBitmap object
-        /// </returns>
+        /// <returns>A SwiftBitmap object</returns>
         public static SwiftBitmap KuwaharaBlur(this SwiftBitmap OriginalImage, int Size = 3)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
@@ -709,9 +613,7 @@ namespace Utilities.Media
         /// Laplace edge detection function
         /// </summary>
         /// <param name="Image">Image to manipulate</param>
-        /// <returns>
-        /// A SwiftBitmap object
-        /// </returns>
+        /// <returns>A SwiftBitmap object</returns>
         public static SwiftBitmap LaplaceEdgeDetection(this SwiftBitmap Image)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
@@ -729,9 +631,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="OriginalImage">Image to manipulate</param>
         /// <param name="Size">Size of the aperture</param>
-        /// <returns>
-        /// A SwiftBitmap image
-        /// </returns>
+        /// <returns>A SwiftBitmap image</returns>
         public static SwiftBitmap MedianFilter(this SwiftBitmap OriginalImage, int Size = 3)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
@@ -783,9 +683,7 @@ namespace Utilities.Media
         /// gets the negative of the image
         /// </summary>
         /// <param name="OriginalImage">Image to manipulate</param>
-        /// <returns>
-        /// A SwiftBitmap image
-        /// </returns>
+        /// <returns>A SwiftBitmap image</returns>
         public static SwiftBitmap Negative(this SwiftBitmap OriginalImage)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
@@ -864,9 +762,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="OriginalImage">Image to pixelate</param>
         /// <param name="PixelSize">Size of the "pixels" in pixels</param>
-        /// <returns>
-        /// A SwiftBitmap image
-        /// </returns>
+        /// <returns>A SwiftBitmap image</returns>
         public static SwiftBitmap Pixelate(this SwiftBitmap OriginalImage, int PixelSize = 5)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
@@ -917,9 +813,7 @@ namespace Utilities.Media
         /// Gets the Red filter for an image
         /// </summary>
         /// <param name="Image">Image to change</param>
-        /// <returns>
-        /// A SwiftBitmap image
-        /// </returns>
+        /// <returns>A SwiftBitmap image</returns>
         public static SwiftBitmap RedFilter(this SwiftBitmap Image)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
@@ -936,9 +830,7 @@ namespace Utilities.Media
         /// Converts an SwiftBitmap to sepia tone
         /// </summary>
         /// <param name="Image">Image to change</param>
-        /// <returns>
-        /// A SwiftBitmap object of the sepia tone image
-        /// </returns>
+        /// <returns>A SwiftBitmap object of the sepia tone image</returns>
         public static SwiftBitmap SepiaTone(this SwiftBitmap Image)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
@@ -955,9 +847,7 @@ namespace Utilities.Media
         /// Sharpens an image
         /// </summary>
         /// <param name="Image">Image to manipulate</param>
-        /// <returns>
-        /// A SwiftBitmap image
-        /// </returns>
+        /// <returns>A SwiftBitmap image</returns>
         public static SwiftBitmap Sharpen(this SwiftBitmap Image)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
@@ -972,9 +862,7 @@ namespace Utilities.Media
         /// Sharpens an image
         /// </summary>
         /// <param name="Image">Image to manipulate</param>
-        /// <returns>
-        /// A SwiftBitmap image
-        /// </returns>
+        /// <returns>A SwiftBitmap image</returns>
         public static SwiftBitmap SharpenLess(this SwiftBitmap Image)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
@@ -993,9 +881,7 @@ namespace Utilities.Media
         /// <param name="Frequency">Frequency of the sine wave</param>
         /// <param name="XDirection">Determines if this should be done in the X direction</param>
         /// <param name="YDirection">Determines if this should be done in the Y direction</param>
-        /// <returns>
-        /// A SwiftBitmap which has been modified
-        /// </returns>
+        /// <returns>A SwiftBitmap which has been modified</returns>
         public static SwiftBitmap SinWave(this SwiftBitmap OriginalImage, float Amplitude, float Frequency, bool XDirection, bool YDirection)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
@@ -1038,9 +924,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="OriginalImage">Image to manipulate</param>
         /// <param name="Size">Size of the aperture</param>
-        /// <returns>
-        /// The resulting SwiftBitmap
-        /// </returns>
+        /// <returns>The resulting SwiftBitmap</returns>
         public static SwiftBitmap SNNBlur(this SwiftBitmap OriginalImage, int Size = 3)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
@@ -1110,9 +994,7 @@ namespace Utilities.Media
         /// Sobel edge detection function
         /// </summary>
         /// <param name="Input">Image to manipulate</param>
-        /// <returns>
-        /// A SwiftBitmap image
-        /// </returns>
+        /// <returns>A SwiftBitmap image</returns>
         public static SwiftBitmap SobelEdgeDetection(this SwiftBitmap Input)
         {
             Contract.Requires<ArgumentNullException>(Input != null, "Input");
@@ -1161,9 +1043,7 @@ namespace Utilities.Media
         /// Sobel emboss function
         /// </summary>
         /// <param name="Image">Image to manipulate</param>
-        /// <returns>
-        /// A SwiftBitmap image
-        /// </returns>
+        /// <returns>A SwiftBitmap image</returns>
         public static SwiftBitmap SobelEmboss(this SwiftBitmap Image)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
@@ -1178,9 +1058,7 @@ namespace Utilities.Media
         /// Stretches the contrast
         /// </summary>
         /// <param name="OriginalImage">Image to manipulate</param>
-        /// <returns>
-        /// A SwiftBitmap image
-        /// </returns>
+        /// <returns>A SwiftBitmap image</returns>
         public static SwiftBitmap StretchContrast(this SwiftBitmap OriginalImage)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
@@ -1213,10 +1091,10 @@ namespace Utilities.Media
         /// Does threshold manipulation of the image
         /// </summary>
         /// <param name="OriginalImage">Image to transform</param>
-        /// <param name="Threshold">Float defining the threshold at which to set the pixel to black vs white.</param>
-        /// <returns>
-        /// A SwiftBitmap object containing the new image
-        /// </returns>
+        /// <param name="Threshold">
+        /// Float defining the threshold at which to set the pixel to black vs white.
+        /// </param>
+        /// <returns>A SwiftBitmap object containing the new image</returns>
         public static SwiftBitmap Threshold(this SwiftBitmap OriginalImage, float Threshold = 0.5f)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
@@ -1286,9 +1164,7 @@ namespace Utilities.Media
         /// <param name="Roughness">Roughness of the movement</param>
         /// <param name="Power">How strong the movement is</param>
         /// <param name="Seed">Random seed</param>
-        /// <returns>
-        /// A SwiftBitmap object containing the new image
-        /// </returns>
+        /// <returns>A SwiftBitmap object containing the new image</returns>
         public static SwiftBitmap Turbulence(this SwiftBitmap OriginalImage, int Roughness = 8, float Power = 5.0f, int Seed = 25123864)
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
@@ -1329,13 +1205,15 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="Image">image to add the watermark to</param>
         /// <param name="WatermarkImage">Watermark image</param>
-        /// <param name="Opacity">Opacity of the watermark (1.0 to 0.0 with 1 being completely visible and 0 being invisible)</param>
+        /// <param name="Opacity">
+        /// Opacity of the watermark (1.0 to 0.0 with 1 being completely visible and 0 being invisible)
+        /// </param>
         /// <param name="X">X position in pixels for the watermark</param>
         /// <param name="Y">Y position in pixels for the watermark</param>
-        /// <param name="KeyColor">Transparent color used in watermark image, set to null if not used</param>
-        /// <returns>
-        /// The results in the form of a SwiftBitmap object
-        /// </returns>
+        /// <param name="KeyColor">
+        /// Transparent color used in watermark image, set to null if not used
+        /// </param>
+        /// <returns>The results in the form of a SwiftBitmap object</returns>
         public static SwiftBitmap Watermark(this SwiftBitmap Image, SwiftBitmap WatermarkImage, float Opacity, int X, int Y, Color KeyColor)
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
@@ -1352,16 +1230,13 @@ namespace Utilities.Media
                             new float[] {0, 0, 0, 0, 1}
                         };
 
-                    System.Drawing.Imaging.ColorMatrix NewColorMatrix = new System.Drawing.Imaging.ColorMatrix(FloatColorMatrix);
+                    var NewColorMatrix = new ColorMatrix(FloatColorMatrix);
                     using (ImageAttributes Attributes = new ImageAttributes())
                     {
                         Attributes.SetColorMatrix(NewColorMatrix);
-                        if (KeyColor != null)
-                        {
-                            Attributes.SetColorKey(KeyColor, KeyColor);
-                        }
+                        Attributes.SetColorKey(KeyColor, KeyColor);
                         NewGraphics.DrawImage(WatermarkImage.InternalBitmap,
-                            new System.Drawing.Rectangle(X, Y, WatermarkImage.Width, WatermarkImage.Height),
+                            new Rectangle(X, Y, WatermarkImage.Width, WatermarkImage.Height),
                             0, 0, WatermarkImage.Width, WatermarkImage.Height,
                             GraphicsUnit.Pixel,
                             Attributes);
@@ -1424,5 +1299,63 @@ namespace Utilities.Media
             TempVal /= (double)(Max - Min);
             return ((int)(TempVal * 255)).Clamp(255, 0);
         }
+    }
+
+    /// <summary>
+    /// Enum defining alignment
+    /// </summary>
+    public enum Align
+    {
+        /// <summary>
+        /// Top
+        /// </summary>
+        Top,
+
+        /// <summary>
+        /// Bottom
+        /// </summary>
+        Bottom,
+
+        /// <summary>
+        /// Left
+        /// </summary>
+        Left,
+
+        /// <summary>
+        /// Right
+        /// </summary>
+        Right
+    }
+
+    /// <summary>
+    /// Direction
+    /// </summary>
+    public enum Direction
+    {
+        /// <summary>
+        /// Top to bottom
+        /// </summary>
+        TopBottom = 0,
+
+        /// <summary>
+        /// Left to right
+        /// </summary>
+        LeftRight
+    };
+
+    /// <summary>
+    /// Enum defining quality
+    /// </summary>
+    public enum Quality
+    {
+        /// <summary>
+        /// High
+        /// </summary>
+        High,
+
+        /// <summary>
+        /// Low
+        /// </summary>
+        Low
     }
 }

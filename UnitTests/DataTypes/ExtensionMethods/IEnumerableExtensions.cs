@@ -51,7 +51,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ForEachParallelTest()
         {
             ConcurrentBag<int> Builder = new ConcurrentBag<int>();
-            int[] Temp = new int[] { 0, 0, 1, 2, 3 };
+            int[] Temp = { 0, 0, 1, 2, 3 };
             Temp.ForEachParallel(x => Builder.Add(x));
             Assert.Equal(5, Builder.Count);
             string OrderedString = new string(Builder.OrderBy(x => x).ToString(x => x.ToString(), "").ToArray());
@@ -62,7 +62,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ForEachParallelTest2()
         {
             StringBuilder Builder = new StringBuilder();
-            int[] Temp = new int[] { 0, 0, 1, 2, 3 };
+            int[] Temp = { 0, 0, 1, 2, 3 };
             IEnumerable<string> Values = Temp.ForEachParallel(x => x.ToString());
             Assert.Equal(5, Values.Count());
             Values.ForEach<string>(x => Builder.Append(x));
@@ -74,7 +74,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ForEachTest()
         {
             StringBuilder Builder = new StringBuilder();
-            int[] Temp = new int[] { 0, 0, 1, 2, 3 };
+            int[] Temp = { 0, 0, 1, 2, 3 };
             Temp.ForEach<int>(x => Builder.Append(x));
             Assert.Equal("00123", Builder.ToString());
         }
@@ -83,7 +83,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ForEachTest2()
         {
             StringBuilder Builder = new StringBuilder();
-            int[] Temp = new int[] { 0, 0, 1, 2, 3 };
+            int[] Temp = { 0, 0, 1, 2, 3 };
             Temp.ForEach(x => x.ToString()).ForEach<string>(x => Builder.Append(x));
             Assert.Equal("00123", Builder.ToString());
         }
@@ -99,7 +99,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ForParallelTest()
         {
             StringBuilder Builder = new StringBuilder(30);
-            int[] Temp = new int[] { 0, 0, 1, 2, 3 };
+            int[] Temp = { 0, 0, 1, 2, 3 };
             Temp.ForParallel(0, Temp.Length - 1, x => Builder.Append(x));
             Assert.Equal(5, Builder.ToString().Length);
             string OrderedString = new string(Builder.ToString().OrderBy(x => x).ToArray());
@@ -110,7 +110,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ForParallelTest2()
         {
             StringBuilder Builder = new StringBuilder();
-            int[] Temp = new int[] { 0, 0, 1, 2, 3 };
+            int[] Temp = { 0, 0, 1, 2, 3 };
             IEnumerable<string> Values = Temp.ForParallel(0, Temp.Length - 1, x => x.ToString());
             Assert.Equal(5, Values.Count());
             Values.ForEach<string>(x => Builder.Append(x));
@@ -122,7 +122,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ForTest()
         {
             StringBuilder Builder = new StringBuilder();
-            int[] Temp = new int[] { 0, 0, 1, 2, 3 };
+            int[] Temp = { 0, 0, 1, 2, 3 };
             Temp.For<int>(0, Temp.Length - 1, x => Builder.Append(x));
             Assert.Equal("00123", Builder.ToString());
         }

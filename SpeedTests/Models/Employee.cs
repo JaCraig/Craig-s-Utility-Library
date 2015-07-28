@@ -20,11 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using SpeedTests.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Utilities.Random.ContactInfoGenerators;
 using Utilities.Random.DefaultClasses;
 using Utilities.Random.NameGenerators;
@@ -36,14 +31,6 @@ namespace SpeedTests.Models
     /// </summary>
     public class Employee : Utilities.ORM.ObjectBaseClass<Employee, long>
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public Employee()
-            : base()
-        {
-        }
-
         /// <summary>
         /// City generator
         /// </summary>

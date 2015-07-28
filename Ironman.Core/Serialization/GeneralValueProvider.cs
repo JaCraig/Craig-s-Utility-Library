@@ -19,19 +19,15 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
+using Ironman.Core.Serialization.BaseClasses;
 using System;
 using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Ironman.Core.Serialization.BaseClasses;
 using Utilities.DataTypes;
 using Utilities.IO;
-
-#endregion Usings
 
 namespace Ironman.Core.Serialization
 {
@@ -41,7 +37,7 @@ namespace Ironman.Core.Serialization
     public class GeneralValueProvider : VPFactoryBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="GeneralValueProvider" /> class.
+        /// Initializes a new instance of the <see cref="GeneralValueProvider"/> class.
         /// </summary>
         /// <param name="Manager">The manager.</param>
         public GeneralValueProvider(Utilities.IO.Serializers.Manager Manager)
@@ -75,7 +71,7 @@ namespace Ironman.Core.Serialization
         public override IValueProvider GetValueProvider(ControllerContext controllerContext)
         {
             if (controllerContext == null)
-                throw new ArgumentNullException("controllerContext");
+                throw new ArgumentNullException(nameof(controllerContext));
             HttpRequestBase Request = controllerContext.HttpContext.Request;
             if (string.IsNullOrEmpty(Request.ContentType))
                 return null;

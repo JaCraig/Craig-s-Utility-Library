@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
@@ -44,7 +43,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         public void FillDatabase(IEnumerable<dynamic> values, Database database)
         {
             if (database == null)
-                throw new ArgumentNullException("database");
+                throw new ArgumentNullException(nameof(database));
             if (values == null || values.Count() == 0)
                 return;
             foreach (dynamic Item in values)
@@ -60,7 +59,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         public void GetCommand(IBatch batch)
         {
             if (batch == null)
-                throw new ArgumentNullException("batch");
+                throw new ArgumentNullException(nameof(batch));
             batch.AddCommand(null, null, CommandType.Text, @"SELECT sys.procedures.name as [Procedure],sys.systypes.name as TYPE,sys.parameters.name as NAME,
 sys.parameters.max_length as LENGTH,sys.parameters.default_value as [DEFAULT VALUE]
 FROM sys.procedures
@@ -77,9 +76,9 @@ WHERE sys.systypes.xusertype <> 256");
         private static void SetupStoredProcedures(ITable storedProcedure, dynamic item)
         {
             if (storedProcedure == null)
-                throw new ArgumentNullException("storedProcedure");
+                throw new ArgumentNullException(nameof(storedProcedure));
             if (item == null)
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
             string Type = item.TYPE;
             string Name = item.NAME;
             int Length = item.LENGTH;

@@ -92,8 +92,6 @@ namespace Utilities.Media
             Width = InternalBitmap.Width;
         }
 
-        private IEnumerable<string> htmlPalette_;
-
         /// <summary>
         /// Gets or sets the height.
         /// </summary>
@@ -162,6 +160,8 @@ namespace Utilities.Media
         /// </summary>
         /// <value>The size of the pixel.</value>
         protected int PixelSize { get; private set; }
+
+        private IEnumerable<string> htmlPalette_;
 
         /// <summary>
         /// Implements the operator &amp;.
@@ -451,7 +451,6 @@ namespace Utilities.Media
         {
             Contract.Requires<ArgumentNullException>(FontToUse != null, "FontToUse");
             Contract.Requires<ArgumentNullException>(BrushUsing != null, "BrushUsing");
-            Contract.Requires<ArgumentNullException>(BoxToDrawWithin != null, "BoxToDrawWithin");
             Contract.Requires<NullReferenceException>(InternalBitmap != null);
             Unlock();
             using (Graphics TempGraphics = Graphics.FromImage(InternalBitmap))

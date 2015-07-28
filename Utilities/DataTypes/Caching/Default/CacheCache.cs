@@ -79,7 +79,7 @@ namespace Utilities.DataTypes.Caching.Default
             {
                 if (HttpContext.Current == null)
                     return new List<object>();
-                List<object> Temp = new List<object>();
+                var Temp = new List<object>();
                 foreach (string Key in Keys)
                 {
                     Temp.Add(HttpContext.Current.Cache[Key]);
@@ -162,7 +162,7 @@ namespace Utilities.DataTypes.Caching.Default
         {
             if (HttpContext.Current == null)
                 return new List<KeyValuePair<string, object>>().GetEnumerator();
-            List<KeyValuePair<string, object>> Temp = new List<KeyValuePair<string, object>>();
+            var Temp = new List<KeyValuePair<string, object>>();
             foreach (string Key in Keys)
             {
                 Temp.Add(new KeyValuePair<string, object>(Key, HttpContext.Current.Cache.Get(Key)));

@@ -26,7 +26,7 @@ using Xunit;
 
 namespace UnitTests.IO
 {
-    public class FileInfo:TestingDirectoryFixture
+    public class FileInfo : TestingDirectoryFixture
     {
         [Fact]
         public void Clone()
@@ -72,8 +72,8 @@ namespace UnitTests.IO
             Assert.True(File.Exists);
             Assert.Equal("Testing this out", File.Read());
             Assert.Equal("Testing this out", File);
-            Assert.Equal(ASCIIEncoding.ASCII.GetBytes("Testing this out"), File.ReadBinary());
-            Assert.Equal(ASCIIEncoding.ASCII.GetBytes("Testing this out"), File);
+            Assert.Equal(Encoding.ASCII.GetBytes("Testing this out"), File.ReadBinary());
+            Assert.Equal(Encoding.ASCII.GetBytes("Testing this out"), File);
             File.Delete();
         }
 

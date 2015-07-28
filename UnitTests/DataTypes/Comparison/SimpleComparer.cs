@@ -29,7 +29,7 @@ namespace UnitTests.DataTypes.Comparison
         [Fact]
         public void Compare()
         {
-            SimpleComparer<string> Comparer = new SimpleComparer<string>((x, y) => string.Compare(x, y));
+            SimpleComparer<string> Comparer = new SimpleComparer<string>((x, y) => string.Compare(x, y, System.StringComparison.Ordinal));
             Assert.Equal(0, Comparer.Compare("A", "A"));
             Assert.Equal(-1, Comparer.Compare("A", "B"));
             Assert.Equal(1, Comparer.Compare("B", "A"));

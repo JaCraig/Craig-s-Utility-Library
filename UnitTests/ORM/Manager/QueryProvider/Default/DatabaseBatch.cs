@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 using System;
 using System.Data;
 using System.Linq;
-using Utilities.ORM.Manager.Schema.Default.Database;
 using Xunit;
 
 namespace UnitTests.ORM.Manager.QueryProvider.Default
@@ -32,11 +31,6 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
     /// </summary>
     public class DatabaseBatch : DatabaseBaseClass
     {
-        public DatabaseBatch() :
-            base()
-        {
-        }
-
         [Fact]
         public void AddCommand()
         {

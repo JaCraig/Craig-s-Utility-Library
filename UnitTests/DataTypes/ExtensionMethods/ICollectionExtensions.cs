@@ -75,7 +75,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ForTest()
         {
             StringBuilder Builder = new StringBuilder();
-            int[] Temp = new int[] { 0, 0, 1, 2, 3 };
+            int[] Temp = { 0, 0, 1, 2, 3 };
             Temp.For(0, Temp.Length - 1, (x, y) => Builder.Append(y));
             Assert.Equal("00123", Builder.ToString());
             Builder = new StringBuilder();
@@ -87,7 +87,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ForTest2()
         {
             StringBuilder Builder = new StringBuilder();
-            int[] Temp = new int[] { 0, 0, 1, 2, 3 };
+            int[] Temp = { 0, 0, 1, 2, 3 };
             int[] Temp2 = Temp.For(0, Temp.Length - 1, (x, y) => x + y).ToArray();
             Assert.Equal(new int[] { 0, 1, 3, 5, 7 }, Temp2);
         }
@@ -102,7 +102,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void RemoveRange2()
         {
-            int[] TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
+            int[] TestObject = { 1, 2, 3, 4, 5, 6 };
             Assert.Equal(0, TestObject.Remove(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).Count);
             TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
             Assert.Equal(1, TestObject.Remove(new int[] { 1, 2, 3, 4, 5 }).Count);
@@ -123,7 +123,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void RemoveTest2()
         {
-            int[] TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
+            int[] TestObject = { 1, 2, 3, 4, 5, 6 };
             TestObject = TestObject.Remove((x) => x % 2 == 0).ToArray();
             Assert.Equal(3, TestObject.Count());
             foreach (int Item in TestObject)

@@ -34,14 +34,6 @@ namespace CUL.Serialization
     public class JsonSerializer : SerializerBase<string>
     {
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public JsonSerializer()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Content type (MIME type)
         /// </summary>
         public override string ContentType { get { return "application/json"; } }

@@ -107,30 +107,6 @@ namespace Utilities.IO
         protected IFile InternalFile { get; private set; }
 
         /// <summary>
-        /// Reads the file and converts it to a byte array
-        /// </summary>
-        /// <param name="File">File to read</param>
-        /// <returns>The file as a byte array</returns>
-        public static implicit operator byte[](FileInfo File)
-        {
-            if (File == null)
-                return new byte[0];
-            return File.ReadBinary();
-        }
-
-        /// <summary>
-        /// Reads the file and converts it to a string
-        /// </summary>
-        /// <param name="File">File to read</param>
-        /// <returns>The file as a string</returns>
-        public static implicit operator string(FileInfo File)
-        {
-            if (File == null)
-                return "";
-            return File.Read();
-        }
-
-        /// <summary>
         /// Determines if two directories are not equal
         /// </summary>
         /// <param name="File1">File 1</param>
@@ -206,6 +182,30 @@ namespace Utilities.IO
             if (File1 == null || File2 == null)
                 return false;
             return string.Compare(File1.FullName, File2.FullName, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        /// <summary>
+        /// Reads the file and converts it to a byte array
+        /// </summary>
+        /// <param name="File">File to read</param>
+        /// <returns>The file as a byte array</returns>
+        public static implicit operator byte[] (FileInfo File)
+        {
+            if (File == null)
+                return new byte[0];
+            return File.ReadBinary();
+        }
+
+        /// <summary>
+        /// Reads the file and converts it to a string
+        /// </summary>
+        /// <param name="File">File to read</param>
+        /// <returns>The file as a string</returns>
+        public static implicit operator string (FileInfo File)
+        {
+            if (File == null)
+                return "";
+            return File.Read();
         }
 
         /// <summary>
@@ -379,7 +379,7 @@ namespace Utilities.IO
         public T To<T, R>()
             where T : StringListFormatBase<T, R>, new()
         {
-            return StringListFormatBase<T, R>.Load(FullName);
+            return FormatBase<T, string>.Load(FullName);
         }
 
         /// <summary>

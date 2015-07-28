@@ -32,14 +32,6 @@ namespace Utilities.IO.Serializers.Default
     public class BinarySerializer : SerializerBase<byte[]>
     {
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public BinarySerializer()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Content type (MIME type)
         /// </summary>
         public override string ContentType { get { return "application/octet-stream"; } }

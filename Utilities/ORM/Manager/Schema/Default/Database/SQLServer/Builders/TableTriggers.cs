@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using Utilities.DataTypes;
@@ -46,7 +45,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         public void FillDatabase(IEnumerable<dynamic> values, Database database)
         {
             if (database == null)
-                throw new ArgumentNullException("database");
+                throw new ArgumentNullException(nameof(database));
             if (values == null || values.Count() == 0)
                 return;
             foreach (dynamic Item in values)
@@ -62,7 +61,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         public void GetCommand(IBatch batch)
         {
             if (batch == null)
-                throw new ArgumentNullException("batch");
+                throw new ArgumentNullException(nameof(batch));
             batch.AddCommand(null, null, CommandType.Text, @"SELECT sys.tables.name as [Table],sys.triggers.name as Name,sys.trigger_events.type as Type,
                                                                 OBJECT_DEFINITION(sys.triggers.object_id) as Definition
                                                                 FROM sys.triggers
@@ -78,9 +77,9 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         private static void SetupTriggers(ITable table, dynamic item)
         {
             if (item == null)
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
             if (table == null)
-                throw new ArgumentNullException("table");
+                throw new ArgumentNullException(nameof(table));
             string Name = item.Name;
             int Type = item.Type;
             string Definition = item.Definition;

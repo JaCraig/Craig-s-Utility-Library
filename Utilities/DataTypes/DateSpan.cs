@@ -32,13 +32,13 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Start">Start of the date span</param>
-        /// <param name="End">End of the date span</param>
-        public DateSpan(DateTime Start, DateTime End)
+        /// <param name="start">Start of the date span</param>
+        /// <param name="end">End of the date span</param>
+        public DateSpan(DateTime start, DateTime end)
         {
-            Contract.Requires<ArgumentException>(Start <= End, "Start is after End");
-            this.Start = Start;
-            this.End = End;
+            Contract.Requires<ArgumentException>(start <= end, "Start is after End");
+            Start = start;
+            End = end;
         }
 
         /// <summary>
@@ -87,17 +87,6 @@ namespace Utilities.DataTypes
         public virtual int Years { get { return (End - Start).Years(); } }
 
         /// <summary>
-        /// Converts the object to a string
-        /// </summary>
-        /// <param name="Value">Value to convert</param>
-        /// <returns>The value as a string</returns>
-        public static implicit operator string(DateSpan Value)
-        {
-            Contract.Requires<ArgumentNullException>(Value != null, "Value");
-            return Value.ToString();
-        }
-
-        /// <summary>
         /// Determines if two DateSpans are not equal
         /// </summary>
         /// <param name="Span1">Span 1</param>
@@ -140,6 +129,17 @@ namespace Utilities.DataTypes
             if ((object)Span1 == null || (object)Span2 == null)
                 return false;
             return Span1.Start == Span2.Start && Span1.End == Span2.End;
+        }
+
+        /// <summary>
+        /// Converts the object to a string
+        /// </summary>
+        /// <param name="Value">Value to convert</param>
+        /// <returns>The value as a string</returns>
+        public static implicit operator string (DateSpan Value)
+        {
+            Contract.Requires<ArgumentNullException>(Value != null, "Value");
+            return Value.ToString();
         }
 
         /// <summary>

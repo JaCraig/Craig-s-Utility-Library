@@ -97,10 +97,10 @@ namespace Utilities.IO
         /// <summary>
         /// Disposes of the objects
         /// </summary>
-        /// <param name="Disposing">
+        /// <param name="Managed">
         /// True to dispose of all resources, false only disposes of native resources
         /// </param>
-        protected override void Dispose(bool Disposing)
+        protected override void Dispose(bool Managed)
         {
             if (Attachments != null)
             {

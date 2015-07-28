@@ -31,14 +31,6 @@ namespace Utilities.IO.Compression.Default
     public class GZipCompressor : CompressorBase
     {
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public GZipCompressor()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Name
         /// </summary>
         public override string Name

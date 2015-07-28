@@ -37,7 +37,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
     /// <typeparam name="ClassType">Class type to map</typeparam>
     /// <typeparam name="IDType">ID type</typeparam>
     public abstract class APIMappingBaseClass<ClassType, IDType> : IAPIMapping<ClassType>, IAPIMapping
-        where ClassType : class,new()
+        where ClassType : class, new()
         where IDType : IComparable
     {
         /// <summary>
@@ -156,7 +156,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
                                                                    .ToArray());
                     string AbsoluteUri = HttpContext.Current != null ? HttpContext.Current.Request.Url.AbsoluteUri.Left(HttpContext.Current.Request.Url.AbsoluteUri.IndexOf('?')) : "";
                     AbsoluteUri = AbsoluteUri.Check("");
-                    if (!AbsoluteUri.EndsWith("/"))
+                    if (!AbsoluteUri.EndsWith("/", StringComparison.Ordinal))
                         AbsoluteUri += "/";
                     AbsoluteUri += Properties.FirstOrDefault(x => x is IID).GetValue(Mappings, Object).ToString() + "/";
                     foreach (IAPIProperty Property in Properties.Where(x => x is IMap))
@@ -181,7 +181,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
         public Dynamo Any(string ID, MappingHolder Mappings, params string[] EmbeddedProperties)
         {
             if (string.IsNullOrEmpty(ID))
-                throw new ArgumentNullException("ID");
+                throw new ArgumentNullException(nameof(ID));
             ClassType Object = AnyFunc(ID);
             if (!CanGetFunc(Object))
                 return null;
@@ -190,7 +190,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
                                                            .Select(x => x.Name)
                                                            .ToArray());
             string AbsoluteUri = HttpContext.Current != null ? HttpContext.Current.Request.Url.AbsoluteUri.Left(HttpContext.Current.Request.Url.AbsoluteUri.IndexOf('?')) : "";
-            if (!AbsoluteUri.EndsWith("/"))
+            if (!AbsoluteUri.EndsWith("/", StringComparison.Ordinal))
                 AbsoluteUri += "/";
             foreach (IAPIProperty Property in Properties.Where(x => x is IMap))
             {
@@ -239,7 +239,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
         public bool Delete(string ID)
         {
             if (string.IsNullOrEmpty(ID))
-                throw new ArgumentNullException("ID");
+                throw new ArgumentNullException(nameof(ID));
             ClassType DeleteValue = AnyFunc(ID);
             if (CanDeleteFunc(DeleteValue))
                 return DeleteFunc(DeleteValue);
@@ -257,7 +257,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
         public bool DeleteProperty(string ID, MappingHolder MappingHolder, string PropertyName, string PropertyID)
         {
             if (string.IsNullOrEmpty(ID))
-                throw new ArgumentNullException("ID");
+                throw new ArgumentNullException(nameof(ID));
             IAPIProperty PropertyObject = Properties.FirstOrDefault(x => string.Equals(x.Name, PropertyName, StringComparison.InvariantCultureIgnoreCase));
             if (PropertyObject == null)
                 return false;
@@ -278,7 +278,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
         public dynamic GetProperty(string ID, MappingHolder Mappings, string Property, params string[] EmbeddedProperties)
         {
             if (string.IsNullOrEmpty(ID))
-                throw new ArgumentNullException("ID");
+                throw new ArgumentNullException(nameof(ID));
             IAPIProperty PropertyObject = Properties.FirstOrDefault(x => string.Equals(x.Name, Property, StringComparison.InvariantCultureIgnoreCase));
             if (PropertyObject == null)
                 return null;
@@ -306,7 +306,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
         /// <param name="Expression">Expression pointing to the property</param>
         /// <returns>Map property object</returns>
         public IAPIProperty<ClassType, DataType> Map<DataType>(Expression<Func<ClassType, DataType>> Expression)
-            where DataType : class,new()
+            where DataType : class, new()
         {
             return (IAPIProperty<ClassType, DataType>)Properties.AddAndReturn(new Map<ClassType, DataType>(Expression));
         }
@@ -318,7 +318,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
         /// <param name="Expression">Expression pointing to the property</param>
         /// <returns>List Map property object</returns>
         public IAPIProperty<ClassType, IEnumerable<DataType>> MapList<DataType>(Expression<Func<ClassType, IEnumerable<DataType>>> Expression)
-            where DataType : class,new()
+            where DataType : class, new()
         {
             return (IAPIProperty<ClassType, IEnumerable<DataType>>)Properties.AddAndReturn(new MapList<ClassType, DataType>(Expression));
         }
@@ -380,7 +380,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
                                                                    .ToArray());
                     string AbsoluteUri = HttpContext.Current != null ? HttpContext.Current.Request.Url.AbsoluteUri.Left(HttpContext.Current.Request.Url.AbsoluteUri.IndexOf('?')) : "";
                     AbsoluteUri = AbsoluteUri.Check("");
-                    if (!AbsoluteUri.EndsWith("/"))
+                    if (!AbsoluteUri.EndsWith("/", StringComparison.Ordinal))
                         AbsoluteUri += "/";
                     AbsoluteUri += Properties.FirstOrDefault(x => x is IID).GetValue(Mappings, Object).ToString() + "/";
                     foreach (IAPIProperty Property in Properties.Where(x => x is IMap))
@@ -441,7 +441,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
         public bool SaveProperty(string ID, MappingHolder MappingHolder, string PropertyName, IEnumerable<Dynamo> Models)
         {
             if (string.IsNullOrEmpty(ID))
-                throw new ArgumentNullException("ID");
+                throw new ArgumentNullException(nameof(ID));
             IAPIProperty PropertyObject = Properties.FirstOrDefault(x => string.Equals(x.Name, PropertyName, StringComparison.InvariantCultureIgnoreCase));
             if (PropertyObject == null)
                 return false;

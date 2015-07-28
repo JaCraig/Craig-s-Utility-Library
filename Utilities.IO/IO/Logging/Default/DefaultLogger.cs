@@ -29,14 +29,6 @@ namespace Utilities.IO.Logging.Default
     public class DefaultLogger : LoggerBase
     {
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public DefaultLogger()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Name of the logger
         /// </summary>
         public override string Name

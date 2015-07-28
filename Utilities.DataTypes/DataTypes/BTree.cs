@@ -36,15 +36,15 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Root">Root of the binary tree</param>
-        public BinaryTree(TreeNode<T> Root = null)
+        /// <param name="root">Root of the binary tree</param>
+        public BinaryTree(TreeNode<T> root = null)
         {
             if (Root == null)
             {
                 NumberOfNodes = 0;
                 return;
             }
-            this.Root = Root;
+            Root = root;
             NumberOfNodes = Traversal(Root).Count();
         }
 
@@ -116,7 +116,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="Value">Value to convert</param>
         /// <returns>The value as a string</returns>
-        public static implicit operator string(BinaryTree<T> Value)
+        public static implicit operator string (BinaryTree<T> Value)
         {
             Contract.Requires<ArgumentNullException>(Value != null, "Value");
             return Value.ToString();
@@ -164,10 +164,8 @@ namespace Utilities.DataTypes
                 int ComparedValue = TempNode.Value.CompareTo(item);
                 if (ComparedValue == 0)
                     return true;
-                else if (ComparedValue < 0)
-                    TempNode = TempNode.Left;
                 else
-                    TempNode = TempNode.Right;
+                    TempNode = ComparedValue < 0 ? TempNode.Left : TempNode.Right;
             }
             return false;
         }
@@ -186,7 +184,7 @@ namespace Utilities.DataTypes
                 TempArray[Counter] = Value;
                 ++Counter;
             }
-            Array.Copy(TempArray, 0, array, arrayIndex, this.NumberOfNodes);
+            Array.Copy(TempArray, 0, array, arrayIndex, NumberOfNodes);
         }
 
         /// <summary>
@@ -212,7 +210,7 @@ namespace Utilities.DataTypes
             if (Item == null)
                 return false;
             --NumberOfNodes;
-            List<T> Values = new List<T>();
+            var Values = new List<T>();
             foreach (TreeNode<T> TempNode in Traversal(Item.Left))
                 Values.Add(TempNode.Value);
             foreach (TreeNode<T> TempNode in Traversal(Item.Right))
@@ -230,7 +228,7 @@ namespace Utilities.DataTypes
                 Root = null;
             }
             foreach (T Value in Values)
-                this.Add(Value);
+                Add(Value);
             return true;
         }
 
@@ -346,16 +344,16 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Value">Value of the node</param>
-        /// <param name="Parent">Parent node</param>
-        /// <param name="Left">Left node</param>
-        /// <param name="Right">Right node</param>
-        public TreeNode(T Value = default(T), TreeNode<T> Parent = null, TreeNode<T> Left = null, TreeNode<T> Right = null)
+        /// <param name="value">Value of the node</param>
+        /// <param name="parent">Parent node</param>
+        /// <param name="left">Left node</param>
+        /// <param name="right">Right node</param>
+        public TreeNode(T value = default(T), TreeNode<T> parent = null, TreeNode<T> left = null, TreeNode<T> right = null)
         {
-            this.Value = Value;
-            this.Right = Right;
-            this.Left = Left;
-            this.Parent = Parent;
+            Value = value;
+            Right = right;
+            Left = left;
+            Parent = parent;
         }
 
         /// <summary>

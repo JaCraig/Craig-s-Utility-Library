@@ -28,7 +28,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// Vector class (holds three items)
     /// </summary>
-    [Serializable()]
+    [Serializable]
     public class Vector3
     {
         /// <summary>

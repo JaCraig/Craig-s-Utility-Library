@@ -31,14 +31,6 @@ namespace Utilities.DataTypes.Caching.Default
     public class SessionCache : CacheBase
     {
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public SessionCache()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// The number of items in the cache
         /// </summary>
         public override int Count
@@ -60,7 +52,7 @@ namespace Utilities.DataTypes.Caching.Default
             {
                 if (HttpContext.Current == null)
                     return new List<string>();
-                List<string> Temp = new List<string>();
+                var Temp = new List<string>();
                 foreach (string Key in HttpContext.Current.Session.Keys)
                 {
                     Temp.Add(Key);
@@ -83,7 +75,7 @@ namespace Utilities.DataTypes.Caching.Default
             {
                 if (HttpContext.Current == null)
                     return new List<object>();
-                List<object> Temp = new List<object>();
+                var Temp = new List<object>();
                 foreach (string Key in HttpContext.Current.Session.Keys)
                 {
                     Temp.Add(HttpContext.Current.Session[Key]);
@@ -156,7 +148,7 @@ namespace Utilities.DataTypes.Caching.Default
         {
             if (HttpContext.Current == null)
                 return new List<KeyValuePair<string, object>>().GetEnumerator();
-            List<KeyValuePair<string, object>> Temp = new List<KeyValuePair<string, object>>();
+            var Temp = new List<KeyValuePair<string, object>>();
             foreach (string Key in HttpContext.Current.Session.Keys)
             {
                 Temp.Add(new KeyValuePair<string, object>(Key, HttpContext.Current.Session[Key]));

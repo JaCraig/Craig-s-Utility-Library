@@ -61,7 +61,9 @@ namespace UnitTests.IO.FileSystem.Default
             }
             Assert.Equal(1, Count);
             Temp2.Delete();
-            while (Temp2.Exists) ;
+            while (Temp2.Exists)
+            {
+            }
         }
 
         [Fact]
@@ -117,7 +119,9 @@ namespace UnitTests.IO.FileSystem.Default
             }
             Assert.Equal(1, Count);
             Temp2.Delete();
-            while (Temp2.Exists) ;
+            while (Temp2.Exists)
+            {
+            }
         }
     }
 }

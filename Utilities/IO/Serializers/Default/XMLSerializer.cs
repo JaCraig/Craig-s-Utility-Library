@@ -33,14 +33,6 @@ namespace Utilities.IO.Serializers.Default
     public class XMLSerializer : SerializerBase<string>
     {
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public XMLSerializer()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Content type (MIME type)
         /// </summary>
         public override string ContentType { get { return "text/xml"; } }

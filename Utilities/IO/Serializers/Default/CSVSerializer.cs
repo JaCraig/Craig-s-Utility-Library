@@ -37,14 +37,6 @@ namespace Utilities.IO.Serializers.Default
     public class CSVSerializer : SerializerBase<string>
     {
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public CSVSerializer()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Content type (MIME type)
         /// </summary>
         public override string ContentType { get { return "text/csv"; } }

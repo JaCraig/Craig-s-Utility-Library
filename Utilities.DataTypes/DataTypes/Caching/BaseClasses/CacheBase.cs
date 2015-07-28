@@ -154,7 +154,7 @@ namespace Utilities.DataTypes.Caching.BaseClasses
         /// <returns>The objects associated with the tag</returns>
         public IEnumerable<object> GetByTag(string Tag)
         {
-            List<object> ReturnValue = new List<object>();
+            var ReturnValue = new List<object>();
             if (!TagMappings.ContainsKey(Tag))
                 return ReturnValue;
             foreach (string Key in TagMappings[Tag])

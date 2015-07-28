@@ -51,7 +51,7 @@ namespace Utilities.IO.Compression.BaseClasses
         public byte[] Compress(byte[] Data)
         {
             if (Data == null)
-                throw new ArgumentNullException("Data");
+                throw new ArgumentNullException(nameof(Data));
             using (MemoryStream Stream = new MemoryStream())
             {
                 using (Stream ZipStream = GetStream(Stream, CompressionMode.Compress))
@@ -74,7 +74,7 @@ namespace Utilities.IO.Compression.BaseClasses
         public byte[] Decompress(byte[] Data)
         {
             if (Data == null)
-                throw new ArgumentNullException("Data");
+                throw new ArgumentNullException(nameof(Data));
             using (MemoryStream Stream = new MemoryStream())
             {
                 using (MemoryStream DataStream = new MemoryStream(Data))

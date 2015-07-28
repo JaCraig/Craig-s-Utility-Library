@@ -38,14 +38,14 @@ namespace Utilities.ORM.Interfaces
         /// <summary>
         /// Date created
         /// </summary>
-        [Required()]
+        [Required]
         [Between("1/1/1900", "1/1/2100", "Date created is not valid")]
         DateTime DateCreated { get; set; }
 
         /// <summary>
         /// Date last modified
         /// </summary>
-        [Required()]
+        [Required]
         [Between("1/1/1900", "1/1/2100", "Date modified is not valid")]
         DateTime DateModified { get; set; }
 

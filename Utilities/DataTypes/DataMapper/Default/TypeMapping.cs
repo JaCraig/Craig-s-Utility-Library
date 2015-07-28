@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 using System;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using Utilities.DataTypes.DataMapper.BaseClasses;
 using Utilities.DataTypes.DataMapper.Interfaces;
 
@@ -33,14 +32,6 @@ namespace Utilities.DataTypes.DataMapper.Default
     /// </summary>
     public class TypeMapping<Left, Right> : TypeMappingBase<Left, Right>
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public TypeMapping()
-            : base()
-        {
-        }
-
         /// <summary>
         /// Adds a mapping
         /// </summary>

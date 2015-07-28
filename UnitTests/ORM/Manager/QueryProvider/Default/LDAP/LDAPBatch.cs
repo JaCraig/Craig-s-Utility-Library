@@ -20,11 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace UnitTests.ORM.Manager.QueryProvider.Default.LDAP
@@ -34,11 +30,6 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.LDAP
     /// </summary>
     public class LDAPBatch : DatabaseBaseClass
     {
-        public LDAPBatch() :
-            base()
-        {
-        }
-
         [Fact]
         public void AddCommand()
         {

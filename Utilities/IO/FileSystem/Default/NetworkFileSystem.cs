@@ -29,14 +29,6 @@ namespace Utilities.IO.FileSystem.Default
     public class NetworkFileSystem : LocalFileSystemBase
     {
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public NetworkFileSystem()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Name of the file system
         /// </summary>
         public override string Name { get { return "Network"; } }

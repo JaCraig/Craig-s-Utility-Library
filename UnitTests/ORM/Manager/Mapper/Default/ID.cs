@@ -20,24 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System.Collections.Generic;
-using System.Data;
-using UnitTests.DataTypes.DataMapper.Default;
 using Utilities.ORM.BaseClasses;
 using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
-using Utilities.ORM.Manager.Schema.Default.Database;
 using Xunit;
 
 namespace UnitTests.ORM.Manager.Mapper.Default
 {
     public class ID : DatabaseBaseClass
     {
-        public ID()
-            : base()
-        {
-            //var Temp = Utilities.IoC.Manager.Bootstrapper;
-        }
-
         [Fact]
         public void CascadeDelete()
         {

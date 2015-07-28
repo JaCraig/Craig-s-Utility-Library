@@ -39,13 +39,6 @@ namespace Utilities.ORM.Aspect
     public class ORMAspect : IAspect
     {
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public ORMAspect()
-        {
-        }
-
-        /// <summary>
         /// Mapper
         /// </summary>
         public static Utilities.ORM.Manager.Mapper.Manager Mapper { get; set; }

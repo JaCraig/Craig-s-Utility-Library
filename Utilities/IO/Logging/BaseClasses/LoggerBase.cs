@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Utilities.DataTypes;
@@ -81,10 +80,10 @@ namespace Utilities.IO.Logging.BaseClasses
         /// <summary>
         /// Disposes of the objects
         /// </summary>
-        /// <param name="Disposing">
+        /// <param name="Managed">
         /// True to dispose of all resources, false only disposes of native resources
         /// </param>
-        protected override void Dispose(bool Disposing)
+        protected override void Dispose(bool Managed)
         {
             if (Logs != null)
             {

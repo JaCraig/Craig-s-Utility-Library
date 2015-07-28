@@ -19,14 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-
-#endregion Usings
 
 namespace Ironman.Core.ActionFilters
 {
@@ -67,7 +63,7 @@ namespace Ironman.Core.ActionFilters
             Context.Response.Cache.SetMaxAge(new TimeSpan(DaysToCache, 0, 0, 0));
             Context.Response.Cache.SetRevalidation(HttpCacheRevalidation.None);
             Context.Response.Cache.SetETag(Etag);
-            if (String.Compare(IncomingEtag, Etag) == 0
+            if (string.Compare(IncomingEtag, Etag, StringComparison.Ordinal) == 0
                 || Date.CompareTo(ModifiedSinceDate) <= 0)
             {
                 Context.Response.StatusCode = (int)HttpStatusCode.NotModified;

@@ -56,19 +56,19 @@ namespace Utilities.DataTypes.AOP
         }
 
         /// <summary>
+        /// Gets the system's compiler
+        /// </summary>
+        protected static Compiler Compiler { get; private set; }
+
+        /// <summary>
         /// The list of aspects that are being used
         /// </summary>
-        private static ConcurrentBag<IAspect> Aspects = new ConcurrentBag<IAspect>();
+        private static readonly ConcurrentBag<IAspect> Aspects = new ConcurrentBag<IAspect>();
 
         /// <summary>
         /// Dictionary containing generated types and associates it with original type
         /// </summary>
         private static ConcurrentDictionary<Type, Type> Classes = new ConcurrentDictionary<Type, Type>();
-
-        /// <summary>
-        /// Gets the system's compiler
-        /// </summary>
-        protected static Compiler Compiler { get; private set; }
 
         /// <summary>
         /// Creates an object of the specified base type, registering the type if necessary
@@ -112,11 +112,11 @@ namespace Utilities.DataTypes.AOP
         public virtual void Setup(params Type[] types)
         {
             IEnumerable<Type> TempTypes = FilterTypesToSetup(types);
-            List<Assembly> AssembliesUsing = new List<Assembly>();
+            var AssembliesUsing = new List<Assembly>();
             AssembliesUsing.Add(typeof(object).Assembly, typeof(System.Linq.Enumerable).Assembly);
             Aspects.ForEach(x => AssembliesUsing.AddIfUnique(x.AssembliesUsing));
 
-            List<string> Usings = new List<string>();
+            var Usings = new List<string>();
             Usings.Add("System");
             Usings.Add("System.Collections.Generic");
             Usings.Add("System.Linq");
@@ -124,10 +124,10 @@ namespace Utilities.DataTypes.AOP
             Usings.Add("System.Threading.Tasks");
             Aspects.ForEach(x => Usings.AddIfUnique(x.Usings));
 
-            List<Type> Interfaces = new List<Type>();
-            Aspects.ForEach(x => Interfaces.AddRange(x.InterfacesUsing == null ? new List<Type>() : x.InterfacesUsing));
+            var Interfaces = new List<Type>();
+            Aspects.ForEach(x => Interfaces.AddRange(x.InterfacesUsing ?? new List<Type>()));
 
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
 
             foreach (Type Type in TempTypes)
             {
@@ -190,7 +190,7 @@ namespace Utilities.DataTypes.AOP
 
         private static Assembly[] GetAssemblies(Type Type)
         {
-            List<Assembly> Types = new List<Assembly>();
+            var Types = new List<Assembly>();
             Type TempType = Type;
             while (TempType != null)
             {
@@ -224,7 +224,7 @@ namespace Utilities.DataTypes.AOP
 
         private static Assembly[] GetAssembliesSimple(Type Type)
         {
-            List<Assembly> Types = new List<Assembly>();
+            var Types = new List<Assembly>();
             Type TempType = Type;
             while (TempType != null)
             {
@@ -251,7 +251,7 @@ namespace Utilities.DataTypes.AOP
             string ClassName, List<string> Usings,
             List<Type> Interfaces, List<Assembly> AssembliesUsing)
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.AppendLineFormat(@"namespace {1}
 {{
     {0}
@@ -279,7 +279,7 @@ namespace Utilities.DataTypes.AOP
             Aspects.ForEach(x => Builder.AppendLine(x.SetupInterfaces(Type)));
 
             Type TempType = Type;
-            List<string> MethodsAlreadyDone = new List<string>();
+            var MethodsAlreadyDone = new List<string>();
             while (TempType != null)
             {
                 foreach (PropertyInfo Property in TempType.GetProperties(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance))
@@ -384,7 +384,7 @@ namespace Utilities.DataTypes.AOP
         {
             if (MethodInfo == null)
                 return "";
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             string BaseMethodName = MethodInfo.Name.Replace("get_", "").Replace("set_", "");
             string ReturnValue = MethodInfo.ReturnType != typeof(void) ? "FinalReturnValue" : "";
             string BaseCall = "";

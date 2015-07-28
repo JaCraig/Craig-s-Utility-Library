@@ -33,14 +33,6 @@ namespace Utilities.IO.Serializers.Default
     public class SOAPSerializer : SerializerBase<string>
     {
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public SOAPSerializer()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Content type (MIME type)
         /// </summary>
         public override string ContentType { get { return "application/soap+xml"; } }

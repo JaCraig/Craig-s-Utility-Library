@@ -30,12 +30,6 @@ namespace Utilities.Media.Procedural
     /// </summary>
     public class CellularMap
     {
-        private int _Height = 0;
-
-        private int _Width = 0;
-
-        private List<Point> Points = new List<Point>();
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -83,6 +77,12 @@ namespace Utilities.Media.Procedural
         /// Minimum distance to a point
         /// </summary>
         public virtual float MinDistance { get; set; }
+
+        private int _Height = 0;
+
+        private int _Width = 0;
+
+        private List<Point> Points = new List<Point>();
 
         /// <summary>
         /// Calculate the distance between the points
@@ -134,13 +134,6 @@ namespace Utilities.Media.Procedural
     /// </summary>
     internal class Point
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public Point()
-        {
-        }
-
         /// <summary>
         /// X axis
         /// </summary>

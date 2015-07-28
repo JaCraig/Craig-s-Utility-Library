@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\AnalyzerSet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\AnalyzerSet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -41,8 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tasks\CreatePackages.cs" />
+    <Compile Include="Tasks\Interfaces\ITask.cs" />
+    <Compile Include="Tasks\PushPackages.cs" />
+    <Compile Include="Tasks\ReversionPackages.cs" />
+    <Compile Include="Tasks\SetupDependencies.cs" />
+    <Compile Include="Tasks\SetupInternalDependencies.cs" />
+    <Compile Include="Tasks\UpdateProjects.cs" />
+    <Compile Include="Tasks\UtilClasses\Project.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

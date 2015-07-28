@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics.Contracts;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders.Interfaces;
 
@@ -41,7 +40,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         public void FillDatabase(IEnumerable<dynamic> values, Database database)
         {
             if (database == null)
-                throw new ArgumentNullException("database");
+                throw new ArgumentNullException(nameof(database));
             foreach (Table Table in database.Tables)
             {
                 Table.SetupForeignKeys();
@@ -55,7 +54,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         public void GetCommand(IBatch batch)
         {
             if (batch == null)
-                throw new ArgumentNullException("batch");
+                throw new ArgumentNullException(nameof(batch));
             batch.AddCommand(null, null, CommandType.Text, @"SELECT sys.tables.name as [Table] FROM sys.tables");
         }
     }

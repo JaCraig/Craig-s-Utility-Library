@@ -34,14 +34,6 @@ namespace Utilities.IO.Encryption.Default
     public class RSA : AsymmetricBase
     {
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public RSA()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Name
         /// </summary>
         public override string Name { get { return "RSA"; } }

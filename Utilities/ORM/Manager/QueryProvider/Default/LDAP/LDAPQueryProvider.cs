@@ -19,10 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
@@ -34,14 +30,6 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
     /// </summary>
     public class LDAPQueryProvider : IQueryProvider
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LDAPQueryProvider"/> class.
-        /// </summary>
-        public LDAPQueryProvider()
-            : base()
-        {
-        }
-
         ///<summary>
         /// Provider name associated with the query provider
         ///</summary>
@@ -50,18 +38,14 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
         /// <summary>
         /// Parameter prefix
         /// </summary>
-        /// <value>
-        /// The parameter prefix.
-        /// </value>
+        /// <value>The parameter prefix.</value>
         protected static string ParameterPrefix { get { return ""; } }
 
         /// <summary>
         /// Creates a batch for running commands
         /// </summary>
         /// <param name="Source">Source info</param>
-        /// <returns>
-        /// A batch object
-        /// </returns>
+        /// <returns>A batch object</returns>
         public IBatch Batch(ISourceInfo Source)
         {
             return new LDAPBatch(Source);
@@ -73,11 +57,9 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="Source">Source information</param>
         /// <param name="Mapping">Mapping information</param>
-        /// <returns>
-        /// A generator class
-        /// </returns>
+        /// <returns>A generator class</returns>
         public IGenerator<T> Generate<T>(ISourceInfo Source, IMapping Mapping)
-            where T : class,new()
+            where T : class, new()
         {
             return new LDAPGenerator<T>(this, Source, Mapping);
         }

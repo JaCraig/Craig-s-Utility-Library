@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Diagnostics.Contracts;
 using Utilities.DataTypes;
 using Utilities.IO.Serializers.BaseClasses;
 
@@ -31,14 +30,6 @@ namespace CUL.Serialization
     /// </summary>
     public class XmlSerializer : SerializerBase<string>
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public XmlSerializer()
-            : base()
-        {
-        }
-
         /// <summary>
         /// Content type (MIME type)
         /// </summary>

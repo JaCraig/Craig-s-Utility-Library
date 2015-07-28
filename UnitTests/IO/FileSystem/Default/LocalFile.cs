@@ -57,8 +57,8 @@ namespace UnitTests.IO.FileSystem.Default
             Assert.True(File.Exists);
             Assert.Equal("Testing this out", File.Read());
             Assert.Equal("Testing this out", File);
-            Assert.Equal(ASCIIEncoding.ASCII.GetBytes("Testing this out"), File.ReadBinary());
-            Assert.Equal(ASCIIEncoding.ASCII.GetBytes("Testing this out"), File);
+            Assert.Equal(Encoding.ASCII.GetBytes("Testing this out"), File.ReadBinary());
+            Assert.Equal(Encoding.ASCII.GetBytes("Testing this out"), File);
             File.Delete();
         }
     }

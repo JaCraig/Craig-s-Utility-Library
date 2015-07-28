@@ -20,15 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
-using Utilities.DataTypes;
 
 namespace Ironman.Models.Plugins
 {
@@ -38,14 +32,6 @@ namespace Ironman.Models.Plugins
     [Serializable]
     public class PluginFile
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PluginFile" /> class.
-        /// </summary>
-        public PluginFile()
-            : base()
-        {
-        }
-
         /// <summary>
         /// Gets or sets a value indicating whether this instance is a directory.
         /// </summary>

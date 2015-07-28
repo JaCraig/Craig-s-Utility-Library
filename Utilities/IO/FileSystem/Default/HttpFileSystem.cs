@@ -30,14 +30,6 @@ namespace Utilities.IO.FileSystem.Default
     public class HttpFileSystem : FileSystemBase
     {
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public HttpFileSystem()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Name of the file system
         /// </summary>
         public override string Name { get { return "HTTP"; } }

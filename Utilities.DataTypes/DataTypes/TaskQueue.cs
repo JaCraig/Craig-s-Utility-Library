@@ -120,10 +120,10 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Disposes of the objects
         /// </summary>
-        /// <param name="Disposing">
+        /// <param name="disposing">
         /// True to dispose of all resources, false only disposes of native resources
         /// </param>
-        protected override void Dispose(bool Disposing)
+        protected override void Dispose(bool disposing)
         {
             if (Tasks != null)
             {
@@ -139,7 +139,7 @@ namespace Utilities.DataTypes
                 CancellationToken.Dispose();
                 CancellationToken = null;
             }
-            base.Dispose(Disposing);
+            base.Dispose(disposing);
         }
 
         /// <summary>

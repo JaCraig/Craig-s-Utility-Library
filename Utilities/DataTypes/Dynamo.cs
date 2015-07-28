@@ -44,12 +44,12 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="OriginalValue">Original value</param>
-        /// <param name="NewValue">New value</param>
-        public Change(object OriginalValue, object NewValue)
+        /// <param name="originalValue">Original value</param>
+        /// <param name="newValue">New value</param>
+        public Change(object originalValue, object newValue)
         {
-            this.OriginalValue = OriginalValue;
-            this.NewValue = NewValue;
+            OriginalValue = originalValue;
+            NewValue = newValue;
         }
 
         /// <summary>
@@ -82,18 +82,18 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Item">Item to copy values from</param>
-        protected Dynamo(object Item)
-            : base(Item)
+        /// <param name="item">Item to copy values from</param>
+        protected Dynamo(object item)
+            : base(item)
         {
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Dictionary">Dictionary to copy</param>
-        protected Dynamo(IDictionary<string, object> Dictionary)
-            : base(Dictionary)
+        /// <param name="dictionary">Dictionary to copy</param>
+        protected Dynamo(IDictionary<string, object> dictionary)
+            : base(dictionary)
         {
         }
 
@@ -203,36 +203,36 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Item">Item to copy values from</param>
-        public Dynamo(object Item)
+        /// <param name="item">Item to copy values from</param>
+        public Dynamo(object item)
             : base()
         {
             InternalValues = new ConcurrentDictionary<string, object>(StringComparer.OrdinalIgnoreCase);
             ChildValues = new ConcurrentDictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
             ChangeLog = new ConcurrentDictionary<string, Change>(StringComparer.OrdinalIgnoreCase);
-            IDictionary<string, object> DictItem = Item as IDictionary<string, object>;
-            if (Item == null)
+            IDictionary<string, object> DictItem = item as IDictionary<string, object>;
+            if (item == null)
                 return;
-            if (Item is string || Item.GetType().IsValueType)
-                SetValue("Value", Item);
+            if (item is string || item.GetType().IsValueType)
+                SetValue("Value", item);
             else if (DictItem != null)
                 InternalValues = new ConcurrentDictionary<string, object>(DictItem, StringComparer.OrdinalIgnoreCase);
-            else if (Item is IEnumerable)
-                SetValue("Items", Item);
+            else if (item is IEnumerable)
+                SetValue("Items", item);
             else
-                DataMapper.Map(Item.GetType(), this.GetType())
+                DataMapper.Map(item.GetType(), GetType())
                           .AutoMap()
-                          .Copy(Item, this);
+                          .Copy(item, this);
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Dictionary">Dictionary to copy</param>
-        public Dynamo(IDictionary<string, object> Dictionary)
+        /// <param name="dictionary">Dictionary to copy</param>
+        public Dynamo(IDictionary<string, object> dictionary)
             : base()
         {
-            InternalValues = new ConcurrentDictionary<string, object>(Dictionary, StringComparer.OrdinalIgnoreCase);
+            InternalValues = new ConcurrentDictionary<string, object>(dictionary, StringComparer.OrdinalIgnoreCase);
             ChildValues = new ConcurrentDictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
             ChangeLog = new ConcurrentDictionary<string, Change>(StringComparer.OrdinalIgnoreCase);
         }
@@ -252,6 +252,70 @@ namespace Utilities.DataTypes
             foreach (SerializationEntry Item in info)
             {
                 SetValue(Item.Name, Item.Value);
+            }
+        }
+
+        /// <summary>
+        /// Change log
+        /// </summary>
+        public ConcurrentDictionary<string, Change> ChangeLog { get; private set; }
+
+        /// <summary>
+        /// Number of items
+        /// </summary>
+        public int Count { get { return InternalValues.Count; } }
+
+        /// <summary>
+        /// Is this read only?
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        /// <summary>
+        /// Keys
+        /// </summary>
+        public virtual ICollection<string> Keys { get { return InternalValues.Keys; } }
+
+        /// <summary>
+        /// Values
+        /// </summary>
+        public virtual ICollection<object> Values { get { return InternalValues.Values; } }
+
+        /// <summary>
+        /// Child class key/value dictionary
+        /// </summary>
+        internal ConcurrentDictionary<string, Func<object>> ChildValues { get; set; }
+
+        /// <summary>
+        /// Internal key/value dictionary
+        /// </summary>
+        internal ConcurrentDictionary<string, object> InternalValues { get; set; }
+
+        /// <summary>
+        /// Gets or sets the aop manager.
+        /// </summary>
+        /// <value>The aop manager.</value>
+        private static AOP.Manager AOPManager { get { return IoC.Manager.Bootstrapper.Resolve<AOP.Manager>(); } }
+
+        /// <summary>
+        /// Gets or sets the data mapper.
+        /// </summary>
+        /// <value>The data mapper.</value>
+        private static Manager DataMapper { get { return IoC.Manager.Bootstrapper.Resolve<Manager>(); } }
+
+        /// <summary>
+        /// Gets the value associated with the key specified
+        /// </summary>
+        /// <param name="key">Key to get</param>
+        /// <returns>The object associated with the key</returns>
+        public object this[string key]
+        {
+            get
+            {
+                return GetValue(key, typeof(object));
+            }
+            set
+            {
+                SetValue(key, value);
             }
         }
 
@@ -317,70 +381,6 @@ namespace Utilities.DataTypes
             remove
             {
                 propertyChanged_ -= value;
-            }
-        }
-
-        /// <summary>
-        /// Change log
-        /// </summary>
-        public ConcurrentDictionary<string, Change> ChangeLog { get; private set; }
-
-        /// <summary>
-        /// Number of items
-        /// </summary>
-        public int Count { get { return InternalValues.Count; } }
-
-        /// <summary>
-        /// Is this read only?
-        /// </summary>
-        public bool IsReadOnly { get { return false; } }
-
-        /// <summary>
-        /// Keys
-        /// </summary>
-        public virtual ICollection<string> Keys { get { return InternalValues.Keys; } }
-
-        /// <summary>
-        /// Values
-        /// </summary>
-        public virtual ICollection<object> Values { get { return InternalValues.Values; } }
-
-        /// <summary>
-        /// Child class key/value dictionary
-        /// </summary>
-        internal ConcurrentDictionary<string, Func<object>> ChildValues { get; set; }
-
-        /// <summary>
-        /// Internal key/value dictionary
-        /// </summary>
-        internal ConcurrentDictionary<string, object> InternalValues { get; set; }
-
-        /// <summary>
-        /// Gets or sets the aop manager.
-        /// </summary>
-        /// <value>The aop manager.</value>
-        private static AOP.Manager AOPManager { get { return IoC.Manager.Bootstrapper.Resolve<AOP.Manager>(); } }
-
-        /// <summary>
-        /// Gets or sets the data mapper.
-        /// </summary>
-        /// <value>The data mapper.</value>
-        private static Manager DataMapper { get { return IoC.Manager.Bootstrapper.Resolve<Manager>(); } }
-
-        /// <summary>
-        /// Gets the value associated with the key specified
-        /// </summary>
-        /// <param name="key">Key to get</param>
-        /// <returns>The object associated with the key</returns>
-        public object this[string key]
-        {
-            get
-            {
-                return GetValue(key, typeof(object));
-            }
-            set
-            {
-                SetValue(key, value);
             }
         }
 
@@ -453,7 +453,7 @@ namespace Utilities.DataTypes
             else if (Item is IEnumerable)
                 SetValue("Items", Item);
             else
-                DataMapper.Map(Item.GetType(), this.GetType())
+                DataMapper.Map(Item.GetType(), GetType())
                           .AutoMap()
                           .Copy(Item, this);
         }
@@ -475,7 +475,7 @@ namespace Utilities.DataTypes
         public void CopyTo(object result)
         {
             Contract.Requires<ArgumentNullException>(result != null, "result");
-            DataMapper.Map(this.GetType(), result.GetType())
+            DataMapper.Map(GetType(), result.GetType())
                       .AutoMap()
                       .Copy(this, result);
         }
@@ -640,7 +640,7 @@ namespace Utilities.DataTypes
         public object To(Type ObjectType)
         {
             object Result = AOPManager.Create(ObjectType);
-            DataMapper.Map(this.GetType(), ObjectType)
+            DataMapper.Map(GetType(), ObjectType)
                       .AutoMap()
                       .Copy(this, Result);
             return Result;

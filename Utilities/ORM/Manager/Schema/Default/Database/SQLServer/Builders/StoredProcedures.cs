@@ -22,11 +22,9 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders.Interfaces;
-using Utilities.ORM.Manager.Schema.Interfaces;
 
 namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
 {
@@ -43,7 +41,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         public void FillDatabase(IEnumerable<dynamic> values, Database database)
         {
             if (database == null)
-                throw new ArgumentNullException("database");
+                throw new ArgumentNullException(nameof(database));
             if (values == null || values.Count() == 0)
                 return;
             foreach (dynamic Item in values)
@@ -59,7 +57,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
         public void GetCommand(IBatch batch)
         {
             if (batch == null)
-                throw new ArgumentNullException("batch");
+                throw new ArgumentNullException(nameof(batch));
             batch.AddCommand(null, null, CommandType.Text, @"SELECT sys.procedures.name as NAME,OBJECT_DEFINITION(sys.procedures.object_id) as DEFINITION FROM sys.procedures");
         }
     }

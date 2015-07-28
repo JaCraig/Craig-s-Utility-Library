@@ -31,13 +31,6 @@ namespace Utilities.IO.Messaging.Default
     public class DefaultFormatter : IFormatter
     {
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public DefaultFormatter()
-        {
-        }
-
-        /// <summary>
         /// Name of the formatter
         /// </summary>
         public string Name { get { return "Default"; } }
@@ -51,9 +44,9 @@ namespace Utilities.IO.Messaging.Default
         public void Format<T>(IMessage Message, T Model)
         {
             if (Message == null)
-                throw new ArgumentNullException("Message");
+                throw new ArgumentNullException(nameof(Message));
             if (Model == null)
-                throw new ArgumentNullException("Model");
+                throw new ArgumentNullException(nameof(Model));
             if (string.IsNullOrEmpty(Message.Body) || Model.Is<string>())
                 Message.Body = Model.ToString();
             else

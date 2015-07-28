@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Web.Mvc;
 using Utilities.DataTypes;
-
-#endregion Usings
 
 namespace Ironman.Core.ActionFilters
 {
@@ -54,7 +50,7 @@ namespace Ironman.Core.ActionFilters
         {
             if (Context == null || Context.HttpContext == null || Context.HttpContext.Request == null)
                 return false;
-            return (string.Compare(Context.HttpContext.Request.HttpMethod, System.Net.WebRequestMethods.Http.Post, true) == 0
+            return (string.Compare(Context.HttpContext.Request.HttpMethod, System.Net.WebRequestMethods.Http.Post, StringComparison.OrdinalIgnoreCase) == 0
                 && Context.ActionDescriptor.Attributes<ValidateAntiForgeryTokenAttribute>().Length == 0
                 && Context.ActionDescriptor.Attributes<ByPassCRSF>().Length == 0);
         }

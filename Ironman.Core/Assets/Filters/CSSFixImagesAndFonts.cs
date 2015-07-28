@@ -19,22 +19,17 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using Ironman.Core.Assets.Enums;
 using Ironman.Core.Assets.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes;
 using Utilities.IO;
 using Utilities.Media;
-
-#endregion Usings
 
 namespace Ironman.Core.Assets.Filters
 {
@@ -110,27 +105,27 @@ namespace Ironman.Core.Assets.Filters
                             {
                                 string MIMEType = "image/jpeg";
                                 string Content = "";
-                                if (File.FullName.ToUpperInvariant().EndsWith(".PNG"))
+                                if (File.FullName.ToUpperInvariant().EndsWith(".PNG", StringComparison.Ordinal))
                                 {
                                     MIMEType = "image/png";
                                     Content = TempImage.ToString(ImageFormat.Png);
                                 }
-                                else if (File.FullName.ToUpperInvariant().EndsWith(".JPG") || File.FullName.ToUpperInvariant().EndsWith(".JPEG"))
+                                else if (File.FullName.ToUpperInvariant().EndsWith(".JPG", StringComparison.Ordinal) || File.FullName.ToUpperInvariant().EndsWith(".JPEG", StringComparison.Ordinal))
                                 {
                                     MIMEType = "image/jpeg";
                                     Content = TempImage.ToString(ImageFormat.Jpeg);
                                 }
-                                else if (File.FullName.ToUpperInvariant().EndsWith(".GIF"))
+                                else if (File.FullName.ToUpperInvariant().EndsWith(".GIF", StringComparison.Ordinal))
                                 {
                                     MIMEType = "image/gif";
                                     Content = TempImage.ToString(ImageFormat.Gif);
                                 }
-                                else if (File.FullName.ToUpperInvariant().EndsWith(".TIFF"))
+                                else if (File.FullName.ToUpperInvariant().EndsWith(".TIFF", StringComparison.Ordinal))
                                 {
                                     MIMEType = "image/tiff";
                                     Content = TempImage.ToString(ImageFormat.Tiff);
                                 }
-                                else if (File.FullName.ToUpperInvariant().EndsWith(".BMP"))
+                                else if (File.FullName.ToUpperInvariant().EndsWith(".BMP", StringComparison.Ordinal))
                                 {
                                     MIMEType = "image/bmp";
                                     Content = TempImage.ToString(ImageFormat.Bmp);

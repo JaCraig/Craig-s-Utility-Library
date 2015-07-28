@@ -114,9 +114,9 @@ namespace Utilities.DataTypes
 
             Set<T> ReturnValue = new Set<T>();
             for (int x = 0; x < Set1.Count; ++x)
-                ReturnValue.Add(Set1[x]); ;
+                ReturnValue.Add(Set1[x]);
             for (int x = 0; x < Set2.Count; ++x)
-                ReturnValue.Add(Set2[x]); ;
+                ReturnValue.Add(Set2[x]);
             return ReturnValue;
         }
 

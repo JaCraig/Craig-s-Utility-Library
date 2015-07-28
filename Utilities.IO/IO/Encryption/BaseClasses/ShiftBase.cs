@@ -50,7 +50,7 @@ namespace Utilities.IO.Encryption.BaseClasses
         public byte[] Decrypt(byte[] Data, byte[] Key)
         {
             if (Key == null)
-                throw new ArgumentNullException("Key");
+                throw new ArgumentNullException(nameof(Key));
             if (Data == null)
                 return null;
             return Process(Data, Key);
@@ -65,7 +65,7 @@ namespace Utilities.IO.Encryption.BaseClasses
         public byte[] Encrypt(byte[] Data, byte[] Key)
         {
             if (Key == null)
-                throw new ArgumentNullException("Key");
+                throw new ArgumentNullException(nameof(Key));
             if (Data == null)
                 return null;
             return Process(Data, Key);

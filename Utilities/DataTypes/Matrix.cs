@@ -28,13 +28,9 @@ namespace Utilities.DataTypes
     /// <summary>
     /// Matrix used in linear algebra
     /// </summary>
-    [Serializable()]
+    [Serializable]
     public class Matrix
     {
-        private int _Height = 1;
-
-        private int _Width = 1;
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -95,6 +91,10 @@ namespace Utilities.DataTypes
                 Values[X, Y] = value;
             }
         }
+
+        private int _Height = 1;
+
+        private int _Width = 1;
 
         /// <summary>
         /// Subtracts two matrices

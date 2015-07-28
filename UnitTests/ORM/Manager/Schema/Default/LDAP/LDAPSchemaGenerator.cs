@@ -19,10 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using Utilities.ORM.Manager.Schema.Default.Database;
 using Utilities.ORM.Manager.Schema.Interfaces;
 using Xunit;
 
@@ -30,11 +26,6 @@ namespace UnitTests.ORM.Manager.Schema.Default.LDAP
 {
     public class LDAPSchemaGenerator : DatabaseBaseClass
     {
-        public LDAPSchemaGenerator()
-            : base()
-        {
-        }
-
         [Fact]
         public void Create()
         {

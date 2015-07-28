@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.IO;
 using System.Web;
 using Utilities.IO.FileSystem.BaseClasses;
 
@@ -31,14 +30,6 @@ namespace Utilities.IO.FileSystem.Default
     /// </summary>
     public class RelativeLocalFileSystem : LocalFileSystemBase
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public RelativeLocalFileSystem()
-            : base()
-        {
-        }
-
         /// <summary>
         /// Name of the file system
         /// </summary>

@@ -49,7 +49,7 @@ namespace Utilities.Web
                 return "";
             string HTMLTemplate = "<strong>Request Variables</strong><br />{Request}<br /><br /><strong>Response Variables</strong><br />{Response}<br /><br /><strong>Server Variables</strong><br />{Server}<br /><br /><strong>Session Variables</strong><br />{Session}<br /><br /><strong>Cookie Variables</strong><br />{Cookie}<br /><br /><strong>Cache Variables</strong><br />{Cache}<br /><br /><strong>Application Variables</strong><br />{Application}";
             string NormalTemplate = "Request Variables\r\n{Request}\r\n\r\nResponse Variables\r\n{Response}\r\n\r\nServer Variables\r\n{Server}\r\n\r\nSession Variables\r\n{Session}\r\n\r\nCookie Variables\r\n{Cookie}\r\n\r\nCache Variables\r\n{Cache}\r\n\r\nApplication Variables\r\n{Application}";
-            KeyValuePair<string, string>[] Values = new KeyValuePair<string, string>[]{new KeyValuePair<string,string>("{Request}",Context.Request.DumpRequestVariable(HTMLOutput)),
+            KeyValuePair<string, string>[] Values = {new KeyValuePair<string,string>("{Request}",Context.Request.DumpRequestVariable(HTMLOutput)),
                     new KeyValuePair<string,string>("{Response}",Context.Response.DumpResponseVariable(HTMLOutput)),
                     new KeyValuePair<string,string>("{Server}",Context.Request.DumpServerVars(HTMLOutput)),
                     new KeyValuePair<string,string>("{Session}",Context.Session.DumpSession(HTMLOutput)),

@@ -97,7 +97,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                 return null;
             Database Temp = new Database(DatabaseName);
             IBatch Batch = Provider.Batch(Source);
-            IBuilder[] Builders = new IBuilder[]{
+            IBuilder[] Builders = {
                 new Tables(),
                 new TableColumns(),
                 new TableTriggers(),

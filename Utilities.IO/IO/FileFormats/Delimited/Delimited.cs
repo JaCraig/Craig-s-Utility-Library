@@ -34,8 +34,6 @@ namespace Utilities.IO.FileFormats.Delimited
     /// </summary>
     public class Delimited : StringListFormatBase<Delimited, Row>
     {
-        private string _Delimiter = "";
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -70,6 +68,8 @@ namespace Utilities.IO.FileFormats.Delimited
         /// The delimiter used to seperate values (must be overridden)
         /// </summary>
         public string Delimiter { get { return _Delimiter; } set { _Delimiter = value; Records.ForEach(x => x.Delimiter = _Delimiter); } }
+
+        private string _Delimiter = "";
 
         /// <summary>
         /// Converts the string to the format specified
@@ -174,7 +174,7 @@ namespace Utilities.IO.FileFormats.Delimited
         {
             if (string.IsNullOrEmpty(Content))
                 return ",";
-            string[] Delimiters = new string[] { ",", "|", "\t", "$", ";", ":" };
+            string[] Delimiters = { ",", "|", "\t", "$", ";", ":" };
             int[] Count = new int[6];
             int MaxIndex = 0;
             for (int x = 0; x < Delimiters.Length; ++x)

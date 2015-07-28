@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System.Data;
 using Utilities.ORM.Manager.Schema.Default.Database;
 using Utilities.ORM.Manager.Schema.Interfaces;
 using Xunit;
@@ -28,11 +27,6 @@ namespace UnitTests.ORM.Manager.Schema
 {
     public class Manager : DatabaseBaseClass
     {
-        public Manager()
-            : base()
-        {
-        }
-
         [Fact]
         public void Create()
         {

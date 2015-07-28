@@ -36,19 +36,6 @@ namespace Utilities.IO.Serializers.Default
     public class JSONSerializer : SerializerBase<string>
     {
         /// <summary>
-        /// JSONP regex filter
-        /// </summary>
-        private static Regex JsonPRegex = new Regex(@"[^\(]+\(([^\)]*)\);", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public JSONSerializer()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Content type (MIME type)
         /// </summary>
         public override string ContentType { get { return "application/json"; } }
@@ -62,6 +49,11 @@ namespace Utilities.IO.Serializers.Default
         /// Name
         /// </summary>
         public override string Name { get { return "JSON"; } }
+
+        /// <summary>
+        /// JSONP regex filter
+        /// </summary>
+        private static Regex JsonPRegex = new Regex(@"[^\(]+\(([^\)]*)\);", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Deserializes the data

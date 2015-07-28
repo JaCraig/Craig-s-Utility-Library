@@ -32,14 +32,6 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
     public class SQLServerQueryProvider : DatabaseQueryProviderBase
     {
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public SQLServerQueryProvider()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Provider name
         /// </summary>
         public override string ProviderName { get { return "System.Data.SqlClient"; } }

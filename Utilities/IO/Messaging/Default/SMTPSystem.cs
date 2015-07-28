@@ -35,13 +35,6 @@ namespace Utilities.IO.Messaging.Default
     public class SMTPSystem : MessagingSystemBase
     {
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public SMTPSystem()
-        {
-        }
-
-        /// <summary>
         /// Message type accepts
         /// </summary>
         public override Type MessageType { get { return typeof(EmailMessage); } }

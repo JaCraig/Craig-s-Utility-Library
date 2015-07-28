@@ -138,7 +138,7 @@ namespace Utilities.DataTypes.AI
         {
             Contract.Requires<ArgumentNullException>(Items != null, "Items");
             Contract.Requires<InvalidOperationException>(Probabilities != null, "Probabilities has not been initialized");
-            SortedList<string, double> SortedProbabilities = new SortedList<string, double>();
+            var SortedProbabilities = new SortedList<string, double>();
             int x = 0;
             foreach (T Item in Items)
             {

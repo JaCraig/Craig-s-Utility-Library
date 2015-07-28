@@ -365,155 +365,155 @@ namespace Ironman.Core.API.Manager
             foreach (int VersionNumber in Mappings.Keys)
             {
                 routes.MapRoute(
-                    name: "Ironman_API_Service",
-                    url: AreaName + "/v" + VersionNumber + "/Services/{ServiceName}",
-                    defaults: new { controller = ControllerName, action = "Services" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("POST", "GET") }
+"Ironman_API_Service",
+AreaName + "/v" + VersionNumber + "/Services/{ServiceName}",
+new { controller = ControllerName, action = "Services" },
+new { httpMethod = new HttpMethodConstraint("POST", "GET") }
                 );
                 routes.MapRoute(
-                    name: "Ironman_API_Service_Ending",
-                    url: AreaName + "/v" + VersionNumber + "/Services/{ServiceName}.{ending}",
-                    defaults: new { controller = ControllerName, action = "Services" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("POST", "GET") }
+"Ironman_API_Service_Ending",
+AreaName + "/v" + VersionNumber + "/Services/{ServiceName}.{ending}",
+new { controller = ControllerName, action = "Services" },
+new { httpMethod = new HttpMethodConstraint("POST", "GET") }
                 );
                 routes.MapRoute(
-                    name: "Ironman_API_Save",
-                    url: AreaName + "/v" + VersionNumber + "/{ModelName}",
-                    defaults: new { controller = ControllerName, action = "Save" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("POST", "PUT", "PATCH") }
-                );
-
-                routes.MapRoute(
-                    name: "Ironman_API_Save2",
-                    url: AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}",
-                    defaults: new { controller = ControllerName, action = "Save" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("POST", "PUT", "PATCH") }
+"Ironman_API_Save",
+AreaName + "/v" + VersionNumber + "/{ModelName}",
+new { controller = ControllerName, action = "Save" },
+new { httpMethod = new HttpMethodConstraint("POST", "PUT", "PATCH") }
                 );
 
                 routes.MapRoute(
-                    name: "Ironman_API_Delete",
-                    url: AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}",
-                    defaults: new { controller = ControllerName, action = "Delete" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("DELETE") }
+"Ironman_API_Save2",
+AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}",
+new { controller = ControllerName, action = "Save" },
+new { httpMethod = new HttpMethodConstraint("POST", "PUT", "PATCH") }
                 );
 
                 routes.MapRoute(
-                    name: "Ironman_API_SaveProperty",
-                    url: AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}/{PropertyName}",
-                    defaults: new { controller = ControllerName, action = "SaveProperty" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("POST", "PUT", "PATCH") }
+"Ironman_API_Delete",
+AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}",
+new { controller = ControllerName, action = "Delete" },
+new { httpMethod = new HttpMethodConstraint("DELETE") }
                 );
 
                 routes.MapRoute(
-                    name: "Ironman_API_SaveProperty2",
-                    url: AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}/{PropertyName}/{PropertyID}",
-                    defaults: new { controller = ControllerName, action = "SaveProperty" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("POST", "PUT", "PATCH") }
+"Ironman_API_SaveProperty",
+AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}/{PropertyName}",
+new { controller = ControllerName, action = "SaveProperty" },
+new { httpMethod = new HttpMethodConstraint("POST", "PUT", "PATCH") }
                 );
 
                 routes.MapRoute(
-                    name: "Ironman_API_DeleteProperty",
-                    url: AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}/{PropertyName}/{PropertyID}",
-                    defaults: new { controller = ControllerName, action = "DeleteProperty" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("DELETE") }
+"Ironman_API_SaveProperty2",
+AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}/{PropertyName}/{PropertyID}",
+new { controller = ControllerName, action = "SaveProperty" },
+new { httpMethod = new HttpMethodConstraint("POST", "PUT", "PATCH") }
                 );
 
                 routes.MapRoute(
-                    name: "Ironman_API_GetPageCount",
-                    url: AreaName + "/v" + VersionNumber + "/{ModelName}/Paged",
-                    defaults: new { controller = ControllerName, action = "PageCount" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("GET") }
+"Ironman_API_DeleteProperty",
+AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}/{PropertyName}/{PropertyID}",
+new { controller = ControllerName, action = "DeleteProperty" },
+new { httpMethod = new HttpMethodConstraint("DELETE") }
                 );
 
                 routes.MapRoute(
-                    name: "Ironman_API_GetPaged",
-                    url: AreaName + "/v" + VersionNumber + "/{ModelName}/Paged/{PageNumber}",
-                    defaults: new { controller = ControllerName, action = "Paged" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("GET") }
+"Ironman_API_GetPageCount",
+AreaName + "/v" + VersionNumber + "/{ModelName}/Paged",
+new { controller = ControllerName, action = "PageCount" },
+new { httpMethod = new HttpMethodConstraint("GET") }
                 );
 
                 routes.MapRoute(
-                    name: "Ironman_API_GetProperty",
-                    url: AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}/{PropertyName}",
-                    defaults: new { controller = ControllerName, action = "GetProperty" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("GET") }
+"Ironman_API_GetPaged",
+AreaName + "/v" + VersionNumber + "/{ModelName}/Paged/{PageNumber}",
+new { controller = ControllerName, action = "Paged" },
+new { httpMethod = new HttpMethodConstraint("GET") }
                 );
 
                 routes.MapRoute(
-                    name: "Ironman_API_Any",
-                    url: AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}",
-                    defaults: new { controller = ControllerName, action = "Any" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("GET") }
+"Ironman_API_GetProperty",
+AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}/{PropertyName}",
+new { controller = ControllerName, action = "GetProperty" },
+new { httpMethod = new HttpMethodConstraint("GET") }
                 );
 
                 routes.MapRoute(
-                    name: "Ironman_API_All",
-                    url: AreaName + "/v" + VersionNumber + "/{ModelName}",
-                    defaults: new { controller = ControllerName, action = "All" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("GET") }
+"Ironman_API_Any",
+AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}",
+new { controller = ControllerName, action = "Any" },
+new { httpMethod = new HttpMethodConstraint("GET") }
                 );
 
                 routes.MapRoute(
-                    name: "Ironman_API_Save_Ending",
-                    url: AreaName + "/v" + VersionNumber + "/{ModelName}.{ending}",
-                    defaults: new { controller = ControllerName, action = "Save" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("POST", "PUT", "PATCH") }
+"Ironman_API_All",
+AreaName + "/v" + VersionNumber + "/{ModelName}",
+new { controller = ControllerName, action = "All" },
+new { httpMethod = new HttpMethodConstraint("GET") }
                 );
 
                 routes.MapRoute(
-                    name: "Ironman_API_Save2_Ending",
-                    url: AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}.{ending}",
-                    defaults: new { controller = ControllerName, action = "Save" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("POST", "PUT", "PATCH") }
+"Ironman_API_Save_Ending",
+AreaName + "/v" + VersionNumber + "/{ModelName}.{ending}",
+new { controller = ControllerName, action = "Save" },
+new { httpMethod = new HttpMethodConstraint("POST", "PUT", "PATCH") }
                 );
 
                 routes.MapRoute(
-                    name: "Ironman_API_Delete_Ending",
-                    url: AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}.{ending}",
-                    defaults: new { controller = ControllerName, action = "Delete" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("DELETE") }
+"Ironman_API_Save2_Ending",
+AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}.{ending}",
+new { controller = ControllerName, action = "Save" },
+new { httpMethod = new HttpMethodConstraint("POST", "PUT", "PATCH") }
                 );
 
                 routes.MapRoute(
-                    name: "Ironman_API_SaveProperty_Ending",
-                    url: AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}/{PropertyName}.{ending}",
-                    defaults: new { controller = ControllerName, action = "SaveProperty" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("POST", "PUT", "PATCH") }
+"Ironman_API_Delete_Ending",
+AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}.{ending}",
+new { controller = ControllerName, action = "Delete" },
+new { httpMethod = new HttpMethodConstraint("DELETE") }
                 );
 
                 routes.MapRoute(
-                    name: "Ironman_API_SaveProperty2_Ending",
-                    url: AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}/{PropertyName}/{PropertyID}.{ending}",
-                    defaults: new { controller = ControllerName, action = "SaveProperty" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("POST", "PUT", "PATCH") }
+"Ironman_API_SaveProperty_Ending",
+AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}/{PropertyName}.{ending}",
+new { controller = ControllerName, action = "SaveProperty" },
+new { httpMethod = new HttpMethodConstraint("POST", "PUT", "PATCH") }
                 );
 
                 routes.MapRoute(
-                    name: "Ironman_API_DeleteProperty_Ending",
-                    url: AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}/{PropertyName}/{PropertyID}.{ending}",
-                    defaults: new { controller = ControllerName, action = "DeleteProperty" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("DELETE") }
+"Ironman_API_SaveProperty2_Ending",
+AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}/{PropertyName}/{PropertyID}.{ending}",
+new { controller = ControllerName, action = "SaveProperty" },
+new { httpMethod = new HttpMethodConstraint("POST", "PUT", "PATCH") }
                 );
 
                 routes.MapRoute(
-                    name: "Ironman_API_GetProperty_Ending",
-                    url: AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}/{PropertyName}.{ending}",
-                    defaults: new { controller = ControllerName, action = "GetProperty" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("GET") }
+"Ironman_API_DeleteProperty_Ending",
+AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}/{PropertyName}/{PropertyID}.{ending}",
+new { controller = ControllerName, action = "DeleteProperty" },
+new { httpMethod = new HttpMethodConstraint("DELETE") }
                 );
 
                 routes.MapRoute(
-                    name: "Ironman_API_Any_Ending",
-                    url: AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}.{ending}",
-                    defaults: new { controller = ControllerName, action = "Any" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("GET") }
+"Ironman_API_GetProperty_Ending",
+AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}/{PropertyName}.{ending}",
+new { controller = ControllerName, action = "GetProperty" },
+new { httpMethod = new HttpMethodConstraint("GET") }
                 );
 
                 routes.MapRoute(
-                    name: "Ironman_API_All_Ending",
-                    url: AreaName + "/v" + VersionNumber + "/{ModelName}.{ending}",
-                    defaults: new { controller = ControllerName, action = "All" },
-                    constraints: new { httpMethod = new HttpMethodConstraint("GET") }
+"Ironman_API_Any_Ending",
+AreaName + "/v" + VersionNumber + "/{ModelName}/{ID}.{ending}",
+new { controller = ControllerName, action = "Any" },
+new { httpMethod = new HttpMethodConstraint("GET") }
+                );
+
+                routes.MapRoute(
+"Ironman_API_All_Ending",
+AreaName + "/v" + VersionNumber + "/{ModelName}.{ending}",
+new { controller = ControllerName, action = "All" },
+new { httpMethod = new HttpMethodConstraint("GET") }
                 );
             }
         }
@@ -588,7 +588,7 @@ namespace Ironman.Core.API.Manager
                 HttpContext.Current.Response.StatusCode = 400;
                 HttpContext.Current.Response.StatusDescription = "Bad Request";
             }
-            return new Dynamo(new { Status = "Error", Message = Message });
+            return new Dynamo(new { Status = "Error", Message });
         }
 
         private static Dynamo Success(string Message)
@@ -598,7 +598,7 @@ namespace Ironman.Core.API.Manager
                 HttpContext.Current.Response.StatusCode = 200;
                 HttpContext.Current.Response.StatusDescription = "Success";
             }
-            return new Dynamo(new { Status = "Success", Message = Message });
+            return new Dynamo(new { Status = "Success", Message });
         }
     }
 }

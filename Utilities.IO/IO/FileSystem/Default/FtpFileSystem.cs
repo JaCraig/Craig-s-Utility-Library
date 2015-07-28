@@ -30,14 +30,6 @@ namespace Utilities.IO.FileSystem.Default
     public class FtpFileSystem : FileSystemBase
     {
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public FtpFileSystem()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Name of the file system
         /// </summary>
         public override string Name { get { return "FTP"; } }
