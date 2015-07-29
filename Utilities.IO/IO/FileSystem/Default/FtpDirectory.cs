@@ -146,7 +146,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override void Create()
         {
-            FtpWebRequest Request = WebRequest.Create(InternalDirectory) as FtpWebRequest;
+            var Request = WebRequest.Create(InternalDirectory) as FtpWebRequest;
             Request.Method = WebRequestMethods.Ftp.MakeDirectory;
             SetupData(Request, null);
             SetupCredentials(Request);
@@ -158,7 +158,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override void Delete()
         {
-            FtpWebRequest Request = WebRequest.Create(InternalDirectory) as FtpWebRequest;
+            var Request = WebRequest.Create(InternalDirectory) as FtpWebRequest;
             Request.Method = WebRequestMethods.Ftp.RemoveDirectory;
             SetupData(Request, null);
             SetupCredentials(Request);
@@ -173,7 +173,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns></returns>
         public override IEnumerable<IDirectory> EnumerateDirectories(string SearchPattern, SearchOption Options = SearchOption.TopDirectoryOnly)
         {
-            FtpWebRequest Request = WebRequest.Create(InternalDirectory) as FtpWebRequest;
+            var Request = WebRequest.Create(InternalDirectory) as FtpWebRequest;
             Request.Method = WebRequestMethods.Ftp.ListDirectory;
             SetupData(Request, null);
             SetupCredentials(Request);
@@ -186,7 +186,7 @@ namespace Utilities.IO.FileSystem.Default
             Data = SendRequest(Request);
             string[] DetailedFolders = Data.Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-            List<IDirectory> Directories = new List<IDirectory>();
+            var Directories = new List<IDirectory>();
             foreach (string Folder in Folders)
             {
                 string DetailedFolder = DetailedFolders.FirstOrDefault(x => x.EndsWith(Folder, StringComparison.OrdinalIgnoreCase));
@@ -209,7 +209,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns></returns>
         public override IEnumerable<IFile> EnumerateFiles(string SearchPattern = "*", SearchOption Options = SearchOption.TopDirectoryOnly)
         {
-            FtpWebRequest Request = WebRequest.Create(InternalDirectory) as FtpWebRequest;
+            var Request = WebRequest.Create(InternalDirectory) as FtpWebRequest;
             Request.Method = WebRequestMethods.Ftp.ListDirectory;
             SetupData(Request, null);
             SetupCredentials(Request);
@@ -222,7 +222,7 @@ namespace Utilities.IO.FileSystem.Default
             Data = SendRequest(Request);
             string[] DetailedFolders = Data.Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-            List<IFile> Directories = new List<IFile>();
+            var Directories = new List<IFile>();
             foreach (string Folder in Folders)
             {
                 string DetailedFolder = DetailedFolders.FirstOrDefault(x => x.EndsWith(Folder, StringComparison.OrdinalIgnoreCase));
@@ -243,7 +243,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Name"></param>
         public override void Rename(string Name)
         {
-            FtpWebRequest Request = WebRequest.Create(InternalDirectory) as FtpWebRequest;
+            var Request = WebRequest.Create(InternalDirectory) as FtpWebRequest;
             Request.Method = WebRequestMethods.Ftp.Rename;
             Request.RenameTo = Name;
             SetupData(Request, null);

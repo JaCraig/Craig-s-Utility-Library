@@ -28,8 +28,8 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void Clone()
         {
-            Utilities.IO.FileSystem.Default.ResourceFile Temp = new Utilities.IO.FileSystem.Default.ResourceFile("resource://UnitTests/UnitTests.TestFile.txt");
-            Utilities.IO.FileSystem.Default.ResourceFile Temp2 = (Utilities.IO.FileSystem.Default.ResourceFile)Temp.Clone();
+            var Temp = new Utilities.IO.FileSystem.Default.ResourceFile("resource://UnitTests/UnitTests.TestFile.txt");
+            var Temp2 = (Utilities.IO.FileSystem.Default.ResourceFile)Temp.Clone();
             Assert.True(Temp == Temp2);
             Assert.True(Temp.Equals(Temp2));
             Assert.Equal(0, Temp.CompareTo(Temp2));
@@ -43,7 +43,7 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void Creation()
         {
-            Utilities.IO.FileSystem.Default.ResourceFile File = new Utilities.IO.FileSystem.Default.ResourceFile("resource://UnitTests/UnitTests.TestFile.txt");
+            var File = new Utilities.IO.FileSystem.Default.ResourceFile("resource://UnitTests/UnitTests.TestFile.txt");
             Assert.NotNull(File);
             Assert.True(File.Exists);
             Assert.NotNull(File.Directory);
@@ -56,7 +56,7 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void ReadWrite()
         {
-            Utilities.IO.FileSystem.Default.ResourceFile File = new Utilities.IO.FileSystem.Default.ResourceFile("resource://UnitTests/UnitTests.TestFile.txt");
+            var File = new Utilities.IO.FileSystem.Default.ResourceFile("resource://UnitTests/UnitTests.TestFile.txt");
             Assert.Equal("This is a simple resource file test.", File.Read());
             Assert.Equal("This is a simple resource file test.", (string)File);
         }

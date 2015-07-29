@@ -53,7 +53,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <summary>
         /// Used to parse SQL commands to find parameters (when batching)
         /// </summary>
-        private static Regex ParameterRegex = new Regex(@"[^@](?<ParamStart>[:@?])(?<ParamName>\w+)", RegexOptions.Compiled);
+        private static readonly Regex ParameterRegex = new Regex(@"[^@](?<ParamStart>[:@?])(?<ParamName>\w+)", RegexOptions.Compiled);
 
         /// <summary>
         /// Command count
@@ -121,7 +121,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <returns>This</returns>
         public IBatch AddCommand(IBatch Batch)
         {
-            DatabaseBatch TempValue = Batch as DatabaseBatch;
+            var TempValue = Batch as DatabaseBatch;
             if (TempValue == null)
                 return this;
             Commands.Add(TempValue.Commands);
@@ -159,7 +159,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         private static IList<dynamic> GetValues(DbDataReader TempReader)
         {
             Contract.Requires<ArgumentNullException>(TempReader != null, "TempReader");
-            List<dynamic> ReturnValue = new List<dynamic>();
+            var ReturnValue = new List<dynamic>();
             string[] FieldNames = new string[TempReader.FieldCount];
             for (int x = 0; x < TempReader.FieldCount; ++x)
             {
@@ -167,7 +167,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
             }
             while (TempReader.Read())
             {
-                IDictionary<string, object> Value = new Dynamo();
+                var Value = new Dynamo();
                 for (int x = 0; x < TempReader.FieldCount; ++x)
                 {
                     Value.Add(FieldNames[x], TempReader[x]);
@@ -182,7 +182,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
             Contract.Requires(this.Source != null);
             if (Commands == null)
                 return new List<IList<dynamic>>();
-            IList<IList<dynamic>> ReturnValue = new List<IList<dynamic>>();
+            var ReturnValue = new List<IList<dynamic>>();
             if (Commands.Count == 0)
             {
                 ReturnValue.Add(new List<dynamic>());
@@ -207,7 +207,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
                         int Count = 0;
                         while (true)
                         {
-                            List<IParameter> FinalParameters = new List<IParameter>();
+                            var FinalParameters = new List<IParameter>();
                             string FinalSQLCommand = "";
                             int ParameterTotal = 0;
                             ExecutableCommand.Parameters.Clear();

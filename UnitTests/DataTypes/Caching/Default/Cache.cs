@@ -30,7 +30,7 @@ namespace UnitTests.DataTypes.Caching.Default
         [Fact]
         public void Add()
         {
-            Utilities.DataTypes.Caching.Default.Cache Temp = new Utilities.DataTypes.Caching.Default.Cache();
+            var Temp = new Utilities.DataTypes.Caching.Default.Cache();
             Temp.Add("A", 1);
             Assert.NotNull(Temp);
             Assert.Equal(1, Temp.Count);
@@ -46,7 +46,7 @@ namespace UnitTests.DataTypes.Caching.Default
         [Fact]
         public void Clear()
         {
-            Utilities.DataTypes.Caching.Default.Cache Temp = new Utilities.DataTypes.Caching.Default.Cache();
+            var Temp = new Utilities.DataTypes.Caching.Default.Cache();
             Temp.Add("A", 1);
             Assert.NotNull(Temp);
             Assert.Equal(1, Temp.Count);
@@ -65,7 +65,7 @@ namespace UnitTests.DataTypes.Caching.Default
         [Fact]
         public void Create()
         {
-            Utilities.DataTypes.Caching.Default.Cache Temp = new Utilities.DataTypes.Caching.Default.Cache();
+            var Temp = new Utilities.DataTypes.Caching.Default.Cache();
             Assert.NotNull(Temp);
             Assert.Equal(0, Temp.Count);
             Assert.False(Temp.IsReadOnly);
@@ -77,7 +77,7 @@ namespace UnitTests.DataTypes.Caching.Default
         [Fact]
         public void Remove()
         {
-            Utilities.DataTypes.Caching.Default.Cache Temp = new Utilities.DataTypes.Caching.Default.Cache();
+            var Temp = new Utilities.DataTypes.Caching.Default.Cache();
             Temp.Add("A", 1);
             Assert.NotNull(Temp);
             Assert.Equal(1, Temp.Count);
@@ -98,7 +98,7 @@ namespace UnitTests.DataTypes.Caching.Default
         [Fact]
         public void TagAdd()
         {
-            Utilities.DataTypes.Caching.Default.Cache Temp = new Utilities.DataTypes.Caching.Default.Cache();
+            var Temp = new Utilities.DataTypes.Caching.Default.Cache();
             Temp.Add("A", 1, new string[] { "Tag1", "Tag2" });
             Assert.NotNull(Temp);
             Assert.Equal(1, Temp.Count);
@@ -117,7 +117,7 @@ namespace UnitTests.DataTypes.Caching.Default
         [Fact]
         public void TagGet()
         {
-            Utilities.DataTypes.Caching.Default.Cache Temp = new Utilities.DataTypes.Caching.Default.Cache();
+            var Temp = new Utilities.DataTypes.Caching.Default.Cache();
             Temp.Add("A", 1, new string[] { "Tag1", "Tag2" });
             Temp.Add("B", 2, new string[] { "Tag2" });
             Temp.Add("C", 3);
@@ -130,7 +130,7 @@ namespace UnitTests.DataTypes.Caching.Default
         [Fact]
         public void TagRemove()
         {
-            Utilities.DataTypes.Caching.Default.Cache Temp = new Utilities.DataTypes.Caching.Default.Cache();
+            var Temp = new Utilities.DataTypes.Caching.Default.Cache();
             Temp.Add("A", 1, new string[] { "Tag1", "Tag2" });
             Temp.Add("B", 2, new string[] { "Tag2" });
             Temp.Add("C", 3);
@@ -144,7 +144,7 @@ namespace UnitTests.DataTypes.Caching.Default
         [Fact]
         public void TryGetValue()
         {
-            Utilities.DataTypes.Caching.Default.Cache Temp = new Utilities.DataTypes.Caching.Default.Cache();
+            var Temp = new Utilities.DataTypes.Caching.Default.Cache();
             Temp.Add("A", 1);
             Assert.NotNull(Temp);
             Assert.Equal(1, Temp.Count);

@@ -183,7 +183,7 @@ namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
         /// <returns>True if they are equal, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            ParameterBase<DataType> OtherParameter = obj as ParameterBase<DataType>;
+            var OtherParameter = obj as ParameterBase<DataType>;
             return (OtherParameter != null
                 && OtherParameter.DatabaseType == DatabaseType
                 && OtherParameter.Direction == Direction

@@ -209,7 +209,7 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <returns>The cloned object</returns>
         public object Clone()
         {
-            DirectoryBase<InternalDirectoryType, DirectoryType> Temp = new DirectoryType();
+            var Temp = new DirectoryType();
             Temp.InternalDirectory = InternalDirectory;
             Temp.UserName = UserName;
             Temp.Password = Password;
@@ -238,7 +238,7 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <returns></returns>
         public int CompareTo(object obj)
         {
-            IDirectory Temp = obj as IDirectory;
+            var Temp = obj as IDirectory;
             if (Temp == null)
                 return 1;
             return CompareTo(Temp);
@@ -257,26 +257,27 @@ namespace Utilities.IO.FileSystem.BaseClasses
             Directory.Create();
             foreach (IFile TempFile in EnumerateFiles())
             {
-                if (Options == CopyOptions.CopyAlways)
+                switch (Options)
                 {
-                    TempFile.CopyTo(Directory, true);
-                }
-                else if (Options == CopyOptions.CopyIfNewer)
-                {
-                    if (new FileInfo(Directory.FullName + "\\" + TempFile.Name.Replace("/", "").Replace("\\", ""), UserName, Password, Domain).Exists)
-                    {
-                        FileInfo FileInfo = new FileInfo(Directory.FullName + "\\" + TempFile.Name.Replace("/", "").Replace("\\", ""), UserName, Password, Domain);
-                        if (FileInfo.Modified.CompareTo(TempFile.Modified) < 0)
-                            TempFile.CopyTo(Directory, true);
-                    }
-                    else
-                    {
+                    case CopyOptions.CopyAlways:
                         TempFile.CopyTo(Directory, true);
-                    }
-                }
-                else if (Options == CopyOptions.DoNotOverwrite)
-                {
-                    TempFile.CopyTo(Directory, false);
+                        break;
+                    case CopyOptions.CopyIfNewer:
+                        if (new FileInfo(Directory.FullName + "\\" + TempFile.Name.Replace("/", "").Replace("\\", ""), UserName, Password, Domain).Exists)
+                        {
+                            var FileInfo = new FileInfo(Directory.FullName + "\\" + TempFile.Name.Replace("/", "").Replace("\\", ""), UserName, Password, Domain);
+                            if (FileInfo.Modified.CompareTo(TempFile.Modified) < 0)
+                                TempFile.CopyTo(Directory, true);
+                        }
+                        else
+                        {
+                            TempFile.CopyTo(Directory, true);
+                        }
+
+                        break;
+                    case CopyOptions.DoNotOverwrite:
+                        TempFile.CopyTo(Directory, false);
+                        break;
                 }
             }
             foreach (IDirectory SubDirectory in EnumerateDirectories())
@@ -339,7 +340,7 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <returns>True if they're the same, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            DirectoryBase<InternalDirectoryType, DirectoryType> Other = obj as DirectoryBase<InternalDirectoryType, DirectoryType>;
+            var Other = obj as DirectoryBase<InternalDirectoryType, DirectoryType>;
             return Other != null && Other == this;
         }
 

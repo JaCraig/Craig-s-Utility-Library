@@ -68,7 +68,7 @@ namespace Utilities.IO
         /// <summary>
         /// Does the directory exist
         /// </summary>
-        public bool Exists { get { return InternalDirectory == null ? false : InternalDirectory.Exists; } }
+        public bool Exists { get { return InternalDirectory != null && InternalDirectory.Exists; } }
 
         /// <summary>
         /// Full path to the directory
@@ -189,7 +189,7 @@ namespace Utilities.IO
         /// <returns>The cloned object</returns>
         public object Clone()
         {
-            DirectoryInfo Temp = new DirectoryInfo(InternalDirectory);
+            var Temp = new DirectoryInfo(InternalDirectory);
             return Temp;
         }
 
@@ -214,7 +214,7 @@ namespace Utilities.IO
         /// <returns></returns>
         public int CompareTo(object obj)
         {
-            DirectoryInfo Temp = obj as DirectoryInfo;
+            var Temp = obj as DirectoryInfo;
             if (Temp == null)
                 return 1;
             return CompareTo(Temp);
@@ -324,7 +324,7 @@ namespace Utilities.IO
         /// <returns>True if they're the same, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            DirectoryInfo Other = obj as DirectoryInfo;
+            var Other = obj as DirectoryInfo;
             return Other != null && Other == this;
         }
 

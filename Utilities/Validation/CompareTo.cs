@@ -67,18 +67,28 @@ namespace Utilities.Validation
         public override string FormatErrorMessage(string name)
         {
             string ComparisonTypeString = "";
-            if (Type == ComparisonType.Equal)
-                ComparisonTypeString = "equal";
-            else if (Type == ComparisonType.GreaterThan)
-                ComparisonTypeString = "greater than";
-            else if (Type == ComparisonType.GreaterThanOrEqual)
-                ComparisonTypeString = "greater than or equal";
-            else if (Type == ComparisonType.LessThan)
-                ComparisonTypeString = "less than";
-            else if (Type == ComparisonType.LessThanOrEqual)
-                ComparisonTypeString = "less than or equal";
-            else if (Type == ComparisonType.NotEqual)
-                ComparisonTypeString = "not equal";
+            switch (Type)
+            {
+                case ComparisonType.Equal:
+                    ComparisonTypeString = "equal";
+                    break;
+                case ComparisonType.GreaterThan:
+                    ComparisonTypeString = "greater than";
+                    break;
+                case ComparisonType.GreaterThanOrEqual:
+                    ComparisonTypeString = "greater than or equal";
+                    break;
+                case ComparisonType.LessThan:
+                    ComparisonTypeString = "less than";
+                    break;
+                case ComparisonType.LessThanOrEqual:
+                    ComparisonTypeString = "less than or equal";
+                    break;
+                case ComparisonType.NotEqual:
+                    ComparisonTypeString = "not equal";
+                    break;
+            }
+
             return string.Format(CultureInfo.InvariantCulture, ErrorMessageString, name, ComparisonTypeString, PropertyName);
         }
 
@@ -90,7 +100,7 @@ namespace Utilities.Validation
         /// <returns>The list of client side validation rules</returns>
         public IEnumerable<ModelClientValidationRule> GetClientValidationRules(ModelMetadata metadata, ControllerContext context)
         {
-            ModelClientValidationRule Rule = new ModelClientValidationRule();
+            var Rule = new ModelClientValidationRule();
             Rule.ErrorMessage = FormatErrorMessage(metadata.GetDisplayName());
             Rule.ValidationParameters.Add("Type", Type);
             Rule.ValidationParameters.Add("PropertyName", PropertyName);
@@ -106,23 +116,26 @@ namespace Utilities.Validation
         /// <returns>The validation result</returns>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            IComparable Tempvalue = value as IComparable;
-            GenericComparer<IComparable> Comparer = new GenericComparer<IComparable>();
-            IComparable ComparisonValue = (IComparable)validationContext.ObjectType.GetProperty(PropertyName).GetValue(validationContext.ObjectInstance, null).To<object>(value.GetType());
-            if (Type == ComparisonType.Equal)
-                return Comparer.Compare(Tempvalue, ComparisonValue) == 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
-            else if (Type == ComparisonType.NotEqual)
-                return Comparer.Compare(Tempvalue, ComparisonValue) != 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
-            else if (Type == ComparisonType.GreaterThan)
-                return Comparer.Compare(Tempvalue, ComparisonValue) > 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
-            else if (Type == ComparisonType.GreaterThanOrEqual)
-                return Comparer.Compare(Tempvalue, ComparisonValue) >= 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
-            else if (Type == ComparisonType.LessThan)
-                return Comparer.Compare(Tempvalue, ComparisonValue) < 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
-            else if (Type == ComparisonType.LessThanOrEqual)
-                return Comparer.Compare(Tempvalue, ComparisonValue) <= 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
-            else
-                return ValidationResult.Success;
+            var Tempvalue = value as IComparable;
+            var Comparer = new GenericComparer<IComparable>();
+            var ComparisonValue = (IComparable)validationContext.ObjectType.GetProperty(PropertyName).GetValue(validationContext.ObjectInstance, null).To<object>(value.GetType());
+            switch (Type)
+            {
+                case ComparisonType.Equal:
+                    return Comparer.Compare(Tempvalue, ComparisonValue) == 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                case ComparisonType.NotEqual:
+                    return Comparer.Compare(Tempvalue, ComparisonValue) != 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                case ComparisonType.GreaterThan:
+                    return Comparer.Compare(Tempvalue, ComparisonValue) > 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                case ComparisonType.GreaterThanOrEqual:
+                    return Comparer.Compare(Tempvalue, ComparisonValue) >= 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                case ComparisonType.LessThan:
+                    return Comparer.Compare(Tempvalue, ComparisonValue) < 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                case ComparisonType.LessThanOrEqual:
+                    return Comparer.Compare(Tempvalue, ComparisonValue) <= 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                default:
+                    return ValidationResult.Success;
+            }
         }
     }
 }

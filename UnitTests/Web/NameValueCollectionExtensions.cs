@@ -30,7 +30,7 @@ namespace UnitTests.Web.ExtensionMethods
         [Fact]
         public void ToQueryString()
         {
-            NameValueCollection Collection = new NameValueCollection();
+            var Collection = new NameValueCollection();
             Collection.Add("A", "1");
             Collection.Add("B", "2");
             Assert.Equal("?A=1&B=2", Collection.ToQueryString());

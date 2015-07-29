@@ -40,9 +40,9 @@ namespace Utilities.Profiler.Manager
         public Manager(IEnumerable<IProfiler> Profilers)
         {
             Contract.Requires<ArgumentNullException>(Profilers != null, "Profilers");
-            Profiler = Profilers.Where(x => !x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+            Profiler = Profilers.FirstOrDefault(x => !x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
             if (Profiler == null)
-                Profiler = Profilers.Where(x => x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+                Profiler = Profilers.FirstOrDefault(x => x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>

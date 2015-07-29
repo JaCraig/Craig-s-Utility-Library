@@ -28,13 +28,13 @@ namespace UnitTests.Random.DefaultClasses
         [Fact]
         public void Next()
         {
-            Utilities.Random.DefaultClasses.DecimalGenerator<decimal> Generator = new Utilities.Random.DefaultClasses.DecimalGenerator<decimal>();
+            var Generator = new Utilities.Random.DefaultClasses.DecimalGenerator<decimal>();
             Assert.InRange(Generator.Next(new System.Random()), 0, 1);
             Assert.InRange(Generator.Next(new System.Random(), 1.05m, 1.1m), 1.05m, 1.1m);
-            Utilities.Random.DefaultClasses.DecimalGenerator<float> Generator2 = new Utilities.Random.DefaultClasses.DecimalGenerator<float>();
+            var Generator2 = new Utilities.Random.DefaultClasses.DecimalGenerator<float>();
             Assert.InRange(Generator2.Next(new System.Random()), 0, 1);
             Assert.InRange(Generator2.Next(new System.Random(), 1.05f, 1.1f), 1.05f, 1.1f);
-            Utilities.Random.DefaultClasses.DecimalGenerator<double> Generator3 = new Utilities.Random.DefaultClasses.DecimalGenerator<double>();
+            var Generator3 = new Utilities.Random.DefaultClasses.DecimalGenerator<double>();
             Assert.InRange(Generator3.Next(new System.Random()), 0, 1);
             Assert.InRange(Generator3.Next(new System.Random(), 1.05d, 1.1d), 1.05d, 1.1d);
         }

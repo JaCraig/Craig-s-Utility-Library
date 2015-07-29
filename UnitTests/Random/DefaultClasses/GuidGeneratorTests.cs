@@ -29,7 +29,7 @@ namespace UnitTests.Random.DefaultClasses
         [Fact]
         public void Next()
         {
-            Utilities.Random.DefaultClasses.GuidGenerator Generator = new Utilities.Random.DefaultClasses.GuidGenerator();
+            var Generator = new Utilities.Random.DefaultClasses.GuidGenerator();
             Assert.IsType(typeof(Guid), Generator.Next(new System.Random()));
         }
     }

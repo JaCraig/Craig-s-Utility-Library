@@ -71,7 +71,7 @@ namespace Utilities.IO.Messaging
         /// <returns>The string info that the manager contains</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.AppendLineFormat("Formatters: {0}\r\nMessaging Systems: {1}", Formatters.ToString(x => x.Name), MessagingSystems.ToString(x => x.Value.Name));
             return Builder.ToString();
         }

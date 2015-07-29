@@ -432,7 +432,7 @@ namespace Utilities.Media
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
             using (SwiftBitmap NewSwiftBitmap = new SwiftBitmap(OriginalImage.Width, OriginalImage.Height))
             {
-                RGBHistogram TempHistogram = new RGBHistogram(OriginalImage);
+                var TempHistogram = new RGBHistogram(OriginalImage);
                 TempHistogram.Equalize();
                 NewSwiftBitmap.Lock();
                 OriginalImage.Lock();
@@ -441,9 +441,9 @@ namespace Utilities.Media
                     for (int y = 0; y < OriginalImage.Height; ++y)
                     {
                         Color Current = OriginalImage.GetPixel(x, y);
-                        int NewR = (int)TempHistogram.R[Current.R];
-                        int NewG = (int)TempHistogram.G[Current.G];
-                        int NewB = (int)TempHistogram.B[Current.B];
+                        var NewR = (int)TempHistogram.R[Current.R];
+                        var NewG = (int)TempHistogram.G[Current.G];
+                        var NewB = (int)TempHistogram.B[Current.B];
                         NewR = NewR.Clamp(255, 0);
                         NewG = NewG.Clamp(255, 0);
                         NewB = NewB.Clamp(255, 0);
@@ -647,9 +647,9 @@ namespace Utilities.Media
                 {
                     for (int y = 0; y < Height; ++y)
                     {
-                        List<int> RValues = new List<int>();
-                        List<int> GValues = new List<int>();
-                        List<int> BValues = new List<int>();
+                        var RValues = new List<int>();
+                        var GValues = new List<int>();
+                        var BValues = new List<int>();
                         for (int x2 = ApetureMin; x2 < ApetureMax; ++x2)
                         {
                             int TempX = x + x2;
@@ -730,7 +730,7 @@ namespace Utilities.Media
                         int Height = TempImageX.Height;
                         Parallel.For(0, Height, y =>
                         {
-                            Vector3 TempVector = new Vector3(0.0, 0.0, 0.0);
+                            var TempVector = new Vector3(0.0, 0.0, 0.0);
                             for (int x = 0; x < Width; ++x)
                             {
                                 Color TempPixelX = TempImageX.GetPixel(x, y);
@@ -1131,7 +1131,7 @@ namespace Utilities.Media
             bool ShowLine = true;
             using (SwiftBitmap TempImage = ((SwiftBitmap)Input.Clone()).BlackAndWhite().Lock())
             {
-                StringBuilder Builder = new StringBuilder();
+                var Builder = new StringBuilder();
                 for (int x = 0; x < TempImage.Height; ++x)
                 {
                     for (int y = 0; y < TempImage.Width; ++y)

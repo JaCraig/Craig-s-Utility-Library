@@ -35,7 +35,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         [Fact]
         public void Create()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.StringParameter Parameter = new Utilities.ORM.Manager.QueryProvider.Default.StringParameter("Test", "This is a test");
+            var Parameter = new Utilities.ORM.Manager.QueryProvider.Default.StringParameter("Test", "This is a test");
             Assert.Equal("Test", Parameter.ID);
             Assert.Equal("This is a test", Parameter.Value);
             Assert.Equal("@", Parameter.ParameterStarter);
@@ -46,8 +46,8 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         [Fact]
         public void CreateCopy()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.StringParameter Parameter = new Utilities.ORM.Manager.QueryProvider.Default.StringParameter("Test", "This is a test");
-            Utilities.ORM.Manager.QueryProvider.Default.StringParameter Parameter2 = (Utilities.ORM.Manager.QueryProvider.Default.StringParameter)Parameter.CreateCopy("0");
+            var Parameter = new Utilities.ORM.Manager.QueryProvider.Default.StringParameter("Test", "This is a test");
+            var Parameter2 = (Utilities.ORM.Manager.QueryProvider.Default.StringParameter)Parameter.CreateCopy("0");
             Assert.Equal("Test0", Parameter2.ID);
             Assert.Equal("This is a test", Parameter2.Value);
             Assert.Equal("@", Parameter2.ParameterStarter);

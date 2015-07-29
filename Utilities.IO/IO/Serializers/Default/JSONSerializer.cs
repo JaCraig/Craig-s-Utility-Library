@@ -68,7 +68,7 @@ namespace Utilities.IO.Serializers.Default
             Data = JsonPRegex.Replace(Data, "$1");
             using (MemoryStream Stream = new MemoryStream(Encoding.UTF8.GetBytes(Data)))
             {
-                DataContractJsonSerializer Serializer = new DataContractJsonSerializer(ObjectType);
+                var Serializer = new DataContractJsonSerializer(ObjectType);
                 return Serializer.ReadObject(Stream);
             }
         }
@@ -86,7 +86,7 @@ namespace Utilities.IO.Serializers.Default
             string ReturnValue = "";
             using (MemoryStream Stream = new MemoryStream())
             {
-                DataContractJsonSerializer Serializer = new DataContractJsonSerializer(Data.GetType());
+                var Serializer = new DataContractJsonSerializer(Data.GetType());
                 Serializer.WriteObject(Stream, Data);
                 Stream.Flush();
                 ReturnValue = Encoding.UTF8.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);

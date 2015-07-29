@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Web;
 using System.Web.Mvc;
-
-#endregion Usings
 
 namespace Ironman.Core.ActionFilters
 {
@@ -47,7 +43,7 @@ namespace Ironman.Core.ActionFilters
             HttpResponseBase Response = filterContext.HttpContext.Response;
             if (!Request.IsSecureConnection && !Request.IsLocal)
             {
-                UriBuilder Builder = new UriBuilder(Request.Url);
+                var Builder = new UriBuilder(Request.Url);
                 Builder.Scheme = Uri.UriSchemeHttps;
                 Response.Redirect(Builder.Uri.ToString());
             }

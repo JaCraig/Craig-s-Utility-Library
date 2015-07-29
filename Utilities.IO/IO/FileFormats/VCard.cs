@@ -201,7 +201,7 @@ namespace Utilities.IO.FileFormats
         {
             get
             {
-                StringBuilder Builder = new StringBuilder();
+                var Builder = new StringBuilder();
                 if (!string.IsNullOrEmpty(Prefix))
                 {
                     Builder.AppendFormat("{0} ", Prefix);
@@ -237,7 +237,7 @@ namespace Utilities.IO.FileFormats
         /// <returns>A hCard in string format</returns>
         public string HCard()
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.Append("<div class=\"vcard\">");
             if (string.IsNullOrEmpty(Url))
             {
@@ -304,37 +304,36 @@ namespace Utilities.IO.FileFormats
             string Content = Data;
             foreach (Match TempMatch in Regex.Matches(Content, "(?<Title>[^:]+):(?<Value>.*)"))
             {
-                if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "N")
+                switch (TempMatch.Groups["Title"].Value.ToUpperInvariant())
                 {
-                    string[] Name = TempMatch.Groups["Value"].Value.Split(';');
-                    if (Name.Length > 0)
-                    {
-                        LastName = Name[0];
-                        if (Name.Length > 1)
-                            FirstName = Name[1];
-                        if (Name.Length > 2)
-                            MiddleName = Name[2];
-                        if (Name.Length > 3)
-                            Prefix = Name[3];
-                        if (Name.Length > 4)
-                            Suffix = Name[4];
-                    }
-                }
-                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "TEL;WORK")
-                {
-                    DirectDial = TempMatch.Groups["Value"].Value;
-                }
-                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "EMAIL;INTERNET")
-                {
-                    Email = TempMatch.Groups["Value"].Value;
-                }
-                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "TITLE")
-                {
-                    Title = TempMatch.Groups["Value"].Value;
-                }
-                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "ORG")
-                {
-                    Organization = TempMatch.Groups["Value"].Value;
+                    case "N":
+                        string[] Name = TempMatch.Groups["Value"].Value.Split(';');
+                        if (Name.Length > 0)
+                        {
+                            LastName = Name[0];
+                            if (Name.Length > 1)
+                                FirstName = Name[1];
+                            if (Name.Length > 2)
+                                MiddleName = Name[2];
+                            if (Name.Length > 3)
+                                Prefix = Name[3];
+                            if (Name.Length > 4)
+                                Suffix = Name[4];
+                        }
+
+                        break;
+                    case "TEL;WORK":
+                        DirectDial = TempMatch.Groups["Value"].Value;
+                        break;
+                    case "EMAIL;INTERNET":
+                        Email = TempMatch.Groups["Value"].Value;
+                        break;
+                    case "TITLE":
+                        Title = TempMatch.Groups["Value"].Value;
+                        break;
+                    case "ORG":
+                        Organization = TempMatch.Groups["Value"].Value;
+                        break;
                 }
             }
         }

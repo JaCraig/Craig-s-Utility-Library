@@ -19,16 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
+using Ironman.Core.Assets.Enums;
+using Ironman.Core.Assets.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Ironman.Core.Assets.Enums;
-using Ironman.Core.Assets.Interfaces;
 using Utilities.DataTypes;
-
-#endregion Usings
 
 namespace Ironman.Core.Assets.Filters
 {
@@ -50,7 +46,7 @@ namespace Ironman.Core.Assets.Filters
         /// <summary>
         /// Used to determine what files to remove
         /// </summary>
-        private Regex RemoveRegex = new Regex(@"-vsdoc|_references.js", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private readonly Regex RemoveRegex = new Regex(@"-vsdoc|_references.js", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Filters the assets

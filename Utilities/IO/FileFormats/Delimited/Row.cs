@@ -61,7 +61,7 @@ namespace Utilities.IO.FileFormats.Delimited
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Delimiter), "Delimiter");
             this.Cells = new List<Cell>();
             this.Delimiter = Delimiter;
-            Regex TempSplitter = new Regex(string.Format(CultureInfo.InvariantCulture, "(?<Value>\"(?:[^\"]|\"\")*\"|[^{0}\r\n]*?)(?<Delimiter>{0}|\r\n|\n|$)", Regex.Escape(Delimiter)));
+            var TempSplitter = new Regex(string.Format(CultureInfo.InvariantCulture, "(?<Value>\"(?:[^\"]|\"\")*\"|[^{0}\r\n]*?)(?<Delimiter>{0}|\r\n|\n|$)", Regex.Escape(Delimiter)));
             MatchCollection Matches = TempSplitter.Matches(Content);
             bool Finished = false;
             foreach (Match Match in Matches)
@@ -211,7 +211,7 @@ namespace Utilities.IO.FileFormats.Delimited
         /// <returns>The content of the row in string form</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             string Seperator = "";
             foreach (Cell CurrentCell in Cells)
             {

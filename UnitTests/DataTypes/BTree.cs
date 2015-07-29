@@ -29,7 +29,7 @@ namespace UnitTests.DataTypes
         [Fact]
         public void Creation()
         {
-            BinaryTree<int> Tree = new BinaryTree<int>();
+            var Tree = new BinaryTree<int>();
             Tree.Add(1);
             Tree.Add(2);
             Tree.Add(0);
@@ -41,9 +41,9 @@ namespace UnitTests.DataTypes
         [Fact]
         public void Random()
         {
-            BinaryTree<int> Tree = new BinaryTree<int>();
-            System.Collections.Generic.List<int> Values = new System.Collections.Generic.List<int>();
-            System.Random Rand = new System.Random();
+            var Tree = new BinaryTree<int>();
+            var Values = new System.Collections.Generic.List<int>();
+            var Rand = new System.Random();
             for (int x = 0; x < 10; ++x)
             {
                 int Value = Rand.Next();

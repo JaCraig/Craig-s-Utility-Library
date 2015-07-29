@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using Utilities.DataTypes;
 using Xunit;
@@ -32,8 +31,8 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void CopyToTest()
         {
-            ConcurrentDictionary<string, int> Test = new ConcurrentDictionary<string, int>();
-            ConcurrentDictionary<string, int> Test2 = new ConcurrentDictionary<string, int>();
+            var Test = new ConcurrentDictionary<string, int>();
+            var Test2 = new ConcurrentDictionary<string, int>();
             Test.AddOrUpdate("Q", 4, (x, y) => 4);
             Test.AddOrUpdate("Z", 2, (x, y) => 2);
             Test.AddOrUpdate("C", 3, (x, y) => 3);
@@ -53,7 +52,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void GetValue()
         {
-            ConcurrentDictionary<string, int> Test = new ConcurrentDictionary<string, int>();
+            var Test = new ConcurrentDictionary<string, int>();
             Test.AddOrUpdate("Q", 4, (x, y) => 4);
             Test.AddOrUpdate("Z", 2, (x, y) => 4);
             Test.AddOrUpdate("C", 3, (x, y) => 4);
@@ -66,7 +65,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void SetValue()
         {
-            ConcurrentDictionary<string, int> Test = new ConcurrentDictionary<string, int>();
+            var Test = new ConcurrentDictionary<string, int>();
             Test.AddOrUpdate("Q", 4, (x, y) => 4);
             Test.AddOrUpdate("Z", 2, (x, y) => 4);
             Test.AddOrUpdate("C", 3, (x, y) => 4);

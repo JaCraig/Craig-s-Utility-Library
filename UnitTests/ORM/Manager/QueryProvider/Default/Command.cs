@@ -33,7 +33,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         public void Create()
         {
             var Bootstrapper = Utilities.IoC.Manager.Bootstrapper;
-            Utilities.ORM.Manager.QueryProvider.Default.Command Temp = new Utilities.ORM.Manager.QueryProvider.Default.Command(null, null, "SELECT * FROM A", CommandType.Text, "@", new object[] { 1, "ASDF", 2.0f, Guid.NewGuid() });
+            var Temp = new Utilities.ORM.Manager.QueryProvider.Default.Command(null, null, "SELECT * FROM A", CommandType.Text, "@", new object[] { 1, "ASDF", 2.0f, Guid.NewGuid() });
             Assert.Equal(CommandType.Text, Temp.CommandType);
             Assert.Equal(4, Temp.Parameters.Count);
             IParameter Parameter = Temp.Parameters.ElementAt(0);

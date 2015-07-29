@@ -78,7 +78,7 @@ namespace Utilities.DataTypes.Formatters
         {
             if (!IsValid(FormatPattern))
                 throw new ArgumentException("FormatPattern is not valid");
-            StringBuilder ReturnValue = new StringBuilder();
+            var ReturnValue = new StringBuilder();
             for (int x = 0; x < FormatPattern.Length; ++x)
             {
                 if (FormatPattern[x] == EscapeChar)
@@ -154,8 +154,7 @@ namespace Utilities.DataTypes.Formatters
                     return false;
                 else if (EscapeCharFound)
                     EscapeCharFound = false;
-                else if (FormatPattern[x] == EscapeChar)
-                    EscapeCharFound = true;
+                else EscapeCharFound |= FormatPattern[x] == EscapeChar;
             }
             if (EscapeCharFound)
                 return false;

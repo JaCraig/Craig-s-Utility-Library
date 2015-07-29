@@ -183,7 +183,7 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
         /// <returns>The record as a string</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             foreach (IField<T> Field in Fields)
                 Builder.Append(Field.ToString());
             return Builder.ToString();

@@ -311,7 +311,7 @@ namespace Ironman.Core.API.Manager
                 IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
                 if (!TempMappings.ContainsKey(Mapping))
                     return new Dynamo(new { PageCount = 0 });
-                Dynamo ReturnValue = new Dynamo(new { PageCount = TempMappings[Mapping].PageCount(Mappings.GetValue(Version), PageSize) });
+                var ReturnValue = new Dynamo(new { PageCount = TempMappings[Mapping].PageCount(Mappings.GetValue(Version), PageSize) });
                 return ReturnValue;
             }
             catch

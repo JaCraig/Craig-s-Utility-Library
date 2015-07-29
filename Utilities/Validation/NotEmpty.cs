@@ -61,7 +61,7 @@ namespace Utilities.Validation
         {
             if (value == null)
                 return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
-            IEnumerable ValueList = value as IEnumerable;
+            var ValueList = value as IEnumerable;
             return ValueList != null && ValueList.GetEnumerator().MoveNext() ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
         }
     }

@@ -29,7 +29,7 @@ namespace UnitTests.DataTypes.Comparison
         [Fact]
         public void Compare()
         {
-            SimpleEqualityComparer<string> Comparer = new SimpleEqualityComparer<string>((x, y) => string.Equals(x, y), x => x.GetHashCode());
+            var Comparer = new SimpleEqualityComparer<string>((x, y) => string.Equals(x, y), x => x.GetHashCode());
             Assert.True(Comparer.Equals("A", "A"));
             Assert.False(Comparer.Equals("A", "B"));
             Assert.False(Comparer.Equals("B", "A"));

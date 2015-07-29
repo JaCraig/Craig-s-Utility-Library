@@ -134,7 +134,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
         /// </returns>
         public IBatch AddCommand(IBatch Batch)
         {
-            LDAPBatch TempValue = Batch as LDAPBatch;
+            var TempValue = Batch as LDAPBatch;
             if (TempValue == null)
                 return this;
             Commands.Add(TempValue.Commands);
@@ -149,7 +149,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
         /// </returns>
         public IList<IList<dynamic>> Execute()
         {
-            IList<IList<dynamic>> ReturnValue = new List<IList<dynamic>>();
+            var ReturnValue = new List<IList<dynamic>>();
             if (Commands.Count == 0)
             {
                 ReturnValue.Add(new List<dynamic>());
@@ -165,10 +165,10 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
                         Searcher.Filter = Command.SQLCommand;
                         using (SearchResultCollection Results = Searcher.FindAll())
                         {
-                            List<dynamic> ReturnValues = new List<dynamic>();
+                            var ReturnValues = new List<dynamic>();
                             foreach (SearchResult Result in Results)
                             {
-                                dynamic TempValue = new Dynamo();
+                                var TempValue = new Dynamo();
                                 foreach (PropertyValueCollection Property in Result.GetDirectoryEntry().Properties)
                                 {
                                     TempValue[Property.PropertyName] = Property.Value;

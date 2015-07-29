@@ -58,14 +58,14 @@ namespace CUL.PostgreSQL.Schema
         public string ProviderName { get { return "System.Data.SqlClient"; } }
 
         /// <summary>
-        /// Query provider object
-        /// </summary>
-        protected Utilities.ORM.Manager.QueryProvider.Manager Provider { get; private set; }
-
-        /// <summary>
         /// Source provider object
         /// </summary>
         protected Utilities.ORM.Manager.SourceProvider.Manager SourceProvider { get; private set; }
+
+        /// <summary>
+        /// Query provider object
+        /// </summary>
+        protected Utilities.ORM.Manager.QueryProvider.Manager Provider { get; private set; }
 
         /// <summary>
         /// Generates a list of commands used to modify the source. If it does not exist prior, the
@@ -92,7 +92,7 @@ namespace CUL.PostgreSQL.Schema
             ISourceInfo DatabaseSource = SourceProvider.GetSource(Regex.Replace(Source.Connection, "Initial Catalog=(.*?;)", ""));
             if (!SourceExists(DatabaseName, DatabaseSource))
                 return null;
-            Database Temp = new Database(DatabaseName);
+            var Temp = new Database(DatabaseName);
             GetTables(Source, Temp);
             SetupTables(Source, Temp);
             SetupViews(Source, Temp);
@@ -110,7 +110,7 @@ namespace CUL.PostgreSQL.Schema
         public void Setup(ListMapping<IDatabase, IMapping> Mappings, IDatabase Database, Utilities.ORM.Manager.QueryProvider.Manager QueryProvider)
         {
             ISourceInfo TempSource = SourceProvider.GetSource(Database.Name);
-            Utilities.ORM.Manager.Schema.Default.Database.Database TempDatabase = new Utilities.ORM.Manager.Schema.Default.Database.Database(Regex.Match(TempSource.Connection, "Initial Catalog=(.*?;)").Value.Replace("Initial Catalog=", "").Replace(";", ""));
+            var TempDatabase = new Utilities.ORM.Manager.Schema.Default.Database.Database(Regex.Match(TempSource.Connection, "Initial Catalog=(.*?;)").Value.Replace("Initial Catalog=", "").Replace(";", ""));
             SetupTables(Mappings, Database, TempDatabase);
             SetupJoiningTables(Mappings, Database, TempDatabase);
             SetupAuditTables(Database, TempDatabase);
@@ -206,7 +206,7 @@ namespace CUL.PostgreSQL.Schema
 
         private static IEnumerable<string> BuildCommands(ISource DesiredStructure, ISource CurrentStructure)
         {
-            List<string> Commands = new List<string>();
+            var Commands = new List<string>();
             DesiredStructure = DesiredStructure.Check(new Database(""));
             if (CurrentStructure == null)
                 Commands.Add(string.Format(CultureInfo.CurrentCulture,
@@ -226,17 +226,17 @@ namespace CUL.PostgreSQL.Schema
             }
             foreach (Function Function in DesiredStructure.Functions)
             {
-                Function CurrentFunction = (Function)CurrentStructure.Functions.FirstOrDefault(x => x.Name == Function.Name);
+                var CurrentFunction = (Function)CurrentStructure.Functions.FirstOrDefault(x => x.Name == Function.Name);
                 Commands.Add(CurrentFunction != null ? GetAlterFunctionCommand(Function, CurrentFunction) : GetFunctionCommand(Function));
             }
             foreach (View View in DesiredStructure.Views)
             {
-                View CurrentView = (View)CurrentStructure.Views.FirstOrDefault(x => x.Name == View.Name);
+                var CurrentView = (View)CurrentStructure.Views.FirstOrDefault(x => x.Name == View.Name);
                 Commands.Add(CurrentView != null ? GetAlterViewCommand(View, CurrentView) : GetViewCommand(View));
             }
             foreach (StoredProcedure StoredProcedure in DesiredStructure.StoredProcedures)
             {
-                StoredProcedure CurrentStoredProcedure = (StoredProcedure)CurrentStructure.StoredProcedures.FirstOrDefault(x => x.Name == StoredProcedure.Name);
+                var CurrentStoredProcedure = (StoredProcedure)CurrentStructure.StoredProcedures.FirstOrDefault(x => x.Name == StoredProcedure.Name);
                 Commands.Add(CurrentStoredProcedure != null ? GetAlterStoredProcedure(StoredProcedure, CurrentStoredProcedure) : GetStoredProcedure(StoredProcedure));
             }
             return Commands;
@@ -247,7 +247,7 @@ namespace CUL.PostgreSQL.Schema
             Contract.Requires<ArgumentNullException>(Function != null, "Function");
             Contract.Requires<ArgumentNullException>(CurrentFunction != null, "CurrentFunction");
             Contract.Requires<ArgumentException>(Function.Definition == CurrentFunction.Definition || !string.IsNullOrEmpty(Function.Definition));
-            List<string> ReturnValue = new List<string>();
+            var ReturnValue = new List<string>();
             if (Function.Definition != CurrentFunction.Definition)
             {
                 ReturnValue.Add(string.Format(CultureInfo.CurrentCulture,
@@ -263,7 +263,7 @@ namespace CUL.PostgreSQL.Schema
             Contract.Requires<ArgumentNullException>(StoredProcedure != null, "StoredProcedure");
             Contract.Requires<ArgumentNullException>(CurrentStoredProcedure != null, "CurrentStoredProcedure");
             Contract.Requires<ArgumentException>(StoredProcedure.Definition == CurrentStoredProcedure.Definition || !string.IsNullOrEmpty(StoredProcedure.Definition));
-            List<string> ReturnValue = new List<string>();
+            var ReturnValue = new List<string>();
             if (StoredProcedure.Definition != CurrentStoredProcedure.Definition)
             {
                 ReturnValue.Add(string.Format(CultureInfo.CurrentCulture,
@@ -278,7 +278,7 @@ namespace CUL.PostgreSQL.Schema
         {
             Contract.Requires<ArgumentNullException>(Table != null, "Table");
             Contract.Requires<ArgumentNullException>(Table.Columns != null, "Table.Columns");
-            List<string> ReturnValue = new List<string>();
+            var ReturnValue = new List<string>();
             foreach (IColumn Column in Table.Columns)
             {
                 IColumn CurrentColumn = CurrentTable[Column.Name];
@@ -355,7 +355,7 @@ namespace CUL.PostgreSQL.Schema
         {
             Contract.Requires<ArgumentNullException>(Table != null, "Table");
             Contract.Requires<ArgumentNullException>(Table.Triggers != null, "Table.Triggers");
-            List<string> ReturnValue = new List<string>();
+            var ReturnValue = new List<string>();
             foreach (Trigger Trigger in Table.Triggers)
             {
                 foreach (Trigger Trigger2 in CurrentTable.Triggers)
@@ -381,7 +381,7 @@ namespace CUL.PostgreSQL.Schema
             Contract.Requires<ArgumentNullException>(View != null, "View");
             Contract.Requires<ArgumentNullException>(CurrentView != null, "CurrentView");
             Contract.Requires<ArgumentException>(View.Definition == CurrentView.Definition || !string.IsNullOrEmpty(View.Definition));
-            List<string> ReturnValue = new List<string>();
+            var ReturnValue = new List<string>();
             if (View.Definition != CurrentView.Definition)
             {
                 ReturnValue.Add(string.Format(CultureInfo.CurrentCulture,
@@ -396,7 +396,7 @@ namespace CUL.PostgreSQL.Schema
         {
             Contract.Requires<ArgumentNullException>(Table != null, "Table");
             Contract.Requires<ArgumentNullException>(Table.Columns != null, "Table.Columns");
-            List<string> ReturnValue = new List<string>();
+            var ReturnValue = new List<string>();
             foreach (IColumn Column in Table.Columns)
             {
                 IColumn CurrentColumn = CurrentTable[Column.Name];
@@ -429,7 +429,7 @@ namespace CUL.PostgreSQL.Schema
         {
             Contract.Requires<ArgumentNullException>(Table != null, "Table");
             Contract.Requires<ArgumentNullException>(Table.Columns != null, "Table.Columns");
-            List<string> ReturnValue = new List<string>();
+            var ReturnValue = new List<string>();
             foreach (IColumn Column in Table.Columns)
             {
                 if (Column.ForeignKey.Count > 0)
@@ -476,8 +476,8 @@ namespace CUL.PostgreSQL.Schema
         {
             Contract.Requires<ArgumentNullException>(Table != null, "Table");
             Contract.Requires<ArgumentNullException>(Table.Columns != null, "Table.Columns");
-            List<string> ReturnValue = new List<string>();
-            StringBuilder Builder = new StringBuilder();
+            var ReturnValue = new List<string>();
+            var Builder = new StringBuilder();
             Builder.Append("EXEC dbo.sp_executesql @statement = N'CREATE TABLE ").Append(Table.Name).Append("(");
             string Splitter = "";
             foreach (IColumn Column in Table.Columns)
@@ -550,7 +550,7 @@ namespace CUL.PostgreSQL.Schema
         {
             Contract.Requires<ArgumentNullException>(Table != null, "Table");
             Contract.Requires<ArgumentNullException>(Table.Triggers != null, "Table.Triggers");
-            List<string> ReturnValue = new List<string>();
+            var ReturnValue = new List<string>();
             foreach (Trigger Trigger in Table.Triggers)
             {
                 string Definition = Regex.Replace(Trigger.Definition, "-- (.*)", "");
@@ -570,7 +570,7 @@ namespace CUL.PostgreSQL.Schema
         private static ITable SetupAuditTables(ITable Table)
         {
             Contract.Requires<ArgumentNullException>(Table != null, "Table");
-            ITable AuditTable = new Utilities.ORM.Manager.Schema.Default.Database.Table(Table.Name + "Audit", Table.Source);
+            var AuditTable = new Utilities.ORM.Manager.Schema.Default.Database.Table(Table.Name + "Audit", Table.Source);
             string IDName = Table.Columns.Any(x => string.Equals(x.Name, "ID", StringComparison.InvariantCultureIgnoreCase)) ? "AuditID" : "ID";
             AuditTable.AddColumn(IDName, DbType.Int32, 0, false, true, true, true, false, "", "", 0);
             AuditTable.AddColumn("AuditType", SqlDbType.NVarChar.To(DbType.Int32), 1, false, false, false, false, false, "", "", "");
@@ -586,7 +586,7 @@ namespace CUL.PostgreSQL.Schema
             Contract.Requires<ArgumentNullException>(TempDatabase.Tables != null, "TempDatabase.Tables");
             if (!Key.Audit)
                 return;
-            List<ITable> TempTables = new List<ITable>();
+            var TempTables = new List<ITable>();
             foreach (ITable Table in TempDatabase.Tables)
             {
                 TempTables.Add(SetupAuditTables(Table));
@@ -626,8 +626,8 @@ namespace CUL.PostgreSQL.Schema
         {
             Contract.Requires<ArgumentNullException>(Table != null, "Table");
             Contract.Requires<ArgumentNullException>(Table.Columns != null, "Table.Columns");
-            StringBuilder Columns = new StringBuilder();
-            StringBuilder Builder = new StringBuilder();
+            var Columns = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.Append("CREATE TRIGGER dbo.").Append(Table.Name).Append("_Audit_D ON dbo.")
                 .Append(Table.Name).Append(" FOR DELETE AS IF @@rowcount=0 RETURN")
                 .Append(" INSERT INTO dbo.").Append(Table.Name).Append("Audit").Append("(");
@@ -648,8 +648,8 @@ namespace CUL.PostgreSQL.Schema
         {
             Contract.Requires<ArgumentNullException>(Table != null, "Table");
             Contract.Requires<ArgumentNullException>(Table.Columns != null, "Table.Columns");
-            StringBuilder Columns = new StringBuilder();
-            StringBuilder Builder = new StringBuilder();
+            var Columns = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.Append("CREATE TRIGGER dbo.").Append(Table.Name).Append("_Audit_IU ON dbo.")
                 .Append(Table.Name).Append(" FOR INSERT,UPDATE AS IF @@rowcount=0 RETURN declare @AuditType")
                 .Append(" char(1) declare @DeletedCount int SELECT @DeletedCount=count(*) FROM DELETED IF @DeletedCount=0")

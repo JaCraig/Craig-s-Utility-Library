@@ -30,7 +30,7 @@ namespace UnitTests.SQL.DataClasses
         [Fact]
         public void AddFunction()
         {
-            Utilities.ORM.Manager.Schema.Default.Database.Database Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
+            var Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
             Database.AddFunction("TestFunction", "FunctionDefinition");
             Assert.Equal(1, Database.Functions.Count);
             Assert.Equal("TestFunction", Database.Functions.First().Name);
@@ -41,7 +41,7 @@ namespace UnitTests.SQL.DataClasses
         [Fact]
         public void AddStoredProcedures()
         {
-            Utilities.ORM.Manager.Schema.Default.Database.Database Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
+            var Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
             Database.AddStoredProcedure("TestFunction", "FunctionDefinition");
             Assert.Equal(1, Database.StoredProcedures.Count);
             Assert.Equal("TestFunction", Database.StoredProcedures.First().Name);
@@ -52,7 +52,7 @@ namespace UnitTests.SQL.DataClasses
         [Fact]
         public void AddTable()
         {
-            Utilities.ORM.Manager.Schema.Default.Database.Database Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
+            var Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
             Database.AddTable("TestTable");
             Assert.Equal(1, Database.Tables.Count);
             Assert.Equal("TestTable", Database.Tables.First().Name);
@@ -62,7 +62,7 @@ namespace UnitTests.SQL.DataClasses
         [Fact]
         public void AddView()
         {
-            Utilities.ORM.Manager.Schema.Default.Database.Database Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
+            var Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
             Database.AddView("TestTable");
             Assert.Equal(1, Database.Views.Count);
             Assert.Equal("TestTable", Database.Views.First().Name);
@@ -72,7 +72,7 @@ namespace UnitTests.SQL.DataClasses
         [Fact]
         public void Create()
         {
-            Utilities.ORM.Manager.Schema.Default.Database.Database Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
+            var Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
             Assert.Equal("TestDatabase", Database.Name);
             Assert.Equal(0, Database.Functions.Count);
             Assert.Equal(0, Database.StoredProcedures.Count);

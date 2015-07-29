@@ -59,7 +59,7 @@ namespace Utilities.IO.Serializers.Default
                 return null;
             using (MemoryStream Stream = new MemoryStream(Encoding.UTF8.GetBytes(Data)))
             {
-                XmlSerializer Serializer = new XmlSerializer(ObjectType);
+                var Serializer = new XmlSerializer(ObjectType);
                 return Serializer.Deserialize(Stream);
             }
         }
@@ -76,7 +76,7 @@ namespace Utilities.IO.Serializers.Default
                 return null;
             using (MemoryStream Stream = new MemoryStream())
             {
-                XmlSerializer Serializer = new XmlSerializer(ObjectType);
+                var Serializer = new XmlSerializer(ObjectType);
                 Serializer.Serialize(Stream, Data);
                 Stream.Flush();
                 return Encoding.UTF8.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);

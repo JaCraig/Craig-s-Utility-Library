@@ -21,17 +21,12 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Serialization;
 using Utilities.DataTypes;
-using Utilities.IO;
-using Utilities.IO.Logging.Enums;
 
 namespace Ironman.Models.Plugins
 {
@@ -42,7 +37,7 @@ namespace Ironman.Models.Plugins
     public class PluginList
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PluginList" /> class.
+        /// Initializes a new instance of the <see cref="PluginList"/> class.
         /// </summary>
         public PluginList()
             : base()
@@ -139,7 +134,7 @@ namespace Ironman.Models.Plugins
                 return null;
             using (MemoryStream Stream = new MemoryStream(Encoding.UTF8.GetBytes(Data)))
             {
-                XmlSerializer Serializer = new XmlSerializer(typeof(PluginList));
+                var Serializer = new XmlSerializer(typeof(PluginList));
                 return (PluginList)Serializer.Deserialize(Stream);
             }
         }
@@ -155,7 +150,7 @@ namespace Ironman.Models.Plugins
                 return null;
             using (MemoryStream Stream = new MemoryStream())
             {
-                XmlSerializer Serializer = new XmlSerializer(typeof(PluginList));
+                var Serializer = new XmlSerializer(typeof(PluginList));
                 Serializer.Serialize(Stream, Data);
                 Stream.Flush();
                 return Encoding.UTF8.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);

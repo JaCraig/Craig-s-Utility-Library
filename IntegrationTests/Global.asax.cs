@@ -1,8 +1,5 @@
 ﻿using IntegrationTests.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -18,7 +15,7 @@ namespace IntegrationTests
                 return;
             for (int x = 0; x < 5; ++x)
             {
-                TestClass TempObject = new TestClass();
+                var TempObject = new TestClass();
                 TempObject.BoolReference = true;
                 TempObject.ByteArrayReference = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
                 TempObject.ByteReference = 12;

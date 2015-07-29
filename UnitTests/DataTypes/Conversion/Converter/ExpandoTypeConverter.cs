@@ -39,7 +39,7 @@ namespace UnitTests.DataTypes.Conversion.Converter
         [Fact]
         public void ConvertTo()
         {
-            IDictionary<string, object> TestObject = new ExpandoObject();
+            IDictionary<string,object> TestObject = new ExpandoObject();
             TestObject.Add("A", "This is a test");
             TestObject.Add("B", 10);
             TestClass Result = TestObject.To<IDictionary<string, object>, TestClass>();

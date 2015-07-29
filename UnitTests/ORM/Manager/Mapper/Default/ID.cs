@@ -32,9 +32,9 @@ namespace UnitTests.ORM.Manager.Mapper.Default
         [Fact]
         public void CascadeDelete()
         {
-            TestClass TempObject = new TestClass();
+            var TempObject = new TestClass();
             TempObject.ID = 1;
-            Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int> TestObject = new Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int>(x => x.ID, new TestClassMapping());
+            var TestObject = new Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int>(x => x.ID, new TestClassMapping());
             IBatch Result = TestObject.CascadeDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("IDTest"), new List<object>());
             Assert.NotNull(Result);
             Assert.Equal("", Result.ToString());
@@ -44,9 +44,9 @@ namespace UnitTests.ORM.Manager.Mapper.Default
         [Fact]
         public void CascadeJoinsDelete()
         {
-            TestClass TempObject = new TestClass();
+            var TempObject = new TestClass();
             TempObject.ID = 1;
-            Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int> TestObject = new Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int>(x => x.ID, new TestClassMapping());
+            var TestObject = new Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int>(x => x.ID, new TestClassMapping());
             TestObject.ForeignMapping = new TestClassMapping();
             IBatch Result = TestObject.CascadeJoinsDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("IDTest"), new List<object>());
             Assert.NotNull(Result);
@@ -57,9 +57,9 @@ namespace UnitTests.ORM.Manager.Mapper.Default
         [Fact]
         public void CascadeJoinsSave()
         {
-            TestClass TempObject = new TestClass();
+            var TempObject = new TestClass();
             TempObject.ID = 1;
-            Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int> TestObject = new Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int>(x => x.ID, new TestClassMapping());
+            var TestObject = new Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int>(x => x.ID, new TestClassMapping());
             TestObject.ForeignMapping = new TestClassMapping();
             IBatch Result = TestObject.CascadeJoinsSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("IDTest"), new List<object>());
             Assert.NotNull(Result);
@@ -70,9 +70,9 @@ namespace UnitTests.ORM.Manager.Mapper.Default
         [Fact]
         public void CascadeSave()
         {
-            TestClass TempObject = new TestClass();
+            var TempObject = new TestClass();
             TempObject.ID = 1;
-            Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int> TestObject = new Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int>(x => x.ID, new TestClassMapping());
+            var TestObject = new Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int>(x => x.ID, new TestClassMapping());
             IBatch Result = TestObject.CascadeSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("IDTest"), new List<object>());
             Assert.NotNull(Result);
             Assert.Equal("", Result.ToString());
@@ -82,7 +82,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
         [Fact]
         public void Create()
         {
-            Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int> TestObject = new Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int>(x => x.ID, new TestClassMapping());
+            var TestObject = new Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int>(x => x.ID, new TestClassMapping());
             Assert.False(TestObject.AutoIncrement);
             Assert.False(TestObject.Cascade);
             Assert.NotNull(TestObject.CompiledExpression);

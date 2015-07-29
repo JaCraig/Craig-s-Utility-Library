@@ -31,7 +31,7 @@ namespace UnitTests.ORM.Parameters
         [Fact]
         public void Creation()
         {
-            NotEqualParameter<int> TestObject = new NotEqualParameter<int>(12, "ID");
+            var TestObject = new NotEqualParameter<int>(12, "ID");
             Assert.Equal("ID", TestObject.ID);
             Assert.Equal(12, TestObject.Value);
             Assert.Equal("@", TestObject.ParameterStarter);

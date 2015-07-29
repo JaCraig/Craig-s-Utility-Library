@@ -87,7 +87,7 @@ namespace Utilities.Web
         /// <returns>false if it does not contain HTML, true otherwise</returns>
         public static bool ContainsHTML(this string Input)
         {
-            return string.IsNullOrEmpty(Input) ? false : STRIP_HTML_REGEX.IsMatch(Input);
+            return !string.IsNullOrEmpty(Input) && STRIP_HTML_REGEX.IsMatch(Input);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Utilities.Web
         public static bool ContainsHTML(this FileInfo Input)
         {
             Contract.Requires<ArgumentNullException>(Input != null, "Input");
-            return Input.Exists ? Input.Read().ContainsHTML() : false;
+            return Input.Exists && Input.Read().ContainsHTML();
         }
 
         /// <summary>
@@ -117,32 +117,7 @@ namespace Utilities.Web
             Contract.Requires<ArgumentNullException>(Context != null, "Context");
             if (Context.Request.UserAgent != null && Context.Request.UserAgent.Contains("MSIE 6"))
                 return;
-            if (RemovePrettyPrinting)
-            {
-                if (Context.IsEncodingAccepted(GZIP))
-                {
-                    Context.Response.Filter = new UglyStream(Context.Response.Filter, CompressionType.GZip, Type);
-                    Context.SetEncoding(GZIP);
-                }
-                else if (Context.IsEncodingAccepted(DEFLATE))
-                {
-                    Context.Response.Filter = new UglyStream(Context.Response.Filter, CompressionType.Deflate, Type);
-                    Context.SetEncoding(DEFLATE);
-                }
-            }
-            else
-            {
-                if (Context.IsEncodingAccepted(GZIP))
-                {
-                    Context.Response.Filter = new GZipStream(Context.Response.Filter, CompressionMode.Compress);
-                    Context.SetEncoding(GZIP);
-                }
-                else if (Context.IsEncodingAccepted(DEFLATE))
-                {
-                    Context.Response.Filter = new DeflateStream(Context.Response.Filter, CompressionMode.Compress);
-                    Context.SetEncoding(DEFLATE);
-                }
-            }
+            Context.Response.Filter = RemovePrettyPrinting ? (System.IO.Stream)new UglyStream(Context.Response.Filter, CompressionType.GZip, Type) : new GZipStream(Context.Response.Filter, CompressionMode.Compress);
         }
 
         /// <summary>
@@ -161,32 +136,7 @@ namespace Utilities.Web
             Contract.Requires<ArgumentNullException>(Context != null, "Context");
             if (Context.Request.UserAgent != null && Context.Request.UserAgent.Contains("MSIE 6"))
                 return;
-            if (RemovePrettyPrinting)
-            {
-                if (Context.IsEncodingAccepted(GZIP))
-                {
-                    Context.Response.Filter = new UglyStream(Context.Response.Filter, CompressionType.GZip, Type);
-                    Context.SetEncoding(GZIP);
-                }
-                else if (Context.IsEncodingAccepted(DEFLATE))
-                {
-                    Context.Response.Filter = new UglyStream(Context.Response.Filter, CompressionType.Deflate, Type);
-                    Context.SetEncoding(DEFLATE);
-                }
-            }
-            else
-            {
-                if (Context.IsEncodingAccepted(GZIP))
-                {
-                    Context.Response.Filter = new GZipStream(Context.Response.Filter, CompressionMode.Compress);
-                    Context.SetEncoding(GZIP);
-                }
-                else if (Context.IsEncodingAccepted(DEFLATE))
-                {
-                    Context.Response.Filter = new DeflateStream(Context.Response.Filter, CompressionMode.Compress);
-                    Context.SetEncoding(DEFLATE);
-                }
-            }
+            Context.Response.Filter = RemovePrettyPrinting ? (System.IO.Stream)new UglyStream(Context.Response.Filter, CompressionType.GZip, Type) : new GZipStream(Context.Response.Filter, CompressionMode.Compress);
         }
 
         /// <summary>
@@ -339,7 +289,7 @@ namespace Utilities.Web
             if (string.IsNullOrEmpty(Input))
                 return Input;
             string Normalized = Input.Normalize(NormalizationForm.FormD);
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             for (int i = 0; i < Normalized.Length; i++)
             {
                 Char TempChar = Normalized[i];

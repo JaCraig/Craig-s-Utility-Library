@@ -113,7 +113,7 @@ namespace Utilities.Media
                 {
                     return InternalBitmap.Palette.Entries.Distinct((x, y) => x == y).Select(x => ColorTranslator.ToHtml(x));
                 }
-                ConcurrentDictionary<string, int> ReturnArray = new ConcurrentDictionary<string, int>();
+                var ReturnArray = new ConcurrentDictionary<string, int>();
                 Lock();
                 Parallel.For(0, Width, x =>
                 {
@@ -175,7 +175,7 @@ namespace Utilities.Media
             Contract.Requires<ArgumentNullException>(Image2 != null, "Image2");
             Image1.Lock();
             Image2.Lock();
-            SwiftBitmap Result = new SwiftBitmap(Image1.Width, Image1.Height);
+            var Result = new SwiftBitmap(Image1.Width, Image1.Height);
             Result.Lock();
             Parallel.For(0, Result.Width, x =>
             {
@@ -206,7 +206,7 @@ namespace Utilities.Media
             Contract.Requires<ArgumentNullException>(Image2 != null, "Image2");
             Image1.Lock();
             Image2.Lock();
-            SwiftBitmap Result = new SwiftBitmap(Image1.Width, Image1.Height);
+            var Result = new SwiftBitmap(Image1.Width, Image1.Height);
             Result.Lock();
             Parallel.For(0, Result.Width, x =>
             {
@@ -237,7 +237,7 @@ namespace Utilities.Media
             Contract.Requires<ArgumentNullException>(Image2 != null, "Image2");
             Image1.Lock();
             Image2.Lock();
-            SwiftBitmap Result = new SwiftBitmap(Image1.Width, Image1.Height);
+            var Result = new SwiftBitmap(Image1.Width, Image1.Height);
             Result.Lock();
             Parallel.For(0, Result.Width, x =>
             {
@@ -402,7 +402,7 @@ namespace Utilities.Media
         {
             Contract.Requires<NullReferenceException>(InternalBitmap != null);
             Unlock();
-            System.Drawing.Rectangle TempRectangle = new System.Drawing.Rectangle();
+            var TempRectangle = new System.Drawing.Rectangle();
             TempRectangle.Height = Height;
             TempRectangle.Width = Width;
             TempRectangle.Y = VAlignment == Align.Top ? 0 : this.Height - Height;
@@ -529,7 +529,7 @@ namespace Utilities.Media
         {
             Contract.Requires<NullReferenceException>(InternalBitmap != null);
             Unlock();
-            Bitmap TempBitmap = new Bitmap(Width, Height);
+            var TempBitmap = new Bitmap(Width, Height);
             using (Graphics NewGraphics = Graphics.FromImage(TempBitmap))
             {
                 if (Quality == Quality.High)
@@ -575,7 +575,7 @@ namespace Utilities.Media
         {
             Contract.Requires<NullReferenceException>(InternalBitmap != null);
             Unlock();
-            Bitmap TempBitmap = new Bitmap(Width, Height);
+            var TempBitmap = new Bitmap(Width, Height);
             using (Graphics NewGraphics = Graphics.FromImage(TempBitmap))
             {
                 NewGraphics.TranslateTransform((float)Width / 2.0f, (float)Height / 2.0f);

@@ -72,13 +72,13 @@ namespace Utilities.Random.StringGenerators
         {
             if (Length < 1)
                 return "";
-            StringBuilder TempBuilder = new StringBuilder();
-            Regex Comparer = new Regex(AllowedCharacters);
-            Regex AlphaNumbericComparer = new Regex("[0-9a-zA-Z]");
+            var TempBuilder = new StringBuilder();
+            var Comparer = new Regex(AllowedCharacters);
+            var AlphaNumbericComparer = new Regex("[0-9a-zA-Z]");
             int Counter = 0;
             while (TempBuilder.Length < Length)
             {
-                string TempValue = new string(Convert.ToChar(Convert.ToInt32(System.Math.Floor(94 * Rand.NextDouble() + 32))), 1);
+                var TempValue = new string(Convert.ToChar(Convert.ToInt32(System.Math.Floor(94 * Rand.NextDouble() + 32))), 1);
                 if (Comparer.IsMatch(TempValue))
                 {
                     if (!AlphaNumbericComparer.IsMatch(TempValue) && NumberOfNonAlphaNumericsAllowed > Counter)

@@ -38,21 +38,21 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void Chain()
         {
-            DateTime Temp = new DateTime(1999, 1, 1);
+            var Temp = new DateTime(1999, 1, 1);
             Assert.Equal(Temp, Temp.Chain<DateTime>(x => x.AddSeconds(1)));
         }
 
         [Fact]
         public void Chain2()
         {
-            DateTime Temp = new DateTime(1999, 1, 1);
+            var Temp = new DateTime(1999, 1, 1);
             Assert.Equal(Temp.AddSeconds(1), Temp.Chain(x => x.AddSeconds(1)));
         }
 
         [Fact]
         public void Chain3()
         {
-            DateTime Temp = new DateTime(1999, 1, 1);
+            var Temp = new DateTime(1999, 1, 1);
             Assert.Equal(Temp, Temp.Chain<DateTime>(x => x.AddSeconds(1)));
             Assert.Equal(default(DateTime?), ((DateTime?)null).Chain<DateTime?>(x => x.Value.AddSeconds(1)));
             Assert.Throws<ArgumentOutOfRangeException>(() => ((DateTime?)null).Chain<DateTime?>(x => x.Value.AddSeconds(1), DateTime.MaxValue));
@@ -61,7 +61,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void Chain4()
         {
-            DateTime Temp = new DateTime(1999, 1, 1);
+            var Temp = new DateTime(1999, 1, 1);
             Assert.Equal(Temp.AddSeconds(1), Temp.Chain(x => x.AddSeconds(1)));
             Assert.Equal(DateTime.MaxValue, ((DateTime?)null).Chain(x => x.Value.AddSeconds(1), DateTime.MaxValue));
         }
@@ -86,14 +86,14 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void Execute2()
         {
-            Action Temp = () => Test();
+            Action Temp = Test;
             Assert.Throws<Exception>(() => Temp.Execute());
         }
 
         [Fact]
         public void If()
         {
-            MyTestClass Temp = new MyTestClass();
+            var Temp = new MyTestClass();
             Assert.Same(Temp, Temp.Check(x => x.B == 10));
             Assert.NotSame(Temp, Temp.Check(x => x.B == 1));
         }
@@ -126,7 +126,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void NotIf()
         {
-            MyTestClass Temp = new MyTestClass();
+            var Temp = new MyTestClass();
             Assert.NotSame(Temp, Temp.Check(x => x.B != 10));
             Assert.Same(Temp, Temp.Check(x => x.B != 1));
         }
@@ -239,7 +239,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void Times()
         {
             Assert.Equal(new int[] { 0, 1, 2, 3, 4 }.ToList(), 5.Times(x => x));
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             5.Times(x => { Builder.Append(x); });
             Assert.Equal("01234", Builder.ToString());
         }

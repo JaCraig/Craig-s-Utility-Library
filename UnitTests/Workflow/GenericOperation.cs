@@ -33,7 +33,7 @@ namespace Utilities.Tests.Workflow
         [Fact]
         public void Execute()
         {
-            Utilities.Workflow.Manager.GenericOperation<dynamic> TempOperation = new Utilities.Workflow.Manager.GenericOperation<dynamic>(x => x);
+            var TempOperation = new Utilities.Workflow.Manager.GenericOperation<dynamic>(x => x);
             Assert.Equal(1, TempOperation.Execute(1));
             Assert.Equal("A", TempOperation.Execute("A"));
         }
@@ -41,7 +41,7 @@ namespace Utilities.Tests.Workflow
         [Fact]
         public void Setup()
         {
-            Utilities.Workflow.Manager.GenericOperation<dynamic> TempOperation = new Utilities.Workflow.Manager.GenericOperation<dynamic>(x => x);
+            var TempOperation = new Utilities.Workflow.Manager.GenericOperation<dynamic>(x => x);
             Assert.Equal("Generic operation", TempOperation.Name);
             Assert.NotNull(TempOperation.Operation);
         }
@@ -49,7 +49,7 @@ namespace Utilities.Tests.Workflow
         [Fact]
         public void StartFailedOperation()
         {
-            Utilities.Workflow.Manager.GenericOperation<dynamic> TempOperation = new Utilities.Workflow.Manager.GenericOperation<dynamic>(x => { throw new ArgumentException("ASDF"); });
+            var TempOperation = new Utilities.Workflow.Manager.GenericOperation<dynamic>(x => { throw new ArgumentException("ASDF"); });
             Assert.Throws<ArgumentException>(() => TempOperation.Execute(1));
         }
     }

@@ -44,7 +44,7 @@ namespace Utilities.DataTypes
         public static string GetInformation(this Process Process, bool HTMLFormat = true)
         {
             Contract.Requires<ArgumentNullException>(Process != null, "Process");
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             return Builder.Append(HTMLFormat ? "<strong>" : "")
                    .Append(Process.ProcessName)
                    .Append(" Information")
@@ -64,7 +64,7 @@ namespace Utilities.DataTypes
         {
             if (Processes == null)
                 return "";
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Processes.ForEach(x => Builder.Append(x.GetInformation(HTMLFormat)));
             return Builder.ToString();
         }

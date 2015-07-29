@@ -41,7 +41,7 @@ namespace Utilities.DataTypes
         {
             _Width = Width;
             _Height = Height;
-            this.Values = (Values == null) ? new double[Width, Height] : Values;
+            this.Values = Values ?? new double[Width, Height];
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(M1 != null, "M1");
             Contract.Requires<ArgumentNullException>(M2 != null, "M2");
             Contract.Requires<ArgumentException>(M1.Width == M2.Width && M1.Height == M2.Height, "Both matrices must be the same dimensions.");
-            Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
+            var TempMatrix = new Matrix(M1.Width, M1.Height);
             for (int x = 0; x < M1.Width; ++x)
                 for (int y = 0; y < M1.Height; ++y)
                     TempMatrix[x, y] = M1[x, y] - M2[x, y];
@@ -122,7 +122,7 @@ namespace Utilities.DataTypes
         public static Matrix operator -(Matrix M1)
         {
             Contract.Requires<ArgumentNullException>(M1 != null, "M1");
-            Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
+            var TempMatrix = new Matrix(M1.Width, M1.Height);
             for (int x = 0; x < M1.Width; ++x)
                 for (int y = 0; y < M1.Height; ++y)
                     TempMatrix[x, y] = -M1[x, y];
@@ -151,7 +151,7 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(M1 != null, "M1");
             Contract.Requires<ArgumentNullException>(M2 != null, "M2");
             Contract.Requires<ArgumentException>(M1.Width == M2.Width && M1.Height == M2.Height, "Both matrices must be the same dimensions.");
-            Matrix TempMatrix = new Matrix(M2.Width, M1.Height);
+            var TempMatrix = new Matrix(M2.Width, M1.Height);
             for (int x = 0; x < M2.Width; ++x)
             {
                 for (int y = 0; y < M1.Height; ++y)
@@ -174,7 +174,7 @@ namespace Utilities.DataTypes
         public static Matrix operator *(Matrix M1, double D)
         {
             Contract.Requires<ArgumentNullException>(M1 != null, "M1");
-            Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
+            var TempMatrix = new Matrix(M1.Width, M1.Height);
             for (int x = 0; x < M1.Width; ++x)
                 for (int y = 0; y < M1.Height; ++y)
                     TempMatrix[x, y] = M1[x, y] * D;
@@ -190,7 +190,7 @@ namespace Utilities.DataTypes
         public static Matrix operator *(double D, Matrix M1)
         {
             Contract.Requires<ArgumentNullException>(M1 != null, "M1");
-            Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
+            var TempMatrix = new Matrix(M1.Width, M1.Height);
             for (int x = 0; x < M1.Width; ++x)
                 for (int y = 0; y < M1.Height; ++y)
                     TempMatrix[x, y] = M1[x, y] * D;
@@ -232,7 +232,7 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(M1 != null, "M1");
             Contract.Requires<ArgumentNullException>(M2 != null, "M2");
             Contract.Requires<ArgumentException>(M1.Width == M2.Width && M1.Height == M2.Height, "Both matrices must be the same dimensions.");
-            Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
+            var TempMatrix = new Matrix(M1.Width, M1.Height);
             for (int x = 0; x < M1.Width; ++x)
                 for (int y = 0; y < M1.Height; ++y)
                     TempMatrix[x, y] = M1[x, y] + M2[x, y];
@@ -274,7 +274,7 @@ namespace Utilities.DataTypes
             double Answer = 0.0;
             for (int x = 0; x < Width; ++x)
             {
-                Matrix TempMatrix = new Matrix(Width - 1, Height - 1);
+                var TempMatrix = new Matrix(Width - 1, Height - 1);
                 int WidthCounter = 0;
                 for (int y = 0; y < Width; ++y)
                 {
@@ -304,7 +304,7 @@ namespace Utilities.DataTypes
         /// <returns>True if they are, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            Matrix Tempobj = obj as Matrix;
+            var Tempobj = obj as Matrix;
             return Tempobj != null && this == Tempobj;
         }
 
@@ -327,7 +327,7 @@ namespace Utilities.DataTypes
         /// <returns>The matrix as a string</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             string Seperator = "";
             Builder.Append("{").Append(System.Environment.NewLine);
             for (int x = 0; x < Width; ++x)
@@ -351,7 +351,7 @@ namespace Utilities.DataTypes
         /// <returns>Returns a new transposed matrix</returns>
         public virtual Matrix Transpose()
         {
-            Matrix TempValues = new Matrix(Height, Width);
+            var TempValues = new Matrix(Height, Width);
             for (int x = 0; x < Width; ++x)
                 for (int y = 0; y < Height; ++y)
                     TempValues[y, x] = Values[x, y];

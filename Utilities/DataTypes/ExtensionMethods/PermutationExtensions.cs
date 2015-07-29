@@ -42,9 +42,9 @@ namespace Utilities.DataTypes
         public static ListMapping<int, T> Permute<T>(this IEnumerable<T> Input)
         {
             Contract.Requires<ArgumentNullException>(Input != null, "Input");
-            System.Collections.Generic.List<T> Current = new System.Collections.Generic.List<T>();
+            var Current = new System.Collections.Generic.List<T>();
             Current.AddRange(Input);
-            ListMapping<int, T> ReturnValue = new ListMapping<int, T>();
+            var ReturnValue = new ListMapping<int, T>();
             int Max = (Input.Count() - 1).Factorial();
             int CurrentValue = 0;
             for (int x = 0; x < Input.Count(); ++x)

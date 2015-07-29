@@ -77,7 +77,7 @@ namespace Utilities.Random.StringGenerators
         /// </summary>
         public virtual int NumberOfSentences { get; protected set; }
 
-        private string[] Words = { "consetetur", "sadipscing", "elitr", "sed", "diam", "nonumy", "eirmod",
+        private readonly string[] Words = { "consetetur", "sadipscing", "elitr", "sed", "diam", "nonumy", "eirmod",
         "tempor", "invidunt", "ut", "labore", "et", "dolore", "magna", "aliquyam", "erat", "sed", "diam", "voluptua",
         "at", "vero", "eos", "et", "accusam", "et", "justo", "duo", "dolores", "et", "ea", "rebum", "stet", "clita",
         "kasd", "gubergren", "no", "sea", "takimata", "sanctus", "est", "lorem", "ipsum", "dolor", "sit", "amet",
@@ -130,7 +130,7 @@ namespace Utilities.Random.StringGenerators
         /// <returns>A randomly generated object of the specified type</returns>
         public virtual string Next(System.Random Rand)
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             if (HTMLFormatting)
                 Builder.Append("<p>");
             Builder.Append("Lorem ipsum dolor sit amet. ");
@@ -183,7 +183,7 @@ namespace Utilities.Random.StringGenerators
         protected virtual string NextSentence(System.Random Rand, int NumberOfWords)
         {
             Contract.Requires<ArgumentNullException>(Rand != null, "Rand");
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.Append(Words[Rand.Next(Words.Length)].ToString(StringCase.FirstCharacterUpperCase));
             for (int x = 1; x < NumberOfWords; ++x)
                 Builder.Append(" ").Append(Words[Rand.Next(Words.Length)]);

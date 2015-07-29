@@ -42,7 +42,7 @@ namespace UnitTests.Random.ExtensionMethods
         [Fact]
         public void ClassGenerator()
         {
-            System.Random Rand = new System.Random(1231415);
+            var Rand = new System.Random(1231415);
             RandomTestClass Item = Rand.NextClass<RandomTestClass>();
             Assert.Equal(202970450, Item.A);
             Assert.Equal("Lorem ipsum dolor sit amet. ", Item.B);
@@ -53,7 +53,7 @@ namespace UnitTests.Random.ExtensionMethods
         [Fact]
         public void Next()
         {
-            System.Random Random = new System.Random();
+            var Random = new System.Random();
             Random.Next<bool>();
             Random.Next<byte>();
             Random.Next<char>();
@@ -77,7 +77,7 @@ namespace UnitTests.Random.ExtensionMethods
         [Fact]
         public void Next2()
         {
-            System.Random Random = new System.Random();
+            var Random = new System.Random();
             Random.Next<bool>(false, true);
             Assert.InRange(Random.Next<byte>(1, 29), 1, 29);
             Assert.InRange(Random.Next<char>('a', 'z'), 'a', 'z');
@@ -98,21 +98,21 @@ namespace UnitTests.Random.ExtensionMethods
         [Fact]
         public void NextIEnumerable()
         {
-            System.Random Random = new System.Random();
+            var Random = new System.Random();
             Assert.InRange(Random.Next<int>(new int[] { 1, 2, 3, 4, 5 }), 1, 5);
         }
 
         [Fact]
         public void NextLoremIpsumTest()
         {
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
+            var Rand = new Utilities.Random.Random();
             Assert.NotNull(Rand.Next<string>(new LoremIpsumGenerator(1, 4)));
         }
 
         [Fact]
         public void NextName()
         {
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
+            var Rand = new Utilities.Random.Random();
             Assert.Equal(3, Rand.Next<string>(new NameGenerator(false, true, true, false)).Split(' ').Length);
             Assert.Equal(2, Rand.Next<string>(new NameGenerator(false, false, true, false)).Split(' ').Length);
             Assert.Equal(4, Rand.Next<string>(new NameGenerator(true, true, true, false)).Split(' ').Length);
@@ -122,14 +122,14 @@ namespace UnitTests.Random.ExtensionMethods
         [Fact]
         public void NextStringTest()
         {
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
+            var Rand = new Utilities.Random.Random();
             Assert.Equal(10, Rand.Next<string>(new RegexStringGenerator(10)).Length);
         }
 
         [Fact]
         public void NextStringTest2()
         {
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
+            var Rand = new Utilities.Random.Random();
             Assert.True(Regex.IsMatch(Rand.Next<string>(new PatternGenerator("(###)###-####")), @"\(\d{3}\)\d{3}-\d{4}"));
             Assert.True(Regex.IsMatch(Rand.Next<string>(new PatternGenerator("(@@@)###-####")), @"\([a-zA-Z]{3}\)\d{3}-\d{4}"));
         }
@@ -137,7 +137,7 @@ namespace UnitTests.Random.ExtensionMethods
         [Fact]
         public void RegisterGenerator()
         {
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
+            var Rand = new Utilities.Random.Random();
             Rand.RegisterGenerator<string>(new NameGenerator());
             Assert.True(100.Times(x => Rand.Next<string>()).All(x => x.Split(' ').Length == 2));
         }
@@ -145,7 +145,7 @@ namespace UnitTests.Random.ExtensionMethods
         [Fact]
         public void Shuffle()
         {
-            System.Random Rand = new System.Random(1231415);
+            var Rand = new System.Random(1231415);
             Assert.Equal(new int[] { 3, 1, 4, 5, 2 }, Rand.Shuffle(new int[] { 1, 2, 3, 4, 5 }));
         }
     }

@@ -28,7 +28,7 @@ namespace UnitTests.DataTypes
         [Fact]
         public void CreationTest()
         {
-            Utilities.DataTypes.Table Table = new Utilities.DataTypes.Table("Column1", "Column2", "Column3");
+            var Table = new Utilities.DataTypes.Table("Column1", "Column2", "Column3");
             Assert.Equal(3, Table.ColumnNames.Length);
             Assert.Equal("Column1", Table.ColumnNames[0]);
             Assert.Equal("Column2", Table.ColumnNames[1]);
@@ -38,7 +38,7 @@ namespace UnitTests.DataTypes
         [Fact]
         public void RowCreationTest()
         {
-            Utilities.DataTypes.Table Table = new Utilities.DataTypes.Table("Column1", "Column2", "Column3");
+            var Table = new Utilities.DataTypes.Table("Column1", "Column2", "Column3");
             Table.AddRow(1, "A", 9.2f)
                  .AddRow(2, "B", 8.2f)
                  .AddRow(3, "C", 7.2f);

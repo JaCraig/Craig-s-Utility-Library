@@ -52,7 +52,7 @@ namespace Utilities.IO.FileFormats.RSS
         {
             Contract.Requires<ArgumentNullException>(Doc != null, "Doc");
             XPathNavigator Element = Doc.CreateNavigator();
-            XmlNamespaceManager NamespaceManager = new XmlNamespaceManager(Element.NameTable);
+            var NamespaceManager = new XmlNamespaceManager(Element.NameTable);
             NamespaceManager.AddNamespace("media", "http://search.yahoo.com/mrss/");
             XPathNavigator Node = Element.SelectSingleNode("./title", NamespaceManager);
             if (Node != null)
@@ -152,7 +152,7 @@ namespace Utilities.IO.FileFormats.RSS
         /// <returns>A string formatted for RSS</returns>
         public override string ToString()
         {
-            StringBuilder ItemString = new StringBuilder();
+            var ItemString = new StringBuilder();
             ItemString.Append("<item><title>").Append(Title).Append("</title>\r\n<link>")
                 .Append(Link).Append("</link>\r\n<author>").Append(Author)
                 .Append("</author>\r\n");

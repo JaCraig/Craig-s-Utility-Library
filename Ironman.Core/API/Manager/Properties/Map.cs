@@ -26,8 +26,6 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Utilities.DataTypes;
 
 namespace Ironman.Core.API.Manager.Properties
@@ -38,8 +36,8 @@ namespace Ironman.Core.API.Manager.Properties
     /// <typeparam name="ClassType">Class type</typeparam>
     /// <typeparam name="DataType">Data type</typeparam>
     public class Map<ClassType, DataType> : APIPropertyBaseClass<ClassType, DataType>, IMap
-        where ClassType : class,new()
-        where DataType : class,new()
+        where ClassType : class, new()
+        where DataType : class, new()
     {
         /// <summary>
         /// Constructor
@@ -65,7 +63,7 @@ namespace Ironman.Core.API.Manager.Properties
             ClassType TempItem = Object;
             if (TempItem == null)
                 return false;
-            IAPIMapping<DataType> Mapping = (IAPIMapping<DataType>)MappingHolder[typeof(DataType).Name];
+            var Mapping = (IAPIMapping<DataType>)MappingHolder[typeof(DataType).Name];
             if (Mapping == null)
                 return false;
             DataType Value = CompiledExpression(TempItem);
@@ -87,13 +85,13 @@ namespace Ironman.Core.API.Manager.Properties
             ClassType TempItem = Object;
             if (TempItem == null)
                 return null;
-            IAPIMapping<DataType> Mapping = (IAPIMapping<DataType>)Mappings[typeof(DataType).Name];
+            var Mapping = (IAPIMapping<DataType>)Mappings[typeof(DataType).Name];
             if (Mapping == null)
                 return new Dynamo(CompiledExpression(TempItem));
             DataType Value = CompiledExpression(TempItem);
             if (!Mapping.CanGet(Value))
                 return null;
-            Dynamo ReturnValue = new Dynamo(Value);
+            var ReturnValue = new Dynamo(Value);
             return ReturnValue.SubSet(Mapping.Properties.Where(x => x is IReference || x is IID)
                                                            .Select(x => x.Name)
                                                            .ToArray());
@@ -115,8 +113,8 @@ namespace Ironman.Core.API.Manager.Properties
                 return false;
             if (AssignExpression == null)
                 return false;
-            IAPIMapping<DataType> Mapping = (IAPIMapping<DataType>)MappingHolder[typeof(DataType).Name];
-            IAPIMapping<ClassType> ClassMapping = (IAPIMapping<ClassType>)MappingHolder[typeof(ClassType).Name];
+            var Mapping = (IAPIMapping<DataType>)MappingHolder[typeof(DataType).Name];
+            var ClassMapping = (IAPIMapping<ClassType>)MappingHolder[typeof(ClassType).Name];
             if (Mapping == null || ClassMapping == null || Models == null)
                 return false;
             Dynamo Model = Models.FirstOrDefault();

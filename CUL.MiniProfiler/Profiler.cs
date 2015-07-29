@@ -19,14 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
 using Utilities.Profiler.Manager.Interfaces;
-
-#endregion Usings
 
 namespace CUL.Profiling
 {
@@ -50,9 +46,9 @@ namespace CUL.Profiling
         /// </summary>
         /// <param name="ProfilerUsing">Profiler using</param>
         /// <param name="StepDisposable">Object to use</param>
-        public Profiler(StackExchange.Profiling.MiniProfiler ProfilerUsing, IDisposable StepDisposable)
+        public Profiler(MiniProfiler ProfilerUsing, IDisposable StepDisposable)
         {
-            this.Current = (ProfilerUsing == null) ? StackExchange.Profiling.MiniProfiler.Current : ProfilerUsing;
+            Current = ProfilerUsing ?? MiniProfiler.Current;
             this.StepDisposable = StepDisposable;
         }
 

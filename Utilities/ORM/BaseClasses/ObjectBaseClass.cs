@@ -114,7 +114,7 @@ namespace Utilities.ORM
         public static IEnumerable<ObjectType> All(params IParameter[] Params)
         {
             IEnumerable<ObjectType> instance = new List<ObjectType>();
-            LoadingEventArgs E = new LoadingEventArgs();
+            var E = new LoadingEventArgs();
             ObjectBaseClass<ObjectType, IDType>.OnLoading(null, E);
             if (!E.Stop)
             {
@@ -138,8 +138,8 @@ namespace Utilities.ORM
         public static IEnumerable<ObjectType> All(string Command, CommandType Type, string ConnectionString, params object[] Params)
         {
             IEnumerable<ObjectType> instance = new List<ObjectType>();
-            LoadingEventArgs E = new LoadingEventArgs();
-            ObjectBaseClass<ObjectType, IDType>.OnLoading(null, E);
+            var E = new LoadingEventArgs();
+            OnLoading(null, E);
             if (!E.Stop)
             {
                 instance = QueryProvider.All<ObjectType>(Command, Type, ConnectionString, Params);
@@ -158,8 +158,8 @@ namespace Utilities.ORM
         /// <returns>The specified item</returns>
         public static ObjectType Any(params IParameter[] Params)
         {
-            ObjectType instance = new ObjectType();
-            LoadingEventArgs E = new LoadingEventArgs();
+            var instance = new ObjectType();
+            var E = new LoadingEventArgs();
             E.Content = Params;
             instance.OnLoading(E);
             if (!E.Stop)
@@ -181,8 +181,8 @@ namespace Utilities.ORM
         /// <returns>The specified item</returns>
         public static ObjectType Any(string Command, CommandType Type, string ConnectionString, params object[] Params)
         {
-            ObjectType instance = new ObjectType();
-            LoadingEventArgs E = new LoadingEventArgs();
+            var instance = new ObjectType();
+            var E = new LoadingEventArgs();
             E.Content = Params;
             instance.OnLoading(E);
             if (!E.Stop)
@@ -274,8 +274,8 @@ namespace Utilities.ORM
         public static IEnumerable<ObjectType> Paged(int PageSize = 25, int CurrentPage = 0, string OrderBy = "", params IParameter[] Params)
         {
             IEnumerable<ObjectType> instance = new List<ObjectType>();
-            LoadingEventArgs E = new LoadingEventArgs();
-            ObjectBaseClass<ObjectType, IDType>.OnLoading(null, E);
+            var E = new LoadingEventArgs();
+            OnLoading(null, E);
             if (!E.Stop)
             {
                 instance = QueryProvider.Paged<ObjectType>(PageSize, CurrentPage, OrderBy, Params);
@@ -325,12 +325,12 @@ namespace Utilities.ORM
         /// </summary>
         public virtual void Delete()
         {
-            DeletingEventArgs E = new DeletingEventArgs();
+            var E = new DeletingEventArgs();
             OnDeleting(E);
             if (!E.Stop)
             {
                 QueryProvider.Delete<ObjectType>((ObjectType)this);
-                DeletedEventArgs X = new DeletedEventArgs();
+                var X = new DeletedEventArgs();
                 OnDeleted(X);
             }
         }
@@ -361,7 +361,7 @@ namespace Utilities.ORM
         /// </summary>
         public virtual void Save()
         {
-            SavingEventArgs E = new SavingEventArgs();
+            var E = new SavingEventArgs();
             OnSaving(E);
 
             if (!E.Stop)
@@ -369,7 +369,7 @@ namespace Utilities.ORM
                 SetupObject();
                 this.Validate();
                 QueryProvider.Save<ObjectType, IDType>((ObjectType)this);
-                SavedEventArgs X = new SavedEventArgs();
+                var X = new SavedEventArgs();
                 OnSaved(X);
             }
         }

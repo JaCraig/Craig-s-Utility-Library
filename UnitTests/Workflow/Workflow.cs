@@ -36,7 +36,7 @@ namespace Utilities.Tests.Workflow
         [Fact]
         public void Execute()
         {
-            Utilities.Workflow.Manager.Workflow<dynamic> TempOperation = new Utilities.Workflow.Manager.Workflow<dynamic>("ASDF");
+            var TempOperation = new Utilities.Workflow.Manager.Workflow<dynamic>("ASDF");
             TempOperation.Do(new GenericOperation<dynamic>(x => x));
             Assert.Equal(1, TempOperation.Start(1));
             Assert.Equal("A", TempOperation.Start("A"));
@@ -45,7 +45,7 @@ namespace Utilities.Tests.Workflow
         [Fact]
         public void ExecuteFailedConstraint()
         {
-            Utilities.Workflow.Manager.Workflow<dynamic> TempOperation = new Utilities.Workflow.Manager.Workflow<dynamic>("ASDF");
+            var TempOperation = new Utilities.Workflow.Manager.Workflow<dynamic>("ASDF");
             TempOperation.Do(new GenericOperation<dynamic>(x => x), new GenericConstraint<dynamic>(x => x > 1));
             Assert.Equal(1, TempOperation.Start(1));
         }
@@ -53,7 +53,7 @@ namespace Utilities.Tests.Workflow
         [Fact]
         public void ExecuteMultiple()
         {
-            Utilities.Workflow.Manager.Workflow<dynamic> TempOperation = new Utilities.Workflow.Manager.Workflow<dynamic>("ASDF");
+            var TempOperation = new Utilities.Workflow.Manager.Workflow<dynamic>("ASDF");
             TempOperation.Do(new GenericOperation<dynamic>(x => x + 1))
                 .Do(new GenericOperation<dynamic>(x => x + 1));
             Assert.Equal(3, TempOperation.Start(1));
@@ -62,7 +62,7 @@ namespace Utilities.Tests.Workflow
         [Fact]
         public void ExecuteMultipleParallel()
         {
-            Utilities.Workflow.Manager.Workflow<dynamic> TempOperation = new Utilities.Workflow.Manager.Workflow<dynamic>("ASDF");
+            var TempOperation = new Utilities.Workflow.Manager.Workflow<dynamic>("ASDF");
             TempOperation.Do(new GenericOperation<dynamic>(x => { x.A = 10; return x; }))
                 .And(new GenericOperation<dynamic>(x => { x.B = 20; return x; }));
             dynamic Value = TempOperation.Start(new Dynamo(new { A = 1, B = 2 }));
@@ -73,7 +73,7 @@ namespace Utilities.Tests.Workflow
         [Fact]
         public void ExecuteRepeat()
         {
-            Utilities.Workflow.Manager.Workflow<dynamic> TempOperation = new Utilities.Workflow.Manager.Workflow<dynamic>("ASDF");
+            var TempOperation = new Utilities.Workflow.Manager.Workflow<dynamic>("ASDF");
             TempOperation.Do(new GenericOperation<dynamic>(x => x + 1));
             TempOperation.Repeat(1);
             Assert.Equal(2, TempOperation.Start(1));
@@ -82,8 +82,8 @@ namespace Utilities.Tests.Workflow
         [Fact]
         public void ExecuteRetry()
         {
-            System.Random Rand = new System.Random(1234);
-            Utilities.Workflow.Manager.Workflow<dynamic> TempOperation = new Utilities.Workflow.Manager.Workflow<dynamic>("ASDF");
+            var Rand = new System.Random(1234);
+            var TempOperation = new Utilities.Workflow.Manager.Workflow<dynamic>("ASDF");
             TempOperation.Do(new GenericOperation<dynamic>(x =>
             {
                 if (Rand.Next(1, 3) > 1)
@@ -97,7 +97,7 @@ namespace Utilities.Tests.Workflow
         [Fact]
         public void ExecuteTrueConstraint()
         {
-            Utilities.Workflow.Manager.Workflow<dynamic> TempOperation = new Utilities.Workflow.Manager.Workflow<dynamic>("ASDF");
+            var TempOperation = new Utilities.Workflow.Manager.Workflow<dynamic>("ASDF");
             TempOperation.Do(new GenericOperation<dynamic>(x => x + 1), new GenericConstraint<dynamic>(x => x > 1));
             Assert.Equal(3, TempOperation.Start(2));
         }
@@ -106,7 +106,7 @@ namespace Utilities.Tests.Workflow
         public void OnException()
         {
             int Value = 0;
-            Utilities.Workflow.Manager.Workflow<dynamic> TempOperation = new Utilities.Workflow.Manager.Workflow<dynamic>("ASDF");
+            var TempOperation = new Utilities.Workflow.Manager.Workflow<dynamic>("ASDF");
             TempOperation.Do(new GenericOperation<dynamic>(x =>
             {
                 throw new Exception("ASDF");
@@ -119,7 +119,7 @@ namespace Utilities.Tests.Workflow
         [Fact]
         public void Setup()
         {
-            Utilities.Workflow.Manager.Workflow<dynamic> TempOperation = new Utilities.Workflow.Manager.Workflow<dynamic>("ASDF");
+            var TempOperation = new Utilities.Workflow.Manager.Workflow<dynamic>("ASDF");
             TempOperation.Do(new GenericOperation<dynamic>(x => x), new GenericConstraint<dynamic>(x => x > 1));
             Assert.Equal(1, TempOperation.Nodes.Count());
             Assert.Equal("ASDF", TempOperation.Name);

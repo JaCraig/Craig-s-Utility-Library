@@ -36,9 +36,9 @@ namespace Utilities.Tests.Workflow
         [Fact]
         public void Execute()
         {
-            Utilities.Workflow.Manager.Workflow<dynamic> TempWorkflow = new Workflow<dynamic>("ASDF");
+            var TempWorkflow = new Workflow<dynamic>("ASDF");
             TempWorkflow.Do(new GenericOperation<dynamic>(x => x));
-            Utilities.Workflow.Manager.WorkflowInvoker<dynamic> TempOperation = new Utilities.Workflow.Manager.WorkflowInvoker<dynamic>(TempWorkflow, new List<IConstraint<dynamic>>());
+            var TempOperation = new Utilities.Workflow.Manager.WorkflowInvoker<dynamic>(TempWorkflow, new List<IConstraint<dynamic>>());
             Assert.Equal(1, TempOperation.Execute(1));
             Assert.Equal("A", TempOperation.Execute("A"));
         }
@@ -46,27 +46,27 @@ namespace Utilities.Tests.Workflow
         [Fact]
         public void ExecuteFailedConstraint()
         {
-            Utilities.Workflow.Manager.Workflow<dynamic> TempWorkflow = new Workflow<dynamic>("ASDF");
+            var TempWorkflow = new Workflow<dynamic>("ASDF");
             TempWorkflow.Do(new GenericOperation<dynamic>(x => x + 1));
-            Utilities.Workflow.Manager.WorkflowInvoker<dynamic> TempOperation = new Utilities.Workflow.Manager.WorkflowInvoker<dynamic>(TempWorkflow, new IConstraint<dynamic>[] { new GenericConstraint<dynamic>(x => x > 1) });
+            var TempOperation = new Utilities.Workflow.Manager.WorkflowInvoker<dynamic>(TempWorkflow, new IConstraint<dynamic>[] { new GenericConstraint<dynamic>(x => x > 1) });
             Assert.Equal(1, TempOperation.Execute(1));
         }
 
         [Fact]
         public void ExecuteTrueConstraint()
         {
-            Utilities.Workflow.Manager.Workflow<dynamic> TempWorkflow = new Workflow<dynamic>("ASDF");
+            var TempWorkflow = new Workflow<dynamic>("ASDF");
             TempWorkflow.Do(new GenericOperation<dynamic>(x => x + 1));
-            Utilities.Workflow.Manager.WorkflowInvoker<dynamic> TempOperation = new Utilities.Workflow.Manager.WorkflowInvoker<dynamic>(TempWorkflow, new IConstraint<dynamic>[] { new GenericConstraint<dynamic>(x => x > 1) });
+            var TempOperation = new Utilities.Workflow.Manager.WorkflowInvoker<dynamic>(TempWorkflow, new IConstraint<dynamic>[] { new GenericConstraint<dynamic>(x => x > 1) });
             Assert.Equal(3, TempOperation.Execute(2));
         }
 
         [Fact]
         public void Setup()
         {
-            Utilities.Workflow.Manager.Workflow<dynamic> TempWorkflow = new Workflow<dynamic>("ASDF");
+            var TempWorkflow = new Workflow<dynamic>("ASDF");
             TempWorkflow.Do(new GenericOperation<dynamic>(x => x + 1));
-            Utilities.Workflow.Manager.WorkflowInvoker<dynamic> TempOperation = new Utilities.Workflow.Manager.WorkflowInvoker<dynamic>(TempWorkflow, new IConstraint<dynamic>[] { new GenericConstraint<dynamic>(x => x > 1) });
+            var TempOperation = new Utilities.Workflow.Manager.WorkflowInvoker<dynamic>(TempWorkflow, new IConstraint<dynamic>[] { new GenericConstraint<dynamic>(x => x > 1) });
             Assert.Equal(1, TempOperation.Constraints.Count());
             Assert.NotNull(TempOperation.Workflow);
         }

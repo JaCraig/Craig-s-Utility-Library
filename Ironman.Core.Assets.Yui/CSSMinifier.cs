@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using Ironman.Core.Assets.Enums;
 using Ironman.Core.Assets.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using Yahoo.Yui.Compressor;
-
-#endregion Usings
 
 namespace Ironman.Core.Assets.Yui
 {
@@ -63,7 +59,7 @@ namespace Ironman.Core.Assets.Yui
             IEnumerable<IAsset> Processable = Assets.Where(x => !x.Minified);
             if (Processable.FirstOrDefault() == null)
                 return Assets;
-            CssCompressor Minifier = new CssCompressor() { CompressionType = CompressionType.Standard, RemoveComments = true };
+            var Minifier = new CssCompressor() { CompressionType = CompressionType.Standard, RemoveComments = true };
             foreach (IAsset Asset in Processable.Where(x => x != null))
             {
                 try

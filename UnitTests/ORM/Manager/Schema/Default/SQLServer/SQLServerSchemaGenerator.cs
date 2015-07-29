@@ -32,14 +32,14 @@ namespace UnitTests.ORM.Manager.Schema.Default.SQLServer
         [Fact]
         public void Create()
         {
-            Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
+            var Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
             Assert.Equal("System.Data.SqlClient", Temp.ProviderName);
         }
 
         [Fact]
         public void GenerateSchema()
         {
-            Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
+            var Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
             ISource Source = Temp.GetSourceStructure(TestDatabaseSource);
             Source.Tables.First().AddColumn<string>("A", DbType.Int16);
             ITable Table = Source.AddTable("TestTable2");
@@ -53,7 +53,7 @@ namespace UnitTests.ORM.Manager.Schema.Default.SQLServer
         [Fact]
         public void GetSourceStructure()
         {
-            Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
+            var Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
             ISource Source = Temp.GetSourceStructure(TestDatabaseSource);
             Assert.Equal(0, Source.Functions.Count);
             Assert.Equal("TestDatabase", Source.Name);
@@ -70,14 +70,14 @@ namespace UnitTests.ORM.Manager.Schema.Default.SQLServer
         [Fact]
         public void SourceExists()
         {
-            Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
+            var Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
             Assert.True(Temp.SourceExists("TestDatabase", DatabaseSource));
         }
 
         [Fact]
         public void TableExists()
         {
-            Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
+            var Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
             Assert.True(Temp.TableExists("TestTable", TestDatabaseSource));
         }
     }

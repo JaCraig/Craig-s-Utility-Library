@@ -30,7 +30,7 @@ namespace UnitTests.DataTypes
         [Fact]
         public void ContainsTest()
         {
-            ListMapping<string, int> TestObject = new ListMapping<string, int>();
+            var TestObject = new ListMapping<string, int>();
             TestObject.Add("A", 0);
             TestObject.Add("A", 1);
             Assert.True(TestObject.Contains("A", 0));
@@ -40,8 +40,8 @@ namespace UnitTests.DataTypes
         [Fact]
         public void RandomTest()
         {
-            ListMapping<string, int> TestObject = new ListMapping<string, int>();
-            System.Random Rand = new System.Random();
+            var TestObject = new ListMapping<string, int>();
+            var Rand = new System.Random();
             for (int x = 0; x < 10; ++x)
             {
                 string Name = x.ToString();
@@ -59,7 +59,7 @@ namespace UnitTests.DataTypes
         [Fact]
         public void RemoveTest()
         {
-            ListMapping<string, int> TestObject = new ListMapping<string, int>();
+            var TestObject = new ListMapping<string, int>();
             TestObject.Add("A", 0);
             TestObject.Add("A", 1);
             TestObject.Remove("A", 0);

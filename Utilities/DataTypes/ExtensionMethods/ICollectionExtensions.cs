@@ -231,7 +231,7 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(List != null, "List");
             Contract.Requires<ArgumentNullException>(Function != null, "Function");
             Contract.Requires<ArgumentException>(End + 1 - Start >= 0, "End must be greater than start");
-            List<R> ReturnValues = new List<R>();
+            var ReturnValues = new List<R>();
             if (End >= List.Count)
                 End = List.Count - 1;
             if (Start < 0)

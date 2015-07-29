@@ -29,7 +29,7 @@ namespace Utilities.Random
     /// </summary>
     public class Random : System.Random
     {
-        private static Random GlobalSeed = new Random();
+        private static readonly Random GlobalSeed = new Random();
 
         [ThreadStatic]
         private static Random Local;

@@ -31,7 +31,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void BasicTest()
         {
-            Utilities.IO.FileFormats.VCalendar Calendar = new Utilities.IO.FileFormats.VCalendar();
+            var Calendar = new Utilities.IO.FileFormats.VCalendar();
             Calendar.AttendeeList.Add(new MailAddress("test@test.com", "Test Test"));
             Calendar.AttendeeList.Add(new MailAddress("test2@test.com", "Test2 Test2"));
             Calendar.Description = "Test vcal item";

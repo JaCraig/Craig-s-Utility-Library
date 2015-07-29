@@ -145,12 +145,12 @@ namespace Ironman.Core.API.Manager.BaseClasses
             IEnumerable<ClassType> Objects = AllFunc();
             if (Objects == null)
                 Objects = new List<ClassType>();
-            List<Dynamo> ReturnValue = new List<Dynamo>();
+            var ReturnValue = new List<Dynamo>();
             foreach (ClassType Object in Objects)
             {
                 if (CanGetFunc(Object))
                 {
-                    Dynamo TempItem = new Dynamo(Object);
+                    var TempItem = new Dynamo(Object);
                     Dynamo ReturnItem = TempItem.SubSet(Properties.Where(x => x is IReference || x is IID)
                                                                    .Select(x => x.Name)
                                                                    .ToArray());
@@ -185,7 +185,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
             ClassType Object = AnyFunc(ID);
             if (!CanGetFunc(Object))
                 return null;
-            Dynamo TempItem = new Dynamo(Object);
+            var TempItem = new Dynamo(Object);
             Dynamo ReturnValue = TempItem.SubSet(Properties.Where(x => x is IReference || x is IID)
                                                            .Select(x => x.Name)
                                                            .ToArray());
@@ -369,12 +369,12 @@ namespace Ironman.Core.API.Manager.BaseClasses
             IEnumerable<ClassType> Objects = PagedFunc(PageSize, Page, OrderByClauseFinal);
             if (Objects == null)
                 Objects = new List<ClassType>();
-            List<Dynamo> ReturnValue = new List<Dynamo>();
+            var ReturnValue = new List<Dynamo>();
             foreach (ClassType Object in Objects)
             {
                 if (CanGetFunc(Object))
                 {
-                    Dynamo TempItem = new Dynamo(Object);
+                    var TempItem = new Dynamo(Object);
                     Dynamo ReturnItem = TempItem.SubSet(Properties.Where(x => x is IReference || x is IID)
                                                                    .Select(x => x.Name)
                                                                    .ToArray());

@@ -32,7 +32,7 @@ namespace UnitTests.Validation.Rules
         [Fact]
         public void Test()
         {
-            ClassA Temp = new ClassA();
+            var Temp = new ClassA();
             Temp.ItemA = 1;
             Temp.ItemB = DateTime.Now;
             Temp.Validate();

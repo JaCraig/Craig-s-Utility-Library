@@ -35,14 +35,14 @@ namespace UnitTests.ORM.Manager.SourceProvider
         [Fact]
         public void Create()
         {
-            Utilities.ORM.Manager.SourceProvider.Manager Temp = new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>());
+            var Temp = new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>());
             Assert.NotNull(Temp);
         }
 
         [Fact]
         public void GetSource()
         {
-            Utilities.ORM.Manager.SourceProvider.Manager Temp = new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>());
+            var Temp = new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>());
             ISourceInfo Source = Temp.GetSource("Temp");
             Assert.Equal("Temp", Source.Connection);
             Assert.Equal("Temp", Source.Name);
@@ -55,7 +55,7 @@ namespace UnitTests.ORM.Manager.SourceProvider
         [Fact]
         public void GetSourceAgain()
         {
-            Utilities.ORM.Manager.SourceProvider.Manager Temp = new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>());
+            var Temp = new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>());
             ISourceInfo Source = Temp.GetSource("Temp");
             ISourceInfo Source2 = Temp.GetSource("Temp");
             Assert.Equal(Source, Source2);

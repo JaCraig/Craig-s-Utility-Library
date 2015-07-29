@@ -28,15 +28,15 @@ namespace UnitTests.Random.DefaultClasses
         [Fact]
         public void Next()
         {
-            Utilities.Random.DefaultClasses.IntegerGenerator<int> Generator = new Utilities.Random.DefaultClasses.IntegerGenerator<int>();
+            var Generator = new Utilities.Random.DefaultClasses.IntegerGenerator<int>();
             Assert.InRange(Generator.Next(new System.Random()), 0, int.MaxValue);
             Assert.InRange(Generator.Next(new System.Random(), 10, 300), 10, 300);
 
-            Utilities.Random.DefaultClasses.IntegerGenerator<long> Generator2 = new Utilities.Random.DefaultClasses.IntegerGenerator<long>();
+            var Generator2 = new Utilities.Random.DefaultClasses.IntegerGenerator<long>();
             Assert.InRange(Generator2.Next(new System.Random()), 0, long.MaxValue);
             Assert.InRange(Generator2.Next(new System.Random(), 10, 300), 10, 300);
 
-            Utilities.Random.DefaultClasses.IntegerGenerator<ushort> Generator3 = new Utilities.Random.DefaultClasses.IntegerGenerator<ushort>();
+            var Generator3 = new Utilities.Random.DefaultClasses.IntegerGenerator<ushort>();
             Assert.InRange(Generator3.Next(new System.Random()), 0, ushort.MaxValue);
             Assert.InRange(Generator3.Next(new System.Random(), 10, 300), 10, 300);
         }

@@ -29,7 +29,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void Load()
         {
-            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38");
+            var TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38");
             Assert.Equal(3, TestObject.Count);
             Assert.Equal("\"Year\",\"Make\",\"Model\",\"Length\"" + System.Environment.NewLine + "\"1997\",\"Ford\",\"E350\",\"2.34\"" + System.Environment.NewLine + "\"2000\",\"Mercury\",\"Cougar\",\"2.38\"" + System.Environment.NewLine, TestObject.ToString());
         }
@@ -37,7 +37,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void Load2()
         {
-            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("\"Year,Make,Model,Length\"\r\n\"1997,Ford,E350,2.34\"\r\n\"2000,Mercury,Cougar,2.38\"");
+            var TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("\"Year,Make,Model,Length\"\r\n\"1997,Ford,E350,2.34\"\r\n\"2000,Mercury,Cougar,2.38\"");
             Assert.Equal(3, TestObject.Count);
             Assert.Equal("\"Year,Make,Model,Length\"\r\n\"1997,Ford,E350,2.34\"\r\n\"2000,Mercury,Cougar,2.38\"\r\n", TestObject.ToString());
         }
@@ -45,7 +45,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void Load3()
         {
-            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"");
+            var TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"");
             Assert.Equal(1, TestObject.Count);
             Assert.Equal("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"\r\n", TestObject.ToString());
         }
@@ -53,7 +53,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void Load4()
         {
-            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited();
+            var TestObject = new Utilities.IO.FileFormats.Delimited.Delimited();
             TestObject.Parse("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"");
             Assert.Equal(1, TestObject.Count);
             Assert.Equal("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"\r\n", TestObject.ToString());
@@ -62,7 +62,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void Load5()
         {
-            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"");
+            var TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"");
             Assert.Equal(1, TestObject.Count);
             Assert.Equal("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"\r\n", TestObject);
         }
@@ -70,7 +70,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void PipeLoad()
         {
-            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38");
+            var TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38");
             Assert.Equal(3, TestObject.Count);
             Assert.Equal("\"Year\"|\"Make\"|\"Model\"|\"Length\"" + System.Environment.NewLine + "\"1997\"|\"Ford\"|\"E350\"|\"2.34\"" + System.Environment.NewLine + "\"2000\"|\"Mercury\"|\"Cougar\"|\"2.38\"" + System.Environment.NewLine, TestObject);
         }
@@ -78,7 +78,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void PipeLoad2()
         {
-            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("\"Year|Make|Model|Length\"\r\n\"1997|Ford|E350|2.34\"\r\n\"2000|Mercury|Cougar|2.38\"");
+            var TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("\"Year|Make|Model|Length\"\r\n\"1997|Ford|E350|2.34\"\r\n\"2000|Mercury|Cougar|2.38\"");
             Assert.Equal(3, TestObject.Count);
             Assert.Equal("\"Year|Make|Model|Length\"\r\n\"1997|Ford|E350|2.34\"\r\n\"2000|Mercury|Cougar|2.38\"\r\n", TestObject);
         }
@@ -86,7 +86,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void PipeLoad3()
         {
-            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("\"Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38\"");
+            var TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("\"Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38\"");
             Assert.Equal(1, TestObject.Count);
             Assert.Equal("\"Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38\"\r\n", TestObject);
         }
@@ -94,7 +94,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void PipeLoad4()
         {
-            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited();
+            var TestObject = new Utilities.IO.FileFormats.Delimited.Delimited();
             TestObject.Parse("\"Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38\"");
             Assert.Equal(1, TestObject.Count);
             Assert.Equal("\"Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38\"\r\n", TestObject);
@@ -122,7 +122,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void TabLoad()
         {
-            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("Year\tMake\tModel\tLength\r\n1997\tFord\tE350\t2.34\r\n2000\tMercury\tCougar\t2.38");
+            var TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("Year\tMake\tModel\tLength\r\n1997\tFord\tE350\t2.34\r\n2000\tMercury\tCougar\t2.38");
             Assert.Equal(3, TestObject.Count);
             Assert.Equal("\"Year\"\t\"Make\"\t\"Model\"\t\"Length\"" + System.Environment.NewLine + "\"1997\"\t\"Ford\"\t\"E350\"\t\"2.34\"" + System.Environment.NewLine + "\"2000\"\t\"Mercury\"\t\"Cougar\"\t\"2.38\"" + System.Environment.NewLine, TestObject);
         }
@@ -130,7 +130,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void TabLoad2()
         {
-            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("\"Year\tMake\tModel\tLength\"\r\n\"1997\tFord\tE350\t2.34\"\r\n\"2000\tMercury\tCougar\t2.38\"", "\t");
+            var TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("\"Year\tMake\tModel\tLength\"\r\n\"1997\tFord\tE350\t2.34\"\r\n\"2000\tMercury\tCougar\t2.38\"", "\t");
             Assert.Equal(3, TestObject.Count);
             Assert.Equal("\"Year\tMake\tModel\tLength\"\r\n\"1997\tFord\tE350\t2.34\"\r\n\"2000\tMercury\tCougar\t2.38\"\r\n", TestObject);
         }
@@ -138,7 +138,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void TabLoad3()
         {
-            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("\"Year\tMake\tModel\tLength\r\n1997\tFord\tE350\t2.34\r\n2000\tMercury\tCougar\t2.38\"", "\t");
+            var TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("\"Year\tMake\tModel\tLength\r\n1997\tFord\tE350\t2.34\r\n2000\tMercury\tCougar\t2.38\"", "\t");
             Assert.Equal(1, TestObject.Count);
             Assert.Equal("\"Year\tMake\tModel\tLength\r\n1997\tFord\tE350\t2.34\r\n2000\tMercury\tCougar\t2.38\"\r\n", TestObject);
         }
@@ -146,7 +146,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void TabLoad4()
         {
-            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited();
+            var TestObject = new Utilities.IO.FileFormats.Delimited.Delimited();
             TestObject.Parse("\"Year\tMake\tModel\tLength\r\n1997\tFord\tE350\t2.34\r\n2000\tMercury\tCougar\t2.38\"");
             Assert.Equal(1, TestObject.Count);
             Assert.Equal("\"Year\tMake\tModel\tLength\r\n1997\tFord\tE350\t2.34\r\n2000\tMercury\tCougar\t2.38\"\r\n", TestObject);

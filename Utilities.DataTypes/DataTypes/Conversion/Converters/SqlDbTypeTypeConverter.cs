@@ -95,8 +95,8 @@ namespace Utilities.DataTypes.Conversion.Converters
         {
             if (!(value is DbType))
                 return SqlDbType.Int;
-            DbType TempValue = (DbType)value;
-            SqlParameter Parameter = new SqlParameter();
+            var TempValue = (DbType)value;
+            var Parameter = new SqlParameter();
             Parameter.DbType = TempValue;
             return Parameter.SqlDbType;
         }
@@ -105,8 +105,8 @@ namespace Utilities.DataTypes.Conversion.Converters
         {
             if (!(sqlDbType is SqlDbType))
                 return DbType.Int32;
-            SqlDbType Temp = (SqlDbType)sqlDbType;
-            SqlParameter Parameter = new SqlParameter();
+            var Temp = (SqlDbType)sqlDbType;
+            var Parameter = new SqlParameter();
             Parameter.SqlDbType = Temp;
             return Parameter.DbType;
         }
@@ -115,41 +115,64 @@ namespace Utilities.DataTypes.Conversion.Converters
         {
             if (!(arg is SqlDbType))
                 return typeof(int);
-            SqlDbType Item = (SqlDbType)arg;
-            SqlParameter Parameter = new SqlParameter();
+            var Item = (SqlDbType)arg;
+            var Parameter = new SqlParameter();
             Parameter.SqlDbType = Item;
-            if (Parameter.DbType == DbType.Byte) return typeof(byte);
-            else if (Parameter.DbType == DbType.SByte) return typeof(sbyte);
-            else if (Parameter.DbType == DbType.Int16) return typeof(short);
-            else if (Parameter.DbType == DbType.UInt16) return typeof(ushort);
-            else if (Parameter.DbType == DbType.Int32) return typeof(int);
-            else if (Parameter.DbType == DbType.UInt32) return typeof(uint);
-            else if (Parameter.DbType == DbType.Int64) return typeof(long);
-            else if (Parameter.DbType == DbType.UInt64) return typeof(ulong);
-            else if (Parameter.DbType == DbType.Single) return typeof(float);
-            else if (Parameter.DbType == DbType.Double) return typeof(double);
-            else if (Parameter.DbType == DbType.Decimal) return typeof(decimal);
-            else if (Parameter.DbType == DbType.Boolean) return typeof(bool);
-            else if (Parameter.DbType == DbType.String) return typeof(string);
-            else if (Parameter.DbType == DbType.StringFixedLength) return typeof(char);
-            else if (Parameter.DbType == DbType.Guid) return typeof(Guid);
-            else if (Parameter.DbType == DbType.DateTime2) return typeof(DateTime);
-            else if (Parameter.DbType == DbType.DateTime) return typeof(DateTime);
-            else if (Parameter.DbType == DbType.DateTimeOffset) return typeof(DateTimeOffset);
-            else if (Parameter.DbType == DbType.Binary) return typeof(byte[]);
+            switch (Parameter.DbType)
+            {
+                case DbType.Byte:
+                    return typeof(byte);
+                case DbType.SByte:
+                    return typeof(sbyte);
+                case DbType.Int16:
+                    return typeof(short);
+                case DbType.UInt16:
+                    return typeof(ushort);
+                case DbType.Int32:
+                    return typeof(int);
+                case DbType.UInt32:
+                    return typeof(uint);
+                case DbType.Int64:
+                    return typeof(long);
+                case DbType.UInt64:
+                    return typeof(ulong);
+                case DbType.Single:
+                    return typeof(float);
+                case DbType.Double:
+                    return typeof(double);
+                case DbType.Decimal:
+                    return typeof(decimal);
+                case DbType.Boolean:
+                    return typeof(bool);
+                case DbType.String:
+                    return typeof(string);
+                case DbType.StringFixedLength:
+                    return typeof(char);
+                case DbType.Guid:
+                    return typeof(Guid);
+                case DbType.DateTime2:
+                    return typeof(DateTime);
+                case DbType.DateTime:
+                    return typeof(DateTime);
+                case DbType.DateTimeOffset:
+                    return typeof(DateTimeOffset);
+                case DbType.Binary:
+                    return typeof(byte[]);
+            }
+
             return typeof(int);
         }
 
         private static object TypeToSqlDbType(object arg)
         {
-            Type TempValue = arg as Type;
+            var TempValue = arg as Type;
             if (TempValue == null)
                 return SqlDbType.Int;
             DbType Item = DbType.Int32;
             if (TempValue.IsEnum)
                 TempValue = Enum.GetUnderlyingType(TempValue);
             Item = Conversions.GetValue(TempValue, DbType.Int32);
-            SqlParameter Parameter = new SqlParameter();
+            var Parameter = new SqlParameter();
             Parameter.DbType = Item;
             return Parameter.SqlDbType;
         }

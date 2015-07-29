@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using Glimpse.AspNet.Extensibility;
 using Glimpse.Core.Extensibility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-
-#endregion Usings
 
 namespace Glimpse.CUL
 {
@@ -83,7 +79,7 @@ namespace Glimpse.CUL
         /// <returns>A dictionary of information to put in the tab</returns>
         public override object GetData(ITabContext context)
         {
-            Dictionary<string, string[]> Return = new Dictionary<string, string[]>();
+            var Return = new Dictionary<string, string[]>();
             if (Container == null)
                 return Return;
             Return.Add("IoC Container", new string[] { Container.Name });

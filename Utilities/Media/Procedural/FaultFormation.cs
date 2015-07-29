@@ -43,12 +43,12 @@ namespace Utilities.Media.Procedural
         {
             float[,] Heights = new float[Width, Height];
             float IncreaseVal = 0.1f;
-            System.Random Generator = new System.Random(Seed);
+            var Generator = new System.Random(Seed);
             for (int x = 0; x < NumberFaults; ++x)
             {
                 IncreaseVal = GenerateFault(Width, Height, NumberFaults, Heights, IncreaseVal, Generator);
             }
-            SwiftBitmap ReturnValue = new SwiftBitmap(Width, Height);
+            var ReturnValue = new SwiftBitmap(Width, Height);
             ReturnValue.Lock();
             for (int x = 0; x < Width; ++x)
             {
@@ -82,46 +82,44 @@ namespace Utilities.Media.Procedural
             int Y2 = 0;
             while (X1 == X2 || Y1 == Y2)
             {
-                if (Wall == 0)
+                switch (Wall)
                 {
-                    X1 = Generator.Next(Width);
-                    Y1 = 0;
-                }
-                else if (Wall == 1)
-                {
-                    Y1 = Generator.Next(Height);
-                    X1 = Width;
-                }
-                else if (Wall == 2)
-                {
-                    X1 = Generator.Next(Width);
-                    Y1 = Height;
-                }
-                else
-                {
-                    X1 = 0;
-                    Y1 = Generator.Next(Height);
+                    case 0:
+                        X1 = Generator.Next(Width);
+                        Y1 = 0;
+                        break;
+                    case 1:
+                        Y1 = Generator.Next(Height);
+                        X1 = Width;
+                        break;
+                    case 2:
+                        X1 = Generator.Next(Width);
+                        Y1 = Height;
+                        break;
+                    default:
+                        X1 = 0;
+                        Y1 = Generator.Next(Height);
+                        break;
                 }
 
-                if (Wall2 == 0)
+                switch (Wall2)
                 {
-                    X2 = Generator.Next(Width);
-                    Y2 = 0;
-                }
-                else if (Wall2 == 1)
-                {
-                    Y2 = Generator.Next(Height);
-                    X2 = Width;
-                }
-                else if (Wall2 == 2)
-                {
-                    X2 = Generator.Next(Width);
-                    Y2 = Height;
-                }
-                else
-                {
-                    X2 = 0;
-                    Y2 = Generator.Next(Height);
+                    case 0:
+                        X2 = Generator.Next(Width);
+                        Y2 = 0;
+                        break;
+                    case 1:
+                        Y2 = Generator.Next(Height);
+                        X2 = Width;
+                        break;
+                    case 2:
+                        X2 = Generator.Next(Width);
+                        Y2 = Height;
+                        break;
+                    default:
+                        X2 = 0;
+                        Y2 = Generator.Next(Height);
+                        break;
                 }
             }
             int M = (Y1 - Y2) / (X1 - X2);

@@ -31,7 +31,7 @@ namespace UnitTests.Validation.Rules
         [Fact]
         public void Test()
         {
-            CompareToClass Temp = new CompareToClass();
+            var Temp = new CompareToClass();
             Temp.ItemA = 1;
             Temp.ItemB = 1;
             Temp.Validate();

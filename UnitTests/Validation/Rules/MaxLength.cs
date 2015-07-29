@@ -31,7 +31,7 @@ namespace UnitTests.Validation.Rules
         [Fact]
         public void Test()
         {
-            MaxLengthClass Temp = new MaxLengthClass();
+            var Temp = new MaxLengthClass();
             Temp.ItemA = "Test";
             Temp.Validate();
             Temp.ItemA = "Testing";

@@ -239,7 +239,7 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <returns>The cloned object</returns>
         public object Clone()
         {
-            FileBase<InternalFileType, FileType> Temp = new FileType();
+            var Temp = new FileType();
             Temp.InternalFile = InternalFile;
             Temp.Password = Password;
             Temp.UserName = UserName;
@@ -266,7 +266,7 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <returns></returns>
         public int CompareTo(object obj)
         {
-            FileBase<InternalFileType, FileType> Temp = obj as FileBase<InternalFileType, FileType>;
+            var Temp = obj as FileBase<InternalFileType, FileType>;
             if (Temp == null)
                 return 1;
             return CompareTo(Temp);
@@ -293,7 +293,7 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <returns>True if they are equal, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            FileBase<InternalFileType, FileType> File = obj as FileBase<InternalFileType, FileType>;
+            var File = obj as FileBase<InternalFileType, FileType>;
             return File != null && File == this;
         }
 

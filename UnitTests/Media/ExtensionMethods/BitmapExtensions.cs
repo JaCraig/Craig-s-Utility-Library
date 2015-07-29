@@ -142,7 +142,7 @@ namespace UnitTests.Media.Image.ExtensionMethods
         [Fact]
         public void Colorize()
         {
-            List<Color> Colors = new List<Color>();
+            var Colors = new List<Color>();
             for (int x = 0; x < 256; ++x)
                 Colors.Add(Color.FromArgb(255 - x, 0, x));
             using (Utilities.Media.SwiftBitmap TestObject = new Utilities.Media.SwiftBitmap(@"..\..\Data\Image\Lenna.jpg").BlackAndWhite())

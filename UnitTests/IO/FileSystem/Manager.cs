@@ -31,14 +31,14 @@ namespace UnitTests.IO.FileSystem
         [Fact]
         public void Creation()
         {
-            Utilities.IO.FileSystem.Manager Temp = new Utilities.IO.FileSystem.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IFileSystem>());
+            var Temp = new Utilities.IO.FileSystem.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IFileSystem>());
             Assert.NotNull(Temp);
         }
 
         [Fact]
         public void Directory()
         {
-            Utilities.IO.FileSystem.Manager Temp = new Utilities.IO.FileSystem.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IFileSystem>());
+            var Temp = new Utilities.IO.FileSystem.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IFileSystem>());
             IDirectory Dir = Temp.Directory(@"C:\");
             Assert.NotNull(Dir);
             Assert.IsType<Utilities.IO.FileSystem.Default.LocalDirectory>(Dir);
@@ -64,7 +64,7 @@ namespace UnitTests.IO.FileSystem
         [Fact]
         public void File()
         {
-            Utilities.IO.FileSystem.Manager Temp = new Utilities.IO.FileSystem.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IFileSystem>());
+            var Temp = new Utilities.IO.FileSystem.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IFileSystem>());
             IFile File = Temp.File(@"C:\Test.txt");
             Assert.NotNull(File);
             Assert.IsType<Utilities.IO.FileSystem.Default.LocalFile>(File);

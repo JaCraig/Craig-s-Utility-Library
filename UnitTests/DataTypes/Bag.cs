@@ -29,8 +29,8 @@ namespace UnitTests.DataTypes
         [Fact]
         public void RandomTest()
         {
-            Bag<string> BagObject = new Bag<string>();
-            System.Random Rand = new System.Random();
+            var BagObject = new Bag<string>();
+            var Rand = new System.Random();
             for (int x = 0; x < 10; ++x)
             {
                 string Value = x.ToString();

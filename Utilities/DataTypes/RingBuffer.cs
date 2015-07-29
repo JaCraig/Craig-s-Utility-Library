@@ -208,7 +208,7 @@ namespace Utilities.DataTypes
         public virtual bool Contains(T item)
         {
             int y = ReadPosition;
-            GenericEqualityComparer<T> Comparer = new GenericEqualityComparer<T>();
+            var Comparer = new GenericEqualityComparer<T>();
             for (int x = 0; x < Count; ++x)
             {
                 if (Comparer.Equals(Buffer[y], item))
@@ -310,7 +310,7 @@ namespace Utilities.DataTypes
         {
             if (Count == 0)
                 return new List<T>();
-            List<T> ReturnValue = new List<T>();
+            var ReturnValue = new List<T>();
             for (int x = 0; x < Amount; ++x)
                 ReturnValue.Add(Remove());
             return ReturnValue;
@@ -324,7 +324,7 @@ namespace Utilities.DataTypes
         public virtual bool Remove(T item)
         {
             int y = ReadPosition;
-            GenericEqualityComparer<T> Comparer = new GenericEqualityComparer<T>();
+            var Comparer = new GenericEqualityComparer<T>();
             for (int x = 0; x < Count; ++x)
             {
                 if (Comparer.Equals(Buffer[y], item))

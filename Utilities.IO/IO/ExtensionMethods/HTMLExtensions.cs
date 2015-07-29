@@ -158,7 +158,7 @@ namespace Utilities.IO
             if (string.IsNullOrEmpty(Input))
                 return "";
             string[] CodeLines = Input.Split(new string[] { System.Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries);
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             foreach (string Line in CodeLines)
             {
                 string Temp = Line.Trim();

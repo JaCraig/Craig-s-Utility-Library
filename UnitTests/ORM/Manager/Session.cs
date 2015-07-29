@@ -47,10 +47,10 @@ namespace UnitTests.ORM.Manager
         public void All()
         {
             Guid TempGuid = Guid.NewGuid();
-            Utilities.ORM.Manager.Session TestObject = new Utilities.ORM.Manager.Session();
+            var TestObject = new Utilities.ORM.Manager.Session();
             for (int x = 0; x < 100; ++x)
             {
-                TestClass TempObject = new TestClass();
+                var TempObject = new TestClass();
                 TempObject.BoolReference = true;
                 TempObject.ByteArrayReference = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
                 TempObject.ByteReference = 12;
@@ -92,10 +92,10 @@ namespace UnitTests.ORM.Manager
         public void Any()
         {
             Guid TempGuid = Guid.NewGuid();
-            Utilities.ORM.Manager.Session TestObject = new Utilities.ORM.Manager.Session();
+            var TestObject = new Utilities.ORM.Manager.Session();
             for (int x = 0; x < 100; ++x)
             {
-                TestClass TempObject = new TestClass();
+                var TempObject = new TestClass();
                 TempObject.BoolReference = true;
                 TempObject.ByteArrayReference = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
                 TempObject.ByteReference = 12;
@@ -170,10 +170,10 @@ namespace UnitTests.ORM.Manager
         public void AnyByID()
         {
             Guid TempGuid = Guid.NewGuid();
-            Utilities.ORM.Manager.Session TestObject = new Utilities.ORM.Manager.Session();
+            var TestObject = new Utilities.ORM.Manager.Session();
             for (int x = 0; x < 100; ++x)
             {
-                TestClass TempObject = new TestClass();
+                var TempObject = new TestClass();
                 TempObject.BoolReference = true;
                 TempObject.ByteArrayReference = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
                 TempObject.ByteReference = 12;
@@ -235,10 +235,10 @@ namespace UnitTests.ORM.Manager
         public void Delete()
         {
             Guid TempGuid = Guid.NewGuid();
-            Utilities.ORM.Manager.Session TestObject = new Utilities.ORM.Manager.Session();
+            var TestObject = new Utilities.ORM.Manager.Session();
             for (int x = 0; x < 100; ++x)
             {
-                TestClass TempObject = new TestClass();
+                var TempObject = new TestClass();
                 TempObject.BoolReference = true;
                 TempObject.ByteArrayReference = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
                 TempObject.ByteReference = 12;
@@ -263,7 +263,7 @@ namespace UnitTests.ORM.Manager
         public override void Dispose()
         {
             base.Dispose();
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(MasterDatabaseSource);
+            var Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(MasterDatabaseSource);
             try
             {
                 Temp.AddCommand(null, null, CommandType.Text, "ALTER DATABASE SessionTestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE")
@@ -278,10 +278,10 @@ namespace UnitTests.ORM.Manager
         public void PageCount()
         {
             Guid TempGuid = Guid.NewGuid();
-            Utilities.ORM.Manager.Session TestObject = new Utilities.ORM.Manager.Session();
+            var TestObject = new Utilities.ORM.Manager.Session();
             for (int x = 0; x < 100; ++x)
             {
-                TestClass TempObject = new TestClass();
+                var TempObject = new TestClass();
                 TempObject.BoolReference = true;
                 TempObject.ByteArrayReference = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
                 TempObject.ByteReference = 12;
@@ -305,10 +305,10 @@ namespace UnitTests.ORM.Manager
         public void Paged()
         {
             Guid TempGuid = Guid.NewGuid();
-            Utilities.ORM.Manager.Session TestObject = new Utilities.ORM.Manager.Session();
+            var TestObject = new Utilities.ORM.Manager.Session();
             for (int x = 0; x < 100; ++x)
             {
-                TestClass TempObject = new TestClass();
+                var TempObject = new TestClass();
                 TempObject.BoolReference = true;
                 TempObject.ByteArrayReference = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
                 TempObject.ByteReference = 12;
@@ -409,8 +409,8 @@ namespace UnitTests.ORM.Manager
         public void Save()
         {
             Guid TempGuid = Guid.NewGuid();
-            Utilities.ORM.Manager.Session TestObject = new Utilities.ORM.Manager.Session();
-            TestClass TempObject = new TestClass();
+            var TestObject = new Utilities.ORM.Manager.Session();
+            var TempObject = new TestClass();
             TempObject.BoolReference = true;
             TempObject.ByteArrayReference = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             TempObject.ByteReference = 12;
@@ -454,7 +454,7 @@ namespace UnitTests.ORM.Manager
             Assert.Equal(5423, TempObject.ShortReference);
             Assert.Equal("agsdpghasdg", TempObject.StringReference);
 
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=SessionTestDatabase;Integrated Security=SSPI;Pooling=false"));
+            var Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=SessionTestDatabase;Integrated Security=SSPI;Pooling=false"));
 
             IList<dynamic> Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestClass_").Execute().First();
             TestClass Item = Items.FirstOrDefault(x => x.BoolReference_);
@@ -485,8 +485,8 @@ namespace UnitTests.ORM.Manager
         public void Update()
         {
             Guid TempGuid = Guid.NewGuid();
-            Utilities.ORM.Manager.Session TestObject = new Utilities.ORM.Manager.Session();
-            TestClass TempObject = new TestClass();
+            var TestObject = new Utilities.ORM.Manager.Session();
+            var TempObject = new TestClass();
             TempObject.BoolReference = true;
             TempObject.ByteArrayReference = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             TempObject.ByteReference = 12;
@@ -530,7 +530,7 @@ namespace UnitTests.ORM.Manager
             Assert.Equal(5423, TempObject.ShortReference);
             Assert.Equal("agsdpghasdg", TempObject.StringReference);
 
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=SessionTestDatabase;Integrated Security=SSPI;Pooling=false"));
+            var Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=SessionTestDatabase;Integrated Security=SSPI;Pooling=false"));
 
             IList<dynamic> Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestClass_").Execute().First();
             TestClass Item = Items.FirstOrDefault(x => x.BoolReference_);
@@ -600,8 +600,8 @@ namespace UnitTests.ORM.Manager
         public void UpdateCascade()
         {
             Guid TempGuid = Guid.NewGuid();
-            Utilities.ORM.Manager.Session TestObject = new Utilities.ORM.Manager.Session();
-            TestClass TempObject = new TestClass();
+            var TestObject = new Utilities.ORM.Manager.Session();
+            var TempObject = new TestClass();
             TempObject.BoolReference = true;
             TempObject.ByteArrayReference = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             TempObject.ByteReference = 12;
@@ -653,7 +653,7 @@ namespace UnitTests.ORM.Manager
             Assert.Equal(5423, TempObject.ShortReference);
             Assert.Equal("agsdpghasdg", TempObject.StringReference);
 
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=SessionTestDatabase;Integrated Security=SSPI;Pooling=false"));
+            var Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=SessionTestDatabase;Integrated Security=SSPI;Pooling=false"));
 
             IList<dynamic> Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestClass_").Execute().First();
             TestClass Item = Items.FirstOrDefault(x => x.BoolReference_);

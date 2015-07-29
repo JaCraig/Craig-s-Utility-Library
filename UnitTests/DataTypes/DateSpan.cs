@@ -29,9 +29,9 @@ namespace UnitTests.DataTypes
         [Fact]
         public void CompareTest()
         {
-            Utilities.DataTypes.DateSpan Span1 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1), new DateTime(2009, 1, 1));
-            Utilities.DataTypes.DateSpan Span2 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1), new DateTime(2009, 1, 1));
-            Utilities.DataTypes.DateSpan Span3 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 2), new DateTime(2009, 1, 1));
+            var Span1 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1), new DateTime(2009, 1, 1));
+            var Span2 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1), new DateTime(2009, 1, 1));
+            var Span3 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 2), new DateTime(2009, 1, 1));
 
             Assert.True(Span1 == Span2);
             Assert.False(Span1 == Span3);
@@ -40,7 +40,7 @@ namespace UnitTests.DataTypes
         [Fact]
         public void DifferenceTest()
         {
-            Utilities.DataTypes.DateSpan Span1 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1), new DateTime(2003, 1, 1));
+            var Span1 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1), new DateTime(2003, 1, 1));
             Assert.Equal(4, Span1.Years);
             Assert.Equal(0, Span1.Months);
             Assert.Equal(0, Span1.Days);
@@ -48,7 +48,7 @@ namespace UnitTests.DataTypes
             Assert.Equal(0, Span1.Minutes);
             Assert.Equal(0, Span1.Seconds);
             Assert.Equal(0, Span1.MilliSeconds);
-            Utilities.DataTypes.DateSpan Span2 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1, 2, 3, 4), new DateTime(2003, 11, 15, 6, 45, 32));
+            var Span2 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1, 2, 3, 4), new DateTime(2003, 11, 15, 6, 45, 32));
             Assert.Equal(4, Span2.Years);
             Assert.Equal(10, Span2.Months);
             Assert.Equal(14, Span2.Days);
@@ -61,8 +61,8 @@ namespace UnitTests.DataTypes
         [Fact]
         public void IntersectionTest()
         {
-            Utilities.DataTypes.DateSpan Span1 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1), new DateTime(2003, 1, 1));
-            Utilities.DataTypes.DateSpan Span2 = new Utilities.DataTypes.DateSpan(new DateTime(2002, 1, 1), new DateTime(2009, 1, 1));
+            var Span1 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1), new DateTime(2003, 1, 1));
+            var Span2 = new Utilities.DataTypes.DateSpan(new DateTime(2002, 1, 1), new DateTime(2009, 1, 1));
             Utilities.DataTypes.DateSpan Span3 = Span1.Intersection(Span2);
             Assert.Equal(new DateTime(2002, 1, 1), Span3.Start);
             Assert.Equal(new DateTime(2003, 1, 1), Span3.End);
@@ -71,16 +71,16 @@ namespace UnitTests.DataTypes
         [Fact]
         public void OverlapTest()
         {
-            Utilities.DataTypes.DateSpan Span1 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1), new DateTime(2003, 1, 1));
-            Utilities.DataTypes.DateSpan Span2 = new Utilities.DataTypes.DateSpan(new DateTime(2002, 1, 1), new DateTime(2009, 1, 1));
+            var Span1 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1), new DateTime(2003, 1, 1));
+            var Span2 = new Utilities.DataTypes.DateSpan(new DateTime(2002, 1, 1), new DateTime(2009, 1, 1));
             Assert.True(Span1.Overlap(Span2));
         }
 
         [Fact]
         public void UnionTest()
         {
-            Utilities.DataTypes.DateSpan Span1 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1), new DateTime(2003, 1, 1));
-            Utilities.DataTypes.DateSpan Span2 = new Utilities.DataTypes.DateSpan(new DateTime(2002, 1, 1), new DateTime(2009, 1, 1));
+            var Span1 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1), new DateTime(2003, 1, 1));
+            var Span2 = new Utilities.DataTypes.DateSpan(new DateTime(2002, 1, 1), new DateTime(2009, 1, 1));
             Utilities.DataTypes.DateSpan Span3 = Span1 + Span2;
             Assert.Equal(new DateTime(1999, 1, 1), Span3.Start);
             Assert.Equal(new DateTime(2009, 1, 1), Span3.End);

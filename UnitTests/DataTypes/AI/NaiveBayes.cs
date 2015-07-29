@@ -29,7 +29,7 @@ namespace UnitTests.DataTypes.AI
         [Fact]
         public void BasicTest()
         {
-            Utilities.DataTypes.AI.NaiveBayes<string> TestingObject = new Utilities.DataTypes.AI.NaiveBayes<string>();
+            var TestingObject = new Utilities.DataTypes.AI.NaiveBayes<string>();
             TestingObject.LoadTokens(new string[] { "this", "is", "a", "test" }.ToList(), new string[] { "not", "a", "test" }.ToList());
             Assert.Equal(0.999, TestingObject.CalculateProbabilityOfTokens(new string[] { "this" }.ToList()));
             Assert.Equal(0.999, TestingObject.CalculateProbabilityOfTokens(new string[] { "is" }.ToList()));

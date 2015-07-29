@@ -81,7 +81,7 @@ namespace UnitTests.DataTypes.Dynamic
             dynamic Temp = new TestClass();
             Temp.A = "Testing";
             Temp.B = 1;
-            TestClass2 Temp2 = new TestClass2();
+            dynamic Temp2 = new TestClass2();
             Temp2.A = "A";
             Temp.Copy(Temp2);
             Assert.Equal("A", Temp.A);
@@ -112,7 +112,7 @@ namespace UnitTests.DataTypes.Dynamic
             dynamic Temp = new TestClass();
             Temp.A = "Testing";
             Temp.B = 1;
-            TestClass2 Temp2 = new TestClass2();
+            dynamic Temp2 = new TestClass2();
             Temp2.A = "A";
             Temp.CopyTo(Temp2);
             Assert.Equal("Testing", Temp2.A);

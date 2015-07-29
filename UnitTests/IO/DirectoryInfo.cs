@@ -33,8 +33,8 @@ namespace UnitTests.IO
         [Fact]
         public void Clone()
         {
-            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo(".");
-            Utilities.IO.DirectoryInfo Temp2 = (Utilities.IO.DirectoryInfo)Temp.Clone();
+            var Temp = new Utilities.IO.DirectoryInfo(".");
+            var Temp2 = (Utilities.IO.DirectoryInfo)Temp.Clone();
             Assert.True(Temp == Temp2);
             Assert.True(Temp.Equals(Temp2));
             Assert.Equal(0, Temp.CompareTo(Temp2));
@@ -48,7 +48,7 @@ namespace UnitTests.IO
         [Fact]
         public void CreateAndDelete()
         {
-            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo("./Test");
+            var Temp = new Utilities.IO.DirectoryInfo("./Test");
             Temp.Create();
             Assert.True(Temp.Exists);
             Temp.Delete();
@@ -58,7 +58,7 @@ namespace UnitTests.IO
         [Fact]
         public void Creation()
         {
-            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo(".");
+            var Temp = new Utilities.IO.DirectoryInfo(".");
             Assert.NotNull(Temp);
             Assert.True(Temp.Exists);
             Temp = new Utilities.IO.DirectoryInfo(new Utilities.IO.DirectoryInfo("."));
@@ -69,7 +69,7 @@ namespace UnitTests.IO
         [Fact]
         public void DeleteExtension()
         {
-            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo("./Test");
+            var Temp = new Utilities.IO.DirectoryInfo("./Test");
             Temp.Create();
             for (int x = 0; x < 10; ++x)
             {
@@ -84,7 +84,7 @@ namespace UnitTests.IO
         {
             new Utilities.IO.DirectoryInfo("~/Logs/").Delete();
             new Utilities.IO.DirectoryInfo("~/App_Data/").Delete();
-            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo(".");
+            var Temp = new Utilities.IO.DirectoryInfo(".");
             foreach (IFile File in Temp) { }
             Assert.Equal(1, Temp.EnumerateDirectories().Count());
             Assert.Equal(39, Temp.EnumerateFiles().Count());
@@ -95,8 +95,8 @@ namespace UnitTests.IO
         [Fact]
         public void Equality()
         {
-            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo(".");
-            Utilities.IO.DirectoryInfo Temp2 = new Utilities.IO.DirectoryInfo(".");
+            var Temp = new Utilities.IO.DirectoryInfo(".");
+            var Temp2 = new Utilities.IO.DirectoryInfo(".");
             Assert.True(Temp == Temp2);
             Assert.True(Temp.Equals(Temp2));
             Assert.Equal(0, Temp.CompareTo(Temp2));

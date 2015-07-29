@@ -253,7 +253,7 @@ namespace Utilities.DataTypes
         public static string GetName(this Type ObjectType)
         {
             Contract.Requires<ArgumentNullException>(ObjectType != null, "ObjectType");
-            StringBuilder Output = new StringBuilder();
+            var Output = new StringBuilder();
             if (ObjectType.Name == "Void")
             {
                 Output.Append("void");
@@ -376,7 +376,7 @@ namespace Utilities.DataTypes
         public static IEnumerable<Assembly> LoadAssemblies(this DirectoryInfo Directory, bool Recursive = false)
         {
             Contract.Requires<ArgumentNullException>(Directory != null, "Directory");
-            List<Assembly> Assemblies = new List<Assembly>();
+            var Assemblies = new List<Assembly>();
             foreach (FileInfo File in Directory.GetFiles("*.dll", Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
             {
                 try
@@ -477,7 +477,7 @@ namespace Utilities.DataTypes
         public static IEnumerable<ClassType> Objects<ClassType>(this IEnumerable<Assembly> Assemblies, params object[] Args)
         {
             Contract.Requires<ArgumentNullException>(Assemblies != null, "Assemblies");
-            List<ClassType> ReturnValues = new List<ClassType>();
+            var ReturnValues = new List<ClassType>();
             foreach (Assembly Assembly in Assemblies)
                 ReturnValues.AddRange(Assembly.Objects<ClassType>(Args));
             return ReturnValues;
@@ -634,7 +634,7 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
             if (Expression.Body is UnaryExpression && Expression.Body.NodeType == ExpressionType.Convert)
             {
-                MemberExpression Temp = (MemberExpression)((UnaryExpression)Expression.Body).Operand;
+                var Temp = (MemberExpression)((UnaryExpression)Expression.Body).Operand;
                 return Temp.Expression.PropertyName() + Temp.Member.Name;
             }
             if (!(Expression.Body is MemberExpression))
@@ -649,7 +649,7 @@ namespace Utilities.DataTypes
         /// <returns>The name of the property</returns>
         public static string PropertyName(this Expression Expression)
         {
-            MemberExpression TempExpression = Expression as MemberExpression;
+            var TempExpression = Expression as MemberExpression;
             if (TempExpression == null)
                 return "";
             return TempExpression.Expression.PropertyName() + TempExpression.Member.Name + ".";
@@ -698,16 +698,10 @@ namespace Utilities.DataTypes
                         && x.GetParameters().Length == 2);
                     ConversionMethod = ConversionMethod.MakeGenericMethod(typeof(DataType), PropertyInfo.PropertyType);
                     MethodCallExpression Convert = Expression.Call(ConversionMethod, PropertySet, DefaultConstant);
-                    if (PropertyGet == null)
-                        SetterCall = Expression.Call(ObjectInstance, SetMethod, Convert);
-                    else
-                        SetterCall = Expression.Call(PropertyGet, SetMethod, Convert);
+                    SetterCall = PropertyGet == null ? Expression.Call(ObjectInstance, SetMethod, Convert) : Expression.Call(PropertyGet, SetMethod, Convert);
                     return Expression.Lambda<Action<ClassType, DataType>>(SetterCall, ObjectInstance, PropertySet);
                 }
-                if (PropertyGet == null)
-                    SetterCall = Expression.Call(ObjectInstance, SetMethod, PropertySet);
-                else
-                    SetterCall = Expression.Call(PropertyGet, SetMethod, PropertySet);
+                SetterCall = PropertyGet == null ? Expression.Call(ObjectInstance, SetMethod, PropertySet) : Expression.Call(PropertyGet, SetMethod, PropertySet);
             }
             else
                 return Expression.Lambda<Action<ClassType, DataType>>(Expression.Empty(), ObjectInstance, PropertySet);
@@ -794,7 +788,7 @@ namespace Utilities.DataTypes
         public static string ToString(this IEnumerable<Assembly> Assemblies, VersionInfo InfoType)
         {
             Contract.Requires<ArgumentNullException>(Assemblies != null, "Assemblies");
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Assemblies.OrderBy(x => x.FullName).ForEach<Assembly>(x => Builder.AppendLine(x.GetName().Name + ": " + x.ToString(InfoType)));
             return Builder.ToString();
         }
@@ -808,7 +802,7 @@ namespace Utilities.DataTypes
         public static string ToString(this IEnumerable<Assembly> Assemblies, bool HTMLOutput)
         {
             Contract.Requires<ArgumentNullException>(Assemblies != null, "Assemblies");
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.Append(HTMLOutput ? "<strong>Assembly Information</strong><br />" : "Assembly Information\r\n");
             Assemblies.ForEach<Assembly>(x => Builder.Append(x.ToString(HTMLOutput)));
             return Builder.ToString();
@@ -823,7 +817,7 @@ namespace Utilities.DataTypes
         public static string ToString(this object Object, bool HTMLOutput)
         {
             Contract.Requires<ArgumentNullException>(Object != null, "Object");
-            StringBuilder TempValue = new StringBuilder();
+            var TempValue = new StringBuilder();
             TempValue.Append(HTMLOutput ? "<table><thead><tr><th>Property Name</th><th>Property Value</th></tr></thead><tbody>" : "Property Name\t\t\t\tProperty Value");
             Type ObjectType = Object.GetType();
             foreach (PropertyInfo Property in ObjectType.GetProperties())
@@ -854,7 +848,7 @@ namespace Utilities.DataTypes
         public static string ToString(this Type ObjectType, bool HTMLOutput)
         {
             Contract.Requires<ArgumentNullException>(ObjectType != null, "ObjectType");
-            StringBuilder TempValue = new StringBuilder();
+            var TempValue = new StringBuilder();
             TempValue.Append(HTMLOutput ? "<table><thead><tr><th>Property Name</th><th>Property Value</th></tr></thead><tbody>" : "Property Name\t\t\t\tProperty Value");
             PropertyInfo[] Properties = ObjectType.GetProperties();
             foreach (PropertyInfo Property in Properties)
@@ -925,7 +919,7 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(Assemblies != null, "Assemblies");
             Contract.Requires<ArgumentNullException>(BaseType != null, "BaseType");
-            List<Type> ReturnValues = new List<Type>();
+            var ReturnValues = new List<Type>();
             Assemblies.ForEach(y => ReturnValues.AddRange(y.Types(BaseType)));
             return ReturnValues;
         }
@@ -938,7 +932,7 @@ namespace Utilities.DataTypes
         public static IEnumerable<Type> Types(this IEnumerable<Assembly> Assemblies)
         {
             Contract.Requires<ArgumentNullException>(Assemblies != null, "Assemblies");
-            List<Type> ReturnValues = new List<Type>();
+            var ReturnValues = new List<Type>();
             Assemblies.ForEach(y =>
             {
                 try

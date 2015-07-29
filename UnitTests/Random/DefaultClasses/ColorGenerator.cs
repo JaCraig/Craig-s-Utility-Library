@@ -29,7 +29,7 @@ namespace UnitTests.Random.DefaultClasses
         [Fact]
         public void Next()
         {
-            Utilities.Random.DefaultClasses.ColorGenerator Generator = new Utilities.Random.DefaultClasses.ColorGenerator();
+            var Generator = new Utilities.Random.DefaultClasses.ColorGenerator();
             Generator.Next(new System.Random());
             Generator.Next(new System.Random(), Color.Green, Color.Blue);
         }

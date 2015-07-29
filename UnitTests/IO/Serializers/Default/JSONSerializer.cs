@@ -30,14 +30,14 @@ namespace UnitTests.IO.Serializers.Default
         [Fact]
         public void Creation()
         {
-            Utilities.IO.Serializers.Default.JSONSerializer Temp = new Utilities.IO.Serializers.Default.JSONSerializer();
+            var Temp = new Utilities.IO.Serializers.Default.JSONSerializer();
             Assert.NotNull(Temp);
         }
 
         [Fact]
         public void SerializeDeserialize()
         {
-            Utilities.IO.Serializers.Default.JSONSerializer Temp = new Utilities.IO.Serializers.Default.JSONSerializer();
+            var Temp = new Utilities.IO.Serializers.Default.JSONSerializer();
             Assert.Equal(new Temp() { A = 10 }.A, ((Temp)Temp.Deserialize(typeof(Temp), Temp.Serialize(typeof(Temp), new Temp() { A = 10 }))).A);
         }
 

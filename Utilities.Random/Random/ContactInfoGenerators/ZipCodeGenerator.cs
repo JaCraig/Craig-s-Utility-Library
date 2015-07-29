@@ -28,7 +28,7 @@ namespace Utilities.Random.ContactInfoGenerators
     /// </summary>
     public class ZipCodeGenerator : PatternGenerator
     {
-        private string[] ZipCodeFormats = { "#####", "#####-####" };
+        private readonly string[] ZipCodeFormats = { "#####", "#####-####" };
 
         /// <summary>
         /// Constructor

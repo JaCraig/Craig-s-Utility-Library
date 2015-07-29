@@ -33,10 +33,10 @@ namespace UnitTests.ORM.Manager.Mapper.Default
         [Fact]
         public void CascadeDelete()
         {
-            TestClass TempObject = new TestClass();
+            var TempObject = new TestClass();
             TempObject.A = new TestClass[] { new TestClass(), new TestClass(), new TestClass() }.ToList();
             TempObject.ID = 1;
-            Utilities.ORM.Manager.Mapper.Default.ListManyToOne<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.ListManyToOne<TestClass, TestClass>(x => x.A, null);
+            var TestObject = new Utilities.ORM.Manager.Mapper.Default.ListManyToOne<TestClass, TestClass>(x => x.A, null);
             IBatch Result = TestObject.CascadeDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=TestDatabase5;Integrated Security=SSPI;Pooling=false"), new List<object>());
             Assert.NotNull(Result);
             Assert.Equal("DELETE FROM TestClass_ WHERE ID=0\r\nDELETE FROM TestClass_ WHERE ID=0\r\nDELETE FROM TestClass_ WHERE ID=0", Result.ToString());
@@ -46,10 +46,10 @@ namespace UnitTests.ORM.Manager.Mapper.Default
         [Fact]
         public void CascadeJoinsDelete()
         {
-            TestClass TempObject = new TestClass();
+            var TempObject = new TestClass();
             TempObject.A = new TestClass[] { new TestClass(), new TestClass(), new TestClass() }.ToList();
             TempObject.ID = 1;
-            Utilities.ORM.Manager.Mapper.Default.ListManyToOne<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.ListManyToOne<TestClass, TestClass>(x => x.A, new TestClassMapping());
+            var TestObject = new Utilities.ORM.Manager.Mapper.Default.ListManyToOne<TestClass, TestClass>(x => x.A, new TestClassMapping());
             TestObject.ForeignMapping = new TestClassMapping();
             IBatch Result = TestObject.CascadeJoinsDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=TestDatabase5;Integrated Security=SSPI;Pooling=false"), new List<object>());
             Assert.NotNull(Result);
@@ -60,10 +60,10 @@ namespace UnitTests.ORM.Manager.Mapper.Default
         [Fact]
         public void CascadeJoinsSave()
         {
-            TestClass TempObject = new TestClass();
+            var TempObject = new TestClass();
             TempObject.A = new TestClass[] { new TestClass(), new TestClass(), new TestClass() }.ToList();
             TempObject.ID = 1;
-            Utilities.ORM.Manager.Mapper.Default.ListManyToOne<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.ListManyToOne<TestClass, TestClass>(x => x.A, new TestClassMapping());
+            var TestObject = new Utilities.ORM.Manager.Mapper.Default.ListManyToOne<TestClass, TestClass>(x => x.A, new TestClassMapping());
             TestObject.ForeignMapping = new TestClassMapping();
             IBatch Result = TestObject.CascadeJoinsSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=TestDatabase5;Integrated Security=SSPI;Pooling=false"), new List<object>());
             Assert.NotNull(Result);
@@ -74,10 +74,10 @@ namespace UnitTests.ORM.Manager.Mapper.Default
         [Fact]
         public void CascadeSave()
         {
-            TestClass TempObject = new TestClass();
+            var TempObject = new TestClass();
             TempObject.A = new TestClass[] { new TestClass(), new TestClass(), new TestClass() }.ToList();
             TempObject.ID = 1;
-            Utilities.ORM.Manager.Mapper.Default.ListManyToOne<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.ListManyToOne<TestClass, TestClass>(x => x.A, new TestClassMapping());
+            var TestObject = new Utilities.ORM.Manager.Mapper.Default.ListManyToOne<TestClass, TestClass>(x => x.A, new TestClassMapping());
             IBatch Result = TestObject.CascadeSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=TestDatabase5;Integrated Security=SSPI;Pooling=false"), new List<object>());
             Assert.NotNull(Result);
             Assert.Equal("INSERT INTO TestClass_() VALUES() SELECT scope_identity() as [ID]\r\nINSERT INTO TestClass_() VALUES() SELECT scope_identity() as [ID]\r\nINSERT INTO TestClass_() VALUES() SELECT scope_identity() as [ID]", Result.ToString());
@@ -87,7 +87,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
         [Fact]
         public void Create()
         {
-            Utilities.ORM.Manager.Mapper.Default.ListManyToOne<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.ListManyToOne<TestClass, TestClass>(x => x.A, null);
+            var TestObject = new Utilities.ORM.Manager.Mapper.Default.ListManyToOne<TestClass, TestClass>(x => x.A, null);
             Assert.False(TestObject.AutoIncrement);
             Assert.False(TestObject.Cascade);
             Assert.NotNull(TestObject.CompiledExpression);

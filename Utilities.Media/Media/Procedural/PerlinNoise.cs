@@ -49,7 +49,7 @@ namespace Utilities.Media.Procedural
         public static SwiftBitmap Generate(int Width, int Height, int MaxRGBValue, int MinRGBValue,
             float Frequency, float Amplitude, float Persistance, int Octaves, int Seed)
         {
-            SwiftBitmap ReturnValue = new SwiftBitmap(Width, Height);
+            var ReturnValue = new SwiftBitmap(Width, Height);
             ReturnValue.Lock();
             float[,] Noise = GenerateNoise(Seed, Width, Height);
             for (int x = 0; x < Width; ++x)
@@ -70,7 +70,7 @@ namespace Utilities.Media.Procedural
         private static float[,] GenerateNoise(int Seed, int Width, int Height)
         {
             float[,] Noise = new float[Width, Height];
-            System.Random RandomGenerator = new System.Random(Seed);
+            var RandomGenerator = new System.Random(Seed);
             for (int x = 0; x < Width; ++x)
             {
                 for (int y = 0; y < Height; ++y)

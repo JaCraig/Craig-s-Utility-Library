@@ -29,7 +29,7 @@ namespace UnitTests.IO.Compression.Default
         [Fact]
         public void GZipTest()
         {
-            Utilities.IO.Compression.Default.GZipCompressor Compressor = new Utilities.IO.Compression.Default.GZipCompressor();
+            var Compressor = new Utilities.IO.Compression.Default.GZipCompressor();
             string Data = "This is a bit of data that I want to compress";
             Assert.NotEqual("This is a bit of data that I want to compress", Compressor.Compress(Data.ToByteArray()).ToString(null));
             Assert.Equal("This is a bit of data that I want to compress", Compressor.Decompress(Compressor.Compress(Data.ToByteArray())).ToString(null));

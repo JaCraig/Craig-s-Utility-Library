@@ -79,7 +79,7 @@ namespace Utilities.IO.Compression
         /// <returns>The string info that the manager contains</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.AppendLineFormat("Compressors: {0}", Compressors.OrderBy(x => x.Key).ToString(x => x.Key, ", "));
             return Builder.ToString();
         }

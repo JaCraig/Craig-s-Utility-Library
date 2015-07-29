@@ -19,9 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
-using System.Linq;
-using System.Runtime.Serialization;
 using Xunit;
 
 namespace UnitTests.IO.Messaging.Default
@@ -38,8 +35,8 @@ namespace UnitTests.IO.Messaging.Default
         [Fact]
         public void Format()
         {
-            Utilities.IO.Messaging.Default.DefaultFormatter TestObject = new Utilities.IO.Messaging.Default.DefaultFormatter();
-            Utilities.IO.EmailMessage TestMessage = new Utilities.IO.EmailMessage() { Body = "There are {A} items in the {B}" };
+            var TestObject = new Utilities.IO.Messaging.Default.DefaultFormatter();
+            var TestMessage = new Utilities.IO.EmailMessage() { Body = "There are {A} items in the {B}" };
             TestObject.Format(TestMessage, new TestClass() { A = 2, B = "class" });
             Assert.Equal("There are 2 items in the class", TestMessage.Body);
             TestObject.Format(TestMessage, "Testing this out");

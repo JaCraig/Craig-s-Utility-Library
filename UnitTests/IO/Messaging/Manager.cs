@@ -31,7 +31,7 @@ namespace UnitTests.IO.Messaging
         [Fact]
         public void Creation()
         {
-            Utilities.IO.Messaging.Manager Temp = new Utilities.IO.Messaging.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IFormatter>(), AppDomain.CurrentDomain.GetAssemblies().Objects<IMessagingSystem>());
+            var Temp = new Utilities.IO.Messaging.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IFormatter>(), AppDomain.CurrentDomain.GetAssemblies().Objects<IMessagingSystem>());
             Assert.NotNull(Temp);
             Assert.Equal(1, Temp.Formatters.Count);
             Assert.Equal(1, Temp.MessagingSystems.Count);

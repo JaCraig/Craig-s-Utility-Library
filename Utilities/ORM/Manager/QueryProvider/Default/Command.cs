@@ -74,7 +74,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
             {
                 foreach (object Parameter in Parameters)
                 {
-                    string TempParameter = Parameter as string;
+                    var TempParameter = Parameter as string;
                     if (Parameter == null)
                         this.Parameters.Add(new Parameter<object>(this.Parameters.Count().ToString(CultureInfo.InvariantCulture), default(DbType), null, ParameterDirection.Input, ParameterStarter));
                     else if (TempParameter != null)
@@ -122,7 +122,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <returns>Determines if the commands are equal</returns>
         public override bool Equals(object obj)
         {
-            Command OtherCommand = obj as Command;
+            var OtherCommand = obj as Command;
             if (OtherCommand == null)
                 return false;
 

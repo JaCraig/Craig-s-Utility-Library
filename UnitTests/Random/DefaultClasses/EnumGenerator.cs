@@ -28,7 +28,7 @@ namespace UnitTests.Random.DefaultClasses
         [Fact]
         public void Next()
         {
-            Utilities.Random.DefaultClasses.EnumGenerator<MyTest> Generator = new Utilities.Random.DefaultClasses.EnumGenerator<MyTest>();
+            var Generator = new Utilities.Random.DefaultClasses.EnumGenerator<MyTest>();
             Assert.InRange(Generator.Next(new System.Random()), MyTest.Item1, MyTest.Item3);
         }
 

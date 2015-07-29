@@ -1,0 +1,6 @@
+﻿// This file is used by Code Analysis to maintain SuppressMessage attributes that are applied to
+// this project. Project-level suppressions either have no target or are given a specific target and
+// scoped to a namespace, type, member, etc.
+
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Language Usage Opportunities", "RECS0015:If an extension method is called as static method convert it to method syntax", Justification = "<Pending>", Scope = "member", Target = "~M:CUL.PostgreSQL.Schema.PostgreSQLSchemaGenerator.SetupColumns(Utilities.ORM.Manager.Schema.Default.Database.Table,System.Collections.Generic.IEnumerable{})")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Language Usage Opportunities", "RECS0015:If an extension method is called as static method convert it to method syntax", Justification = "<Pending>", Scope = "member", Target = "~M:CUL.PostgreSQL.Schema.PostgreSQLSchemaGenerator.SetupColumns(Utilities.ORM.Manager.Schema.Default.Database.Table,System.Collections.Generic.IEnumerable{})")]

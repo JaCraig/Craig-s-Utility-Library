@@ -62,14 +62,18 @@ namespace Utilities.Random.ContactInfoGenerators
         {
             string DomainName = (Rand.Next<bool>()) ? Rand.Next(FreeAccounts) + (CommonEndings ? Rand.Next(MostCommonEndings) : Rand.Next(Endings)) : new DomainNameGenerator(CommonEndings).Next(Rand);
             int AddressStyle = Rand.Next(1, 6);
-            if (AddressStyle == 1)
-                return new NameGenerator().Next(Rand).Replace(" ", ".") + "@" + DomainName;
-            else if (AddressStyle == 2)
-                return new NameGenerator(false, true, true, false).Next(Rand).Replace(" ", ".") + "@" + DomainName;
-            else if (AddressStyle == 3)
-                return Rand.Next<char>('a', 'z') + "." + new LastNameGenerator().Next(Rand) + "@" + DomainName;
-            else if (AddressStyle == 4)
-                return new NameGenerator(false, false, false, false).Next(Rand).Replace(" ", ".") + "@" + DomainName;
+            switch (AddressStyle)
+            {
+                case 1:
+                    return new NameGenerator().Next(Rand).Replace(" ", ".") + "@" + DomainName;
+                case 2:
+                    return new NameGenerator(false, true, true, false).Next(Rand).Replace(" ", ".") + "@" + DomainName;
+                case 3:
+                    return Rand.Next<char>('a', 'z') + "." + new LastNameGenerator().Next(Rand) + "@" + DomainName;
+                case 4:
+                    return new NameGenerator(false, false, false, false).Next(Rand).Replace(" ", ".") + "@" + DomainName;
+            }
+
             return Rand.Next<char>('a', 'z') + "." + Rand.Next<char>('a', 'z') + "." + new LastNameGenerator().Next(Rand) + "@" + DomainName;
         }
 

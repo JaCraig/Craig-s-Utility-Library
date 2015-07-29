@@ -103,7 +103,7 @@ namespace Utilities.IO.FileFormats
         /// <returns>A string output of the HCalendar item</returns>
         public virtual string GetHCalendar()
         {
-            StringBuilder Output = new StringBuilder();
+            var Output = new StringBuilder();
             Output.Append("<div class=\"vevent\">")
                   .Append("<div class=\"summary\">").Append(Subject).Append("</div>")
                   .Append("<div>Date: <abbr class=\"dtstart\" title=\"")
@@ -141,7 +141,7 @@ namespace Utilities.IO.FileFormats
         public virtual string GetICalendar()
         {
             Contract.Requires<NullReferenceException>(!string.IsNullOrEmpty(Description), "Description");
-            StringBuilder FileOutput = new StringBuilder();
+            var FileOutput = new StringBuilder();
             FileOutput.AppendLine("BEGIN:VCALENDAR")
                       .AppendLineFormat("METHOD:{0}", Cancel ? "CANCEL" : "REQUEST")
                       .AppendLine("PRODID:-//Craigs Utility Library//EN")

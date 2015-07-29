@@ -31,7 +31,7 @@ namespace UnitTests.Validation.Rules
         [Fact]
         public void Test()
         {
-            NotBetweenClass Temp = new NotBetweenClass();
+            var Temp = new NotBetweenClass();
             Temp.ItemA = 0;
             Temp.Validate();
             Temp.ItemA = 1;

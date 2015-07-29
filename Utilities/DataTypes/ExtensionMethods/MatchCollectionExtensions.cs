@@ -44,7 +44,7 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
             if (Collection == null)
                 return null;
-            List<Match> Matches = new List<Match>();
+            var Matches = new List<Match>();
             foreach (Match Item in Collection)
                 if (Predicate(Item))
                     Matches.Add(Item);

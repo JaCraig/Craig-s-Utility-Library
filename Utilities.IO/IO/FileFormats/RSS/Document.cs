@@ -229,7 +229,7 @@ namespace Utilities.IO.FileFormats.RSS
         /// <param name="Data">Data to load into the object</param>
         protected override void LoadFromData(string Data)
         {
-            XmlDocument Document = new XmlDocument();
+            var Document = new XmlDocument();
             Document.LoadXml(Data);
             Load(Document);
         }
@@ -239,7 +239,7 @@ namespace Utilities.IO.FileFormats.RSS
             Contract.Requires<ArgumentNullException>(Document != null, "Document");
             Channels = Channels.Check(new List<Channel>());
             XPathNavigator Navigator = Document.CreateNavigator();
-            XmlNamespaceManager NamespaceManager = new XmlNamespaceManager(Navigator.NameTable);
+            var NamespaceManager = new XmlNamespaceManager(Navigator.NameTable);
             XPathNodeIterator Nodes = Navigator.Select("./channel", NamespaceManager);
             foreach (XmlNode Element in Nodes)
             {
@@ -252,7 +252,7 @@ namespace Utilities.IO.FileFormats.RSS
                 {
                     Channels.Add(new Channel((XmlElement)Element));
                 }
-                List<Item> Items = new List<Item>();
+                var Items = new List<Item>();
                 Nodes = Navigator.Select(".//item", NamespaceManager);
                 foreach (XmlNode Element in Nodes)
                 {

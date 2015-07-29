@@ -31,7 +31,7 @@ namespace UnitTests.ORM.Parameters
         [Fact]
         public void Creation()
         {
-            BetweenParameter<int> TestObject = new BetweenParameter<int>(10, 12, "ID");
+            var TestObject = new BetweenParameter<int>(10, 12, "ID");
             Assert.Equal("ID", TestObject.ID);
             Assert.Equal(10, TestObject.Min);
             Assert.Equal(12, TestObject.Max);

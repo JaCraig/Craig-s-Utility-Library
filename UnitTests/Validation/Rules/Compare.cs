@@ -32,7 +32,7 @@ namespace UnitTests.Validation.Rules
         [Fact]
         public void Test()
         {
-            CompareClass Temp = new CompareClass();
+            var Temp = new CompareClass();
             Temp.ItemA = 1;
             Temp.ItemB = 2.1f;
             Temp.ItemC = new DateTime(1900, 1, 1);

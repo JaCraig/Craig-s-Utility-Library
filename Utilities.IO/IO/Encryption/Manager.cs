@@ -290,7 +290,7 @@ namespace Utilities.IO.Encryption
         /// <returns>The string info that the manager contains</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.AppendLineFormat("Asymmetric algorithms: {0}", AsymmetricAlgorithms.ToString(x => x.Name));
             Builder.AppendLineFormat("Hashing algorithms: {0}", HasherAlgorithms.ToString(x => x.Name));
             Builder.AppendLineFormat("Shift algorithms: {0}", ShiftAlgorithms.ToString(x => x.Name));

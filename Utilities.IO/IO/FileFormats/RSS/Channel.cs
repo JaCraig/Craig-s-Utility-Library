@@ -59,7 +59,7 @@ namespace Utilities.IO.FileFormats.RSS
             XPathNavigator Element = Doc.CreateNavigator();
             if (!Element.Name.Equals("channel", StringComparison.CurrentCultureIgnoreCase))
                 throw new ArgumentException("Element is not a channel");
-            XmlNamespaceManager NamespaceManager = new XmlNamespaceManager(Element.NameTable);
+            var NamespaceManager = new XmlNamespaceManager(Element.NameTable);
             XPathNavigator Node = Element.SelectSingleNode("./title", NamespaceManager);
             if (Node != null)
             {
@@ -325,7 +325,7 @@ namespace Utilities.IO.FileFormats.RSS
         /// <returns>The channel as a string</returns>
         public override string ToString()
         {
-            StringBuilder ChannelString = new StringBuilder();
+            var ChannelString = new StringBuilder();
             ChannelString.Append("<channel>");
             ChannelString.Append("<title>").Append(Utils.StripIllegalCharacters(Title)).Append("</title>\r\n");
             ChannelString.Append("<link>").Append(Link).Append("</link>\r\n");

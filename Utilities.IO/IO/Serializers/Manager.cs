@@ -147,7 +147,7 @@ namespace Utilities.IO.Serializers
         /// <returns>String version of the object</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.Append("Serializers: ").AppendLine(Serializers.ToString(x => x.Value.Name));
             return Builder.ToString();
         }

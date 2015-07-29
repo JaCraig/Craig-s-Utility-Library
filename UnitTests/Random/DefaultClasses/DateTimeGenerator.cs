@@ -30,7 +30,7 @@ namespace UnitTests.Random.DefaultClasses
         [Fact]
         public void Next()
         {
-            Utilities.Random.DefaultClasses.DateTimeGenerator Generator = new Utilities.Random.DefaultClasses.DateTimeGenerator();
+            var Generator = new Utilities.Random.DefaultClasses.DateTimeGenerator();
             Assert.InRange(Generator.Next(new System.Random()), DateTime.MinValue, DateTime.MaxValue);
             Assert.InRange(Generator.Next(new System.Random(), new DateTime(1900, 1, 1), new DateTime(2000, 1, 1)), new DateTime(1900, 1, 1), new DateTime(2000, 1, 1));
         }

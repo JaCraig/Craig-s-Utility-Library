@@ -28,8 +28,8 @@ namespace UnitTests.DataTypes
         [Fact]
         public void BasicTest()
         {
-            Utilities.DataTypes.Fraction TestObject = new Utilities.DataTypes.Fraction(9, 27);
-            Utilities.DataTypes.Fraction TestObject2 = new Utilities.DataTypes.Fraction(3, 4);
+            var TestObject = new Utilities.DataTypes.Fraction(9, 27);
+            var TestObject2 = new Utilities.DataTypes.Fraction(3, 4);
             TestObject.Reduce();
             Assert.Equal(3, TestObject.Denominator);
             Assert.Equal(1, TestObject.Numerator);

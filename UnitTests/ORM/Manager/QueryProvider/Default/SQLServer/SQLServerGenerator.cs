@@ -32,7 +32,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.SQLServer
         public SQLServerGenerator()
             : base()
         {
-            Utilities.ORM.Manager.Mapper.Manager Temp = new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>());
+            var Temp = new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>());
             QueryProvider = new Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider();
             Generator = new Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerGenerator<TestClass>(QueryProvider, TestDatabaseSource, Temp[typeof(TestClass), TestDatabaseSource]);
         }

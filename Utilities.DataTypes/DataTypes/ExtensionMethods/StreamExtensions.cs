@@ -55,7 +55,7 @@ namespace Utilities.DataTypes
         public static byte[] ReadAllBinary(this Stream Input)
         {
             Contract.Requires<ArgumentNullException>(Input != null, "Input");
-            MemoryStream TempInput = Input as MemoryStream;
+            var TempInput = Input as MemoryStream;
             if (TempInput != null)
                 return TempInput.ToArray();
             byte[] Buffer = new byte[1024];

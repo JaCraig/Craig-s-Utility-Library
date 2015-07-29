@@ -50,7 +50,7 @@ namespace Utilities.Validation
         /// <returns>The validation result</returns>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            List<ValidationResult> Results = new List<ValidationResult>();
+            var Results = new List<ValidationResult>();
             if (!value.TryValidate(Results))
             {
                 return new ValidationResult(string.Format(CultureInfo.InvariantCulture, ErrorMessageString, validationContext.DisplayName, Results.ForEach(x => x.ErrorMessage).ToString(x => x, System.Environment.NewLine)));

@@ -29,14 +29,14 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void CanHandle()
         {
-            Utilities.IO.FileSystem.Default.NetworkFileSystem Temp = new Utilities.IO.FileSystem.Default.NetworkFileSystem();
+            var Temp = new Utilities.IO.FileSystem.Default.NetworkFileSystem();
             Assert.True(Temp.CanHandle(@"\\localhost\C$\TestPath\Yay"));
         }
 
         [Fact]
         public void Creation()
         {
-            Utilities.IO.FileSystem.Default.NetworkFileSystem Temp = new Utilities.IO.FileSystem.Default.NetworkFileSystem();
+            var Temp = new Utilities.IO.FileSystem.Default.NetworkFileSystem();
             Assert.NotNull(Temp);
             Assert.Equal("Network", Temp.Name);
         }
@@ -44,7 +44,7 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void Directory()
         {
-            Utilities.IO.FileSystem.Default.NetworkFileSystem Temp = new Utilities.IO.FileSystem.Default.NetworkFileSystem();
+            var Temp = new Utilities.IO.FileSystem.Default.NetworkFileSystem();
             IDirectory Dir = Temp.Directory(@"\\localhost\C$\");
             Assert.NotNull(Dir);
             Assert.IsType<Utilities.IO.FileSystem.Default.LocalDirectory>(Dir);
@@ -54,7 +54,7 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void File()
         {
-            Utilities.IO.FileSystem.Default.NetworkFileSystem Temp = new Utilities.IO.FileSystem.Default.NetworkFileSystem();
+            var Temp = new Utilities.IO.FileSystem.Default.NetworkFileSystem();
             IFile File = Temp.File(@"\\localhost\C$\Test.txt");
             Assert.NotNull(File);
             Assert.IsType<Utilities.IO.FileSystem.Default.LocalFile>(File);

@@ -74,7 +74,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
             Mapper.Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
             IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
             IBatch Batch = Provider.Batch(Source);
-            IORMObject AspectObject = Object as IORMObject;
+            var AspectObject = Object as IORMObject;
             if (Object == null || (AspectObject != null && ObjectsSeen.Contains(Mapping.IDProperties.FirstOrDefault().GetValue(Object))))
                 return Batch;
             if (AspectObject != null)
@@ -107,7 +107,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
             Mapper.Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
             IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
             IBatch Batch = Provider.Batch(Source);
-            IORMObject AspectObject = Object as IORMObject;
+            var AspectObject = Object as IORMObject;
             if (Object == null || (AspectObject != null && ObjectsSeen.Contains(Mapping.IDProperties.FirstOrDefault().GetValue(Object))))
                 return Batch;
             if (AspectObject != null)
@@ -148,7 +148,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
             Mapper.Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
             IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
             IBatch Batch = Provider.Batch(Source);
-            IORMObject AspectObject = Object as IORMObject;
+            var AspectObject = Object as IORMObject;
             if (Object == null || (AspectObject != null && ObjectsSeen.Contains(Mapping.IDProperties.FirstOrDefault().GetValue(Object))))
                 return Batch;
             if (AspectObject != null)
@@ -189,7 +189,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
             Mapper.Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
             IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
             IBatch Batch = Provider.Batch(Source);
-            IORMObject AspectObject = Object as IORMObject;
+            var AspectObject = Object as IORMObject;
             if (Object == null || (AspectObject != null && ObjectsSeen.Contains(Mapping.IDProperties.FirstOrDefault().GetValue(Object))))
                 return Batch;
             if (AspectObject != null)
@@ -239,7 +239,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         public override IBatch JoinsDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
-            IORMObject AspectObject = Object as IORMObject;
+            var AspectObject = Object as IORMObject;
             if (Object == null || (AspectObject != null && ObjectsSeen.Contains(Mapping.IDProperties.FirstOrDefault().GetValue(Object))))
                 return Provider.Batch(Source);
             if (AspectObject != null)
@@ -257,7 +257,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         public override IBatch JoinsSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
-            IORMObject AspectObject = Object as IORMObject;
+            var AspectObject = Object as IORMObject;
             if (Object == null || (AspectObject != null && ObjectsSeen.Contains(Mapping.IDProperties.FirstOrDefault().GetValue(Object))))
                 return Provider.Batch(Source);
             if (AspectObject != null)

@@ -148,7 +148,7 @@ namespace Utilities.DataTypes
         /// <returns>True if it's unicode, false otherwise</returns>
         public static bool IsUnicode(this byte[] Input)
         {
-            return Input == null ? true : Input.ToString(new UnicodeEncoding()).Is(StringCompare.Unicode);
+            return Input == null || Input.ToString(new UnicodeEncoding()).Is(StringCompare.Unicode);
         }
 
         /// <summary>

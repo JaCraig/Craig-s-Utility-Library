@@ -115,7 +115,7 @@ namespace Utilities.DataTypes
         {
             get
             {
-                List<string> Temp = new List<string>();
+                var Temp = new List<string>();
                 Temp.Add(base.Keys);
                 Type ObjectType = GetType();
                 foreach (PropertyInfo Property in ObjectType.GetProperties().Where(x => x.DeclaringType != typeof(Dynamo<T>) && x.DeclaringType != typeof(Dynamo)))
@@ -133,7 +133,7 @@ namespace Utilities.DataTypes
         {
             get
             {
-                List<object> Temp = new List<object>();
+                var Temp = new List<object>();
                 foreach (string Key in Keys)
                 {
                     Temp.Add(GetValue(Key, typeof(object)));
@@ -210,7 +210,7 @@ namespace Utilities.DataTypes
             InternalValues = new ConcurrentDictionary<string, object>(StringComparer.OrdinalIgnoreCase);
             ChildValues = new ConcurrentDictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
             ChangeLog = new ConcurrentDictionary<string, Change>(StringComparer.OrdinalIgnoreCase);
-            IDictionary<string, object> DictItem = item as IDictionary<string, object>;
+            var DictItem = item as IDictionary<string, object>;
             if (item == null)
                 return;
             if (item is string || item.GetType().IsValueType)
@@ -440,7 +440,7 @@ namespace Utilities.DataTypes
         {
             if (Item == null)
                 return;
-            IDictionary<string, object> DictItem = Item as IDictionary<string, object>;
+            var DictItem = Item as IDictionary<string, object>;
             if (Item is string || Item.GetType().IsValueType)
                 SetValue("Value", Item);
             else if (DictItem != null)
@@ -487,7 +487,7 @@ namespace Utilities.DataTypes
         /// <returns>True if they're equal, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            Dynamo TempObj = obj as Dynamo;
+            var TempObj = obj as Dynamo;
             if (TempObj == null)
                 return false;
             return TempObj.GetHashCode() == GetHashCode();
@@ -604,7 +604,7 @@ namespace Utilities.DataTypes
         {
             if (Keys == null)
                 return new Dynamo();
-            Dynamo ReturnValue = new Dynamo();
+            var ReturnValue = new Dynamo();
             ReturnValue.Clear();
             foreach (string Key in Keys)
             {
@@ -652,7 +652,7 @@ namespace Utilities.DataTypes
         /// <returns>The string version of the object</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.AppendLineFormat("{0} this", GetType().Name);
             foreach (string Key in Keys.OrderBy(x => x))
             {
@@ -778,7 +778,7 @@ namespace Utilities.DataTypes
             }
             object ReturnValue = ChildValues[Name]().To(ReturnType, null);
             Value = RaiseGetValueEnd(Name, ReturnValue);
-            return (Value != null) ? Value : ReturnValue;
+            return Value ?? ReturnValue;
         }
 
         /// <summary>
@@ -792,7 +792,7 @@ namespace Utilities.DataTypes
         /// </returns>
         protected object RaiseGetValueEnd(string PropertyName, object Value)
         {
-            EventArgs.OnEndEventArgs End = new EventArgs.OnEndEventArgs() { Content = Value };
+            var End = new EventArgs.OnEndEventArgs() { Content = Value };
             var Handler = getValueEnd_;
             if (Handler != null)
                 Handler(this, PropertyName, End);
@@ -809,7 +809,7 @@ namespace Utilities.DataTypes
         /// </returns>
         protected object RaiseGetValueStart(string PropertyName)
         {
-            EventArgs.OnStartEventArgs Start = new EventArgs.OnStartEventArgs() { Content = PropertyName };
+            var Start = new EventArgs.OnStartEventArgs() { Content = PropertyName };
             var Handler = getValueStart_;
             if (Handler != null)
                 Handler(this, Start);

@@ -29,7 +29,7 @@ namespace UnitTests.DataTypes.Comparison
         [Fact]
         public void Compare()
         {
-            GenericComparer<string> Comparer = new GenericComparer<string>();
+            var Comparer = new GenericComparer<string>();
             Assert.Equal(0, Comparer.Compare("A", "A"));
             Assert.Equal(-1, Comparer.Compare("A", "B"));
             Assert.Equal(1, Comparer.Compare("B", "A"));

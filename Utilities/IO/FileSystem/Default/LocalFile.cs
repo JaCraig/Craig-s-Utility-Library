@@ -88,7 +88,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override bool Exists
         {
-            get { return InternalFile == null ? false : InternalFile.Exists; }
+            get { return InternalFile != null && InternalFile.Exists; }
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace Utilities.IO.FileSystem.Default
             if (Directory == null || !Exists)
                 return null;
             Directory.Create();
-            FileInfo File = new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
+            var File = new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
             if (!File.Exists || Overwrite)
             {
                 File.Write(ReadBinary());

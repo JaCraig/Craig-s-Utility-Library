@@ -33,13 +33,13 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         public Parameter()
             : base()
         {
-            Utilities.DataTypes.Conversion.Manager TestObject = new Utilities.DataTypes.Conversion.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IConverter>());
+            var TestObject = new Utilities.DataTypes.Conversion.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IConverter>());
         }
 
         [Fact]
         public void Create()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.Parameter<int> Parameter = new Utilities.ORM.Manager.QueryProvider.Default.Parameter<int>("Test", 101);
+            var Parameter = new Utilities.ORM.Manager.QueryProvider.Default.Parameter<int>("Test", 101);
             Assert.Equal("Test", Parameter.ID);
             Assert.Equal(101, Parameter.Value);
             Assert.Equal("@", Parameter.ParameterStarter);
@@ -50,8 +50,8 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         [Fact]
         public void CreateCopy()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.Parameter<int> Parameter = new Utilities.ORM.Manager.QueryProvider.Default.Parameter<int>("Test", 101);
-            Utilities.ORM.Manager.QueryProvider.Default.Parameter<int> Parameter2 = (Utilities.ORM.Manager.QueryProvider.Default.Parameter<int>)Parameter.CreateCopy("0");
+            var Parameter = new Utilities.ORM.Manager.QueryProvider.Default.Parameter<int>("Test", 101);
+            var Parameter2 = (Utilities.ORM.Manager.QueryProvider.Default.Parameter<int>)Parameter.CreateCopy("0");
             Assert.Equal("Test0", Parameter2.ID);
             Assert.Equal(101, Parameter2.Value);
             Assert.Equal("@", Parameter2.ParameterStarter);

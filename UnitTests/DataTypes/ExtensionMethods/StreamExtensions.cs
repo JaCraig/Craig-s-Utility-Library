@@ -26,7 +26,7 @@ using Xunit;
 
 namespace UnitTests.DataTypes.ExtensionMethods
 {
-    public class StreamExtensions :TestingDirectoryFixture
+    public class StreamExtensions : TestingDirectoryFixture
     {
         public StreamExtensions()
         {
@@ -37,7 +37,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ReadAll()
         {
             new FileInfo(@".\Testing\Test.txt").Write("This is a test");
-            System.IO.FileInfo File = new System.IO.FileInfo(@".\Testing\Test.txt");
+            var File = new System.IO.FileInfo(@".\Testing\Test.txt");
             using (System.IO.FileStream Test = File.OpenRead())
             {
                 Assert.Equal("This is a test", Test.ReadAll());
@@ -48,7 +48,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ReadAllBinary()
         {
             new FileInfo(@".\Testing\Test.txt").Write("This is a test");
-            System.IO.FileInfo File = new System.IO.FileInfo(@".\Testing\Test.txt");
+            var File = new System.IO.FileInfo(@".\Testing\Test.txt");
             using (System.IO.FileStream Test = File.OpenRead())
             {
                 byte[] Content = Test.ReadAllBinary();

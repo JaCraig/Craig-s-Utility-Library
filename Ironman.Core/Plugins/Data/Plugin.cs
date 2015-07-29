@@ -26,12 +26,8 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using Utilities.DataTypes;
-using Utilities.ORM.Parameters;
 
 namespace Ironman.Models.Plugins
 {
@@ -51,7 +47,7 @@ namespace Ironman.Models.Plugins
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Plugin" /> class.
+        /// Initializes a new instance of the <see cref="Plugin"/> class.
         /// </summary>
         /// <param name="Package">The package.</param>
         public Plugin(IPackage Package)
@@ -71,7 +67,7 @@ namespace Ironman.Models.Plugins
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="Plugin" /> is active.
+        /// Gets or sets a value indicating whether this <see cref="Plugin"/> is active.
         /// </summary>
         /// <value><c>true</c> if active; otherwise, <c>false</c>.</value>
         public bool Active { get; set; }
@@ -169,8 +165,8 @@ namespace Ironman.Models.Plugins
         {
             if (Active)
             {
-                DirectoryInfo LoadingDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/plugins/Loaded/" + PluginID);
-                DirectoryInfo PluginDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/plugins/" + PluginID);
+                var LoadingDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/plugins/Loaded/" + PluginID);
+                var PluginDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/plugins/" + PluginID);
                 CopyTo(PluginDirectory, LoadingDirectory);
                 LoadingDirectory.EnumerateFiles("*.dll", System.IO.SearchOption.AllDirectories)
                     .ForEach(x => AssemblyName.GetAssemblyName(x.FullName).Load());
@@ -185,9 +181,9 @@ namespace Ironman.Models.Plugins
             if (Files.Count == 0)
             {
                 DirectoryInfo LibDirectory = new DirectoryInfo(string.Format(HttpContext.Current != null ? HttpContext.Current.Server.MapPath("~/App_Data/packages/{0}.{1}/lib") : "./App_Data/packages/{0}.{1}/lib", PluginID, Version)).EnumerateDirectories().OrderByDescending(x => x.Name).First();
-                DirectoryInfo ContentDirectory = new DirectoryInfo(string.Format(HttpContext.Current != null ? HttpContext.Current.Server.MapPath("~/App_Data/packages/{0}.{1}/content") : "./App_Data/packages/{0}.{1}/content", PluginID, Version));
+                var ContentDirectory = new DirectoryInfo(string.Format(HttpContext.Current != null ? HttpContext.Current.Server.MapPath("~/App_Data/packages/{0}.{1}/content") : "./App_Data/packages/{0}.{1}/content", PluginID, Version));
                 int y = 0;
-                List<PluginFile> TempFiles = new List<PluginFile>();
+                var TempFiles = new List<PluginFile>();
                 TempFiles.Add(LibDirectory.EnumerateFiles("*", System.IO.SearchOption.AllDirectories).ForEach(x => new PluginFile()
                 {
                     IsDirectory = false,

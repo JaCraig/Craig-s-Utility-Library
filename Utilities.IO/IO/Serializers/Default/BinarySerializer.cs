@@ -58,7 +58,7 @@ namespace Utilities.IO.Serializers.Default
                 return null;
             using (MemoryStream Stream = new MemoryStream(Data))
             {
-                BinaryFormatter Formatter = new BinaryFormatter();
+                var Formatter = new BinaryFormatter();
                 return Formatter.Deserialize(Stream);
             }
         }
@@ -75,7 +75,7 @@ namespace Utilities.IO.Serializers.Default
                 return new byte[0];
             using (MemoryStream Stream = new MemoryStream())
             {
-                BinaryFormatter Formatter = new BinaryFormatter();
+                var Formatter = new BinaryFormatter();
                 Formatter.Serialize(Stream, Data);
                 return Stream.ToArray();
             }

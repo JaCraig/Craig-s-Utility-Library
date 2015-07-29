@@ -81,7 +81,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders
                 throw new ArgumentNullException(nameof(item));
             if (table == null)
                 throw new ArgumentNullException(nameof(table));
-            View View = (View)table;
+            var View = (View)table;
             View.Definition = item.Definition;
             string ColumnName = item.Column;
             string ColumnType = item.COLUMN_TYPE;

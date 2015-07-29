@@ -154,8 +154,8 @@ namespace Utilities.IO.FileSystem.Default
             string TempName = Name;
             if (TempName == "/")
                 TempName = "index.html";
-            FileInfo NewDirectory = new FileInfo(Directory.FullName + "\\" + TempName.Right(TempName.Length - (TempName.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
-            FileInfo OldFile = new FileInfo(InternalDirectory.AbsoluteUri, UserName, Password, Domain);
+            var NewDirectory = new FileInfo(Directory.FullName + "\\" + TempName.Right(TempName.Length - (TempName.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
+            var OldFile = new FileInfo(InternalDirectory.AbsoluteUri, UserName, Password, Domain);
             NewDirectory.Write(OldFile.Read(), FileMode.Create);
             return Directory;
         }
@@ -165,7 +165,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override void Create()
         {
-            HttpWebRequest Request = WebRequest.Create(InternalDirectory) as HttpWebRequest;
+            var Request = WebRequest.Create(InternalDirectory) as HttpWebRequest;
             Request.Method = "POST";
             Request.ContentType = "text/xml";
             SetupData(Request, "");
@@ -180,7 +180,7 @@ namespace Utilities.IO.FileSystem.Default
         {
             if (InternalDirectory == null)
                 return;
-            HttpWebRequest Request = WebRequest.Create(InternalDirectory) as HttpWebRequest;
+            var Request = WebRequest.Create(InternalDirectory) as HttpWebRequest;
             Request.Method = "DELETE";
             Request.ContentType = "text/xml";
             SetupData(Request, "");

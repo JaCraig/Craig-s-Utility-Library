@@ -150,7 +150,7 @@ namespace Utilities.IO.FileSystem.Default
         {
             if (Directory == null)
                 return this;
-            FileInfo File = new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
+            var File = new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
             if (!File.Exists || Overwrite)
             {
                 File.Write(ReadBinary());
@@ -167,7 +167,7 @@ namespace Utilities.IO.FileSystem.Default
         {
             if (InternalFile == null)
                 return "";
-            HttpWebRequest Request = WebRequest.Create(InternalFile) as HttpWebRequest;
+            var Request = WebRequest.Create(InternalFile) as HttpWebRequest;
             Request.Method = "DELETE";
             Request.ContentType = "text/xml";
             SetupData(Request, "");
@@ -195,7 +195,7 @@ namespace Utilities.IO.FileSystem.Default
         {
             if (InternalFile == null)
                 return "";
-            HttpWebRequest Request = WebRequest.Create(InternalFile) as HttpWebRequest;
+            var Request = WebRequest.Create(InternalFile) as HttpWebRequest;
             Request.Method = "GET";
             Request.ContentType = "text/xml";
             SetupData(Request, "");
@@ -231,7 +231,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>The result of the write or original content</returns>
         public override string Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
         {
-            HttpWebRequest Request = WebRequest.Create(InternalFile) as HttpWebRequest;
+            var Request = WebRequest.Create(InternalFile) as HttpWebRequest;
             if (Request == null)
                 return "";
             if (Mode.HasFlag(FileMode.Append) || Mode.HasFlag(FileMode.Open))

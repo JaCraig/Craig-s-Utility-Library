@@ -20,7 +20,7 @@ namespace Utilities.Random.DefaultClasses
         /// <returns>The randomly generated class</returns>
         public T Next(System.Random Rand)
         {
-            T ReturnItem = new T();
+            var ReturnItem = new T();
             System.Type ObjectType = typeof(T);
             foreach (PropertyInfo Property in ObjectType.GetProperties())
             {

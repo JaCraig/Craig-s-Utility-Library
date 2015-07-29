@@ -81,12 +81,12 @@ namespace Utilities.ORM.Aspect
         /// <param name="Object">Object to set up</param>
         public void Setup(object Object)
         {
-            IORMObject TempObject = (IORMObject)Object;
+            var TempObject = (IORMObject)Object;
             TempObject.Session0 = new Utilities.ORM.Manager.Session();
             TempObject.PropertiesChanged0 = new List<string>();
             TempObject.PropertyChanged += (object sender, PropertyChangedEventArgs e) =>
             {
-                IORMObject x = (IORMObject)sender;
+                var x = (IORMObject)sender;
                 x.PropertiesChanged0.Add(e.PropertyName);
             };
         }
@@ -110,7 +110,7 @@ namespace Utilities.ORM.Aspect
         /// <returns>The code used</returns>
         public string SetupEndMethod(MethodInfo Method, Type BaseType, string ReturnValueName)
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             if (Mapper[BaseType] != null && Method.Name.StartsWith("get_", StringComparison.Ordinal))
             {
                 foreach (IMapping Mapping in Mapper[BaseType])
@@ -151,7 +151,7 @@ namespace Utilities.ORM.Aspect
         /// <returns>The code used</returns>
         public string SetupInterfaces(Type Type)
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.AppendLine(@"public Session Session0{ get; set; }");
             Builder.AppendLine(@"public IList<string> PropertiesChanged0{ get; set; }");
             if (!Type.Is<INotifyPropertyChanged>())
@@ -189,7 +189,7 @@ public event PropertyChangedEventHandler PropertyChanged
         /// <returns>The code used</returns>
         public string SetupStartMethod(MethodInfo Method, Type BaseType)
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             if (Mapper[BaseType] != null && Method.Name.StartsWith("set_", StringComparison.Ordinal))
             {
                 foreach (IMapping Mapping in Mapper[BaseType])
@@ -211,7 +211,7 @@ public event PropertyChangedEventHandler PropertyChanged
             Contract.Requires<ArgumentNullException>(Property != null, "Property");
             Contract.Requires<ArgumentNullException>(Property.Mapping != null, "Property.Mapping");
             Contract.Requires<ArgumentNullException>(Property.Mapping.ObjectType != null, "Property.Mapping.ObjectType");
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
                 .AppendLineFormat("{0}=Session0.LoadProperties<{1},{2}>(this,\"{3}\");",
@@ -234,7 +234,7 @@ public event PropertyChangedEventHandler PropertyChanged
             Contract.Requires<ArgumentNullException>(Property != null, "Property");
             Contract.Requires<ArgumentNullException>(Property.Mapping != null, "Property.Mapping");
             Contract.Requires<ArgumentNullException>(Property.Mapping.ObjectType != null, "Property.Mapping.ObjectType");
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
                 .AppendLineFormat("{0}=Session0.LoadProperties<{1},{2}>(this,\"{3}\").ToList();",
@@ -256,7 +256,7 @@ public event PropertyChangedEventHandler PropertyChanged
             Contract.Requires<ArgumentNullException>(Property != null, "Property");
             Contract.Requires<ArgumentNullException>(Property.Mapping != null, "Property.Mapping");
             Contract.Requires<ArgumentNullException>(Property.Mapping.ObjectType != null, "Property.Mapping.ObjectType");
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
                 .AppendLineFormat("{0}=Session0.LoadProperty<{1},{2}>(this,\"{3}\");",
@@ -279,7 +279,7 @@ public event PropertyChangedEventHandler PropertyChanged
         private string SetupFields(Type Type)
         {
             Fields = new List<IProperty>();
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             if (Mapper[Type] != null)
             {
                 foreach (IMapping Mapping in Mapper[Type])

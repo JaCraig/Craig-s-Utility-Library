@@ -88,7 +88,7 @@ namespace Utilities.IO.Serializers.Default
             }
             else
             {
-                List<object> Temp = new List<object>();
+                var Temp = new List<object>();
                 Temp.Add(Data);
                 return ((IEnumerable)Temp).ToDelimitedFile();
             }

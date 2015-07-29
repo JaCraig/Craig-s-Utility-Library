@@ -31,8 +31,8 @@ namespace UnitTests.DataTypes
         [Fact]
         public void RandomTest()
         {
-            RingBuffer<int> TestObject = new RingBuffer<int>(10);
-            System.Random Rand = new System.Random();
+            var TestObject = new RingBuffer<int>(10);
+            var Rand = new System.Random();
             int Value = 0;
             for (int x = 0; x < 10; ++x)
             {
@@ -42,7 +42,7 @@ namespace UnitTests.DataTypes
                 Assert.Equal(Value, TestObject.Remove());
             }
             Assert.Equal(0, TestObject.Count);
-            System.Collections.Generic.List<int> Values = new System.Collections.Generic.List<int>();
+            var Values = new System.Collections.Generic.List<int>();
             for (int x = 0; x < 10; ++x)
             {
                 Values.Add(Rand.Next());

@@ -31,8 +31,8 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void CopyToTest()
         {
-            IDictionary<string, int> Test = new Dictionary<string, int>();
-            IDictionary<string, int> Test2 = new Dictionary<string, int>();
+            var Test = new Dictionary<string, int>();
+            var Test2 = new Dictionary<string, int>();
             Test.Add("Q", 4);
             Test.Add("Z", 2);
             Test.Add("C", 3);
@@ -52,7 +52,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void GetValue()
         {
-            IDictionary<string, int> Test = new Dictionary<string, int>();
+            var Test = new Dictionary<string, int>();
             Test.Add("Q", 4);
             Test.Add("Z", 2);
             Test.Add("C", 3);
@@ -65,7 +65,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void SetValue()
         {
-            IDictionary<string, int> Test = new Dictionary<string, int>();
+            var Test = new Dictionary<string, int>();
             Test.Add("Q", 4);
             Test.Add("Z", 2);
             Test.Add("C", 3);
@@ -78,7 +78,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void SortByValueTest()
         {
-            IDictionary<string, int> Test = new Dictionary<string, int>();
+            IDictionary<string,int> Test = new Dictionary<string, int>();
             Test.Add("Q", 4);
             Test.Add("Z", 2);
             Test.Add("C", 3);

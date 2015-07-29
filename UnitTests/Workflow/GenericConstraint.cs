@@ -33,7 +33,7 @@ namespace Utilities.Tests.Workflow
         [Fact]
         public void Eval()
         {
-            Utilities.Workflow.Manager.GenericConstraint<int> TestObject = new Utilities.Workflow.Manager.GenericConstraint<int>(x => x > 5);
+            var TestObject = new Utilities.Workflow.Manager.GenericConstraint<int>(x => x > 5);
             Assert.NotNull(TestObject);
             Assert.NotNull(TestObject.InternalFunction);
             Assert.True(TestObject.Eval(6));

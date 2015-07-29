@@ -30,7 +30,7 @@ namespace UnitTests.DataTypes
         [Fact]
         public void BasicTest()
         {
-            TagDictionary<string, string> TestObject = new TagDictionary<string, string>();
+            var TestObject = new TagDictionary<string, string>();
             10.Times(x => TestObject.Add("Object" + x, (x + 1).Times(y => "Key" + y).ToArray()));
             11.Times(x => Assert.Equal(10 - x, TestObject["Key" + x].Count()));
             Assert.Equal(10, TestObject["Key0"].Count());

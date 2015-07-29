@@ -60,7 +60,7 @@ namespace Utilities.DataTypes
         {
             if (Set1 == null || Set2 == null || !Set1.Intersect(Set2))
                 return null;
-            Set<T> ReturnValue = new Set<T>();
+            var ReturnValue = new Set<T>();
             for (int x = 0; x < Set1.Count; ++x)
                 if (Set2.Contains(Set1[x]))
                     ReturnValue.Add(Set1[x]);
@@ -83,7 +83,7 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(Set1 != null, "Set1");
             Contract.Requires<ArgumentNullException>(Set2 != null, "Set2");
 
-            Set<T> ReturnValue = new Set<T>();
+            var ReturnValue = new Set<T>();
             for (int x = 0; x < Set1.Count; ++x)
                 if (!Set2.Contains(Set1[x]))
                     ReturnValue.Add(Set1[x]);
@@ -112,7 +112,7 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(Set1 != null, "Set1");
             Contract.Requires<ArgumentNullException>(Set2 != null, "Set2");
 
-            Set<T> ReturnValue = new Set<T>();
+            var ReturnValue = new Set<T>();
             for (int x = 0; x < Set1.Count; ++x)
                 ReturnValue.Add(Set1[x]);
             for (int x = 0; x < Set2.Count; ++x)
@@ -202,7 +202,7 @@ namespace Utilities.DataTypes
         /// <returns>The set as a string</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.Append("{ ");
             string Splitter = "";
             for (int x = 0; x < this.Count; ++x)

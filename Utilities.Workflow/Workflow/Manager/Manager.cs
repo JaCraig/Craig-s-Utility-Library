@@ -100,7 +100,7 @@ namespace Utilities.Workflow.Manager
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name), "Name");
             if (Exists(Name))
                 return (IWorkflow<T>)Workflows[Name];
-            IWorkflow<T> ReturnValue = new Workflow<T>(Name);
+            var ReturnValue = new Workflow<T>(Name);
             Workflows.Add(new KeyValuePair<string, IWorkflow>(Name, ReturnValue));
             return ReturnValue;
         }

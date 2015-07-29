@@ -29,7 +29,7 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void CanHandle()
         {
-            Utilities.IO.FileSystem.Default.AbsoluteLocalFileSystem Temp = new Utilities.IO.FileSystem.Default.AbsoluteLocalFileSystem();
+            var Temp = new Utilities.IO.FileSystem.Default.AbsoluteLocalFileSystem();
             Assert.True(Temp.CanHandle(@"C:\TestPath\Yay"));
             Assert.True(Temp.CanHandle(@"F:\TestPath\Yay"));
             Assert.True(Temp.CanHandle(@"Q:\TestPath\Yay"));
@@ -38,7 +38,7 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void Creation()
         {
-            Utilities.IO.FileSystem.Default.AbsoluteLocalFileSystem Temp = new Utilities.IO.FileSystem.Default.AbsoluteLocalFileSystem();
+            var Temp = new Utilities.IO.FileSystem.Default.AbsoluteLocalFileSystem();
             Assert.NotNull(Temp);
             Assert.Equal("Absolute Local", Temp.Name);
         }
@@ -46,7 +46,7 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void Directory()
         {
-            Utilities.IO.FileSystem.Default.AbsoluteLocalFileSystem Temp = new Utilities.IO.FileSystem.Default.AbsoluteLocalFileSystem();
+            var Temp = new Utilities.IO.FileSystem.Default.AbsoluteLocalFileSystem();
             IDirectory Dir = Temp.Directory(@"C:\");
             Assert.NotNull(Dir);
             Assert.IsType<Utilities.IO.FileSystem.Default.LocalDirectory>(Dir);
@@ -56,7 +56,7 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void File()
         {
-            Utilities.IO.FileSystem.Default.AbsoluteLocalFileSystem Temp = new Utilities.IO.FileSystem.Default.AbsoluteLocalFileSystem();
+            var Temp = new Utilities.IO.FileSystem.Default.AbsoluteLocalFileSystem();
             IFile File = Temp.File(@"C:\Test.txt");
             Assert.NotNull(File);
             Assert.IsType<Utilities.IO.FileSystem.Default.LocalFile>(File);

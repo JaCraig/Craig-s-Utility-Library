@@ -7,7 +7,7 @@ namespace UnitTests.IoC.Default
         [Fact]
         public void Creation()
         {
-            Utilities.IoC.Default.TypeBuilder<int> Temp = new Utilities.IoC.Default.TypeBuilder<int>(() => 12);
+            var Temp = new Utilities.IoC.Default.TypeBuilder<int>(() => 12);
             Assert.NotNull(Temp);
             Assert.Equal(typeof(int), Temp.ReturnType);
             Assert.Equal(12, Temp.Create());

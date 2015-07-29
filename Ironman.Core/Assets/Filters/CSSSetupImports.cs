@@ -19,18 +19,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
+using Ironman.Core.Assets.Enums;
+using Ironman.Core.Assets.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Ironman.Core.Assets.Enums;
-using Ironman.Core.Assets.Interfaces;
 using Utilities.IO;
-
-#endregion Usings
 
 namespace Ironman.Core.Assets.Filters
 {
@@ -65,7 +61,7 @@ namespace Ironman.Core.Assets.Filters
                 return new List<IAsset>();
             if (Assets.FirstOrDefault().Type != AssetType.CSS)
                 return Assets;
-            List<IAsset> TempAssets = new List<IAsset>();
+            var TempAssets = new List<IAsset>();
             foreach (IAsset Asset in Assets)
             {
                 bool Done = false;
@@ -77,11 +73,11 @@ namespace Ironman.Core.Assets.Filters
                         Done = false;
                         string TempFile = Import.Groups["File"].Value;
                         string MatchString = Import.Value;
-                        FileInfo File = new FileInfo(TempFile);
+                        var File = new FileInfo(TempFile);
                         File = DetermineFile(File, Asset, TempFile);
                         if (File == null || !File.Exists)
                         {
-                            FileInfo AssetFile = new FileInfo(Asset.Path);
+                            var AssetFile = new FileInfo(Asset.Path);
                             File = new FileInfo(AssetFile.Directory.FullName + "\\" + TempFile);
                         }
                         IAsset SubAsset = Assets.FirstOrDefault(x => x.Path.ToUpperInvariant() == File.FullName.ToUpperInvariant());
@@ -119,7 +115,7 @@ namespace Ironman.Core.Assets.Filters
                 return File;
             if (File == null || !File.Exists)
             {
-                FileInfo AssetFile = new FileInfo(Asset.Path);
+                var AssetFile = new FileInfo(Asset.Path);
                 File = new FileInfo(AssetFile.Directory.FullName + "\\" + TempFile);
             }
             if (File == null || !File.Exists)

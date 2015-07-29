@@ -215,9 +215,9 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(First != null, "First");
             Contract.Requires<ArgumentNullException>(Second != null, "Second");
-            Fraction Value1 = new Fraction(First.Numerator * (int)Second.Denominator, First.Denominator * Second.Denominator);
-            Fraction Value2 = new Fraction(Second.Numerator * (int)First.Denominator, Second.Denominator * First.Denominator);
-            Fraction Result = new Fraction(Value1.Numerator - Value2.Numerator, Value1.Denominator);
+            var Value1 = new Fraction(First.Numerator * (int)Second.Denominator, First.Denominator * Second.Denominator);
+            var Value2 = new Fraction(Second.Numerator * (int)First.Denominator, Second.Denominator * First.Denominator);
+            var Result = new Fraction(Value1.Numerator - Value2.Numerator, Value1.Denominator);
             Result.Reduce();
             return Result;
         }
@@ -276,7 +276,7 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(First != null, "First");
             Contract.Requires<ArgumentNullException>(Second != null, "Second");
-            Fraction Result = new Fraction(First.Numerator * Second.Numerator, First.Denominator * Second.Denominator);
+            var Result = new Fraction(First.Numerator * Second.Numerator, First.Denominator * Second.Denominator);
             Result.Reduce();
             return Result;
         }
@@ -304,9 +304,9 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(First != null, "First");
             Contract.Requires<ArgumentNullException>(Second != null, "Second");
-            Fraction Value1 = new Fraction(First.Numerator * (int)Second.Denominator, First.Denominator * Second.Denominator);
-            Fraction Value2 = new Fraction(Second.Numerator * (int)First.Denominator, Second.Denominator * First.Denominator);
-            Fraction Result = new Fraction(Value1.Numerator + Value2.Numerator, Value1.Denominator);
+            var Value1 = new Fraction(First.Numerator * (int)Second.Denominator, First.Denominator * Second.Denominator);
+            var Value2 = new Fraction(Second.Numerator * (int)First.Denominator, Second.Denominator * First.Denominator);
+            var Result = new Fraction(Value1.Numerator + Value2.Numerator, Value1.Denominator);
             Result.Reduce();
             return Result;
         }
@@ -351,7 +351,7 @@ namespace Utilities.DataTypes
         /// <returns>True if they are, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            Fraction Other = obj as Fraction;
+            var Other = obj as Fraction;
             if (((object)Other) == null)
                 return false;
             decimal Value1 = this;

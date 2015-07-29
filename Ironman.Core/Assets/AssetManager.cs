@@ -146,7 +146,7 @@ namespace Ironman.Core.Assets
             {
                 Content = Filter.Filter(Content);
             }
-            System.Collections.Generic.List<BundleFile> Files = new System.Collections.Generic.List<BundleFile>();
+            var Files = new List<BundleFile>();
             foreach (IAsset Asset in Assets)
             {
                 if (Asset.Path.StartsWith("~", StringComparison.Ordinal) || Asset.Path.StartsWith("/", StringComparison.Ordinal))
@@ -183,7 +183,7 @@ namespace Ironman.Core.Assets
             if (Directory == null || !Directory.Exists || string.IsNullOrEmpty(Directory.FullName))
                 return;
             string BundleDirectory = Directory.FullName.Replace(new DirectoryInfo("~/").FullName, "~/").Replace("\\", "/");
-            StyleBundle Bundle = new StyleBundle(BundleDirectory + "/bundle/css");
+            var Bundle = new StyleBundle(BundleDirectory + "/bundle/css");
             Bundle.Transforms.Clear();
             Bundle.Transforms.Add(new Transformer(this));
             if (Directory.Exists)
@@ -193,7 +193,7 @@ namespace Ironman.Core.Assets
                     Bundle.IncludeDirectory(BundleDirectory, "*." + Value, true);
                 }
             }
-            ScriptBundle Bundle2 = new ScriptBundle(BundleDirectory + "/bundle/js");
+            var Bundle2 = new ScriptBundle(BundleDirectory + "/bundle/js");
             Bundle2.Transforms.Clear();
             Bundle2.Transforms.Add(new Transformer(this));
             if (Directory.Exists)

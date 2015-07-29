@@ -19,16 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
+using Ironman.Core.Assets.Enums;
+using Ironman.Core.Assets.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using Ironman.Core.Assets.Enums;
-using Ironman.Core.Assets.Interfaces;
 using Utilities.IO;
-
-#endregion Usings
 
 namespace Ironman.Core.Assets
 {
@@ -49,7 +45,7 @@ namespace Ironman.Core.Assets
             this.Included = new List<IAsset>();
             this.Manager = AssetManager;
             this.Type = Manager.DetermineType(Path);
-            FileInfo File = new FileInfo(Path);
+            var File = new FileInfo(Path);
             this.LastModified = File.Modified;
             this.Content = File.Read();
             this.Minified = File.FullName.ToUpperInvariant().Contains(".MIN.");
@@ -104,7 +100,7 @@ namespace Ironman.Core.Assets
         {
             if (obj == null)
                 return false;
-            Asset TempAsset = obj as Asset;
+            var TempAsset = obj as Asset;
             if (obj == null)
                 return false;
             return TempAsset.Path.ToUpperInvariant() == Path.ToUpperInvariant();

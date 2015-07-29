@@ -132,7 +132,7 @@ namespace Utilities.IoC
         private static List<Type> GetTypes(ref ConcurrentBag<Assembly> LoadedAssemblies)
         {
             Contract.Requires<ArgumentNullException>(LoadedAssemblies != null);
-            List<Type> TempTypes = new List<Type>();
+            var TempTypes = new List<Type>();
             LoadedAssemblies = new ConcurrentBag<Assembly>(LoadedAssemblies.Where(x =>
             {
                 try
@@ -163,9 +163,9 @@ namespace Utilities.IoC
                                                      .Where(x => !x.Name.Equals("CULGeneratedTypes.dll", StringComparison.InvariantCultureIgnoreCase)));
             }
             Files = Files.Distinct().ToList();
-            List<Assembly> LoadedAssemblies = new List<Assembly>(AppDomain.CurrentDomain.GetAssemblies());
+            var LoadedAssemblies = new List<Assembly>(AppDomain.CurrentDomain.GetAssemblies());
             LoadAssemblies(LoadedAssemblies, Files.Select(x => AssemblyName.GetAssemblyName(x.FullName)).ToArray());
-            FileInfo GeneratedFile = new FileInfo(AppDomain.CurrentDomain.BaseDirectory + "\\CULGeneratedTypes.dll");
+            var GeneratedFile = new FileInfo(AppDomain.CurrentDomain.BaseDirectory + "\\CULGeneratedTypes.dll");
             if (GeneratedFile.Exists
                 && !LoadedAssemblies.Any(x => !x.FullName.Contains("vshost32")
                                             && !x.IsDynamic

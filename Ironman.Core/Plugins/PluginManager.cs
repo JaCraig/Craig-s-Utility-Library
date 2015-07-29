@@ -28,8 +28,6 @@ using System.Diagnostics.Contracts;
 using System.DirectoryServices;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
@@ -44,7 +42,7 @@ namespace Ironman.Core.Plugins
     public class PluginManager : SafeDisposableBaseClass
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PluginManager" /> class.
+        /// Initializes a new instance of the <see cref="PluginManager"/> class.
         /// </summary>
         /// <param name="Repositories">The repositories.</param>
         /// <param name="Bootstrapper">The bootstrapper.</param>
@@ -70,7 +68,7 @@ namespace Ironman.Core.Plugins
         {
             get
             {
-                List<Plugin> Results = new List<Plugin>();
+                var Results = new List<Plugin>();
                 foreach (IPackageRepository Repo in PackageRepositories)
                 {
                     Results.Add(Repo.GetPackages()
@@ -97,9 +95,7 @@ namespace Ironman.Core.Plugins
         /// <summary>
         /// Gets or sets the bootstrapper.
         /// </summary>
-        /// <value>
-        /// The bootstrapper.
-        /// </value>
+        /// <value>The bootstrapper.</value>
         private IBootstrapper Bootstrapper { get; set; }
 
         /// <summary>
@@ -169,7 +165,7 @@ namespace Ironman.Core.Plugins
                     new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/packages/" + Package.Id + "." + Package.Version.ToString() + "/lib").Create();
                     new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/packages/" + Package.Id + "." + Package.Version.ToString() + "/content").Create();
                     new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/packages/" + Package.Id + "." + Package.Version.ToString() + "/tools").Create();
-                    PackageManager Manager = new PackageManager(Repo,
+                    var Manager = new PackageManager(Repo,
                         new DefaultPackagePathResolver(Repo.Source),
                         new PhysicalFileSystem(new DirectoryInfo(HttpContext.Current != null ?
                             HttpContext.Current.Server.MapPath("~/App_Data/packages") :

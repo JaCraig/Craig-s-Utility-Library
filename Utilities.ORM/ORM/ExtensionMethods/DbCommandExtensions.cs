@@ -189,7 +189,7 @@ namespace Utilities.ORM
             using (DbDataAdapter Adapter = Factory.CreateDataAdapter())
             {
                 Adapter.SelectCommand = Command;
-                DataSet ReturnSet = new DataSet();
+                var ReturnSet = new DataSet();
                 ReturnSet.Locale = CultureInfo.CurrentCulture;
                 Adapter.Fill(ReturnSet);
                 return ReturnSet;

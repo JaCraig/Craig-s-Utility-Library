@@ -140,7 +140,7 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(V1 != null, "V1");
             Contract.Requires<ArgumentNullException>(V2 != null, "V2");
-            Vector3 TempVector = new Vector3(0.0, 0.0, 0.0);
+            var TempVector = new Vector3(0.0, 0.0, 0.0);
             TempVector.X = (V1.X * (1 - Control)) + (V2.X * Control);
             TempVector.Y = (V1.Y * (1 - Control)) + (V2.Y * Control);
             TempVector.Z = (V1.Z * (1 - Control)) - (V2.Z * Control);
@@ -218,7 +218,7 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(V1 != null, "V1");
             Contract.Requires<ArgumentNullException>(V2 != null, "V2");
-            Vector3 TempVector = new Vector3(0.0, 0.0, 0.0);
+            var TempVector = new Vector3(0.0, 0.0, 0.0);
             TempVector.X = (V1.Y * V2.Z) - (V1.Z * V2.Y);
             TempVector.Y = (V1.Z * V2.X) - (V1.X * V2.Z);
             TempVector.Z = (V1.X * V2.Y) - (V1.Y * V2.X);
@@ -322,7 +322,7 @@ namespace Utilities.DataTypes
         /// <returns>true if they are, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            Vector3 Tempobj = obj as Vector3;
+            var Tempobj = obj as Vector3;
             return (object)Tempobj != null && this == Tempobj;
         }
 

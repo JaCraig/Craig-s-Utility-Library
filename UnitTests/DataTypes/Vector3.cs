@@ -28,7 +28,7 @@ namespace UnitTests.DataTypes
         [Fact]
         public void BasicTest()
         {
-            Utilities.DataTypes.Vector3 TestObject = new Utilities.DataTypes.Vector3(2.5, 4.1, 1.3);
+            var TestObject = new Utilities.DataTypes.Vector3(2.5, 4.1, 1.3);
             Assert.InRange(TestObject.Magnitude, 4.97, 4.98);
             TestObject.Normalize();
             Assert.InRange(TestObject.X, .5, .6);

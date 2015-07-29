@@ -28,7 +28,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void StringField()
         {
-            Utilities.IO.FileFormats.FixedLength.StringField Field = new Utilities.IO.FileFormats.FixedLength.StringField("Testing this");
+            var Field = new Utilities.IO.FileFormats.FixedLength.StringField("Testing this");
             Assert.Equal(12, Field.Length);
             Assert.Equal("Testing this", Field.Value);
             Assert.Equal("Testing this", Field.ToString());
@@ -37,7 +37,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void StringField2()
         {
-            Utilities.IO.FileFormats.FixedLength.StringField Field = new Utilities.IO.FileFormats.FixedLength.StringField("Testing this", 4);
+            var Field = new Utilities.IO.FileFormats.FixedLength.StringField("Testing this", 4);
             Assert.Equal(4, Field.Length);
             Assert.Equal("Test", Field.Value);
             Assert.Equal("Test", Field.ToString());

@@ -80,7 +80,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override bool Exists
         {
-            get { return InternalDirectory == null ? false : InternalDirectory.Exists; }
+            get { return InternalDirectory != null && InternalDirectory.Exists; }
         }
 
         /// <summary>

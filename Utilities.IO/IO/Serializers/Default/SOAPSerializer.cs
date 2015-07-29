@@ -59,7 +59,7 @@ namespace Utilities.IO.Serializers.Default
                 return null;
             using (MemoryStream Stream = new MemoryStream(Encoding.UTF8.GetBytes(Data)))
             {
-                SoapFormatter Formatter = new SoapFormatter();
+                var Formatter = new SoapFormatter();
                 return Formatter.Deserialize(Stream);
             }
         }
@@ -76,7 +76,7 @@ namespace Utilities.IO.Serializers.Default
                 return null;
             using (MemoryStream Stream = new MemoryStream())
             {
-                SoapFormatter Serializer = new SoapFormatter();
+                var Serializer = new SoapFormatter();
                 Serializer.Serialize(Stream, Data);
                 Stream.Flush();
                 return Encoding.UTF8.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);

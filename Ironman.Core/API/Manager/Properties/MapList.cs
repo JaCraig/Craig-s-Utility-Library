@@ -19,15 +19,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using Ironman.Core.API.Manager.BaseClasses;
+using Ironman.Core.API.Manager.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using Ironman.Core.API.Manager.BaseClasses;
-using Ironman.Core.API.Manager.Interfaces;
 using Utilities.DataTypes;
 
 namespace Ironman.Core.API.Manager.Properties
@@ -38,8 +36,8 @@ namespace Ironman.Core.API.Manager.Properties
     /// <typeparam name="ClassType">Class type</typeparam>
     /// <typeparam name="DataType">Data type</typeparam>
     public class MapList<ClassType, DataType> : APIPropertyBaseClass<ClassType, IEnumerable<DataType>>, IMap
-        where ClassType : class,new()
-        where DataType : class,new()
+        where ClassType : class, new()
+        where DataType : class, new()
     {
         /// <summary>
         /// Constructor
@@ -65,7 +63,7 @@ namespace Ironman.Core.API.Manager.Properties
             ClassType TempItem = Object;
             if (TempItem == null)
                 return false;
-            IAPIMapping<DataType> Mapping = (IAPIMapping<DataType>)MappingHolder[typeof(DataType).Name];
+            var Mapping = (IAPIMapping<DataType>)MappingHolder[typeof(DataType).Name];
             if (Mapping == null)
                 return false;
             dynamic TempValue = Mapping.Any(PropertyID, MappingHolder);
@@ -88,15 +86,15 @@ namespace Ironman.Core.API.Manager.Properties
             ClassType TempItem = Object;
             if (TempItem == null)
                 return null;
-            IAPIMapping<DataType> Mapping = (IAPIMapping<DataType>)Mappings[typeof(DataType).Name];
+            var Mapping = (IAPIMapping<DataType>)Mappings[typeof(DataType).Name];
             if (Mapping == null)
                 return new Dynamo(CompiledExpression(TempItem));
-            List<Dynamo> ReturnValue = new List<Dynamo>();
+            var ReturnValue = new List<Dynamo>();
             foreach (DataType Item in CompiledExpression(TempItem))
             {
                 if (Mapping.CanGet(Item))
                 {
-                    Dynamo ReturnItem = new Dynamo(Item);
+                    var ReturnItem = new Dynamo(Item);
                     ReturnValue.Add(ReturnItem.SubSet(Mapping.Properties.Where(x => x is IReference || x is IID)
                                                                .Select(x => x.Name)
                                                                .ToArray()));
@@ -121,8 +119,8 @@ namespace Ironman.Core.API.Manager.Properties
                 return false;
             if (AssignExpression == null)
                 return false;
-            IAPIMapping<DataType> Mapping = (IAPIMapping<DataType>)MappingHolder[typeof(DataType).Name];
-            IAPIMapping<ClassType> ClassMapping = (IAPIMapping<ClassType>)MappingHolder[typeof(ClassType).Name];
+            var Mapping = (IAPIMapping<DataType>)MappingHolder[typeof(DataType).Name];
+            var ClassMapping = (IAPIMapping<ClassType>)MappingHolder[typeof(ClassType).Name];
             if (Mapping == null)
                 return false;
             if (Models == null)

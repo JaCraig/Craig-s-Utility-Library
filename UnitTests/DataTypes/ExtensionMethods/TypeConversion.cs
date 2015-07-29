@@ -33,13 +33,6 @@ namespace UnitTests.DataTypes.ExtensionMethods
     {
     }
 
-    public enum MyEnumTest
-    {
-        Item1,
-        Item2,
-        Item3
-    }
-
     public class MyTestClass : IMyTestClass
     {
         public MyTestClass()
@@ -88,7 +81,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void FormatToString()
         {
-            object TestObject = new DateTime(1999, 1, 1);
+            var TestObject = new DateTime(1999, 1, 1);
             Assert.Equal("January 1, 1999", TestObject.FormatToString("MMMM d, yyyy"));
         }
 
@@ -111,7 +104,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void ToExpando()
         {
-            MyTestClass TestObject = new MyTestClass();
+            var TestObject = new MyTestClass();
             ExpandoObject Object = TestObject.To<MyTestClass, ExpandoObject>();
             Assert.Equal(10, ((IDictionary<string, object>)Object)["B"]);
             ((IDictionary<string, object>)Object)["B"] = 20;
@@ -156,5 +149,12 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(SqlDbType.Real, typeof(float).To(SqlDbType.Int));
             Assert.Equal(SqlDbType.Int, typeof(MyEnumTest).To(SqlDbType.Int));
         }
+    }
+
+    public enum MyEnumTest
+    {
+        Item1,
+        Item2,
+        Item3
     }
 }

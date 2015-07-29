@@ -149,7 +149,7 @@ namespace Utilities.DataTypes
         /// <returns>True if they are, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            DateSpan Tempobj = obj as DateSpan;
+            var Tempobj = obj as DateSpan;
             return Tempobj != null && Tempobj == this;
         }
 

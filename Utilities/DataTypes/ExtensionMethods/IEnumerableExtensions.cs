@@ -60,7 +60,7 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(Enumerable1 != null, "Enumerable1");
             Contract.Requires<ArgumentNullException>(Additions != null, "Additions");
             Contract.Requires<ArgumentNullException>(Contract.ForAll(Additions, x => x != null), "Additions");
-            List<T> Results = new List<T>();
+            var Results = new List<T>();
             Results.AddRange(Enumerable1);
             for (int x = 0; x < Additions.Length; ++x)
                 Results.AddRange(Additions[x]);
@@ -81,7 +81,7 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
             Contract.Requires<ArgumentNullException>(Enumerable != null, "Enumerable");
-            List<T> Results = new List<T>();
+            var Results = new List<T>();
             foreach (T Item in Enumerable)
             {
                 bool Found = false;
@@ -115,7 +115,7 @@ namespace Utilities.DataTypes
                 End = List.Count();
             if (Start < 0)
                 Start = 0;
-            System.Collections.Generic.List<T> ReturnList = new System.Collections.Generic.List<T>();
+            var ReturnList = new System.Collections.Generic.List<T>();
             for (int x = Start; x < End; ++x)
                 ReturnList.Add(List.ElementAt(x));
             return ReturnList;
@@ -171,7 +171,7 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(List != null, "List");
             Contract.Requires<ArgumentNullException>(Function != null, "Function");
             Contract.Requires<ArgumentException>(End + 1 - Start >= 0, "End must be greater than start");
-            List<R> ReturnValues = new List<R>();
+            var ReturnValues = new List<R>();
             foreach (T Item in List.ElementsBetween(Start, End + 1))
                 ReturnValues.Add(Function(Item));
             return ReturnValues;
@@ -205,7 +205,7 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(List != null, "List");
             Contract.Requires<ArgumentNullException>(Function != null, "Function");
-            List<R> ReturnValues = new List<R>();
+            var ReturnValues = new List<R>();
             foreach (T Item in List)
                 ReturnValues.Add(Function(Item));
             return ReturnValues;
@@ -249,7 +249,7 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(List != null, "List");
             Contract.Requires<ArgumentNullException>(Function != null, "Function");
             Contract.Requires<ArgumentNullException>(CatchAction != null, "CatchAction");
-            List<R> ReturnValues = new List<R>();
+            var ReturnValues = new List<R>();
             foreach (T Item in List)
             {
                 try
@@ -329,7 +329,7 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(List != null, "List");
             Contract.Requires<ArgumentNullException>(Function != null, "Function");
             Contract.Requires<ArgumentNullException>(CatchAction != null, "CatchAction");
-            List<R> ReturnValues = new List<R>();
+            var ReturnValues = new List<R>();
             Parallel.ForEach<T>(List, delegate(T Item)
             {
                 try
@@ -602,7 +602,7 @@ namespace Utilities.DataTypes
         /// <returns>The list as a DataTable</returns>
         public static DataTable To<T>(this IEnumerable<T> List, params string[] Columns)
         {
-            DataTable ReturnValue = new DataTable();
+            var ReturnValue = new DataTable();
             ReturnValue.Locale = CultureInfo.CurrentCulture;
             if (List == null || List.Count() == 0)
                 return ReturnValue;
@@ -631,7 +631,7 @@ namespace Utilities.DataTypes
         public static DataTable To(this IEnumerable List, params string[] Columns)
         {
             Contract.Requires<ArgumentNullException>(List != null, "List");
-            DataTable ReturnValue = new DataTable();
+            var ReturnValue = new DataTable();
             ReturnValue.Locale = CultureInfo.CurrentCulture;
             int Count = 0;
             var i = List.GetEnumerator();
@@ -717,7 +717,7 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(List != null, "List");
             Seperator = Seperator.Check("");
             ItemOutput = ItemOutput.Check(x => x.ToString());
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             string TempSeperator = "";
             List.ForEach(x =>
             {

@@ -69,7 +69,7 @@ namespace Utilities.Validation
         {
             if (value == null)
                 return ValidationResult.Success;
-            IEnumerable ValueList = value as IEnumerable;
+            var ValueList = value as IEnumerable;
             long Count = 0;
             foreach (object Item in ValueList)
             {

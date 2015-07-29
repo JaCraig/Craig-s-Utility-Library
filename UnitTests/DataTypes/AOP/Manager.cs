@@ -41,14 +41,14 @@ namespace UnitTests.DataTypes.AOP
         public virtual List<string> D { get; set; }
     }
 
-    public class Manager:TestingDirectoryFixture
+    public class Manager : TestingDirectoryFixture
     {
         [Fact]
         public void Create()
         {
-            Utilities.DataTypes.AOP.Manager Test = new Utilities.DataTypes.AOP.Manager(new Compiler(), AppDomain.CurrentDomain.GetAssemblies().Objects<IAspect>(), AppDomain.CurrentDomain.GetAssemblies().Objects<IAOPModule>());
+            var Test = new Utilities.DataTypes.AOP.Manager(new Compiler(), AppDomain.CurrentDomain.GetAssemblies().Objects<IAspect>(), AppDomain.CurrentDomain.GetAssemblies().Objects<IAOPModule>());
             Utilities.ORM.Aspect.ORMAspect.Mapper = new Utilities.ORM.Manager.Mapper.Manager(new List<IMapping>());
-            AOPTestClass Item = (AOPTestClass)Test.Create(typeof(AOPTestClass));
+            var Item = (AOPTestClass)Test.Create(typeof(AOPTestClass));
             Assert.NotNull(Item);
         }
     }

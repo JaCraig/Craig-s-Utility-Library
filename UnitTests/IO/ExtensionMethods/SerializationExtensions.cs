@@ -31,7 +31,7 @@ namespace UnitTests.IO.ExtensionMethods
         [Fact]
         public void SerializeDeserialize()
         {
-            Temp TestObj = new Temp() { A = 100 };
+            var TestObj = new Temp() { A = 100 };
             string Value = TestObj.Serialize<string, Temp>();
             Temp TestObj2 = Value.Deserialize<Temp, string>();
             Assert.Equal("{\"A\":100}", Value);
@@ -63,7 +63,7 @@ namespace UnitTests.IO.ExtensionMethods
         [Fact]
         public void SerializeDeserialize2()
         {
-            Temp TestObj = new Temp() { A = 100 };
+            var TestObj = new Temp() { A = 100 };
             string Value = TestObj.Serialize<string, Temp>(SerializationType.JSON);
             Temp TestObj2 = Value.Deserialize<Temp, string>(SerializationType.JSON);
             Assert.Equal("{\"A\":100}", Value);

@@ -35,7 +35,7 @@ namespace Utilities.Tests.Workflow
         [Fact]
         public void Execute()
         {
-            Utilities.Workflow.Manager.WorkflowNode<dynamic> TempOperation = new Utilities.Workflow.Manager.WorkflowNode<dynamic>();
+            var TempOperation = new Utilities.Workflow.Manager.WorkflowNode<dynamic>();
             TempOperation.AddOperation(new GenericOperation<dynamic>(x => x));
             Assert.Equal(1, TempOperation.Start(1));
             Assert.Equal("A", TempOperation.Start("A"));
@@ -44,7 +44,7 @@ namespace Utilities.Tests.Workflow
         [Fact]
         public void ExecuteFailedConstraint()
         {
-            Utilities.Workflow.Manager.WorkflowNode<dynamic> TempOperation = new Utilities.Workflow.Manager.WorkflowNode<dynamic>();
+            var TempOperation = new Utilities.Workflow.Manager.WorkflowNode<dynamic>();
             TempOperation.AddOperation(new GenericOperation<dynamic>(x => x), new GenericConstraint<dynamic>(x => x > 1));
             Assert.Equal(1, TempOperation.Start(1));
         }
@@ -52,7 +52,7 @@ namespace Utilities.Tests.Workflow
         [Fact]
         public void ExecuteRepeat()
         {
-            Utilities.Workflow.Manager.WorkflowNode<dynamic> TempOperation = new Utilities.Workflow.Manager.WorkflowNode<dynamic>();
+            var TempOperation = new Utilities.Workflow.Manager.WorkflowNode<dynamic>();
             TempOperation.AddOperation(new GenericOperation<dynamic>(x => x + 1));
             TempOperation.Repeat(1);
             Assert.Equal(2, TempOperation.Start(1));
@@ -61,8 +61,8 @@ namespace Utilities.Tests.Workflow
         [Fact]
         public void ExecuteRetry()
         {
-            System.Random Rand = new System.Random(1234);
-            Utilities.Workflow.Manager.WorkflowNode<dynamic> TempOperation = new Utilities.Workflow.Manager.WorkflowNode<dynamic>();
+            var Rand = new System.Random(1234);
+            var TempOperation = new Utilities.Workflow.Manager.WorkflowNode<dynamic>();
             TempOperation.AddOperation(new GenericOperation<dynamic>(x =>
             {
                 if (Rand.Next(1, 3) > 1)
@@ -76,7 +76,7 @@ namespace Utilities.Tests.Workflow
         [Fact]
         public void ExecuteTrueConstraint()
         {
-            Utilities.Workflow.Manager.WorkflowNode<dynamic> TempOperation = new Utilities.Workflow.Manager.WorkflowNode<dynamic>();
+            var TempOperation = new Utilities.Workflow.Manager.WorkflowNode<dynamic>();
             TempOperation.AddOperation(new GenericOperation<dynamic>(x => x + 1), new GenericConstraint<dynamic>(x => x > 1));
             Assert.Equal(3, TempOperation.Start(2));
         }
@@ -84,7 +84,7 @@ namespace Utilities.Tests.Workflow
         [Fact]
         public void Setup()
         {
-            Utilities.Workflow.Manager.WorkflowNode<dynamic> TempOperation = new Utilities.Workflow.Manager.WorkflowNode<dynamic>();
+            var TempOperation = new Utilities.Workflow.Manager.WorkflowNode<dynamic>();
             TempOperation.AddOperation(new GenericOperation<dynamic>(x => x), new GenericConstraint<dynamic>(x => x > 1));
             Assert.Equal(1, TempOperation.Operations.Count());
             Assert.Equal(0, TempOperation.RepeatCount);

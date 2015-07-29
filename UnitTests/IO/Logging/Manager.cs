@@ -28,7 +28,7 @@ using Xunit;
 
 namespace UnitTests.IO.Logging
 {
-    public class Manager:TestingDirectoryFixture
+    public class Manager : TestingDirectoryFixture
     {
         [Fact]
         public void Creation()
@@ -45,7 +45,7 @@ namespace UnitTests.IO.Logging
         {
             using (Utilities.IO.Logging.Manager Temp = new Utilities.IO.Logging.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<ILogger>()))
             {
-                Utilities.IO.Logging.Default.DefaultLog File = (Utilities.IO.Logging.Default.DefaultLog)Temp.GetLog();
+                var File = (Utilities.IO.Logging.Default.DefaultLog)Temp.GetLog();
                 Assert.Equal("Default", File.Name);
                 foreach (MessageType Type in Enum.GetValues(typeof(MessageType)))
                     File.LogMessage("TestMessage", Type);

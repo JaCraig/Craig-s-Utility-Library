@@ -31,7 +31,7 @@ namespace UnitTests.ORM.Parameters
         [Fact]
         public void Creation()
         {
-            EqualParameter<int> TestObject = new EqualParameter<int>(12, "ID");
+            var TestObject = new EqualParameter<int>(12, "ID");
             Assert.Equal("ID", TestObject.ID);
             Assert.Equal(12, TestObject.Value);
             Assert.Equal("@", TestObject.ParameterStarter);

@@ -28,14 +28,14 @@ namespace UnitTests.DataTypes.DataMapper.Default
         [Fact]
         public void Creation()
         {
-            Utilities.DataTypes.DataMapper.Default.DataMapper Manager = new Utilities.DataTypes.DataMapper.Default.DataMapper();
+            var Manager = new Utilities.DataTypes.DataMapper.Default.DataMapper();
             Manager.Map<MappingA, MappingB>()
                 .AddMapping(x => x.Item1, x => x.Item1)
                 .AddMapping(x => x.Item2, x => x.Item2);
-            MappingA A = new MappingA();
+            var A = new MappingA();
             A.Item1 = 12;
             A.Item2 = "ASDF";
-            MappingB B = new MappingB();
+            var B = new MappingB();
             B.Item1 = 13;
             B.Item2 = "ZXCV";
             Manager.Map<MappingA, MappingB>().CopyLeftToRight(A, B);

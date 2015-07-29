@@ -56,7 +56,7 @@ namespace Utilities.DataTypes
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.StartsWith(System.String,System.StringComparison)")]
         public static IEnumerable<MethodBase> GetMethods(this IEnumerable<StackFrame> Frames, params Assembly[] ExcludedAssemblies)
         {
-            List<MethodBase> Methods = new List<MethodBase>();
+            var Methods = new List<MethodBase>();
             if (Frames == null)
                 return Methods;
             foreach (StackFrame Frame in Frames)

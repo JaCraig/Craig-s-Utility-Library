@@ -42,7 +42,7 @@ namespace Utilities.DataTypes
         {
             if (Exception == null)
                 return "";
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.AppendLine(Prefix);
             try
             {

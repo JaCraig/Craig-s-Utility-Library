@@ -30,7 +30,7 @@ namespace UnitTests.DataTypes.Threading
         [Fact]
         public void BasicTasks()
         {
-            using (Utilities.DataTypes.TaskQueue<string> Tasks = new Utilities.DataTypes.TaskQueue<string>(3, x => Console.WriteLine(x)))
+            using (TaskQueue<string> Tasks = new TaskQueue<string>(3, Console.WriteLine))
             {
                 10.Times(x => Tasks.Enqueue("This is a test #" + x));
             }

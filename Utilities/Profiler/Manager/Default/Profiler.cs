@@ -297,7 +297,7 @@ namespace Utilities.Profiler.Manager.Default
         /// <returns>True if they are equal, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            Profiler Temp = obj as Profiler;
+            var Temp = obj as Profiler;
             if (Temp == null)
                 return false;
             return Temp == this;
@@ -375,7 +375,7 @@ namespace Utilities.Profiler.Manager.Default
         /// <returns>an html string containing the information</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Level.Times(x => { Builder.Append("\t"); });
             Builder.AppendLineFormat("{0} ({1} ms)", Function, Entries.Sum(x => x.Time));
             foreach (string Key in Children.Keys)

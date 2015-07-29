@@ -29,7 +29,7 @@ namespace UnitTests.DataTypes.Patterns
         [Fact]
         public void Register()
         {
-            Factory<string, int> FactoryObject = new Factory<string, int>();
+            var FactoryObject = new Factory<string, int>();
             FactoryObject.Register("A", 1);
             Assert.True(FactoryObject.Exists("A"));
             Assert.Equal(1, FactoryObject.Create("A"));
@@ -38,7 +38,7 @@ namespace UnitTests.DataTypes.Patterns
         [Fact]
         public void Register2()
         {
-            Factory<string, int> FactoryObject = new Factory<string, int>();
+            var FactoryObject = new Factory<string, int>();
             FactoryObject.Register("A", () => 1);
             Assert.True(FactoryObject.Exists("A"));
             Assert.Equal(1, FactoryObject.Create("A"));
@@ -47,7 +47,7 @@ namespace UnitTests.DataTypes.Patterns
         [Fact]
         public void Register3()
         {
-            Factory<string, int> FactoryObject = new Factory<string, int>();
+            var FactoryObject = new Factory<string, int>();
             Assert.False(FactoryObject.Exists("A"));
         }
     }

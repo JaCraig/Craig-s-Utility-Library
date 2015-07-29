@@ -38,7 +38,7 @@ namespace UnitTests.Validation.Rules
         [Fact]
         public void Test()
         {
-            ClassC Temp = new ClassC();
+            var Temp = new ClassC();
             Temp.ItemA = new List<string>();
             Temp.ItemA.Add("A");
             Temp.ItemA.Add("B");

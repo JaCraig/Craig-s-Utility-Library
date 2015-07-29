@@ -212,7 +212,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
 
             if (Object == null)
                 return ReturnValue;
-            P List = (P)Property.GetValue(Object);
+            var List = (P)Property.GetValue(Object);
             if (List == null)
                 return ReturnValue;
             object CurrentID = Mapping.IDProperties.FirstOrDefault().GetValue(Object);
@@ -254,7 +254,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 return ReturnValue;
             if (Property as IManyToOne != null)
             {
-                P Item = (P)Property.GetValue(Object);
+                var Item = (P)Property.GetValue(Object);
                 if (Item == null)
                     return ReturnValue;
 
@@ -287,7 +287,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                         Values);
                 return ReturnValue;
             }
-            IEnumerable<ItemType> List = (IEnumerable<ItemType>)Property.GetValue(Object);
+            var List = (IEnumerable<ItemType>)Property.GetValue(Object);
             if (List == null)
                 return ReturnValue;
             foreach (ItemType Item in List)
@@ -409,7 +409,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             IProperty<T> IDProperty = ((IProperty<T>)Mapping.IDProperties.FirstOrDefault());
             PrimaryKeyType IDValue = IDProperty.GetValue(Object).To(default(PrimaryKeyType));
 
-            GenericEqualityComparer<PrimaryKeyType> Comparer = new GenericEqualityComparer<PrimaryKeyType>();
+            var Comparer = new GenericEqualityComparer<PrimaryKeyType>();
             IParameter Param1 = null;
             if (Comparer.Equals(IDValue, default(PrimaryKeyType)))
             {
@@ -419,10 +419,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             {
                 return TempBatch.AddCommand(Update(Object));
             }
-            if (typeof(PrimaryKeyType).Is(typeof(string)))
-                Param1 = new StringEqualParameter(IDValue.ToString(), IDProperty.FieldName, IDValue.ToString().Length, IDProperty.FieldName, Source.ParameterPrefix);
-            else
-                Param1 = new EqualParameter<PrimaryKeyType>(IDValue, IDProperty.FieldName, IDProperty.FieldName, Source.ParameterPrefix);
+            Param1 = typeof(PrimaryKeyType).Is(typeof(string)) ? (IParameter)new StringEqualParameter(IDValue.ToString(), IDProperty.FieldName, IDValue.ToString().Length, IDProperty.FieldName, Source.ParameterPrefix) : (IParameter)new EqualParameter<PrimaryKeyType>(IDValue, IDProperty.FieldName, IDProperty.FieldName, Source.ParameterPrefix);
             if (Any(Param1).Execute()[0].Count == 0)
             {
                 return TempBatch.AddCommand(Insert(Object));

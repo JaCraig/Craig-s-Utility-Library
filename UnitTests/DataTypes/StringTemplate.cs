@@ -28,7 +28,7 @@ namespace UnitTests.DataTypes
         [Fact]
         public void BasicTest()
         {
-            Utilities.DataTypes.StringTemplate Template = new Utilities.DataTypes.StringTemplate("{AccessModifier} {Type} {Name} { get; set; }");
+            var Template = new Utilities.DataTypes.StringTemplate("{AccessModifier} {Type} {Name} { get; set; }");
             Template.Add("AccessModifier", "public");
             Template.Add("Type", "string");
             Template.Add("Name", "TestProperty");

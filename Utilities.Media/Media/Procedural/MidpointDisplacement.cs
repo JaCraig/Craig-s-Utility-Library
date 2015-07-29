@@ -49,7 +49,7 @@ namespace Utilities.Media.Procedural
             Contract.Requires<ArgumentException>(NumberOfCracks >= 0, "Number of cracks should be greater than 0");
             Contract.Requires<ArgumentException>(Width >= 0, "Width must be greater than or equal to 0");
             Contract.Requires<ArgumentException>(Height >= 0, "Height must be greater than or equal to 0");
-            SwiftBitmap ReturnValue = new SwiftBitmap(Width, Height);
+            var ReturnValue = new SwiftBitmap(Width, Height);
             List<Line> Lines = GenerateLines(Width, Height, NumberOfCracks, Iterations, MaxChange, MaxLength, Seed);
             using (Graphics ReturnGraphic = Graphics.FromImage(ReturnValue.InternalBitmap))
             {
@@ -67,8 +67,8 @@ namespace Utilities.Media.Procedural
         private static List<Line> GenerateLines(int Width, int Height, int NumberOfCracks, int Iterations, int MaxChange, int MaxLength, int Seed)
         {
             Contract.Requires<ArgumentException>(NumberOfCracks >= 0 && Width >= 0);
-            List<Line> Lines = new List<Line>();
-            System.Random Generator = new System.Random(Seed);
+            var Lines = new List<Line>();
+            var Generator = new System.Random(Seed);
             for (int x = 0; x < NumberOfCracks; ++x)
             {
                 Line TempLine = null;
@@ -81,7 +81,7 @@ namespace Utilities.Media.Procedural
                         + ((TempLine.Y1 - TempLine.Y2) * (TempLine.Y1 - TempLine.Y2)));
                 } while (LineLength > MaxLength && LineLength <= 0);
                 Lines.Add(TempLine);
-                List<Line> TempLineList = new List<Line>();
+                var TempLineList = new List<Line>();
                 TempLineList.Add(TempLine);
                 for (int y = 0; y < Iterations; ++y)
                 {
@@ -96,8 +96,8 @@ namespace Utilities.Media.Procedural
                     {
                         YBreak = Generator.Next(LineUsing.Y1, LineUsing.Y2) + Generator.Next(-MaxChange, MaxChange);
                     }
-                    Line LineA = new Line(LineUsing.X1, XBreak, LineUsing.Y1, YBreak);
-                    Line LineB = new Line(XBreak, LineUsing.X2, YBreak, LineUsing.Y2);
+                    var LineA = new Line(LineUsing.X1, XBreak, LineUsing.Y1, YBreak);
+                    var LineB = new Line(XBreak, LineUsing.X2, YBreak, LineUsing.Y2);
                     TempLineList.Remove(LineUsing);
                     TempLineList.Add(LineA);
                     TempLineList.Add(LineB);

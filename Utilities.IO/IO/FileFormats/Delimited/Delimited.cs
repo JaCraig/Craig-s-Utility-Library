@@ -78,10 +78,10 @@ namespace Utilities.IO.FileFormats.Delimited
         /// <returns>The string as an object</returns>
         public static implicit operator Delimited(DataTable Value)
         {
-            Delimited ReturnValue = new Delimited();
+            var ReturnValue = new Delimited();
             if (Value == null)
                 return ReturnValue;
-            Row TempRow = new Row(ReturnValue.Delimiter);
+            var TempRow = new Row(ReturnValue.Delimiter);
             foreach (DataColumn Column in Value.Columns)
             {
                 TempRow.Add(new Cell(Column.ColumnName));
@@ -107,7 +107,7 @@ namespace Utilities.IO.FileFormats.Delimited
         {
             if (string.IsNullOrEmpty(FileContent))
                 return;
-            Regex TempSplitter = new Regex("[^\"\r\n]*(\r\n|\n|$)|(([^\"\r\n]*)(\"[^\"]*\")([^\"\r\n]*))*(\r\n|\n|$)");
+            var TempSplitter = new Regex("[^\"\r\n]*(\r\n|\n|$)|(([^\"\r\n]*)(\"[^\"]*\")([^\"\r\n]*))*(\r\n|\n|$)");
             MatchCollection Matches = TempSplitter.Matches(FileContent);
             if (string.IsNullOrEmpty(Delimiter) && Matches != null)
                 Delimiter = CheckDelimiters(Matches.Where(x => !string.IsNullOrEmpty(x.Value)).FirstOrDefault().Chain(x => x.Value, ","));
@@ -125,7 +125,7 @@ namespace Utilities.IO.FileFormats.Delimited
         /// <returns>The delimited file as a DataTable</returns>
         public DataTable ToDataTable(bool FirstRowIsHeader = true, params string[] Headers)
         {
-            DataTable ReturnValue = new DataTable();
+            var ReturnValue = new DataTable();
             ReturnValue.Locale = CultureInfo.CurrentCulture;
             if (FirstRowIsHeader)
             {
@@ -156,7 +156,7 @@ namespace Utilities.IO.FileFormats.Delimited
         /// <returns>A string containing the file information</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Records.ForEach<Row>(x => Builder.Append(x.ToString()));
             return Builder.ToString();
         }
@@ -180,7 +180,7 @@ namespace Utilities.IO.FileFormats.Delimited
             for (int x = 0; x < Delimiters.Length; ++x)
             {
                 string TempDelimiter = Delimiters[x];
-                Regex TempSplitter = new Regex(string.Format(CultureInfo.InvariantCulture, "(?<Value>\"(?:[^\"]|\"\")*\"|[^{0}\r\n]*?)(?<Delimiter>{0}|\r\n|\n|$)", Regex.Escape(TempDelimiter)));
+                var TempSplitter = new Regex(string.Format(CultureInfo.InvariantCulture, "(?<Value>\"(?:[^\"]|\"\")*\"|[^{0}\r\n]*?)(?<Delimiter>{0}|\r\n|\n|$)", Regex.Escape(TempDelimiter)));
                 Count[x] = TempSplitter.Matches(Content).Count;
                 if (Count[MaxIndex] < Count[x])
                     MaxIndex = x;

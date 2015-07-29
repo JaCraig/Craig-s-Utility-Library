@@ -40,7 +40,7 @@ namespace UnitTests.DataTypes.DataMapper
         [Fact]
         public void TypeMappingTest()
         {
-            Utilities.DataTypes.DataMapper.Manager TestObject = new Utilities.DataTypes.DataMapper.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IDataMapper>(), AppDomain.CurrentDomain.GetAssemblies().Objects<IMapperModule>());
+            var TestObject = new Utilities.DataTypes.DataMapper.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IDataMapper>(), AppDomain.CurrentDomain.GetAssemblies().Objects<IMapperModule>());
             Assert.NotNull(TestObject.Map<MappingA, MappingB>());
             Assert.IsType<Utilities.DataTypes.DataMapper.Default.TypeMapping<MappingA, MappingB>>(TestObject.Map<MappingA, MappingB>());
         }

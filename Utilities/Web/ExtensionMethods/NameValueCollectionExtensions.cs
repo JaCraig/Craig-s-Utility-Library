@@ -43,7 +43,7 @@ namespace Utilities.Web
             Contract.Requires<ArgumentNullException>(Input != null, "Input");
             if (Input.Count <= 0)
                 return "";
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.Append("?");
             string Splitter = "";
             foreach (string Key in Input.Keys)

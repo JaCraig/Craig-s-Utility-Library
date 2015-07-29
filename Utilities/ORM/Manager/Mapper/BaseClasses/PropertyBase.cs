@@ -255,7 +255,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <returns>True if they are equal, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            PropertyBase<ClassType, DataType, ReturnType> SecondObj = obj as PropertyBase<ClassType, DataType, ReturnType>;
+            var SecondObj = obj as PropertyBase<ClassType, DataType, ReturnType>;
             if (((object)SecondObj) == null)
                 return false;
             return this == SecondObj;

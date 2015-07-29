@@ -43,12 +43,12 @@ namespace Utilities.Media.Procedural
             _Height = Height;
             MinDistance = float.MaxValue;
             MaxDistance = float.MinValue;
-            Random.Random Rand = new Random.Random(Seed);
+            var Rand = new Random.Random(Seed);
             Distances = new float[Width, Height];
             ClosestPoint = new int[Width, Height];
             for (int x = 0; x < NumberOfPoints; ++x)
             {
-                Point TempPoint = new Point();
+                var TempPoint = new Point();
                 TempPoint.X = Rand.Next(0, Width);
                 TempPoint.Y = Rand.Next(0, Height);
                 Points.Add(TempPoint);
@@ -82,7 +82,7 @@ namespace Utilities.Media.Procedural
 
         private int _Width = 0;
 
-        private List<Point> Points = new List<Point>();
+        private readonly List<Point> Points = new List<Point>();
 
         /// <summary>
         /// Calculate the distance between the points
@@ -113,7 +113,7 @@ namespace Utilities.Media.Procedural
             int Index = -1;
             for (int z = 0; z < Points.Count; ++z)
             {
-                float Distance = (float)System.Math.Sqrt(((Points[z].X - x) * (Points[z].X - x)) + ((Points[z].Y - y) * (Points[z].Y - y)));
+                var Distance = (float)System.Math.Sqrt(((Points[z].X - x) * (Points[z].X - x)) + ((Points[z].Y - y) * (Points[z].Y - y)));
                 if (Distance < MaxDistance)
                 {
                     MaxDistance = Distance;

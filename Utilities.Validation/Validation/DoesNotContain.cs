@@ -70,8 +70,8 @@ namespace Utilities.Validation
         {
             if (value == null)
                 return ValidationResult.Success;
-            GenericEqualityComparer<IComparable> Comparer = new GenericEqualityComparer<IComparable>();
-            IEnumerable ValueList = value as IEnumerable;
+            var Comparer = new GenericEqualityComparer<IComparable>();
+            var ValueList = value as IEnumerable;
             IComparable ValueTemp = 0;
             foreach (IComparable Item in ValueList)
             {

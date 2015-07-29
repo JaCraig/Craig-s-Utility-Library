@@ -77,7 +77,7 @@ namespace Utilities.Validation
         /// <returns>The list of client side validation rules</returns>
         public IEnumerable<ModelClientValidationRule> GetClientValidationRules(ModelMetadata metadata, ControllerContext context)
         {
-            ModelClientValidationRule Rule = new ModelClientValidationRule();
+            var Rule = new ModelClientValidationRule();
             Rule.ErrorMessage = FormatErrorMessage(metadata.GetDisplayName());
             Rule.ValidationParameters.Add("Min", Min);
             Rule.ValidationParameters.Add("Max", Max);
@@ -93,10 +93,10 @@ namespace Utilities.Validation
         /// <returns>The validation result</returns>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            GenericComparer<IComparable> Comparer = new GenericComparer<IComparable>();
-            IComparable MaxValue = (IComparable)Max.To<object>(value.GetType());
-            IComparable MinValue = (IComparable)Min.To<object>(value.GetType());
-            IComparable TempValue = value as IComparable;
+            var Comparer = new GenericComparer<IComparable>();
+            var MaxValue = (IComparable)Max.To<object>(value.GetType());
+            var MinValue = (IComparable)Min.To<object>(value.GetType());
+            var TempValue = value as IComparable;
             return (Comparer.Compare(MaxValue, TempValue) < 0
                     || Comparer.Compare(TempValue, MinValue) < 0) ?
                 new ValidationResult(FormatErrorMessage(validationContext.DisplayName)) :

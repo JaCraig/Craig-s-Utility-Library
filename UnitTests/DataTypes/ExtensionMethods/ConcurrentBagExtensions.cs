@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using Utilities.DataTypes;
 using Xunit;
@@ -32,7 +31,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void AddAndReturnTest()
         {
-            ConcurrentBag<int> TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
+            var TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
             int Item = 7;
             Assert.Equal(Item, TestObject.AddAndReturn(Item));
         }
@@ -40,7 +39,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void AddIfTest()
         {
-            ConcurrentBag<int> TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
+            var TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
             Assert.False(TestObject.AddIf(x => x > 1, 1));
             Assert.True(TestObject.AddIf(x => x > 1, 7));
             Assert.True(TestObject.AddIf(x => x > 7, new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }));
@@ -50,7 +49,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void AddIfUniqueTest()
         {
-            ConcurrentBag<int> TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
+            var TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
             Assert.False(TestObject.AddIfUnique(1));
             Assert.True(TestObject.AddIfUnique(7));
             Assert.True(TestObject.AddIfUnique(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }));
@@ -65,8 +64,8 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void AddRange()
         {
-            ConcurrentBag<int> TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
-            ConcurrentBag<int> Results = new ConcurrentBag<int>(TestObject.Add(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }));
+            var TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
+            var Results = new ConcurrentBag<int>(TestObject.Add(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }));
             Assert.Equal(14, Results.Count);
             Assert.Equal(14, TestObject.Count);
         }
@@ -74,7 +73,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void Contains()
         {
-            ConcurrentBag<int> TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
+            var TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
             Assert.True(TestObject.Contains(4));
             Assert.False(TestObject.Contains(-1));
         }
@@ -82,14 +81,14 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void RemoveRange()
         {
-            ConcurrentBag<int> TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
+            var TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
             Assert.Equal(0, TestObject.Remove(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).Count);
         }
 
         [Fact]
         public void RemoveRange2()
         {
-            ConcurrentBag<int> TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
+            var TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
             Assert.Equal(0, TestObject.Remove(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).Count);
             TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
             Assert.Equal(1, TestObject.Remove(new int[] { 1, 2, 3, 4, 5 }).Count);
@@ -100,7 +99,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void RemoveTest()
         {
-            ConcurrentBag<int> TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
+            var TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
             TestObject = new ConcurrentBag<int>(TestObject.Remove((x) => x % 2 == 0));
             Assert.Equal(3, TestObject.Count());
             foreach (int Item in TestObject)
@@ -110,7 +109,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void RemoveTest2()
         {
-            ConcurrentBag<int> TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
+            var TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
             TestObject = new ConcurrentBag<int>(TestObject.Remove((x) => x % 2 == 0));
             Assert.Equal(3, TestObject.Count());
             foreach (int Item in TestObject)

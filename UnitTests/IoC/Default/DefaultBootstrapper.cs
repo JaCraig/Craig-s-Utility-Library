@@ -12,7 +12,7 @@ namespace UnitTests.IoC.Default
         [Fact]
         public void CascadeConstructor()
         {
-            Utilities.IoC.Default.DefaultBootstrapper Temp = new Utilities.IoC.Default.DefaultBootstrapper(AppDomain.CurrentDomain.GetAssemblies(), AppDomain.CurrentDomain.GetAssemblies().Types());
+            var Temp = new Utilities.IoC.Default.DefaultBootstrapper(AppDomain.CurrentDomain.GetAssemblies(), AppDomain.CurrentDomain.GetAssemblies().Types());
             Temp.RegisterAll<ITestClass>();
             Temp.Register<TestClass3>();
             Temp.Register<TestClass4>();
@@ -25,14 +25,14 @@ namespace UnitTests.IoC.Default
         [Fact]
         public void Creation()
         {
-            Utilities.IoC.Default.DefaultBootstrapper Temp = new Utilities.IoC.Default.DefaultBootstrapper(AppDomain.CurrentDomain.GetAssemblies(), AppDomain.CurrentDomain.GetAssemblies().Types());
+            var Temp = new Utilities.IoC.Default.DefaultBootstrapper(AppDomain.CurrentDomain.GetAssemblies(), AppDomain.CurrentDomain.GetAssemblies().Types());
             Assert.Equal("Default bootstrapper", Temp.Name);
         }
 
         [Fact]
         public void IEnumerableConstructor()
         {
-            Utilities.IoC.Default.DefaultBootstrapper Temp = new Utilities.IoC.Default.DefaultBootstrapper(AppDomain.CurrentDomain.GetAssemblies(), AppDomain.CurrentDomain.GetAssemblies().Types());
+            var Temp = new Utilities.IoC.Default.DefaultBootstrapper(AppDomain.CurrentDomain.GetAssemblies(), AppDomain.CurrentDomain.GetAssemblies().Types());
             Temp.RegisterAll<ITestClass>();
             Temp.Register<TestClass3>();
             TestClass3 Object = Temp.Resolve<TestClass3>();
@@ -43,7 +43,7 @@ namespace UnitTests.IoC.Default
         [Fact]
         public void Register()
         {
-            Utilities.IoC.Default.DefaultBootstrapper Temp = new Utilities.IoC.Default.DefaultBootstrapper(AppDomain.CurrentDomain.GetAssemblies(), AppDomain.CurrentDomain.GetAssemblies().Types());
+            var Temp = new Utilities.IoC.Default.DefaultBootstrapper(AppDomain.CurrentDomain.GetAssemblies(), AppDomain.CurrentDomain.GetAssemblies().Types());
             Temp.Register(new TestClass() { A = 12 });
             Assert.Equal(12, Temp.Resolve<TestClass>().A);
             Temp.Register<TestClass>();
@@ -61,7 +61,7 @@ namespace UnitTests.IoC.Default
         [Fact]
         public void RegisterAll()
         {
-            Utilities.IoC.Default.DefaultBootstrapper Temp = new Utilities.IoC.Default.DefaultBootstrapper(new Assembly[] { typeof(DefaultBootstrapper).Assembly }, typeof(DefaultBootstrapper).Assembly.GetTypes());
+            var Temp = new Utilities.IoC.Default.DefaultBootstrapper(new Assembly[] { typeof(DefaultBootstrapper).Assembly }, typeof(DefaultBootstrapper).Assembly.GetTypes());
             Temp.RegisterAll<ITestClass>();
             Assert.Null(Temp.Resolve<ITestClass>());
             Assert.Equal(2, Temp.ResolveAll<ITestClass>().Count());
@@ -72,7 +72,7 @@ namespace UnitTests.IoC.Default
         [Fact]
         public void Resolve()
         {
-            Utilities.IoC.Default.DefaultBootstrapper Temp = new Utilities.IoC.Default.DefaultBootstrapper(AppDomain.CurrentDomain.GetAssemblies(), AppDomain.CurrentDomain.GetAssemblies().Types());
+            var Temp = new Utilities.IoC.Default.DefaultBootstrapper(AppDomain.CurrentDomain.GetAssemblies(), AppDomain.CurrentDomain.GetAssemblies().Types());
             Temp.Register(new TestClass() { A = 12 });
             Assert.Equal(12, Temp.Resolve<TestClass>().A);
             Assert.Equal(12, Temp.Resolve<TestClass>("").A);
@@ -82,7 +82,7 @@ namespace UnitTests.IoC.Default
         [Fact]
         public void ResolveAll()
         {
-            Utilities.IoC.Default.DefaultBootstrapper Temp = new Utilities.IoC.Default.DefaultBootstrapper(AppDomain.CurrentDomain.GetAssemblies(), AppDomain.CurrentDomain.GetAssemblies().Types());
+            var Temp = new Utilities.IoC.Default.DefaultBootstrapper(AppDomain.CurrentDomain.GetAssemblies(), AppDomain.CurrentDomain.GetAssemblies().Types());
             Temp.Register(new TestClass() { A = 12 });
             Temp.Register(new TestClass() { A = 13 }, "A");
             Temp.Register(new TestClass() { A = 14 }, "B");

@@ -34,14 +34,14 @@ namespace UnitTests.ORM
     [Collection("DatabaseCollection")]
     public abstract class DatabaseBaseClass : IDisposable
     {
-        public DatabaseBaseClass()
+        protected DatabaseBaseClass()
             : base()
         {
             DatabaseSource = new Utilities.ORM.Manager.SourceProvider.Manager(new List<IDatabase>()).GetSource("Data Source=localhost;Integrated Security=SSPI;Pooling=false");
             LDAPSource = new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("LDAP");
             MasterDatabaseSource = new Utilities.ORM.Manager.SourceProvider.Manager(new List<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false");
             TestDatabaseSource = new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(DatabaseSource);
+            var Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(DatabaseSource);
             try
             {
                 Temp.AddCommand(null, null, CommandType.Text, "Create Database TestDatabase")
@@ -64,7 +64,7 @@ namespace UnitTests.ORM
 
         public virtual void Dispose()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(MasterDatabaseSource);
+            var Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(MasterDatabaseSource);
             try
             {
                 Temp.AddCommand(null, null, CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE")

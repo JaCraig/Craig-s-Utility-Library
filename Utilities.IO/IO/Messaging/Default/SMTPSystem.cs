@@ -50,7 +50,7 @@ namespace Utilities.IO.Messaging.Default
         /// <param name="Message2">Message</param>
         protected override void InternalSend(Interfaces.IMessage Message2)
         {
-            EmailMessage Message = Message2 as EmailMessage;
+            var Message = Message2 as EmailMessage;
             if (Message == null)
                 return;
             if (string.IsNullOrEmpty(Message.Body))
@@ -129,10 +129,7 @@ namespace Utilities.IO.Messaging.Default
                 {
                     smtp.Credentials = new System.Net.NetworkCredential(Message.UserName, Message.Password);
                 }
-                if (Message.UseSSL)
-                    smtp.EnableSsl = true;
-                else
-                    smtp.EnableSsl = false;
+                smtp.EnableSsl = Message.UseSSL;
                 smtp.Send(message);
             }
         }

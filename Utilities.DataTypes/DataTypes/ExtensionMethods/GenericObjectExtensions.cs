@@ -432,7 +432,7 @@ namespace Utilities.DataTypes
         /// <returns>The results from the function</returns>
         public static IEnumerable<T> Times<T>(this int Count, Func<int, T> Function)
         {
-            System.Collections.Generic.List<T> ReturnValue = new System.Collections.Generic.List<T>();
+            var ReturnValue = new System.Collections.Generic.List<T>();
             for (int x = 0; x < Count; ++x)
                 ReturnValue.Add(Function(x));
             return ReturnValue;

@@ -31,7 +31,7 @@ namespace UnitTests.IO.Messaging.Default
         [Fact]
         public void Creation()
         {
-            Utilities.IO.Messaging.Default.SMTPSystem Temp = new Utilities.IO.Messaging.Default.SMTPSystem();
+            var Temp = new Utilities.IO.Messaging.Default.SMTPSystem();
             Assert.NotNull(Temp);
             Assert.Equal(0, Temp.Formatters.Count());
             Assert.Equal(typeof(Utilities.IO.EmailMessage), Temp.MessageType);
@@ -41,7 +41,7 @@ namespace UnitTests.IO.Messaging.Default
         [Fact]
         public void NullSend()
         {
-            Utilities.IO.Messaging.Default.SMTPSystem Temp = new Utilities.IO.Messaging.Default.SMTPSystem();
+            var Temp = new Utilities.IO.Messaging.Default.SMTPSystem();
             Assert.NotNull(Temp);
             Temp.Send(null, new Temp()).Wait();
         }

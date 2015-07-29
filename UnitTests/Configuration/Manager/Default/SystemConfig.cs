@@ -28,7 +28,7 @@ namespace UnitTests.Configuration.Manager.Default
         [Fact]
         public void Create()
         {
-            Utilities.Configuration.Manager.Default.SystemConfig Temp = new Utilities.Configuration.Manager.Default.SystemConfig();
+            var Temp = new Utilities.Configuration.Manager.Default.SystemConfig();
             Assert.NotNull(Temp);
             Assert.Equal(1, Temp.AppSettings.Count);
             Assert.Equal(2, Temp.ConnectionStrings.Count);

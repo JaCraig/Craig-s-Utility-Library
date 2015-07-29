@@ -220,7 +220,7 @@ namespace Utilities.DataTypes
             }
             if (ComparisonType == StringCompare.Unicode)
             {
-                return string.IsNullOrEmpty(Value) ? true : Regex.Replace(Value, @"[^\u0000-\u007F]", "") != Value;
+                return string.IsNullOrEmpty(Value) || Regex.Replace(Value, @"[^\u0000-\u007F]", "") != Value;
             }
             return Value.Is("", StringCompare.Anagram);
         }
@@ -249,9 +249,9 @@ namespace Utilities.DataTypes
         {
             if (string.IsNullOrEmpty(Input) || string.IsNullOrEmpty(Filter))
                 return "";
-            Regex TempRegex = new Regex(Filter);
+            var TempRegex = new Regex(Filter);
             MatchCollection Collection = TempRegex.Matches(Input);
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             foreach (Match Match in Collection)
                 Builder.Append(Match.Value);
             return Builder.ToString();
@@ -468,7 +468,7 @@ namespace Utilities.DataTypes
         {
             if (string.IsNullOrEmpty(Content))
                 return "";
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             foreach (char Char in Content)
             {
                 if (Char == 0x9
@@ -588,7 +588,7 @@ namespace Utilities.DataTypes
                 {
                     if (!string.IsNullOrEmpty(InputStrings[x]))
                     {
-                        Regex TempRegex = new Regex(InputStrings[x]);
+                        var TempRegex = new Regex(InputStrings[x]);
                         InputStrings[x] = InputStrings[x].ToString(StringCase.FirstCharacterUpperCase);
                         Input = TempRegex.Replace(Input, InputStrings[x]);
                     }
@@ -604,7 +604,7 @@ namespace Utilities.DataTypes
                     if (!string.IsNullOrEmpty(InputStrings[x])
                         && InputStrings[x].Length > 3)
                     {
-                        Regex TempRegex = new Regex(InputStrings[x].Replace(")", @"\)").Replace("(", @"\(").Replace("*", @"\*"));
+                        var TempRegex = new Regex(InputStrings[x].Replace(")", @"\)").Replace("(", @"\(").Replace("*", @"\*"));
                         InputStrings[x] = InputStrings[x].ToString(StringCase.FirstCharacterUpperCase);
                         Input = TempRegex.Replace(Input, InputStrings[x]);
                     }

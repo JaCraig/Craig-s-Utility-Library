@@ -169,15 +169,15 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
             this.AddMapping(x => x,
             new Action<Left, object>((x, y) =>
             {
-                IDictionary<string, object> LeftSide = (IDictionary<string, object>)x;
-                IDictionary<string, object> RightSide = (IDictionary<string, object>)y;
+                var LeftSide = (IDictionary<string, object>)x;
+                var RightSide = (IDictionary<string, object>)y;
                 RightSide.CopyTo(LeftSide);
             }),
             x => x,
             new Action<Right, object>((x, y) =>
             {
-                IDictionary<string, object> LeftSide = (IDictionary<string, object>)y;
-                IDictionary<string, object> RightSide = (IDictionary<string, object>)x;
+                var LeftSide = (IDictionary<string, object>)y;
+                var RightSide = (IDictionary<string, object>)x;
                 LeftSide.CopyTo(RightSide);
             }));
         }
@@ -202,7 +202,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
                 {
                     this.AddMapping(new Func<Left, object>(y =>
                     {
-                        IDictionary<string, object> Temp = (IDictionary<string, object>)y;
+                        var Temp = (IDictionary<string, object>)y;
                         if (Temp.ContainsKey(Property.Name))
                             return Temp[Property.Name];
                         string Key = Temp.Keys.FirstOrDefault(z => string.Equals(z.Replace("_", ""), Property.Name, StringComparison.InvariantCultureIgnoreCase));
@@ -212,7 +212,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
                     }),
                     new Action<Left, object>((y, z) =>
                     {
-                        IDictionary<string, object> LeftSide = (IDictionary<string, object>)y;
+                        var LeftSide = (IDictionary<string, object>)y;
                         if (LeftSide.ContainsKey(Property.Name))
                             LeftSide[Property.Name] = z;
                         else
@@ -254,7 +254,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
                     }),
                     new Func<Right, object>(y =>
                     {
-                        IDictionary<string, object> Temp = (IDictionary<string, object>)y;
+                        var Temp = (IDictionary<string, object>)y;
                         if (Temp.ContainsKey(Property.Name))
                             return Temp[Property.Name];
                         string Key = Temp.Keys.FirstOrDefault(z => string.Equals(z.Replace("_", ""), Property.Name, StringComparison.InvariantCultureIgnoreCase));
@@ -264,7 +264,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
                     }),
                     new Action<Right, object>((y, z) =>
                     {
-                        IDictionary<string, object> LeftSide = (IDictionary<string, object>)y;
+                        var LeftSide = (IDictionary<string, object>)y;
                         if (LeftSide.ContainsKey(Property.Name))
                             LeftSide[Property.Name] = z;
                         else

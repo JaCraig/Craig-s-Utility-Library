@@ -150,7 +150,7 @@ namespace Utilities.IO.FileSystem.Default
         {
             if (Directory == null || !Exists)
                 return this;
-            FileInfo File = new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
+            var File = new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
             if (!File.Exists || Overwrite)
             {
                 File.Write(ReadBinary());
@@ -165,7 +165,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>Any response for deleting the resource (usually FTP, HTTP, etc)</returns>
         public override string Delete()
         {
-            FtpWebRequest Request = WebRequest.Create(InternalFile) as FtpWebRequest;
+            var Request = WebRequest.Create(InternalFile) as FtpWebRequest;
             Request.Method = WebRequestMethods.Ftp.DeleteFile;
             SetupData(Request, null);
             SetupCredentials(Request);
@@ -190,7 +190,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>The content as a string</returns>
         public override string Read()
         {
-            FtpWebRequest Request = WebRequest.Create(InternalFile) as FtpWebRequest;
+            var Request = WebRequest.Create(InternalFile) as FtpWebRequest;
             Request.Method = WebRequestMethods.Ftp.DownloadFile;
             SetupData(Request, null);
             SetupCredentials(Request);
@@ -212,7 +212,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="NewName">Not used</param>
         public override void Rename(string NewName)
         {
-            FtpWebRequest Request = WebRequest.Create(InternalFile) as FtpWebRequest;
+            var Request = WebRequest.Create(InternalFile) as FtpWebRequest;
             Request.Method = WebRequestMethods.Ftp.Rename;
             Request.RenameTo = NewName;
             SetupData(Request, null);
@@ -241,7 +241,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>The result of the write or original content</returns>
         public override byte[] Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
         {
-            FtpWebRequest Request = WebRequest.Create(InternalFile) as FtpWebRequest;
+            var Request = WebRequest.Create(InternalFile) as FtpWebRequest;
             Request.Method = WebRequestMethods.Ftp.UploadFile;
             SetupData(Request, Content);
             SetupCredentials(Request);

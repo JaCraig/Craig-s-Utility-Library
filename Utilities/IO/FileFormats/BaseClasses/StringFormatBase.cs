@@ -56,7 +56,7 @@ namespace Utilities.IO.FileFormats.BaseClasses
         /// <returns>The string as an object</returns>
         public static implicit operator StringFormatBase<FormatType>(string Value)
         {
-            FormatType ReturnValue = new FormatType();
+            var ReturnValue = new FormatType();
             ReturnValue.LoadFromData(Value);
             return ReturnValue;
         }

@@ -30,7 +30,7 @@ namespace UnitTests.SQL.DataClasses
         [Fact]
         public void Creation()
         {
-            Utilities.ORM.Manager.Schema.Interfaces.IColumn Column = new Column<int>("Column1", System.Data.DbType.Int32, 0, false, false, false, false, false, "", "", 0, false, false, false, null);
+            var Column = new Column<int>("Column1", System.Data.DbType.Int32, 0, false, false, false, false, false, "", "", 0, false, false, false, null);
             Assert.Equal("Column1", Column.Name);
             Assert.Equal("", Column.Default);
             Assert.Equal(DbType.Int32, Column.DataType);

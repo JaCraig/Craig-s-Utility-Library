@@ -29,8 +29,8 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void Clone()
         {
-            Utilities.IO.FileSystem.Default.LocalFile Temp = new Utilities.IO.FileSystem.Default.LocalFile("./Test.txt");
-            Utilities.IO.FileSystem.Default.LocalFile Temp2 = (Utilities.IO.FileSystem.Default.LocalFile)Temp.Clone();
+            var Temp = new Utilities.IO.FileSystem.Default.LocalFile("./Test.txt");
+            var Temp2 = (Utilities.IO.FileSystem.Default.LocalFile)Temp.Clone();
             Assert.True(Temp == Temp2);
             Assert.True(Temp.Equals(Temp2));
             Assert.Equal(0, Temp.CompareTo(Temp2));
@@ -44,7 +44,7 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void Creation()
         {
-            Utilities.IO.FileSystem.Default.LocalFile File = new Utilities.IO.FileSystem.Default.LocalFile("./Test.txt");
+            var File = new Utilities.IO.FileSystem.Default.LocalFile("./Test.txt");
             Assert.NotNull(File);
             Assert.False(File.Exists);
         }
@@ -52,7 +52,7 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void ReadWrite()
         {
-            Utilities.IO.FileSystem.Default.LocalFile File = new Utilities.IO.FileSystem.Default.LocalFile("./Test.txt");
+            var File = new Utilities.IO.FileSystem.Default.LocalFile("./Test.txt");
             File.Write("Testing this out");
             Assert.True(File.Exists);
             Assert.Equal("Testing this out", File.Read());

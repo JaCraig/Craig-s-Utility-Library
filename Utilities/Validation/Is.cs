@@ -59,14 +59,22 @@ namespace Utilities.Validation
         public override string FormatErrorMessage(string name)
         {
             string ComparisonString = "";
-            if (Type == Utilities.Validation.IsValid.CreditCard)
-                ComparisonString = "a credit card";
-            else if (Type == Utilities.Validation.IsValid.Decimal)
-                ComparisonString = "a decimal";
-            else if (Type == Utilities.Validation.IsValid.Domain)
-                ComparisonString = "a domain";
-            else if (Type == Utilities.Validation.IsValid.Integer)
-                ComparisonString = "an integer";
+            switch (Type)
+            {
+                case Utilities.Validation.IsValid.CreditCard:
+                    ComparisonString = "a credit card";
+                    break;
+                case Utilities.Validation.IsValid.Decimal:
+                    ComparisonString = "a decimal";
+                    break;
+                case Utilities.Validation.IsValid.Domain:
+                    ComparisonString = "a domain";
+                    break;
+                case Utilities.Validation.IsValid.Integer:
+                    ComparisonString = "an integer";
+                    break;
+            }
+
             return string.Format(CultureInfo.InvariantCulture, ErrorMessageString, name, ComparisonString);
         }
 
@@ -78,7 +86,7 @@ namespace Utilities.Validation
         /// <returns>The list of client side validation rules</returns>
         public IEnumerable<ModelClientValidationRule> GetClientValidationRules(ModelMetadata metadata, ControllerContext context)
         {
-            ModelClientValidationRule Rule = new ModelClientValidationRule();
+            var Rule = new ModelClientValidationRule();
             Rule.ErrorMessage = FormatErrorMessage(metadata.GetDisplayName());
             Rule.ValidationParameters.Add("Type", Type.ToString());
             Rule.ValidationType = "Is";
@@ -93,15 +101,19 @@ namespace Utilities.Validation
         /// <returns>The validation result</returns>
         protected override System.ComponentModel.DataAnnotations.ValidationResult IsValid(object value, System.ComponentModel.DataAnnotations.ValidationContext validationContext)
         {
-            string Tempvalue = value as string;
-            if (Type == Utilities.Validation.IsValid.CreditCard)
-                return Tempvalue.Is(StringCompare.CreditCard) ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
-            else if (Type == Utilities.Validation.IsValid.Decimal)
-                return Regex.IsMatch(Tempvalue, @"^(\d+)+(\.\d+)?$|^(\d+)?(\.\d+)+$") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
-            else if (Type == Utilities.Validation.IsValid.Domain)
-                return Regex.IsMatch(Tempvalue, @"^(http|https|ftp)://([a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*)+):?([0-9]+)?/?") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
-            else if (Type == Utilities.Validation.IsValid.Integer)
-                return Regex.IsMatch(Tempvalue, @"^\d+$") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+            var Tempvalue = value as string;
+            switch (Type)
+            {
+                case Utilities.Validation.IsValid.CreditCard:
+                    return Tempvalue.Is(StringCompare.CreditCard) ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                case Utilities.Validation.IsValid.Decimal:
+                    return Regex.IsMatch(Tempvalue, @"^(\d+)+(\.\d+)?$|^(\d+)?(\.\d+)+$") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                case Utilities.Validation.IsValid.Domain:
+                    return Regex.IsMatch(Tempvalue, @"^(http|https|ftp)://([a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*)+):?([0-9]+)?/?") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                case Utilities.Validation.IsValid.Integer:
+                    return Regex.IsMatch(Tempvalue, @"^\d+$") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+            }
+
             return ValidationResult.Success;
         }
     }

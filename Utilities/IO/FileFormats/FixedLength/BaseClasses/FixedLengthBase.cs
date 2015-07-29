@@ -54,7 +54,7 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
         /// <returns>The file as a string</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             foreach (IRecord<FieldType> Record in Records)
                 Builder.Append(Record.ToString());
             return Builder.ToString();

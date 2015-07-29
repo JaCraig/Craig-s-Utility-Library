@@ -31,8 +31,8 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void Clone()
         {
-            Utilities.IO.FileSystem.Default.ResourceDirectory Temp = new Utilities.IO.FileSystem.Default.ResourceDirectory("resource://UnitTests/");
-            Utilities.IO.FileSystem.Default.ResourceDirectory Temp2 = (Utilities.IO.FileSystem.Default.ResourceDirectory)Temp.Clone();
+            var Temp = new Utilities.IO.FileSystem.Default.ResourceDirectory("resource://UnitTests/");
+            var Temp2 = (Utilities.IO.FileSystem.Default.ResourceDirectory)Temp.Clone();
             Assert.True(Temp == Temp2);
             Assert.True(Temp.Equals(Temp2));
             Assert.Equal(0, Temp.CompareTo(Temp2));
@@ -69,7 +69,7 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void Creation()
         {
-            Utilities.IO.FileSystem.Default.ResourceDirectory Temp = new Utilities.IO.FileSystem.Default.ResourceDirectory("resource://UnitTests/");
+            var Temp = new Utilities.IO.FileSystem.Default.ResourceDirectory("resource://UnitTests/");
             Assert.NotNull(Temp);
             Assert.True(Temp.Exists);
             Assert.Equal("resource://UnitTests/", Temp.FullName);
@@ -80,7 +80,7 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void Enumeration()
         {
-            Utilities.IO.FileSystem.Default.ResourceDirectory Temp = new Utilities.IO.FileSystem.Default.ResourceDirectory("resource://UnitTests/");
+            var Temp = new Utilities.IO.FileSystem.Default.ResourceDirectory("resource://UnitTests/");
             foreach (IFile File in Temp) { }
             Assert.Equal(1, Temp.EnumerateFiles().Count());
         }
@@ -88,8 +88,8 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void Equality()
         {
-            Utilities.IO.FileSystem.Default.ResourceDirectory Temp = new Utilities.IO.FileSystem.Default.ResourceDirectory("resource://UnitTests/");
-            Utilities.IO.FileSystem.Default.ResourceDirectory Temp2 = new Utilities.IO.FileSystem.Default.ResourceDirectory("resource://UnitTests/");
+            var Temp = new Utilities.IO.FileSystem.Default.ResourceDirectory("resource://UnitTests/");
+            var Temp2 = new Utilities.IO.FileSystem.Default.ResourceDirectory("resource://UnitTests/");
             Assert.True(Temp == Temp2);
             Assert.True(Temp.Equals(Temp2));
             Assert.Equal(0, Temp.CompareTo(Temp2));

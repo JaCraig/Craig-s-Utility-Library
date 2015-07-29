@@ -74,7 +74,7 @@ namespace Utilities.IO
         /// <summary>
         /// Does the file exist?
         /// </summary>
-        public bool Exists { get { return InternalFile == null ? false : InternalFile.Exists; } }
+        public bool Exists { get { return InternalFile != null && InternalFile.Exists; } }
 
         /// <summary>
         /// File extension
@@ -214,7 +214,7 @@ namespace Utilities.IO
         /// <returns>The cloned object</returns>
         public object Clone()
         {
-            FileInfo Temp = new FileInfo(InternalFile);
+            var Temp = new FileInfo(InternalFile);
             return Temp;
         }
 
@@ -239,7 +239,7 @@ namespace Utilities.IO
         /// <returns></returns>
         public int CompareTo(object obj)
         {
-            FileInfo Temp = obj as FileInfo;
+            var Temp = obj as FileInfo;
             if (Temp == null)
                 return 1;
             return CompareTo(Temp);
@@ -276,7 +276,7 @@ namespace Utilities.IO
         /// <returns>True if they are equal, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            FileInfo File = obj as FileInfo;
+            var File = obj as FileInfo;
             return File != null && File == this;
         }
 
@@ -301,7 +301,7 @@ namespace Utilities.IO
         {
             if (InternalFile == null)
                 return null;
-            Info = Info == null ? new ProcessStartInfo() : Info;
+            Info = Info ?? new ProcessStartInfo();
             Info.FileName = FullName;
             return Process.Start(Info);
         }

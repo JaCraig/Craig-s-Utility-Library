@@ -31,8 +31,8 @@ namespace UnitTests.IO
         [Fact]
         public void Clone()
         {
-            Utilities.IO.FileInfo Temp = new Utilities.IO.FileInfo("./Test.txt");
-            Utilities.IO.FileInfo Temp2 = (Utilities.IO.FileInfo)Temp.Clone();
+            var Temp = new Utilities.IO.FileInfo("./Test.txt");
+            var Temp2 = (Utilities.IO.FileInfo)Temp.Clone();
             Assert.True(Temp == Temp2);
             Assert.True(Temp.Equals(Temp2));
             Assert.Equal(0, Temp.CompareTo(Temp2));
@@ -46,7 +46,7 @@ namespace UnitTests.IO
         [Fact]
         public void Creation()
         {
-            Utilities.IO.FileInfo File = new Utilities.IO.FileInfo("./Test.txt");
+            var File = new Utilities.IO.FileInfo("./Test.txt");
             Assert.NotNull(File);
             Assert.False(File.Exists);
         }
@@ -54,7 +54,7 @@ namespace UnitTests.IO
         [Fact]
         public void DeleteExtension()
         {
-            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo("./Test");
+            var Temp = new Utilities.IO.DirectoryInfo("./Test");
             Temp.Create();
             for (int x = 0; x < 10; ++x)
             {
@@ -67,7 +67,7 @@ namespace UnitTests.IO
         [Fact]
         public void ReadWrite()
         {
-            Utilities.IO.FileInfo File = new Utilities.IO.FileInfo("./Test2.txt");
+            var File = new Utilities.IO.FileInfo("./Test2.txt");
             File.Write("Testing this out");
             Assert.True(File.Exists);
             Assert.Equal("Testing this out", File.Read());

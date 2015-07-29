@@ -74,7 +74,7 @@ namespace Utilities.DataTypes
                 Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ColumnName), "ColumnName");
                 Contract.Requires<NullReferenceException>(ColumnNameHash != null, "ColumnNameHash");
                 Contract.Requires<NullReferenceException>(ColumnValues != null, "ColumnValues");
-                int Column = (int)ColumnNameHash[ColumnName];//.PositionOf(ColumnName);
+                var Column = (int)ColumnNameHash[ColumnName];//.PositionOf(ColumnName);
                 if (Column <= -1)
                     throw new ArgumentOutOfRangeException(ColumnName + " is not present in the row");
                 return this[Column];

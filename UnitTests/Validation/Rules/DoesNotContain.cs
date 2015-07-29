@@ -32,7 +32,7 @@ namespace UnitTests.Validation.Rules
         [Fact]
         public void Test()
         {
-            DoesNotContainClass Temp = new DoesNotContainClass();
+            var Temp = new DoesNotContainClass();
             Temp.ItemA = new List<string>();
             Temp.ItemA.Add("A");
             Temp.ItemA.Add("B");

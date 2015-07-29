@@ -29,7 +29,7 @@ namespace UnitTests.DataTypes.DataMapper.Default
         [Fact]
         public void CreationTest()
         {
-            Utilities.DataTypes.DataMapper.Default.Mapping<MappingA, MappingB> TempObject = null;
+            Mapping<MappingA, MappingB> TempObject = null;
             TempObject = new Mapping<MappingA, MappingB>(x => x.Item1, x => x.Item1);
             Assert.NotNull(TempObject);
         }
@@ -37,11 +37,11 @@ namespace UnitTests.DataTypes.DataMapper.Default
         [Fact]
         public void LeftToRight()
         {
-            Utilities.DataTypes.DataMapper.Default.Mapping<MappingA, MappingB> TempObject = new Mapping<MappingA, MappingB>(x => x.Item1, x => x.Item1);
-            MappingA A = new MappingA();
+            var TempObject = new Mapping<MappingA, MappingB>(x => x.Item1, x => x.Item1);
+            var A = new MappingA();
             A.Item1 = 12;
             A.Item2 = "ASDF";
-            MappingB B = new MappingB();
+            var B = new MappingB();
             B.Item1 = 13;
             B.Item2 = "ZXCV";
             TempObject.CopyLeftToRight(A, B);
@@ -52,11 +52,11 @@ namespace UnitTests.DataTypes.DataMapper.Default
         [Fact]
         public void NullLeftToRight()
         {
-            Utilities.DataTypes.DataMapper.Default.Mapping<MappingA, MappingB> TempObject = new Mapping<MappingA, MappingB>(null, x => x.Item1);
-            MappingA A = new MappingA();
+            var TempObject = new Mapping<MappingA, MappingB>(null, x => x.Item1);
+            var A = new MappingA();
             A.Item1 = 12;
             A.Item2 = "ASDF";
-            MappingB B = new MappingB();
+            var B = new MappingB();
             B.Item1 = 13;
             B.Item2 = "ZXCV";
             TempObject.CopyLeftToRight(A, B);
@@ -67,11 +67,11 @@ namespace UnitTests.DataTypes.DataMapper.Default
         [Fact]
         public void NullRightToLeft()
         {
-            Utilities.DataTypes.DataMapper.Default.Mapping<MappingA, MappingB> TempObject = new Mapping<MappingA, MappingB>(x => x.Item1, null);
-            MappingA A = new MappingA();
+            var TempObject = new Mapping<MappingA, MappingB>(x => x.Item1, null);
+            var A = new MappingA();
             A.Item1 = 12;
             A.Item2 = "ASDF";
-            MappingB B = new MappingB();
+            var B = new MappingB();
             B.Item1 = 13;
             B.Item2 = "ZXCV";
             TempObject.CopyRightToLeft(B, A);
@@ -82,11 +82,11 @@ namespace UnitTests.DataTypes.DataMapper.Default
         [Fact]
         public void RightToLeft()
         {
-            Utilities.DataTypes.DataMapper.Default.Mapping<MappingA, MappingB> TempObject = new Mapping<MappingA, MappingB>(x => x.Item1, x => x.Item1);
-            MappingA A = new MappingA();
+            var TempObject = new Mapping<MappingA, MappingB>(x => x.Item1, x => x.Item1);
+            var A = new MappingA();
             A.Item1 = 12;
             A.Item2 = "ASDF";
-            MappingB B = new MappingB();
+            var B = new MappingB();
             B.Item1 = 13;
             B.Item2 = "ZXCV";
             TempObject.CopyRightToLeft(B, A);

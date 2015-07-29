@@ -74,7 +74,7 @@ namespace Utilities.DataTypes
         {
             get
             {
-                List<IEnumerable<T2>> Lists = new List<IEnumerable<T2>>();
+                var Lists = new List<IEnumerable<T2>>();
                 foreach (T1 Key in Keys)
                     Lists.Add(this[Key]);
                 return Lists;
@@ -222,7 +222,7 @@ namespace Utilities.DataTypes
         /// <returns>True if the key is found, false otherwise</returns>
         public virtual bool Remove(T1 key)
         {
-            ConcurrentBag<T2> Value = new ConcurrentBag<T2>();
+            var Value = new ConcurrentBag<T2>();
             return Items.TryRemove(key, out Value);
         }
 
@@ -279,7 +279,7 @@ namespace Utilities.DataTypes
         /// </returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             foreach (var Key in Keys)
             {
                 Builder.AppendLineFormat("{0}:{{{1}}}", Key.ToString(), Items[Key].ToString(x => x.ToString()));
@@ -296,7 +296,7 @@ namespace Utilities.DataTypes
         public virtual bool TryGetValue(T1 Key, out IEnumerable<T2> Value)
         {
             Value = new List<T2>();
-            ConcurrentBag<T2> TempValue = new ConcurrentBag<T2>();
+            var TempValue = new ConcurrentBag<T2>();
             if (Items.TryGetValue(Key, out TempValue))
             {
                 Value = TempValue.ToList(x => x);

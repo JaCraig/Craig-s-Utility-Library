@@ -30,7 +30,7 @@ namespace UnitTests.Random.DefaultClasses
         [Fact]
         public void Next()
         {
-            Utilities.Random.DefaultClasses.TimeSpanGenerator Generator = new Utilities.Random.DefaultClasses.TimeSpanGenerator();
+            var Generator = new Utilities.Random.DefaultClasses.TimeSpanGenerator();
             Assert.InRange(Generator.Next(new System.Random()), TimeSpan.MinValue, TimeSpan.MaxValue);
             Assert.InRange(Generator.Next(new System.Random(), new TimeSpan(10, 1, 1), new TimeSpan(12, 2, 3)), new TimeSpan(10, 1, 1), new TimeSpan(12, 2, 3));
         }

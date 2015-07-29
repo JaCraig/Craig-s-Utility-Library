@@ -29,7 +29,7 @@ namespace UnitTests.Profiler
         [Fact]
         public void BasicTest()
         {
-            Utilities.Profiler.Manager.Default.StopWatch TestObject = new Utilities.Profiler.Manager.Default.StopWatch();
+            var TestObject = new Utilities.Profiler.Manager.Default.StopWatch();
             TestObject.Start();
             Thread.Sleep(100);
             TestObject.Stop();

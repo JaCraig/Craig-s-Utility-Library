@@ -24,7 +24,7 @@ using Xunit;
 
 namespace UnitTests.IO.FileFormats
 {
-    public class INI :TestingDirectoryFixture
+    public class INI : TestingDirectoryFixture
     {
         public INI()
         {
@@ -34,7 +34,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void Delete()
         {
-            Utilities.IO.FileFormats.INI TestObject = new Utilities.IO.FileFormats.INI(@".\Testing\TestFile.ini");
+            var TestObject = new Utilities.IO.FileFormats.INI(@".\Testing\TestFile.ini");
             Assert.True(TestObject.DeleteFromINI("Section1"));
             Assert.Equal("", TestObject.ReadFromINI("Section1", "Key1"));
             Assert.Equal("", TestObject.ReadFromINI("Section1", "Key2"));
@@ -46,7 +46,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void Load()
         {
-            Utilities.IO.FileFormats.INI TestObject = new Utilities.IO.FileFormats.INI(@".\Testing\TestFile.ini");
+            var TestObject = new Utilities.IO.FileFormats.INI(@".\Testing\TestFile.ini");
             Assert.Equal("Value1", TestObject.ReadFromINI("Section1", "Key1"));
             Assert.Equal("Value2", TestObject.ReadFromINI("Section1", "Key2"));
             Assert.Equal("Value3", TestObject.ReadFromINI("Section2", "Key1"));
@@ -60,7 +60,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void Write()
         {
-            Utilities.IO.FileFormats.INI TestObject = new Utilities.IO.FileFormats.INI(@".\Testing\TestFile.ini");
+            var TestObject = new Utilities.IO.FileFormats.INI(@".\Testing\TestFile.ini");
             TestObject.WriteToINI("Section1", "Key3", "SpecialValue");
 
             TestObject = new Utilities.IO.FileFormats.INI(@".\Testing\TestFile.ini");

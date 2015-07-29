@@ -32,7 +32,7 @@ namespace UnitTests.Math.ExtensionMethods
         [Fact]
         public void BasicTest()
         {
-            System.Collections.Generic.List<string> TestObject = new System.Collections.Generic.List<string>();
+            var TestObject = new System.Collections.Generic.List<string>();
             TestObject.AddRange(new string[] { "this", "is", "a", "test" });
             ListMapping<int, string> Results = TestObject.Permute();
             Assert.Equal(24, Results.Keys.Count);

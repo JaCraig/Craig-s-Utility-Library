@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
@@ -29,8 +27,6 @@ using Utilities.IO;
 using Utilities.IO.FileSystem.Interfaces;
 using Utilities.IO.Logging.Enums;
 using Utilities.Profiler;
-
-#endregion Usings
 
 namespace Ironman.Core.BaseClasses
 {
@@ -108,13 +104,13 @@ namespace Ironman.Core.BaseClasses
         protected virtual ActionResult Serialize<T>(T Object, string ContentType = "")
         {
             Utilities.IO.Serializers.Manager Manager = Utilities.IoC.Manager.Bootstrapper == null ? null : Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>();
-            ContentResult Result = new ContentResult();
+            var Result = new ContentResult();
             if (Manager == null)
                 return Result;
             if (string.IsNullOrEmpty(ContentType))
             {
                 if (Request.AcceptTypes != null)
-                    ContentType = Request.AcceptTypes.Length > 0 ? Request.AcceptTypes.FirstOrDefault(x => Manager.CanSerialize(x)) : "";
+                    ContentType = Request.AcceptTypes.Length > 0 ? Request.AcceptTypes.FirstOrDefault(Manager.CanSerialize) : "";
                 if (string.IsNullOrEmpty(ContentType) && Request.Path.Contains('.'))
                     ContentType = Manager.FileTypeToContentType(Request.Path.ToUpperInvariant().Right((Request.Path.Length - Request.Path.LastIndexOf('.'))));
                 if (string.IsNullOrEmpty(ContentType))

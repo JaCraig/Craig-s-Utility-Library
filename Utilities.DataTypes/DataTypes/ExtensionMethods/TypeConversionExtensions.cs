@@ -111,7 +111,7 @@ namespace Utilities.DataTypes
             Creator = Creator.Check(() => new T());
             Type TType = typeof(T);
             PropertyInfo[] Properties = TType.GetProperties();
-            List<T> Results = new List<T>();
+            var Results = new List<T>();
             for (int x = 0; x < Data.Rows.Count; ++x)
             {
                 T RowObject = Creator();

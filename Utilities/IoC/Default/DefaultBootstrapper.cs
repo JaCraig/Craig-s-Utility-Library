@@ -136,7 +136,7 @@ namespace Utilities.IoC.Default
         /// <param name="Name">Name to associate with the function</param>
         public override void Register<T>(Func<T> Function, string Name = "")
         {
-            Tuple<Type, string> Key = new Tuple<Type, string>(typeof(T), Name);
+            var Key = new Tuple<Type, string>(typeof(T), Name);
             _AppContainer.AddOrUpdate(Key,
                 x => new TypeBuilder<T>(Function),
                 (x, y) => new TypeBuilder<T>(Function));
@@ -205,7 +205,7 @@ namespace Utilities.IoC.Default
         {
             try
             {
-                Tuple<Type, string> Key = new Tuple<Type, string>(ObjectType, Name);
+                var Key = new Tuple<Type, string>(ObjectType, Name);
                 ITypeBuilder Builder = null;
                 return _AppContainer.TryGetValue(Key, out Builder) ? Builder.Create() : DefaultObject;
             }
@@ -229,7 +229,7 @@ namespace Utilities.IoC.Default
         /// <returns>An IEnumerable containing all objects of the type specified</returns>
         public override IEnumerable<object> ResolveAll(Type ObjectType)
         {
-            ConcurrentBag<object> ReturnValues = new ConcurrentBag<object>();
+            var ReturnValues = new ConcurrentBag<object>();
             foreach (Tuple<Type, string> Key in _AppContainer.Keys.Where(x => x.Item1 == ObjectType))
             {
                 ReturnValues.Add(Resolve(Key.Item1, Key.Item2, null));
@@ -243,7 +243,7 @@ namespace Utilities.IoC.Default
         /// <returns>String version of the bootstrapper</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             foreach (Tuple<Type, string> Key in AppContainer.Keys)
             {
                 Builder.Append(AppContainer[Key].ToString());
@@ -317,7 +317,7 @@ namespace Utilities.IoC.Default
         private List<object> GetParameters(ConstructorInfo Constructor)
         {
             Contract.Requires<ArgumentNullException>(Constructor != null, "Constructor");
-            List<object> Params = new List<object>();
+            var Params = new List<object>();
             foreach (ParameterInfo Parameter in Constructor.GetParameters())
             {
                 if (Parameter.ParameterType.GetInterfaces().Contains(typeof(IEnumerable)) && Parameter.ParameterType.IsGenericType)

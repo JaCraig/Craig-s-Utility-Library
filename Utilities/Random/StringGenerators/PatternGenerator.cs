@@ -54,7 +54,7 @@ namespace Utilities.Random.StringGenerators
         {
             if (string.IsNullOrEmpty(Pattern))
                 return "";
-            StringBuilder TempBuilder = new StringBuilder();
+            var TempBuilder = new StringBuilder();
             for (int x = 0; x < Pattern.Length; ++x)
             {
                 if (Pattern[x] == '#')

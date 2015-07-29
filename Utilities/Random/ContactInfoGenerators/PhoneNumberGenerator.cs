@@ -28,7 +28,7 @@ namespace Utilities.Random.ContactInfoGenerators
     /// </summary>
     public class PhoneNumberGenerator : PatternGenerator
     {
-        private string[] Formats = { "x###","x####","x#####",
+        private readonly string[] Formats = { "x###","x####","x#####",
                                     "###-###-####","(###)###-####","1-###-###-####",
                                     "###.###.####","(###)###.####","1.###.###.####",
                                     "###-###-#### x###","(###)###-#### x###","1-###-###-#### x###",

@@ -206,7 +206,7 @@ namespace Utilities.ORM.BaseClasses
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
-            ID<ClassType, DataType> ReturnValue = new ID<ClassType, DataType>(Expression, this);
+            var ReturnValue = new ID<ClassType, DataType>(Expression, this);
             IDProperties.Add(ReturnValue);
             return ReturnValue;
         }
@@ -222,7 +222,7 @@ namespace Utilities.ORM.BaseClasses
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
-            ManyToMany<ClassType, DataType> ReturnValue = new ManyToMany<ClassType, DataType>(Expression, this);
+            var ReturnValue = new ManyToMany<ClassType, DataType>(Expression, this);
             Properties.Add(ReturnValue);
             return ReturnValue;
         }
@@ -238,7 +238,7 @@ namespace Utilities.ORM.BaseClasses
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
-            ListManyToMany<ClassType, DataType> ReturnValue = new ListManyToMany<ClassType, DataType>(Expression, this);
+            var ReturnValue = new ListManyToMany<ClassType, DataType>(Expression, this);
             Properties.Add(ReturnValue);
             return ReturnValue;
         }
@@ -254,7 +254,7 @@ namespace Utilities.ORM.BaseClasses
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
-            IListManyToMany<ClassType, DataType> ReturnValue = new IListManyToMany<ClassType, DataType>(Expression, this);
+            var ReturnValue = new IListManyToMany<ClassType, DataType>(Expression, this);
             Properties.Add(ReturnValue);
             return ReturnValue;
         }
@@ -270,7 +270,7 @@ namespace Utilities.ORM.BaseClasses
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
-            ICollectionManyToMany<ClassType, DataType> ReturnValue = new ICollectionManyToMany<ClassType, DataType>(Expression, this);
+            var ReturnValue = new ICollectionManyToMany<ClassType, DataType>(Expression, this);
             Properties.Add(ReturnValue);
             return ReturnValue;
         }
@@ -286,7 +286,7 @@ namespace Utilities.ORM.BaseClasses
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
-            ManyToOne<ClassType, DataType> ReturnValue = new ManyToOne<ClassType, DataType>(Expression, this);
+            var ReturnValue = new ManyToOne<ClassType, DataType>(Expression, this);
             Properties.Add(ReturnValue);
             return ReturnValue;
         }
@@ -302,7 +302,7 @@ namespace Utilities.ORM.BaseClasses
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
-            IEnumerableManyToOne<ClassType, DataType> ReturnValue = new IEnumerableManyToOne<ClassType, DataType>(Expression, this);
+            var ReturnValue = new IEnumerableManyToOne<ClassType, DataType>(Expression, this);
             Properties.Add(ReturnValue);
             return ReturnValue;
         }
@@ -318,7 +318,7 @@ namespace Utilities.ORM.BaseClasses
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
-            IListManyToOne<ClassType, DataType> ReturnValue = new IListManyToOne<ClassType, DataType>(Expression, this);
+            var ReturnValue = new IListManyToOne<ClassType, DataType>(Expression, this);
             Properties.Add(ReturnValue);
             return ReturnValue;
         }
@@ -334,7 +334,7 @@ namespace Utilities.ORM.BaseClasses
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
-            ICollectionManyToOne<ClassType, DataType> ReturnValue = new ICollectionManyToOne<ClassType, DataType>(Expression, this);
+            var ReturnValue = new ICollectionManyToOne<ClassType, DataType>(Expression, this);
             Properties.Add(ReturnValue);
             return ReturnValue;
         }
@@ -350,7 +350,7 @@ namespace Utilities.ORM.BaseClasses
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
-            ListManyToOne<ClassType, DataType> ReturnValue = new ListManyToOne<ClassType, DataType>(Expression, this);
+            var ReturnValue = new ListManyToOne<ClassType, DataType>(Expression, this);
             Properties.Add(ReturnValue);
             return ReturnValue;
         }
@@ -366,7 +366,7 @@ namespace Utilities.ORM.BaseClasses
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
-            Map<ClassType, DataType> ReturnValue = new Map<ClassType, DataType>(Expression, this);
+            var ReturnValue = new Map<ClassType, DataType>(Expression, this);
             Properties.Add(ReturnValue);
             return ReturnValue;
         }
@@ -381,7 +381,7 @@ namespace Utilities.ORM.BaseClasses
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
-            Reference<ClassType, DataType> ReturnValue = new Reference<ClassType, DataType>(Expression, this);
+            var ReturnValue = new Reference<ClassType, DataType>(Expression, this);
             Properties.Add(ReturnValue);
             return ReturnValue;
         }

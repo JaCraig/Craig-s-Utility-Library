@@ -31,7 +31,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void Where()
         {
-            Regex Regex = new System.Text.RegularExpressions.Regex(@"[^\s]");
+            var Regex = new Regex(@"[^\s]");
             Assert.Equal(3, Regex.Matches("This is a test").Where(x => x.Value == "s").Count());
         }
     }

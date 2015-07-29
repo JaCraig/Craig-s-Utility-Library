@@ -29,14 +29,14 @@ namespace UnitTests.ORM.Manager.Schema.Default.LDAP
         [Fact]
         public void Create()
         {
-            Utilities.ORM.Manager.Schema.Default.LDAP.LDAPSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.LDAP.LDAPSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
+            var Temp = new Utilities.ORM.Manager.Schema.Default.LDAP.LDAPSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
             Assert.Equal("LDAP", Temp.ProviderName);
         }
 
         [Fact]
         public void GenerateSchema()
         {
-            Utilities.ORM.Manager.Schema.Default.LDAP.LDAPSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.LDAP.LDAPSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
+            var Temp = new Utilities.ORM.Manager.Schema.Default.LDAP.LDAPSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
             ISource Source = Temp.GetSourceStructure(TestDatabaseSource);
             Assert.Null(Source);
         }
@@ -44,14 +44,14 @@ namespace UnitTests.ORM.Manager.Schema.Default.LDAP
         [Fact]
         public void SourceExists()
         {
-            Utilities.ORM.Manager.Schema.Default.LDAP.LDAPSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.LDAP.LDAPSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
+            var Temp = new Utilities.ORM.Manager.Schema.Default.LDAP.LDAPSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
             Assert.True(Temp.SourceExists("TestDatabase", DatabaseSource));
         }
 
         [Fact]
         public void TableExists()
         {
-            Utilities.ORM.Manager.Schema.Default.LDAP.LDAPSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.LDAP.LDAPSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
+            var Temp = new Utilities.ORM.Manager.Schema.Default.LDAP.LDAPSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
             Assert.False(Temp.TableExists("TestTable", TestDatabaseSource));
         }
     }

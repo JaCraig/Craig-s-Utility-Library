@@ -19,13 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SpeedTests.Models;
+using System;
+using System.Data;
 using Utilities.DataTypes;
 using Utilities.IoC.Interfaces;
 using Utilities.ORM;
@@ -38,14 +34,14 @@ namespace SpeedTests
     {
         public static void Main(string[] args)
         {
-            StopWatch StopWatch = new StopWatch();
+            var StopWatch = new StopWatch();
             StopWatch.Start();
             IBootstrapper Bootstrapper = Utilities.IoC.Manager.Bootstrapper;
             StopWatch.Stop();
             Console.WriteLine("Start up: " + StopWatch.ElapsedTime);
             using (IDisposable StartProfiler = Utilities.Profiler.Profiler.StartProfiling())
             {
-                System.Random Rand = new System.Random();
+                var Rand = new System.Random();
                 SingleSourceCached(Rand);
                 MultipleSourceCached(Rand);
                 MultipleSourceCachedCascade(Rand);

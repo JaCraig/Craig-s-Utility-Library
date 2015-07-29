@@ -31,7 +31,7 @@ namespace UnitTests.Validation.Rules
         [Fact]
         public void Test()
         {
-            MinLengthClass Temp = new MinLengthClass();
+            var Temp = new MinLengthClass();
             Temp.ItemA = "Test";
             Temp.Validate();
             Temp.ItemA = "Tes";

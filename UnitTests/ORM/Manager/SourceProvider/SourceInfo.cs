@@ -34,7 +34,7 @@ namespace UnitTests.ORM.Manager.SourceProvider
         [Fact]
         public void Create()
         {
-            Utilities.ORM.Manager.SourceProvider.SourceInfo Temp = new Utilities.ORM.Manager.SourceProvider.SourceInfo("Temp", "Temp");
+            var Temp = new Utilities.ORM.Manager.SourceProvider.SourceInfo("Temp", "Temp");
             Assert.Equal("Temp", Temp.Connection);
             Assert.Equal("Temp", Temp.Name);
             Assert.Equal("@", Temp.ParameterPrefix);

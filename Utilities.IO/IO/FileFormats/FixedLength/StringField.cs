@@ -56,7 +56,7 @@ namespace Utilities.IO.FileFormats.FixedLength
                 this.Value = Value.Left(Length);
                 return;
             }
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.Append(Value);
             while (Builder.Length < this.Length)
                 Builder.Append(FillerCharacter);

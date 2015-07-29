@@ -33,7 +33,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.LDAP
         [Fact]
         public void AddCommand()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPBatch(TestDatabaseSource);
+            var Temp = new Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPBatch(TestDatabaseSource);
             Temp.AddCommand(null, null, " ", CommandType.Text, "@", new object[] { 1, "ASDF", 2.0f, Guid.NewGuid() });
             Assert.Equal(1, Temp.CommandCount);
         }
@@ -41,7 +41,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.LDAP
         [Fact]
         public void Create()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPBatch(TestDatabaseSource);
+            var Temp = new Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPBatch(TestDatabaseSource);
             Assert.NotNull(Temp);
             Assert.Equal(0, Temp.CommandCount);
         }

@@ -31,7 +31,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.LDAP
         [Fact]
         public void Batch()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPQueryProvider Temp = new Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPQueryProvider();
+            var Temp = new Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPQueryProvider();
             IBatch Batch = Temp.Batch(TestDatabaseSource);
             Assert.Equal(0, Batch.CommandCount);
             Assert.Equal(typeof(Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPBatch), Batch.GetType());
@@ -40,7 +40,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.LDAP
         [Fact]
         public void Create()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPQueryProvider Temp = new Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPQueryProvider();
+            var Temp = new Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPQueryProvider();
             Assert.NotNull(Temp);
             Assert.Equal("LDAP", Temp.ProviderName);
         }
@@ -48,7 +48,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.LDAP
         [Fact]
         public void Generate()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPQueryProvider Temp = new Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPQueryProvider();
+            var Temp = new Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPQueryProvider();
             IGenerator<Dynamo> Generator = Temp.Generate<Dynamo>(TestDatabaseSource, new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>())[typeof(Dynamo), TestDatabaseSource]);
             Assert.Equal(typeof(Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPGenerator<Dynamo>), Generator.GetType());
         }

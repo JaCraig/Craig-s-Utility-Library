@@ -32,7 +32,7 @@ namespace UnitTests.Validation.Rules
         [Fact]
         public void Test()
         {
-            EmptyClass Temp = new EmptyClass();
+            var Temp = new EmptyClass();
             Temp.ItemA = new List<string>();
             Temp.ItemA.Add("A");
             Temp.ItemA.Add("B");

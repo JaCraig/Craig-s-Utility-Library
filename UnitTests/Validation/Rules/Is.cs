@@ -31,7 +31,7 @@ namespace UnitTests.Validation.Rules
         [Fact]
         public void Test()
         {
-            IsClass Temp = new IsClass();
+            var Temp = new IsClass();
             Temp.ItemA = "4012888888881881";
             Temp.ItemB = "1234.123";
             Temp.ItemC = "http://www.google.com";

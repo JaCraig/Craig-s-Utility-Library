@@ -139,6 +139,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="QueryProvider\PostgreSQLGenerator.cs" />
     <Compile Include="QueryProvider\PostgreSQLQueryProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

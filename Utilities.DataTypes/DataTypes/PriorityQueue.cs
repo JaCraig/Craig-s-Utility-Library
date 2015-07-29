@@ -73,7 +73,7 @@ namespace Utilities.DataTypes
         {
             get
             {
-                List<ICollection<T>> Lists = new List<ICollection<T>>();
+                var Lists = new List<ICollection<T>>();
                 foreach (int Key in Keys)
                     Lists.Add(this[Key]);
                 return Lists;

@@ -56,8 +56,8 @@ namespace UnitTests.DataTypes.Conversion
         [Fact]
         public void ToClasses()
         {
-            TestA Object1 = new TestA() { A = 10, B = "ASDF" };
-            TestB Object2 = new TestB() { A = 20, B = "ZXCV" };
+            var Object1 = new TestA() { A = 10, B = "ASDF" };
+            var Object2 = new TestB() { A = 20, B = "ZXCV" };
             TestB Result1 = Utilities.DataTypes.Conversion.Manager.To<TestA, TestB>(Object1, null);
             Assert.Equal(10, Result1.A);
             Assert.Equal("ASDF", Result1.B);

@@ -80,7 +80,7 @@ namespace Utilities.ORM.Manager
             where ObjectType : class,new()
         {
             Parameters = Parameters.Check(new IParameter[] { });
-            List<Dynamo> ReturnValue = new List<Dynamo>();
+            var ReturnValue = new List<Dynamo>();
             string KeyName = typeof(ObjectType).GetName() + "_All_" + Parameters.ToString(x => x.ToString(), "_");
             Parameters.ForEach(x => { KeyName = x.AddParameter(KeyName); });
             if (Cache.ContainsKey(KeyName))
@@ -205,7 +205,7 @@ namespace Utilities.ORM.Manager
             where ObjectType : class,new()
             where DataType : class,new()
         {
-            System.Collections.Generic.List<Dynamo> ReturnValue = new System.Collections.Generic.List<Dynamo>();
+            var ReturnValue = new System.Collections.Generic.List<Dynamo>();
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
@@ -242,10 +242,7 @@ namespace Utilities.ORM.Manager
                         {
                             if (IDProperty.GetParameter(Item) != null)
                             {
-                                if (Parameter == null)
-                                    Parameter = new EqualParameter<object>(IDProperty.GetParameter(Item), Counter.ToString(CultureInfo.InvariantCulture), IDProperty.FieldName, Source.ParameterPrefix);
-                                else
-                                    Parameter = new OrParameter(Parameter, new EqualParameter<object>(IDProperty.GetParameter(Item), Counter.ToString(CultureInfo.InvariantCulture), IDProperty.FieldName, Source.ParameterPrefix));
+                                Parameter = Parameter == null ? (IParameter)new EqualParameter<object>(IDProperty.GetParameter(Item), Counter.ToString(CultureInfo.InvariantCulture), IDProperty.FieldName, Source.ParameterPrefix) : (IParameter)new OrParameter(Parameter, new EqualParameter<object>(IDProperty.GetParameter(Item), Counter.ToString(CultureInfo.InvariantCulture), IDProperty.FieldName, Source.ParameterPrefix));
                                 ++Counter;
                             }
                         }
@@ -330,7 +327,7 @@ namespace Utilities.ORM.Manager
             Parameters = Parameters.Check(new IParameter[] { });
             string KeyName = typeof(ObjectType).GetName() + "_Paged_" + PageSize.ToString(CultureInfo.InvariantCulture) + "_" + CurrentPage.ToString(CultureInfo.InvariantCulture) + "_" + Parameters.ToString(x => x.ToString(), "_");
             Parameters.ForEach(x => { KeyName = x.AddParameter(KeyName); });
-            System.Collections.Generic.List<Dynamo> ReturnValue = new System.Collections.Generic.List<Dynamo>();
+            var ReturnValue = new System.Collections.Generic.List<Dynamo>();
             if (Cache.ContainsKey(KeyName))
             {
                 return GetListCached<ObjectType>(ref ReturnValue, KeyName);
@@ -402,7 +399,7 @@ namespace Utilities.ORM.Manager
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             Contract.Requires<ArgumentNullException>(Mapping.Properties != null, "Mapping.Properties");
-            IORMObject ORMObject = Object as IORMObject;
+            var ORMObject = Object as IORMObject;
             foreach (IProperty<ObjectType> Property in Mapping.Properties.Where(x => x.Cascade))
             {
                 if (ORMObject == null || ORMObject.PropertiesChanged0.Contains(Property.Name))
@@ -440,7 +437,7 @@ namespace Utilities.ORM.Manager
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             Contract.Requires<ArgumentNullException>(Mapping.Properties != null, "Mapping.Properties");
-            IORMObject ORMObject = Object as IORMObject;
+            var ORMObject = Object as IORMObject;
             foreach (IProperty<ObjectType> Property in Mapping.Properties)
             {
                 if (ORMObject == null || ORMObject.PropertiesChanged0.Contains(Property.Name))
@@ -464,7 +461,7 @@ namespace Utilities.ORM.Manager
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             Contract.Requires<ArgumentNullException>(Mapping.Properties != null, "Mapping.Properties");
-            IORMObject ORMObject = Object as IORMObject;
+            var ORMObject = Object as IORMObject;
             foreach (IProperty<ObjectType> Property in Mapping.Properties)
             {
                 if (ORMObject == null || ORMObject.PropertiesChanged0.Contains(Property.Name))

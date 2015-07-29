@@ -30,7 +30,7 @@ namespace UnitTests.Web.ExtensionMethods
         [Fact]
         public void ToQueryString()
         {
-            Dictionary<string, string> Collection = new Dictionary<string, string>();
+            var Collection = new Dictionary<string, string>();
             Collection.Add("A", "1");
             Collection.Add("B", "2");
             Assert.Equal("?A=1&B=2", Collection.ToQueryString());

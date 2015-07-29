@@ -70,11 +70,11 @@ namespace Ironman.Core.Assets.Filters
                 {
                     string TempFile = ImageMatch.Groups["File"].Value;
                     string MatchString = ImageMatch.Value;
-                    FileInfo File = new FileInfo(TempFile);
+                    var File = new FileInfo(TempFile);
                     File = DetermineFile(File, Asset, TempFile);
                     if (File == null || !File.Exists)
                     {
-                        FileInfo AssetFile = new FileInfo(Asset.Path);
+                        var AssetFile = new FileInfo(Asset.Path);
                         File = new FileInfo(AssetFile.Directory.FullName + "\\" + TempFile);
                     }
                     if (File.Exists)
@@ -86,16 +86,28 @@ namespace Ironman.Core.Assets.Filters
                             || File.Extension.ToUpperInvariant() == ".EOT")
                         {
                             string MIME = "";
-                            if (File.Extension.ToUpperInvariant() == ".WOFF")
-                                MIME = "application/x-font-woff";
-                            else if (File.Extension.ToUpperInvariant() == ".OTF")
-                                MIME = "application/x-font-opentype";
-                            else if (File.Extension.ToUpperInvariant() == ".TTF")
-                                MIME = "application/x-font-ttf";
-                            else if (File.Extension.ToUpperInvariant() == ".SVG")
-                                MIME = "image/svg+xml";
-                            else if (File.Extension.ToUpperInvariant() == ".EOT")
-                                MIME = "application/vnd.ms-fontobject";
+                            switch (File.Extension.ToUpperInvariant())
+                            {
+                                case ".WOFF":
+                                    MIME = "application/x-font-woff";
+                                    break;
+
+                                case ".OTF":
+                                    MIME = "application/x-font-opentype";
+                                    break;
+
+                                case ".TTF":
+                                    MIME = "application/x-font-ttf";
+                                    break;
+
+                                case ".SVG":
+                                    MIME = "image/svg+xml";
+                                    break;
+
+                                case ".EOT":
+                                    MIME = "application/vnd.ms-fontobject";
+                                    break;
+                            }
 
                             Asset.Content = Asset.Content.Replace(MatchString, "url(data:" + MIME + ";base64," + File.ReadBinary().ToString(Base64FormattingOptions.None) + ")");
                         }
@@ -144,7 +156,7 @@ namespace Ironman.Core.Assets.Filters
             Contract.Requires<ArgumentNullException>(Asset != null, "Asset");
             if (File == null || !File.Exists)
             {
-                FileInfo AssetFile = new FileInfo(Asset.Path);
+                var AssetFile = new FileInfo(Asset.Path);
                 File = new FileInfo(AssetFile.Directory.FullName + "\\" + TempFile);
             }
             if (File == null || !File.Exists)

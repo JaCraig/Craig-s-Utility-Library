@@ -115,7 +115,7 @@ namespace Utilities.IO.FileFormats
         /// <returns>The INI file as a string</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             foreach (string Header in FileContents.Keys)
             {
                 Builder.Append("[" + Header + "]\r\n");
@@ -133,7 +133,7 @@ namespace Utilities.IO.FileFormats
         {
             if (string.IsNullOrEmpty(this.FileName))
                 return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<INI>\r\n</INI>";
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.Append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n");
             Builder.Append("<INI>\r\n");
             foreach (string Header in FileContents.Keys)
@@ -170,7 +170,7 @@ namespace Utilities.IO.FileFormats
             }
             else
             {
-                Dictionary<string, string> TempDictionary = new Dictionary<string, string>();
+                var TempDictionary = new Dictionary<string, string>();
                 TempDictionary.Add(Key, Value);
                 FileContents.Add(Section, TempDictionary);
             }
@@ -185,7 +185,7 @@ namespace Utilities.IO.FileFormats
         {
             FileContents = new Dictionary<string, Dictionary<string, string>>();
             string Contents = Data;
-            Regex Section = new Regex("[" + Regex.Escape(" ") + "\t]*" + Regex.Escape("[") + ".*" + Regex.Escape("]\r\n"));
+            var Section = new Regex("[" + Regex.Escape(" ") + "\t]*" + Regex.Escape("[") + ".*" + Regex.Escape("]\r\n"));
             string[] Sections = Section.Split(Contents);
             MatchCollection SectionHeaders = Section.Matches(Contents);
             int Counter = 1;
@@ -194,7 +194,7 @@ namespace Utilities.IO.FileFormats
                 string[] Splitter = { "\r\n" };
                 string[] Splitter2 = { "=" };
                 string[] Items = Sections[Counter].Split(Splitter, StringSplitOptions.RemoveEmptyEntries);
-                Dictionary<string, string> SectionValues = new Dictionary<string, string>();
+                var SectionValues = new Dictionary<string, string>();
                 foreach (string Item in Items)
                 {
                     string[] ItemSplit = Item.Split(Splitter2, StringSplitOptions.None);

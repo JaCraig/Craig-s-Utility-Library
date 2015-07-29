@@ -29,8 +29,8 @@ namespace UnitTests.DataTypes
         [Fact]
         public void RandomTest()
         {
-            PriorityQueue<int> TestObject = new PriorityQueue<int>();
-            System.Random Rand = new System.Random();
+            var TestObject = new PriorityQueue<int>();
+            var Rand = new System.Random();
             int Value = 0;
             for (int x = 0; x < 10; ++x)
             {

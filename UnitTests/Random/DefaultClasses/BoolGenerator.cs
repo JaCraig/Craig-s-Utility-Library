@@ -29,8 +29,8 @@ namespace UnitTests.Random.DefaultClasses
         [Fact]
         public void Next()
         {
-            Utilities.Random.DefaultClasses.BoolGenerator Generator = new Utilities.Random.DefaultClasses.BoolGenerator();
-            System.Random Rand = new System.Random();
+            var Generator = new Utilities.Random.DefaultClasses.BoolGenerator();
+            var Rand = new System.Random();
             Assert.Contains(true, 100.Times(x => Generator.Next(Rand)));
             Assert.Contains(false, 100.Times(x => Generator.Next(Rand)));
         }

@@ -29,7 +29,7 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void CanHandle()
         {
-            Utilities.IO.FileSystem.Default.HttpFileSystem Temp = new Utilities.IO.FileSystem.Default.HttpFileSystem();
+            var Temp = new Utilities.IO.FileSystem.Default.HttpFileSystem();
             Assert.True(Temp.CanHandle(@"http://www.google.com"));
             Assert.True(Temp.CanHandle(@"https://www.google.com"));
             Assert.True(Temp.CanHandle(@"www.google.com"));
@@ -38,7 +38,7 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void Creation()
         {
-            Utilities.IO.FileSystem.Default.HttpFileSystem Temp = new Utilities.IO.FileSystem.Default.HttpFileSystem();
+            var Temp = new Utilities.IO.FileSystem.Default.HttpFileSystem();
             Assert.NotNull(Temp);
             Assert.Equal("HTTP", Temp.Name);
         }
@@ -46,7 +46,7 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void Directory()
         {
-            Utilities.IO.FileSystem.Default.HttpFileSystem Temp = new Utilities.IO.FileSystem.Default.HttpFileSystem();
+            var Temp = new Utilities.IO.FileSystem.Default.HttpFileSystem();
             IDirectory Dir = Temp.Directory(@"http://www.google.com");
             Assert.NotNull(Dir);
             Assert.IsType<Utilities.IO.FileSystem.Default.WebDirectory>(Dir);
@@ -56,7 +56,7 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void File()
         {
-            Utilities.IO.FileSystem.Default.HttpFileSystem Temp = new Utilities.IO.FileSystem.Default.HttpFileSystem();
+            var Temp = new Utilities.IO.FileSystem.Default.HttpFileSystem();
             IFile Dir = Temp.File(@"http://www.google.com");
             Assert.NotNull(Dir);
             Assert.IsType<Utilities.IO.FileSystem.Default.WebFile>(Dir);

@@ -47,7 +47,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void AppendLineFormat()
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.AppendLineFormat("This is test {0}", 1);
             Assert.Equal("This is test 1" + System.Environment.NewLine, Builder.ToString());
             Builder.Clear();
@@ -271,12 +271,6 @@ namespace UnitTests.DataTypes.ExtensionMethods
             "ASD".To<string, int>();
         }
 
-        private enum EnumValues
-        {
-            Value1,
-            Value2
-        }
-
         public class StringFormatClass
         {
             public StringFormatClass()
@@ -291,6 +285,12 @@ namespace UnitTests.DataTypes.ExtensionMethods
             public int B { get; set; }
 
             public float C { get; set; }
+        }
+
+        private enum EnumValues
+        {
+            Value1,
+            Value2
         }
     }
 }

@@ -29,8 +29,8 @@ namespace UnitTests.DataTypes
         [Fact]
         public void BasicTest()
         {
-            Set<int> TestObject = new Set<int>();
-            Set<int> TestObject2 = new Set<int>();
+            var TestObject = new Set<int>();
+            var TestObject2 = new Set<int>();
             for (int x = 0; x < 10; ++x)
                 TestObject.Add(x);
             for (int x = 9; x >= 0; --x)

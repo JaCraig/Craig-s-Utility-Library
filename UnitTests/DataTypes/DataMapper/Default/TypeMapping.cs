@@ -33,10 +33,10 @@ namespace UnitTests.DataTypes.DataMapper.Default
             TestObject = new TypeMapping<MappingA, MappingB>();
             Assert.NotNull(TestObject);
             TestObject.AutoMap();
-            MappingA A = new MappingA();
+            var A = new MappingA();
             A.Item1 = 12;
             A.Item2 = "ASDF";
-            MappingB B = new MappingB();
+            var B = new MappingB();
             B.Item1 = 13;
             B.Item2 = "ZXCV";
             TestObject.CopyLeftToRight(A, B);
@@ -60,10 +60,10 @@ namespace UnitTests.DataTypes.DataMapper.Default
             Assert.NotNull(TestObject);
             TestObject.AddMapping(x => x.Item1, x => x.Item1);
             TestObject.AddMapping(x => x.Item2, x => x.Item2);
-            MappingA A = new MappingA();
+            var A = new MappingA();
             A.Item1 = 12;
             A.Item2 = "ASDF";
-            MappingB B = new MappingB();
+            var B = new MappingB();
             B.Item1 = 13;
             B.Item2 = "ZXCV";
             TestObject.CopyLeftToRight(A, B);

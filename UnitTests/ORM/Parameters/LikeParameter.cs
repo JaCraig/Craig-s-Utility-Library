@@ -30,7 +30,7 @@ namespace UnitTests.ORM.Parameters
         [Fact]
         public void Creation()
         {
-            Utilities.ORM.Parameters.LikeParameter TestObject = new Utilities.ORM.Parameters.LikeParameter("ASDF", "ID", 100);
+            var TestObject = new Utilities.ORM.Parameters.LikeParameter("ASDF", "ID", 100);
             Assert.Equal("ID", TestObject.ID);
             Assert.Equal("ASDF", TestObject.Value);
             Assert.Equal("@", TestObject.ParameterStarter);

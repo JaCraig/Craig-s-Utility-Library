@@ -32,7 +32,7 @@ namespace UnitTests.Validation.Extensions
         public void ObjectValidationTest()
         {
             var dog = new Dog() { Age = -1, Name = "Jim" };
-            ICollection<ValidationResult> validationResults = new List<ValidationResult>();
+            var validationResults = new List<ValidationResult>();
             Assert.False(dog.TryValidate(validationResults));
             Assert.Equal(1, validationResults.Count);
             Assert.Throws<ValidationException>(() => dog.Validate());

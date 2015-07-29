@@ -44,11 +44,11 @@ namespace Utilities.Media.Procedural
             float[,] DistanceBuffer = new float[Width, Height];
             float MinimumDistance = float.MaxValue;
             float MaxDistance = float.MinValue;
-            CellularMap Map = new CellularMap(Seed, Width, Height, NumberOfPoints);
+            var Map = new CellularMap(Seed, Width, Height, NumberOfPoints);
             MaxDistance = Map.MaxDistance;
             MinimumDistance = Map.MinDistance;
             DistanceBuffer = Map.Distances;
-            SwiftBitmap ReturnValue = new SwiftBitmap(Width, Height);
+            var ReturnValue = new SwiftBitmap(Width, Height);
             ReturnValue.Lock();
             for (int x = 0; x < Width; ++x)
             {

@@ -33,7 +33,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.LDAP
         public LDAPGenerator()
             : base()
         {
-            Utilities.ORM.Manager.Mapper.Manager Temp = new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>());
+            var Temp = new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>());
             QueryProvider = new Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPQueryProvider();
             Generator = new Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPGenerator<Dynamo>(QueryProvider, LDAPSource, Temp[typeof(Dynamo), LDAPSource]);
         }

@@ -234,7 +234,7 @@ namespace Utilities.DataTypes
                 return default(T);
             if (Values.Count() == 0)
                 return default(T);
-            Bag<T> Items = new Bag<T>();
+            var Items = new Bag<T>();
             foreach (T Value in Values)
                 Items.Add(Value);
             int MaxValue = 0;

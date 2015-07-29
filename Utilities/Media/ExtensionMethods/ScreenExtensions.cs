@@ -46,7 +46,7 @@ namespace Utilities.Media
         public static Bitmap TakeScreenShot(this Screen Screen, string FileName = "")
         {
             Contract.Requires<ArgumentNullException>(Screen != null, "Screen");
-            Bitmap TempSwiftBitmap = new Bitmap(Screen.Bounds.Width > 1 ? Screen.Bounds.Width : 1, Screen.Bounds.Height > 1 ? Screen.Bounds.Height : 1, PixelFormat.Format32bppArgb);
+            var TempSwiftBitmap = new Bitmap(Screen.Bounds.Width > 1 ? Screen.Bounds.Width : 1, Screen.Bounds.Height > 1 ? Screen.Bounds.Height : 1, PixelFormat.Format32bppArgb);
             try
             {
                 if (Screen.Bounds.Width > 1 && Screen.Bounds.Height > 1)
@@ -77,7 +77,7 @@ namespace Utilities.Media
             Rectangle TotalScreenRect = Rectangle.Empty;
             foreach (Screen CurrentScreen in Screen.AllScreens)
                 TotalScreenRect = Rectangle.Union(TotalScreenRect, CurrentScreen.Bounds);
-            Bitmap TempSwiftBitmap = new Bitmap(TotalScreenRect.Width > 1 ? TotalScreenRect.Width : 1, TotalScreenRect.Height > 1 ? TotalScreenRect.Width : 1, PixelFormat.Format32bppArgb);
+            var TempSwiftBitmap = new Bitmap(TotalScreenRect.Width > 1 ? TotalScreenRect.Width : 1, TotalScreenRect.Height > 1 ? TotalScreenRect.Width : 1, PixelFormat.Format32bppArgb);
             try
             {
                 if (TotalScreenRect.Width > 1 && TotalScreenRect.Height > 1)
