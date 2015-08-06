@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Rules for Utilities" Description="Code analysis rules for Utilities.csproj." ToolsVersion="14.0">
+  <IncludeAll Action="Warning" />
+</RuleSet>
