@@ -23,7 +23,6 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -50,8 +49,6 @@ namespace Utilities.IoC.Default
             GenericResolveMethod = GetType().GetMethods().First(x => x.Name == "Resolve" && x.IsGenericMethod && x.GetParameters().Length == 1);
             GenericResolveAllMethod = GetType().GetMethod("ResolveAll", new Type[] { });
         }
-
-        private ConcurrentDictionary<Tuple<Type, string>, ITypeBuilder> _AppContainer = null;
 
         /// <summary>
         /// Name of the bootstrapper
@@ -86,6 +83,8 @@ namespace Utilities.IoC.Default
         /// </summary>
         /// <value>The generic resolve method.</value>
         private MethodInfo GenericResolveMethod { get; set; }
+
+        private ConcurrentDictionary<Tuple<Type, string>, ITypeBuilder> _AppContainer = null;
 
         /// <summary>
         /// Registers an object
@@ -149,9 +148,9 @@ namespace Utilities.IoC.Default
         public override void RegisterAll<T>()
         {
             foreach (Type Type in Types.Where(x => IsOfType(x, typeof(T))
-                                                    && x.IsClass
-                                                    && !x.IsAbstract
-                                                    && !x.ContainsGenericParameters))
+                                                    && x.GetTypeInfo().IsClass
+                                                    && !x.GetTypeInfo().IsAbstract
+                                                    && !x.GetTypeInfo().ContainsGenericParameters))
             {
                 GenericRegisterMethod.MakeGenericMethod(typeof(T), Type)
                     .Invoke(this, new object[] { Types.Count == 1 ? "" : Type.FullName });
@@ -276,7 +275,8 @@ namespace Utilities.IoC.Default
         /// <returns>The constructor that should be used</returns>
         private ConstructorInfo FindConstructor(Type Type)
         {
-            Contract.Requires<ArgumentNullException>(Type != null, "Type");
+            if (Type == null)
+                return null;
             ConstructorInfo[] Constructors = Type.GetConstructors();
             ConstructorInfo Constructor = null;
             foreach (ConstructorInfo TempConstructor in Constructors.OrderByDescending(x => x.GetParameters().Length))
@@ -285,7 +285,7 @@ namespace Utilities.IoC.Default
                 foreach (ParameterInfo Parameter in TempConstructor.GetParameters())
                 {
                     Type ParameterType = Parameter.ParameterType;
-                    if (Parameter.ParameterType.GetInterfaces().Contains(typeof(IEnumerable)) && Parameter.ParameterType.IsGenericType)
+                    if (Parameter.ParameterType.GetInterfaces().Contains(typeof(IEnumerable)) && Parameter.ParameterType.GetTypeInfo().IsGenericType)
                     {
                         ParameterType = ParameterType.GetGenericArguments().First();
                         if (!AppContainer.Keys.Any(x => x.Item1 == ParameterType))
@@ -316,11 +316,12 @@ namespace Utilities.IoC.Default
         /// <returns>The parameters</returns>
         private List<object> GetParameters(ConstructorInfo Constructor)
         {
-            Contract.Requires<ArgumentNullException>(Constructor != null, "Constructor");
+            if (Constructor == null)
+                return new List<object>();
             var Params = new List<object>();
             foreach (ParameterInfo Parameter in Constructor.GetParameters())
             {
-                if (Parameter.ParameterType.GetInterfaces().Contains(typeof(IEnumerable)) && Parameter.ParameterType.IsGenericType)
+                if (Parameter.ParameterType.GetInterfaces().Contains(typeof(IEnumerable)) && Parameter.ParameterType.GetTypeInfo().IsGenericType)
                 {
                     Type GenericParamType = Parameter.ParameterType.GetGenericArguments().First();
                     Params.Add(GenericResolveAllMethod.MakeGenericMethod(GenericParamType).Invoke(this, new object[] { }));
@@ -329,7 +330,7 @@ namespace Utilities.IoC.Default
                 {
                     Params.Add(GenericResolveMethod.MakeGenericMethod(Parameter.ParameterType)
                                                    .Invoke(this, new object[] {
-                                                                    Parameter.ParameterType.IsValueType ? Activator.CreateInstance(Parameter.ParameterType) : null
+                                                                    Parameter.ParameterType.GetTypeInfo().IsValueType ? Activator.CreateInstance(Parameter.ParameterType) : null
                                                    }));
                 }
             }
@@ -342,7 +343,7 @@ namespace Utilities.IoC.Default
                 return false;
             if (x == type || x.GetInterfaces().Any(y => y == type))
                 return true;
-            return IsOfType(x.BaseType, type);
+            return IsOfType(x.GetTypeInfo().BaseType, type);
         }
     }
 }

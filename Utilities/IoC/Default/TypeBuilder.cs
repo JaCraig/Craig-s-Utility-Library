@@ -33,10 +33,11 @@ namespace Utilities.IoC.Default
         /// <summary>
         /// Constructor
         /// </summary>
-        public TypeBuilder(Func<T> Implementation)
+        /// <param name="implementation">Implementation</param>
+        public TypeBuilder(Func<T> implementation)
         {
-            this.Implementation = Implementation;
-            this.ReturnType = typeof(T);
+            Implementation = implementation ?? new Func<T>(() => (T)Activator.CreateInstance(typeof(T)));
+            ReturnType = typeof(T);
         }
 
         /// <summary>

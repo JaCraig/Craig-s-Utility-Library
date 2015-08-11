@@ -40,8 +40,8 @@ namespace Utilities.IoC.BaseClasses
         /// <param name="types">The types.</param>
         protected BootstrapperBase(IEnumerable<Assembly> assemblies, IEnumerable<Type> types)
         {
-            this.Assemblies = assemblies.ToList();
-            this.Types = types.ToList();
+            Assemblies = assemblies.ToList();
+            Types = types.ToList();
         }
 
         /// <summary>
@@ -69,19 +69,19 @@ namespace Utilities.IoC.BaseClasses
         /// <summary>
         /// Adds the assembly.
         /// </summary>
-        /// <param name="Assemblies">The assemblies.</param>
-        public void AddAssembly(params Assembly[] Assemblies)
+        /// <param name="assemblies">The assemblies.</param>
+        public void AddAssembly(params Assembly[] assemblies)
         {
-            if (Assemblies == null || Assemblies.Length == 0)
+            if (assemblies == null || assemblies.Length == 0)
                 return;
-            foreach (Assembly Assembly in Assemblies)
+            foreach (Assembly Assembly in assemblies)
             {
-                if (!this.Assemblies.Contains(Assembly))
+                if (!Assemblies.Contains(Assembly))
                 {
                     try
                     {
-                        this.Types.AddRange(Assembly.GetTypes());
-                        this.Assemblies.Add(Assembly);
+                        Types.AddRange(Assembly.GetTypes());
+                        Assemblies.Add(Assembly);
                     }
                     catch (ReflectionTypeLoadException) { }
                 }
@@ -112,7 +112,7 @@ namespace Utilities.IoC.BaseClasses
         /// <typeparam name="T">Object type to register</typeparam>
         /// <param name="Name">Name associated with the object</param>
         public abstract void Register<T>(string Name = "")
-            where T : class,new();
+            where T : class, new();
 
         /// <summary>
         /// Registers a type with the default constructor of a child class
@@ -121,7 +121,7 @@ namespace Utilities.IoC.BaseClasses
         /// <typeparam name="T2">Child class type</typeparam>
         /// <param name="Name">Name associated with the object</param>
         public abstract void Register<T1, T2>(string Name = "")
-            where T2 : class,T1
+            where T2 : class, T1
             where T1 : class;
 
         /// <summary>

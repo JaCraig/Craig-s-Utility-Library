@@ -21,16 +21,13 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Reflection;
-using Utilities.IoC.Interfaces.Contracts;
 
 namespace Utilities.IoC.Interfaces
 {
     /// <summary>
     /// Bootstrapper interface
     /// </summary>
-    [ContractClass(typeof(IBootstrapperContract))]
     public interface IBootstrapper : IDisposable
     {
         /// <summary>
@@ -59,7 +56,7 @@ namespace Utilities.IoC.Interfaces
         /// <typeparam name="T">Object type to register</typeparam>
         /// <param name="Name">Name associated with the object</param>
         void Register<T>(string Name = "")
-            where T : class,new();
+            where T : class, new();
 
         /// <summary>
         /// Registers a type with the default constructor of a child class
@@ -68,7 +65,7 @@ namespace Utilities.IoC.Interfaces
         /// <typeparam name="T2">Child class type</typeparam>
         /// <param name="Name">Name associated with the object</param>
         void Register<T1, T2>(string Name = "")
-            where T2 : class,T1
+            where T2 : class, T1
             where T1 : class;
 
         /// <summary>
