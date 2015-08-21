@@ -211,7 +211,7 @@ $(document).ready(function(){initNavTree('_v_card_8cs_source.html','');});
 <div class="line"><a name="l00201"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_formats_1_1_v_card.html#ab06b78e99d931cf70bfab7e8c9ab3e03">  201</a></span>&#160;        {</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            <span class="keyword">get</span></div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            {</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                StringBuilder Builder = <span class="keyword">new</span> StringBuilder();</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                var Builder = <span class="keyword">new</span> StringBuilder();</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrEmpty(Prefix))</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;                {</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;                    Builder.AppendFormat(<span class="stringliteral">&quot;{0} &quot;</span>, Prefix);</div>
@@ -240,7 +240,7 @@ $(document).ready(function(){initNavTree('_v_card_8cs_source.html','');});
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;</div>
 <div class="line"><a name="l00238"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_formats_1_1_v_card.html#a6bc96ef7089f9c49c7ebd5bb4875b6e6">  238</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">string</span> <a class="code" href="class_utilities_1_1_i_o_1_1_file_formats_1_1_v_card.html#a6bc96ef7089f9c49c7ebd5bb4875b6e6">HCard</a>()</div>
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        {</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;            StringBuilder Builder = <span class="keyword">new</span> StringBuilder();</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;            var Builder = <span class="keyword">new</span> StringBuilder();</div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;            Builder.Append(<span class="stringliteral">&quot;&lt;div class=\&quot;vcard\&quot;&gt;&quot;</span>);</div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;            <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrEmpty(Url))</div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;            {</div>
@@ -299,52 +299,51 @@ $(document).ready(function(){initNavTree('_v_card_8cs_source.html','');});
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;            <span class="keywordtype">string</span> Content = Data;</div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;            <span class="keywordflow">foreach</span> (Match TempMatch <span class="keywordflow">in</span> Regex.Matches(Content, <span class="stringliteral">&quot;(?&lt;Title&gt;[^:]+):(?&lt;Value&gt;.*)&quot;</span>))</div>
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;            {</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;                <span class="keywordflow">if</span> (TempMatch.Groups[<span class="stringliteral">&quot;Title&quot;</span>].Value.ToUpperInvariant() == <span class="stringliteral">&quot;N&quot;</span>)</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;                <span class="keywordflow">switch</span> (TempMatch.Groups[<span class="stringliteral">&quot;Title&quot;</span>].Value.ToUpperInvariant())</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;                {</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;                    <span class="keywordtype">string</span>[] Name = TempMatch.Groups[<span class="stringliteral">&quot;Value&quot;</span>].Value.Split(<span class="charliteral">&#39;;&#39;</span>);</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;                    <span class="keywordflow">if</span> (Name.Length &gt; 0)</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                    {</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;                        LastName = Name[0];</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                        <span class="keywordflow">if</span> (Name.Length &gt; 1)</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                            FirstName = Name[1];</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                        <span class="keywordflow">if</span> (Name.Length &gt; 2)</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                            MiddleName = Name[2];</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                        <span class="keywordflow">if</span> (Name.Length &gt; 3)</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                            Prefix = Name[3];</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                        <span class="keywordflow">if</span> (Name.Length &gt; 4)</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;                            Suffix = Name[4];</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;                    }</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;                }</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (TempMatch.Groups[<span class="stringliteral">&quot;Title&quot;</span>].Value.ToUpperInvariant() == <span class="stringliteral">&quot;TEL;WORK&quot;</span>)</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;                {</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;                    DirectDial = TempMatch.Groups[<span class="stringliteral">&quot;Value&quot;</span>].Value;</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;                }</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (TempMatch.Groups[<span class="stringliteral">&quot;Title&quot;</span>].Value.ToUpperInvariant() == <span class="stringliteral">&quot;EMAIL;INTERNET&quot;</span>)</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;                {</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;                    Email = TempMatch.Groups[<span class="stringliteral">&quot;Value&quot;</span>].Value;</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;                }</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (TempMatch.Groups[<span class="stringliteral">&quot;Title&quot;</span>].Value.ToUpperInvariant() == <span class="stringliteral">&quot;TITLE&quot;</span>)</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;                {</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                    Title = TempMatch.Groups[<span class="stringliteral">&quot;Value&quot;</span>].Value;</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;                }</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (TempMatch.Groups[<span class="stringliteral">&quot;Title&quot;</span>].Value.ToUpperInvariant() == <span class="stringliteral">&quot;ORG&quot;</span>)</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;                {</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;                    Organization = TempMatch.Groups[<span class="stringliteral">&quot;Value&quot;</span>].Value;</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;                }</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;            }</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;        }</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">string</span> StripHTML(<span class="keywordtype">string</span> HTML)</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        {</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;            <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrEmpty(HTML))</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;                <span class="keywordflow">return</span> <span class="keywordtype">string</span>.Empty;</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;            HTML = STRIP_HTML_REGEX.Replace(HTML, <span class="keywordtype">string</span>.Empty);</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;            HTML = HTML.Replace(<span class="stringliteral">&quot;&amp;nbsp;&quot;</span>, <span class="stringliteral">&quot; &quot;</span>);</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;            <span class="keywordflow">return</span> HTML.Replace(<span class="stringliteral">&quot;&amp;#160;&quot;</span>, <span class="keywordtype">string</span>.Empty);</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;        }</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    }</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;}</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;                    <span class="keywordflow">case</span> <span class="stringliteral">&quot;N&quot;</span>:</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;                        <span class="keywordtype">string</span>[] Name = TempMatch.Groups[<span class="stringliteral">&quot;Value&quot;</span>].Value.Split(<span class="charliteral">&#39;;&#39;</span>);</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                        <span class="keywordflow">if</span> (Name.Length &gt; 0)</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;                        {</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                            LastName = Name[0];</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                            <span class="keywordflow">if</span> (Name.Length &gt; 1)</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                                FirstName = Name[1];</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                            <span class="keywordflow">if</span> (Name.Length &gt; 2)</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                                MiddleName = Name[2];</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                            <span class="keywordflow">if</span> (Name.Length &gt; 3)</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                                Prefix = Name[3];</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;                            <span class="keywordflow">if</span> (Name.Length &gt; 4)</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;                                Suffix = Name[4];</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;                        }</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;                        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;                    <span class="keywordflow">case</span> <span class="stringliteral">&quot;TEL;WORK&quot;</span>:</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;                        DirectDial = TempMatch.Groups[<span class="stringliteral">&quot;Value&quot;</span>].Value;</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;                        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;                    <span class="keywordflow">case</span> <span class="stringliteral">&quot;EMAIL;INTERNET&quot;</span>:</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;                        Email = TempMatch.Groups[<span class="stringliteral">&quot;Value&quot;</span>].Value;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;                        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;                    <span class="keywordflow">case</span> <span class="stringliteral">&quot;TITLE&quot;</span>:</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;                        Title = TempMatch.Groups[<span class="stringliteral">&quot;Value&quot;</span>].Value;</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;                    <span class="keywordflow">case</span> <span class="stringliteral">&quot;ORG&quot;</span>:</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;                        Organization = TempMatch.Groups[<span class="stringliteral">&quot;Value&quot;</span>].Value;</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;                        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;                }</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;            }</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        }</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">string</span> StripHTML(<span class="keywordtype">string</span> HTML)</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        {</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;            <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrEmpty(HTML))</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;                <span class="keywordflow">return</span> <span class="keywordtype">string</span>.Empty;</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;            HTML = STRIP_HTML_REGEX.Replace(HTML, <span class="keywordtype">string</span>.Empty);</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;            HTML = HTML.Replace(<span class="stringliteral">&quot;&amp;nbsp;&quot;</span>, <span class="stringliteral">&quot; &quot;</span>);</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;            <span class="keywordflow">return</span> HTML.Replace(<span class="stringliteral">&quot;&amp;#160;&quot;</span>, <span class="keywordtype">string</span>.Empty);</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;        }</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    }</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;}</div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_1_1_file_formats_html_a1c328a2a149c22b302b9b3a6f922def8a4d6e933698bb09ff5ff25a89624f7b7a"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_file_formats.html#a1c328a2a149c22b302b9b3a6f922def8a4d6e933698bb09ff5ff25a89624f7b7a">Utilities.IO.FileFormats.Met</a></div><div class="ttdoc">Met </div></div>
 <div class="ttc" id="class_utilities_1_1_i_o_1_1_file_formats_1_1_base_classes_1_1_string_format_base_html"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_formats_1_1_base_classes_1_1_string_format_base.html">Utilities.IO.FileFormats.BaseClasses.StringFormatBase</a></div><div class="ttdoc">Format base class for objects that are string based </div><div class="ttdef"><b>Definition:</b> <a href="_string_format_base_8cs_source.html#l00030">StringFormatBase.cs:30</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_1_1_file_formats_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_file_formats.html">Utilities.IO.FileFormats</a></div></div>
@@ -381,7 +380,7 @@ $(document).ready(function(){initNavTree('_v_card_8cs_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_cdffdb722b1f3b30993d9a14c7e19da9.html">IO</a></li><li class="navelem"><a class="el" href="dir_477cfb373389f9b5d984bcb90362a6a9.html">FileFormats</a></li><li class="navelem"><a class="el" href="_v_card_8cs.html">VCard.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:44 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:42 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

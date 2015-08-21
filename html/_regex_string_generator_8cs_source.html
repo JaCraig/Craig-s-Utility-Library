@@ -156,13 +156,13 @@ $(document).ready(function(){initNavTree('_regex_string_generator_8cs_source.htm
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        {</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keywordflow">if</span> (Length &lt; 1)</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            StringBuilder TempBuilder = <span class="keyword">new</span> StringBuilder();</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            Regex Comparer = <span class="keyword">new</span> Regex(AllowedCharacters);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            Regex AlphaNumbericComparer = <span class="keyword">new</span> Regex(<span class="stringliteral">&quot;[0-9a-zA-Z]&quot;</span>);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            var TempBuilder = <span class="keyword">new</span> StringBuilder();</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            var Comparer = <span class="keyword">new</span> Regex(AllowedCharacters);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            var AlphaNumbericComparer = <span class="keyword">new</span> Regex(<span class="stringliteral">&quot;[0-9a-zA-Z]&quot;</span>);</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keywordtype">int</span> Counter = 0;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordflow">while</span> (TempBuilder.Length &lt; Length)</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                <span class="keywordtype">string</span> TempValue = <span class="keyword">new</span> string(Convert.ToChar(Convert.ToInt32(<a class="code" href="namespace_system.html">System</a>.Math.Floor(94 * Rand.NextDouble() + 32))), 1);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                var TempValue = <span class="keyword">new</span> string(Convert.ToChar(Convert.ToInt32(<a class="code" href="namespace_system.html">System</a>.Math.Floor(94 * Rand.NextDouble() + 32))), 1);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                <span class="keywordflow">if</span> (Comparer.IsMatch(TempValue))</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                {</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                    <span class="keywordflow">if</span> (!AlphaNumbericComparer.IsMatch(TempValue) &amp;&amp; NumberOfNonAlphaNumericsAllowed &gt; Counter)</div>
@@ -208,7 +208,7 @@ $(document).ready(function(){initNavTree('_regex_string_generator_8cs_source.htm
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_cef0bc0a28c7240aecb363714ea68265.html">Random</a></li><li class="navelem"><a class="el" href="dir_bed7739707598708b163a3b1eb0081d2.html">StringGenerators</a></li><li class="navelem"><a class="el" href="_regex_string_generator_8cs.html">RegexStringGenerator.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:50 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:47 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

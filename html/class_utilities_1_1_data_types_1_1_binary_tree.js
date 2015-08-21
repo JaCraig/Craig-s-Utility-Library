@@ -1,6 +1,6 @@
 var class_utilities_1_1_data_types_1_1_binary_tree =
 [
-    [ "BinaryTree", "class_utilities_1_1_data_types_1_1_binary_tree.html#ac5b2bb2f12881eba4fa7bb9ae3e3bc85", null ],
+    [ "BinaryTree", "class_utilities_1_1_data_types_1_1_binary_tree.html#a3cdecb1334018ba7d1f74b3fa498ef52", null ],
     [ "Add", "class_utilities_1_1_data_types_1_1_binary_tree.html#aacbfb112ae22b488f3256ae6066c2dcb", null ],
     [ "Clear", "class_utilities_1_1_data_types_1_1_binary_tree.html#ab5c0b593517cf6979b576260e2c2f6ca", null ],
     [ "Contains", "class_utilities_1_1_data_types_1_1_binary_tree.html#aff28aed15ca9cc24959c57ef175fc54b", null ],

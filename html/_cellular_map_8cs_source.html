@@ -136,40 +136,40 @@ $(document).ready(function(){initNavTree('_cellular_map_8cs_source.html','');});
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
 <div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="class_utilities_1_1_media_1_1_procedural_1_1_cellular_map.html">   31</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="class_utilities_1_1_media_1_1_procedural_1_1_cellular_map.html">CellularMap</a></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">int</span> _Height = 0;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">int</span> _Width = 0;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keyword">private</span> List&lt;Point&gt; Points = <span class="keyword">new</span> List&lt;Point&gt;();</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="class_utilities_1_1_media_1_1_procedural_1_1_cellular_map.html#a5a2a53d01a21848a7b36a52671219cb4">   46</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_utilities_1_1_media_1_1_procedural_1_1_cellular_map.html#a5a2a53d01a21848a7b36a52671219cb4">CellularMap</a>(<span class="keywordtype">int</span> Seed, <span class="keywordtype">int</span> Width, <span class="keywordtype">int</span> Height, <span class="keywordtype">int</span> NumberOfPoints)</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            _Width = Width;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            _Height = Height;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            MinDistance = <span class="keywordtype">float</span>.MaxValue;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            MaxDistance = <span class="keywordtype">float</span>.MinValue;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            Random.Random Rand = <span class="keyword">new</span> Random.Random(Seed);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            Distances = <span class="keyword">new</span> <span class="keywordtype">float</span>[Width, Height];</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            ClosestPoint = <span class="keyword">new</span> <span class="keywordtype">int</span>[Width, Height];</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; NumberOfPoints; ++x)</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                Point TempPoint = <span class="keyword">new</span> Point();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                TempPoint.X = Rand.Next(0, Width);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                TempPoint.Y = Rand.Next(0, Height);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                Points.Add(TempPoint);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            CalculateDistances();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        }</div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="class_utilities_1_1_media_1_1_procedural_1_1_cellular_map.html#a5a2a53d01a21848a7b36a52671219cb4">   40</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_utilities_1_1_media_1_1_procedural_1_1_cellular_map.html#a5a2a53d01a21848a7b36a52671219cb4">CellularMap</a>(<span class="keywordtype">int</span> Seed, <span class="keywordtype">int</span> Width, <span class="keywordtype">int</span> Height, <span class="keywordtype">int</span> NumberOfPoints)</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            _Width = Width;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            _Height = Height;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            MinDistance = <span class="keywordtype">float</span>.MaxValue;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            MaxDistance = <span class="keywordtype">float</span>.MinValue;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            var Rand = <span class="keyword">new</span> Random.Random(Seed);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            Distances = <span class="keyword">new</span> <span class="keywordtype">float</span>[Width, Height];</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            ClosestPoint = <span class="keyword">new</span> <span class="keywordtype">int</span>[Width, Height];</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; NumberOfPoints; ++x)</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                var TempPoint = <span class="keyword">new</span> Point();</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                TempPoint.X = Rand.Next(0, Width);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                TempPoint.Y = Rand.Next(0, Height);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                Points.Add(TempPoint);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            }</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            CalculateDistances();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        [<a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Performance&quot;</span>, <span class="stringliteral">&quot;CA1819:PropertiesShouldNotReturnArrays&quot;</span>), <a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Performance&quot;</span>, <span class="stringliteral">&quot;CA1814:PreferJaggedArraysOverMultidimensional&quot;</span>, MessageId = <span class="stringliteral">&quot;Member&quot;</span>)]</div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="class_utilities_1_1_media_1_1_procedural_1_1_cellular_map.html#a5b50f62ff019e63b66e7dfa0c7c6e00d">   63</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">int</span>[,] ClosestPoint { <span class="keyword">get</span>; set; }</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        [<a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Performance&quot;</span>, <span class="stringliteral">&quot;CA1819:PropertiesShouldNotReturnArrays&quot;</span>), <a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Performance&quot;</span>, <span class="stringliteral">&quot;CA1814:PreferJaggedArraysOverMultidimensional&quot;</span>, MessageId = <span class="stringliteral">&quot;Member&quot;</span>)]</div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="class_utilities_1_1_media_1_1_procedural_1_1_cellular_map.html#a5b50f62ff019e63b66e7dfa0c7c6e00d">   69</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">int</span>[,] ClosestPoint { <span class="keyword">get</span>; set; }</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="class_utilities_1_1_media_1_1_procedural_1_1_cellular_map.html#a5ea573cdc78255adcccc8471fff6c7ab">   69</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">float</span>[,] Distances { <span class="keyword">get</span>; set; }</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        [<a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Performance&quot;</span>, <span class="stringliteral">&quot;CA1819:PropertiesShouldNotReturnArrays&quot;</span>), <a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Performance&quot;</span>, <span class="stringliteral">&quot;CA1814:PreferJaggedArraysOverMultidimensional&quot;</span>, MessageId = <span class="stringliteral">&quot;Member&quot;</span>)]</div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="class_utilities_1_1_media_1_1_procedural_1_1_cellular_map.html#a5ea573cdc78255adcccc8471fff6c7ab">   75</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">float</span>[,] Distances { <span class="keyword">get</span>; set; }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="class_utilities_1_1_media_1_1_procedural_1_1_cellular_map.html#ad0e8263b60d1af5cd7af1b50763b5495">   80</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">float</span> MaxDistance { <span class="keyword">get</span>; set; }</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="class_utilities_1_1_media_1_1_procedural_1_1_cellular_map.html#a2db11a0eaf21c0835043793f0fbe50f0">   85</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">float</span> MinDistance { <span class="keyword">get</span>; set; }</div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="class_utilities_1_1_media_1_1_procedural_1_1_cellular_map.html#ad0e8263b60d1af5cd7af1b50763b5495">   74</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">float</span> MaxDistance { <span class="keyword">get</span>; set; }</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="class_utilities_1_1_media_1_1_procedural_1_1_cellular_map.html#a2db11a0eaf21c0835043793f0fbe50f0">   79</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">float</span> MinDistance { <span class="keyword">get</span>; set; }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">int</span> _Height = 0;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">int</span> _Width = 0;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keyword">private</span> readonly List&lt;Point&gt; Points = <span class="keyword">new</span> List&lt;Point&gt;();</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> CalculateDistances()</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        {</div>
@@ -192,7 +192,7 @@ $(document).ready(function(){initNavTree('_cellular_map_8cs_source.html','');});
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keywordtype">int</span> Index = -1;</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> z = 0; z &lt; Points.Count; ++z)</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            {</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                <span class="keywordtype">float</span> Distance = (float)<a class="code" href="namespace_system.html">System</a>.Math.Sqrt(((Points[z].X - x) * (Points[z].X - x)) + ((Points[z].Y - y) * (Points[z].Y - y)));</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                var Distance = (float)<a class="code" href="namespace_system.html">System</a>.Math.Sqrt(((Points[z].X - x) * (Points[z].X - x)) + ((Points[z].Y - y) * (Points[z].Y - y)));</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                <span class="keywordflow">if</span> (Distance &lt; MaxDistance)</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                {</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                    MaxDistance = Distance;</div>
@@ -210,18 +210,14 @@ $(document).ready(function(){initNavTree('_cellular_map_8cs_source.html','');});
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keyword">internal</span> <span class="keyword">class </span>Point</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    {</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        <span class="keyword">public</span> Point()</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        {</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        }</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">int</span> X { <span class="keyword">get</span>; set; }</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">int</span> Y { <span class="keyword">get</span>; set; }</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    }</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;}</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">int</span> X { <span class="keyword">get</span>; set; }</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">int</span> Y { <span class="keyword">get</span>; set; }</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    }</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;}</div>
 <div class="ttc" id="namespace_system_html"><div class="ttname"><a href="namespace_system.html">System</a></div></div>
 <div class="ttc" id="namespace_utilities_html"><div class="ttname"><a href="namespace_utilities.html">Utilities</a></div></div>
-<div class="ttc" id="class_utilities_1_1_media_1_1_procedural_1_1_cellular_map_html_a5a2a53d01a21848a7b36a52671219cb4"><div class="ttname"><a href="class_utilities_1_1_media_1_1_procedural_1_1_cellular_map.html#a5a2a53d01a21848a7b36a52671219cb4">Utilities.Media.Procedural.CellularMap.CellularMap</a></div><div class="ttdeci">CellularMap(int Seed, int Width, int Height, int NumberOfPoints)</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_cellular_map_8cs_source.html#l00046">CellularMap.cs:46</a></div></div>
+<div class="ttc" id="class_utilities_1_1_media_1_1_procedural_1_1_cellular_map_html_a5a2a53d01a21848a7b36a52671219cb4"><div class="ttname"><a href="class_utilities_1_1_media_1_1_procedural_1_1_cellular_map.html#a5a2a53d01a21848a7b36a52671219cb4">Utilities.Media.Procedural.CellularMap.CellularMap</a></div><div class="ttdeci">CellularMap(int Seed, int Width, int Height, int NumberOfPoints)</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_cellular_map_8cs_source.html#l00040">CellularMap.cs:40</a></div></div>
 <div class="ttc" id="class_utilities_1_1_media_1_1_procedural_1_1_cellular_map_html"><div class="ttname"><a href="class_utilities_1_1_media_1_1_procedural_1_1_cellular_map.html">Utilities.Media.Procedural.CellularMap</a></div><div class="ttdoc">A cellular map creator </div><div class="ttdef"><b>Definition:</b> <a href="_cellular_map_8cs_source.html#l00031">CellularMap.cs:31</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -229,7 +225,7 @@ $(document).ready(function(){initNavTree('_cellular_map_8cs_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_7ba1ae5b3988c571c02a9d1c2c91e331.html">Media</a></li><li class="navelem"><a class="el" href="dir_a3eed4b998e4ac151013a330af78a718.html">Procedural</a></li><li class="navelem"><a class="el" href="_cellular_map_8cs.html">CellularMap.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:46 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:43 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

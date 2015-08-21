@@ -254,7 +254,7 @@ $(document).ready(function(){initNavTree('_document_8cs_source.html','');});
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
 <div class="line"><a name="l00230"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_formats_1_1_r_s_s_1_1_document.html#a09df97caac41c9195e65805e50f31372">  230</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">override</span> <span class="keywordtype">void</span> <a class="code" href="class_utilities_1_1_i_o_1_1_file_formats_1_1_r_s_s_1_1_document.html#a09df97caac41c9195e65805e50f31372">LoadFromData</a>(<span class="keywordtype">string</span> Data)</div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        {</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            XmlDocument <a class="code" href="class_utilities_1_1_i_o_1_1_file_formats_1_1_r_s_s_1_1_document.html">Document</a> = <span class="keyword">new</span> XmlDocument();</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            var <a class="code" href="class_utilities_1_1_i_o_1_1_file_formats_1_1_r_s_s_1_1_document.html">Document</a> = <span class="keyword">new</span> XmlDocument();</div>
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;            Document.LoadXml(Data);</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;            Load(Document);</div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        }</div>
@@ -264,7 +264,7 @@ $(document).ready(function(){initNavTree('_document_8cs_source.html','');});
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;            Contract.Requires&lt;ArgumentNullException&gt;(Document != null, <span class="stringliteral">&quot;Document&quot;</span>);</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;            Channels = Channels.Check(<span class="keyword">new</span> List&lt;Channel&gt;());</div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;            XPathNavigator Navigator = Document.CreateNavigator();</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;            XmlNamespaceManager NamespaceManager = <span class="keyword">new</span> XmlNamespaceManager(Navigator.NameTable);</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;            var NamespaceManager = <span class="keyword">new</span> XmlNamespaceManager(Navigator.NameTable);</div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;            XPathNodeIterator Nodes = Navigator.Select(<span class="stringliteral">&quot;./channel&quot;</span>, NamespaceManager);</div>
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;            <span class="keywordflow">foreach</span> (XmlNode Element <span class="keywordflow">in</span> Nodes)</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;            {</div>
@@ -277,7 +277,7 @@ $(document).ready(function(){initNavTree('_document_8cs_source.html','');});
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;                {</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;                    Channels.Add(<span class="keyword">new</span> Channel((XmlElement)Element));</div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;                }</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;                List&lt;Item&gt; Items = <span class="keyword">new</span> List&lt;Item&gt;();</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;                var Items = <span class="keyword">new</span> List&lt;Item&gt;();</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                Nodes = Navigator.Select(<span class="stringliteral">&quot;.//item&quot;</span>, NamespaceManager);</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                <span class="keywordflow">foreach</span> (XmlNode Element <span class="keywordflow">in</span> Nodes)</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                {</div>
@@ -321,7 +321,7 @@ $(document).ready(function(){initNavTree('_document_8cs_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_cdffdb722b1f3b30993d9a14c7e19da9.html">IO</a></li><li class="navelem"><a class="el" href="dir_477cfb373389f9b5d984bcb90362a6a9.html">FileFormats</a></li><li class="navelem"><a class="el" href="dir_a3591d04f361644678f2dc5c1c23a709.html">RSS</a></li><li class="navelem"><a class="el" href="_document_8cs.html">Document.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:44 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:41 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

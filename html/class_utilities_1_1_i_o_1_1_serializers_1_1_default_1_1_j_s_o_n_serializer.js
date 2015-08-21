@@ -1,6 +1,5 @@
 var class_utilities_1_1_i_o_1_1_serializers_1_1_default_1_1_j_s_o_n_serializer =
 [
-    [ "JSONSerializer", "class_utilities_1_1_i_o_1_1_serializers_1_1_default_1_1_j_s_o_n_serializer.html#a583c6ebfd62061a6fdfc526f42855ff9", null ],
     [ "Deserialize", "class_utilities_1_1_i_o_1_1_serializers_1_1_default_1_1_j_s_o_n_serializer.html#a2fec021a26d25dc6a593f233a5df0360", null ],
     [ "Serialize", "class_utilities_1_1_i_o_1_1_serializers_1_1_default_1_1_j_s_o_n_serializer.html#a59d178c4383feb073e608bd46cd12ab4", null ],
     [ "ContentType", "class_utilities_1_1_i_o_1_1_serializers_1_1_default_1_1_j_s_o_n_serializer.html#a849e7f5ac3fdf30f5acf35d8575c3735", null ],

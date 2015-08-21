@@ -162,7 +162,7 @@ $(document).ready(function(){initNavTree('_i_o_2_compression_2_manager_8cs_sourc
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
 <div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_compression_1_1_manager.html#a4c16e7f3eb721290b7594af55db322bc">   80</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">string</span> <a class="code" href="class_utilities_1_1_i_o_1_1_compression_1_1_manager.html#a4c16e7f3eb721290b7594af55db322bc">ToString</a>()</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            StringBuilder Builder = <span class="keyword">new</span> StringBuilder();</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            var Builder = <span class="keyword">new</span> StringBuilder();</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            Builder.AppendLineFormat(<span class="stringliteral">&quot;Compressors: {0}&quot;</span>, Compressors.OrderBy(x =&gt; x.Key).ToString(x =&gt; x.Key, <span class="stringliteral">&quot;, &quot;</span>));</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">return</span> Builder.ToString();</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div>
@@ -185,7 +185,7 @@ $(document).ready(function(){initNavTree('_i_o_2_compression_2_manager_8cs_sourc
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_cdffdb722b1f3b30993d9a14c7e19da9.html">IO</a></li><li class="navelem"><a class="el" href="dir_405b9be83027a49645a7f9e7cc0359f8.html">Compression</a></li><li class="navelem"><a class="el" href="_i_o_2_compression_2_manager_8cs.html">Manager.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:40 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:37 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

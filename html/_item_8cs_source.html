@@ -151,7 +151,7 @@ $(document).ready(function(){initNavTree('_item_8cs_source.html','');});
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        {</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            Contract.Requires&lt;ArgumentNullException&gt;(Doc != null, <span class="stringliteral">&quot;Doc&quot;</span>);</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            XPathNavigator Element = Doc.CreateNavigator();</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            XmlNamespaceManager NamespaceManager = <span class="keyword">new</span> XmlNamespaceManager(Element.NameTable);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            var NamespaceManager = <span class="keyword">new</span> XmlNamespaceManager(Element.NameTable);</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            NamespaceManager.AddNamespace(<span class="stringliteral">&quot;media&quot;</span>, <span class="stringliteral">&quot;http://search.yahoo.com/mrss/&quot;</span>);</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            XPathNavigator Node = Element.SelectSingleNode(<span class="stringliteral">&quot;./title&quot;</span>, NamespaceManager);</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keywordflow">if</span> (Node != null)</div>
@@ -220,7 +220,7 @@ $(document).ready(function(){initNavTree('_item_8cs_source.html','');});
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
 <div class="line"><a name="l00153"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_formats_1_1_r_s_s_1_1_item.html#a7cf742f83cf5bf135e820abc159d5713">  153</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">string</span> <a class="code" href="class_utilities_1_1_i_o_1_1_file_formats_1_1_r_s_s_1_1_item.html#a7cf742f83cf5bf135e820abc159d5713">ToString</a>()</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        {</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            StringBuilder ItemString = <span class="keyword">new</span> StringBuilder();</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            var ItemString = <span class="keyword">new</span> StringBuilder();</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            ItemString.Append(<span class="stringliteral">&quot;&lt;item&gt;&lt;title&gt;&quot;</span>).Append(Title).Append(<span class="stringliteral">&quot;&lt;/title&gt;\r\n&lt;link&gt;&quot;</span>)</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                .Append(Link).Append(<span class="stringliteral">&quot;&lt;/link&gt;\r\n&lt;author&gt;&quot;</span>).Append(Author)</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                .Append(<span class="stringliteral">&quot;&lt;/author&gt;\r\n&quot;</span>);</div>
@@ -261,7 +261,7 @@ $(document).ready(function(){initNavTree('_item_8cs_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_cdffdb722b1f3b30993d9a14c7e19da9.html">IO</a></li><li class="navelem"><a class="el" href="dir_477cfb373389f9b5d984bcb90362a6a9.html">FileFormats</a></li><li class="navelem"><a class="el" href="dir_a3591d04f361644678f2dc5c1c23a709.html">RSS</a></li><li class="navelem"><a class="el" href="_item_8cs.html">Item.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:44 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:41 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

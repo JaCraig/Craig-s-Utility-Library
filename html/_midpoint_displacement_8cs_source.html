@@ -144,7 +144,7 @@ $(document).ready(function(){initNavTree('_midpoint_displacement_8cs_source.html
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            Contract.Requires&lt;ArgumentException&gt;(NumberOfCracks &gt;= 0, <span class="stringliteral">&quot;Number of cracks should be greater than 0&quot;</span>);</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            Contract.Requires&lt;ArgumentException&gt;(Width &gt;= 0, <span class="stringliteral">&quot;Width must be greater than or equal to 0&quot;</span>);</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            Contract.Requires&lt;ArgumentException&gt;(Height &gt;= 0, <span class="stringliteral">&quot;Height must be greater than or equal to 0&quot;</span>);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            SwiftBitmap ReturnValue = <span class="keyword">new</span> SwiftBitmap(Width, Height);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            var ReturnValue = <span class="keyword">new</span> SwiftBitmap(Width, Height);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            List&lt;Line&gt; Lines = GenerateLines(Width, Height, NumberOfCracks, Iterations, MaxChange, MaxLength, Seed);</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keyword">using</span> (Graphics ReturnGraphic = Graphics.FromImage(ReturnValue.InternalBitmap))</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            {</div>
@@ -162,8 +162,8 @@ $(document).ready(function(){initNavTree('_midpoint_displacement_8cs_source.html
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> List&lt;Line&gt; GenerateLines(<span class="keywordtype">int</span> Width, <span class="keywordtype">int</span> Height, <span class="keywordtype">int</span> NumberOfCracks, <span class="keywordtype">int</span> Iterations, <span class="keywordtype">int</span> MaxChange, <span class="keywordtype">int</span> MaxLength, <span class="keywordtype">int</span> Seed)</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        {</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            Contract.Requires&lt;ArgumentException&gt;(NumberOfCracks &gt;= 0 &amp;&amp; Width &gt;= 0);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            List&lt;Line&gt; Lines = <span class="keyword">new</span> List&lt;Line&gt;();</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <a class="code" href="namespace_system.html">System</a>.Random Generator = <span class="keyword">new</span> <a class="code" href="namespace_system.html">System</a>.Random(Seed);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            var Lines = <span class="keyword">new</span> List&lt;Line&gt;();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            var Generator = <span class="keyword">new</span> <a class="code" href="namespace_system.html">System</a>.Random(Seed);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; NumberOfCracks; ++x)</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            {</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                Line TempLine = null;</div>
@@ -176,7 +176,7 @@ $(document).ready(function(){initNavTree('_midpoint_displacement_8cs_source.html
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                        + ((TempLine.Y1 - TempLine.Y2) * (TempLine.Y1 - TempLine.Y2)));</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                } <span class="keywordflow">while</span> (LineLength &gt; MaxLength &amp;&amp; LineLength &lt;= 0);</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                Lines.Add(TempLine);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                List&lt;Line&gt; TempLineList = <span class="keyword">new</span> List&lt;Line&gt;();</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                var TempLineList = <span class="keyword">new</span> List&lt;Line&gt;();</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                TempLineList.Add(TempLine);</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; Iterations; ++y)</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                {</div>
@@ -191,8 +191,8 @@ $(document).ready(function(){initNavTree('_midpoint_displacement_8cs_source.html
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                    {</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                        YBreak = Generator.Next(LineUsing.Y1, LineUsing.Y2) + Generator.Next(-MaxChange, MaxChange);</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                    }</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                    Line LineA = <span class="keyword">new</span> Line(LineUsing.X1, XBreak, LineUsing.Y1, YBreak);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                    Line LineB = <span class="keyword">new</span> Line(XBreak, LineUsing.X2, YBreak, LineUsing.Y2);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                    var LineA = <span class="keyword">new</span> Line(LineUsing.X1, XBreak, LineUsing.Y1, YBreak);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                    var LineB = <span class="keyword">new</span> Line(XBreak, LineUsing.X2, YBreak, LineUsing.Y2);</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                    TempLineList.Remove(LineUsing);</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                    TempLineList.Add(LineA);</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                    TempLineList.Add(LineB);</div>
@@ -245,7 +245,7 @@ $(document).ready(function(){initNavTree('_midpoint_displacement_8cs_source.html
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_7ba1ae5b3988c571c02a9d1c2c91e331.html">Media</a></li><li class="navelem"><a class="el" href="dir_a3eed4b998e4ac151013a330af78a718.html">Procedural</a></li><li class="navelem"><a class="el" href="_midpoint_displacement_8cs.html">MidpointDisplacement.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:46 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:43 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

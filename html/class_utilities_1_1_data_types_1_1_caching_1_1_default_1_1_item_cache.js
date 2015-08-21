@@ -1,6 +1,5 @@
 var class_utilities_1_1_data_types_1_1_caching_1_1_default_1_1_item_cache =
 [
-    [ "ItemCache", "class_utilities_1_1_data_types_1_1_caching_1_1_default_1_1_item_cache.html#a3f05293cbdd487fe6a5c467d5512cd82", null ],
     [ "Add", "class_utilities_1_1_data_types_1_1_caching_1_1_default_1_1_item_cache.html#a43263eba5edef14ee5d95b35fd33486f", null ],
     [ "Clear", "class_utilities_1_1_data_types_1_1_caching_1_1_default_1_1_item_cache.html#afd7107fdbc6c758b74d28213508c1543", null ],
     [ "Contains", "class_utilities_1_1_data_types_1_1_caching_1_1_default_1_1_item_cache.html#ab85468422689a0feb5e062e2104f11c7", null ],

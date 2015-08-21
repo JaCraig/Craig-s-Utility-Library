@@ -134,44 +134,38 @@ $(document).ready(function(){initNavTree('_default_logger_8cs_source.html','');}
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;{</div>
 <div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_logger.html">   29</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_logger.html">DefaultLogger</a> : <a class="code" href="class_utilities_1_1_i_o_1_1_logging_1_1_base_classes_1_1_logger_base.html">LoggerBase</a></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    {</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_logger.html#aab55c3c5a07d6b22c00b1ac8a8dcf461">   34</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_logger.html#aab55c3c5a07d6b22c00b1ac8a8dcf461">DefaultLogger</a>()</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            : base()</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">string</span> Name</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_logger.html#a10626d3e2cab35630db1aa723691f6d4">   35</a></span>&#160;        {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> <span class="stringliteral">&quot;Default Logger&quot;</span>; }</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        }</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">string</span> Name</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_logger.html#a10626d3e2cab35630db1aa723691f6d4">   43</a></span>&#160;        {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> <span class="stringliteral">&quot;Default Logger&quot;</span>; }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        }</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_logger.html#a86772853e6a6d2b6049eb46cac250379">   51</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> <a class="code" href="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_logger.html#a86772853e6a6d2b6049eb46cac250379">AddLog</a>(<span class="keywordtype">string</span> Name = <span class="stringliteral">&quot;Default&quot;</span>)</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keywordflow">if</span> (!Logs.ContainsKey(Name))</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                Logs.Add(Name, <span class="keyword">new</span> <a class="code" href="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_log.html">DefaultLog</a>(Name));</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                Logs[Name].Dispose();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                Logs[Name] = <span class="keyword">new</span> <a class="code" href="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_log.html">DefaultLog</a>(Name);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            }</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        }</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_logger.html#a86772853e6a6d2b6049eb46cac250379">   43</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> <a class="code" href="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_logger.html#a86772853e6a6d2b6049eb46cac250379">AddLog</a>(<span class="keywordtype">string</span> Name = <span class="stringliteral">&quot;Default&quot;</span>)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keywordflow">if</span> (!Logs.ContainsKey(Name))</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                Logs.Add(Name, <span class="keyword">new</span> <a class="code" href="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_log.html">DefaultLog</a>(Name));</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                Logs[Name].Dispose();</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                Logs[Name] = <span class="keyword">new</span> <a class="code" href="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_log.html">DefaultLog</a>(Name);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        }</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}</div>
 <div class="ttc" id="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_log_html"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_log.html">Utilities.IO.Logging.Default.DefaultLog</a></div><div class="ttdoc">Outputs messages to a file in ~/App_Data/Logs/ if a web app or ~/Logs/ if windows app with the format...</div><div class="ttdef"><b>Definition:</b> <a href="_default_log_8cs_source.html#l00034">DefaultLog.cs:34</a></div></div>
 <div class="ttc" id="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_logger_html"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_logger.html">Utilities.IO.Logging.Default.DefaultLogger</a></div><div class="ttdoc">Default logger if one isn&#39;t found </div><div class="ttdef"><b>Definition:</b> <a href="_default_logger_8cs_source.html#l00029">DefaultLogger.cs:29</a></div></div>
-<div class="ttc" id="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_logger_html_a86772853e6a6d2b6049eb46cac250379"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_logger.html#a86772853e6a6d2b6049eb46cac250379">Utilities.IO.Logging.Default.DefaultLogger.AddLog</a></div><div class="ttdeci">override void AddLog(string Name=&quot;Default&quot;)</div><div class="ttdoc">Adds a log to the logger </div><div class="ttdef"><b>Definition:</b> <a href="_default_logger_8cs_source.html#l00051">DefaultLogger.cs:51</a></div></div>
+<div class="ttc" id="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_logger_html_a86772853e6a6d2b6049eb46cac250379"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_logger.html#a86772853e6a6d2b6049eb46cac250379">Utilities.IO.Logging.Default.DefaultLogger.AddLog</a></div><div class="ttdeci">override void AddLog(string Name=&quot;Default&quot;)</div><div class="ttdoc">Adds a log to the logger </div><div class="ttdef"><b>Definition:</b> <a href="_default_logger_8cs_source.html#l00043">DefaultLogger.cs:43</a></div></div>
 <div class="ttc" id="namespace_utilities_html"><div class="ttname"><a href="namespace_utilities.html">Utilities</a></div></div>
-<div class="ttc" id="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_logger_html_aab55c3c5a07d6b22c00b1ac8a8dcf461"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_logger.html#aab55c3c5a07d6b22c00b1ac8a8dcf461">Utilities.IO.Logging.Default.DefaultLogger.DefaultLogger</a></div><div class="ttdeci">DefaultLogger()</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_default_logger_8cs_source.html#l00034">DefaultLogger.cs:34</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_1_1_logging_1_1_base_classes_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_logging_1_1_base_classes.html">Utilities.IO.Logging.BaseClasses</a></div><div class="ttdef"><b>Definition:</b> <a href="_log_base_8cs_source.html#l00030">LogBase.cs:30</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o.html">Utilities.IO</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_1_1_logging_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_logging.html">Utilities.IO.Logging</a></div></div>
-<div class="ttc" id="class_utilities_1_1_i_o_1_1_logging_1_1_base_classes_1_1_logger_base_html"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_logging_1_1_base_classes_1_1_logger_base.html">Utilities.IO.Logging.BaseClasses.LoggerBase</a></div><div class="ttdoc">Logger base </div><div class="ttdef"><b>Definition:</b> <a href="_logger_base_8cs_source.html#l00034">LoggerBase.cs:34</a></div></div>
+<div class="ttc" id="class_utilities_1_1_i_o_1_1_logging_1_1_base_classes_1_1_logger_base_html"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_logging_1_1_base_classes_1_1_logger_base.html">Utilities.IO.Logging.BaseClasses.LoggerBase</a></div><div class="ttdoc">Logger base </div><div class="ttdef"><b>Definition:</b> <a href="_logger_base_8cs_source.html#l00033">LoggerBase.cs:33</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_cdffdb722b1f3b30993d9a14c7e19da9.html">IO</a></li><li class="navelem"><a class="el" href="dir_b9f66d3f47b442313a4db381c24471e6.html">Logging</a></li><li class="navelem"><a class="el" href="dir_de1350c78b9dc7001b2877cf0cb71fd2.html">Default</a></li><li class="navelem"><a class="el" href="_default_logger_8cs.html">DefaultLogger.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:45 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:42 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

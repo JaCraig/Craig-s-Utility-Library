@@ -17,7 +17,6 @@ var searchData=
   ['pluginbase_2ecs',['PluginBase.cs',['../_plugin_base_8cs.html',1,'']]],
   ['plugindata',['PluginData',['../class_ironman_1_1_core_1_1_plugins_1_1_base_classes_1_1_plugin_base.html#a9194f0d0079b60db45f92fcf5b7a44bf',1,'Ironman.Core.Plugins.BaseClasses.PluginBase.PluginData()'],['../interface_ironman_1_1_core_1_1_plugins_1_1_interfaces_1_1_i_plugin.html#a46f1aeb2211e602bc11b06f4ea7a60b1',1,'Ironman.Core.Plugins.Interfaces.IPlugin.PluginData()']]],
   ['pluginfile',['PluginFile',['../class_ironman_1_1_models_1_1_plugins_1_1_plugin_file.html',1,'Ironman::Models::Plugins']]],
-  ['pluginfile',['PluginFile',['../class_ironman_1_1_models_1_1_plugins_1_1_plugin_file.html#a878cf357e50abead81d4c013ba60c529',1,'Ironman::Models::Plugins::PluginFile']]],
   ['pluginfile_2ecs',['PluginFile.cs',['../_plugin_file_8cs.html',1,'']]],
   ['pluginid',['PluginID',['../class_ironman_1_1_models_1_1_plugins_1_1_plugin.html#a3c679c5eb977d4383e9dd9bfbdeacf07',1,'Ironman::Models::Plugins::Plugin']]],
   ['pluginlist',['PluginList',['../class_ironman_1_1_models_1_1_plugins_1_1_plugin_list.html',1,'Ironman::Models::Plugins']]],

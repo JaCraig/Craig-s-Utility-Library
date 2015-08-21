@@ -157,7 +157,7 @@ $(document).ready(function(){initNavTree('_symmetric_base_8cs_source.html','');}
 <div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_encryption_1_1_base_classes_1_1_symmetric_base.html#a981c9f968577360e80da42d0f61ebaf1">   76</a></span>&#160;        <span class="keyword">public</span> byte[] <a class="code" href="class_utilities_1_1_i_o_1_1_encryption_1_1_base_classes_1_1_symmetric_base.html#a981c9f968577360e80da42d0f61ebaf1">Decrypt</a>(byte[] Data, DeriveBytes Key, <span class="keywordtype">string</span> Algorithm = <span class="stringliteral">&quot;AES&quot;</span>, <span class="keywordtype">string</span> InitialVector = <span class="stringliteral">&quot;OFRna73m*aze01xY&quot;</span>, <span class="keywordtype">int</span> KeySize = 256)</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        {</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrEmpty(InitialVector))</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> ArgumentNullException(<span class="stringliteral">&quot;InitialVector&quot;</span>);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> ArgumentNullException(nameof(InitialVector));</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keywordflow">if</span> (Data == null)</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                <span class="keywordflow">return</span> null;</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keyword">using</span> (SymmetricAlgorithm SymmetricKey = GetProvider(Algorithm))</div>
@@ -201,7 +201,7 @@ $(document).ready(function(){initNavTree('_symmetric_base_8cs_source.html','');}
 <div class="line"><a name="l00159"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_encryption_1_1_base_classes_1_1_symmetric_base.html#ab62b7030550c7b9c92094ff47d5f6682">  159</a></span>&#160;        <span class="keyword">public</span> byte[] <a class="code" href="class_utilities_1_1_i_o_1_1_encryption_1_1_base_classes_1_1_symmetric_base.html#ab62b7030550c7b9c92094ff47d5f6682">Encrypt</a>(byte[] Data, DeriveBytes Key, <span class="keywordtype">string</span> Algorithm = <span class="stringliteral">&quot;AES&quot;</span>, <span class="keywordtype">string</span> InitialVector = <span class="stringliteral">&quot;OFRna73m*aze01xY&quot;</span>, <span class="keywordtype">int</span> KeySize = 256)</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        {</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrEmpty(InitialVector))</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> ArgumentNullException(<span class="stringliteral">&quot;InitialVector&quot;</span>);</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> ArgumentNullException(nameof(InitialVector));</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            <span class="keywordflow">if</span> (Data == null)</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                <span class="keywordflow">return</span> null;</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            <span class="keyword">using</span> (SymmetricAlgorithm SymmetricKey = GetProvider(Algorithm))</div>
@@ -257,7 +257,7 @@ $(document).ready(function(){initNavTree('_symmetric_base_8cs_source.html','');}
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_cdffdb722b1f3b30993d9a14c7e19da9.html">IO</a></li><li class="navelem"><a class="el" href="dir_e35fdc21017dc1aac5bc1e058230d41b.html">Encryption</a></li><li class="navelem"><a class="el" href="dir_c73576b7b3a57f7c7943024c58f4f396.html">BaseClasses</a></li><li class="navelem"><a class="el" href="_symmetric_base_8cs.html">SymmetricBase.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:43 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:40 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

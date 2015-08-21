@@ -311,7 +311,7 @@ $(document).ready(function(){initNavTree('_manager_2_default_2_profiler_8cs_sour
 <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;</div>
 <div class="line"><a name="l00298"></a><span class="lineno"><a class="line" href="class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler.html#a2ebcf01c5ec88b76cef2cf4525dc9977">  298</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">bool</span> <a class="code" href="class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler.html#a2ebcf01c5ec88b76cef2cf4525dc9977">Equals</a>(<span class="keywordtype">object</span> obj)</div>
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        {</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;            <a class="code" href="class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler.html">Profiler</a> Temp = obj as <a class="code" href="class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler.html">Profiler</a>;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;            var Temp = obj as <a class="code" href="class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler.html">Profiler</a>;</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;            <span class="keywordflow">if</span> (Temp == null)</div>
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;            <span class="keywordflow">return</span> Temp == <span class="keyword">this</span>;</div>
@@ -364,7 +364,7 @@ $(document).ready(function(){initNavTree('_manager_2_default_2_profiler_8cs_sour
 <div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;</div>
 <div class="line"><a name="l00376"></a><span class="lineno"><a class="line" href="class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler.html#ae363e770886add5b0342ae5a7d71a999">  376</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">string</span> <a class="code" href="class_utilities_1_1_profiler_1_1_manager_1_1_default_1_1_profiler.html#ae363e770886add5b0342ae5a7d71a999">ToString</a>()</div>
 <div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;        {</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;            StringBuilder Builder = <span class="keyword">new</span> StringBuilder();</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;            var Builder = <span class="keyword">new</span> StringBuilder();</div>
 <div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;            Level.Times(x =&gt; { Builder.Append(<span class="stringliteral">&quot;\t&quot;</span>); });</div>
 <div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;            Builder.AppendLineFormat(<span class="stringliteral">&quot;{0} ({1} ms)&quot;</span>, Function, Entries.Sum(x =&gt; x.Time));</div>
 <div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;            <span class="keywordflow">foreach</span> (<span class="keywordtype">string</span> Key <span class="keywordflow">in</span> Children.Keys)</div>
@@ -418,7 +418,7 @@ $(document).ready(function(){initNavTree('_manager_2_default_2_profiler_8cs_sour
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_0deab5547d8c4818f15d478fb019a5e1.html">Profiler</a></li><li class="navelem"><a class="el" href="dir_c1cc2e08147db8e9d10bbcc053886d2c.html">Manager</a></li><li class="navelem"><a class="el" href="dir_55ce24594c0db7fdd7e508fcb370a5ca.html">Default</a></li><li class="navelem"><a class="el" href="_manager_2_default_2_profiler_8cs.html">Profiler.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:49 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:46 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

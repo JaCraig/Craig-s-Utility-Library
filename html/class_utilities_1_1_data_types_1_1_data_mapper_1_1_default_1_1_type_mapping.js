@@ -1,6 +1,5 @@
 var class_utilities_1_1_data_types_1_1_data_mapper_1_1_default_1_1_type_mapping =
 [
-    [ "TypeMapping", "class_utilities_1_1_data_types_1_1_data_mapper_1_1_default_1_1_type_mapping.html#a90a23eec56434ee4987d74834540f93d", null ],
     [ "AddMapping", "class_utilities_1_1_data_types_1_1_data_mapper_1_1_default_1_1_type_mapping.html#ae6179a042314212807cb520884604479", null ],
     [ "AddMapping", "class_utilities_1_1_data_types_1_1_data_mapper_1_1_default_1_1_type_mapping.html#a3a22ac67ceda77ad5d0e61e243cce7a1", null ],
     [ "AddMapping", "class_utilities_1_1_data_types_1_1_data_mapper_1_1_default_1_1_type_mapping.html#a4674b43c54a029c6b4684838f6a4339b", null ],

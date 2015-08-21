@@ -206,8 +206,8 @@ $(document).ready(function(){initNavTree('_ftp_file_8cs_source.html','');});
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        {</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <span class="keywordflow">if</span> (Directory == null || !Exists)</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">this</span>;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            <a class="code" href="class_utilities_1_1_i_o_1_1_file_info.html">FileInfo</a> File = <span class="keyword">new</span> <a class="code" href="class_utilities_1_1_i_o_1_1_file_info.html">FileInfo</a>(Directory.<a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html#abd8e5633719f53721ee4327901c352a2">FullName</a> + <span class="stringliteral">&quot;\\&quot;</span> + Name.Right(Name.Length - (Name.LastIndexOf(<span class="stringliteral">&quot;/&quot;</span>, StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;            <span class="keywordflow">if</span> (!File.<a class="code" href="class_utilities_1_1_i_o_1_1_file_info.html#aa80867b315011b58bb925bb80d7eba7c">Exists</a> || Overwrite)</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            var File = <span class="keyword">new</span> <a class="code" href="class_utilities_1_1_i_o_1_1_file_info.html">FileInfo</a>(Directory.<a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html#abd8e5633719f53721ee4327901c352a2">FullName</a> + <span class="stringliteral">&quot;\\&quot;</span> + Name.Right(Name.Length - (Name.LastIndexOf(<span class="stringliteral">&quot;/&quot;</span>, StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;            <span class="keywordflow">if</span> (!File.Exists || Overwrite)</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            {</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                File.<a class="code" href="class_utilities_1_1_i_o_1_1_file_info.html#a6ea1ab31125852a557d52ce938b4434f">Write</a>(ReadBinary());</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                <span class="keywordflow">return</span> File;</div>
@@ -217,7 +217,7 @@ $(document).ready(function(){initNavTree('_ftp_file_8cs_source.html','');});
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;</div>
 <div class="line"><a name="l00166"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_ftp_file.html#a8c4ab3049dd590e5aa3a531e3be2853d">  166</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">string</span> <a class="code" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_ftp_file.html#a8c4ab3049dd590e5aa3a531e3be2853d">Delete</a>()</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        {</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            FtpWebRequest Request = WebRequest.Create(InternalFile) as FtpWebRequest;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            var Request = WebRequest.Create(InternalFile) as FtpWebRequest;</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;            Request.Method = WebRequestMethods.Ftp.DeleteFile;</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            SetupData(Request, null);</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            SetupCredentials(Request);</div>
@@ -234,7 +234,7 @@ $(document).ready(function(){initNavTree('_ftp_file_8cs_source.html','');});
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;</div>
 <div class="line"><a name="l00191"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_ftp_file.html#aa98f3e2b809ac5a61b279cf3d5087a1f">  191</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">string</span> <a class="code" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_ftp_file.html#aa98f3e2b809ac5a61b279cf3d5087a1f">Read</a>()</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        {</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;            FtpWebRequest Request = WebRequest.Create(InternalFile) as FtpWebRequest;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;            var Request = WebRequest.Create(InternalFile) as FtpWebRequest;</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            Request.Method = WebRequestMethods.Ftp.DownloadFile;</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;            SetupData(Request, null);</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;            SetupCredentials(Request);</div>
@@ -248,7 +248,7 @@ $(document).ready(function(){initNavTree('_ftp_file_8cs_source.html','');});
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div>
 <div class="line"><a name="l00213"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_ftp_file.html#a0ca63d44b84d9ba93743ebd602691c05">  213</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> <a class="code" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_ftp_file.html#a0ca63d44b84d9ba93743ebd602691c05">Rename</a>(<span class="keywordtype">string</span> NewName)</div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        {</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;            FtpWebRequest Request = WebRequest.Create(InternalFile) as FtpWebRequest;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;            var Request = WebRequest.Create(InternalFile) as FtpWebRequest;</div>
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            Request.Method = WebRequestMethods.Ftp.Rename;</div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;            Request.RenameTo = NewName;</div>
 <div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;            SetupData(Request, null);</div>
@@ -264,7 +264,7 @@ $(document).ready(function(){initNavTree('_ftp_file_8cs_source.html','');});
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;</div>
 <div class="line"><a name="l00242"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_ftp_file.html#ab713cfb01604ed210b8456a944b2d470">  242</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> byte[] <a class="code" href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_ftp_file.html#ab713cfb01604ed210b8456a944b2d470">Write</a>(byte[] Content, <a class="code" href="namespace_system.html">System</a>.IO.FileMode Mode = FileMode.Create)</div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        {</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;            FtpWebRequest Request = WebRequest.Create(InternalFile) as FtpWebRequest;</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;            var Request = WebRequest.Create(InternalFile) as FtpWebRequest;</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;            Request.Method = WebRequestMethods.Ftp.UploadFile;</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            SetupData(Request, Content);</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            SetupCredentials(Request);</div>
@@ -327,7 +327,6 @@ $(document).ready(function(){initNavTree('_ftp_file_8cs_source.html','');});
 <div class="ttc" id="namespace_utilities_html"><div class="ttname"><a href="namespace_utilities.html">Utilities</a></div></div>
 <div class="ttc" id="class_utilities_1_1_i_o_1_1_file_info_html_a6ea1ab31125852a557d52ce938b4434f"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_info.html#a6ea1ab31125852a557d52ce938b4434f">Utilities.IO.FileInfo.Write</a></div><div class="ttdeci">string Write(string Content, System.IO.FileMode Mode=FileMode.Create, Encoding Encoding=null)</div><div class="ttdoc">Writes content to the file </div><div class="ttdef"><b>Definition:</b> <a href="_file_info_8cs_source.html#l00410">FileInfo.cs:410</a></div></div>
 <div class="ttc" id="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_ftp_file_html_a8c4ab3049dd590e5aa3a531e3be2853d"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_ftp_file.html#a8c4ab3049dd590e5aa3a531e3be2853d">Utilities.IO.FileSystem.Default.FtpFile.Delete</a></div><div class="ttdeci">override string Delete()</div><div class="ttdoc">Delete (does nothing) </div><div class="ttdef"><b>Definition:</b> <a href="_ftp_file_8cs_source.html#l00166">FtpFile.cs:166</a></div></div>
-<div class="ttc" id="class_utilities_1_1_i_o_1_1_file_info_html_aa80867b315011b58bb925bb80d7eba7c"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_info.html#aa80867b315011b58bb925bb80d7eba7c">Utilities.IO.FileInfo.Exists</a></div><div class="ttdeci">bool Exists</div><div class="ttdoc">Does the file exist? </div><div class="ttdef"><b>Definition:</b> <a href="_file_info_8cs_source.html#l00077">FileInfo.cs:77</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_data_types_html"><div class="ttname"><a href="namespace_utilities_1_1_data_types.html">Utilities.DataTypes</a></div></div>
 <div class="ttc" id="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory_html_abd8e5633719f53721ee4327901c352a2"><div class="ttname"><a href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html#abd8e5633719f53721ee4327901c352a2">Utilities.IO.FileSystem.Interfaces.IDirectory.FullName</a></div><div class="ttdeci">string FullName</div><div class="ttdoc">Full path to the directory </div><div class="ttdef"><b>Definition:</b> <a href="_i_directory_8cs_source.html#l00055">IDirectory.cs:55</a></div></div>
 <div class="ttc" id="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_ftp_file_html_a31737022380224b64c458008a5010637"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_ftp_file.html#a31737022380224b64c458008a5010637">Utilities.IO.FileSystem.Default.FtpFile.MoveTo</a></div><div class="ttdeci">override void MoveTo(IDirectory Directory)</div><div class="ttdoc">Moves the file (not used) </div><div class="ttdef"><b>Definition:</b> <a href="_ftp_file_8cs_source.html#l00179">FtpFile.cs:179</a></div></div>
@@ -345,7 +344,7 @@ $(document).ready(function(){initNavTree('_ftp_file_8cs_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_cdffdb722b1f3b30993d9a14c7e19da9.html">IO</a></li><li class="navelem"><a class="el" href="dir_dd846de6290642c8890e926ebf368f0a.html">FileSystem</a></li><li class="navelem"><a class="el" href="dir_907aa97e1531825d990413d236dd34b6.html">Default</a></li><li class="navelem"><a class="el" href="_ftp_file_8cs.html">FtpFile.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:44 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:42 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -228,7 +228,7 @@ $(document).ready(function(){initNavTree('_i_o_2_extension_methods_2_h_t_m_l_ext
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrEmpty(Input))</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            <span class="keywordtype">string</span>[] CodeLines = Input.Split(<span class="keyword">new</span> <span class="keywordtype">string</span>[] { <a class="code" href="namespace_system.html">System</a>.Environment.NewLine, <span class="stringliteral">&quot;\n&quot;</span> }, StringSplitOptions.RemoveEmptyEntries);</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            StringBuilder Builder = <span class="keyword">new</span> StringBuilder();</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            var Builder = <span class="keyword">new</span> StringBuilder();</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            <span class="keywordflow">foreach</span> (<span class="keywordtype">string</span> Line <span class="keywordflow">in</span> CodeLines)</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            {</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                <span class="keywordtype">string</span> Temp = Line.Trim();</div>
@@ -269,7 +269,7 @@ $(document).ready(function(){initNavTree('_i_o_2_extension_methods_2_h_t_m_l_ext
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_cdffdb722b1f3b30993d9a14c7e19da9.html">IO</a></li><li class="navelem"><a class="el" href="dir_a50eb2016b7195b769928278b61c3dd5.html">ExtensionMethods</a></li><li class="navelem"><a class="el" href="_i_o_2_extension_methods_2_h_t_m_l_extensions_8cs.html">HTMLExtensions.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:43 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:41 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -155,11 +155,11 @@ $(document).ready(function(){initNavTree('_data_types_2_a_o_p_2_manager_8cs_sour
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            Modules.ForEachParallel(x =&gt; x.Setup(<span class="keyword">this</span>));</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        }</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> ConcurrentBag&lt;IAspect&gt; Aspects = <span class="keyword">new</span> ConcurrentBag&lt;IAspect&gt;();</div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html#abb8856a577239b1bef30d102319d1651">   61</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">static</span> <a class="code" href="class_utilities_1_1_data_types_1_1_code_gen_1_1_compiler.html">Compiler</a> <a class="code" href="class_utilities_1_1_data_types_1_1_code_gen_1_1_compiler.html">Compiler</a> { <span class="keyword">get</span>; <span class="keyword">private</span> set; }</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> ConcurrentDictionary&lt;Type, Type&gt; Classes = <span class="keyword">new</span> ConcurrentDictionary&lt;Type, Type&gt;();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> readonly ConcurrentBag&lt;IAspect&gt; Aspects = <span class="keyword">new</span> ConcurrentBag&lt;IAspect&gt;();</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html#abb8856a577239b1bef30d102319d1651">   71</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">static</span> <a class="code" href="class_utilities_1_1_data_types_1_1_code_gen_1_1_compiler.html">Compiler</a> <a class="code" href="class_utilities_1_1_data_types_1_1_code_gen_1_1_compiler.html">Compiler</a> { <span class="keyword">get</span>; <span class="keyword">private</span> set; }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> ConcurrentDictionary&lt;Type, Type&gt; Classes = <span class="keyword">new</span> ConcurrentDictionary&lt;Type, Type&gt;();</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
 <div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html#a7a3ff007407acfb187d7901d517e937e">   78</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> T Create&lt;T&gt;()</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        {</div>
@@ -185,11 +185,11 @@ $(document).ready(function(){initNavTree('_data_types_2_a_o_p_2_manager_8cs_sour
 <div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html#a5bce17c272e2b336c940057afd126642">  112</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html#a5bce17c272e2b336c940057afd126642">Setup</a>(params Type[] types)</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        {</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            IEnumerable&lt;Type&gt; TempTypes = FilterTypesToSetup(types);</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            List&lt;Assembly&gt; AssembliesUsing = <span class="keyword">new</span> List&lt;Assembly&gt;();</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            var AssembliesUsing = <span class="keyword">new</span> List&lt;Assembly&gt;();</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            AssembliesUsing.Add(typeof(<span class="keywordtype">object</span>).Assembly, typeof(<a class="code" href="namespace_system.html">System</a>.Linq.Enumerable).Assembly);</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            Aspects.ForEach(x =&gt; AssembliesUsing.AddIfUnique(x.AssembliesUsing));</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            List&lt;string&gt; Usings = <span class="keyword">new</span> List&lt;string&gt;();</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            var Usings = <span class="keyword">new</span> List&lt;string&gt;();</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            Usings.Add(<span class="stringliteral">&quot;System&quot;</span>);</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            Usings.Add(<span class="stringliteral">&quot;System.Collections.Generic&quot;</span>);</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            Usings.Add(<span class="stringliteral">&quot;System.Linq&quot;</span>);</div>
@@ -197,10 +197,10 @@ $(document).ready(function(){initNavTree('_data_types_2_a_o_p_2_manager_8cs_sour
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            Usings.Add(<span class="stringliteral">&quot;System.Threading.Tasks&quot;</span>);</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            Aspects.ForEach(x =&gt; Usings.AddIfUnique(x.Usings));</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            List&lt;Type&gt; Interfaces = <span class="keyword">new</span> List&lt;Type&gt;();</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;            Aspects.ForEach(x =&gt; Interfaces.AddRange(x.InterfacesUsing == null ? <span class="keyword">new</span> List&lt;Type&gt;() : x.InterfacesUsing));</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            var Interfaces = <span class="keyword">new</span> List&lt;Type&gt;();</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;            Aspects.ForEach(x =&gt; Interfaces.AddRange(x.InterfacesUsing ?? <span class="keyword">new</span> List&lt;Type&gt;()));</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            StringBuilder Builder = <span class="keyword">new</span> StringBuilder();</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            var Builder = <span class="keyword">new</span> StringBuilder();</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            <span class="keywordflow">foreach</span> (Type Type <span class="keywordflow">in</span> TempTypes)</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;            {</div>
@@ -254,7 +254,7 @@ $(document).ready(function(){initNavTree('_data_types_2_a_o_p_2_manager_8cs_sour
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> Assembly[] GetAssemblies(Type Type)</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        {</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;            List&lt;Assembly&gt; Types = <span class="keyword">new</span> List&lt;Assembly&gt;();</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;            var Types = <span class="keyword">new</span> List&lt;Assembly&gt;();</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            Type TempType = Type;</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;            <span class="keywordflow">while</span> (TempType != null)</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;            {</div>
@@ -288,7 +288,7 @@ $(document).ready(function(){initNavTree('_data_types_2_a_o_p_2_manager_8cs_sour
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> Assembly[] GetAssembliesSimple(Type Type)</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        {</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;            List&lt;Assembly&gt; Types = <span class="keyword">new</span> List&lt;Assembly&gt;();</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;            var Types = <span class="keyword">new</span> List&lt;Assembly&gt;();</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;            Type TempType = Type;</div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            <span class="keywordflow">while</span> (TempType != null)</div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;            {</div>
@@ -305,7 +305,7 @@ $(document).ready(function(){initNavTree('_data_types_2_a_o_p_2_manager_8cs_sour
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;            <span class="keywordtype">string</span> ClassName, List&lt;string&gt; Usings,</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;            List&lt;Type&gt; Interfaces, List&lt;Assembly&gt; AssembliesUsing)</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        {</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            StringBuilder Builder = <span class="keyword">new</span> StringBuilder();</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            var Builder = <span class="keyword">new</span> StringBuilder();</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            Builder.AppendLineFormat(<span class="stringliteral">@&quot;namespace {1}</span></div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="stringliteral">{{</span></div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="stringliteral">    {0}</span></div>
@@ -333,7 +333,7 @@ $(document).ready(function(){initNavTree('_data_types_2_a_o_p_2_manager_8cs_sour
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;            Aspects.ForEach(x =&gt; Builder.AppendLine(x.SetupInterfaces(Type)));</div>
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;</div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;            Type TempType = Type;</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;            List&lt;string&gt; MethodsAlreadyDone = <span class="keyword">new</span> List&lt;string&gt;();</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;            var MethodsAlreadyDone = <span class="keyword">new</span> List&lt;string&gt;();</div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;            <span class="keywordflow">while</span> (TempType != null)</div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;            {</div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;                <span class="keywordflow">foreach</span> (PropertyInfo Property <span class="keywordflow">in</span> TempType.GetProperties(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance))</div>
@@ -438,7 +438,7 @@ $(document).ready(function(){initNavTree('_data_types_2_a_o_p_2_manager_8cs_sour
 <div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        {</div>
 <div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;            <span class="keywordflow">if</span> (MethodInfo == null)</div>
 <div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;                <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;            StringBuilder Builder = <span class="keyword">new</span> StringBuilder();</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;            var Builder = <span class="keyword">new</span> StringBuilder();</div>
 <div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;            <span class="keywordtype">string</span> BaseMethodName = MethodInfo.Name.Replace(<span class="stringliteral">&quot;get_&quot;</span>, <span class="stringliteral">&quot;&quot;</span>).Replace(<span class="stringliteral">&quot;set_&quot;</span>, <span class="stringliteral">&quot;&quot;</span>);</div>
 <div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;            <span class="keywordtype">string</span> ReturnValue = MethodInfo.ReturnType != typeof(<span class="keywordtype">void</span>) ? <span class="stringliteral">&quot;FinalReturnValue&quot;</span> : <span class="stringliteral">&quot;&quot;</span>;</div>
 <div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;            <span class="keywordtype">string</span> BaseCall = <span class="stringliteral">&quot;&quot;</span>;</div>
@@ -481,7 +481,7 @@ $(document).ready(function(){initNavTree('_data_types_2_a_o_p_2_manager_8cs_sour
 <div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;    }</div>
 <div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;}</div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager_html_a77ffa4e6fc9c170fa7b7d803daffb9fd"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html#a77ffa4e6fc9c170fa7b7d803daffb9fd">Utilities.DataTypes.AOP.Manager.Manager</a></div><div class="ttdeci">Manager(Compiler Compiler, IEnumerable&lt; IAspect &gt; Aspects, IEnumerable&lt; IAOPModule &gt; Modules)</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_data_types_2_a_o_p_2_manager_8cs_source.html#l00045">Manager.cs:45</a></div></div>
-<div class="ttc" id="class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager_html_abb8856a577239b1bef30d102319d1651"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html#abb8856a577239b1bef30d102319d1651">Utilities.DataTypes.AOP.Manager.Compiler</a></div><div class="ttdeci">static Compiler Compiler</div><div class="ttdoc">Gets the system&#39;s compiler </div><div class="ttdef"><b>Definition:</b> <a href="_data_types_2_a_o_p_2_manager_8cs_source.html#l00071">Manager.cs:71</a></div></div>
+<div class="ttc" id="class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager_html_abb8856a577239b1bef30d102319d1651"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html#abb8856a577239b1bef30d102319d1651">Utilities.DataTypes.AOP.Manager.Compiler</a></div><div class="ttdeci">static Compiler Compiler</div><div class="ttdoc">Gets the system&#39;s compiler </div><div class="ttdef"><b>Definition:</b> <a href="_data_types_2_a_o_p_2_manager_8cs_source.html#l00061">Manager.cs:61</a></div></div>
 <div class="ttc" id="namespace_system_html"><div class="ttname"><a href="namespace_system.html">System</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager_html_a8f38f663126ce4a377d6eef0c9c26f7d"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html#a8f38f663126ce4a377d6eef0c9c26f7d">Utilities.DataTypes.AOP.Manager.Create</a></div><div class="ttdeci">virtual object Create(Type BaseType)</div><div class="ttdoc">Creates an object of the specified base type, registering the type if necessary </div><div class="ttdef"><b>Definition:</b> <a href="_data_types_2_a_o_p_2_manager_8cs_source.html#l00088">Manager.cs:88</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager_html_ab3cb52ed25b9bbc0297bf014e7860b7e"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html#ab3cb52ed25b9bbc0297bf014e7860b7e">Utilities.DataTypes.AOP.Manager.ToString</a></div><div class="ttdeci">override string ToString()</div><div class="ttdoc">Outputs manager info as a string </div><div class="ttdef"><b>Definition:</b> <a href="_data_types_2_a_o_p_2_manager_8cs_source.html#l00166">Manager.cs:166</a></div></div>
@@ -502,7 +502,7 @@ $(document).ready(function(){initNavTree('_data_types_2_a_o_p_2_manager_8cs_sour
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_ca0426833ed64f488ae0419fd1a98fec.html">DataTypes</a></li><li class="navelem"><a class="el" href="dir_6b1e934cc7a9a7f3168cb9dba0c90499.html">AOP</a></li><li class="navelem"><a class="el" href="_data_types_2_a_o_p_2_manager_8cs.html">Manager.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:39 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:37 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

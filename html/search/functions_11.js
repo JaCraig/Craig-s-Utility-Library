@@ -16,7 +16,7 @@ var searchData=
   ['toxml',['ToXML',['../class_utilities_1_1_i_o_1_1_file_formats_1_1_i_n_i.html#a2d3159d55e8848e356f70e54c148839d',1,'Utilities::IO::FileFormats::INI']]],
   ['transpose',['Transpose',['../class_utilities_1_1_data_types_1_1_matrix.html#ac834623fc3c493d60fae3da992baa4b0',1,'Utilities::DataTypes::Matrix']]],
   ['traversal',['Traversal',['../class_utilities_1_1_data_types_1_1_binary_tree.html#af1a23fead6809b4fd6ffa50a7637f748',1,'Utilities::DataTypes::BinaryTree']]],
-  ['treenode',['TreeNode',['../class_utilities_1_1_data_types_1_1_tree_node.html#a79e6cebc64766104a2d3427ed72ccf7e',1,'Utilities::DataTypes::TreeNode']]],
+  ['treenode',['TreeNode',['../class_utilities_1_1_data_types_1_1_tree_node.html#af73a6d92916e7d15654641c01480d83c',1,'Utilities::DataTypes::TreeNode']]],
   ['trigger',['Trigger',['../class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_trigger.html#a55ae3474d9f8e1e73830f04d530d49da',1,'Utilities::ORM::Manager::Schema::Default::Database::Trigger']]],
   ['triggerexists',['TriggerExists',['../class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_s_q_l_server_1_1_s_q_l_server_schema_generator.html#a77d729e63c27b15e47d43bee81757b62',1,'Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator.TriggerExists()'],['../class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_l_d_a_p_1_1_l_d_a_p_schema_generator.html#a0de0eb5cfc71736cbee7d35a69124760',1,'Utilities.ORM.Manager.Schema.Default.LDAP.LDAPSchemaGenerator.TriggerExists()'],['../interface_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_interfaces_1_1_i_schema_generator.html#a1b4468df384a52ba42fe0a4d7ff1f7d6',1,'Utilities.ORM.Manager.Schema.Interfaces.ISchemaGenerator.TriggerExists()']]],
   ['tryconvert',['TryConvert',['../class_utilities_1_1_data_types_1_1_dynamo.html#a1b099271d91df4ec400dbbba32930abb',1,'Utilities::DataTypes::Dynamo']]],
@@ -27,6 +27,5 @@ var searchData=
   ['trysetmember',['TrySetMember',['../class_utilities_1_1_data_types_1_1_dynamo.html#a352d96b613b0f635225c3ffefd892425',1,'Utilities::DataTypes::Dynamo']]],
   ['typebuilder',['TypeBuilder',['../class_utilities_1_1_io_c_1_1_default_1_1_type_builder.html#af1ea64ed31f9b3f70d4f948ad8dfdeee',1,'Utilities::IoC::Default::TypeBuilder']]],
   ['typeconverterbase',['TypeConverterBase',['../class_utilities_1_1_data_types_1_1_conversion_1_1_converters_1_1_base_classes_1_1_type_converter_base.html#a25949070d39ee2fce5e5af64c33c5013',1,'Utilities::DataTypes::Conversion::Converters::BaseClasses::TypeConverterBase']]],
-  ['typemapping',['TypeMapping',['../class_utilities_1_1_data_types_1_1_data_mapper_1_1_default_1_1_type_mapping.html#a90a23eec56434ee4987d74834540f93d',1,'Utilities::DataTypes::DataMapper::Default::TypeMapping']]],
   ['typemappingbase',['TypeMappingBase',['../class_utilities_1_1_data_types_1_1_data_mapper_1_1_base_classes_1_1_type_mapping_base.html#a3773b187e91a3fa84e894e9b2b740a04',1,'Utilities::DataTypes::DataMapper::BaseClasses::TypeMappingBase']]]
 ];

@@ -210,15 +210,15 @@ $(document).ready(function(){initNavTree('_web_directory_8cs_source.html','');})
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;            <span class="keywordtype">string</span> TempName = Name;</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            <span class="keywordflow">if</span> (TempName == <span class="stringliteral">&quot;/&quot;</span>)</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                TempName = <span class="stringliteral">&quot;index.html&quot;</span>;</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            FileInfo NewDirectory = <span class="keyword">new</span> FileInfo(Directory.<a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html#abd8e5633719f53721ee4327901c352a2">FullName</a> + <span class="stringliteral">&quot;\\&quot;</span> + TempName.Right(TempName.Length - (TempName.LastIndexOf(<span class="stringliteral">&quot;/&quot;</span>, StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            FileInfo OldFile = <span class="keyword">new</span> FileInfo(InternalDirectory.AbsoluteUri, UserName, Password, Domain);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            var NewDirectory = <span class="keyword">new</span> FileInfo(Directory.<a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html#abd8e5633719f53721ee4327901c352a2">FullName</a> + <span class="stringliteral">&quot;\\&quot;</span> + TempName.Right(TempName.Length - (TempName.LastIndexOf(<span class="stringliteral">&quot;/&quot;</span>, StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            var OldFile = <span class="keyword">new</span> FileInfo(InternalDirectory.AbsoluteUri, UserName, Password, Domain);</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            NewDirectory.Write(OldFile.Read(), FileMode.Create);</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            <span class="keywordflow">return</span> Directory;</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        }</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> Create()</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        {</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            HttpWebRequest Request = WebRequest.<a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html#a55efa33c81b8c058c08efb51525f0d87">Create</a>(InternalDirectory) as HttpWebRequest;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            var Request = WebRequest.<a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html#a55efa33c81b8c058c08efb51525f0d87">Create</a>(InternalDirectory) as HttpWebRequest;</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;            Request.Method = <span class="stringliteral">&quot;POST&quot;</span>;</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            Request.ContentType = <span class="stringliteral">&quot;text/xml&quot;</span>;</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            SetupData(Request, <span class="stringliteral">&quot;&quot;</span>);</div>
@@ -230,7 +230,7 @@ $(document).ready(function(){initNavTree('_web_directory_8cs_source.html','');})
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        {</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;            <span class="keywordflow">if</span> (InternalDirectory == null)</div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            HttpWebRequest Request = WebRequest.Create(InternalDirectory) as HttpWebRequest;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            var Request = WebRequest.Create(InternalDirectory) as HttpWebRequest;</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            Request.Method = <span class="stringliteral">&quot;DELETE&quot;</span>;</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            Request.ContentType = <span class="stringliteral">&quot;text/xml&quot;</span>;</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            SetupData(Request, <span class="stringliteral">&quot;&quot;</span>);</div>
@@ -315,7 +315,7 @@ $(document).ready(function(){initNavTree('_web_directory_8cs_source.html','');})
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_cdffdb722b1f3b30993d9a14c7e19da9.html">IO</a></li><li class="navelem"><a class="el" href="dir_dd846de6290642c8890e926ebf368f0a.html">FileSystem</a></li><li class="navelem"><a class="el" href="dir_907aa97e1531825d990413d236dd34b6.html">Default</a></li><li class="navelem"><a class="el" href="_web_directory_8cs.html">WebDirectory.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:44 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:42 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -174,7 +174,7 @@ $(document).ready(function(){initNavTree('_workflow_2_manager_2_manager_8cs_sour
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            Contract.Requires&lt;ArgumentNullException&gt;(!<span class="keywordtype">string</span>.IsNullOrEmpty(Name), <span class="stringliteral">&quot;Name&quot;</span>);</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <span class="keywordflow">if</span> (Exists(Name))</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                <span class="keywordflow">return</span> (<a class="code" href="interface_utilities_1_1_workflow_1_1_manager_1_1_interfaces_1_1_i_workflow.html">IWorkflow&lt;T&gt;</a>)Workflows[Name];</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <a class="code" href="interface_utilities_1_1_workflow_1_1_manager_1_1_interfaces_1_1_i_workflow.html">IWorkflow&lt;T&gt;</a> ReturnValue = <span class="keyword">new</span> <a class="code" href="class_utilities_1_1_workflow_1_1_manager_1_1_workflow.html">Workflow&lt;T&gt;</a>(Name);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            var ReturnValue = <span class="keyword">new</span> <a class="code" href="class_utilities_1_1_workflow_1_1_manager_1_1_workflow.html">Workflow&lt;T&gt;</a>(Name);</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            Workflows.Add(<span class="keyword">new</span> KeyValuePair&lt;string, IWorkflow&gt;(Name, ReturnValue));</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keywordflow">return</span> ReturnValue;</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        }</div>
@@ -247,7 +247,7 @@ $(document).ready(function(){initNavTree('_workflow_2_manager_2_manager_8cs_sour
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_e4ccdf57506c3b7741851a0ba1b9142b.html">Workflow</a></li><li class="navelem"><a class="el" href="dir_9af059438975e15be44c0534e398d310.html">Manager</a></li><li class="navelem"><a class="el" href="_workflow_2_manager_2_manager_8cs.html">Manager.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:40 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:38 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

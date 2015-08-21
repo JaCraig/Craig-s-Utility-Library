@@ -193,7 +193,7 @@ $(document).ready(function(){initNavTree('_cache_base_8cs_source.html','');});
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
 <div class="line"><a name="l00155"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a96fcef3e2f58de289afffdbbf6f91b76">  155</a></span>&#160;        <span class="keyword">public</span> IEnumerable&lt;object&gt; <a class="code" href="class_utilities_1_1_data_types_1_1_caching_1_1_base_classes_1_1_cache_base.html#a96fcef3e2f58de289afffdbbf6f91b76">GetByTag</a>(<span class="keywordtype">string</span> Tag)</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        {</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            List&lt;object&gt; ReturnValue = <span class="keyword">new</span> List&lt;object&gt;();</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            var ReturnValue = <span class="keyword">new</span> List&lt;object&gt;();</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            <span class="keywordflow">if</span> (!TagMappings.ContainsKey(Tag))</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                <span class="keywordflow">return</span> ReturnValue;</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            <span class="keywordflow">foreach</span> (<span class="keywordtype">string</span> Key <span class="keywordflow">in</span> TagMappings[Tag])</div>
@@ -249,7 +249,7 @@ $(document).ready(function(){initNavTree('_cache_base_8cs_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_ca0426833ed64f488ae0419fd1a98fec.html">DataTypes</a></li><li class="navelem"><a class="el" href="dir_72ec8bfa1f83b53a2c20df35317f5b06.html">Caching</a></li><li class="navelem"><a class="el" href="dir_0aea80d7d013ac6ee445c75c3120aab4.html">BaseClasses</a></li><li class="navelem"><a class="el" href="_cache_base_8cs.html">CacheBase.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:40 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:38 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

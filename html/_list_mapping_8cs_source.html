@@ -163,7 +163,7 @@ $(document).ready(function(){initNavTree('_list_mapping_8cs_source.html','');});
 <div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_list_mapping.html#a3856b747d5dc34b7e6da1e709546a078">   74</a></span>&#160;        {</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keyword">get</span></div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                List&lt;IEnumerable&lt;T2&gt;&gt; Lists = <span class="keyword">new</span> List&lt;IEnumerable&lt;T2&gt;&gt;();</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                var Lists = <span class="keyword">new</span> List&lt;IEnumerable&lt;T2&gt;&gt;();</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                <span class="keywordflow">foreach</span> (T1 Key <span class="keywordflow">in</span> Keys)</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                    Lists.Add(<span class="keyword">this</span>[Key]);</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                <span class="keywordflow">return</span> Lists;</div>
@@ -250,7 +250,7 @@ $(document).ready(function(){initNavTree('_list_mapping_8cs_source.html','');});
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;</div>
 <div class="line"><a name="l00223"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_list_mapping.html#a34f23d11f453229ce030fde0d6d853d8">  223</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_utilities_1_1_data_types_1_1_list_mapping.html#a34f23d11f453229ce030fde0d6d853d8">Remove</a>(T1 key)</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        {</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            ConcurrentBag&lt;T2&gt; Value = <span class="keyword">new</span> ConcurrentBag&lt;T2&gt;();</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            var Value = <span class="keyword">new</span> ConcurrentBag&lt;T2&gt;();</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            <span class="keywordflow">return</span> Items.TryRemove(key, out Value);</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        }</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;</div>
@@ -286,7 +286,7 @@ $(document).ready(function(){initNavTree('_list_mapping_8cs_source.html','');});
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;</div>
 <div class="line"><a name="l00280"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_list_mapping.html#ad7787077f14294f53ef78211aa19e041">  280</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">string</span> <a class="code" href="class_utilities_1_1_data_types_1_1_list_mapping.html#ad7787077f14294f53ef78211aa19e041">ToString</a>()</div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        {</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;            StringBuilder Builder = <span class="keyword">new</span> StringBuilder();</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;            var Builder = <span class="keyword">new</span> StringBuilder();</div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;            <span class="keywordflow">foreach</span> (var Key <span class="keywordflow">in</span> Keys)</div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;            {</div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;                Builder.AppendLineFormat(<span class="stringliteral">&quot;{0}:{{{1}}}&quot;</span>, Key.ToString(), Items[Key].ToString(x =&gt; x.ToString()));</div>
@@ -297,7 +297,7 @@ $(document).ready(function(){initNavTree('_list_mapping_8cs_source.html','');});
 <div class="line"><a name="l00296"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_list_mapping.html#a747a8c1f6f3ed4c0c33c5e8c80eb48ee">  296</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_utilities_1_1_data_types_1_1_list_mapping.html#a747a8c1f6f3ed4c0c33c5e8c80eb48ee">TryGetValue</a>(T1 Key, out IEnumerable&lt;T2&gt; Value)</div>
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        {</div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;            Value = <span class="keyword">new</span> List&lt;T2&gt;();</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;            ConcurrentBag&lt;T2&gt; TempValue = <span class="keyword">new</span> ConcurrentBag&lt;T2&gt;();</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;            var TempValue = <span class="keyword">new</span> ConcurrentBag&lt;T2&gt;();</div>
 <div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;            <span class="keywordflow">if</span> (Items.TryGetValue(Key, out TempValue))</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;            {</div>
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                Value = TempValue.ToList(x =&gt; x);</div>
@@ -332,7 +332,7 @@ $(document).ready(function(){initNavTree('_list_mapping_8cs_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_ca0426833ed64f488ae0419fd1a98fec.html">DataTypes</a></li><li class="navelem"><a class="el" href="_list_mapping_8cs.html">ListMapping.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:42 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:40 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

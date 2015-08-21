@@ -144,7 +144,7 @@ $(document).ready(function(){initNavTree('_process_extensions_8cs_source.html','
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">string</span> GetInformation(<span class="keyword">this</span> Process Process, <span class="keywordtype">bool</span> HTMLFormat = <span class="keyword">true</span>)</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        {</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            Contract.Requires&lt;ArgumentNullException&gt;(Process != null, <span class="stringliteral">&quot;Process&quot;</span>);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            StringBuilder Builder = <span class="keyword">new</span> StringBuilder();</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            var Builder = <span class="keyword">new</span> StringBuilder();</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">return</span> Builder.Append(HTMLFormat ? <span class="stringliteral">&quot;&lt;strong&gt;&quot;</span> : <span class="stringliteral">&quot;&quot;</span>)</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                   .Append(Process.ProcessName)</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                   .Append(<span class="stringliteral">&quot; Information&quot;</span>)</div>
@@ -158,7 +158,7 @@ $(document).ready(function(){initNavTree('_process_extensions_8cs_source.html','
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        {</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">if</span> (Processes == null)</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            StringBuilder Builder = <span class="keyword">new</span> StringBuilder();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            var Builder = <span class="keyword">new</span> StringBuilder();</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            Processes.ForEach(x =&gt; Builder.Append(x.GetInformation(HTMLFormat)));</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keywordflow">return</span> Builder.ToString();</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        }</div>
@@ -192,7 +192,7 @@ $(document).ready(function(){initNavTree('_process_extensions_8cs_source.html','
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_ca0426833ed64f488ae0419fd1a98fec.html">DataTypes</a></li><li class="navelem"><a class="el" href="dir_ff08ba1239df36e241ac9aa57b32dcdc.html">ExtensionMethods</a></li><li class="navelem"><a class="el" href="_process_extensions_8cs.html">ProcessExtensions.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:42 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:39 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -128,46 +128,42 @@ $(document).ready(function(){initNavTree('_require_s_s_l_8cs_source.html','');})
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">THE SOFTWARE.*/</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#region Usings</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Web;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Web.Mvc;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#endregion Usings</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespace_ironman.html">Ironman</a>.Core.ActionFilters</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = <span class="keyword">false</span>, Inherited = <span class="keyword">true</span>)]</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="class_ironman_1_1_core_1_1_action_filters_1_1_require_s_s_l.html">   36</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="class_ironman_1_1_core_1_1_action_filters_1_1_require_s_s_l.html">RequireSSL</a> : ActionFilterAttribute</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    {</div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="class_ironman_1_1_core_1_1_action_filters_1_1_require_s_s_l.html#aa69fe895a829f22268b3b4a774b845a5">   42</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> <a class="code" href="class_ironman_1_1_core_1_1_action_filters_1_1_require_s_s_l.html#aa69fe895a829f22268b3b4a774b845a5">OnActionExecuting</a>(ActionExecutingContext filterContext)</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordflow">if</span> (filterContext == null)</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            HttpRequestBase Request = filterContext.HttpContext.Request;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            HttpResponseBase Response = filterContext.HttpContext.Response;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">if</span> (!Request.IsSecureConnection &amp;&amp; !Request.IsLocal)</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            {</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                UriBuilder Builder = <span class="keyword">new</span> UriBuilder(Request.Url);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                Builder.Scheme = Uri.UriSchemeHttps;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                Response.Redirect(Builder.Uri.ToString());</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            base.OnActionExecuting(filterContext);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Web;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Web.Mvc;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespace_ironman.html">Ironman</a>.Core.ActionFilters</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = <span class="keyword">false</span>, Inherited = <span class="keyword">true</span>)]</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="class_ironman_1_1_core_1_1_action_filters_1_1_require_s_s_l.html">   32</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="class_ironman_1_1_core_1_1_action_filters_1_1_require_s_s_l.html">RequireSSL</a> : ActionFilterAttribute</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    {</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="class_ironman_1_1_core_1_1_action_filters_1_1_require_s_s_l.html#aa69fe895a829f22268b3b4a774b845a5">   38</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> <a class="code" href="class_ironman_1_1_core_1_1_action_filters_1_1_require_s_s_l.html#aa69fe895a829f22268b3b4a774b845a5">OnActionExecuting</a>(ActionExecutingContext filterContext)</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="keywordflow">if</span> (filterContext == null)</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            HttpRequestBase Request = filterContext.HttpContext.Request;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            HttpResponseBase Response = filterContext.HttpContext.Response;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordflow">if</span> (!Request.IsSecureConnection &amp;&amp; !Request.IsLocal)</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                var Builder = <span class="keyword">new</span> UriBuilder(Request.Url);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                Builder.Scheme = Uri.UriSchemeHttps;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                Response.Redirect(Builder.Uri.ToString());</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            }</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            base.OnActionExecuting(filterContext);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    }</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
 <div class="ttc" id="namespace_system_html"><div class="ttname"><a href="namespace_system.html">System</a></div></div>
-<div class="ttc" id="class_ironman_1_1_core_1_1_action_filters_1_1_require_s_s_l_html"><div class="ttname"><a href="class_ironman_1_1_core_1_1_action_filters_1_1_require_s_s_l.html">Ironman.Core.ActionFilters.RequireSSL</a></div><div class="ttdoc">Require SSL, forcing everything to https unless it&#39;s a local call </div><div class="ttdef"><b>Definition:</b> <a href="_require_s_s_l_8cs_source.html#l00036">RequireSSL.cs:36</a></div></div>
+<div class="ttc" id="class_ironman_1_1_core_1_1_action_filters_1_1_require_s_s_l_html"><div class="ttname"><a href="class_ironman_1_1_core_1_1_action_filters_1_1_require_s_s_l.html">Ironman.Core.ActionFilters.RequireSSL</a></div><div class="ttdoc">Require SSL, forcing everything to https unless it&#39;s a local call </div><div class="ttdef"><b>Definition:</b> <a href="_require_s_s_l_8cs_source.html#l00032">RequireSSL.cs:32</a></div></div>
 <div class="ttc" id="namespace_ironman_html"><div class="ttname"><a href="namespace_ironman.html">Ironman</a></div></div>
-<div class="ttc" id="class_ironman_1_1_core_1_1_action_filters_1_1_require_s_s_l_html_aa69fe895a829f22268b3b4a774b845a5"><div class="ttname"><a href="class_ironman_1_1_core_1_1_action_filters_1_1_require_s_s_l.html#aa69fe895a829f22268b3b4a774b845a5">Ironman.Core.ActionFilters.RequireSSL.OnActionExecuting</a></div><div class="ttdeci">override void OnActionExecuting(ActionExecutingContext filterContext)</div><div class="ttdoc">OnActionExecuting </div><div class="ttdef"><b>Definition:</b> <a href="_require_s_s_l_8cs_source.html#l00042">RequireSSL.cs:42</a></div></div>
+<div class="ttc" id="class_ironman_1_1_core_1_1_action_filters_1_1_require_s_s_l_html_aa69fe895a829f22268b3b4a774b845a5"><div class="ttname"><a href="class_ironman_1_1_core_1_1_action_filters_1_1_require_s_s_l.html#aa69fe895a829f22268b3b4a774b845a5">Ironman.Core.ActionFilters.RequireSSL.OnActionExecuting</a></div><div class="ttdeci">override void OnActionExecuting(ActionExecutingContext filterContext)</div><div class="ttdoc">OnActionExecuting </div><div class="ttdef"><b>Definition:</b> <a href="_require_s_s_l_8cs_source.html#l00038">RequireSSL.cs:38</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_6a56b502eb043bbe81fce8865cd859cd.html">Ironman.Core</a></li><li class="navelem"><a class="el" href="dir_528d5d6dafa17c9e4d975b2158624466.html">ActionFilters</a></li><li class="navelem"><a class="el" href="_require_s_s_l_8cs.html">RequireSSL.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:25:41 for Ironman by
+    <li class="footer">Generated on Fri Aug 21 2015 00:32:38 for Ironman by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

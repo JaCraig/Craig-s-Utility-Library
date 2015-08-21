@@ -150,15 +150,15 @@ $(document).ready(function(){initNavTree('_compiler_base_8cs_source.html','');})
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                AssemblyDirectory;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            this.AssemblyName = AssemblyName;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            this.Optimize = Optimize;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            this.Classes = <span class="keyword">new</span> List&lt;Type&gt;();</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <a class="code" href="namespace_system.html">System</a>.IO.FileInfo CurrentFile = <span class="keyword">new</span> <a class="code" href="namespace_system.html">System</a>.IO.FileInfo(this.AssemblyDirectory + <span class="stringliteral">&quot;\\&quot;</span> + this.AssemblyName + <span class="stringliteral">&quot;.dll&quot;</span>);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            this.RegenerateAssembly = (!CurrentFile.Exists</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            Classes = <span class="keyword">new</span> List&lt;Type&gt;();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            var CurrentFile = <span class="keyword">new</span> FileInfo(this.AssemblyDirectory + <span class="stringliteral">&quot;\\&quot;</span> + this.AssemblyName + <span class="stringliteral">&quot;.dll&quot;</span>);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            RegenerateAssembly = (!CurrentFile.Exists</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                                      || AppDomain.CurrentDomain.GetAssemblies()</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                                                                .Where(x =&gt; !x.FullName.Contains(<span class="stringliteral">&quot;vshost32&quot;</span>) &amp;&amp; !x.IsDynamic &amp;&amp; !<span class="keywordtype">string</span>.IsNullOrEmpty(x.Location))</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                                                                .Any(x =&gt; <span class="keyword">new</span> <a class="code" href="namespace_system.html">System</a>.IO.FileInfo(x.Location).LastWriteTime &gt; CurrentFile.LastWriteTime));</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrEmpty(this.AssemblyDirectory)</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                || !<span class="keyword">new</span> <a class="code" href="namespace_system.html">System</a>.IO.FileInfo(this.AssemblyDirectory + <span class="stringliteral">&quot;\\&quot;</span> + this.AssemblyName + <span class="stringliteral">&quot;.dll&quot;</span>).Exists</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                || this.RegenerateAssembly)</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                || !<span class="keyword">new</span> FileInfo(this.AssemblyDirectory + <span class="stringliteral">&quot;\\&quot;</span> + this.AssemblyName + <span class="stringliteral">&quot;.dll&quot;</span>).Exists</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                || RegenerateAssembly)</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            {</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                AssemblyStream = <span class="keyword">new</span> MemoryStream();</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            }</div>
@@ -271,7 +271,7 @@ $(document).ready(function(){initNavTree('_compiler_base_8cs_source.html','');})
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_ca0426833ed64f488ae0419fd1a98fec.html">DataTypes</a></li><li class="navelem"><a class="el" href="dir_20bd034e859ebb71b23c2736496c17c7.html">CodeGen</a></li><li class="navelem"><a class="el" href="dir_d2bb4e37f9dc0f5f1d35686204fa8b84.html">BaseClasses</a></li><li class="navelem"><a class="el" href="_compiler_base_8cs.html">CompilerBase.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:40 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:38 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

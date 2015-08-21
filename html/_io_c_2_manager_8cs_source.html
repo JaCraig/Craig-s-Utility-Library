@@ -211,7 +211,7 @@ $(document).ready(function(){initNavTree('_io_c_2_manager_8cs_source.html','');}
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> List&lt;Type&gt; GetTypes(ref ConcurrentBag&lt;Assembly&gt; LoadedAssemblies)</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        {</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            Contract.Requires&lt;ArgumentNullException&gt;(LoadedAssemblies != null);</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            List&lt;Type&gt; TempTypes = <span class="keyword">new</span> List&lt;Type&gt;();</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            var TempTypes = <span class="keyword">new</span> List&lt;Type&gt;();</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            LoadedAssemblies = <span class="keyword">new</span> ConcurrentBag&lt;Assembly&gt;(LoadedAssemblies.Where(x =&gt;</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            {</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                <span class="keywordflow">try</span></div>
@@ -238,9 +238,9 @@ $(document).ready(function(){initNavTree('_io_c_2_manager_8cs_source.html','');}
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                                                     .Where(x =&gt; !x.Name.Equals(<span class="stringliteral">&quot;CULGeneratedTypes.dll&quot;</span>, StringComparison.InvariantCultureIgnoreCase)));</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            }</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            Files = Files.Distinct().ToList();</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            List&lt;Assembly&gt; LoadedAssemblies = <span class="keyword">new</span> List&lt;Assembly&gt;(AppDomain.CurrentDomain.GetAssemblies());</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            var LoadedAssemblies = <span class="keyword">new</span> List&lt;Assembly&gt;(AppDomain.CurrentDomain.GetAssemblies());</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;            LoadAssemblies(LoadedAssemblies, Files.Select(x =&gt; AssemblyName.GetAssemblyName(x.FullName)).ToArray());</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            FileInfo GeneratedFile = <span class="keyword">new</span> FileInfo(AppDomain.CurrentDomain.BaseDirectory + <span class="stringliteral">&quot;\\CULGeneratedTypes.dll&quot;</span>);</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            var GeneratedFile = <span class="keyword">new</span> FileInfo(AppDomain.CurrentDomain.BaseDirectory + <span class="stringliteral">&quot;\\CULGeneratedTypes.dll&quot;</span>);</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;            <span class="keywordflow">if</span> (GeneratedFile.Exists</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                &amp;&amp; !LoadedAssemblies.Any(x =&gt; !x.FullName.Contains(<span class="stringliteral">&quot;vshost32&quot;</span>)</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                                            &amp;&amp; !x.IsDynamic</div>
@@ -306,7 +306,7 @@ $(document).ready(function(){initNavTree('_io_c_2_manager_8cs_source.html','');}
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_2a25a2b0d9506505e87582da3d777bb1.html">IoC</a></li><li class="navelem"><a class="el" href="_io_c_2_manager_8cs.html">Manager.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:40 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:38 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

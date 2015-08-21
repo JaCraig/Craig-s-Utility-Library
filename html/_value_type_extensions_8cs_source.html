@@ -201,7 +201,7 @@ $(document).ready(function(){initNavTree('_value_type_extensions_8cs_source.html
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> IsUnicode(<span class="keyword">this</span> byte[] Input)</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        {</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <span class="keywordflow">return</span> Input == null ? <span class="keyword">true</span> : Input.ToString(<span class="keyword">new</span> UnicodeEncoding()).Is(<a class="code" href="namespace_utilities_1_1_data_types.html#af4e0581b3077d2edc1fe62fd4c78a1b2">StringCompare</a>.Unicode);</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <span class="keywordflow">return</span> Input == null || Input.ToString(<span class="keyword">new</span> UnicodeEncoding()).Is(<a class="code" href="namespace_utilities_1_1_data_types.html#af4e0581b3077d2edc1fe62fd4c78a1b2">StringCompare</a>.Unicode);</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        }</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">string</span> ToString(<span class="keyword">this</span> byte[] Input, Base64FormattingOptions Options, <span class="keywordtype">int</span> Index = 0, <span class="keywordtype">int</span> Count = -1)</div>
@@ -245,7 +245,7 @@ $(document).ready(function(){initNavTree('_value_type_extensions_8cs_source.html
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_ca0426833ed64f488ae0419fd1a98fec.html">DataTypes</a></li><li class="navelem"><a class="el" href="dir_ff08ba1239df36e241ac9aa57b32dcdc.html">ExtensionMethods</a></li><li class="navelem"><a class="el" href="_value_type_extensions_8cs.html">ValueTypeExtensions.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:42 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:40 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

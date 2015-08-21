@@ -128,52 +128,48 @@ $(document).ready(function(){initNavTree('_dependency_resolver_8cs_source.html',
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">THE SOFTWARE.*/</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#region Usings</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Collections.Generic;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Web.Mvc;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">using</span> Utilities.IoC.Interfaces;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#endregion Usings</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="namespace_ironman_1_1_core_1_1_bootstrapper.html">   31</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespace_ironman.html">Ironman</a>.Core.Bootstrapper</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html">   36</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html">DependencyResolver</a> : IDependencyResolver</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    {</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html#affa7d82826a1e0ee6a31cff18b2bdf25">   41</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html#affa7d82826a1e0ee6a31cff18b2bdf25">DependencyResolver</a>(IBootstrapper Container)</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            <span class="keywordflow">if</span> (Container == null)</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> ArgumentNullException(<span class="stringliteral">&quot;Container&quot;</span>);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            this.Container = Container;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        }</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html#a759703867da7d6452c751d6b0413be76">   51</a></span>&#160;        <span class="keyword">protected</span> IBootstrapper Container { <span class="keyword">get</span>; <span class="keyword">private</span> set; }</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html#a0a43cca55b017a0f8cb95b5f11a02bd2">   58</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">object</span> <a class="code" href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html#a0a43cca55b017a0f8cb95b5f11a02bd2">GetService</a>(Type serviceType)</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">return</span> Container.Resolve(serviceType, <span class="stringliteral">&quot;&quot;</span>, null);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html#a5f89a427bf06edad41af9104206e23e5">   68</a></span>&#160;        <span class="keyword">public</span> IEnumerable&lt;object&gt; <a class="code" href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html#a5f89a427bf06edad41af9104206e23e5">GetServices</a>(Type serviceType)</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keywordflow">return</span> Container.ResolveAll(serviceType);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}</div>
-<div class="ttc" id="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver_html"><div class="ttname"><a href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html">Ironman.Core.Bootstrapper.DependencyResolver</a></div><div class="ttdoc">Dependency resolver base class </div><div class="ttdef"><b>Definition:</b> <a href="_dependency_resolver_8cs_source.html#l00036">DependencyResolver.cs:36</a></div></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Collections.Generic;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Web.Mvc;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">using</span> Utilities.IoC.Interfaces;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="namespace_ironman_1_1_core_1_1_bootstrapper.html">   27</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespace_ironman.html">Ironman</a>.Core.Bootstrapper</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html">   32</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html">DependencyResolver</a> : IDependencyResolver</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    {</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html#affa7d82826a1e0ee6a31cff18b2bdf25">   37</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html#affa7d82826a1e0ee6a31cff18b2bdf25">DependencyResolver</a>(IBootstrapper Container)</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            <span class="keywordflow">if</span> (Container == null)</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> ArgumentNullException(nameof(Container));</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            this.Container = Container;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        }</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html#a759703867da7d6452c751d6b0413be76">   47</a></span>&#160;        <span class="keyword">protected</span> IBootstrapper Container { <span class="keyword">get</span>; <span class="keyword">private</span> set; }</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html#a0a43cca55b017a0f8cb95b5f11a02bd2">   54</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">object</span> <a class="code" href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html#a0a43cca55b017a0f8cb95b5f11a02bd2">GetService</a>(Type serviceType)</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">return</span> Container.Resolve(serviceType, <span class="stringliteral">&quot;&quot;</span>, null);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html#a5f89a427bf06edad41af9104206e23e5">   64</a></span>&#160;        <span class="keyword">public</span> IEnumerable&lt;object&gt; <a class="code" href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html#a5f89a427bf06edad41af9104206e23e5">GetServices</a>(Type serviceType)</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keywordflow">return</span> Container.ResolveAll(serviceType);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
+<div class="ttc" id="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver_html"><div class="ttname"><a href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html">Ironman.Core.Bootstrapper.DependencyResolver</a></div><div class="ttdoc">Dependency resolver base class </div><div class="ttdef"><b>Definition:</b> <a href="_dependency_resolver_8cs_source.html#l00032">DependencyResolver.cs:32</a></div></div>
 <div class="ttc" id="namespace_system_html"><div class="ttname"><a href="namespace_system.html">System</a></div></div>
 <div class="ttc" id="namespace_ironman_html"><div class="ttname"><a href="namespace_ironman.html">Ironman</a></div></div>
-<div class="ttc" id="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver_html_a5f89a427bf06edad41af9104206e23e5"><div class="ttname"><a href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html#a5f89a427bf06edad41af9104206e23e5">Ironman.Core.Bootstrapper.DependencyResolver.GetServices</a></div><div class="ttdeci">IEnumerable&lt; object &gt; GetServices(Type serviceType)</div><div class="ttdoc">Gets the services based on the type specified </div><div class="ttdef"><b>Definition:</b> <a href="_dependency_resolver_8cs_source.html#l00068">DependencyResolver.cs:68</a></div></div>
-<div class="ttc" id="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver_html_affa7d82826a1e0ee6a31cff18b2bdf25"><div class="ttname"><a href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html#affa7d82826a1e0ee6a31cff18b2bdf25">Ironman.Core.Bootstrapper.DependencyResolver.DependencyResolver</a></div><div class="ttdeci">DependencyResolver(IBootstrapper Container)</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_dependency_resolver_8cs_source.html#l00041">DependencyResolver.cs:41</a></div></div>
-<div class="ttc" id="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver_html_a0a43cca55b017a0f8cb95b5f11a02bd2"><div class="ttname"><a href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html#a0a43cca55b017a0f8cb95b5f11a02bd2">Ironman.Core.Bootstrapper.DependencyResolver.GetService</a></div><div class="ttdeci">object GetService(Type serviceType)</div><div class="ttdoc">Gets the service based on the type specified </div><div class="ttdef"><b>Definition:</b> <a href="_dependency_resolver_8cs_source.html#l00058">DependencyResolver.cs:58</a></div></div>
+<div class="ttc" id="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver_html_a5f89a427bf06edad41af9104206e23e5"><div class="ttname"><a href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html#a5f89a427bf06edad41af9104206e23e5">Ironman.Core.Bootstrapper.DependencyResolver.GetServices</a></div><div class="ttdeci">IEnumerable&lt; object &gt; GetServices(Type serviceType)</div><div class="ttdoc">Gets the services based on the type specified </div><div class="ttdef"><b>Definition:</b> <a href="_dependency_resolver_8cs_source.html#l00064">DependencyResolver.cs:64</a></div></div>
+<div class="ttc" id="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver_html_affa7d82826a1e0ee6a31cff18b2bdf25"><div class="ttname"><a href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html#affa7d82826a1e0ee6a31cff18b2bdf25">Ironman.Core.Bootstrapper.DependencyResolver.DependencyResolver</a></div><div class="ttdeci">DependencyResolver(IBootstrapper Container)</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_dependency_resolver_8cs_source.html#l00037">DependencyResolver.cs:37</a></div></div>
+<div class="ttc" id="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver_html_a0a43cca55b017a0f8cb95b5f11a02bd2"><div class="ttname"><a href="class_ironman_1_1_core_1_1_bootstrapper_1_1_dependency_resolver.html#a0a43cca55b017a0f8cb95b5f11a02bd2">Ironman.Core.Bootstrapper.DependencyResolver.GetService</a></div><div class="ttdeci">object GetService(Type serviceType)</div><div class="ttdoc">Gets the service based on the type specified </div><div class="ttdef"><b>Definition:</b> <a href="_dependency_resolver_8cs_source.html#l00054">DependencyResolver.cs:54</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_6a56b502eb043bbe81fce8865cd859cd.html">Ironman.Core</a></li><li class="navelem"><a class="el" href="dir_10015c00a2ba50cb3d3625887f06ee75.html">Bootstrapper</a></li><li class="navelem"><a class="el" href="_dependency_resolver_8cs.html">DependencyResolver.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:25:42 for Ironman by
+    <li class="footer">Generated on Fri Aug 21 2015 00:32:39 for Ironman by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

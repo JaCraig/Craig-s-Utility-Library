@@ -147,10 +147,10 @@ $(document).ready(function(){initNavTree('_dynamo_8cs_source.html','');});
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
 <div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_change.html">   42</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="class_utilities_1_1_data_types_1_1_change.html">Change</a></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    {</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_change.html#a77433a6919f57873a8743c12f9207382">   49</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_utilities_1_1_data_types_1_1_change.html#a77433a6919f57873a8743c12f9207382">Change</a>(<span class="keywordtype">object</span> OriginalValue, <span class="keywordtype">object</span> NewValue)</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_change.html#addfe41c4580938ce6677acc249470d83">   49</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_utilities_1_1_data_types_1_1_change.html#addfe41c4580938ce6677acc249470d83">Change</a>(<span class="keywordtype">object</span> originalValue, <span class="keywordtype">object</span> newValue)</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            this.OriginalValue = OriginalValue;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            this.NewValue = NewValue;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            OriginalValue = originalValue;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            NewValue = newValue;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        }</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
 <div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_change.html#a7b3f074ae50721bbbb4908bfe9966379">   58</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">object</span> NewValue { <span class="keyword">get</span>; set; }</div>
@@ -167,13 +167,13 @@ $(document).ready(function(){initNavTree('_dynamo_8cs_source.html','');});
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        {</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        }</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#ab175a27eee5a892f4bb20ccad0e7d147">   86</a></span>&#160;        <span class="keyword">protected</span> <a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html#ab175a27eee5a892f4bb20ccad0e7d147">Dynamo</a>(<span class="keywordtype">object</span> Item)</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            : base(Item)</div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a16612f8f9609a3fbfa996c861d860fcc">   86</a></span>&#160;        <span class="keyword">protected</span> <a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html#a16612f8f9609a3fbfa996c861d860fcc">Dynamo</a>(<span class="keywordtype">object</span> item)</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            : base(item)</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        {</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        }</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a99aaab6bfcdd9b913b592f80c09a83b8">   95</a></span>&#160;        <span class="keyword">protected</span> <a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html#a99aaab6bfcdd9b913b592f80c09a83b8">Dynamo</a>(IDictionary&lt;string, object&gt; Dictionary)</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            : base(Dictionary)</div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a722fce654be10aab2eb6254262bc1b38">   95</a></span>&#160;        <span class="keyword">protected</span> <a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html#a722fce654be10aab2eb6254262bc1b38">Dynamo</a>(IDictionary&lt;string, object&gt; dictionary)</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            : base(dictionary)</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        {</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        }</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
@@ -187,7 +187,7 @@ $(document).ready(function(){initNavTree('_dynamo_8cs_source.html','');});
 <div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a21cd286d188b6e640729373866e60e37">  115</a></span>&#160;        {</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <span class="keyword">get</span></div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            {</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                List&lt;string&gt; Temp = <span class="keyword">new</span> List&lt;string&gt;();</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                var Temp = <span class="keyword">new</span> List&lt;string&gt;();</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                Temp.Add(base.Keys);</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                Type ObjectType = GetType();</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                <span class="keywordflow">foreach</span> (PropertyInfo Property <span class="keywordflow">in</span> ObjectType.GetProperties().Where(x =&gt; x.DeclaringType != typeof(<a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html">Dynamo&lt;T&gt;</a>) &amp;&amp; x.DeclaringType != typeof(<a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html">Dynamo</a>)))</div>
@@ -202,7 +202,7 @@ $(document).ready(function(){initNavTree('_dynamo_8cs_source.html','');});
 <div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a9c6e36ef5db948dd63128d8f6619df88">  133</a></span>&#160;        {</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            <span class="keyword">get</span></div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            {</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                List&lt;object&gt; Temp = <span class="keyword">new</span> List&lt;object&gt;();</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                var Temp = <span class="keyword">new</span> List&lt;object&gt;();</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;                <span class="keywordflow">foreach</span> (<span class="keywordtype">string</span> Key <span class="keywordflow">in</span> Keys)</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                {</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                    Temp.Add(GetValue(Key, typeof(<span class="keywordtype">object</span>)));</div>
@@ -252,31 +252,31 @@ $(document).ready(function(){initNavTree('_dynamo_8cs_source.html','');});
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        {</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        }</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;</div>
-<div class="line"><a name="l00207"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#ab175a27eee5a892f4bb20ccad0e7d147">  207</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html#ab175a27eee5a892f4bb20ccad0e7d147">Dynamo</a>(<span class="keywordtype">object</span> Item)</div>
+<div class="line"><a name="l00207"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a16612f8f9609a3fbfa996c861d860fcc">  207</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html#a16612f8f9609a3fbfa996c861d860fcc">Dynamo</a>(<span class="keywordtype">object</span> item)</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;            : base()</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        {</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            InternalValues = <span class="keyword">new</span> ConcurrentDictionary&lt;string, object&gt;(StringComparer.OrdinalIgnoreCase);</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            ChildValues = <span class="keyword">new</span> ConcurrentDictionary&lt;string, Func&lt;object&gt;&gt;(StringComparer.OrdinalIgnoreCase);</div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            ChangeLog = <span class="keyword">new</span> ConcurrentDictionary&lt;string, Change&gt;(StringComparer.OrdinalIgnoreCase);</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;            IDictionary&lt;string, object&gt; DictItem = Item as IDictionary&lt;string, object&gt;;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;            <span class="keywordflow">if</span> (Item == null)</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;            var DictItem = item as IDictionary&lt;string, object&gt;;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;            <span class="keywordflow">if</span> (item == null)</div>
 <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            <span class="keywordflow">if</span> (Item is <span class="keywordtype">string</span> || Item.GetType().IsValueType)</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;                SetValue(<span class="stringliteral">&quot;Value&quot;</span>, Item);</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            <span class="keywordflow">if</span> (item is <span class="keywordtype">string</span> || item.GetType().IsValueType)</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;                SetValue(<span class="stringliteral">&quot;Value&quot;</span>, item);</div>
 <div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (DictItem != null)</div>
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;                InternalValues = <span class="keyword">new</span> ConcurrentDictionary&lt;string, object&gt;(DictItem, StringComparer.OrdinalIgnoreCase);</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (Item is IEnumerable)</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;                SetValue(<span class="stringliteral">&quot;Items&quot;</span>, Item);</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (item is IEnumerable)</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;                SetValue(<span class="stringliteral">&quot;Items&quot;</span>, item);</div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;            <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                DataMapper.Map(Item.GetType(), this.GetType())</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                DataMapper.Map(item.GetType(), GetType())</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;                          .AutoMap()</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;                          .Copy(Item, <span class="keyword">this</span>);</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;                          .Copy(item, <span class="keyword">this</span>);</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        }</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
-<div class="line"><a name="l00232"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a99aaab6bfcdd9b913b592f80c09a83b8">  232</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html#a99aaab6bfcdd9b913b592f80c09a83b8">Dynamo</a>(IDictionary&lt;string, object&gt; Dictionary)</div>
+<div class="line"><a name="l00232"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a722fce654be10aab2eb6254262bc1b38">  232</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html#a722fce654be10aab2eb6254262bc1b38">Dynamo</a>(IDictionary&lt;string, object&gt; dictionary)</div>
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;            : base()</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        {</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            InternalValues = <span class="keyword">new</span> ConcurrentDictionary&lt;string, object&gt;(Dictionary, StringComparer.OrdinalIgnoreCase);</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            InternalValues = <span class="keyword">new</span> ConcurrentDictionary&lt;string, object&gt;(dictionary, StringComparer.OrdinalIgnoreCase);</div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;            ChildValues = <span class="keyword">new</span> ConcurrentDictionary&lt;string, Func&lt;object&gt;&gt;(StringComparer.OrdinalIgnoreCase);</div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;            ChangeLog = <span class="keyword">new</span> ConcurrentDictionary&lt;string, Change&gt;(StringComparer.OrdinalIgnoreCase);</div>
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        }</div>
@@ -294,78 +294,78 @@ $(document).ready(function(){initNavTree('_dynamo_8cs_source.html','');});
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            }</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        }</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        <span class="keyword">private</span> Action&lt;<a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html">Dynamo</a>, string, EventArgs.OnEndEventArgs&gt; getValueEnd_;</div>
+<div class="line"><a name="l00261"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a5f0543816b2b7d21e41c564ad7883211">  261</a></span>&#160;        <span class="keyword">public</span> ConcurrentDictionary&lt;string, Change&gt; ChangeLog { <span class="keyword">get</span>; <span class="keyword">private</span> set; }</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        <span class="keyword">private</span> Action&lt;Dynamo, EventArgs.OnStartEventArgs&gt; getValueStart_;</div>
+<div class="line"><a name="l00266"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#ae286f76254554f599947f27f01b930bc">  266</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">int</span> Count { <span class="keyword">get</span> { <span class="keywordflow">return</span> InternalValues.Count; } }</div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        <span class="keyword">private</span> PropertyChangedEventHandler propertyChanged_;</div>
+<div class="line"><a name="l00271"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a54fb669c033c25272aaa796f773d5fcf">  271</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> IsReadOnly { <span class="keyword">get</span> { <span class="keywordflow">return</span> <span class="keyword">false</span>; } }</div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        <span class="keyword">public</span> <span class="keyword">event</span> Action&lt;Dynamo, string, EventArgs.OnEndEventArgs&gt; GetValueEnd</div>
-<div class="line"><a name="l00278"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a72aff0ce92e6e876f001bcd86c2e6600">  278</a></span>&#160;        {</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;            add</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;            {</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;                getValueEnd_ -= value;</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                getValueEnd_ += value;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;            }</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;            <span class="keyword">remove</span></div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;            {</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                getValueEnd_ -= value;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;            }</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        }</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        <span class="keyword">public</span> <span class="keyword">event</span> Action&lt;Dynamo, EventArgs.OnStartEventArgs&gt; GetValueStart</div>
-<div class="line"><a name="l00295"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a48431a903e135c63bed7cca2a3e1e5e1">  295</a></span>&#160;        {</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;            add</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;            {</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;                getValueStart_ -= value;</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;                getValueStart_ += value;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;            }</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;            <span class="keyword">remove</span></div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;            {</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;                getValueStart_ -= value;</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;            }</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        }</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        <span class="keyword">public</span> <span class="keyword">event</span> PropertyChangedEventHandler PropertyChanged</div>
-<div class="line"><a name="l00311"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a5d38d982c64f22e0e79a76e754926470">  311</a></span>&#160;        {</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;            add</div>
+<div class="line"><a name="l00276"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a766ad5ab64797bef4670c7032ce26ddd">  276</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> ICollection&lt;string&gt; Keys { <span class="keyword">get</span> { <span class="keywordflow">return</span> InternalValues.Keys; } }</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;</div>
+<div class="line"><a name="l00281"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#aea7357ed34463ea2b851f95671f9c97e">  281</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> ICollection&lt;object&gt; Values { <span class="keyword">get</span> { <span class="keywordflow">return</span> InternalValues.Values; } }</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        <span class="keyword">internal</span> ConcurrentDictionary&lt;string, Func&lt;object&gt;&gt; ChildValues { <span class="keyword">get</span>; set; }</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        <span class="keyword">internal</span> ConcurrentDictionary&lt;string, object&gt; InternalValues { <span class="keyword">get</span>; set; }</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> AOP.Manager AOPManager { <span class="keyword">get</span> { <span class="keywordflow">return</span> IoC.Manager.Bootstrapper.Resolve&lt;AOP.Manager&gt;(); } }</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <a class="code" href="class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html">Manager</a> DataMapper { <span class="keyword">get</span> { <span class="keywordflow">return</span> IoC.<a class="code" href="class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html#a27fde93fde087d2e46fa65114cc30a57">Manager</a>.Bootstrapper.Resolve&lt;<a class="code" href="class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html">Manager</a>&gt;(); } }</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">object</span> <span class="keyword">this</span>[<span class="keywordtype">string</span> key]</div>
+<div class="line"><a name="l00311"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#aaa036bf0a32109bda70828081d48722d">  311</a></span>&#160;        {</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;            <span class="keyword">get</span></div>
 <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;            {</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                propertyChanged_ -= value;</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                propertyChanged_ += value;</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;            }</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;            <span class="keyword">remove</span></div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;            {</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                propertyChanged_ -= value;</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;            }</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        }</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;</div>
-<div class="line"><a name="l00326"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a5f0543816b2b7d21e41c564ad7883211">  326</a></span>&#160;        <span class="keyword">public</span> ConcurrentDictionary&lt;string, Change&gt; ChangeLog { <span class="keyword">get</span>; <span class="keyword">private</span> set; }</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;</div>
-<div class="line"><a name="l00331"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#ae286f76254554f599947f27f01b930bc">  331</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">int</span> Count { <span class="keyword">get</span> { <span class="keywordflow">return</span> InternalValues.<a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html#ae286f76254554f599947f27f01b930bc">Count</a>; } }</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;</div>
-<div class="line"><a name="l00336"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a54fb669c033c25272aaa796f773d5fcf">  336</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> IsReadOnly { <span class="keyword">get</span> { <span class="keywordflow">return</span> <span class="keyword">false</span>; } }</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;</div>
-<div class="line"><a name="l00341"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a766ad5ab64797bef4670c7032ce26ddd">  341</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> ICollection&lt;string&gt; Keys { <span class="keyword">get</span> { <span class="keywordflow">return</span> InternalValues.Keys; } }</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;</div>
-<div class="line"><a name="l00346"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#aea7357ed34463ea2b851f95671f9c97e">  346</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> ICollection&lt;object&gt; Values { <span class="keyword">get</span> { <span class="keywordflow">return</span> InternalValues.Values; } }</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        <span class="keyword">internal</span> ConcurrentDictionary&lt;string, Func&lt;object&gt;&gt; ChildValues { <span class="keyword">get</span>; set; }</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;        <span class="keyword">internal</span> ConcurrentDictionary&lt;string, object&gt; InternalValues { <span class="keyword">get</span>; set; }</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> AOP.Manager AOPManager { <span class="keyword">get</span> { <span class="keywordflow">return</span> IoC.Manager.Bootstrapper.Resolve&lt;AOP.Manager&gt;(); } }</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <a class="code" href="class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html">Manager</a> DataMapper { <span class="keyword">get</span> { <span class="keywordflow">return</span> IoC.<a class="code" href="class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html#a27fde93fde087d2e46fa65114cc30a57">Manager</a>.Bootstrapper.Resolve&lt;<a class="code" href="class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html">Manager</a>&gt;(); } }</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">object</span> <span class="keyword">this</span>[<span class="keywordtype">string</span> key]</div>
-<div class="line"><a name="l00376"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#aaa036bf0a32109bda70828081d48722d">  376</a></span>&#160;        {</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;            <span class="keyword">get</span></div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;            {</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;                <span class="keywordflow">return</span> GetValue(key, typeof(<span class="keywordtype">object</span>));</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                <span class="keywordflow">return</span> GetValue(key, typeof(<span class="keywordtype">object</span>));</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;            }</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;            set</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;            {</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                SetValue(key, value);</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;            }</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        }</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        <span class="keyword">private</span> Action&lt;<a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html">Dynamo</a>, string, EventArgs.OnEndEventArgs&gt; getValueEnd_;</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        <span class="keyword">private</span> Action&lt;Dynamo, EventArgs.OnStartEventArgs&gt; getValueStart_;</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        <span class="keyword">private</span> PropertyChangedEventHandler propertyChanged_;</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;        <span class="keyword">public</span> <span class="keyword">event</span> Action&lt;Dynamo, string, EventArgs.OnEndEventArgs&gt; GetValueEnd</div>
+<div class="line"><a name="l00342"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a72aff0ce92e6e876f001bcd86c2e6600">  342</a></span>&#160;        {</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;            add</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;            {</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;                getValueEnd_ -= value;</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;                getValueEnd_ += value;</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;            }</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;            <span class="keyword">remove</span></div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;            {</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;                getValueEnd_ -= value;</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;            }</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        }</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;        <span class="keyword">public</span> <span class="keyword">event</span> Action&lt;Dynamo, EventArgs.OnStartEventArgs&gt; GetValueStart</div>
+<div class="line"><a name="l00359"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a48431a903e135c63bed7cca2a3e1e5e1">  359</a></span>&#160;        {</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;            add</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;            {</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;                getValueStart_ -= value;</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;                getValueStart_ += value;</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;            }</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;            <span class="keyword">remove</span></div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;            {</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;                getValueStart_ -= value;</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;            }</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        }</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        <span class="keyword">public</span> <span class="keyword">event</span> PropertyChangedEventHandler PropertyChanged</div>
+<div class="line"><a name="l00375"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a5d38d982c64f22e0e79a76e754926470">  375</a></span>&#160;        {</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;            add</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;            {</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;                propertyChanged_ -= value;</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;                propertyChanged_ += value;</div>
 <div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;            }</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;            set</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;            <span class="keyword">remove</span></div>
 <div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;            {</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;                SetValue(key, value);</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;                propertyChanged_ -= value;</div>
 <div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;            }</div>
 <div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;        }</div>
 <div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;</div>
@@ -399,7 +399,7 @@ $(document).ready(function(){initNavTree('_dynamo_8cs_source.html','');});
 <div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;        {</div>
 <div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;            <span class="keywordflow">if</span> (Item == null)</div>
 <div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;            IDictionary&lt;string, object&gt; DictItem = Item as IDictionary&lt;string, object&gt;;</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;            var DictItem = Item as IDictionary&lt;string, object&gt;;</div>
 <div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;            <span class="keywordflow">if</span> (Item is <span class="keywordtype">string</span> || Item.GetType().IsValueType)</div>
 <div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;                SetValue(<span class="stringliteral">&quot;Value&quot;</span>, Item);</div>
 <div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (DictItem != null)</div>
@@ -412,7 +412,7 @@ $(document).ready(function(){initNavTree('_dynamo_8cs_source.html','');});
 <div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (Item is IEnumerable)</div>
 <div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;                SetValue(<span class="stringliteral">&quot;Items&quot;</span>, Item);</div>
 <div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;            <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;                DataMapper.Map(Item.GetType(), this.GetType())</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;                DataMapper.Map(Item.GetType(), GetType())</div>
 <div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;                          .AutoMap()</div>
 <div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;                          .Copy(Item, <span class="keyword">this</span>);</div>
 <div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;        }</div>
@@ -425,14 +425,14 @@ $(document).ready(function(){initNavTree('_dynamo_8cs_source.html','');});
 <div class="line"><a name="l00475"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a81c28c1093077d918b364ced29a366bc">  475</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html#a81c28c1093077d918b364ced29a366bc">CopyTo</a>(<span class="keywordtype">object</span> result)</div>
 <div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;        {</div>
 <div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;            Contract.Requires&lt;ArgumentNullException&gt;(result != null, <span class="stringliteral">&quot;result&quot;</span>);</div>
-<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;            DataMapper.Map(this.GetType(), result.GetType())</div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;            DataMapper.Map(GetType(), result.GetType())</div>
 <div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;                      .AutoMap()</div>
 <div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;                      .Copy(<span class="keyword">this</span>, result);</div>
 <div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;        }</div>
 <div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;</div>
 <div class="line"><a name="l00488"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a9aac2e8b907d1ab9485fd3d593a0cde9">  488</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">bool</span> <a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html#a9aac2e8b907d1ab9485fd3d593a0cde9">Equals</a>(<span class="keywordtype">object</span> obj)</div>
 <div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;        {</div>
-<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;            Dynamo TempObj = obj as Dynamo;</div>
+<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;            var TempObj = obj as Dynamo;</div>
 <div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;            <span class="keywordflow">if</span> (TempObj == null)</div>
 <div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;            <span class="keywordflow">return</span> TempObj.GetHashCode() == GetHashCode();</div>
@@ -509,7 +509,7 @@ $(document).ready(function(){initNavTree('_dynamo_8cs_source.html','');});
 <div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;        {</div>
 <div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;            <span class="keywordflow">if</span> (Keys == null)</div>
 <div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">new</span> Dynamo();</div>
-<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;            Dynamo ReturnValue = <span class="keyword">new</span> Dynamo();</div>
+<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;            var ReturnValue = <span class="keyword">new</span> Dynamo();</div>
 <div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;            ReturnValue.Clear();</div>
 <div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;            <span class="keywordflow">foreach</span> (<span class="keywordtype">string</span> Key <span class="keywordflow">in</span> Keys)</div>
 <div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;            {</div>
@@ -531,7 +531,7 @@ $(document).ready(function(){initNavTree('_dynamo_8cs_source.html','');});
 <div class="line"><a name="l00640"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#aa6567b3b6776c50873256bdb22398620">  640</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">object</span> <a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html#aa6567b3b6776c50873256bdb22398620">To</a>(Type ObjectType)</div>
 <div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;        {</div>
 <div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;            <span class="keywordtype">object</span> Result = AOPManager.Create(ObjectType);</div>
-<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;            DataMapper.Map(this.GetType(), ObjectType)</div>
+<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;            DataMapper.Map(GetType(), ObjectType)</div>
 <div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;                      .AutoMap()</div>
 <div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;                      .Copy(<span class="keyword">this</span>, Result);</div>
 <div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;            <span class="keywordflow">return</span> Result;</div>
@@ -539,7 +539,7 @@ $(document).ready(function(){initNavTree('_dynamo_8cs_source.html','');});
 <div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;</div>
 <div class="line"><a name="l00653"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#a317423c6f044c49bb9f3d64230bd8590">  653</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">string</span> <a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html#a317423c6f044c49bb9f3d64230bd8590">ToString</a>()</div>
 <div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;        {</div>
-<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;            StringBuilder Builder = <span class="keyword">new</span> StringBuilder();</div>
+<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;            var Builder = <span class="keyword">new</span> StringBuilder();</div>
 <div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;            Builder.AppendLineFormat(<span class="stringliteral">&quot;{0} this&quot;</span>, GetType().Name);</div>
 <div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;            <span class="keywordflow">foreach</span> (<span class="keywordtype">string</span> Key <span class="keywordflow">in</span> Keys.OrderBy(x =&gt; x))</div>
 <div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;            {</div>
@@ -617,12 +617,12 @@ $(document).ready(function(){initNavTree('_dynamo_8cs_source.html','');});
 <div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;            }</div>
 <div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;            <span class="keywordtype">object</span> ReturnValue = ChildValues[Name]().To(ReturnType, null);</div>
 <div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;            Value = RaiseGetValueEnd(Name, ReturnValue);</div>
-<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;            <span class="keywordflow">return</span> (Value != null) ? Value : ReturnValue;</div>
+<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;            <span class="keywordflow">return</span> Value ?? ReturnValue;</div>
 <div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;        }</div>
 <div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;</div>
 <div class="line"><a name="l00793"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#ac030c82c1284d6c314c6bf8ec76c1e0a">  793</a></span>&#160;        <span class="keyword">protected</span> <span class="keywordtype">object</span> <a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html#ac030c82c1284d6c314c6bf8ec76c1e0a">RaiseGetValueEnd</a>(<span class="keywordtype">string</span> PropertyName, <span class="keywordtype">object</span> Value)</div>
 <div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;        {</div>
-<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;            EventArgs.OnEndEventArgs End = <span class="keyword">new</span> EventArgs.OnEndEventArgs() { Content = Value };</div>
+<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;            var End = <span class="keyword">new</span> EventArgs.OnEndEventArgs() { Content = Value };</div>
 <div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;            var Handler = getValueEnd_;</div>
 <div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;            <span class="keywordflow">if</span> (Handler != null)</div>
 <div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;                Handler(<span class="keyword">this</span>, PropertyName, End);</div>
@@ -631,7 +631,7 @@ $(document).ready(function(){initNavTree('_dynamo_8cs_source.html','');});
 <div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;</div>
 <div class="line"><a name="l00810"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_dynamo.html#ad269b72823dd12d34d96c066a5b2a79d">  810</a></span>&#160;        <span class="keyword">protected</span> <span class="keywordtype">object</span> <a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html#ad269b72823dd12d34d96c066a5b2a79d">RaiseGetValueStart</a>(<span class="keywordtype">string</span> PropertyName)</div>
 <div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;        {</div>
-<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;            EventArgs.OnStartEventArgs Start = <span class="keyword">new</span> EventArgs.OnStartEventArgs() { Content = PropertyName };</div>
+<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;            var Start = <span class="keyword">new</span> EventArgs.OnStartEventArgs() { Content = PropertyName };</div>
 <div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;            var Handler = getValueStart_;</div>
 <div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;            <span class="keywordflow">if</span> (Handler != null)</div>
 <div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;                Handler(<span class="keyword">this</span>, Start);</div>
@@ -676,21 +676,19 @@ $(document).ready(function(){initNavTree('_dynamo_8cs_source.html','');});
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_ac3f6834c26c823558a5a27b890e4f118"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#ac3f6834c26c823558a5a27b890e4f118">Utilities.DataTypes.Dynamo.WriteXml</a></div><div class="ttdeci">virtual void WriteXml(System.Xml.XmlWriter writer)</div><div class="ttdoc">Writes the data to an XML doc </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00743">Dynamo.cs:743</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_ab6f6761062bf34f76cf852f3bbf9480d"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#ab6f6761062bf34f76cf852f3bbf9480d">Utilities.DataTypes.Dynamo.SubSet</a></div><div class="ttdeci">dynamic SubSet(params string[] Keys)</div><div class="ttdoc">Returns a subset of the current Dynamo object </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00603">Dynamo.cs:603</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_a2c095b36e372e176e3c701be2e5ead1f"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#a2c095b36e372e176e3c701be2e5ead1f">Utilities.DataTypes.Dynamo.Clear</a></div><div class="ttdeci">void Clear()</div><div class="ttdoc">Clears the key/value pairs </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00409">Dynamo.cs:409</a></div></div>
-<div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_ab175a27eee5a892f4bb20ccad0e7d147"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#ab175a27eee5a892f4bb20ccad0e7d147">Utilities.DataTypes.Dynamo.Dynamo</a></div><div class="ttdeci">Dynamo(object Item)</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00086">Dynamo.cs:86</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_change_html"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_change.html">Utilities.DataTypes.Change</a></div><div class="ttdoc">Change class </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00042">Dynamo.cs:42</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_a1f7ec2f190a26b4d24c2c9aa4de33319"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#a1f7ec2f190a26b4d24c2c9aa4de33319">Utilities.DataTypes.Dynamo.Add</a></div><div class="ttdeci">void Add(KeyValuePair&lt; string, object &gt; item)</div><div class="ttdoc">Adds a key/value pair </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00401">Dynamo.cs:401</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_a4a3dcd221d23a94b3bb341fdef693af8"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#a4a3dcd221d23a94b3bb341fdef693af8">Utilities.DataTypes.Dynamo.GetValue</a></div><div class="ttdeci">override object GetValue(string Name, Type ReturnType)</div><div class="ttdoc">Gets a value </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00151">Dynamo.cs:151</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_a832e34f9f6386e5ba9f5dbc8624b5796"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#a832e34f9f6386e5ba9f5dbc8624b5796">Utilities.DataTypes.Dynamo.Remove</a></div><div class="ttdeci">bool Remove(KeyValuePair&lt; string, object &gt; item)</div><div class="ttdoc">Removes a key/value pair </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00591">Dynamo.cs:591</a></div></div>
+<div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_a722fce654be10aab2eb6254262bc1b38"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#a722fce654be10aab2eb6254262bc1b38">Utilities.DataTypes.Dynamo.Dynamo</a></div><div class="ttdeci">Dynamo(IDictionary&lt; string, object &gt; dictionary)</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00095">Dynamo.cs:95</a></div></div>
 <div class="ttc" id="namespace_utilities_html"><div class="ttname"><a href="namespace_utilities.html">Utilities</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_a898febf66da251d62e9936a545140d5d"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#a898febf66da251d62e9936a545140d5d">Utilities.DataTypes.Dynamo.TryInvoke</a></div><div class="ttdeci">override bool TryInvoke(InvokeBinder binder, object[] args, out object result)</div><div class="ttdoc">Attempts to invoke a function </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00710">Dynamo.cs:710</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html">Utilities.DataTypes.Dynamo</a></div><div class="ttdoc">Dynamic object implementation (used when inheriting) </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00071">Dynamo.cs:71</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_aee69ed0d74820d23cc42b5b6abe55dea"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#aee69ed0d74820d23cc42b5b6abe55dea">Utilities.DataTypes.Dynamo.Copy</a></div><div class="ttdeci">void Copy(object Item)</div><div class="ttdoc">Copies the properties from an item </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00439">Dynamo.cs:439</a></div></div>
-<div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_a99aaab6bfcdd9b913b592f80c09a83b8"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#a99aaab6bfcdd9b913b592f80c09a83b8">Utilities.DataTypes.Dynamo.Dynamo</a></div><div class="ttdeci">Dynamo(IDictionary&lt; string, object &gt; Dictionary)</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00095">Dynamo.cs:95</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_a3b61a6ec4334a8dcf229e8e5696ae7e7"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#a3b61a6ec4334a8dcf229e8e5696ae7e7">Utilities.DataTypes.Dynamo.Dynamo</a></div><div class="ttdeci">Dynamo()</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00077">Dynamo.cs:77</a></div></div>
-<div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_ae286f76254554f599947f27f01b930bc"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#ae286f76254554f599947f27f01b930bc">Utilities.DataTypes.Dynamo.Count</a></div><div class="ttdeci">int Count</div><div class="ttdoc">Number of items </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00331">Dynamo.cs:331</a></div></div>
+<div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_a16612f8f9609a3fbfa996c861d860fcc"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#a16612f8f9609a3fbfa996c861d860fcc">Utilities.DataTypes.Dynamo.Dynamo</a></div><div class="ttdeci">Dynamo(object item)</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00086">Dynamo.cs:86</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_a1b099271d91df4ec400dbbba32930abb"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#a1b099271d91df4ec400dbbba32930abb">Utilities.DataTypes.Dynamo.TryConvert</a></div><div class="ttdeci">override bool TryConvert(ConvertBinder binder, out object result)</div><div class="ttdoc">Attempts to convert the object </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00674">Dynamo.cs:674</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_a607fa04c662a54a300a913ac53ba11c6"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#a607fa04c662a54a300a913ac53ba11c6">Utilities.DataTypes.Dynamo.ReadXml</a></div><div class="ttdeci">virtual void ReadXml(System.Xml.XmlReader reader)</div><div class="ttdoc">Reads the data from an XML doc </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00565">Dynamo.cs:565</a></div></div>
-<div class="ttc" id="class_utilities_1_1_data_types_1_1_change_html_a77433a6919f57873a8743c12f9207382"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_change.html#a77433a6919f57873a8743c12f9207382">Utilities.DataTypes.Change.Change</a></div><div class="ttdeci">Change(object OriginalValue, object NewValue)</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00049">Dynamo.cs:49</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_a203da5e4394d9d4fcf40058ddfab88b7"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#a203da5e4394d9d4fcf40058ddfab88b7">Utilities.DataTypes.Dynamo.GetHashCode</a></div><div class="ttdeci">override int GetHashCode()</div><div class="ttdoc">Gets the hash code </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00521">Dynamo.cs:521</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager_html"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html">Utilities.DataTypes.DataMapper.Manager</a></div><div class="ttdoc">Data mapper manager </div><div class="ttdef"><b>Definition:</b> <a href="_data_types_2_data_mapper_2_manager_8cs_source.html#l00033">Manager.cs:33</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_a81c28c1093077d918b364ced29a366bc"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#a81c28c1093077d918b364ced29a366bc">Utilities.DataTypes.Dynamo.CopyTo</a></div><div class="ttdeci">void CopyTo(object result)</div><div class="ttdoc">Copies data from here to another object </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00475">Dynamo.cs:475</a></div></div>
@@ -703,6 +701,7 @@ $(document).ready(function(){initNavTree('_dynamo_8cs_source.html','');});
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_ae2da2f587f86489460e9aaf3f52f836a"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#ae2da2f587f86489460e9aaf3f52f836a">Utilities.DataTypes.Dynamo.TryGetMember</a></div><div class="ttdeci">override bool TryGetMember(GetMemberBinder binder, out object result)</div><div class="ttdoc">Attempts to get a member </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00686">Dynamo.cs:686</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_a352d96b613b0f635225c3ffefd892425"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#a352d96b613b0f635225c3ffefd892425">Utilities.DataTypes.Dynamo.TrySetMember</a></div><div class="ttdeci">override bool TrySetMember(SetMemberBinder binder, object value)</div><div class="ttdoc">Attempts to set the member </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00733">Dynamo.cs:733</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_ab138319406db5b5b46cc5a989ce5d458"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#ab138319406db5b5b46cc5a989ce5d458">Utilities.DataTypes.Dynamo.GetSchema</a></div><div class="ttdeci">System.Xml.Schema.XmlSchema GetSchema()</div><div class="ttdoc">Not used </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00556">Dynamo.cs:556</a></div></div>
+<div class="ttc" id="class_utilities_1_1_data_types_1_1_change_html_addfe41c4580938ce6677acc249470d83"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_change.html#addfe41c4580938ce6677acc249470d83">Utilities.DataTypes.Change.Change</a></div><div class="ttdeci">Change(object originalValue, object newValue)</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00049">Dynamo.cs:49</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_a761825f7d8021ce4cd25f14801639cd0"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#a761825f7d8021ce4cd25f14801639cd0">Utilities.DataTypes.Dynamo.GetEnumerator</a></div><div class="ttdeci">IEnumerator&lt; KeyValuePair&lt; string, object &gt; &gt; GetEnumerator()</div><div class="ttdoc">Gets the enumerator for the object </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00509">Dynamo.cs:509</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_ab8478606a984862617084dd2553d8b90"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#ab8478606a984862617084dd2553d8b90">Utilities.DataTypes.Dynamo.ContainsKey</a></div><div class="ttdeci">bool ContainsKey(string key)</div><div class="ttdoc">Determines if the object contains a key </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00430">Dynamo.cs:430</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_dynamo_html_ab85c39b09654cf104e368b8dfb313532"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_dynamo.html#ab85c39b09654cf104e368b8dfb313532">Utilities.DataTypes.Dynamo.Remove</a></div><div class="ttdeci">bool Remove(string key)</div><div class="ttdoc">Removes the value associated with the key </div><div class="ttdef"><b>Definition:</b> <a href="_dynamo_8cs_source.html#l00579">Dynamo.cs:579</a></div></div>
@@ -714,7 +713,7 @@ $(document).ready(function(){initNavTree('_dynamo_8cs_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_ca0426833ed64f488ae0419fd1a98fec.html">DataTypes</a></li><li class="navelem"><a class="el" href="_dynamo_8cs.html">Dynamo.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:41 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:39 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

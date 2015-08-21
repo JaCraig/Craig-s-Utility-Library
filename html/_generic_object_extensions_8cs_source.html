@@ -318,7 +318,7 @@ $(document).ready(function(){initNavTree('_generic_object_extensions_8cs_source.
 <div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;</div>
 <div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;T&gt; Times&lt;T&gt;(<span class="keyword">this</span> <span class="keywordtype">int</span> Count, Func&lt;int, T&gt; Function)</div>
 <div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;        {</div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;            <a class="code" href="namespace_system.html">System</a>.Collections.Generic.List&lt;T&gt; ReturnValue = <span class="keyword">new</span> <a class="code" href="namespace_system.html">System</a>.Collections.Generic.List&lt;T&gt;();</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;            var ReturnValue = <span class="keyword">new</span> <a class="code" href="namespace_system.html">System</a>.Collections.Generic.List&lt;T&gt;();</div>
 <div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; Count; ++x)</div>
 <div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;                ReturnValue.Add(Function(x));</div>
 <div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;            <span class="keywordflow">return</span> ReturnValue;</div>
@@ -342,7 +342,7 @@ $(document).ready(function(){initNavTree('_generic_object_extensions_8cs_source.
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_ca0426833ed64f488ae0419fd1a98fec.html">DataTypes</a></li><li class="navelem"><a class="el" href="dir_ff08ba1239df36e241ac9aa57b32dcdc.html">ExtensionMethods</a></li><li class="navelem"><a class="el" href="_generic_object_extensions_8cs.html">GenericObjectExtensions.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:41 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:39 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

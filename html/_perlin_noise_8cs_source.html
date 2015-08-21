@@ -142,7 +142,7 @@ $(document).ready(function(){initNavTree('_perlin_noise_8cs_source.html','');});
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> SwiftBitmap Generate(<span class="keywordtype">int</span> Width, <span class="keywordtype">int</span> Height, <span class="keywordtype">int</span> MaxRGBValue, <span class="keywordtype">int</span> MinRGBValue,</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordtype">float</span> Frequency, <span class="keywordtype">float</span> Amplitude, <span class="keywordtype">float</span> Persistance, <span class="keywordtype">int</span> Octaves, <span class="keywordtype">int</span> Seed)</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            SwiftBitmap ReturnValue = <span class="keyword">new</span> SwiftBitmap(Width, Height);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            var ReturnValue = <span class="keyword">new</span> SwiftBitmap(Width, Height);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            ReturnValue.Lock();</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordtype">float</span>[,] Noise = GenerateNoise(Seed, Width, Height);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; Width; ++x)</div>
@@ -163,7 +163,7 @@ $(document).ready(function(){initNavTree('_perlin_noise_8cs_source.html','');});
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">float</span>[,] GenerateNoise(<span class="keywordtype">int</span> Seed, <span class="keywordtype">int</span> Width, <span class="keywordtype">int</span> Height)</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        {</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keywordtype">float</span>[,] Noise = <span class="keyword">new</span> <span class="keywordtype">float</span>[Width, Height];</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <a class="code" href="namespace_system.html">System</a>.Random RandomGenerator = <span class="keyword">new</span> <a class="code" href="namespace_system.html">System</a>.Random(Seed);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            var RandomGenerator = <span class="keyword">new</span> <a class="code" href="namespace_system.html">System</a>.Random(Seed);</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; Width; ++x)</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            {</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; Height; ++y)</div>
@@ -223,7 +223,7 @@ $(document).ready(function(){initNavTree('_perlin_noise_8cs_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_7ba1ae5b3988c571c02a9d1c2c91e331.html">Media</a></li><li class="navelem"><a class="el" href="dir_a3eed4b998e4ac151013a330af78a718.html">Procedural</a></li><li class="navelem"><a class="el" href="_perlin_noise_8cs.html">PerlinNoise.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:46 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:43 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

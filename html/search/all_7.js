@@ -22,7 +22,6 @@ var searchData=
   ['htmlformatting',['HTMLFormatting',['../class_utilities_1_1_random_1_1_string_generators_1_1_lorem_ipsum_generator.html#a8df9222d39e4fe7be0584426970b7c9a',1,'Utilities::Random::StringGenerators::LoremIpsumGenerator']]],
   ['htmlpalette',['HTMLPalette',['../class_utilities_1_1_media_1_1_swift_bitmap.html#aadc3c6ce5d9357558291b692872d72fd',1,'Utilities::Media::SwiftBitmap']]],
   ['httpcontextextensions_2ecs',['HTTPContextExtensions.cs',['../_h_t_t_p_context_extensions_8cs.html',1,'']]],
-  ['httpfilesystem',['HttpFileSystem',['../class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_http_file_system.html#a248e87aa5e61b3ea7e20d3f8d18f2746',1,'Utilities::IO::FileSystem::Default::HttpFileSystem']]],
   ['httpfilesystem',['HttpFileSystem',['../class_utilities_1_1_i_o_1_1_file_system_1_1_default_1_1_http_file_system.html',1,'Utilities::IO::FileSystem::Default']]],
   ['httpfilesystem_2ecs',['HttpFileSystem.cs',['../_http_file_system_8cs.html',1,'']]],
   ['httprequestextensions_2ecs',['HTTPRequestExtensions.cs',['../_h_t_t_p_request_extensions_8cs.html',1,'']]]

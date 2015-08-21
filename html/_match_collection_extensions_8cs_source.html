@@ -144,7 +144,7 @@ $(document).ready(function(){initNavTree('_match_collection_extensions_8cs_sourc
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            Contract.Requires&lt;ArgumentNullException&gt;(Predicate != null, <span class="stringliteral">&quot;Predicate&quot;</span>);</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keywordflow">if</span> (Collection == null)</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                <span class="keywordflow">return</span> null;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            List&lt;Match&gt; Matches = <span class="keyword">new</span> List&lt;Match&gt;();</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            var Matches = <span class="keyword">new</span> List&lt;Match&gt;();</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">foreach</span> (Match Item <span class="keywordflow">in</span> Collection)</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                <span class="keywordflow">if</span> (Predicate(Item))</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                    Matches.Add(Item);</div>
@@ -160,7 +160,7 @@ $(document).ready(function(){initNavTree('_match_collection_extensions_8cs_sourc
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_ca0426833ed64f488ae0419fd1a98fec.html">DataTypes</a></li><li class="navelem"><a class="el" href="dir_ff08ba1239df36e241ac9aa57b32dcdc.html">ExtensionMethods</a></li><li class="navelem"><a class="el" href="_match_collection_extensions_8cs.html">MatchCollectionExtensions.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:41 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:39 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

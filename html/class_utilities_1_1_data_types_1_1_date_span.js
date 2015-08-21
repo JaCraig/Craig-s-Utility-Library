@@ -1,6 +1,6 @@
 var class_utilities_1_1_data_types_1_1_date_span =
 [
-    [ "DateSpan", "class_utilities_1_1_data_types_1_1_date_span.html#ac23a453a9da21663d61ba2b1f7aeeec3", null ],
+    [ "DateSpan", "class_utilities_1_1_data_types_1_1_date_span.html#a39dd569d8d6e5b11a11648b3c81ffa40", null ],
     [ "Equals", "class_utilities_1_1_data_types_1_1_date_span.html#aaaeb17a0a2946fbafedc1d4f323e6b74", null ],
     [ "GetHashCode", "class_utilities_1_1_data_types_1_1_date_span.html#aa40f96aa8415c387c20f173e8683c8f7", null ],
     [ "Intersection", "class_utilities_1_1_data_types_1_1_date_span.html#ab4303733ea8974d1390344ed26693394", null ],

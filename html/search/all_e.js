@@ -54,7 +54,6 @@ var searchData=
   ['organization',['Organization',['../class_utilities_1_1_i_o_1_1_file_formats_1_1_v_card.html#ad6d36885f3ac2fc279833110e4d32b05',1,'Utilities::IO::FileFormats::VCard']]],
   ['organizer',['Organizer',['../class_utilities_1_1_i_o_1_1_file_formats_1_1_v_calendar.html#a9113f772c900d8c0b52b6b4a2363d407',1,'Utilities::IO::FileFormats::VCalendar']]],
   ['originalvalue',['OriginalValue',['../class_utilities_1_1_data_types_1_1_change.html#a40ee4d2795fc140bb2e12da4d46d39fd',1,'Utilities::DataTypes::Change']]],
-  ['ormaspect',['ORMAspect',['../class_utilities_1_1_o_r_m_1_1_aspect_1_1_o_r_m_aspect.html#ade7ab8ffd997c0b9b833a809ef1b1a96',1,'Utilities::ORM::Aspect::ORMAspect']]],
   ['ormaspect',['ORMAspect',['../class_utilities_1_1_o_r_m_1_1_aspect_1_1_o_r_m_aspect.html',1,'Utilities::ORM::Aspect']]],
   ['ormaspect_2ecs',['ORMAspect.cs',['../_o_r_m_aspect_8cs.html',1,'']]],
   ['ormmanager',['ORMManager',['../class_utilities_1_1_o_r_m_1_1_manager_1_1_o_r_m_manager.html#a7dc3ac2aa2a72b9b573266c73e09d777',1,'Utilities::ORM::Manager::ORMManager']]],
@@ -62,8 +61,8 @@ var searchData=
   ['ormmanager_2ecs',['ORMManager.cs',['../_o_r_m_manager_8cs.html',1,'']]],
   ['ormmodule',['ORMModule',['../class_utilities_1_1_o_r_m_1_1_manager_1_1_module_1_1_o_r_m_module.html',1,'Utilities::ORM::Manager::Module']]],
   ['ormmodule_2ecs',['ORMModule.cs',['../_o_r_m_module_8cs.html',1,'']]],
-  ['orparameter',['OrParameter',['../class_utilities_1_1_o_r_m_1_1_parameters_1_1_or_parameter.html',1,'Utilities::ORM::Parameters']]],
   ['orparameter',['OrParameter',['../class_utilities_1_1_o_r_m_1_1_parameters_1_1_or_parameter.html#aa356e6cc6a99a8758840ac6d0f700b95',1,'Utilities::ORM::Parameters::OrParameter']]],
+  ['orparameter',['OrParameter',['../class_utilities_1_1_o_r_m_1_1_parameters_1_1_or_parameter.html',1,'Utilities::ORM::Parameters']]],
   ['orparameter_2ecs',['OrParameter.cs',['../_or_parameter_8cs.html',1,'']]],
   ['overlap',['Overlap',['../class_utilities_1_1_data_types_1_1_date_span.html#aabad7caed84c8dca1ee04d0a9a00723d',1,'Utilities::DataTypes::DateSpan']]]
 ];

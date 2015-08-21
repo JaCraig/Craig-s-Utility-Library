@@ -2,7 +2,7 @@ var class_utilities_1_1_data_types_1_1_task_queue =
 [
     [ "TaskQueue", "class_utilities_1_1_data_types_1_1_task_queue.html#a40af936d26fcb6948d022f15e7053914", null ],
     [ "Cancel", "class_utilities_1_1_data_types_1_1_task_queue.html#ae5b85b659edac01662dafb7446531a4e", null ],
-    [ "Dispose", "class_utilities_1_1_data_types_1_1_task_queue.html#ab845aab7bcc9b2b782eaaeb88246a235", null ],
+    [ "Dispose", "class_utilities_1_1_data_types_1_1_task_queue.html#a1e7227f7486827d57a2a6b553a08d375", null ],
     [ "Enqueue", "class_utilities_1_1_data_types_1_1_task_queue.html#ad046c2dafb7ec32390cf58411e1b2c86", null ],
     [ "CancellationToken", "class_utilities_1_1_data_types_1_1_task_queue.html#a82b5bc6c3bffe6691b7bbbce299b73af", null ],
     [ "HandleError", "class_utilities_1_1_data_types_1_1_task_queue.html#a228c031bcc02bced2b9a446cd2c05544", null ],

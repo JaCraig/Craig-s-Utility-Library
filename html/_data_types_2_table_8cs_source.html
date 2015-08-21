@@ -160,7 +160,7 @@ $(document).ready(function(){initNavTree('_data_types_2_table_8cs_source.html','
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                Contract.Requires&lt;ArgumentNullException&gt;(!<span class="keywordtype">string</span>.IsNullOrEmpty(ColumnName), <span class="stringliteral">&quot;ColumnName&quot;</span>);</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                Contract.Requires&lt;NullReferenceException&gt;(ColumnNameHash != null, <span class="stringliteral">&quot;ColumnNameHash&quot;</span>);</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                Contract.Requires&lt;NullReferenceException&gt;(ColumnValues != null, <span class="stringliteral">&quot;ColumnValues&quot;</span>);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                <span class="keywordtype">int</span> Column = (int)ColumnNameHash[ColumnName];<span class="comment">//.PositionOf(ColumnName);</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                var Column = (int)ColumnNameHash[ColumnName];<span class="comment">//.PositionOf(ColumnName);</span></div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                <span class="keywordflow">if</span> (Column &lt;= -1)</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                    <span class="keywordflow">throw</span> <span class="keyword">new</span> ArgumentOutOfRangeException(ColumnName + <span class="stringliteral">&quot; is not present in the row&quot;</span>);</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">this</span>[Column];</div>
@@ -262,7 +262,7 @@ $(document).ready(function(){initNavTree('_data_types_2_table_8cs_source.html','
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_ca0426833ed64f488ae0419fd1a98fec.html">DataTypes</a></li><li class="navelem"><a class="el" href="_data_types_2_table_8cs.html">Table.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:42 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:40 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

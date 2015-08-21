@@ -150,7 +150,7 @@ $(document).ready(function(){initNavTree('_stack_trace_extensions_8cs_source.htm
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        [<a class="code" href="namespace_system.html">System</a>.Diagnostics.CodeAnalysis.SuppressMessage(<span class="stringliteral">&quot;Microsoft.Globalization&quot;</span>, <span class="stringliteral">&quot;CA1309:UseOrdinalStringComparison&quot;</span>, MessageId = <span class="stringliteral">&quot;System.String.StartsWith(System.String,System.StringComparison)&quot;</span>)]</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;MethodBase&gt; GetMethods(<span class="keyword">this</span> IEnumerable&lt;StackFrame&gt; Frames, params Assembly[] ExcludedAssemblies)</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            List&lt;MethodBase&gt; Methods = <span class="keyword">new</span> List&lt;MethodBase&gt;();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            var Methods = <span class="keyword">new</span> List&lt;MethodBase&gt;();</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">if</span> (Frames == null)</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                <span class="keywordflow">return</span> Methods;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keywordflow">foreach</span> (StackFrame Frame <span class="keywordflow">in</span> Frames)</div>
@@ -174,7 +174,7 @@ $(document).ready(function(){initNavTree('_stack_trace_extensions_8cs_source.htm
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_ca0426833ed64f488ae0419fd1a98fec.html">DataTypes</a></li><li class="navelem"><a class="el" href="dir_ff08ba1239df36e241ac9aa57b32dcdc.html">ExtensionMethods</a></li><li class="navelem"><a class="el" href="_stack_trace_extensions_8cs.html">StackTraceExtensions.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:42 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:39 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

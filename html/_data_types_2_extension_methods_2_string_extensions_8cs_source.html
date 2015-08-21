@@ -245,7 +245,7 @@ $(document).ready(function(){initNavTree('_data_types_2_extension_methods_2_stri
 <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;            }</div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;            <span class="keywordflow">if</span> (ComparisonType == <a class="code" href="namespace_utilities_1_1_data_types.html#af4e0581b3077d2edc1fe62fd4c78a1b2">StringCompare</a>.Unicode)</div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;            {</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                <span class="keywordflow">return</span> <span class="keywordtype">string</span>.IsNullOrEmpty(Value) ? <span class="keyword">true</span> : Regex.Replace(Value, <span class="stringliteral">@&quot;[^\u0000-\u007F]&quot;</span>, <span class="stringliteral">&quot;&quot;</span>) != Value;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                <span class="keywordflow">return</span> <span class="keywordtype">string</span>.IsNullOrEmpty(Value) || Regex.Replace(Value, <span class="stringliteral">@&quot;[^\u0000-\u007F]&quot;</span>, <span class="stringliteral">&quot;&quot;</span>) != Value;</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;            }</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            <span class="keywordflow">return</span> Value.Is(<span class="stringliteral">&quot;&quot;</span>, <a class="code" href="namespace_utilities_1_1_data_types.html#af4e0581b3077d2edc1fe62fd4c78a1b2">StringCompare</a>.Anagram);</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        }</div>
@@ -261,9 +261,9 @@ $(document).ready(function(){initNavTree('_data_types_2_extension_methods_2_stri
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        {</div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrEmpty(Input) || <span class="keywordtype">string</span>.IsNullOrEmpty(Filter))</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;            Regex TempRegex = <span class="keyword">new</span> Regex(Filter);</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;            var TempRegex = <span class="keyword">new</span> Regex(Filter);</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;            MatchCollection Collection = TempRegex.Matches(Input);</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            StringBuilder Builder = <span class="keyword">new</span> StringBuilder();</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            var Builder = <span class="keyword">new</span> StringBuilder();</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            <span class="keywordflow">foreach</span> (Match Match <span class="keywordflow">in</span> Collection)</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                Builder.Append(Match.Value);</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            <span class="keywordflow">return</span> Builder.ToString();</div>
@@ -391,7 +391,7 @@ $(document).ready(function(){initNavTree('_data_types_2_extension_methods_2_stri
 <div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;        {</div>
 <div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;            <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrEmpty(Content))</div>
 <div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;                <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;            StringBuilder Builder = <span class="keyword">new</span> StringBuilder();</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;            var Builder = <span class="keyword">new</span> StringBuilder();</div>
 <div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;            <span class="keywordflow">foreach</span> (<span class="keywordtype">char</span> Char <span class="keywordflow">in</span> Content)</div>
 <div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;            {</div>
 <div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;                <span class="keywordflow">if</span> (Char == 0x9</div>
@@ -476,7 +476,7 @@ $(document).ready(function(){initNavTree('_data_types_2_extension_methods_2_stri
 <div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;                {</div>
 <div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;                    <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrEmpty(InputStrings[x]))</div>
 <div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;                    {</div>
-<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;                        Regex TempRegex = <span class="keyword">new</span> Regex(InputStrings[x]);</div>
+<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;                        var TempRegex = <span class="keyword">new</span> Regex(InputStrings[x]);</div>
 <div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;                        InputStrings[x] = InputStrings[x].ToString(<a class="code" href="namespace_utilities_1_1_data_types.html#a2076926a2a25a5d9ca8334eeeb88d36a">StringCase</a>.FirstCharacterUpperCase);</div>
 <div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;                        Input = TempRegex.Replace(Input, InputStrings[x]);</div>
 <div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;                    }</div>
@@ -492,7 +492,7 @@ $(document).ready(function(){initNavTree('_data_types_2_extension_methods_2_stri
 <div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;                    <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrEmpty(InputStrings[x])</div>
 <div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;                        &amp;&amp; InputStrings[x].Length &gt; 3)</div>
 <div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;                    {</div>
-<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;                        Regex TempRegex = <span class="keyword">new</span> Regex(InputStrings[x].Replace(<span class="stringliteral">&quot;)&quot;</span>, <span class="stringliteral">@&quot;\)&quot;</span>).Replace(<span class="stringliteral">&quot;(&quot;</span>, <span class="stringliteral">@&quot;\(&quot;</span>).Replace(<span class="stringliteral">&quot;*&quot;</span>, <span class="stringliteral">@&quot;\*&quot;</span>));</div>
+<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;                        var TempRegex = <span class="keyword">new</span> Regex(InputStrings[x].Replace(<span class="stringliteral">&quot;)&quot;</span>, <span class="stringliteral">@&quot;\)&quot;</span>).Replace(<span class="stringliteral">&quot;(&quot;</span>, <span class="stringliteral">@&quot;\(&quot;</span>).Replace(<span class="stringliteral">&quot;*&quot;</span>, <span class="stringliteral">@&quot;\*&quot;</span>));</div>
 <div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;                        InputStrings[x] = InputStrings[x].ToString(<a class="code" href="namespace_utilities_1_1_data_types.html#a2076926a2a25a5d9ca8334eeeb88d36a">StringCase</a>.FirstCharacterUpperCase);</div>
 <div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;                        Input = TempRegex.Replace(Input, InputStrings[x]);</div>
 <div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;                    }</div>
@@ -599,7 +599,7 @@ $(document).ready(function(){initNavTree('_data_types_2_extension_methods_2_stri
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_ca0426833ed64f488ae0419fd1a98fec.html">DataTypes</a></li><li class="navelem"><a class="el" href="dir_ff08ba1239df36e241ac9aa57b32dcdc.html">ExtensionMethods</a></li><li class="navelem"><a class="el" href="_data_types_2_extension_methods_2_string_extensions_8cs.html">StringExtensions.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:42 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:40 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

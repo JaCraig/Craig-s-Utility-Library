@@ -149,11 +149,11 @@ $(document).ready(function(){initNavTree('_generic_equality_comparer_8cs_source.
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            }</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <span class="keywordflow">if</span> (x.GetType() != y.GetType())</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            IEnumerable IEnumerablex = x as IEnumerable;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            IEnumerable IEnumerabley = y as IEnumerable;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            var IEnumerablex = x as IEnumerable;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            var IEnumerabley = y as IEnumerable;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">if</span> (IEnumerablex != null &amp;&amp; IEnumerabley != null)</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                <a class="code" href="class_utilities_1_1_data_types_1_1_comparison_1_1_generic_equality_comparer.html">GenericEqualityComparer&lt;object&gt;</a> Comparer = <span class="keyword">new</span> <a class="code" href="class_utilities_1_1_data_types_1_1_comparison_1_1_generic_equality_comparer.html">GenericEqualityComparer&lt;object&gt;</a>();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                var Comparer = <span class="keyword">new</span> <a class="code" href="class_utilities_1_1_data_types_1_1_comparison_1_1_generic_equality_comparer.html">GenericEqualityComparer&lt;object&gt;</a>();</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                IEnumerator XEnumerator = IEnumerablex.GetEnumerator();</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                IEnumerator YEnumerator = IEnumerabley.GetEnumerator();</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                <span class="keywordflow">while</span> (<span class="keyword">true</span>)</div>
@@ -162,17 +162,17 @@ $(document).ready(function(){initNavTree('_generic_equality_comparer_8cs_source.
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                    <span class="keywordtype">bool</span> YFinished = !YEnumerator.MoveNext();</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                    <span class="keywordflow">if</span> (XFinished || YFinished)</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                        <span class="keywordflow">return</span> XFinished &amp; YFinished;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                    <span class="keywordflow">if</span> (!Comparer.<a class="code" href="class_utilities_1_1_data_types_1_1_comparison_1_1_generic_equality_comparer.html#a64467528d6355d6e36848ccb6477686f">Equals</a>(XEnumerator.Current, YEnumerator.Current))</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                    <span class="keywordflow">if</span> (!Comparer.Equals(XEnumerator.Current, YEnumerator.Current))</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                }</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            IEqualityComparer&lt;T&gt; TempEquality = x as IEqualityComparer&lt;T&gt;;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            var TempEquality = x as IEqualityComparer&lt;T&gt;;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keywordflow">if</span> (TempEquality != null)</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                <span class="keywordflow">return</span> TempEquality.<a class="code" href="class_utilities_1_1_data_types_1_1_comparison_1_1_generic_equality_comparer.html#a64467528d6355d6e36848ccb6477686f">Equals</a>(y);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            IComparable&lt;T&gt; TempComparable = x as IComparable&lt;T&gt;;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            var TempComparable = x as IComparable&lt;T&gt;;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keywordflow">if</span> (TempComparable != null)</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                <span class="keywordflow">return</span> TempComparable.CompareTo(y) == 0;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            IComparable TempComparable2 = x as IComparable;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            var TempComparable2 = x as IComparable;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keywordflow">if</span> (TempComparable2 != null)</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                <span class="keywordflow">return</span> TempComparable2.CompareTo(y) == 0;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordflow">return</span> x.Equals(y);</div>
@@ -195,7 +195,7 @@ $(document).ready(function(){initNavTree('_generic_equality_comparer_8cs_source.
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_ca0426833ed64f488ae0419fd1a98fec.html">DataTypes</a></li><li class="navelem"><a class="el" href="dir_e0ac13547012a5e7c5b64f318921e174.html">Comparison</a></li><li class="navelem"><a class="el" href="_generic_equality_comparer_8cs.html">GenericEqualityComparer.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:40 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:38 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

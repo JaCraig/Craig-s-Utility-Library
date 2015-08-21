@@ -234,7 +234,7 @@ $(document).ready(function(){initNavTree('_db_command_extensions_8cs_source.html
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            <span class="keyword">using</span> (DbDataAdapter Adapter = Factory.CreateDataAdapter())</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;            {</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                Adapter.SelectCommand = Command;</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                DataSet ReturnSet = <span class="keyword">new</span> DataSet();</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                var ReturnSet = <span class="keyword">new</span> DataSet();</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                ReturnSet.Locale = CultureInfo.CurrentCulture;</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;                Adapter.Fill(ReturnSet);</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;                <span class="keywordflow">return</span> ReturnSet;</div>
@@ -293,14 +293,14 @@ $(document).ready(function(){initNavTree('_db_command_extensions_8cs_source.html
 <div class="ttc" id="namespace_utilities_html"><div class="ttname"><a href="namespace_utilities.html">Utilities</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_comparison_1_1_generic_equality_comparer_html"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_comparison_1_1_generic_equality_comparer.html">Utilities.DataTypes.Comparison.GenericEqualityComparer</a></div><div class="ttdoc">Generic equality comparer </div><div class="ttdef"><b>Definition:</b> <a href="_generic_equality_comparer_8cs_source.html#l00032">GenericEqualityComparer.cs:32</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_data_types_html"><div class="ttname"><a href="namespace_utilities_1_1_data_types.html">Utilities.DataTypes</a></div></div>
-<div class="ttc" id="namespace_utilities_1_1_media_html_aaf1692798e56a0e9496f2b45709f3fdc"><div class="ttname"><a href="namespace_utilities_1_1_media.html#aaf1692798e56a0e9496f2b45709f3fdc">Utilities.Media.Direction</a></div><div class="ttdeci">Direction</div><div class="ttdoc">Direction </div><div class="ttdef"><b>Definition:</b> <a href="_bitmap_extensions_8cs_source.html#l00068">BitmapExtensions.cs:68</a></div></div>
+<div class="ttc" id="namespace_utilities_1_1_media_html_aaf1692798e56a0e9496f2b45709f3fdc"><div class="ttname"><a href="namespace_utilities_1_1_media.html#aaf1692798e56a0e9496f2b45709f3fdc">Utilities.Media.Direction</a></div><div class="ttdeci">Direction</div><div class="ttdoc">Direction </div><div class="ttdef"><b>Definition:</b> <a href="_bitmap_extensions_8cs_source.html#l01333">BitmapExtensions.cs:1333</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_6d87d97942e6b418edd310c5e32f39d7.html">ORM</a></li><li class="navelem"><a class="el" href="dir_1b5210fe33649295e2ebaadc7660de3a.html">ExtensionMethods</a></li><li class="navelem"><a class="el" href="_db_command_extensions_8cs.html">DbCommandExtensions.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:46 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:43 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

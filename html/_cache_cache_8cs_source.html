@@ -170,7 +170,7 @@ $(document).ready(function(){initNavTree('_cache_cache_8cs_source.html','');});
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            {</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                <span class="keywordflow">if</span> (HttpContext.Current == null)</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">new</span> List&lt;object&gt;();</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                List&lt;object&gt; Temp = <span class="keyword">new</span> List&lt;object&gt;();</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                var Temp = <span class="keyword">new</span> List&lt;object&gt;();</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                <span class="keywordflow">foreach</span> (<span class="keywordtype">string</span> Key <span class="keywordflow">in</span> Keys)</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                {</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                    Temp.Add(HttpContext.Current.Cache[Key]);</div>
@@ -223,7 +223,7 @@ $(document).ready(function(){initNavTree('_cache_cache_8cs_source.html','');});
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        {</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            <span class="keywordflow">if</span> (HttpContext.Current == null)</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">new</span> List&lt;KeyValuePair&lt;string, object&gt;&gt;().GetEnumerator();</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            List&lt;KeyValuePair&lt;string, object&gt;&gt; Temp = <span class="keyword">new</span> List&lt;KeyValuePair&lt;string, object&gt;&gt;();</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            var Temp = <span class="keyword">new</span> List&lt;KeyValuePair&lt;string, object&gt;&gt;();</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            <span class="keywordflow">foreach</span> (<span class="keywordtype">string</span> Key <span class="keywordflow">in</span> Keys)</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;            {</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                Temp.Add(<span class="keyword">new</span> KeyValuePair&lt;string, object&gt;(Key, HttpContext.Current.Cache.Get(Key)));</div>
@@ -290,7 +290,7 @@ $(document).ready(function(){initNavTree('_cache_cache_8cs_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_ca0426833ed64f488ae0419fd1a98fec.html">DataTypes</a></li><li class="navelem"><a class="el" href="dir_72ec8bfa1f83b53a2c20df35317f5b06.html">Caching</a></li><li class="navelem"><a class="el" href="dir_b4f4e1b575ee3f908aa247c1fa2a9b13.html">Default</a></li><li class="navelem"><a class="el" href="_cache_cache_8cs.html">CacheCache.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:40 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:38 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

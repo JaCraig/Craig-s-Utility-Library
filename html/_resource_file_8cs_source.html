@@ -226,7 +226,7 @@ $(document).ready(function(){initNavTree('_resource_file_8cs_source.html','');})
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        {</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;            <span class="keywordflow">if</span> (Directory == null || !Exists)</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">this</span>;</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;            FileInfo File = <span class="keyword">new</span> FileInfo(Directory.<a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html#abd8e5633719f53721ee4327901c352a2">FullName</a> + <span class="stringliteral">&quot;\\&quot;</span> + Name.Right(Name.Length - (Name.LastIndexOf(<span class="stringliteral">&quot;/&quot;</span>, StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, <a class="code" href="namespace_utilities_1_1_validation.html#a6eee0e05a64d1d4aba235d7f7c127aa2aeae639a70006feff484a39363c977e24">Domain</a>);</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;            var File = <span class="keyword">new</span> FileInfo(Directory.<a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html#abd8e5633719f53721ee4327901c352a2">FullName</a> + <span class="stringliteral">&quot;\\&quot;</span> + Name.Right(Name.Length - (Name.LastIndexOf(<span class="stringliteral">&quot;/&quot;</span>, StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, <a class="code" href="namespace_utilities_1_1_validation.html#a6eee0e05a64d1d4aba235d7f7c127aa2aeae639a70006feff484a39363c977e24">Domain</a>);</div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;            <span class="keywordflow">if</span> (!File.Exists || Overwrite)</div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            {</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;                File.<a class="code" href="interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_file.html#a7b4ab6886debac9efc9d73bb86136b6c">Write</a>(ReadBinary());</div>
@@ -308,7 +308,7 @@ $(document).ready(function(){initNavTree('_resource_file_8cs_source.html','');})
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_cdffdb722b1f3b30993d9a14c7e19da9.html">IO</a></li><li class="navelem"><a class="el" href="dir_dd846de6290642c8890e926ebf368f0a.html">FileSystem</a></li><li class="navelem"><a class="el" href="dir_907aa97e1531825d990413d236dd34b6.html">Default</a></li><li class="navelem"><a class="el" href="_resource_file_8cs.html">ResourceFile.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:44 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:42 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

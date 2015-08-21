@@ -152,7 +152,7 @@ $(document).ready(function(){initNavTree('_not_empty_8cs_source.html','');});
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        {</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keywordflow">if</span> (value == null)</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">new</span> ValidationResult(FormatErrorMessage(validationContext.DisplayName));</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            IEnumerable ValueList = value as IEnumerable;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            var ValueList = value as IEnumerable;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">return</span> ValueList != null &amp;&amp; ValueList.GetEnumerator().MoveNext() ? ValidationResult.Success : <span class="keyword">new</span> ValidationResult(FormatErrorMessage(validationContext.DisplayName));</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        }</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div>
@@ -169,7 +169,7 @@ $(document).ready(function(){initNavTree('_not_empty_8cs_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_23c0620ab5cb9986ecab2d36290626bc.html">Validation</a></li><li class="navelem"><a class="el" href="_not_empty_8cs.html">NotEmpty.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:50 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:48 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

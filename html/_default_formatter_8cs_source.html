@@ -136,30 +136,25 @@ $(document).ready(function(){initNavTree('_default_formatter_8cs_source.html',''
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
 <div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_messaging_1_1_default_1_1_default_formatter.html">   31</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="class_utilities_1_1_i_o_1_1_messaging_1_1_default_1_1_default_formatter.html">DefaultFormatter</a> : <a class="code" href="interface_utilities_1_1_i_o_1_1_messaging_1_1_interfaces_1_1_i_formatter.html">IFormatter</a></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    {</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_messaging_1_1_default_1_1_default_formatter.html#a881b4160b37eaf77f26f2cf077da33d5">   36</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_utilities_1_1_i_o_1_1_messaging_1_1_default_1_1_default_formatter.html#a881b4160b37eaf77f26f2cf077da33d5">DefaultFormatter</a>()</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        }</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_messaging_1_1_default_1_1_default_formatter.html#a7dd7b5ff7ba23308b2a06312f69a219b">   43</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">string</span> Name { <span class="keyword">get</span> { <span class="keywordflow">return</span> <span class="stringliteral">&quot;Default&quot;</span>; } }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_messaging_1_1_default_1_1_default_formatter.html#abc3731d17cecce068c37d0bf8b13929b">   51</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> Format&lt;T&gt;(<a class="code" href="interface_utilities_1_1_i_o_1_1_messaging_1_1_interfaces_1_1_i_message.html">IMessage</a> Message, T Model)</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keywordflow">if</span> (Message == null)</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> ArgumentNullException(<span class="stringliteral">&quot;Message&quot;</span>);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">if</span> (Model == null)</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> ArgumentNullException(<span class="stringliteral">&quot;Model&quot;</span>);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrEmpty(Message.Body) || Model.Is&lt;<span class="keywordtype">string</span>&gt;())</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                Message.Body = Model.ToString();</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                Message.Body = Message.Body.ToString(Model);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_messaging_1_1_default_1_1_default_formatter.html#a7dd7b5ff7ba23308b2a06312f69a219b">   36</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">string</span> Name { <span class="keyword">get</span> { <span class="keywordflow">return</span> <span class="stringliteral">&quot;Default&quot;</span>; } }</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_messaging_1_1_default_1_1_default_formatter.html#abc3731d17cecce068c37d0bf8b13929b">   44</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> Format&lt;T&gt;(<a class="code" href="interface_utilities_1_1_i_o_1_1_messaging_1_1_interfaces_1_1_i_message.html">IMessage</a> Message, T Model)</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <span class="keywordflow">if</span> (Message == null)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> ArgumentNullException(nameof(Message));</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">if</span> (Model == null)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> ArgumentNullException(nameof(Model));</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrEmpty(Message.Body) || Model.Is&lt;<span class="keywordtype">string</span>&gt;())</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                Message.Body = Model.ToString();</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                Message.Body = Message.Body.ToString(Model);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_1_1_messaging_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_messaging.html">Utilities.IO.Messaging</a></div></div>
 <div class="ttc" id="namespace_system_html"><div class="ttname"><a href="namespace_system.html">System</a></div></div>
 <div class="ttc" id="interface_utilities_1_1_i_o_1_1_messaging_1_1_interfaces_1_1_i_formatter_html"><div class="ttname"><a href="interface_utilities_1_1_i_o_1_1_messaging_1_1_interfaces_1_1_i_formatter.html">Utilities.IO.Messaging.Interfaces.IFormatter</a></div><div class="ttdoc">Formatter interface </div><div class="ttdef"><b>Definition:</b> <a href="_i_formatter_8cs_source.html#l00027">IFormatter.cs:27</a></div></div>
 <div class="ttc" id="namespace_utilities_html"><div class="ttname"><a href="namespace_utilities.html">Utilities</a></div></div>
-<div class="ttc" id="class_utilities_1_1_i_o_1_1_messaging_1_1_default_1_1_default_formatter_html_a881b4160b37eaf77f26f2cf077da33d5"><div class="ttname"><a href="class_utilities_1_1_i_o_1_1_messaging_1_1_default_1_1_default_formatter.html#a881b4160b37eaf77f26f2cf077da33d5">Utilities.IO.Messaging.Default.DefaultFormatter.DefaultFormatter</a></div><div class="ttdeci">DefaultFormatter()</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_default_formatter_8cs_source.html#l00036">DefaultFormatter.cs:36</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_i_o_1_1_messaging_1_1_interfaces_html"><div class="ttname"><a href="namespace_utilities_1_1_i_o_1_1_messaging_1_1_interfaces.html">Utilities.IO.Messaging.Interfaces</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_formatter_8cs_source.html#l00022">IFormatter.cs:22</a></div></div>
 <div class="ttc" id="interface_utilities_1_1_i_o_1_1_messaging_1_1_interfaces_1_1_i_message_html"><div class="ttname"><a href="interface_utilities_1_1_i_o_1_1_messaging_1_1_interfaces_1_1_i_message.html">Utilities.IO.Messaging.Interfaces.IMessage</a></div><div class="ttdoc">Message interface </div><div class="ttdef"><b>Definition:</b> <a href="_i_message_8cs_source.html#l00029">IMessage.cs:29</a></div></div>
 <div class="ttc" id="namespace_utilities_1_1_data_types_html"><div class="ttname"><a href="namespace_utilities_1_1_data_types.html">Utilities.DataTypes</a></div></div>
@@ -171,7 +166,7 @@ $(document).ready(function(){initNavTree('_default_formatter_8cs_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_cdffdb722b1f3b30993d9a14c7e19da9.html">IO</a></li><li class="navelem"><a class="el" href="dir_eae72b1dba40f2ee8d16f595d10d62cb.html">Messaging</a></li><li class="navelem"><a class="el" href="dir_0d17bd57531838274351dc5f2f8a7a74.html">Default</a></li><li class="navelem"><a class="el" href="_default_formatter_8cs.html">DefaultFormatter.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:45 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:43 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

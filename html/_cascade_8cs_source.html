@@ -146,7 +146,7 @@ $(document).ready(function(){initNavTree('_cascade_8cs_source.html','');});
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
 <div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="class_utilities_1_1_validation_1_1_cascade_attribute.html#a161ab1ca5c13247f497b158f0793f083">   51</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">override</span> ValidationResult <a class="code" href="class_utilities_1_1_validation_1_1_cascade_attribute.html#a161ab1ca5c13247f497b158f0793f083">IsValid</a>(<span class="keywordtype">object</span> value, ValidationContext validationContext)</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            List&lt;ValidationResult&gt; Results = <span class="keyword">new</span> List&lt;ValidationResult&gt;();</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            var Results = <span class="keyword">new</span> List&lt;ValidationResult&gt;();</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordflow">if</span> (!value.TryValidate(Results))</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            {</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">new</span> ValidationResult(<span class="keywordtype">string</span>.<a class="code" href="namespace_utilities_1_1_i_o_1_1_logging_1_1_base_classes.html#ac848e6004e23702ffc635883d0be4377">Format</a>(CultureInfo.InvariantCulture, ErrorMessageString, validationContext.DisplayName, Results.ForEach(x =&gt; x.ErrorMessage).ToString(x =&gt; x, <a class="code" href="namespace_system.html">System</a>.Environment.NewLine)));</div>
@@ -168,7 +168,7 @@ $(document).ready(function(){initNavTree('_cascade_8cs_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_23c0620ab5cb9986ecab2d36290626bc.html">Validation</a></li><li class="navelem"><a class="el" href="_cascade_8cs.html">Cascade.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:50 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:47 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

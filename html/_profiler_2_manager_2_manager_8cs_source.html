@@ -142,9 +142,9 @@ $(document).ready(function(){initNavTree('_profiler_2_manager_2_manager_8cs_sour
 <div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="class_utilities_1_1_profiler_1_1_manager_1_1_manager.html#a6f1b0f0e155d1384c2ebfb3186c994b4">   40</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_utilities_1_1_profiler_1_1_manager_1_1_manager.html#a6f1b0f0e155d1384c2ebfb3186c994b4">Manager</a>(IEnumerable&lt;IProfiler&gt; Profilers)</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        {</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            Contract.Requires&lt;ArgumentNullException&gt;(Profilers != null, <span class="stringliteral">&quot;Profilers&quot;</span>);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            <a class="code" href="class_utilities_1_1_profiler_1_1_profiler.html">Profiler</a> = Profilers.Where(x =&gt; !x.GetType().Namespace.StartsWith(<span class="stringliteral">&quot;UTILITIES&quot;</span>, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            <a class="code" href="class_utilities_1_1_profiler_1_1_profiler.html">Profiler</a> = Profilers.FirstOrDefault(x =&gt; !x.GetType().Namespace.StartsWith(<span class="stringliteral">&quot;UTILITIES&quot;</span>, StringComparison.OrdinalIgnoreCase));</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordflow">if</span> (Profiler == null)</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                Profiler = Profilers.Where(x =&gt; x.GetType().Namespace.StartsWith(<span class="stringliteral">&quot;UTILITIES&quot;</span>, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                Profiler = Profilers.FirstOrDefault(x =&gt; x.GetType().Namespace.StartsWith(<span class="stringliteral">&quot;UTILITIES&quot;</span>, StringComparison.OrdinalIgnoreCase));</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        }</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
 <div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="class_utilities_1_1_profiler_1_1_manager_1_1_manager.html#a30c930d07720d8419d85d389c95ccee7">   51</a></span>&#160;        <span class="keyword">protected</span> <a class="code" href="interface_utilities_1_1_profiler_1_1_manager_1_1_interfaces_1_1_i_profiler.html">IProfiler</a> <a class="code" href="class_utilities_1_1_profiler_1_1_profiler.html">Profiler</a> { <span class="keyword">get</span>; <span class="keyword">private</span> set; }</div>
@@ -208,7 +208,7 @@ $(document).ready(function(){initNavTree('_profiler_2_manager_2_manager_8cs_sour
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_0deab5547d8c4818f15d478fb019a5e1.html">Profiler</a></li><li class="navelem"><a class="el" href="dir_c1cc2e08147db8e9d10bbcc053886d2c.html">Manager</a></li><li class="navelem"><a class="el" href="_profiler_2_manager_2_manager_8cs.html">Manager.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:40 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:38 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

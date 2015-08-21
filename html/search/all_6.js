@@ -52,8 +52,8 @@ var searchData=
   ['globalsuppressions_2ecs',['GlobalSuppressions.cs',['../_global_suppressions_8cs.html',1,'']]],
   ['greaterthan',['GreaterThan',['../namespace_utilities_1_1_validation.html#a5f012032aca24000d32b4e42c7d9e22daf6d044fe1f01fb0c956b80099e2a3072',1,'Utilities::Validation']]],
   ['greaterthanorequal',['GreaterThanOrEqual',['../namespace_utilities_1_1_validation.html#a5f012032aca24000d32b4e42c7d9e22da25c44812e9d75f685d2a0b815dea1ebe',1,'Utilities::Validation']]],
-  ['guid',['GUID',['../class_utilities_1_1_i_o_1_1_file_formats_1_1_r_s_s_1_1_g_u_i_d.html',1,'Utilities::IO::FileFormats::RSS']]],
   ['guid',['GUID',['../class_utilities_1_1_i_o_1_1_file_formats_1_1_r_s_s_1_1_item.html#a1e622de95de6d9f6c890bb03bbde258d',1,'Utilities.IO.FileFormats.RSS.Item.GUID()'],['../class_utilities_1_1_i_o_1_1_file_formats_1_1_r_s_s_1_1_g_u_i_d.html#a961169b0cfe3650d6dde6c0fcc84b3be',1,'Utilities.IO.FileFormats.RSS.GUID.GUID()'],['../class_utilities_1_1_i_o_1_1_file_formats_1_1_r_s_s_1_1_g_u_i_d.html#a36cb0895c47896b43c4b2d1fc04eba6b',1,'Utilities.IO.FileFormats.RSS.GUID.GUID(IXPathNavigable Element)']]],
+  ['guid',['GUID',['../class_utilities_1_1_i_o_1_1_file_formats_1_1_r_s_s_1_1_g_u_i_d.html',1,'Utilities::IO::FileFormats::RSS']]],
   ['guid_2ecs',['GUID.cs',['../_g_u_i_d_8cs.html',1,'']]],
   ['guidgenerator',['GuidGenerator',['../class_utilities_1_1_random_1_1_default_classes_1_1_guid_generator.html#a3e4945a1a48ddaef882704a95869a08c',1,'Utilities::Random::DefaultClasses::GuidGenerator']]],
   ['guidgenerator',['GuidGenerator',['../class_utilities_1_1_random_1_1_default_classes_1_1_guid_generator.html',1,'Utilities::Random::DefaultClasses']]],
@@ -61,6 +61,5 @@ var searchData=
   ['guidtext',['GUIDText',['../class_utilities_1_1_i_o_1_1_file_formats_1_1_r_s_s_1_1_g_u_i_d.html#a3ece71badc691f60c012f600ce2ec56f',1,'Utilities::IO::FileFormats::RSS::GUID']]],
   ['gzip',['GZip',['../namespace_utilities_1_1_i_o.html#ad972b75f363d0cda5cd01a3d286fe3f3a87e9d72687c86946560099f8307bf1bf',1,'Utilities::IO']]],
   ['gzipcompressor',['GZipCompressor',['../class_utilities_1_1_i_o_1_1_compression_1_1_default_1_1_g_zip_compressor.html',1,'Utilities::IO::Compression::Default']]],
-  ['gzipcompressor',['GZipCompressor',['../class_utilities_1_1_i_o_1_1_compression_1_1_default_1_1_g_zip_compressor.html#a4cd01e632c0880f41173eb15052fdbae',1,'Utilities::IO::Compression::Default::GZipCompressor']]],
   ['gzipcompressor_2ecs',['GZipCompressor.cs',['../_g_zip_compressor_8cs.html',1,'']]]
 ];

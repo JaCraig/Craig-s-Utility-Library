@@ -182,7 +182,7 @@ $(document).ready(function(){initNavTree('_l_d_a_p_batch_8cs_source.html','');})
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
 <div class="line"><a name="l00135"></a><span class="lineno"><a class="line" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_l_d_a_p_1_1_l_d_a_p_batch.html#a206daa621549b7805e4a56b6f0d0d021">  135</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="interface_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_interfaces_1_1_i_batch.html">IBatch</a> <a class="code" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_l_d_a_p_1_1_l_d_a_p_batch.html#a206daa621549b7805e4a56b6f0d0d021">AddCommand</a>(<a class="code" href="interface_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_interfaces_1_1_i_batch.html">IBatch</a> Batch)</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        {</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            <a class="code" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_l_d_a_p_1_1_l_d_a_p_batch.html">LDAPBatch</a> TempValue = Batch as <a class="code" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_l_d_a_p_1_1_l_d_a_p_batch.html">LDAPBatch</a>;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            var TempValue = Batch as <a class="code" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_l_d_a_p_1_1_l_d_a_p_batch.html">LDAPBatch</a>;</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            <span class="keywordflow">if</span> (TempValue == null)</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">this</span>;</div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            Commands.Add(TempValue.Commands);</div>
@@ -191,7 +191,7 @@ $(document).ready(function(){initNavTree('_l_d_a_p_batch_8cs_source.html','');})
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
 <div class="line"><a name="l00150"></a><span class="lineno"><a class="line" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_l_d_a_p_1_1_l_d_a_p_batch.html#adb54d8ec15d402898ffe0128ee513fba">  150</a></span>&#160;        <span class="keyword">public</span> IList&lt;IList&lt;dynamic&gt;&gt; <a class="code" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_l_d_a_p_1_1_l_d_a_p_batch.html#adb54d8ec15d402898ffe0128ee513fba">Execute</a>()</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        {</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            IList&lt;IList&lt;dynamic&gt;&gt; ReturnValue = <span class="keyword">new</span> List&lt;IList&lt;dynamic&gt;&gt;();</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            var ReturnValue = <span class="keyword">new</span> List&lt;IList&lt;dynamic&gt;&gt;();</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            <span class="keywordflow">if</span> (Commands.Count == 0)</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;            {</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                ReturnValue.Add(<span class="keyword">new</span> List&lt;dynamic&gt;());</div>
@@ -207,10 +207,10 @@ $(document).ready(function(){initNavTree('_l_d_a_p_batch_8cs_source.html','');})
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                        Searcher.Filter = Command.<a class="code" href="class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_command.html#a0d74cab867549c46a04222d53c3e87c7">SQLCommand</a>;</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                        <span class="keyword">using</span> (SearchResultCollection Results = Searcher.FindAll())</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                        {</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                            List&lt;dynamic&gt; ReturnValues = <span class="keyword">new</span> List&lt;dynamic&gt;();</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                            var ReturnValues = <span class="keyword">new</span> List&lt;dynamic&gt;();</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                            <span class="keywordflow">foreach</span> (SearchResult Result <span class="keywordflow">in</span> Results)</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                            {</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                                dynamic TempValue = <span class="keyword">new</span> <a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html">Dynamo</a>();</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                                var TempValue = <span class="keyword">new</span> <a class="code" href="class_utilities_1_1_data_types_1_1_dynamo.html">Dynamo</a>();</div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                                <span class="keywordflow">foreach</span> (PropertyValueCollection Property <span class="keywordflow">in</span> Result.GetDirectoryEntry().Properties)</div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                                {</div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                                    TempValue[Property.PropertyName] = Property.Value;</div>
@@ -267,7 +267,7 @@ $(document).ready(function(){initNavTree('_l_d_a_p_batch_8cs_source.html','');})
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_6d87d97942e6b418edd310c5e32f39d7.html">ORM</a></li><li class="navelem"><a class="el" href="dir_4af2e27a32e910a74beda4483c3d8d9e.html">Manager</a></li><li class="navelem"><a class="el" href="dir_7f1a8855141f5dd42a793d7395bc6e51.html">QueryProvider</a></li><li class="navelem"><a class="el" href="dir_f5c5fb1d5b80a31c021bdef01cb20106.html">Default</a></li><li class="navelem"><a class="el" href="dir_8c78a50ea9dc10e404f9980edc39ab83.html">LDAP</a></li><li class="navelem"><a class="el" href="_l_d_a_p_batch_8cs.html">LDAPBatch.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:47 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:45 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

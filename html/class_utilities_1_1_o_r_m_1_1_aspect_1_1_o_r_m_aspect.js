@@ -1,6 +1,5 @@
 var class_utilities_1_1_o_r_m_1_1_aspect_1_1_o_r_m_aspect =
 [
-    [ "ORMAspect", "class_utilities_1_1_o_r_m_1_1_aspect_1_1_o_r_m_aspect.html#ade7ab8ffd997c0b9b833a809ef1b1a96", null ],
     [ "Setup", "class_utilities_1_1_o_r_m_1_1_aspect_1_1_o_r_m_aspect.html#af78f38133a26c83a76893a2450098527", null ],
     [ "SetupDefaultConstructor", "class_utilities_1_1_o_r_m_1_1_aspect_1_1_o_r_m_aspect.html#a4c97af4d1243e7f1bd4d61168eb907b5", null ],
     [ "SetupEndMethod", "class_utilities_1_1_o_r_m_1_1_aspect_1_1_o_r_m_aspect.html#a52f12fbdb1194d5491f1558fa5c3eb7d", null ],

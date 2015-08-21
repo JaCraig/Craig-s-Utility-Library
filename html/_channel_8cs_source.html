@@ -158,7 +158,7 @@ $(document).ready(function(){initNavTree('_channel_8cs_source.html','');});
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            XPathNavigator Element = Doc.CreateNavigator();</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">if</span> (!Element.Name.Equals(<span class="stringliteral">&quot;channel&quot;</span>, StringComparison.CurrentCultureIgnoreCase))</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> ArgumentException(<span class="stringliteral">&quot;Element is not a channel&quot;</span>);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            XmlNamespaceManager NamespaceManager = <span class="keyword">new</span> XmlNamespaceManager(Element.NameTable);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            var NamespaceManager = <span class="keyword">new</span> XmlNamespaceManager(Element.NameTable);</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            XPathNavigator Node = Element.SelectSingleNode(<span class="stringliteral">&quot;./title&quot;</span>, NamespaceManager);</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keywordflow">if</span> (Node != null)</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            {</div>
@@ -323,7 +323,7 @@ $(document).ready(function(){initNavTree('_channel_8cs_source.html','');});
 <div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;</div>
 <div class="line"><a name="l00326"></a><span class="lineno"><a class="line" href="class_utilities_1_1_i_o_1_1_file_formats_1_1_r_s_s_1_1_channel.html#a6428db1dcf2fb62296d0e37d05dc8980">  326</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">string</span> <a class="code" href="class_utilities_1_1_i_o_1_1_file_formats_1_1_r_s_s_1_1_channel.html#a6428db1dcf2fb62296d0e37d05dc8980">ToString</a>()</div>
 <div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;        {</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;            StringBuilder ChannelString = <span class="keyword">new</span> StringBuilder();</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;            var ChannelString = <span class="keyword">new</span> StringBuilder();</div>
 <div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;            ChannelString.Append(<span class="stringliteral">&quot;&lt;channel&gt;&quot;</span>);</div>
 <div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;            ChannelString.Append(<span class="stringliteral">&quot;&lt;title&gt;&quot;</span>).Append(Utils.StripIllegalCharacters(Title)).Append(<span class="stringliteral">&quot;&lt;/title&gt;\r\n&quot;</span>);</div>
 <div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;            ChannelString.Append(<span class="stringliteral">&quot;&lt;link&gt;&quot;</span>).Append(Link).Append(<span class="stringliteral">&quot;&lt;/link&gt;\r\n&quot;</span>);</div>
@@ -381,7 +381,7 @@ $(document).ready(function(){initNavTree('_channel_8cs_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_cdffdb722b1f3b30993d9a14c7e19da9.html">IO</a></li><li class="navelem"><a class="el" href="dir_477cfb373389f9b5d984bcb90362a6a9.html">FileFormats</a></li><li class="navelem"><a class="el" href="dir_a3591d04f361644678f2dc5c1c23a709.html">RSS</a></li><li class="navelem"><a class="el" href="_channel_8cs.html">Channel.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:44 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:41 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

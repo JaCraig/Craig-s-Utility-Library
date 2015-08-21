@@ -147,7 +147,7 @@ $(document).ready(function(){initNavTree('_data_mapper_base_8cs_source.html','')
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
 <div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_data_mapper_1_1_base_classes_1_1_data_mapper_base.html#ad9092ce35528457fe27418e45bfac4d3">   57</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="interface_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_1_1_i_type_mapping.html">ITypeMapping&lt;Left, Right&gt;</a> Map&lt;Left, Right&gt;()</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            Tuple&lt;Type, Type&gt; Key = <span class="keyword">new</span> Tuple&lt;Type, Type&gt;(typeof(Left), typeof(Right));</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            var Key = <span class="keyword">new</span> Tuple&lt;Type, Type&gt;(typeof(Left), typeof(Right));</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            Mappings.AddOrUpdate(Key, x =&gt; CreateTypeMapping&lt;Left, Right&gt;(), (x, y) =&gt; y);</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <a class="code" href="interface_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_1_1_i_type_mapping.html">ITypeMapping</a> ReturnValue = null;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            Mappings.TryGetValue(Key, out ReturnValue);</div>
@@ -156,7 +156,7 @@ $(document).ready(function(){initNavTree('_data_mapper_base_8cs_source.html','')
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
 <div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_data_mapper_1_1_base_classes_1_1_data_mapper_base.html#ad067535359802456173b85d8be5f80bd">   72</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="interface_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_1_1_i_type_mapping.html">ITypeMapping</a> <a class="code" href="class_utilities_1_1_data_types_1_1_data_mapper_1_1_base_classes_1_1_data_mapper_base.html#ad067535359802456173b85d8be5f80bd">Map</a>(Type Left, Type Right)</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            Tuple&lt;Type, Type&gt; Key = <span class="keyword">new</span> Tuple&lt;Type, Type&gt;(Left, Right);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            var Key = <span class="keyword">new</span> Tuple&lt;Type, Type&gt;(Left, Right);</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            Mappings.AddOrUpdate(Key, x =&gt; CreateTypeMapping(x.Item1, x.Item2), (x, y) =&gt; y);</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <a class="code" href="interface_utilities_1_1_data_types_1_1_data_mapper_1_1_interfaces_1_1_i_type_mapping.html">ITypeMapping</a> ReturnValue = null;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            Mappings.TryGetValue(Key, out ReturnValue);</div>
@@ -190,7 +190,7 @@ $(document).ready(function(){initNavTree('_data_mapper_base_8cs_source.html','')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_ca0426833ed64f488ae0419fd1a98fec.html">DataTypes</a></li><li class="navelem"><a class="el" href="dir_25f315fe255bc16052090632c2abb2e0.html">DataMapper</a></li><li class="navelem"><a class="el" href="dir_6e7781dda2e97a5f5ee607bf32613051.html">BaseClasses</a></li><li class="navelem"><a class="el" href="_data_mapper_base_8cs.html">DataMapperBase.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:41 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:38 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

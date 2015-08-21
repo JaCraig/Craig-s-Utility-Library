@@ -138,14 +138,14 @@ $(document).ready(function(){initNavTree('_b_tree_8cs_source.html','');});
 <div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_binary_tree.html">   33</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="class_utilities_1_1_data_types_1_1_binary_tree.html">BinaryTree</a>&lt;T&gt; : ICollection&lt;T&gt;</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        where T : IComparable&lt;T&gt;</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    {</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_binary_tree.html#ac5b2bb2f12881eba4fa7bb9ae3e3bc85">   40</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_utilities_1_1_data_types_1_1_binary_tree.html#ac5b2bb2f12881eba4fa7bb9ae3e3bc85">BinaryTree</a>(<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> Root = null)</div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a3cdecb1334018ba7d1f74b3fa498ef52">   40</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a3cdecb1334018ba7d1f74b3fa498ef52">BinaryTree</a>(<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> root = null)</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        {</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <span class="keywordflow">if</span> (Root == null)</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            {</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                NumberOfNodes = 0;</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            }</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            this.Root = Root;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            Root = root;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            NumberOfNodes = Traversal(Root).Count();</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        }</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
@@ -191,7 +191,7 @@ $(document).ready(function(){initNavTree('_b_tree_8cs_source.html','');});
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
 <div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_binary_tree.html#abe876f90d50daeec4feabda7807e3573">  112</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keywordtype">int</span> NumberOfNodes { <span class="keyword">get</span>; set; }</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
-<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a0fc1dc44f82e5c8db577f3e5748bd2bb">  119</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> implicit <span class="keyword">operator</span> string(<a class="code" href="class_utilities_1_1_data_types_1_1_binary_tree.html">BinaryTree&lt;T&gt;</a> Value)</div>
+<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a0fc1dc44f82e5c8db577f3e5748bd2bb">  119</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> implicit <span class="keyword">operator</span> string (<a class="code" href="class_utilities_1_1_data_types_1_1_binary_tree.html">BinaryTree&lt;T&gt;</a> Value)</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        {</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            Contract.Requires&lt;ArgumentNullException&gt;(Value != null, <span class="stringliteral">&quot;Value&quot;</span>);</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <span class="keywordflow">return</span> Value.<a class="code" href="class_utilities_1_1_data_types_1_1_binary_tree.html#ad4880b39dae84e1ed0132623e88bbbdb">ToString</a>();</div>
@@ -227,191 +227,189 @@ $(document).ready(function(){initNavTree('_b_tree_8cs_source.html','');});
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                <span class="keywordtype">int</span> ComparedValue = TempNode.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#af497932ba326e5efb433f921045b458b">Value</a>.CompareTo(item);</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                <span class="keywordflow">if</span> (ComparedValue == 0)</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ComparedValue &lt; 0)</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                    TempNode = TempNode.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#a332ef8d17d1c9d1abd342d3033619e57">Left</a>;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                    TempNode = TempNode.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#a1a2847af803c75cef4f4a1f38994cd72">Right</a>;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            }</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        }</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;</div>
-<div class="line"><a name="l00180"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a2812f0fae9631401dff7c7cd3ddcb739">  180</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a2812f0fae9631401dff7c7cd3ddcb739">CopyTo</a>(T[] array, <span class="keywordtype">int</span> arrayIndex)</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        {</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            T[] TempArray = <span class="keyword">new</span> T[NumberOfNodes];</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            <span class="keywordtype">int</span> Counter = 0;</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            <span class="keywordflow">foreach</span> (T Value <span class="keywordflow">in</span> <span class="keyword">this</span>)</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            {</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                TempArray[Counter] = Value;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                ++Counter;</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            }</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            Array.Copy(TempArray, 0, array, arrayIndex, this.NumberOfNodes);</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        }</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;</div>
-<div class="line"><a name="l00196"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a052543dab37ff021bd0588c4d28cad98">  196</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> IEnumerator&lt;T&gt; <a class="code" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a052543dab37ff021bd0588c4d28cad98">GetEnumerator</a>()</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        {</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;            <span class="keywordflow">foreach</span> (<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> TempNode <span class="keywordflow">in</span> Traversal(Root))</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;            {</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;                yield <span class="keywordflow">return</span> TempNode.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#af497932ba326e5efb433f921045b458b">Value</a>;</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;            }</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        }</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;</div>
-<div class="line"><a name="l00209"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a60176d6764e07ba27a52378d8217d0b8">  209</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a60176d6764e07ba27a52378d8217d0b8">Remove</a>(T item)</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        {</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> Item = Find(item);</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            <span class="keywordflow">if</span> (Item == null)</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;            --NumberOfNodes;</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;            List&lt;T&gt; Values = <span class="keyword">new</span> List&lt;T&gt;();</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            <span class="keywordflow">foreach</span> (<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> TempNode <span class="keywordflow">in</span> Traversal(Item.Left))</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                    TempNode = ComparedValue &lt; 0 ? TempNode.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#a332ef8d17d1c9d1abd342d3033619e57">Left</a> : TempNode.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#a1a2847af803c75cef4f4a1f38994cd72">Right</a>;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;            }</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        }</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
+<div class="line"><a name="l00178"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a2812f0fae9631401dff7c7cd3ddcb739">  178</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a2812f0fae9631401dff7c7cd3ddcb739">CopyTo</a>(T[] array, <span class="keywordtype">int</span> arrayIndex)</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        {</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            T[] TempArray = <span class="keyword">new</span> T[NumberOfNodes];</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;            <span class="keywordtype">int</span> Counter = 0;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            <span class="keywordflow">foreach</span> (T Value <span class="keywordflow">in</span> <span class="keyword">this</span>)</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            {</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                TempArray[Counter] = Value;</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;                ++Counter;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            }</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            Array.Copy(TempArray, 0, array, arrayIndex, NumberOfNodes);</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        }</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;</div>
+<div class="line"><a name="l00194"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a052543dab37ff021bd0588c4d28cad98">  194</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> IEnumerator&lt;T&gt; <a class="code" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a052543dab37ff021bd0588c4d28cad98">GetEnumerator</a>()</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        {</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;            <span class="keywordflow">foreach</span> (<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> TempNode <span class="keywordflow">in</span> Traversal(Root))</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;            {</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;                yield <span class="keywordflow">return</span> TempNode.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#af497932ba326e5efb433f921045b458b">Value</a>;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;            }</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        }</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
+<div class="line"><a name="l00207"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a60176d6764e07ba27a52378d8217d0b8">  207</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a60176d6764e07ba27a52378d8217d0b8">Remove</a>(T item)</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        {</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;            <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> Item = Find(item);</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            <span class="keywordflow">if</span> (Item == null)</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            --NumberOfNodes;</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;            var Values = <span class="keyword">new</span> List&lt;T&gt;();</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;            <span class="keywordflow">foreach</span> (<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> TempNode <span class="keywordflow">in</span> Traversal(Item.Left))</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;                Values.Add(TempNode.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#af497932ba326e5efb433f921045b458b">Value</a>);</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            <span class="keywordflow">foreach</span> (<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> TempNode <span class="keywordflow">in</span> Traversal(Item.Right))</div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;                Values.Add(TempNode.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#af497932ba326e5efb433f921045b458b">Value</a>);</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;            <span class="keywordflow">foreach</span> (<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> TempNode <span class="keywordflow">in</span> Traversal(Item.Right))</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;                Values.Add(TempNode.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#af497932ba326e5efb433f921045b458b">Value</a>);</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;            <span class="keywordflow">if</span> (Item.Parent != null)</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;            {</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;                <span class="keywordflow">if</span> (Item.Parent.Left == Item)</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                    Item.Parent.Left = null;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;                <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;                    Item.Parent.Right = null;</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;                Item.Parent = null;</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;            }</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;            <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            {</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;                Root = null;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;            }</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            <span class="keywordflow">foreach</span> (T Value <span class="keywordflow">in</span> Values)</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;                this.Add(Value);</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        }</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        <a class="code" href="namespace_system.html">System</a>.Collections.IEnumerator <a class="code" href="namespace_system.html">System</a>.Collections.IEnumerable.GetEnumerator()</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        {</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;            <span class="keywordflow">foreach</span> (<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> TempNode <span class="keywordflow">in</span> Traversal(Root))</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;            {</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                yield <span class="keywordflow">return</span> TempNode.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#af497932ba326e5efb433f921045b458b">Value</a>;</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            }</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        }</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;</div>
-<div class="line"><a name="l00253"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_binary_tree.html#ad4880b39dae84e1ed0132623e88bbbdb">  253</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">string</span> <a class="code" href="class_utilities_1_1_data_types_1_1_binary_tree.html#ad4880b39dae84e1ed0132623e88bbbdb">ToString</a>()</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        {</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            <span class="keywordflow">return</span> this.ToString(x =&gt; x.ToString(), <span class="stringliteral">&quot; &quot;</span>);</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        }</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;</div>
-<div class="line"><a name="l00263"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a4f58bbf69b009e58f287373e5cb5b0fd">  263</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">virtual</span> <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> <a class="code" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a4f58bbf69b009e58f287373e5cb5b0fd">Find</a>(T item)</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        {</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;            <span class="keywordflow">foreach</span> (<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> Item <span class="keywordflow">in</span> Traversal(Root))</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                <span class="keywordflow">if</span> (Item.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#af497932ba326e5efb433f921045b458b">Value</a>.Equals(item))</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                    <span class="keywordflow">return</span> Item;</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;            <span class="keywordflow">return</span> null;</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        }</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;</div>
-<div class="line"><a name="l00275"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a9f2fe712dafef52906000849713acbc0">  275</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a9f2fe712dafef52906000849713acbc0">Insert</a>(T item)</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        {</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;            Contract.Requires&lt;NullReferenceException&gt;(Root != null, <span class="stringliteral">&quot;Root&quot;</span>);</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;            <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> TempNode = Root;</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;            <span class="keywordtype">bool</span> Found = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;            <span class="keywordflow">while</span> (!Found)</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;            {</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                <span class="keywordtype">int</span> ComparedValue = TempNode.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#af497932ba326e5efb433f921045b458b">Value</a>.CompareTo(item);</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;                <span class="keywordflow">if</span> (ComparedValue &gt; 0)</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;                {</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;                    <span class="keywordflow">if</span> (TempNode.Left == null)</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                    {</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;                        TempNode.Left = <span class="keyword">new</span> <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a>(item, TempNode);</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;                        ++NumberOfNodes;</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;                        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                    }</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;                    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;                    {</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;                        TempNode = TempNode.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#a332ef8d17d1c9d1abd342d3033619e57">Left</a>;</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;                    }</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;                }</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ComparedValue &lt; 0)</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;                {</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;                    <span class="keywordflow">if</span> (TempNode.Right == null)</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;                    {</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                        TempNode.Right = <span class="keyword">new</span> <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a>(item, TempNode);</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;                        ++NumberOfNodes;</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;                    }</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;                    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;                    {</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;                        TempNode = TempNode.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#a1a2847af803c75cef4f4a1f38994cd72">Right</a>;</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;                    }</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;                }</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;                <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;                {</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                    TempNode = TempNode.Right;</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;                }</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;            }</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        }</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;</div>
-<div class="line"><a name="l00321"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_binary_tree.html#af1a23fead6809b4fd6ffa50a7637f748">  321</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">virtual</span> IEnumerable&lt;TreeNode&lt;T&gt;&gt; <a class="code" href="class_utilities_1_1_data_types_1_1_binary_tree.html#af1a23fead6809b4fd6ffa50a7637f748">Traversal</a>(<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> Node)</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        {</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;            <span class="keywordflow">if</span> (Node != null)</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;            {</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;                <span class="keywordflow">if</span> (Node.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#a332ef8d17d1c9d1abd342d3033619e57">Left</a> != null)</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;                {</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;                    <span class="keywordflow">foreach</span> (<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> LeftNode <span class="keywordflow">in</span> Traversal(Node.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#a332ef8d17d1c9d1abd342d3033619e57">Left</a>))</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;                        yield <span class="keywordflow">return</span> LeftNode;</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;                }</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;                yield <span class="keywordflow">return</span> Node;</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;                <span class="keywordflow">if</span> (Node.Right != null)</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;                {</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                    <span class="keywordflow">foreach</span> (<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> RightNode <span class="keywordflow">in</span> Traversal(Node.Right))</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;                        yield <span class="keywordflow">return</span> RightNode;</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;                }</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;            }</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        }</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    }</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;</div>
-<div class="line"><a name="l00344"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_tree_node.html">  344</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode</a>&lt;T&gt;</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    {</div>
-<div class="line"><a name="l00353"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_tree_node.html#a79e6cebc64766104a2d3427ed72ccf7e">  353</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#a79e6cebc64766104a2d3427ed72ccf7e">TreeNode</a>(T Value = <span class="keywordflow">default</span>(T), <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> Parent = null, <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> Left = null, <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> Right = null)</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;        {</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;            this.Value = Value;</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;            this.Right = Right;</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;            this.Left = Left;</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;            this.Parent = Parent;</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        }</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;</div>
-<div class="line"><a name="l00364"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_tree_node.html#a5a6782a0b15fed8fd14fdad6c6230619">  364</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">bool</span> IsLeaf { <span class="keyword">get</span> { <span class="keywordflow">return</span> Left == null &amp;&amp; Right == null; } }</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;</div>
-<div class="line"><a name="l00369"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_tree_node.html#a87a17b6c7e61183a4536a487f8d28171">  369</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">bool</span> IsRoot { <span class="keyword">get</span> { <span class="keywordflow">return</span> Parent == null; } }</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;</div>
-<div class="line"><a name="l00374"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_tree_node.html#a332ef8d17d1c9d1abd342d3033619e57">  374</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> Left { <span class="keyword">get</span>; set; }</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;</div>
-<div class="line"><a name="l00379"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_tree_node.html#a644a24a67ba8ac23340c6f10d926e29a">  379</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> Parent { <span class="keyword">get</span>; set; }</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;</div>
-<div class="line"><a name="l00384"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_tree_node.html#a1a2847af803c75cef4f4a1f38994cd72">  384</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> Right { <span class="keyword">get</span>; set; }</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;</div>
-<div class="line"><a name="l00389"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_tree_node.html#af497932ba326e5efb433f921045b458b">  389</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> T Value { <span class="keyword">get</span>; set; }</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        <span class="keyword">internal</span> <span class="keywordtype">bool</span> Visited { <span class="keyword">get</span>; set; }</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;</div>
-<div class="line"><a name="l00400"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_tree_node.html#ae700129268597442c300e843e04fee61">  400</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">string</span> <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#ae700129268597442c300e843e04fee61">ToString</a>()</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;        {</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;            <span class="keywordflow">return</span> Value.ToString();</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;        }</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    }</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;}</div>
-<div class="ttc" id="class_utilities_1_1_data_types_1_1_binary_tree_html_af1a23fead6809b4fd6ffa50a7637f748"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_binary_tree.html#af1a23fead6809b4fd6ffa50a7637f748">Utilities.DataTypes.BinaryTree.Traversal</a></div><div class="ttdeci">virtual IEnumerable&lt; TreeNode&lt; T &gt; &gt; Traversal(TreeNode&lt; T &gt; Node)</div><div class="ttdoc">Traverses the list </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00321">BTree.cs:321</a></div></div>
-<div class="ttc" id="class_utilities_1_1_data_types_1_1_tree_node_html_a332ef8d17d1c9d1abd342d3033619e57"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_tree_node.html#a332ef8d17d1c9d1abd342d3033619e57">Utilities.DataTypes.TreeNode.Left</a></div><div class="ttdeci">virtual TreeNode&lt; T &gt; Left</div><div class="ttdoc">Left node </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00374">BTree.cs:374</a></div></div>
-<div class="ttc" id="class_utilities_1_1_data_types_1_1_binary_tree_html_a9f2fe712dafef52906000849713acbc0"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_binary_tree.html#a9f2fe712dafef52906000849713acbc0">Utilities.DataTypes.BinaryTree.Insert</a></div><div class="ttdeci">virtual void Insert(T item)</div><div class="ttdoc">Inserts a value </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00275">BTree.cs:275</a></div></div>
-<div class="ttc" id="class_utilities_1_1_data_types_1_1_binary_tree_html_a60176d6764e07ba27a52378d8217d0b8"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_binary_tree.html#a60176d6764e07ba27a52378d8217d0b8">Utilities.DataTypes.BinaryTree.Remove</a></div><div class="ttdeci">virtual bool Remove(T item)</div><div class="ttdoc">Removes an item from the tree </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00209">BTree.cs:209</a></div></div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;            <span class="keywordflow">if</span> (Item.Parent != null)</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;            {</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;                <span class="keywordflow">if</span> (Item.Parent.Left == Item)</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;                    Item.Parent.Left = null;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;                <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                    Item.Parent.Right = null;</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;                Item.Parent = null;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            }</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;            {</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;                Root = null;</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            }</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;            <span class="keywordflow">foreach</span> (T Value <span class="keywordflow">in</span> Values)</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;                Add(Value);</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        }</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        <a class="code" href="namespace_system.html">System</a>.Collections.IEnumerator <a class="code" href="namespace_system.html">System</a>.Collections.IEnumerable.GetEnumerator()</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        {</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;            <span class="keywordflow">foreach</span> (<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> TempNode <span class="keywordflow">in</span> Traversal(Root))</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;            {</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;                yield <span class="keywordflow">return</span> TempNode.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#af497932ba326e5efb433f921045b458b">Value</a>;</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;            }</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        }</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;</div>
+<div class="line"><a name="l00251"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_binary_tree.html#ad4880b39dae84e1ed0132623e88bbbdb">  251</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">string</span> <a class="code" href="class_utilities_1_1_data_types_1_1_binary_tree.html#ad4880b39dae84e1ed0132623e88bbbdb">ToString</a>()</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        {</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;            <span class="keywordflow">return</span> this.ToString(x =&gt; x.ToString(), <span class="stringliteral">&quot; &quot;</span>);</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        }</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;</div>
+<div class="line"><a name="l00261"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a4f58bbf69b009e58f287373e5cb5b0fd">  261</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">virtual</span> <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> <a class="code" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a4f58bbf69b009e58f287373e5cb5b0fd">Find</a>(T item)</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        {</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            <span class="keywordflow">foreach</span> (<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> Item <span class="keywordflow">in</span> Traversal(Root))</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                <span class="keywordflow">if</span> (Item.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#af497932ba326e5efb433f921045b458b">Value</a>.Equals(item))</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;                    <span class="keywordflow">return</span> Item;</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            <span class="keywordflow">return</span> null;</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        }</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;</div>
+<div class="line"><a name="l00273"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a9f2fe712dafef52906000849713acbc0">  273</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_utilities_1_1_data_types_1_1_binary_tree.html#a9f2fe712dafef52906000849713acbc0">Insert</a>(T item)</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        {</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;            Contract.Requires&lt;NullReferenceException&gt;(Root != null, <span class="stringliteral">&quot;Root&quot;</span>);</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;            <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> TempNode = Root;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;            <span class="keywordtype">bool</span> Found = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;            <span class="keywordflow">while</span> (!Found)</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;            {</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;                <span class="keywordtype">int</span> ComparedValue = TempNode.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#af497932ba326e5efb433f921045b458b">Value</a>.CompareTo(item);</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;                <span class="keywordflow">if</span> (ComparedValue &gt; 0)</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                {</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;                    <span class="keywordflow">if</span> (TempNode.Left == null)</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;                    {</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;                        TempNode.Left = <span class="keyword">new</span> <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a>(item, TempNode);</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                        ++NumberOfNodes;</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;                        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;                    }</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;                    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                    {</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;                        TempNode = TempNode.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#a332ef8d17d1c9d1abd342d3033619e57">Left</a>;</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;                    }</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;                }</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ComparedValue &lt; 0)</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;                {</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;                    <span class="keywordflow">if</span> (TempNode.Right == null)</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;                    {</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;                        TempNode.Right = <span class="keyword">new</span> <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a>(item, TempNode);</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;                        ++NumberOfNodes;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;                    }</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;                    {</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;                        TempNode = TempNode.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#a1a2847af803c75cef4f4a1f38994cd72">Right</a>;</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;                    }</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;                }</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;                <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;                {</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;                    TempNode = TempNode.Right;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;                }</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;            }</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        }</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;</div>
+<div class="line"><a name="l00319"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_binary_tree.html#af1a23fead6809b4fd6ffa50a7637f748">  319</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">virtual</span> IEnumerable&lt;TreeNode&lt;T&gt;&gt; <a class="code" href="class_utilities_1_1_data_types_1_1_binary_tree.html#af1a23fead6809b4fd6ffa50a7637f748">Traversal</a>(<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> Node)</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        {</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;            <span class="keywordflow">if</span> (Node != null)</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;            {</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;                <span class="keywordflow">if</span> (Node.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#a332ef8d17d1c9d1abd342d3033619e57">Left</a> != null)</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;                {</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;                    <span class="keywordflow">foreach</span> (<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> LeftNode <span class="keywordflow">in</span> Traversal(Node.<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#a332ef8d17d1c9d1abd342d3033619e57">Left</a>))</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;                        yield <span class="keywordflow">return</span> LeftNode;</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;                }</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;                yield <span class="keywordflow">return</span> Node;</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;                <span class="keywordflow">if</span> (Node.Right != null)</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;                {</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;                    <span class="keywordflow">foreach</span> (<a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> RightNode <span class="keywordflow">in</span> Traversal(Node.Right))</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;                        yield <span class="keywordflow">return</span> RightNode;</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                }</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;            }</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        }</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    }</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;</div>
+<div class="line"><a name="l00342"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_tree_node.html">  342</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode</a>&lt;T&gt;</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    {</div>
+<div class="line"><a name="l00351"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_tree_node.html#af73a6d92916e7d15654641c01480d83c">  351</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#af73a6d92916e7d15654641c01480d83c">TreeNode</a>(T value = <span class="keywordflow">default</span>(T), <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> parent = null, <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> left = null, <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> right = null)</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        {</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;            Value = value;</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;            Right = right;</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;            Left = left;</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;            Parent = parent;</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        }</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;</div>
+<div class="line"><a name="l00362"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_tree_node.html#a5a6782a0b15fed8fd14fdad6c6230619">  362</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">bool</span> IsLeaf { <span class="keyword">get</span> { <span class="keywordflow">return</span> Left == null &amp;&amp; Right == null; } }</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;</div>
+<div class="line"><a name="l00367"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_tree_node.html#a87a17b6c7e61183a4536a487f8d28171">  367</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">bool</span> IsRoot { <span class="keyword">get</span> { <span class="keywordflow">return</span> Parent == null; } }</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;</div>
+<div class="line"><a name="l00372"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_tree_node.html#a332ef8d17d1c9d1abd342d3033619e57">  372</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> Left { <span class="keyword">get</span>; set; }</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;</div>
+<div class="line"><a name="l00377"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_tree_node.html#a644a24a67ba8ac23340c6f10d926e29a">  377</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> Parent { <span class="keyword">get</span>; set; }</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;</div>
+<div class="line"><a name="l00382"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_tree_node.html#a1a2847af803c75cef4f4a1f38994cd72">  382</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html">TreeNode&lt;T&gt;</a> Right { <span class="keyword">get</span>; set; }</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;</div>
+<div class="line"><a name="l00387"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_tree_node.html#af497932ba326e5efb433f921045b458b">  387</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> T Value { <span class="keyword">get</span>; set; }</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        <span class="keyword">internal</span> <span class="keywordtype">bool</span> Visited { <span class="keyword">get</span>; set; }</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;</div>
+<div class="line"><a name="l00398"></a><span class="lineno"><a class="line" href="class_utilities_1_1_data_types_1_1_tree_node.html#ae700129268597442c300e843e04fee61">  398</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">string</span> <a class="code" href="class_utilities_1_1_data_types_1_1_tree_node.html#ae700129268597442c300e843e04fee61">ToString</a>()</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        {</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;            <span class="keywordflow">return</span> Value.ToString();</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;        }</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;    }</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;}</div>
+<div class="ttc" id="class_utilities_1_1_data_types_1_1_binary_tree_html_af1a23fead6809b4fd6ffa50a7637f748"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_binary_tree.html#af1a23fead6809b4fd6ffa50a7637f748">Utilities.DataTypes.BinaryTree.Traversal</a></div><div class="ttdeci">virtual IEnumerable&lt; TreeNode&lt; T &gt; &gt; Traversal(TreeNode&lt; T &gt; Node)</div><div class="ttdoc">Traverses the list </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00319">BTree.cs:319</a></div></div>
+<div class="ttc" id="class_utilities_1_1_data_types_1_1_tree_node_html_a332ef8d17d1c9d1abd342d3033619e57"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_tree_node.html#a332ef8d17d1c9d1abd342d3033619e57">Utilities.DataTypes.TreeNode.Left</a></div><div class="ttdeci">virtual TreeNode&lt; T &gt; Left</div><div class="ttdoc">Left node </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00372">BTree.cs:372</a></div></div>
+<div class="ttc" id="class_utilities_1_1_data_types_1_1_binary_tree_html_a9f2fe712dafef52906000849713acbc0"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_binary_tree.html#a9f2fe712dafef52906000849713acbc0">Utilities.DataTypes.BinaryTree.Insert</a></div><div class="ttdeci">virtual void Insert(T item)</div><div class="ttdoc">Inserts a value </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00273">BTree.cs:273</a></div></div>
+<div class="ttc" id="class_utilities_1_1_data_types_1_1_binary_tree_html_a60176d6764e07ba27a52378d8217d0b8"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_binary_tree.html#a60176d6764e07ba27a52378d8217d0b8">Utilities.DataTypes.BinaryTree.Remove</a></div><div class="ttdeci">virtual bool Remove(T item)</div><div class="ttdoc">Removes an item from the tree </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00207">BTree.cs:207</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_binary_tree_html_aacbfb112ae22b488f3256ae6066c2dcb"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_binary_tree.html#aacbfb112ae22b488f3256ae6066c2dcb">Utilities.DataTypes.BinaryTree.Add</a></div><div class="ttdeci">virtual void Add(T item)</div><div class="ttdoc">Adds an item to a binary tree </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00129">BTree.cs:129</a></div></div>
-<div class="ttc" id="class_utilities_1_1_data_types_1_1_tree_node_html_a79e6cebc64766104a2d3427ed72ccf7e"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_tree_node.html#a79e6cebc64766104a2d3427ed72ccf7e">Utilities.DataTypes.TreeNode.TreeNode</a></div><div class="ttdeci">TreeNode(T Value=default(T), TreeNode&lt; T &gt; Parent=null, TreeNode&lt; T &gt; Left=null, TreeNode&lt; T &gt; Right=null)</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00353">BTree.cs:353</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_binary_tree_html_ab5c0b593517cf6979b576260e2c2f6ca"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_binary_tree.html#ab5c0b593517cf6979b576260e2c2f6ca">Utilities.DataTypes.BinaryTree.Clear</a></div><div class="ttdeci">virtual void Clear()</div><div class="ttdoc">Clears all items from the tree </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00145">BTree.cs:145</a></div></div>
 <div class="ttc" id="namespace_system_html"><div class="ttname"><a href="namespace_system.html">System</a></div></div>
-<div class="ttc" id="class_utilities_1_1_data_types_1_1_tree_node_html_ae700129268597442c300e843e04fee61"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_tree_node.html#ae700129268597442c300e843e04fee61">Utilities.DataTypes.TreeNode.ToString</a></div><div class="ttdeci">override string ToString()</div><div class="ttdoc">Returns the node as a string </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00400">BTree.cs:400</a></div></div>
-<div class="ttc" id="class_utilities_1_1_data_types_1_1_binary_tree_html_a4f58bbf69b009e58f287373e5cb5b0fd"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_binary_tree.html#a4f58bbf69b009e58f287373e5cb5b0fd">Utilities.DataTypes.BinaryTree.Find</a></div><div class="ttdeci">virtual TreeNode&lt; T &gt; Find(T item)</div><div class="ttdoc">Finds a specific object </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00263">BTree.cs:263</a></div></div>
-<div class="ttc" id="class_utilities_1_1_data_types_1_1_tree_node_html_af497932ba326e5efb433f921045b458b"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_tree_node.html#af497932ba326e5efb433f921045b458b">Utilities.DataTypes.TreeNode.Value</a></div><div class="ttdeci">virtual T Value</div><div class="ttdoc">Value of the node </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00389">BTree.cs:389</a></div></div>
-<div class="ttc" id="class_utilities_1_1_data_types_1_1_binary_tree_html_a052543dab37ff021bd0588c4d28cad98"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_binary_tree.html#a052543dab37ff021bd0588c4d28cad98">Utilities.DataTypes.BinaryTree.GetEnumerator</a></div><div class="ttdeci">virtual IEnumerator&lt; T &gt; GetEnumerator()</div><div class="ttdoc">Gets the enumerator </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00196">BTree.cs:196</a></div></div>
+<div class="ttc" id="class_utilities_1_1_data_types_1_1_tree_node_html_ae700129268597442c300e843e04fee61"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_tree_node.html#ae700129268597442c300e843e04fee61">Utilities.DataTypes.TreeNode.ToString</a></div><div class="ttdeci">override string ToString()</div><div class="ttdoc">Returns the node as a string </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00398">BTree.cs:398</a></div></div>
+<div class="ttc" id="class_utilities_1_1_data_types_1_1_binary_tree_html_a4f58bbf69b009e58f287373e5cb5b0fd"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_binary_tree.html#a4f58bbf69b009e58f287373e5cb5b0fd">Utilities.DataTypes.BinaryTree.Find</a></div><div class="ttdeci">virtual TreeNode&lt; T &gt; Find(T item)</div><div class="ttdoc">Finds a specific object </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00261">BTree.cs:261</a></div></div>
+<div class="ttc" id="class_utilities_1_1_data_types_1_1_tree_node_html_af497932ba326e5efb433f921045b458b"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_tree_node.html#af497932ba326e5efb433f921045b458b">Utilities.DataTypes.TreeNode.Value</a></div><div class="ttdeci">virtual T Value</div><div class="ttdoc">Value of the node </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00387">BTree.cs:387</a></div></div>
+<div class="ttc" id="class_utilities_1_1_data_types_1_1_binary_tree_html_a052543dab37ff021bd0588c4d28cad98"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_binary_tree.html#a052543dab37ff021bd0588c4d28cad98">Utilities.DataTypes.BinaryTree.GetEnumerator</a></div><div class="ttdeci">virtual IEnumerator&lt; T &gt; GetEnumerator()</div><div class="ttdoc">Gets the enumerator </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00194">BTree.cs:194</a></div></div>
 <div class="ttc" id="namespace_utilities_html"><div class="ttname"><a href="namespace_utilities.html">Utilities</a></div></div>
-<div class="ttc" id="class_utilities_1_1_data_types_1_1_binary_tree_html_ad4880b39dae84e1ed0132623e88bbbdb"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_binary_tree.html#ad4880b39dae84e1ed0132623e88bbbdb">Utilities.DataTypes.BinaryTree.ToString</a></div><div class="ttdeci">override string ToString()</div><div class="ttdoc">Outputs the tree as a string </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00253">BTree.cs:253</a></div></div>
-<div class="ttc" id="class_utilities_1_1_data_types_1_1_binary_tree_html_ac5b2bb2f12881eba4fa7bb9ae3e3bc85"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_binary_tree.html#ac5b2bb2f12881eba4fa7bb9ae3e3bc85">Utilities.DataTypes.BinaryTree.BinaryTree</a></div><div class="ttdeci">BinaryTree(TreeNode&lt; T &gt; Root=null)</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00040">BTree.cs:40</a></div></div>
-<div class="ttc" id="class_utilities_1_1_data_types_1_1_tree_node_html"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_tree_node.html">Utilities.DataTypes.TreeNode</a></div><div class="ttdoc">Node class for the Binary tree </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00344">BTree.cs:344</a></div></div>
-<div class="ttc" id="class_utilities_1_1_data_types_1_1_tree_node_html_a1a2847af803c75cef4f4a1f38994cd72"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_tree_node.html#a1a2847af803c75cef4f4a1f38994cd72">Utilities.DataTypes.TreeNode.Right</a></div><div class="ttdeci">virtual TreeNode&lt; T &gt; Right</div><div class="ttdoc">Right node </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00384">BTree.cs:384</a></div></div>
-<div class="ttc" id="class_utilities_1_1_data_types_1_1_binary_tree_html_a2812f0fae9631401dff7c7cd3ddcb739"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_binary_tree.html#a2812f0fae9631401dff7c7cd3ddcb739">Utilities.DataTypes.BinaryTree.CopyTo</a></div><div class="ttdeci">virtual void CopyTo(T[] array, int arrayIndex)</div><div class="ttdoc">Copies the tree to an array </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00180">BTree.cs:180</a></div></div>
+<div class="ttc" id="class_utilities_1_1_data_types_1_1_binary_tree_html_ad4880b39dae84e1ed0132623e88bbbdb"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_binary_tree.html#ad4880b39dae84e1ed0132623e88bbbdb">Utilities.DataTypes.BinaryTree.ToString</a></div><div class="ttdeci">override string ToString()</div><div class="ttdoc">Outputs the tree as a string </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00251">BTree.cs:251</a></div></div>
+<div class="ttc" id="class_utilities_1_1_data_types_1_1_tree_node_html"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_tree_node.html">Utilities.DataTypes.TreeNode</a></div><div class="ttdoc">Node class for the Binary tree </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00342">BTree.cs:342</a></div></div>
+<div class="ttc" id="class_utilities_1_1_data_types_1_1_tree_node_html_af73a6d92916e7d15654641c01480d83c"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_tree_node.html#af73a6d92916e7d15654641c01480d83c">Utilities.DataTypes.TreeNode.TreeNode</a></div><div class="ttdeci">TreeNode(T value=default(T), TreeNode&lt; T &gt; parent=null, TreeNode&lt; T &gt; left=null, TreeNode&lt; T &gt; right=null)</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00351">BTree.cs:351</a></div></div>
+<div class="ttc" id="class_utilities_1_1_data_types_1_1_binary_tree_html_a3cdecb1334018ba7d1f74b3fa498ef52"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_binary_tree.html#a3cdecb1334018ba7d1f74b3fa498ef52">Utilities.DataTypes.BinaryTree.BinaryTree</a></div><div class="ttdeci">BinaryTree(TreeNode&lt; T &gt; root=null)</div><div class="ttdoc">Constructor </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00040">BTree.cs:40</a></div></div>
+<div class="ttc" id="class_utilities_1_1_data_types_1_1_tree_node_html_a1a2847af803c75cef4f4a1f38994cd72"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_tree_node.html#a1a2847af803c75cef4f4a1f38994cd72">Utilities.DataTypes.TreeNode.Right</a></div><div class="ttdeci">virtual TreeNode&lt; T &gt; Right</div><div class="ttdoc">Right node </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00382">BTree.cs:382</a></div></div>
+<div class="ttc" id="class_utilities_1_1_data_types_1_1_binary_tree_html_a2812f0fae9631401dff7c7cd3ddcb739"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_binary_tree.html#a2812f0fae9631401dff7c7cd3ddcb739">Utilities.DataTypes.BinaryTree.CopyTo</a></div><div class="ttdeci">virtual void CopyTo(T[] array, int arrayIndex)</div><div class="ttdoc">Copies the tree to an array </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00178">BTree.cs:178</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_binary_tree_html_aff28aed15ca9cc24959c57ef175fc54b"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_binary_tree.html#aff28aed15ca9cc24959c57ef175fc54b">Utilities.DataTypes.BinaryTree.Contains</a></div><div class="ttdeci">virtual bool Contains(T item)</div><div class="ttdoc">Determines if the tree contains an item </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00156">BTree.cs:156</a></div></div>
 <div class="ttc" id="class_utilities_1_1_data_types_1_1_binary_tree_html"><div class="ttname"><a href="class_utilities_1_1_data_types_1_1_binary_tree.html">Utilities.DataTypes.BinaryTree</a></div><div class="ttdoc">Binary tree </div><div class="ttdef"><b>Definition:</b> <a href="_b_tree_8cs_source.html#l00033">BTree.cs:33</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -420,7 +418,7 @@ $(document).ready(function(){initNavTree('_b_tree_8cs_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b05a5fa85f84bfc9013183c9d87f9a36.html">Utilities</a></li><li class="navelem"><a class="el" href="dir_ca0426833ed64f488ae0419fd1a98fec.html">DataTypes</a></li><li class="navelem"><a class="el" href="_b_tree_8cs.html">BTree.cs</a></li>
-    <li class="footer">Generated on Fri Jul 17 2015 18:24:40 for Craig&#39;s Utility Library by
+    <li class="footer">Generated on Fri Aug 21 2015 00:31:38 for Craig&#39;s Utility Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
