@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Glimpse.CUL</id>
-		<version>4.0.286</version>
+		<version>4.0.287</version>
 		<title>Glimpse plugin for Craig's Utility Library</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -11,7 +11,7 @@
 		<requireLicenseAcceptance>true</requireLicenseAcceptance>
 		<description>Craig's Utility Library is one of the largest collections of utility classes and extension methods for .Net. It includes code to help with tasks including encryption, compression, serialization, file management, email, image manipulation, SQL, various file formats (CSV, iCal, etc.), randomization, validation, math related classes, various data types, reflection, code gen, events, code profiling, etc.</description>
 		<summary>This is a basic plugin for Glimpse that adds information from Craig's Utility Library.</summary>
-		<releaseNotes>This version is a complete rewrite of the current system. This will break all of your code, so don't update unless you're a brave soul.</releaseNotes>
+		<releaseNotes>This version is a complete rewrite from the 3.X line. This will break all of your code, so don't update unless you're a brave soul.</releaseNotes>
 		<copyright>Copyright 2011</copyright>
 		<tags>utility utilities</tags>
 		<references>
@@ -20,7 +20,7 @@
 		<dependencies>
             <dependency id="Glimpse.AspNet" version="[1.9.2]" />
 			<dependency id="Glimpse" version="[1.8.6]" />
-			<dependency id="CraigsUtilityLibrary" version="[4.0.286]" />
+			<dependency id="CraigsUtilityLibrary" version="[4.0.287]" />
         </dependencies>
 	</metadata>
 	<files>

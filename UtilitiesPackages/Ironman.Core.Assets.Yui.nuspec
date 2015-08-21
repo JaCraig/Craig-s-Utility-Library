@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Ironman.Core.Assets.Yui</id>
-		<version>1.0.286</version>
+		<version>1.0.287</version>
 		<title>Iron Man Framework YUI Minifier</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -11,15 +11,15 @@
 		<requireLicenseAcceptance>true</requireLicenseAcceptance>
 		<description>This makes YUI the minifier for the Iron Man Framework.</description>
 		<summary>This makes YUI the minifier for the Iron Man Framework.</summary>
-		<releaseNotes>This version is in beta. Use at your own risk.</releaseNotes>
+		<releaseNotes>Official 1.0 release of the framework.</releaseNotes>
 		<copyright>Copyright 2014</copyright>
 		<tags>less </tags>
 		<references>
 			<reference file="Ironman.Core.Assets.Yui.dll" />
 		</references>
 		<dependencies>
-            <dependency id="CraigsUtilityLibrary" version="[4.0.286]" />
-			<dependency id="Ironman.Core" version="[1.0.286]" />
+            <dependency id="CraigsUtilityLibrary" version="[4.0.287]" />
+			<dependency id="Ironman.Core" version="[1.0.287]" />
 			<dependency id="YUICompressor.NET" version="[2.7.0.0]" />
         </dependencies>
 	</metadata>
