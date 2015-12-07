@@ -113,7 +113,7 @@ namespace Utilities.IoC
             }
         }
 
-        private void Register(IEnumerable<ServiceDescriptor> descriptors)
+        private IBootstrapper Register(IEnumerable<ServiceDescriptor> descriptors)
         {
             var RegisterTypes = typeof(IBootstrapper).GetTypeInfo()
                                                      .GetDeclaredMethods("Register")
@@ -156,6 +156,7 @@ namespace Utilities.IoC
                     tempRegistration.Invoke(Bootstrapper, new object[] { item.ImplementationInstance, item.Lifetime, "" });
                 }
             }
+            return Bootstrapper;
         }
 
         /// <summary>
