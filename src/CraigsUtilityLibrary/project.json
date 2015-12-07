@@ -1,0 +1,32 @@
+﻿{
+    "title": "Craig's Utility Library",
+    "version": "5.0.0-*",
+    "description": "Craig's Utility Library is one of the largest collections of utility classes and extension methods for .Net. It includes code to help with tasks including encryption, compression, serialization, file management, email, image manipulation, SQL, various file formats (CSV, iCal, etc.), randomization, validation, math related classes, various data types, reflection, code gen, events, code profiling, etc.",
+    "summary": "One of the largest collections of utility classes and extension methods for .Net",
+    "authors": [ "James Craig" ],
+    "owners": [ "James Craig" ],
+    "projectUrl": "https://github.com/JaCraig/Craig-s-Utility-Library",
+    "licenseUrl": "https://github.com/JaCraig/Craig-s-Utility-Library/blob/master/LICENSE",
+    "requireLicenseAcceptance": true,
+    "copyright": "Copyright 2008",
+    "iconUrl": "",
+    "tags": [ "utility", "utilities", "CUL" ],
+    "frameworks": {
+        "dnx451": { },
+        "dnxcore50": {
+            "dependencies": {
+                "Microsoft.CSharp": "4.0.1-beta-23516",
+                "System.Collections": "4.0.11-rc2-23512",
+                "System.Linq": "4.0.1-beta-23516",
+                "System.Runtime": "4.0.21-rc2-23512",
+                "System.Threading": "4.0.11-beta-23516",
+                "System.Collections.Concurrent": "4.0.11-beta-23516",
+                "System.IO.FileSystem": "4.0.1-beta-23516"
+            }
+        }
+    },
+    "dependencies": {
+        "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-beta8-15653",
+        "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta8-15611"
+    }
+}
