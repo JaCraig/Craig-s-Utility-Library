@@ -20,14 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Utilities.DataTypes.Comparison;
@@ -57,8 +53,7 @@ namespace Utilities.DataTypes
         /// </example>
         public static IEnumerable<T> Concat<T>(this IEnumerable<T> enumerable1, params IEnumerable<T>[] additions)
         {
-            if (enumerable1 == null)
-                return null;
+            enumerable1 = enumerable1 ?? new T[0];
             if (additions == null)
                 return enumerable1;
             var ActualAdditions = additions.Where(x => x != null).ToArray();
@@ -82,25 +77,18 @@ namespace Utilities.DataTypes
         public static IEnumerable<T> Distinct<T>(this IEnumerable<T> enumerable, Func<T, T, bool> predicate)
         {
             if (enumerable == null)
-                return null;
+                yield break;
             var TempGenericComparer = new GenericEqualityComparer<T>();
             predicate = predicate ?? TempGenericComparer.Equals;
             var Results = new List<T>();
             foreach (T Item in enumerable)
             {
-                bool Found = false;
-                foreach (T Item2 in Results)
+                if (!Results.Any(x => predicate(Item, x)))
                 {
-                    if (predicate(Item, Item2))
-                    {
-                        Found = true;
-                        break;
-                    }
-                }
-                if (!Found)
                     Results.Add(Item);
+                    yield return Item;
+                }
             }
-            return Results;
         }
 
         /// <summary>
@@ -114,7 +102,7 @@ namespace Utilities.DataTypes
         public static IEnumerable<T> ElementsBetween<T>(this IEnumerable<T> list, int start, int end)
         {
             if (list == null)
-                return null;
+                yield break;
             if (end > list.Count())
                 end = list.Count();
             if (start < 0)
@@ -126,10 +114,8 @@ namespace Utilities.DataTypes
                 end = Temp;
             }
             var TempList = list.ToArray();
-            var ReturnList = new List<T>();
             for (int x = start; x < end; ++x)
-                ReturnList.Add(TempList[x]);
-            return ReturnList;
+                yield return TempList[x];
         }
 
         /// <summary>
@@ -142,7 +128,7 @@ namespace Utilities.DataTypes
         public static IEnumerable<T> Except<T>(this IEnumerable<T> value, Func<T, bool> predicate)
         {
             if (value == null)
-                return null;
+                return new List<T>();
             if (predicate == null)
                 return value;
             return value.Where(x => !predicate(x));
@@ -160,8 +146,8 @@ namespace Utilities.DataTypes
         public static IEnumerable<T> For<T>(this IEnumerable<T> list, int start, int end, Action<T, int> action)
         {
             if (list == null)
-                return null;
-            var TempList = list.ElementsBetween(start, end).ToArray();
+                return new List<T>();
+            var TempList = list.ElementsBetween(start, end + 1).ToArray();
             for (int x = 0; x < TempList.Length; ++x)
             {
                 action(TempList[x], x);
@@ -169,44 +155,46 @@ namespace Utilities.DataTypes
             return list;
         }
 
-        //TODO: Above has been changed, below is where we start with next batch of changes.
-
         /// <summary>
         /// Does a function for each item in the IEnumerable between the start and end indexes and
         /// returns an IEnumerable of the results
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
         /// <typeparam name="R">Return type</typeparam>
-        /// <param name="List">IEnumerable to iterate over</param>
-        /// <param name="Start">Item to start with</param>
-        /// <param name="End">Item to end with</param>
-        /// <param name="Function">Function to do</param>
+        /// <param name="list">IEnumerable to iterate over</param>
+        /// <param name="start">Item to start with</param>
+        /// <param name="end">Item to end with</param>
+        /// <param name="function">Function to do</param>
         /// <returns>The resulting list</returns>
-        public static IEnumerable<R> For<T, R>(this IEnumerable<T> List, int Start, int End, Func<T, R> Function)
+        public static IEnumerable<R> For<T, R>(this IEnumerable<T> list, int start, int end, Func<T, int, R> function)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Function != null, "Function");
-            Contract.Requires<ArgumentException>(End + 1 - Start >= 0, "End must be greater than start");
-            var ReturnValues = new List<R>();
-            foreach (T Item in List.ElementsBetween(Start, End + 1))
-                ReturnValues.Add(Function(Item));
-            return ReturnValues;
+            if (list == null || function == null)
+                return new R[0];
+            var TempList = list.ElementsBetween(start, end + 1).ToArray();
+            var ReturnList = new R[TempList.Length];
+            for (int x = 0; x < TempList.Length; ++x)
+            {
+                ReturnList[x] = function(TempList[x], x);
+            }
+            return ReturnList;
         }
 
         /// <summary>
         /// Does an action for each item in the IEnumerable
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
-        /// <param name="List">IEnumerable to iterate over</param>
-        /// <param name="Action">Action to do</param>
+        /// <param name="list">IEnumerable to iterate over</param>
+        /// <param name="action">Action to do</param>
         /// <returns>The original list</returns>
-        public static IEnumerable<T> ForEach<T>(this IEnumerable<T> List, Action<T> Action)
+        public static IEnumerable<T> ForEach<T>(this IEnumerable<T> list, Action<T> action)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Action != null, "Action");
-            foreach (T Item in List)
-                Action(Item);
-            return List;
+            if (list == null)
+                return new List<T>();
+            if (action == null)
+                return list;
+            foreach (T Item in list)
+                action(Item);
+            return list;
         }
 
         /// <summary>
@@ -214,41 +202,42 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
         /// <typeparam name="R">Return type</typeparam>
-        /// <param name="List">IEnumerable to iterate over</param>
-        /// <param name="Function">Function to do</param>
+        /// <param name="list">IEnumerable to iterate over</param>
+        /// <param name="function">Function to do</param>
         /// <returns>The resulting list</returns>
-        public static IEnumerable<R> ForEach<T, R>(this IEnumerable<T> List, Func<T, R> Function)
+        public static IEnumerable<R> ForEach<T, R>(this IEnumerable<T> list, Func<T, R> function)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Function != null, "Function");
-            var ReturnValues = new List<R>();
-            foreach (T Item in List)
-                ReturnValues.Add(Function(Item));
-            return ReturnValues;
+            if (list == null || function == null)
+                return new List<R>();
+            var ReturnList = new List<R>(list.Count());
+            foreach (T Item in list)
+                ReturnList.Add(function(Item));
+            return ReturnList;
         }
 
         /// <summary>
         /// Does an action for each item in the IEnumerable
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
-        /// <param name="List">IEnumerable to iterate over</param>
-        /// <param name="Action">Action to do</param>
-        /// <param name="CatchAction">Action that occurs if an exception occurs</param>
+        /// <param name="list">IEnumerable to iterate over</param>
+        /// <param name="action">Action to do</param>
+        /// <param name="catchAction">Action that occurs if an exception occurs</param>
         /// <returns>The original list</returns>
-        public static IEnumerable<T> ForEach<T>(this IEnumerable<T> List, Action<T> Action, Action<T, Exception> CatchAction)
+        public static IEnumerable<T> ForEach<T>(this IEnumerable<T> list, Action<T> action, Action<T, Exception> catchAction)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Action != null, "Action");
-            Contract.Requires<ArgumentNullException>(CatchAction != null, "CatchAction");
-            foreach (T Item in List)
+            if (list == null)
+                return new List<T>();
+            if (action == null || catchAction == null)
+                return list;
+            foreach (T Item in list)
             {
                 try
                 {
-                    Action(Item);
+                    action(Item);
                 }
-                catch (Exception e) { CatchAction(Item, e); }
+                catch (Exception e) { catchAction(Item, e); }
             }
-            return List;
+            return list;
         }
 
         /// <summary>
@@ -256,40 +245,41 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
         /// <typeparam name="R">Return type</typeparam>
-        /// <param name="List">IEnumerable to iterate over</param>
-        /// <param name="Function">Function to do</param>
-        /// <param name="CatchAction">Action that occurs if an exception occurs</param>
+        /// <param name="list">IEnumerable to iterate over</param>
+        /// <param name="function">Function to do</param>
+        /// <param name="catchAction">Action that occurs if an exception occurs</param>
         /// <returns>The resulting list</returns>
-        public static IEnumerable<R> ForEach<T, R>(this IEnumerable<T> List, Func<T, R> Function, Action<T, Exception> CatchAction)
+        public static IEnumerable<R> ForEach<T, R>(this IEnumerable<T> list, Func<T, R> function, Action<T, Exception> catchAction)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Function != null, "Function");
-            Contract.Requires<ArgumentNullException>(CatchAction != null, "CatchAction");
-            var ReturnValues = new List<R>();
-            foreach (T Item in List)
+            if (list == null || function == null || catchAction == null)
+                return new R[0];
+            var ReturnValue = new List<R>();
+            foreach (T Item in list)
             {
                 try
                 {
-                    ReturnValues.Add(Function(Item));
+                    ReturnValue.Add(function(Item));
                 }
-                catch (Exception e) { CatchAction(Item, e); }
+                catch (Exception e) { catchAction(Item, e); }
             }
-            return ReturnValues;
+            return ReturnValue;
         }
 
         /// <summary>
         /// Does an action for each item in the IEnumerable in parallel
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
-        /// <param name="List">IEnumerable to iterate over</param>
-        /// <param name="Action">Action to do</param>
+        /// <param name="list">IEnumerable to iterate over</param>
+        /// <param name="action">Action to do</param>
         /// <returns>The original list</returns>
-        public static IEnumerable<T> ForEachParallel<T>(this IEnumerable<T> List, Action<T> Action)
+        public static IEnumerable<T> ForEachParallel<T>(this IEnumerable<T> list, Action<T> action)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Action != null, "Action");
-            Parallel.ForEach(List, Action);
-            return List;
+            if (list == null)
+                return new List<T>();
+            if (action == null)
+                return list;
+            Parallel.ForEach(list, action);
+            return list;
         }
 
         /// <summary>
@@ -297,38 +287,39 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
         /// <typeparam name="R">Results type</typeparam>
-        /// <param name="List">IEnumerable to iterate over</param>
-        /// <param name="Function">Function to do</param>
+        /// <param name="list">IEnumerable to iterate over</param>
+        /// <param name="function">Function to do</param>
         /// <returns>The results in an IEnumerable list</returns>
-        public static IEnumerable<R> ForEachParallel<T, R>(this IEnumerable<T> List, Func<T, R> Function)
+        public static IEnumerable<R> ForEachParallel<T, R>(this IEnumerable<T> list, Func<T, R> function)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Function != null, "Function");
-            return List.ForParallel(0, List.Count() - 1, Function);
+            if (list == null || function == null)
+                return new List<R>();
+            return list.ForParallel(0, list.Count() - 1, (x, y) => function(x));
         }
 
         /// <summary>
         /// Does an action for each item in the IEnumerable
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
-        /// <param name="List">IEnumerable to iterate over</param>
-        /// <param name="Action">Action to do</param>
-        /// <param name="CatchAction">Action that occurs if an exception occurs</param>
+        /// <param name="list">IEnumerable to iterate over</param>
+        /// <param name="action">Action to do</param>
+        /// <param name="catchAction">Action that occurs if an exception occurs</param>
         /// <returns>The original list</returns>
-        public static IEnumerable<T> ForEachParallel<T>(this IEnumerable<T> List, Action<T> Action, Action<T, Exception> CatchAction)
+        public static IEnumerable<T> ForEachParallel<T>(this IEnumerable<T> list, Action<T> action, Action<T, Exception> catchAction)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Action != null, "Action");
-            Contract.Requires<ArgumentNullException>(CatchAction != null, "CatchAction");
-            Parallel.ForEach<T>(List, delegate (T Item)
+            if (list == null)
+                return new List<T>();
+            if (action == null || catchAction == null)
+                return list;
+            Parallel.ForEach<T>(list, delegate (T Item)
             {
                 try
                 {
-                    Action(Item);
+                    action(Item);
                 }
-                catch (Exception e) { CatchAction(Item, e); }
+                catch (Exception e) { catchAction(Item, e); }
             });
-            return List;
+            return list;
         }
 
         /// <summary>
@@ -336,23 +327,22 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
         /// <typeparam name="R">Return type</typeparam>
-        /// <param name="List">IEnumerable to iterate over</param>
-        /// <param name="Function">Function to do</param>
-        /// <param name="CatchAction">Action that occurs if an exception occurs</param>
+        /// <param name="list">IEnumerable to iterate over</param>
+        /// <param name="function">Function to do</param>
+        /// <param name="catchAction">Action that occurs if an exception occurs</param>
         /// <returns>The resulting list</returns>
-        public static IEnumerable<R> ForEachParallel<T, R>(this IEnumerable<T> List, Func<T, R> Function, Action<T, Exception> CatchAction)
+        public static IEnumerable<R> ForEachParallel<T, R>(this IEnumerable<T> list, Func<T, R> function, Action<T, Exception> catchAction)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Function != null, "Function");
-            Contract.Requires<ArgumentNullException>(CatchAction != null, "CatchAction");
-            var ReturnValues = new List<R>();
-            Parallel.ForEach<T>(List, delegate (T Item)
+            if (list == null || function == null || catchAction == null)
+                return new List<R>();
+            var ReturnValues = new ConcurrentBag<R>();
+            Parallel.ForEach<T>(list, delegate (T Item)
             {
                 try
                 {
-                    ReturnValues.Add(Function(Item));
+                    ReturnValues.Add(function(Item));
                 }
-                catch (Exception e) { CatchAction(Item, e); }
+                catch (Exception e) { catchAction(Item, e); }
             });
             return ReturnValues;
         }
@@ -361,18 +351,30 @@ namespace Utilities.DataTypes
         /// Does an action for each item in the IEnumerable between the start and end indexes in parallel
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
-        /// <param name="List">IEnumerable to iterate over</param>
-        /// <param name="Start">Item to start with</param>
-        /// <param name="End">Item to end with</param>
-        /// <param name="Action">Action to do</param>
+        /// <param name="list">IEnumerable to iterate over</param>
+        /// <param name="start">Item to start with</param>
+        /// <param name="end">Item to end with</param>
+        /// <param name="action">Action to do</param>
         /// <returns>The original list</returns>
-        public static IEnumerable<T> ForParallel<T>(this IEnumerable<T> List, int Start, int End, Action<T> Action)
+        public static IEnumerable<T> ForParallel<T>(this IEnumerable<T> list, int start, int end, Action<T, int> action)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Action != null, "Action");
-            Contract.Requires<ArgumentException>(End + 1 - Start >= 0, "End must be greater than start");
-            Parallel.For(Start, End + 1, new Action<int>(x => Action(List.ElementAt(x))));
-            return List;
+            if (list == null)
+                return new List<T>();
+            if (action == null)
+                return list;
+            if (end > list.Count())
+                end = list.Count();
+            if (start < 0)
+                start = 0;
+            if (start > end)
+            {
+                var Temp = start;
+                start = end;
+                end = Temp;
+            }
+            var TempArray = list.ToArray();
+            Parallel.For(start, end + 1, new Action<int>(x => action(TempArray[x], x)));
+            return list;
         }
 
         /// <summary>
@@ -380,18 +382,28 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
         /// <typeparam name="R">Results type</typeparam>
-        /// <param name="List">IEnumerable to iterate over</param>
-        /// <param name="Start">Item to start with</param>
-        /// <param name="End">Item to end with</param>
-        /// <param name="Function">Function to do</param>
+        /// <param name="list">IEnumerable to iterate over</param>
+        /// <param name="start">Item to start with</param>
+        /// <param name="end">Item to end with</param>
+        /// <param name="function">Function to do</param>
         /// <returns>The resulting list</returns>
-        public static IEnumerable<R> ForParallel<T, R>(this IEnumerable<T> List, int Start, int End, Func<T, R> Function)
+        public static IEnumerable<R> ForParallel<T, R>(this IEnumerable<T> list, int start, int end, Func<T, int, R> function)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Function != null, "Function");
-            Contract.Requires<ArgumentException>(End + 1 - Start >= 0, "End must be greater than start");
-            R[] Results = new R[(End + 1) - Start];
-            Parallel.For(Start, End + 1, new Action<int>(x => Results[x - Start] = Function(List.ElementAt(x))));
+            if (list == null || function == null)
+                return new List<R>();
+            if (end > list.Count())
+                end = list.Count();
+            if (start < 0)
+                start = 0;
+            if (start > end)
+            {
+                var Temp = start;
+                start = end;
+                end = Temp;
+            }
+            var TempArray = list.ToArray();
+            R[] Results = new R[(end + 1) - start];
+            Parallel.For(start, end + 1, new Action<int>(x => Results[x - start] = function(TempArray[x], x)));
             return Results;
         }
 
@@ -399,13 +411,14 @@ namespace Utilities.DataTypes
         /// Returns the last X number of items from the list
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
-        /// <param name="List">IEnumerable to iterate over</param>
-        /// <param name="Count">Numbers of items to return</param>
+        /// <param name="list">IEnumerable to iterate over</param>
+        /// <param name="count">Number of items to return</param>
         /// <returns>The last X items from the list</returns>
-        public static IEnumerable<T> Last<T>(this IEnumerable<T> List, int Count)
+        public static IEnumerable<T> Last<T>(this IEnumerable<T> list, int count)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            return List.ElementsBetween(List.Count() - Count, List.Count());
+            if (list == null)
+                return new List<T>();
+            return list.ElementsBetween(list.Count() - count, list.Count());
         }
 
         /// <summary>
@@ -429,11 +442,11 @@ namespace Utilities.DataTypes
             Func<T1, T2, R> resultSelector,
             IEqualityComparer<Key> comparer = null)
         {
-            Contract.Requires<ArgumentNullException>(inner != null, "inner");
-            Contract.Requires<ArgumentNullException>(outerKeySelector != null, "outerKeySelector");
-            Contract.Requires<ArgumentNullException>(innerKeySelector != null, "innerKeySelector");
-            Contract.Requires<ArgumentNullException>(resultSelector != null, "resultSelector");
-
+            if (inner == null
+                || outerKeySelector == null
+                || innerKeySelector == null
+                || resultSelector == null)
+                return new List<R>();
             comparer = comparer ?? new GenericEqualityComparer<Key>();
             return outer.ForEach(x => new { left = x, right = inner.FirstOrDefault(y => comparer.Equals(innerKeySelector(y), outerKeySelector(x))) })
                         .ForEach(x => resultSelector(x.left, x.right));
@@ -460,11 +473,12 @@ namespace Utilities.DataTypes
             Func<T1, T2, R> resultSelector,
             IEqualityComparer<Key> comparer = null)
         {
-            Contract.Requires<ArgumentNullException>(inner != null, "inner");
-            Contract.Requires<ArgumentNullException>(outerKeySelector != null, "outerKeySelector");
-            Contract.Requires<ArgumentNullException>(innerKeySelector != null, "innerKeySelector");
-            Contract.Requires<ArgumentNullException>(resultSelector != null, "resultSelector");
-
+            if (inner == null
+                || outer == null
+                || outerKeySelector == null
+                || innerKeySelector == null
+                || resultSelector == null)
+                return new List<R>();
             var Left = outer.LeftJoin(inner, outerKeySelector, innerKeySelector, resultSelector, comparer);
             var Right = outer.RightJoin(inner, outerKeySelector, innerKeySelector, resultSelector, comparer);
             return Left.Union(Right);
@@ -474,20 +488,21 @@ namespace Utilities.DataTypes
         /// Determines the position of an object if it is present, otherwise it returns -1
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
-        /// <param name="List">List of objects to search</param>
-        /// <param name="Object">Object to find the position of</param>
-        /// <param name="EqualityComparer">
+        /// <param name="list">List of objects to search</param>
+        /// <param name="item">Object to find the position of</param>
+        /// <param name="equalityComparer">
         /// Equality comparer used to determine if the object is present
         /// </param>
         /// <returns>The position of the object if it is present, otherwise -1</returns>
-        public static int PositionOf<T>(this IEnumerable<T> List, T Object, IEqualityComparer<T> EqualityComparer = null)
+        public static int PositionOf<T>(this IEnumerable<T> list, T item, IEqualityComparer<T> equalityComparer = null)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            EqualityComparer = EqualityComparer.Check(() => new GenericEqualityComparer<T>());
+            if (list == null)
+                return -1;
+            equalityComparer = equalityComparer ?? new GenericEqualityComparer<T>();
             int Count = 0;
-            foreach (T Item in List)
+            foreach (T TempItem in list)
             {
-                if (EqualityComparer.Equals(Object, Item))
+                if (equalityComparer.Equals(item, TempItem))
                     return Count;
                 ++Count;
             }
@@ -515,11 +530,11 @@ namespace Utilities.DataTypes
             Func<T1, T2, R> resultSelector,
             IEqualityComparer<Key> comparer = null)
         {
-            Contract.Requires<ArgumentNullException>(outer != null, "outer");
-            Contract.Requires<ArgumentNullException>(outerKeySelector != null, "outerKeySelector");
-            Contract.Requires<ArgumentNullException>(innerKeySelector != null, "innerKeySelector");
-            Contract.Requires<ArgumentNullException>(resultSelector != null, "resultSelector");
-
+            if (outer == null
+                || outerKeySelector == null
+                || innerKeySelector == null
+                || resultSelector == null)
+                return new List<R>();
             comparer = comparer ?? new GenericEqualityComparer<Key>();
             return inner.ForEach(x => new { left = outer.FirstOrDefault(y => comparer.Equals(innerKeySelector(x), outerKeySelector(y))), right = x })
                         .ForEach(x => resultSelector(x.left, x.right));
@@ -529,148 +544,76 @@ namespace Utilities.DataTypes
         /// Throws the specified exception if the predicate is true for all items
         /// </summary>
         /// <typeparam name="T">Item type</typeparam>
-        /// <param name="List">The item</param>
-        /// <param name="Predicate">Predicate to check</param>
-        /// <param name="Exception">Exception to throw if predicate is true</param>
+        /// <param name="list">The item</param>
+        /// <param name="predicate">Predicate to check</param>
+        /// <param name="exception">Exception to throw if predicate is true</param>
         /// <returns>the original Item</returns>
-        public static IEnumerable<T> ThrowIfAll<T>(this IEnumerable<T> List, Predicate<T> Predicate, Func<Exception> Exception)
+        public static IEnumerable<T> ThrowIfAll<T>(this IEnumerable<T> list, Func<T, bool> predicate, Func<Exception> exception)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
-            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
-            foreach (T Item in List)
-            {
-                if (!Predicate(Item))
-                    return List;
-            }
-            throw Exception();
+            if (list == null)
+                return new List<T>();
+            if (predicate == null || exception == null)
+                return list;
+            if (list.All(predicate))
+                throw exception();
+            return list;
         }
 
         /// <summary>
         /// Throws the specified exception if the predicate is true for all items
         /// </summary>
         /// <typeparam name="T">Item type</typeparam>
-        /// <param name="List">The item</param>
-        /// <param name="Predicate">Predicate to check</param>
-        /// <param name="Exception">Exception to throw if predicate is true</param>
+        /// <param name="list">The item</param>
+        /// <param name="predicate">Predicate to check</param>
+        /// <param name="exception">Exception to throw if predicate is true</param>
         /// <returns>the original Item</returns>
-        public static IEnumerable<T> ThrowIfAll<T>(this IEnumerable<T> List, Predicate<T> Predicate, Exception Exception)
+        public static IEnumerable<T> ThrowIfAll<T>(this IEnumerable<T> list, Func<T, bool> predicate, Exception exception)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
-            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
-            foreach (T Item in List)
-            {
-                if (!Predicate(Item))
-                    return List;
-            }
-            throw Exception;
+            if (list == null)
+                return new List<T>();
+            if (predicate == null || exception == null)
+                return list;
+            if (list.All(predicate))
+                throw exception;
+            return list;
         }
 
         /// <summary>
         /// Throws the specified exception if the predicate is true for any items
         /// </summary>
         /// <typeparam name="T">Item type</typeparam>
-        /// <param name="List">The item</param>
-        /// <param name="Predicate">Predicate to check</param>
-        /// <param name="Exception">Exception to throw if predicate is true</param>
+        /// <param name="list">The item</param>
+        /// <param name="predicate">Predicate to check</param>
+        /// <param name="exception">Exception to throw if predicate is true</param>
         /// <returns>the original Item</returns>
-        public static IEnumerable<T> ThrowIfAny<T>(this IEnumerable<T> List, Predicate<T> Predicate, Func<Exception> Exception)
+        public static IEnumerable<T> ThrowIfAny<T>(this IEnumerable<T> list, Func<T, bool> predicate, Func<Exception> exception)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
-            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
-            foreach (T Item in List)
-            {
-                if (Predicate(Item))
-                    throw Exception();
-            }
-            return List;
+            if (list == null)
+                return new List<T>();
+            if (predicate == null || exception == null)
+                return list;
+            if (list.Any(predicate))
+                throw exception();
+            return list;
         }
 
         /// <summary>
         /// Throws the specified exception if the predicate is true for any items
         /// </summary>
         /// <typeparam name="T">Item type</typeparam>
-        /// <param name="List">The item</param>
-        /// <param name="Predicate">Predicate to check</param>
-        /// <param name="Exception">Exception to throw if predicate is true</param>
+        /// <param name="list">The item</param>
+        /// <param name="predicate">Predicate to check</param>
+        /// <param name="exception">Exception to throw if predicate is true</param>
         /// <returns>the original Item</returns>
-        public static IEnumerable<T> ThrowIfAny<T>(this IEnumerable<T> List, Predicate<T> Predicate, Exception Exception)
+        public static IEnumerable<T> ThrowIfAny<T>(this IEnumerable<T> list, Func<T, bool> predicate, Exception exception)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
-            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
-            foreach (T Item in List)
-            {
-                if (Predicate(Item))
-                    throw Exception;
-            }
-            return List;
-        }
-
-        /// <summary>
-        /// Converts the IEnumerable to a DataTable
-        /// </summary>
-        /// <typeparam name="T">Type of the objects in the IEnumerable</typeparam>
-        /// <param name="List">List to convert</param>
-        /// <param name="Columns">Column names (if empty, uses property names)</param>
-        /// <returns>The list as a DataTable</returns>
-        public static DataTable To<T>(this IEnumerable<T> List, params string[] Columns)
-        {
-            var ReturnValue = new DataTable();
-            ReturnValue.Locale = CultureInfo.CurrentCulture;
-            if (List == null || List.Count() == 0)
-                return ReturnValue;
-            PropertyInfo[] Properties = typeof(T).GetProperties();
-            if (Columns.Length == 0)
-                Columns = Properties.ToArray(x => x.Name);
-            Columns.ForEach(x => ReturnValue.Columns.Add(x, Properties.FirstOrDefault(z => z.Name == x).PropertyType));
-            object[] Row = new object[Columns.Length];
-            foreach (T Item in List)
-            {
-                for (int x = 0; x < Row.Length; ++x)
-                {
-                    Row[x] = Properties.FirstOrDefault(z => z.Name == Columns[x]).GetValue(Item, new object[] { });
-                }
-                ReturnValue.Rows.Add(Row);
-            }
-            return ReturnValue;
-        }
-
-        /// <summary>
-        /// Converts the IEnumerable to a DataTable
-        /// </summary>
-        /// <param name="List">List to convert</param>
-        /// <param name="Columns">Column names (if empty, uses property names)</param>
-        /// <returns>The list as a DataTable</returns>
-        public static DataTable To(this IEnumerable List, params string[] Columns)
-        {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            var ReturnValue = new DataTable();
-            ReturnValue.Locale = CultureInfo.CurrentCulture;
-            int Count = 0;
-            var i = List.GetEnumerator();
-            while (i.MoveNext())
-                ++Count;
-            if (List == null || Count == 0)
-                return ReturnValue;
-            IEnumerator ListEnumerator = List.GetEnumerator();
-            ListEnumerator.MoveNext();
-            PropertyInfo[] Properties = ListEnumerator.Current.GetType().GetProperties();
-            if (Columns.Length == 0)
-                Columns = Properties.ToArray(x => x.Name);
-            Columns.ForEach(x => ReturnValue.Columns.Add(x, Properties.FirstOrDefault(z => z.Name == x).PropertyType));
-            object[] Row = new object[Columns.Length];
-            foreach (object Item in List)
-            {
-                for (int x = 0; x < Row.Length; ++x)
-                {
-                    Row[x] = Properties.FirstOrDefault(z => z.Name == Columns[x]).GetValue(Item, new object[] { });
-                }
-                ReturnValue.Rows.Add(Row);
-            }
-            return ReturnValue;
+            if (list == null)
+                return new List<T>();
+            if (predicate == null || exception == null)
+                return list;
+            if (list.Any(predicate))
+                throw exception;
+            return list;
         }
 
         /// <summary>
@@ -678,14 +621,14 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="Source">Source type</typeparam>
         /// <typeparam name="Target">Target type</typeparam>
-        /// <param name="List">List to convert</param>
-        /// <param name="ConvertingFunction">Function used to convert each item</param>
+        /// <param name="list">List to convert</param>
+        /// <param name="convertingFunction">Function used to convert each item</param>
         /// <returns>The array containing the items from the list</returns>
-        public static Target[] ToArray<Source, Target>(this IEnumerable<Source> List, Func<Source, Target> ConvertingFunction)
+        public static Target[] ToArray<Source, Target>(this IEnumerable<Source> list, Func<Source, Target> convertingFunction)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(ConvertingFunction != null, "ConvertingFunction");
-            return List.ForEach(ConvertingFunction).ToArray();
+            if (list == null || convertingFunction == null)
+                return new Target[0];
+            return list.ForEach(convertingFunction).ToArray();
         }
 
         /// <summary>
@@ -693,52 +636,38 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="Source">Source type</typeparam>
         /// <typeparam name="Target">Target type</typeparam>
-        /// <param name="List">IEnumerable to convert</param>
-        /// <param name="ConvertingFunction">Function used to convert each item</param>
+        /// <param name="list">IEnumerable to convert</param>
+        /// <param name="convertingFunction">Function used to convert each item</param>
         /// <returns>The list containing the items from the IEnumerable</returns>
-        public static List<Target> ToList<Source, Target>(this IEnumerable<Source> List, Func<Source, Target> ConvertingFunction)
+        public static List<Target> ToList<Source, Target>(this IEnumerable<Source> list, Func<Source, Target> convertingFunction)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(ConvertingFunction != null, "ConvertingFunction");
-            return List.ForEach(ConvertingFunction).ToList();
-        }
-
-        /// <summary>
-        /// Converts the IEnumerable to an observable list
-        /// </summary>
-        /// <typeparam name="Source">The type of the source.</typeparam>
-        /// <typeparam name="Target">The type of the target.</typeparam>
-        /// <param name="List">The list to convert</param>
-        /// <param name="ConvertingFunction">The converting function.</param>
-        /// <returns>The observable list version of the original list</returns>
-        public static ObservableList<Target> ToObservableList<Source, Target>(this IEnumerable<Source> List, Func<Source, Target> ConvertingFunction)
-        {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(ConvertingFunction != null, "ConvertingFunction");
-            return new ObservableList<Target>(List.ForEach(ConvertingFunction));
+            if (list == null || convertingFunction == null)
+                return new List<Target>();
+            return list.ForEach(convertingFunction).ToList();
         }
 
         /// <summary>
         /// Converts the list to a string where each item is seperated by the Seperator
         /// </summary>
         /// <typeparam name="T">Item type</typeparam>
-        /// <param name="List">List to convert</param>
-        /// <param name="ItemOutput">
+        /// <param name="list">List to convert</param>
+        /// <param name="itemOutput">
         /// Used to convert the item to a string (defaults to calling ToString)
         /// </param>
-        /// <param name="Seperator">Seperator to use between items (defaults to ,)</param>
+        /// <param name="seperator">Seperator to use between items (defaults to ,)</param>
         /// <returns>The string version of the list</returns>
-        public static string ToString<T>(this IEnumerable<T> List, Func<T, string> ItemOutput = null, string Seperator = ",")
+        public static string ToString<T>(this IEnumerable<T> list, Func<T, string> itemOutput = null, string seperator = ",")
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Seperator = Seperator.Check("");
-            ItemOutput = ItemOutput.Check(x => x.ToString());
+            if (list == null)
+                return "";
+            seperator = seperator ?? "";
+            itemOutput = itemOutput ?? (x => x.ToString());
             var Builder = new StringBuilder();
             string TempSeperator = "";
-            List.ForEach(x =>
+            list.ForEach(x =>
             {
-                Builder.Append(TempSeperator).Append(ItemOutput(x));
-                TempSeperator = Seperator;
+                Builder.Append(TempSeperator).Append(itemOutput(x));
+                TempSeperator = seperator;
             });
             return Builder.ToString();
         }
@@ -754,11 +683,9 @@ namespace Utilities.DataTypes
         {
             if (collection == null)
                 yield break;
-
             foreach (T item in collection)
             {
                 yield return item;
-
                 foreach (T inner in Transverse(property(item), property))
                     yield return inner;
             }
@@ -775,9 +702,7 @@ namespace Utilities.DataTypes
         {
             if (item == null)
                 yield break;
-
             yield return item;
-
             foreach (T inner in Transverse(property(item), property))
                 yield return inner;
         }

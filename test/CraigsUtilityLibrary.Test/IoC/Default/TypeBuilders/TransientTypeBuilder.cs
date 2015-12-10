@@ -26,17 +26,6 @@ namespace Utilities.Test.IoC.Default.TypeBuilders
             }
         }
 
-        [Fact]
-        public void ImplementationNotSupplied()
-        {
-            using (var Temp = new Utilities.IoC.Default.TypeBuilders.TransientTypeBuilder<int>(null))
-            {
-                Assert.NotNull(Temp);
-                Assert.Equal(typeof(int), Temp.ReturnType);
-                Assert.Equal(0, Temp.Create(null));
-            }
-        }
-
         [Theory]
         [InlineData(1)]
         [InlineData(12)]
@@ -49,6 +38,17 @@ namespace Utilities.Test.IoC.Default.TypeBuilders
                 Assert.NotNull(Temp);
                 Assert.Equal(typeof(int), Temp.ReturnType);
                 Assert.Equal(value, Temp.Create(null));
+            }
+        }
+
+        [Fact]
+        public void ImplementationNotSupplied()
+        {
+            using (var Temp = new Utilities.IoC.Default.TypeBuilders.TransientTypeBuilder<int>(null))
+            {
+                Assert.NotNull(Temp);
+                Assert.Equal(typeof(int), Temp.ReturnType);
+                Assert.Equal(0, Temp.Create(null));
             }
         }
 

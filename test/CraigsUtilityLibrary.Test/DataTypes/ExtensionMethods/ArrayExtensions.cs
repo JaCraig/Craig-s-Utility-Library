@@ -28,18 +28,26 @@ namespace Utilities.Tests.DataTypes.ExtensionMethods
     public class ArrayExtensions
     {
         [Fact]
-        public void ClearTest()
+        public void ClearGenericTest()
         {
-            Array TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
+            int[] TestObject = { 1, 2, 3, 4, 5, 6 };
             TestObject = TestObject.Clear();
             foreach (int Item in TestObject)
                 Assert.Equal(0, Item);
         }
 
         [Fact]
-        public void ClearGenericTest()
+        public void ClearNullTest()
         {
-            int[] TestObject = { 1, 2, 3, 4, 5, 6 };
+            int[] TestObject = null;
+            TestObject = TestObject.Clear();
+            Assert.Null(TestObject);
+        }
+
+        [Fact]
+        public void ClearTest()
+        {
+            Array TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
             TestObject = TestObject.Clear();
             foreach (int Item in TestObject)
                 Assert.Equal(0, Item);
@@ -54,6 +62,26 @@ namespace Utilities.Tests.DataTypes.ExtensionMethods
             TestObject1 = TestObject1.Concat(TestObject2, TestObject3);
             for (int x = 0; x < 8; ++x)
                 Assert.Equal(x + 1, TestObject1[x]);
+        }
+
+        [Fact]
+        public void ConcatNull2Test()
+        {
+            int[] TestObject1 = { 1, 2, 3 };
+            TestObject1 = TestObject1.Concat(null);
+            for (int x = 0; x < 2; ++x)
+                Assert.Equal(x + 1, TestObject1[x]);
+        }
+
+        [Fact]
+        public void ConcatNullTest()
+        {
+            int[] TestObject1 = null;
+            int[] TestObject2 = { 4, 5, 6 };
+            int[] TestObject3 = { 7, 8, 9 };
+            TestObject1 = TestObject1.Concat(TestObject2, TestObject3);
+            for (int x = 3; x < 8; ++x)
+                Assert.Equal(x + 1, TestObject1[x - 3]);
         }
     }
 }

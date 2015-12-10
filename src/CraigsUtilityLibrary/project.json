@@ -19,9 +19,10 @@
                 "System.Collections": "4.0.11-rc2-23512",
                 "System.Linq": "4.0.1-beta-23516",
                 "System.Runtime": "4.0.21-rc2-23512",
-                "System.Threading": "4.0.11-beta-23516",
                 "System.Collections.Concurrent": "4.0.11-beta-23516",
-                "System.IO.FileSystem": "4.0.1-beta-23516"
+                "System.IO.FileSystem": "4.0.1-beta-23516",
+                "System.Threading": "4.0.11-beta-23516",
+                "System.Threading.Tasks.Parallel": "4.0.1-beta-23516"
             }
         }
     },

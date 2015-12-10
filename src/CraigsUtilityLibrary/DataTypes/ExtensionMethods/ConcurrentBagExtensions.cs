@@ -44,8 +44,7 @@ namespace Utilities.DataTypes
         /// <returns>The collection with the added items</returns>
         public static ConcurrentBag<T> Add<T>(this ConcurrentBag<T> collection, IEnumerable<T> items)
         {
-            if (collection == null)
-                return null;
+            collection = collection ?? new ConcurrentBag<T>();
             if (items == null)
                 return collection;
             Parallel.ForEach(items, collection.Add);
@@ -74,7 +73,7 @@ namespace Utilities.DataTypes
         public static T AddAndReturn<T>(this ConcurrentBag<T> collection, T item)
         {
             if (collection == null)
-                return item;
+                throw new ArgumentNullException(nameof(collection));
             collection.Add(item);
             return item;
         }
@@ -128,10 +127,10 @@ namespace Utilities.DataTypes
         /// <param name="collection">Collection to add to</param>
         /// <param name="items">Items to add to the collection</param>
         /// <returns>True if it is added, false otherwise</returns>
-        public static bool AddIfUnique<T>(this ConcurrentBag<T> collection,IEqualityComparer<T> comparer, params T[] items)
+        public static bool AddIfUnique<T>(this ConcurrentBag<T> collection, IEqualityComparer<T> comparer, params T[] items)
         {
             comparer = comparer ?? new GenericEqualityComparer<T>();
-            return collection.AddIf(x => !collection.Contains(x,comparer), items);
+            return collection.AddIf(x => !collection.Contains(x, comparer), items);
         }
 
         /// <summary>
@@ -159,6 +158,8 @@ namespace Utilities.DataTypes
         /// <returns>True if it is added, false otherwise</returns>
         public static bool AddIfUnique<T>(this ConcurrentBag<T> collection, Func<T, T, bool> predicate, params T[] items)
         {
+            if (predicate == null)
+                return false;
             return collection.AddIf(x => !collection.Any(y => predicate(x, y)), items);
         }
 
@@ -201,6 +202,8 @@ namespace Utilities.DataTypes
         /// <returns>True if it is added, false otherwise</returns>
         public static bool AddIfUnique<T>(this ConcurrentBag<T> collection, Func<T, T, bool> predicate, IEnumerable<T> items)
         {
+            if (predicate == null)
+                return false;
             return collection.AddIf(x => !collection.Any(y => predicate(x, y)), items);
         }
 
@@ -236,7 +239,7 @@ namespace Utilities.DataTypes
         public static ConcurrentBag<T> Remove<T>(this ConcurrentBag<T> collection, Func<T, bool> predicate)
         {
             if (collection == null)
-                return null;
+                return new ConcurrentBag<T>();
             if (predicate == null)
                 return collection;
             return new ConcurrentBag<T>(collection.Where(x => !predicate(x)));
@@ -253,11 +256,11 @@ namespace Utilities.DataTypes
         public static ConcurrentBag<T> Remove<T>(this ConcurrentBag<T> collection, IEnumerable<T> items, IEqualityComparer<T> comparer = null)
         {
             if (collection == null)
-                return null;
+                return new ConcurrentBag<T>();
             if (items == null)
                 return collection;
             comparer = comparer ?? new GenericEqualityComparer<T>();
-            return new ConcurrentBag<T>(collection.Where(x => !items.Contains(x, comparer)));
+            return collection.Remove<T>(x => items.Contains(x, comparer));
         }
     }
 }

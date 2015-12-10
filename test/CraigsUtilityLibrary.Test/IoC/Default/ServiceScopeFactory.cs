@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using Xunit;
 
 namespace Utilities.Test.IoC.Default
 {
     public class ServiceScopeFactory
     {
-        [Fact]
-        public void Creation()
-        {
-            var TestObject = new Utilities.IoC.Default.ServiceScopeFactory(GetBootstrapper());
-            Assert.NotNull(TestObject);
-        }
-
         [Fact]
         public void CreateScope()
         {
@@ -24,6 +13,13 @@ namespace Utilities.Test.IoC.Default
             var Scope = TestObject.CreateScope();
             Assert.NotNull(Scope);
             Assert.NotSame(Scope, Bootstrapper);
+        }
+
+        [Fact]
+        public void Creation()
+        {
+            var TestObject = new Utilities.IoC.Default.ServiceScopeFactory(GetBootstrapper());
+            Assert.NotNull(TestObject);
         }
 
         private Utilities.IoC.Default.DefaultBootstrapper GetBootstrapper()

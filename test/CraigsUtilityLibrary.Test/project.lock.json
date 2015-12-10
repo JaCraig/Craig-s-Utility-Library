@@ -333,7 +333,8 @@
           "System.IO.FileSystem": "4.0.1-beta-23516",
           "System.Linq": "4.0.1-beta-23516",
           "System.Runtime": "4.0.21-rc2-23512",
-          "System.Threading": "4.0.11-beta-23516"
+          "System.Threading": "4.0.11-beta-23516",
+          "System.Threading.Tasks.Parallel": "4.0.1-beta-23516"
         }
       },
       "Microsoft.CSharp/4.0.1-beta-23516": {
@@ -1060,6 +1061,25 @@
         },
         "runtime": {
           "lib/DNXCore50/System.Threading.Tasks.dll": {}
+        }
+      },
+      "System.Threading.Tasks.Parallel/4.0.1-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections.Concurrent": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Diagnostics.Tracing": "4.0.20",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Threading.Tasks": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet5.2/System.Threading.Tasks.Parallel.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/System.Threading.Tasks.Parallel.dll": {}
         }
       },
       "System.Threading.Thread/4.0.0-beta-23516": {
@@ -1959,7 +1979,8 @@
           "System.IO.FileSystem": "4.0.1-beta-23516",
           "System.Linq": "4.0.1-beta-23516",
           "System.Runtime": "4.0.21-rc2-23512",
-          "System.Threading": "4.0.11-beta-23516"
+          "System.Threading": "4.0.11-beta-23516",
+          "System.Threading.Tasks.Parallel": "4.0.1-beta-23516"
         }
       },
       "Microsoft.CSharp/4.0.1-beta-23516": {
@@ -3002,6 +3023,25 @@
           "lib/DNXCore50/System.Threading.Tasks.dll": {}
         }
       },
+      "System.Threading.Tasks.Parallel/4.0.1-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections.Concurrent": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Diagnostics.Tracing": "4.0.20",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Threading.Tasks": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet5.2/System.Threading.Tasks.Parallel.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/System.Threading.Tasks.Parallel.dll": {}
+        }
+      },
       "System.Threading.Thread/4.0.0-beta-23516": {
         "type": "package",
         "dependencies": {
@@ -3251,7 +3291,8 @@
           "System.IO.FileSystem": "4.0.1-beta-23516",
           "System.Linq": "4.0.1-beta-23516",
           "System.Runtime": "4.0.21-rc2-23512",
-          "System.Threading": "4.0.11-beta-23516"
+          "System.Threading": "4.0.11-beta-23516",
+          "System.Threading.Tasks.Parallel": "4.0.1-beta-23516"
         }
       },
       "Microsoft.CSharp/4.0.1-beta-23516": {
@@ -4292,6 +4333,25 @@
         },
         "runtime": {
           "lib/DNXCore50/System.Threading.Tasks.dll": {}
+        }
+      },
+      "System.Threading.Tasks.Parallel/4.0.1-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections.Concurrent": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Diagnostics.Tracing": "4.0.20",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Threading.Tasks": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet5.2/System.Threading.Tasks.Parallel.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/System.Threading.Tasks.Parallel.dll": {}
         }
       },
       "System.Threading.Thread/4.0.0-beta-23516": {
@@ -6886,6 +6946,46 @@
         "System.Threading.Tasks.4.0.11-beta-23516.nupkg",
         "System.Threading.Tasks.4.0.11-beta-23516.nupkg.sha512",
         "System.Threading.Tasks.nuspec"
+      ]
+    },
+    "System.Threading.Tasks.Parallel/4.0.1-beta-23516": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "vAd3w/zDsTRwN/44iYBupyuRt4dU5doWKybVPUhvTVhFgh86sBlk6AlAdY7XjraZxQh16otQPNg6+CxS5u4tOQ==",
+      "files": [
+        "lib/dotnet5.4/System.Threading.Tasks.Parallel.dll",
+        "lib/net45/_._",
+        "lib/netcore50/System.Threading.Tasks.Parallel.dll",
+        "lib/win8/_._",
+        "lib/wpa81/_._",
+        "ref/dotnet5.2/de/System.Threading.Tasks.Parallel.xml",
+        "ref/dotnet5.2/es/System.Threading.Tasks.Parallel.xml",
+        "ref/dotnet5.2/fr/System.Threading.Tasks.Parallel.xml",
+        "ref/dotnet5.2/it/System.Threading.Tasks.Parallel.xml",
+        "ref/dotnet5.2/ja/System.Threading.Tasks.Parallel.xml",
+        "ref/dotnet5.2/ko/System.Threading.Tasks.Parallel.xml",
+        "ref/dotnet5.2/ru/System.Threading.Tasks.Parallel.xml",
+        "ref/dotnet5.2/System.Threading.Tasks.Parallel.dll",
+        "ref/dotnet5.2/System.Threading.Tasks.Parallel.xml",
+        "ref/dotnet5.2/zh-hans/System.Threading.Tasks.Parallel.xml",
+        "ref/dotnet5.2/zh-hant/System.Threading.Tasks.Parallel.xml",
+        "ref/net45/_._",
+        "ref/netcore50/de/System.Threading.Tasks.Parallel.xml",
+        "ref/netcore50/es/System.Threading.Tasks.Parallel.xml",
+        "ref/netcore50/fr/System.Threading.Tasks.Parallel.xml",
+        "ref/netcore50/it/System.Threading.Tasks.Parallel.xml",
+        "ref/netcore50/ja/System.Threading.Tasks.Parallel.xml",
+        "ref/netcore50/ko/System.Threading.Tasks.Parallel.xml",
+        "ref/netcore50/ru/System.Threading.Tasks.Parallel.xml",
+        "ref/netcore50/System.Threading.Tasks.Parallel.dll",
+        "ref/netcore50/System.Threading.Tasks.Parallel.xml",
+        "ref/netcore50/zh-hans/System.Threading.Tasks.Parallel.xml",
+        "ref/netcore50/zh-hant/System.Threading.Tasks.Parallel.xml",
+        "ref/win8/_._",
+        "ref/wpa81/_._",
+        "System.Threading.Tasks.Parallel.4.0.1-beta-23516.nupkg",
+        "System.Threading.Tasks.Parallel.4.0.1-beta-23516.nupkg.sha512",
+        "System.Threading.Tasks.Parallel.nuspec"
       ]
     },
     "System.Threading.Thread/4.0.0-beta-23516": {

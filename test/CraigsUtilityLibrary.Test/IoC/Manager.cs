@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using Utilities.IoC.Default;
 using Utilities.IoC.Interfaces;
 using Xunit;
@@ -33,6 +32,7 @@ namespace Utilities.Test.IoC
         public class TestModule : IModule
         {
             public int Order => 1;
+
             public void Load(IBootstrapper bootstrapper)
             {
             }

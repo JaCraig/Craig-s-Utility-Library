@@ -18,58 +18,16 @@ namespace Utilities.Test.IoC.Default
         }
 
         [Fact]
-        public void GetService()
+        public void CascadeConstructor()
         {
             var Temp = GetBootstrapper();
             Temp.RegisterAll<ITestClass>();
             Temp.Register<TestClass3>();
             Temp.Register<TestClass4>();
-            TestClass4 Object = Temp.GetService(typeof(TestClass4)) as TestClass4;
+            TestClass4 Object = Temp.Resolve<TestClass4>();
             Assert.NotNull(Object);
             Assert.NotNull(Object.Class);
             Assert.Equal(2, Object.Class.Classes.Count());
-        }
-
-        [Fact]
-        public void ResolveType()
-        {
-            var Temp = GetBootstrapper();
-            Temp.RegisterAll<ITestClass>();
-            Temp.Register<TestClass3>();
-            Temp.Register<TestClass4>();
-            TestClass4 Object = Temp.Resolve(typeof(TestClass4), new TestClass4()) as TestClass4;
-            Assert.NotNull(Object);
-            Assert.NotNull(Object.Class);
-            Assert.Equal(2, Object.Class.Classes.Count());
-        }
-
-        [Fact]
-        public void FailedResolve()
-        {
-            var Temp = GetBootstrapper();
-            Temp.RegisterAll<ITestClass>();
-            Temp.Register<TestClass4>();
-            TestClass4 Object = Temp.Resolve(typeof(TestClass4), new TestClass4()) as TestClass4;
-            Assert.NotNull(Object);
-            Assert.Null(Object.Class);
-        }
-
-        [Fact]
-        public void CreateMultipleSameScope()
-        {
-            var Temp = GetBootstrapper();
-            Temp.RegisterAll<ITestClass>();
-            Temp.Register<TestClass3>(ServiceLifetime.Scoped);
-            Temp.Register<TestClass4>(ServiceLifetime.Scoped);
-            using (var NewScope = Temp.CreateScope())
-            {
-                TestClass4 Object = NewScope.ServiceProvider.GetService(typeof(TestClass4)) as TestClass4;
-                Assert.NotNull(Object);
-                Assert.NotNull(Object.Class);
-                Assert.Equal(2, Object.Class.Classes.Count());
-                TestClass4 Object2 = NewScope.ServiceProvider.GetService(typeof(TestClass4)) as TestClass4;
-                Assert.Same(Object, Object2);
-            }
         }
 
         [Fact]
@@ -106,16 +64,21 @@ namespace Utilities.Test.IoC.Default
         }
 
         [Fact]
-        public void CascadeConstructor()
+        public void CreateMultipleSameScope()
         {
             var Temp = GetBootstrapper();
             Temp.RegisterAll<ITestClass>();
-            Temp.Register<TestClass3>();
-            Temp.Register<TestClass4>();
-            TestClass4 Object = Temp.Resolve<TestClass4>();
-            Assert.NotNull(Object);
-            Assert.NotNull(Object.Class);
-            Assert.Equal(2, Object.Class.Classes.Count());
+            Temp.Register<TestClass3>(ServiceLifetime.Scoped);
+            Temp.Register<TestClass4>(ServiceLifetime.Scoped);
+            using (var NewScope = Temp.CreateScope())
+            {
+                TestClass4 Object = NewScope.ServiceProvider.GetService(typeof(TestClass4)) as TestClass4;
+                Assert.NotNull(Object);
+                Assert.NotNull(Object.Class);
+                Assert.Equal(2, Object.Class.Classes.Count());
+                TestClass4 Object2 = NewScope.ServiceProvider.GetService(typeof(TestClass4)) as TestClass4;
+                Assert.Same(Object, Object2);
+            }
         }
 
         [Fact]
@@ -123,6 +86,30 @@ namespace Utilities.Test.IoC.Default
         {
             var Temp = GetBootstrapper();
             Assert.Equal("Default bootstrapper", Temp.Name);
+        }
+
+        [Fact]
+        public void FailedResolve()
+        {
+            var Temp = GetBootstrapper();
+            Temp.RegisterAll<ITestClass>();
+            Temp.Register<TestClass4>();
+            TestClass4 Object = Temp.Resolve(typeof(TestClass4), new TestClass4()) as TestClass4;
+            Assert.NotNull(Object);
+            Assert.Null(Object.Class);
+        }
+
+        [Fact]
+        public void GetService()
+        {
+            var Temp = GetBootstrapper();
+            Temp.RegisterAll<ITestClass>();
+            Temp.Register<TestClass3>();
+            Temp.Register<TestClass4>();
+            TestClass4 Object = Temp.GetService(typeof(TestClass4)) as TestClass4;
+            Assert.NotNull(Object);
+            Assert.NotNull(Object.Class);
+            Assert.Equal(2, Object.Class.Classes.Count());
         }
 
         [Fact]
@@ -188,6 +175,19 @@ namespace Utilities.Test.IoC.Default
             {
                 Assert.Contains(Object.A, new int[] { 12, 13, 14 });
             }
+        }
+
+        [Fact]
+        public void ResolveType()
+        {
+            var Temp = GetBootstrapper();
+            Temp.RegisterAll<ITestClass>();
+            Temp.Register<TestClass3>();
+            Temp.Register<TestClass4>();
+            TestClass4 Object = Temp.Resolve(typeof(TestClass4), new TestClass4()) as TestClass4;
+            Assert.NotNull(Object);
+            Assert.NotNull(Object.Class);
+            Assert.Equal(2, Object.Class.Classes.Count());
         }
 
         private Utilities.IoC.Default.DefaultBootstrapper GetBootstrapper()
