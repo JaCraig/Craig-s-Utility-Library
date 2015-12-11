@@ -36,7 +36,7 @@ namespace Utilities.Tests.DataTypes.Comparison
         }
 
         [Fact]
-        public void GetHashCode()
+        public void GetHashCodeTest()
         {
             var Comparer = new SimpleEqualityComparer<string>((x, y) => string.Equals(x, y), x => x.GetHashCode());
             Assert.Equal("A".GetHashCode(), Comparer.GetHashCode("A"));
