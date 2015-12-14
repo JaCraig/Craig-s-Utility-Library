@@ -78,7 +78,7 @@ namespace Utilities.Tests.DataTypes.ExtensionMethods
         [Fact]
         public void AddIfParamsNull2()
         {
-            ConcurrentBag<int> TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
+            var TestObject = new ConcurrentBag<int>(new int[] { 1, 2, 3, 4, 5, 6 });
             Assert.True(TestObject.AddIf(x => x > 1, new int[] { }));
             Assert.True(TestObject.AddIf(x => x > 1, null));
         }

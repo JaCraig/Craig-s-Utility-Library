@@ -36,18 +36,18 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="TKey">The type of the key.</typeparam>
         /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="Dictionary">The dictionary.</param>
-        /// <param name="Target">The target dictionary.</param>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="target">The target dictionary.</param>
         /// <returns>
         /// This
         /// </returns>
-        public static ConcurrentDictionary<TKey, TValue> CopyTo<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> Dictionary, ConcurrentDictionary<TKey, TValue> Target)
+        public static ConcurrentDictionary<TKey, TValue> CopyTo<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dictionary, ConcurrentDictionary<TKey, TValue> target)
         {
-            Dictionary = Dictionary ?? new ConcurrentDictionary<TKey, TValue>();
-            if (Target == null)
-                return Dictionary;
-            Parallel.ForEach(Dictionary, x => Target.SetValue(x.Key, x.Value));
-            return Dictionary;
+            dictionary = dictionary ?? new ConcurrentDictionary<TKey, TValue>();
+            if (target == null)
+                return dictionary;
+            Parallel.ForEach(dictionary, x => target.SetValue(x.Key, x.Value));
+            return dictionary;
         }
 
         /// <summary>
@@ -55,18 +55,18 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="TKey">Key type</typeparam>
         /// <typeparam name="TValue">Value type</typeparam>
-        /// <param name="Dictionary">Dictionary to get the value from</param>
-        /// <param name="Key">Key to look for</param>
-        /// <param name="Default">Default value if the key is not found</param>
+        /// <param name="dictionary">Dictionary to get the value from</param>
+        /// <param name="key">Key to look for</param>
+        /// <param name="default">Default value if the key is not found</param>
         /// <returns>
         /// The value associated with the key or the default value if the key is not found
         /// </returns>
-        public static TValue GetValue<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> Dictionary, TKey Key, TValue Default = default(TValue))
+        public static TValue GetValue<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default(TValue))
         {
-            if (Dictionary == null)
-                return Default;
-            TValue ReturnValue = Default;
-            return Dictionary.TryGetValue(Key, out ReturnValue) ? ReturnValue : Default;
+            if (dictionary == null)
+                return defaultValue;
+            TValue ReturnValue = defaultValue;
+            return dictionary.TryGetValue(key, out ReturnValue) ? ReturnValue : defaultValue;
         }
 
         /// <summary>
@@ -74,16 +74,16 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="TKey">Key type</typeparam>
         /// <typeparam name="TValue">Value type</typeparam>
-        /// <param name="Dictionary">Dictionary to set the value in</param>
-        /// <param name="Key">Key to look for</param>
-        /// <param name="Value">Value to add</param>
+        /// <param name="dictionary">Dictionary to set the value in</param>
+        /// <param name="key">Key to look for</param>
+        /// <param name="value">Value to add</param>
         /// <returns>The dictionary</returns>
-        public static ConcurrentDictionary<TKey, TValue> SetValue<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> Dictionary, TKey Key, TValue Value)
+        public static ConcurrentDictionary<TKey, TValue> SetValue<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dictionary, TKey key, TValue value)
         {
-            if (Dictionary == null)
+            if (dictionary == null)
                 return new ConcurrentDictionary<TKey, TValue>();
-            Dictionary.AddOrUpdate(Key, Value, (x, y) => Value);
-            return Dictionary;
+            dictionary.AddOrUpdate(key, value, (x, y) => value);
+            return dictionary;
         }
     }
 }

@@ -21,7 +21,6 @@ THE SOFTWARE.*/
 
 using System;
 using System.ComponentModel;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 
 namespace Utilities.DataTypes
@@ -98,228 +97,228 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Adds the number of weeks to the date
         /// </summary>
-        /// <param name="Date">Date input</param>
-        /// <param name="NumberOfWeeks">Number of weeks to add</param>
+        /// <param name="date">Date input</param>
+        /// <param name="numberOfWeeks">Number of weeks to add</param>
         /// <returns>The date after the number of weeks are added</returns>
-        public static DateTime AddWeeks(this DateTime Date, int NumberOfWeeks)
+        public static DateTime AddWeeks(this DateTime date, int numberOfWeeks)
         {
-            return Date.AddDays(NumberOfWeeks * 7);
+            return date.AddDays(numberOfWeeks * 7);
         }
 
         /// <summary>
         /// Calculates age based on date supplied
         /// </summary>
-        /// <param name="Date">Birth date</param>
-        /// <param name="CalculateFrom">Date to calculate from</param>
+        /// <param name="date">Birth date</param>
+        /// <param name="calculateFrom">Date to calculate from</param>
         /// <returns>The total age in years</returns>
-        public static int Age(this DateTime Date, DateTime CalculateFrom = default(DateTime))
+        public static int Age(this DateTime date, DateTime calculateFrom = default(DateTime))
         {
-            if (CalculateFrom == default(DateTime))
-                CalculateFrom = DateTime.Now;
-            return (CalculateFrom - Date).Years();
+            if (calculateFrom == default(DateTime))
+                calculateFrom = DateTime.Now;
+            return (calculateFrom - date).Years();
         }
 
         /// <summary>
         /// Beginning of a specific time frame
         /// </summary>
-        /// <param name="Date">Date to base off of</param>
-        /// <param name="TimeFrame">Time frame to use</param>
-        /// <param name="Culture">
+        /// <param name="date">Date to base off of</param>
+        /// <param name="timeFrame">Time frame to use</param>
+        /// <param name="culture">
         /// Culture to use for calculating (defaults to the current culture)
         /// </param>
         /// <returns>The beginning of a specific time frame</returns>
-        public static DateTime BeginningOf(this DateTime Date, TimeFrame TimeFrame, CultureInfo Culture = null)
+        public static DateTime BeginningOf(this DateTime date, TimeFrame timeFrame, CultureInfo culture = null)
         {
-            Culture = Culture.Check(CultureInfo.CurrentCulture);
-            if (TimeFrame == TimeFrame.Day)
-                return Date.Date;
-            if (TimeFrame == TimeFrame.Week)
-                return Date.AddDays(Culture.DateTimeFormat.FirstDayOfWeek - Date.DayOfWeek).Date;
-            if (TimeFrame == TimeFrame.Month)
-                return new DateTime(Date.Year, Date.Month, 1);
-            if (TimeFrame == TimeFrame.Quarter)
-                return Date.BeginningOf(TimeFrame.Quarter, Date.BeginningOf(TimeFrame.Year, Culture), Culture);
-            return new DateTime(Date.Year, 1, 1);
+            culture = culture ?? CultureInfo.CurrentCulture;
+            if (timeFrame == TimeFrame.Day)
+                return date.Date;
+            if (timeFrame == TimeFrame.Week)
+                return date.AddDays(culture.DateTimeFormat.FirstDayOfWeek - date.DayOfWeek).Date;
+            if (timeFrame == TimeFrame.Month)
+                return new DateTime(date.Year, date.Month, 1);
+            if (timeFrame == TimeFrame.Quarter)
+                return date.BeginningOf(TimeFrame.Quarter, date.BeginningOf(TimeFrame.Year, culture), culture);
+            return new DateTime(date.Year, 1, 1);
         }
 
         /// <summary>
         /// Beginning of a specific time frame
         /// </summary>
-        /// <param name="Date">Date to base off of</param>
-        /// <param name="TimeFrame">Time frame to use</param>
-        /// <param name="Culture">
+        /// <param name="date">Date to base off of</param>
+        /// <param name="timeFrame">Time frame to use</param>
+        /// <param name="culture">
         /// Culture to use for calculating (defaults to the current culture)
         /// </param>
-        /// <param name="StartOfQuarter1">Start of the first quarter</param>
+        /// <param name="startOfQuarter1">Start of the first quarter</param>
         /// <returns>The beginning of a specific time frame</returns>
-        public static DateTime BeginningOf(this DateTime Date, TimeFrame TimeFrame, DateTime StartOfQuarter1, CultureInfo Culture = null)
+        public static DateTime BeginningOf(this DateTime date, TimeFrame timeFrame, DateTime startOfQuarter1, CultureInfo culture = null)
         {
-            if (TimeFrame != TimeFrame.Quarter)
-                return Date.BeginningOf(TimeFrame, Culture);
-            Culture = Culture.Check(CultureInfo.CurrentCulture);
-            if (Date.Between(StartOfQuarter1, StartOfQuarter1.AddMonths(3).AddDays(-1).EndOf(TimeFrame.Day, CultureInfo.CurrentCulture)))
-                return StartOfQuarter1.Date;
-            else if (Date.Between(StartOfQuarter1.AddMonths(3), StartOfQuarter1.AddMonths(6).AddDays(-1).EndOf(TimeFrame.Day, CultureInfo.CurrentCulture)))
-                return StartOfQuarter1.AddMonths(3).Date;
-            else if (Date.Between(StartOfQuarter1.AddMonths(6), StartOfQuarter1.AddMonths(9).AddDays(-1).EndOf(TimeFrame.Day, CultureInfo.CurrentCulture)))
-                return StartOfQuarter1.AddMonths(6).Date;
-            return StartOfQuarter1.AddMonths(9).Date;
+            if (timeFrame != TimeFrame.Quarter)
+                return date.BeginningOf(timeFrame, culture);
+            culture = culture ?? CultureInfo.CurrentCulture;
+            if (date.Between(startOfQuarter1, startOfQuarter1.AddMonths(3).AddDays(-1).EndOf(TimeFrame.Day, CultureInfo.CurrentCulture)))
+                return startOfQuarter1.Date;
+            else if (date.Between(startOfQuarter1.AddMonths(3), startOfQuarter1.AddMonths(6).AddDays(-1).EndOf(TimeFrame.Day, CultureInfo.CurrentCulture)))
+                return startOfQuarter1.AddMonths(3).Date;
+            else if (date.Between(startOfQuarter1.AddMonths(6), startOfQuarter1.AddMonths(9).AddDays(-1).EndOf(TimeFrame.Day, CultureInfo.CurrentCulture)))
+                return startOfQuarter1.AddMonths(6).Date;
+            return startOfQuarter1.AddMonths(9).Date;
         }
 
         /// <summary>
         /// Gets the number of days in the time frame specified based on the date
         /// </summary>
-        /// <param name="Date">Date</param>
-        /// <param name="TimeFrame">Time frame to calculate the number of days from</param>
-        /// <param name="Culture">
+        /// <param name="date">Date</param>
+        /// <param name="timeFrame">Time frame to calculate the number of days from</param>
+        /// <param name="culture">
         /// Culture to use for calculating (defaults to the current culture)
         /// </param>
         /// <returns>The number of days in the time frame</returns>
-        public static int DaysIn(this DateTime Date, TimeFrame TimeFrame, CultureInfo Culture = null)
+        public static int DaysIn(this DateTime date, TimeFrame timeFrame, CultureInfo culture = null)
         {
-            Culture = Culture.Check(CultureInfo.CurrentCulture);
-            if (TimeFrame == TimeFrame.Day)
+            culture = culture ?? CultureInfo.CurrentCulture;
+            if (timeFrame == TimeFrame.Day)
                 return 1;
-            if (TimeFrame == TimeFrame.Week)
+            if (timeFrame == TimeFrame.Week)
                 return 7;
-            if (TimeFrame == TimeFrame.Month)
-                return Culture.Calendar.GetDaysInMonth(Date.Year, Date.Month);
-            if (TimeFrame == TimeFrame.Quarter)
-                return Date.EndOf(TimeFrame.Quarter, Culture).DayOfYear - Date.BeginningOf(TimeFrame.Quarter, Culture).DayOfYear;
-            return Culture.Calendar.GetDaysInYear(Date.Year);
+            if (timeFrame == TimeFrame.Month)
+                return culture.Calendar.GetDaysInMonth(date.Year, date.Month);
+            if (timeFrame == TimeFrame.Quarter)
+                return date.EndOf(TimeFrame.Quarter, culture).DayOfYear - date.BeginningOf(TimeFrame.Quarter, culture).DayOfYear;
+            return culture.Calendar.GetDaysInYear(date.Year);
         }
 
         /// <summary>
         /// Gets the number of days in the time frame specified based on the date
         /// </summary>
-        /// <param name="Date">Date</param>
-        /// <param name="TimeFrame">Time frame to calculate the number of days from</param>
-        /// <param name="Culture">
+        /// <param name="date">Date</param>
+        /// <param name="timeFrame">Time frame to calculate the number of days from</param>
+        /// <param name="culture">
         /// Culture to use for calculating (defaults to the current culture)
         /// </param>
-        /// <param name="StartOfQuarter1">Start of the first quarter</param>
+        /// <param name="startOfQuarter1">Start of the first quarter</param>
         /// <returns>The number of days in the time frame</returns>
-        public static int DaysIn(this DateTime Date, TimeFrame TimeFrame, DateTime StartOfQuarter1, CultureInfo Culture = null)
+        public static int DaysIn(this DateTime date, TimeFrame timeFrame, DateTime startOfQuarter1, CultureInfo culture = null)
         {
-            if (TimeFrame != TimeFrame.Quarter)
-                Date.DaysIn(TimeFrame, Culture);
-            Culture = Culture.Check(CultureInfo.CurrentCulture);
-            return Date.EndOf(TimeFrame.Quarter, Culture).DayOfYear - StartOfQuarter1.DayOfYear;
+            if (timeFrame != TimeFrame.Quarter)
+                date.DaysIn(timeFrame, culture);
+            culture = culture ?? CultureInfo.CurrentCulture;
+            return date.EndOf(TimeFrame.Quarter, culture).DayOfYear - startOfQuarter1.DayOfYear;
         }
 
         /// <summary>
         /// Gets the number of days left in the time frame specified based on the date
         /// </summary>
-        /// <param name="Date">Date</param>
-        /// <param name="TimeFrame">Time frame to calculate the number of days left</param>
-        /// <param name="Culture">
+        /// <param name="date">Date</param>
+        /// <param name="timeFrame">Time frame to calculate the number of days left</param>
+        /// <param name="culture">
         /// Culture to use for calculating (defaults to the current culture)
         /// </param>
         /// <returns>The number of days left in the time frame</returns>
-        public static int DaysLeftIn(this DateTime Date, TimeFrame TimeFrame, CultureInfo Culture = null)
+        public static int DaysLeftIn(this DateTime date, TimeFrame timeFrame, CultureInfo culture = null)
         {
-            Culture = Culture.Check(CultureInfo.CurrentCulture);
-            if (TimeFrame == TimeFrame.Day)
+            culture = culture ?? CultureInfo.CurrentCulture;
+            if (timeFrame == TimeFrame.Day)
                 return 1;
-            if (TimeFrame == TimeFrame.Week)
-                return 7 - ((int)Date.DayOfWeek + 1);
-            if (TimeFrame == TimeFrame.Month)
-                return Date.DaysIn(TimeFrame.Month, Culture) - Date.Day;
-            if (TimeFrame == TimeFrame.Quarter)
-                return Date.DaysIn(TimeFrame.Quarter, Culture) - (Date.DayOfYear - Date.BeginningOf(TimeFrame.Quarter, Culture).DayOfYear);
-            return Date.DaysIn(TimeFrame.Year, Culture) - Date.DayOfYear;
+            if (timeFrame == TimeFrame.Week)
+                return 7 - ((int)date.DayOfWeek + 1);
+            if (timeFrame == TimeFrame.Month)
+                return date.DaysIn(TimeFrame.Month, culture) - date.Day;
+            if (timeFrame == TimeFrame.Quarter)
+                return date.DaysIn(TimeFrame.Quarter, culture) - (date.DayOfYear - date.BeginningOf(TimeFrame.Quarter, culture).DayOfYear);
+            return date.DaysIn(TimeFrame.Year, culture) - date.DayOfYear;
         }
 
         /// <summary>
         /// Gets the number of days left in the time frame specified based on the date
         /// </summary>
-        /// <param name="Date">Date</param>
-        /// <param name="TimeFrame">Time frame to calculate the number of days left</param>
-        /// <param name="Culture">
+        /// <param name="date">Date</param>
+        /// <param name="timeFrame">Time frame to calculate the number of days left</param>
+        /// <param name="culture">
         /// Culture to use for calculating (defaults to the current culture)
         /// </param>
-        /// <param name="StartOfQuarter1">Start of the first quarter</param>
+        /// <param name="startOfQuarter1">Start of the first quarter</param>
         /// <returns>The number of days left in the time frame</returns>
-        public static int DaysLeftIn(this DateTime Date, TimeFrame TimeFrame, DateTime StartOfQuarter1, CultureInfo Culture = null)
+        public static int DaysLeftIn(this DateTime date, TimeFrame timeFrame, DateTime startOfQuarter1, CultureInfo culture = null)
         {
-            if (TimeFrame != TimeFrame.Quarter)
-                return Date.DaysLeftIn(TimeFrame, Culture);
-            Culture = Culture.Check(CultureInfo.CurrentCulture);
-            return Date.DaysIn(TimeFrame.Quarter, StartOfQuarter1, Culture) - (Date.DayOfYear - StartOfQuarter1.DayOfYear);
+            if (timeFrame != TimeFrame.Quarter)
+                return date.DaysLeftIn(timeFrame, culture);
+            culture = culture ?? CultureInfo.CurrentCulture;
+            return date.DaysIn(TimeFrame.Quarter, startOfQuarter1, culture) - (date.DayOfYear - startOfQuarter1.DayOfYear);
         }
 
         /// <summary>
         /// End of a specific time frame
         /// </summary>
-        /// <param name="Date">Date to base off of</param>
-        /// <param name="TimeFrame">Time frame to use</param>
-        /// <param name="Culture">
+        /// <param name="date">Date to base off of</param>
+        /// <param name="timeFrame">Time frame to use</param>
+        /// <param name="culture">
         /// Culture to use for calculating (defaults to the current culture)
         /// </param>
         /// <returns>
         /// The end of a specific time frame (TimeFrame.Day is the only one that sets the time to
         /// 12: 59:59 PM, all else are the beginning of the day)
         /// </returns>
-        public static DateTime EndOf(this DateTime Date, TimeFrame TimeFrame, CultureInfo Culture = null)
+        public static DateTime EndOf(this DateTime date, TimeFrame timeFrame, CultureInfo culture = null)
         {
-            Culture = Culture.Check(CultureInfo.CurrentCulture);
-            if (TimeFrame == TimeFrame.Day)
-                return new DateTime(Date.Year, Date.Month, Date.Day, 23, 59, 59);
-            if (TimeFrame == TimeFrame.Week)
-                return Date.BeginningOf(TimeFrame.Week, Culture).AddDays(6);
-            if (TimeFrame == TimeFrame.Month)
-                return Date.AddMonths(1).BeginningOf(TimeFrame.Month, Culture).AddDays(-1).Date;
-            if (TimeFrame == TimeFrame.Quarter)
-                return Date.EndOf(TimeFrame.Quarter, Date.BeginningOf(TimeFrame.Year, Culture), Culture);
-            return new DateTime(Date.Year, 12, 31);
+            culture = culture ?? CultureInfo.CurrentCulture;
+            if (timeFrame == TimeFrame.Day)
+                return new DateTime(date.Year, date.Month, date.Day, 23, 59, 59);
+            if (timeFrame == TimeFrame.Week)
+                return date.BeginningOf(TimeFrame.Week, culture).AddDays(6);
+            if (timeFrame == TimeFrame.Month)
+                return date.AddMonths(1).BeginningOf(TimeFrame.Month, culture).AddDays(-1).Date;
+            if (timeFrame == TimeFrame.Quarter)
+                return date.EndOf(TimeFrame.Quarter, date.BeginningOf(TimeFrame.Year, culture), culture);
+            return new DateTime(date.Year, 12, 31);
         }
 
         /// <summary>
         /// End of a specific time frame
         /// </summary>
-        /// <param name="Date">Date to base off of</param>
-        /// <param name="TimeFrame">Time frame to use</param>
-        /// <param name="Culture">
+        /// <param name="date">Date to base off of</param>
+        /// <param name="timeFrame">Time frame to use</param>
+        /// <param name="culture">
         /// Culture to use for calculating (defaults to the current culture)
         /// </param>
-        /// <param name="StartOfQuarter1">Start of the first quarter</param>
+        /// <param name="startOfQuarter1">Start of the first quarter</param>
         /// <returns>
         /// The end of a specific time frame (TimeFrame.Day is the only one that sets the time to
         /// 12: 59:59 PM, all else are the beginning of the day)
         /// </returns>
-        public static DateTime EndOf(this DateTime Date, TimeFrame TimeFrame, DateTime StartOfQuarter1, CultureInfo Culture = null)
+        public static DateTime EndOf(this DateTime date, TimeFrame timeFrame, DateTime startOfQuarter1, CultureInfo culture = null)
         {
-            if (TimeFrame != TimeFrame.Quarter)
-                return Date.EndOf(TimeFrame, Culture);
-            Culture = Culture.Check(CultureInfo.CurrentCulture);
-            if (Date.Between(StartOfQuarter1, StartOfQuarter1.AddMonths(3).AddDays(-1).EndOf(TimeFrame.Day, Culture)))
-                return StartOfQuarter1.AddMonths(3).AddDays(-1).Date;
-            else if (Date.Between(StartOfQuarter1.AddMonths(3), StartOfQuarter1.AddMonths(6).AddDays(-1).EndOf(TimeFrame.Day, Culture)))
-                return StartOfQuarter1.AddMonths(6).AddDays(-1).Date;
-            else if (Date.Between(StartOfQuarter1.AddMonths(6), StartOfQuarter1.AddMonths(9).AddDays(-1).EndOf(TimeFrame.Day, Culture)))
-                return StartOfQuarter1.AddMonths(9).AddDays(-1).Date;
-            return StartOfQuarter1.AddYears(1).AddDays(-1).Date;
+            if (timeFrame != TimeFrame.Quarter)
+                return date.EndOf(timeFrame, culture);
+            culture = culture ?? CultureInfo.CurrentCulture;
+            if (date.Between(startOfQuarter1, startOfQuarter1.AddMonths(3).AddDays(-1).EndOf(TimeFrame.Day, culture)))
+                return startOfQuarter1.AddMonths(3).AddDays(-1).Date;
+            else if (date.Between(startOfQuarter1.AddMonths(3), startOfQuarter1.AddMonths(6).AddDays(-1).EndOf(TimeFrame.Day, culture)))
+                return startOfQuarter1.AddMonths(6).AddDays(-1).Date;
+            else if (date.Between(startOfQuarter1.AddMonths(6), startOfQuarter1.AddMonths(9).AddDays(-1).EndOf(TimeFrame.Day, culture)))
+                return startOfQuarter1.AddMonths(9).AddDays(-1).Date;
+            return startOfQuarter1.AddYears(1).AddDays(-1).Date;
         }
 
         /// <summary>
         /// Determines if the date fulfills the comparison
         /// </summary>
-        /// <param name="Date">Date to check</param>
-        /// <param name="Comparison">
+        /// <param name="date">Date to check</param>
+        /// <param name="comparison">
         /// Comparison type (can be combined, so you can do weekday in the future, etc)
         /// </param>
         /// <returns>True if it is, false otherwise</returns>
-        public static bool Is(this DateTime Date, DateCompare Comparison)
+        public static bool Is(this DateTime date, DateCompare comparison)
         {
-            if (Comparison.HasFlag(DateCompare.InFuture) && DateTime.Now >= Date)
+            if (comparison.HasFlag(DateCompare.InFuture) && DateTime.Now >= date)
                 return false;
-            if (Comparison.HasFlag(DateCompare.InPast) && DateTime.Now <= Date)
+            if (comparison.HasFlag(DateCompare.InPast) && DateTime.Now <= date)
                 return false;
-            if (Comparison.HasFlag(DateCompare.Today) && DateTime.Today != Date.Date)
+            if (comparison.HasFlag(DateCompare.Today) && DateTime.Today != date.Date)
                 return false;
-            if (Comparison.HasFlag(DateCompare.WeekDay) && ((int)Date.DayOfWeek == 6 || (int)Date.DayOfWeek == 0))
+            if (comparison.HasFlag(DateCompare.WeekDay) && ((int)date.DayOfWeek == 6 || (int)date.DayOfWeek == 0))
                 return false;
-            if (Comparison.HasFlag(DateCompare.WeekEnd) && (int)Date.DayOfWeek != 6 && (int)Date.DayOfWeek != 0)
+            if (comparison.HasFlag(DateCompare.WeekEnd) && (int)date.DayOfWeek != 6 && (int)date.DayOfWeek != 0)
                 return false;
             return true;
         }
@@ -327,9 +326,9 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Gets the local time zone
         /// </summary>
-        /// <param name="Date">Date object</param>
+        /// <param name="date">Date object</param>
         /// <returns>The local time zone</returns>
-        public static TimeZoneInfo LocalTimeZone(this DateTime Date)
+        public static TimeZoneInfo LocalTimeZone(this DateTime date)
         {
             return TimeZoneInfo.Local;
         }
@@ -337,73 +336,76 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Sets the time portion of a specific date
         /// </summary>
-        /// <param name="Date">Date input</param>
-        /// <param name="Hour">Hour to set</param>
-        /// <param name="Minutes">Minutes to set</param>
-        /// <param name="Seconds">Seconds to set</param>
+        /// <param name="date">Date input</param>
+        /// <param name="hour">Hour to set</param>
+        /// <param name="minutes">Minutes to set</param>
+        /// <param name="seconds">Seconds to set</param>
         /// <returns>Sets the time portion of the specified date</returns>
-        public static DateTime SetTime(this DateTime Date, int Hour, int Minutes, int Seconds)
+        public static DateTime SetTime(this DateTime date, int hour, int minutes, int seconds)
         {
-            return Date.SetTime(new TimeSpan(Hour, Minutes, Seconds));
+            return date.SetTime(new TimeSpan(hour, minutes, seconds));
         }
 
         /// <summary>
         /// Sets the time portion of a specific date
         /// </summary>
-        /// <param name="Date">Date input</param>
-        /// <param name="Time">Time to set</param>
+        /// <param name="date">Date input</param>
+        /// <param name="time">Time to set</param>
         /// <returns>Sets the time portion of the specified date</returns>
-        public static DateTime SetTime(this DateTime Date, TimeSpan Time)
+        public static DateTime SetTime(this DateTime date, TimeSpan time)
         {
-            return Date.Date.Add(Time);
+            return date.Date.Add(time);
         }
 
         /// <summary>
         /// Converts a DateTime to a specific time zone
         /// </summary>
-        /// <param name="Date">DateTime to convert</param>
-        /// <param name="TimeZone">Time zone to convert to</param>
+        /// <param name="date">DateTime to convert</param>
+        /// <param name="timeZone">Time zone to convert to</param>
         /// <returns>The converted DateTime</returns>
-        public static DateTime To(this DateTime Date, TimeZoneInfo TimeZone)
+        public static DateTime To(this DateTime date, TimeZoneInfo timeZone)
         {
-            Contract.Requires<ArgumentNullException>(TimeZone != null, "TimeZone");
-            return TimeZoneInfo.ConvertTime(Date, TimeZone);
+            timeZone = timeZone ?? TimeZoneInfo.Utc;
+            return TimeZoneInfo.ConvertTime(date, timeZone);
         }
 
         /// <summary>
         /// Returns the date in int format based on an Epoch (defaults to unix epoch of 1/1/1970)
         /// </summary>
-        /// <param name="Date">Date to convert</param>
-        /// <param name="Epoch">Epoch to use (defaults to unix epoch of 1/1/1970)</param>
+        /// <param name="date">Date to convert</param>
+        /// <param name="epoch">Epoch to use (defaults to unix epoch of 1/1/1970)</param>
         /// <returns>The date in Unix format</returns>
-        public static int To(this DateTime Date, DateTime Epoch = default(DateTime))
+        public static int To(this DateTime date, DateTime epoch = default(DateTime))
         {
-            Epoch = Epoch.Check(x => x != default(DateTime), () => new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-            return (int)((Date.ToUniversalTime() - Epoch).Ticks / TimeSpan.TicksPerSecond);
+            if (epoch == default(DateTime))
+                epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return (int)((date.ToUniversalTime() - epoch).Ticks / TimeSpan.TicksPerSecond);
         }
 
         /// <summary>
         /// Returns the date in DateTime format based on an Epoch (defaults to unix epoch of 1/1/1970)
         /// </summary>
-        /// <param name="Date">Date to convert</param>
-        /// <param name="Epoch">Epoch to use (defaults to unix epoch of 1/1/1970)</param>
+        /// <param name="date">Date to convert</param>
+        /// <param name="epoch">Epoch to use (defaults to unix epoch of 1/1/1970)</param>
         /// <returns>The Unix Date in DateTime format</returns>
-        public static DateTime To(this int Date, DateTime Epoch = default(DateTime))
+        public static DateTime To(this int date, DateTime epoch = default(DateTime))
         {
-            Epoch = Epoch.Check(x => x != default(DateTime), () => new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-            return new DateTime((Date * TimeSpan.TicksPerSecond) + Epoch.Ticks, DateTimeKind.Utc);
+            if (epoch == default(DateTime))
+                epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return new DateTime((date * TimeSpan.TicksPerSecond) + epoch.Ticks, DateTimeKind.Utc);
         }
 
         /// <summary>
         /// Returns the date in DateTime format based on an Epoch (defaults to unix epoch of 1/1/1970)
         /// </summary>
-        /// <param name="Date">Date to convert</param>
-        /// <param name="Epoch">Epoch to use (defaults to unix epoch of 1/1/1970)</param>
+        /// <param name="date">Date to convert</param>
+        /// <param name="epoch">Epoch to use (defaults to unix epoch of 1/1/1970)</param>
         /// <returns>The Unix Date in DateTime format</returns>
-        public static DateTime To(this long Date, DateTime Epoch = default(DateTime))
+        public static DateTime To(this long date, DateTime epoch = default(DateTime))
         {
-            Epoch = Epoch.Check(x => x != default(DateTime), () => new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-            return new DateTime((Date * TimeSpan.TicksPerSecond) + Epoch.Ticks, DateTimeKind.Utc);
+            if (epoch == default(DateTime))
+                epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return new DateTime((date * TimeSpan.TicksPerSecond) + epoch.Ticks, DateTimeKind.Utc);
         }
 
         /// <summary>
@@ -413,24 +415,24 @@ namespace Utilities.DataTypes
         /// Input=March 21, 2013 Epoch=March 22, 2013 returns "1 day ago" Input=March 22, 2013
         /// Epoch=March 21, 2013 returns "1 day from now"
         /// </summary>
-        /// <param name="Input">Input</param>
-        /// <param name="Epoch">DateTime object that the input is comparred to</param>
+        /// <param name="input">Input</param>
+        /// <param name="epoch">DateTime object that the input is comparred to</param>
         /// <returns>The difference between the input and epoch expressed as a string</returns>
-        public static string ToString(this DateTime Input, DateTime Epoch)
+        public static string ToString(this DateTime input, DateTime epoch)
         {
-            if (Epoch == Input)
+            if (epoch == input)
                 return "now";
-            return Epoch > Input ? (Epoch - Input).ToStringFull() + " ago" : (Input - Epoch).ToStringFull() + " from now";
+            return epoch > input ? (epoch - input).ToStringFull() + " ago" : (input - epoch).ToStringFull() + " from now";
         }
 
         /// <summary>
         /// Gets the UTC offset
         /// </summary>
-        /// <param name="Date">Date to get the offset of</param>
+        /// <param name="date">Date to get the offset of</param>
         /// <returns>UTC offset</returns>
-        public static double UTCOffset(this DateTime Date)
+        public static double UTCOffset(this DateTime date)
         {
-            return (Date - Date.ToUniversalTime()).TotalHours;
+            return (date - date.ToUniversalTime()).TotalHours;
         }
     }
 }

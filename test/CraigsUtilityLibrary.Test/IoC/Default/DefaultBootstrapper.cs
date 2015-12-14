@@ -39,13 +39,13 @@ namespace Utilities.Test.IoC.Default
             Temp.Register<TestClass4>(ServiceLifetime.Scoped);
             using (var NewScope = Temp.CreateScope())
             {
-                TestClass4 Object = NewScope.ServiceProvider.GetService(typeof(TestClass4)) as TestClass4;
+                var Object = NewScope.ServiceProvider.GetService(typeof(TestClass4)) as TestClass4;
                 Assert.NotNull(Object);
                 Assert.NotNull(Object.Class);
                 Assert.Equal(2, Object.Class.Classes.Count());
                 using (var NewScope2 = Temp.CreateScope())
                 {
-                    TestClass4 Object2 = NewScope2.ServiceProvider.GetService(typeof(TestClass4)) as TestClass4;
+                    var Object2 = NewScope2.ServiceProvider.GetService(typeof(TestClass4)) as TestClass4;
                     Assert.NotNull(Object);
                     Assert.NotNull(Object.Class);
                     Assert.Equal(2, Object.Class.Classes.Count());
@@ -54,8 +54,8 @@ namespace Utilities.Test.IoC.Default
             }
             using (var NewScope = Temp.CreateScope())
             {
-                TestClass4 Object = NewScope.ServiceProvider.GetService(typeof(TestClass4)) as TestClass4;
-                TestClass4 Object2 = Temp.GetService(typeof(TestClass4)) as TestClass4;
+                var Object = NewScope.ServiceProvider.GetService(typeof(TestClass4)) as TestClass4;
+                var Object2 = Temp.GetService(typeof(TestClass4)) as TestClass4;
                 Assert.NotNull(Object);
                 Assert.NotNull(Object.Class);
                 Assert.Equal(2, Object.Class.Classes.Count());
@@ -72,11 +72,11 @@ namespace Utilities.Test.IoC.Default
             Temp.Register<TestClass4>(ServiceLifetime.Scoped);
             using (var NewScope = Temp.CreateScope())
             {
-                TestClass4 Object = NewScope.ServiceProvider.GetService(typeof(TestClass4)) as TestClass4;
+                var Object = NewScope.ServiceProvider.GetService(typeof(TestClass4)) as TestClass4;
                 Assert.NotNull(Object);
                 Assert.NotNull(Object.Class);
                 Assert.Equal(2, Object.Class.Classes.Count());
-                TestClass4 Object2 = NewScope.ServiceProvider.GetService(typeof(TestClass4)) as TestClass4;
+                var Object2 = NewScope.ServiceProvider.GetService(typeof(TestClass4)) as TestClass4;
                 Assert.Same(Object, Object2);
             }
         }
@@ -94,7 +94,7 @@ namespace Utilities.Test.IoC.Default
             var Temp = GetBootstrapper();
             Temp.RegisterAll<ITestClass>();
             Temp.Register<TestClass4>();
-            TestClass4 Object = Temp.Resolve(typeof(TestClass4), new TestClass4()) as TestClass4;
+            var Object = Temp.Resolve(typeof(TestClass4), new TestClass4()) as TestClass4;
             Assert.NotNull(Object);
             Assert.Null(Object.Class);
         }
@@ -106,7 +106,7 @@ namespace Utilities.Test.IoC.Default
             Temp.RegisterAll<ITestClass>();
             Temp.Register<TestClass3>();
             Temp.Register<TestClass4>();
-            TestClass4 Object = Temp.GetService(typeof(TestClass4)) as TestClass4;
+            var Object = Temp.GetService(typeof(TestClass4)) as TestClass4;
             Assert.NotNull(Object);
             Assert.NotNull(Object.Class);
             Assert.Equal(2, Object.Class.Classes.Count());
@@ -184,7 +184,7 @@ namespace Utilities.Test.IoC.Default
             Temp.RegisterAll<ITestClass>();
             Temp.Register<TestClass3>();
             Temp.Register<TestClass4>();
-            TestClass4 Object = Temp.Resolve(typeof(TestClass4), new TestClass4()) as TestClass4;
+            var Object = Temp.Resolve(typeof(TestClass4), new TestClass4()) as TestClass4;
             Assert.NotNull(Object);
             Assert.NotNull(Object.Class);
             Assert.Equal(2, Object.Class.Classes.Count());

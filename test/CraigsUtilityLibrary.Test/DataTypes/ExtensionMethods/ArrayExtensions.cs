@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
 using Utilities.DataTypes;
 using Xunit;
 
@@ -47,7 +46,7 @@ namespace Utilities.Tests.DataTypes.ExtensionMethods
         [Fact]
         public void ClearTest()
         {
-            Array TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
+            var TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
             TestObject = TestObject.Clear();
             foreach (int Item in TestObject)
                 Assert.Equal(0, Item);

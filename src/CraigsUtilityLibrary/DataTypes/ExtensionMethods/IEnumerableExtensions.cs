@@ -700,7 +700,7 @@ namespace Utilities.DataTypes
         /// <returns>The transversed hierarchy.</returns>
         public static IEnumerable<T> Transverse<T>(this T item, Func<T, IEnumerable<T>> property)
         {
-            if (item == null)
+            if (ReferenceEquals(item, default(T)))
                 yield break;
             yield return item;
             foreach (T inner in Transverse(property(item), property))
