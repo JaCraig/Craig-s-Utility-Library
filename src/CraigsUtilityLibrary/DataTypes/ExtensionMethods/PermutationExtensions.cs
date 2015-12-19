@@ -19,10 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Utilities.DataTypes
@@ -37,22 +35,23 @@ namespace Utilities.DataTypes
         /// Finds all permutations of the items within the list
         /// </summary>
         /// <typeparam name="T">Object type in the list</typeparam>
-        /// <param name="Input">Input list</param>
+        /// <param name="input">Input list</param>
         /// <returns>The list of permutations</returns>
-        public static ListMapping<int, T> Permute<T>(this IEnumerable<T> Input)
+        public static ListMapping<int, T> Permute<T>(this IEnumerable<T> input)
         {
-            Contract.Requires<ArgumentNullException>(Input != null, "Input");
-            var Current = new System.Collections.Generic.List<T>();
-            Current.AddRange(Input);
+            if (input == null)
+                return new ListMapping<int, T>();
+            var Current = new List<T>();
+            Current.AddRange(input);
             var ReturnValue = new ListMapping<int, T>();
-            int Max = (Input.Count() - 1).Factorial();
+            int Max = (input.Count() - 1).Factorial();
             int CurrentValue = 0;
-            for (int x = 0; x < Input.Count(); ++x)
+            for (int x = 0; x < input.Count(); ++x)
             {
                 int z = 0;
                 while (z < Max)
                 {
-                    int y = Input.Count() - 1;
+                    int y = input.Count() - 1;
                     while (y > 1)
                     {
                         T TempHolder = Current[y - 1];
@@ -67,10 +66,10 @@ namespace Utilities.DataTypes
                             break;
                     }
                 }
-                if (x + 1 != Input.Count())
+                if (x + 1 != input.Count())
                 {
                     Current.Clear();
-                    Current.AddRange(Input);
+                    Current.AddRange(input);
                     T TempHolder2 = Current[0];
                     Current[0] = Current[x + 1];
                     Current[x + 1] = TempHolder2;

@@ -461,12 +461,14 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="count">Number of times to run the action</param>
         /// <param name="action">Action to run</param>
-        public static void Times(this int count, Action<int> action)
+        /// <returns>count</returns>
+        public static int Times(this int count, Action<int> action)
         {
             if (action == null)
-                return;
+                return count;
             for (int x = 0; x < count; ++x)
                 action(x);
+            return count;
         }
     }
 }

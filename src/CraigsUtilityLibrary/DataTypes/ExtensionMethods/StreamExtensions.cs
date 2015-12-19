@@ -19,9 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
 using System.ComponentModel;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
 
@@ -36,26 +34,28 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Takes all of the data in the stream and returns it as a string
         /// </summary>
-        /// <param name="Input">Input stream</param>
-        /// <param name="EncodingUsing">
+        /// <param name="input">Input stream</param>
+        /// <param name="encodingUsing">
         /// Encoding that the string should be in (defaults to UTF8)
         /// </param>
         /// <returns>A string containing the content of the stream</returns>
-        public static string ReadAll(this Stream Input, Encoding EncodingUsing = null)
+        public static string ReadAll(this Stream input, Encoding encodingUsing = null)
         {
-            Contract.Requires<ArgumentNullException>(Input != null, "Input");
-            return Input.ReadAllBinary().ToString(EncodingUsing);
+            if (input == null)
+                return "";
+            return input.ReadAllBinary().ToString(encodingUsing);
         }
 
         /// <summary>
         /// Takes all of the data in the stream and returns it as an array of bytes
         /// </summary>
-        /// <param name="Input">Input stream</param>
+        /// <param name="input">Input stream</param>
         /// <returns>A byte array</returns>
-        public static byte[] ReadAllBinary(this Stream Input)
+        public static byte[] ReadAllBinary(this Stream input)
         {
-            Contract.Requires<ArgumentNullException>(Input != null, "Input");
-            var TempInput = Input as MemoryStream;
+            if (input == null)
+                return new byte[0];
+            var TempInput = input as MemoryStream;
             if (TempInput != null)
                 return TempInput.ToArray();
             byte[] Buffer = new byte[1024];
@@ -64,7 +64,7 @@ namespace Utilities.DataTypes
             {
                 while (true)
                 {
-                    int Count = Input.Read(Buffer, 0, Buffer.Length);
+                    int Count = input.Read(Buffer, 0, Buffer.Length);
                     if (Count <= 0)
                     {
                         ReturnValue = Temp.ToArray();

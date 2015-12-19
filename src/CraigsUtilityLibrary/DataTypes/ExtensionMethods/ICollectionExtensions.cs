@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Utilities.DataTypes
@@ -124,93 +123,93 @@ namespace Utilities.DataTypes
         /// Adds an item to the collection if it isn't already in the collection
         /// </summary>
         /// <typeparam name="T">Collection type</typeparam>
-        /// <param name="Collection">Collection to add to</param>
-        /// <param name="Items">Items to add to the collection</param>
+        /// <param name="collection">Collection to add to</param>
+        /// <param name="items">Items to add to the collection</param>
         /// <returns>True if it is added, false otherwise</returns>
-        public static bool AddIfUnique<T>(this ICollection<T> Collection, params T[] Items)
+        public static bool AddIfUnique<T>(this ICollection<T> collection, params T[] items)
         {
-            Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
-            if (Items == null)
+            if (collection == null)
+                return false;
+            if (items == null)
                 return true;
-            return Collection.AddIf(x => !Collection.Contains(x), Items);
+            return collection.AddIf(x => !collection.Contains(x), items);
         }
 
         /// <summary>
         /// Adds an item to the collection if it isn't already in the collection
         /// </summary>
         /// <typeparam name="T">Collection type</typeparam>
-        /// <param name="Collection">Collection to add to</param>
-        /// <param name="Items">Items to add to the collection</param>
-        /// <param name="Predicate">
+        /// <param name="collection">Collection to add to</param>
+        /// <param name="items">Items to add to the collection</param>
+        /// <param name="predicate">
         /// Predicate used to determine if two values are equal. Return true if they are the same,
         /// false otherwise
         /// </param>
         /// <returns>True if it is added, false otherwise</returns>
-        public static bool AddIfUnique<T>(this ICollection<T> Collection, Func<T, T, bool> Predicate, params T[] Items)
+        public static bool AddIfUnique<T>(this ICollection<T> collection, Func<T, T, bool> predicate, params T[] items)
         {
-            Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
-            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
-            if (Items == null)
+            if (collection == null || predicate == null)
+                return false;
+            if (items == null)
                 return true;
-            return Collection.AddIf(x => !Collection.Any(y => Predicate(x, y)), Items);
+            return collection.AddIf(x => !collection.Any(y => predicate(x, y)), items);
         }
 
         /// <summary>
         /// Adds an item to the collection if it isn't already in the collection
         /// </summary>
         /// <typeparam name="T">Collection type</typeparam>
-        /// <param name="Collection">Collection to add to</param>
-        /// <param name="Items">Items to add to the collection</param>
+        /// <param name="collection">Collection to add to</param>
+        /// <param name="items">Items to add to the collection</param>
         /// <returns>True if it is added, false otherwise</returns>
-        public static bool AddIfUnique<T>(this ICollection<T> Collection, IEnumerable<T> Items)
+        public static bool AddIfUnique<T>(this ICollection<T> collection, IEnumerable<T> items)
         {
-            Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
-            if (Items == null)
+            if (collection == null)
+                return false;
+            if (items == null)
                 return true;
-            return Collection.AddIf(x => !Collection.Contains(x), Items);
+            return collection.AddIf(x => !collection.Contains(x), items);
         }
 
         /// <summary>
         /// Adds an item to the collection if it isn't already in the collection
         /// </summary>
         /// <typeparam name="T">Collection type</typeparam>
-        /// <param name="Collection">Collection to add to</param>
-        /// <param name="Items">Items to add to the collection</param>
-        /// <param name="Predicate">
+        /// <param name="collection">Collection to add to</param>
+        /// <param name="items">Items to add to the collection</param>
+        /// <param name="predicate">
         /// Predicate used to determine if two values are equal. Return true if they are the same,
         /// false otherwise
         /// </param>
         /// <returns>True if it is added, false otherwise</returns>
-        public static bool AddIfUnique<T>(this ICollection<T> Collection, Func<T, T, bool> Predicate, IEnumerable<T> Items)
+        public static bool AddIfUnique<T>(this ICollection<T> collection, Func<T, T, bool> predicate, IEnumerable<T> items)
         {
-            Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
-            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
-            if (Items == null)
+            if (collection == null || predicate == null)
+                return false;
+            if (items == null)
                 return true;
-            return Collection.AddIf(x => !Collection.Any(y => Predicate(x, y)), Items);
+            return collection.AddIf(x => !collection.Any(y => predicate(x, y)), items);
         }
 
         /// <summary>
         /// Does an action for each item in the IEnumerable between the start and end indexes
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
-        /// <param name="List">IEnumerable to iterate over</param>
-        /// <param name="Start">Item to start with</param>
-        /// <param name="End">Item to end with</param>
-        /// <param name="Action">Action to do</param>
+        /// <param name="list">IEnumerable to iterate over</param>
+        /// <param name="start">0 based item to start with (inclusive)</param>
+        /// <param name="end">0 based item to end with (exclusive)</param>
+        /// <param name="action">Action to do</param>
         /// <returns>The original list</returns>
-        public static IList<T> For<T>(this IList<T> List, int Start, int End, Action<int, T> Action)
+        public static IList<T> For<T>(this IList<T> list, int start, int end, Action<T, int> action)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Action != null, "Action");
-            Contract.Requires<ArgumentException>(End + 1 - Start >= 0, "End must be greater than start");
-            if (End >= List.Count)
-                End = List.Count - 1;
-            if (Start < 0)
-                Start = 0;
-            for (int x = Start; x <= End; ++x)
-                Action(x, List[x]);
-            return List;
+            if (list == null)
+                return new List<T>();
+            var TempList = list.ElementsBetween(start, end + 1).ToArray();
+            for (int x = 0; x < TempList.Length; ++x)
+            {
+                action(TempList[x], x);
+            }
+            return list;
         }
 
         /// <summary>
@@ -219,51 +218,51 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
         /// <typeparam name="R">Return type</typeparam>
-        /// <param name="List">IEnumerable to iterate over</param>
-        /// <param name="Start">Item to start with</param>
-        /// <param name="End">Item to end with</param>
-        /// <param name="Function">Function to do</param>
+        /// <param name="list">IEnumerable to iterate over</param>
+        /// <param name="start">0 based item to start with (inclusive)</param>
+        /// <param name="end">0 based item to end with (exclusive)</param>
+        /// <param name="function">Function to do</param>
         /// <returns>The resulting list</returns>
-        public static IList<R> For<T, R>(this IList<T> List, int Start, int End, Func<int, T, R> Function)
+        public static IList<R> For<T, R>(this IList<T> list, int start, int end, Func<T, int, R> function)
         {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Function != null, "Function");
-            Contract.Requires<ArgumentException>(End + 1 - Start >= 0, "End must be greater than start");
-            var ReturnValues = new List<R>();
-            if (End >= List.Count)
-                End = List.Count - 1;
-            if (Start < 0)
-                Start = 0;
-            for (int x = Start; x <= End; ++x)
-                ReturnValues.Add(Function(x, List[x]));
-            return ReturnValues;
+            if (list == null || function == null)
+                return new List<R>();
+            var TempList = list.ElementsBetween(start, end + 1).ToArray();
+            var ReturnList = new List<R>();
+            for (int x = 0; x < TempList.Length; ++x)
+            {
+                ReturnList.Add(function(TempList[x], x));
+            }
+            return ReturnList;
         }
 
         /// <summary>
         /// Removes all items that fit the predicate passed in
         /// </summary>
         /// <typeparam name="T">The type of the items in the collection</typeparam>
-        /// <param name="Collection">Collection to remove items from</param>
-        /// <param name="Predicate">Predicate used to determine what items to remove</param>
-        public static ICollection<T> Remove<T>(this ICollection<T> Collection, Func<T, bool> Predicate)
+        /// <param name="collection">Collection to remove items from</param>
+        /// <param name="predicate">Predicate used to determine what items to remove</param>
+        public static ICollection<T> Remove<T>(this ICollection<T> collection, Func<T, bool> predicate)
         {
-            Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
-            return Collection.Where(x => !Predicate(x)).ToList();
+            if (collection == null)
+                return new List<T>();
+            return collection.Where(x => !predicate(x)).ToList();
         }
 
         /// <summary>
         /// Removes all items in the list from the collection
         /// </summary>
         /// <typeparam name="T">The type of the items in the collection</typeparam>
-        /// <param name="Collection">Collection</param>
-        /// <param name="Items">Items to remove</param>
+        /// <param name="collection">Collection</param>
+        /// <param name="items">Items to remove</param>
         /// <returns>The collection with the items removed</returns>
-        public static ICollection<T> Remove<T>(this ICollection<T> Collection, IEnumerable<T> Items)
+        public static ICollection<T> Remove<T>(this ICollection<T> collection, IEnumerable<T> items)
         {
-            Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
-            if (Items == null)
-                return Collection;
-            return Collection.Where(x => !Items.Contains(x)).ToList();
+            if (collection == null)
+                return new List<T>();
+            if (items == null)
+                return collection;
+            return collection.Where(x => !items.Contains(x)).ToList();
         }
     }
 }

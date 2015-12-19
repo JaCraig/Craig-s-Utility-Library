@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Contracts;
 using System.Text.RegularExpressions;
 
 namespace Utilities.DataTypes
@@ -36,19 +35,16 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Gets a list of items that satisfy the predicate from the collection
         /// </summary>
-        /// <param name="Collection">Collection to search through</param>
-        /// <param name="Predicate">Predicate that the items must satisfy</param>
+        /// <param name="collection">Collection to search through</param>
+        /// <param name="predicate">Predicate that the items must satisfy</param>
         /// <returns>The matches that satisfy the predicate</returns>
-        public static IEnumerable<Match> Where(this MatchCollection Collection, Predicate<Match> Predicate)
+        public static IEnumerable<Match> Where(this MatchCollection collection, Predicate<Match> predicate)
         {
-            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
-            if (Collection == null)
-                return null;
-            var Matches = new List<Match>();
-            foreach (Match Item in Collection)
-                if (Predicate(Item))
-                    Matches.Add(Item);
-            return Matches;
+            if (predicate == null || collection == null)
+                yield break;
+            foreach (Match Item in collection)
+                if (predicate(Item))
+                    yield return Item;
         }
     }
 }

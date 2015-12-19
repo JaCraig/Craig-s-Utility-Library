@@ -19,13 +19,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Utilities.DataTypes
 {
@@ -38,70 +38,78 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Gets information about all processes and returns it in an HTML formatted string
         /// </summary>
-        /// <param name="Process">Process to get information about</param>
-        /// <param name="HTMLFormat">Should this be HTML formatted?</param>
+        /// <param name="process">Process to get information about</param>
+        /// <param name="htmlFormat">Should this be HTML formatted?</param>
         /// <returns>An HTML formatted string</returns>
-        public static string GetInformation(this Process Process, bool HTMLFormat = true)
+        public static string GetInformation(this Process process, bool htmlFormat = true)
         {
-            Contract.Requires<ArgumentNullException>(Process != null, "Process");
+            if (process == null)
+                return "";
             var Builder = new StringBuilder();
-            return Builder.Append(HTMLFormat ? "<strong>" : "")
-                   .Append(Process.ProcessName)
+            return Builder.Append(htmlFormat ? "<strong>" : "")
+                   .Append(process.ProcessName)
                    .Append(" Information")
-                   .Append(HTMLFormat ? "</strong><br />" : "\n")
-                   .Append(Process.ToString(HTMLFormat))
-                   .Append(HTMLFormat ? "<br />" : "\n")
+                   .Append(htmlFormat ? "</strong><br />" : "\n")
+                   .Append(process.ToString(htmlFormat))
+                   .Append(htmlFormat ? "<br />" : "\n")
                    .ToString();
         }
 
         /// <summary>
         /// Gets information about all processes and returns it in an HTML formatted string
         /// </summary>
-        /// <param name="Processes">Processes to get information about</param>
-        /// <param name="HTMLFormat">Should this be HTML formatted?</param>
+        /// <param name="processes">Processes to get information about</param>
+        /// <param name="htmlFormat">Should this be HTML formatted?</param>
         /// <returns>An HTML formatted string</returns>
-        public static string GetInformation(this IEnumerable<Process> Processes, bool HTMLFormat = true)
+        public static string GetInformation(this IEnumerable<Process> processes, bool htmlFormat = true)
         {
-            if (Processes == null)
+            if (processes == null)
                 return "";
             var Builder = new StringBuilder();
-            Processes.ForEach(x => Builder.Append(x.GetInformation(HTMLFormat)));
+            processes.ForEach(x => Builder.Append(x.GetInformation(htmlFormat)));
             return Builder.ToString();
         }
 
         /// <summary>
         /// Kills a process
         /// </summary>
-        /// <param name="Process">Process that should be killed</param>
-        /// <param name="TimeToKill">Amount of time (in ms) until the process is killed.</param>
-        public static void KillProcessAsync(this Process Process, int TimeToKill = 0)
+        /// <param name="process">Process that should be killed</param>
+        /// <param name="timeToKill">Amount of time (in ms) until the process is killed.</param>
+        /// <returns>The input process</returns>
+        public static async Task<Process> KillProcessAsync(this Process process, int timeToKill = 0)
         {
-            Contract.Requires<ArgumentNullException>(Process != null, "Process");
-            ThreadPool.QueueUserWorkItem(delegate { KillProcessAsyncHelper(Process, TimeToKill); });
+            if (process == null)
+                return null;
+            await Task.Run(() => KillProcessAsyncHelper(process, timeToKill));
+            return process;
         }
 
         /// <summary>
         /// Kills a list of processes
         /// </summary>
-        /// <param name="Processes">Processes that should be killed</param>
-        /// <param name="TimeToKill">Amount of time (in ms) until the processes are killed.</param>
-        public static void KillProcessAsync(this IEnumerable<Process> Processes, int TimeToKill = 0)
+        /// <param name="processes">Processes that should be killed</param>
+        /// <param name="timeToKill">Amount of time (in ms) until the processes are killed.</param>
+        /// <returns>The list of processes</returns>
+        public static async Task<IEnumerable<Process>> KillProcessAsync(this IEnumerable<Process> processes, int timeToKill = 0)
         {
-            Contract.Requires<ArgumentNullException>(Processes != null, "Processes");
-            Processes.ForEach(x => ThreadPool.QueueUserWorkItem(delegate { KillProcessAsyncHelper(x, TimeToKill); }));
+            if (processes == null || processes.Count() == 0)
+                return new List<Process>();
+            await Task.Run(() => processes.ForEach(x => KillProcessAsyncHelper(x, timeToKill)));
+            return processes;
         }
 
         /// <summary>
         /// Kills a process asyncronously
         /// </summary>
-        /// <param name="Process">Process to kill</param>
-        /// <param name="TimeToKill">Amount of time until the process is killed</param>
-        private static void KillProcessAsyncHelper(Process Process, int TimeToKill)
+        /// <param name="process">Process to kill</param>
+        /// <param name="timeToKill">Amount of time until the process is killed</param>
+        private static void KillProcessAsyncHelper(Process process, int timeToKill)
         {
-            Contract.Requires<ArgumentNullException>(Process != null, "Process");
-            if (TimeToKill > 0)
-                Thread.Sleep(TimeToKill);
-            Process.Kill();
+            if (process == null)
+                return;
+            if (timeToKill > 0)
+                Thread.Sleep(timeToKill);
+            process.Kill();
         }
     }
 }

@@ -23,7 +23,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 
@@ -38,34 +37,35 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Gets the methods involved in the stack trace
         /// </summary>
-        /// <param name="Stack">Stack trace to get methods from</param>
-        /// <param name="ExcludedAssemblies">Excludes methods from the specified assemblies</param>
+        /// <param name="stack">Stack trace to get methods from</param>
+        /// <param name="excludedAssemblies">Excludes methods from the specified assemblies</param>
         /// <returns>A list of methods involved in the stack trace</returns>
-        public static IEnumerable<MethodBase> GetMethods(this StackTrace Stack, params Assembly[] ExcludedAssemblies)
+        public static IEnumerable<MethodBase> GetMethods(this StackTrace stack, params Assembly[] excludedAssemblies)
         {
-            Contract.Requires<ArgumentNullException>(Stack != null, "Stack");
-            return Stack.GetFrames().GetMethods(ExcludedAssemblies);
+            if (stack == null)
+                return new List<MethodBase>();
+            excludedAssemblies = excludedAssemblies ?? new Assembly[0];
+            return stack.GetFrames().GetMethods(excludedAssemblies);
         }
 
         /// <summary>
         /// Gets the methods involved in the individual frames
         /// </summary>
-        /// <param name="Frames">Frames to get the methods from</param>
-        /// <param name="ExcludedAssemblies">Excludes methods from the specified assemblies</param>
+        /// <param name="frames">Frames to get the methods from</param>
+        /// <param name="excludedAssemblies">Excludes methods from the specified assemblies</param>
         /// <returns>The list of methods involved</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.StartsWith(System.String,System.StringComparison)")]
-        public static IEnumerable<MethodBase> GetMethods(this IEnumerable<StackFrame> Frames, params Assembly[] ExcludedAssemblies)
+        public static IEnumerable<MethodBase> GetMethods(this IEnumerable<StackFrame> frames, params Assembly[] excludedAssemblies)
         {
             var Methods = new List<MethodBase>();
-            if (Frames == null)
+            if (frames == null)
                 return Methods;
-            foreach (StackFrame Frame in Frames)
+            foreach (StackFrame Frame in frames)
             {
                 Methods.AddIf(x => x.DeclaringType != null
-                    && !ExcludedAssemblies.Contains(x.DeclaringType.Assembly)
-                    && !x.DeclaringType.Assembly.FullName.StartsWith("System", StringComparison.InvariantCulture)
-                    && !x.DeclaringType.Assembly.FullName.StartsWith("mscorlib", StringComparison.InvariantCulture)
-                    && !x.DeclaringType.Assembly.FullName.StartsWith("WebDev.WebHost40", StringComparison.InvariantCulture),
+                    && !excludedAssemblies.Contains(x.DeclaringType.GetTypeInfo().Assembly)
+                    && !x.DeclaringType.GetTypeInfo().Assembly.FullName.StartsWith("System", StringComparison.InvariantCulture)
+                    && !x.DeclaringType.GetTypeInfo().Assembly.FullName.StartsWith("mscorlib", StringComparison.InvariantCulture)
+                    && !x.DeclaringType.GetTypeInfo().Assembly.FullName.StartsWith("WebDev.WebHost40", StringComparison.InvariantCulture),
                         Frame.GetMethod());
             }
             return Methods;

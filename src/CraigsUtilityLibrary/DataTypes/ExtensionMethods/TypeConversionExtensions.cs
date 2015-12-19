@@ -19,15 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Reflection;
-using Utilities.DataTypes.Conversion;
-using Utilities.DataTypes.DataMapper.Interfaces;
 
 namespace Utilities.DataTypes
 {
@@ -40,14 +32,14 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Calls the object's ToString function passing in the formatting
         /// </summary>
-        /// <param name="Input">Input object</param>
-        /// <param name="Format">Format of the output string</param>
+        /// <param name="input">Input object</param>
+        /// <param name="format">Format of the output string</param>
         /// <returns>The formatted string</returns>
-        public static string FormatToString(this object Input, string Format)
+        public static string FormatToString(this object input, string format)
         {
-            if (Input == null)
+            if (input == null)
                 return "";
-            return !string.IsNullOrEmpty(Format) ? Input.Call<string>("ToString", Format) : Input.ToString();
+            return !string.IsNullOrEmpty(format) ? input.Call<string>("ToString", format) : input.ToString();
         }
 
         /// <summary>
@@ -104,7 +96,7 @@ namespace Utilities.DataTypes
         /// <param name="Creator">Function used to create each object</param>
         /// <returns>The DataTable converted to a list of objects</returns>
         public static List<T> To<T>(this DataTable Data, Func<T> Creator)
-            where T : class,new()
+            where T : class, new()
         {
             if (Data == null)
                 return new List<T>();
