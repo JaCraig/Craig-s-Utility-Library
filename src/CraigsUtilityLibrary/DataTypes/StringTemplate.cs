@@ -19,41 +19,26 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Runtime.Serialization;
-using System.Security;
 
 namespace Utilities.DataTypes
 {
     /// <summary>
     /// Acts as a template for a string
     /// </summary>
-    [Serializable]
     public class StringTemplate : Dictionary<string, string>
     {
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Template">Template</param>
-        /// <param name="KeyEnd">Ending signifier of a key</param>
-        /// <param name="KeyStart">Starting signifier of a key</param>
-        public StringTemplate(string Template, string KeyStart = "{", string KeyEnd = "}")
+        /// <param name="template">Template</param>
+        /// <param name="keyEnd">Ending signifier of a key</param>
+        /// <param name="keyStart">Starting signifier of a key</param>
+        public StringTemplate(string template, string keyStart = "{", string keyEnd = "}")
         {
-            this.KeyStart = KeyStart;
-            this.KeyEnd = KeyEnd;
-            this.Template = Template;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Info">Serialization info</param>
-        /// <param name="Context">Streaming context</param>
-        protected StringTemplate(SerializationInfo Info, StreamingContext Context)
-            : base(Info, Context)
-        {
+            KeyStart = keyStart;
+            KeyEnd = keyEnd;
+            Template = template;
         }
 
         /// <summary>
@@ -74,24 +59,13 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Converts the object to a string
         /// </summary>
-        /// <param name="Value">Value to convert</param>
+        /// <param name="value">Value to convert</param>
         /// <returns>The value as a string</returns>
-        public static implicit operator string(StringTemplate Value)
+        public static implicit operator string(StringTemplate value)
         {
-            Contract.Requires<ArgumentNullException>(Value != null, "Value");
-            return Value.ToString();
-        }
-
-        /// <summary>
-        /// Implements the ISerializable interface and returns the data needed to serialize the
-        /// dictionary instance
-        /// </summary>
-        /// <param name="info">Serialization info</param>
-        /// <param name="context">Streaming context</param>
-        [SecurityCritical]
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
+            if (value == null)
+                return "";
+            return value.ToString();
         }
 
         /// <summary>

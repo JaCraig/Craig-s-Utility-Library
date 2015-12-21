@@ -21,7 +21,6 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Utilities.DataTypes
@@ -51,33 +50,27 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Number of items in the tree
         /// </summary>
-        public virtual int Count
-        {
-            get { return NumberOfNodes; }
-        }
+        public int Count => NumberOfNodes;
 
         /// <summary>
         /// Is the tree empty
         /// </summary>
-        public virtual bool IsEmpty { get { return Root == null; } }
+        public bool IsEmpty => Root == null;
 
         /// <summary>
         /// Is this read only?
         /// </summary>
-        public virtual bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         /// <summary>
         /// Gets the maximum value of the tree
         /// </summary>
-        public virtual T MaxValue
+        public T MaxValue
         {
             get
             {
-                Contract.Requires<InvalidOperationException>(!IsEmpty, "The tree is empty");
-                Contract.Requires<NullReferenceException>(Root != null, "Root");
+                if (IsEmpty || Root == null)
+                    return default(T);
                 TreeNode<T> TempNode = Root;
                 while (TempNode.Right != null)
                     TempNode = TempNode.Right;
@@ -88,12 +81,12 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Gets the minimum value of the tree
         /// </summary>
-        public virtual T MinValue
+        public T MinValue
         {
             get
             {
-                Contract.Requires<InvalidOperationException>(!IsEmpty, "The tree is empty");
-                Contract.Requires<NullReferenceException>(Root != null, "Root");
+                if (IsEmpty || Root == null)
+                    return default(T);
                 TreeNode<T> TempNode = Root;
                 while (TempNode.Left != null)
                     TempNode = TempNode.Left;
@@ -104,29 +97,30 @@ namespace Utilities.DataTypes
         /// <summary>
         /// The root value
         /// </summary>
-        public virtual TreeNode<T> Root { get; set; }
+        public TreeNode<T> Root { get; set; }
 
         /// <summary>
         /// The number of nodes in the tree
         /// </summary>
-        protected virtual int NumberOfNodes { get; set; }
+        protected int NumberOfNodes { get; set; }
 
         /// <summary>
         /// Converts the object to a string
         /// </summary>
-        /// <param name="Value">Value to convert</param>
+        /// <param name="value">Value to convert</param>
         /// <returns>The value as a string</returns>
-        public static implicit operator string (BinaryTree<T> Value)
+        public static implicit operator string(BinaryTree<T> value)
         {
-            Contract.Requires<ArgumentNullException>(Value != null, "Value");
-            return Value.ToString();
+            if (value == null)
+                return "";
+            return value.ToString();
         }
 
         /// <summary>
         /// Adds an item to a binary tree
         /// </summary>
         /// <param name="item">Item to add</param>
-        public virtual void Add(T item)
+        public void Add(T item)
         {
             if (Root == null)
             {
@@ -142,7 +136,7 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Clears all items from the tree
         /// </summary>
-        public virtual void Clear()
+        public void Clear()
         {
             Root = null;
             NumberOfNodes = 0;
@@ -153,7 +147,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="item">Item to check</param>
         /// <returns>True if it is, false otherwise</returns>
-        public virtual bool Contains(T item)
+        public bool Contains(T item)
         {
             if (IsEmpty)
                 return false;
@@ -164,8 +158,7 @@ namespace Utilities.DataTypes
                 int ComparedValue = TempNode.Value.CompareTo(item);
                 if (ComparedValue == 0)
                     return true;
-                else
-                    TempNode = ComparedValue < 0 ? TempNode.Left : TempNode.Right;
+                TempNode = ComparedValue < 0 ? TempNode.Left : TempNode.Right;
             }
             return false;
         }
@@ -175,7 +168,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="array">Array to copy to</param>
         /// <param name="arrayIndex">Index to start at</param>
-        public virtual void CopyTo(T[] array, int arrayIndex)
+        public void CopyTo(T[] array, int arrayIndex)
         {
             T[] TempArray = new T[NumberOfNodes];
             int Counter = 0;
@@ -191,7 +184,7 @@ namespace Utilities.DataTypes
         /// Gets the enumerator
         /// </summary>
         /// <returns>The enumerator</returns>
-        public virtual IEnumerator<T> GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             foreach (TreeNode<T> TempNode in Traversal(Root))
             {
@@ -204,7 +197,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="item">Item to remove</param>
         /// <returns>True if it is removed, false otherwise</returns>
-        public virtual bool Remove(T item)
+        public bool Remove(T item)
         {
             TreeNode<T> Item = Find(item);
             if (Item == null)
@@ -258,7 +251,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="item">The item to find</param>
         /// <returns>The node if it is found</returns>
-        protected virtual TreeNode<T> Find(T item)
+        protected TreeNode<T> Find(T item)
         {
             foreach (TreeNode<T> Item in Traversal(Root))
                 if (Item.Value.Equals(item))
@@ -270,9 +263,10 @@ namespace Utilities.DataTypes
         /// Inserts a value
         /// </summary>
         /// <param name="item">item to insert</param>
-        protected virtual void Insert(T item)
+        protected void Insert(T item)
         {
-            Contract.Requires<NullReferenceException>(Root != null, "Root");
+            if (Root == null)
+                return;
             TreeNode<T> TempNode = Root;
             bool Found = false;
             while (!Found)
@@ -286,10 +280,7 @@ namespace Utilities.DataTypes
                         ++NumberOfNodes;
                         return;
                     }
-                    else
-                    {
-                        TempNode = TempNode.Left;
-                    }
+                    TempNode = TempNode.Left;
                 }
                 else if (ComparedValue < 0)
                 {
@@ -299,10 +290,7 @@ namespace Utilities.DataTypes
                         ++NumberOfNodes;
                         return;
                     }
-                    else
-                    {
-                        TempNode = TempNode.Right;
-                    }
+                    TempNode = TempNode.Right;
                 }
                 else
                 {
@@ -314,21 +302,21 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Traverses the list
         /// </summary>
-        /// <param name="Node">The node to start the search from</param>
+        /// <param name="node">The node to start the search from</param>
         /// <returns>The individual items from the tree</returns>
-        protected virtual IEnumerable<TreeNode<T>> Traversal(TreeNode<T> Node)
+        protected IEnumerable<TreeNode<T>> Traversal(TreeNode<T> node)
         {
-            if (Node != null)
+            if (node != null)
             {
-                if (Node.Left != null)
+                if (node.Left != null)
                 {
-                    foreach (TreeNode<T> LeftNode in Traversal(Node.Left))
+                    foreach (TreeNode<T> LeftNode in Traversal(node.Left))
                         yield return LeftNode;
                 }
-                yield return Node;
-                if (Node.Right != null)
+                yield return node;
+                if (node.Right != null)
                 {
-                    foreach (TreeNode<T> RightNode in Traversal(Node.Right))
+                    foreach (TreeNode<T> RightNode in Traversal(node.Right))
                         yield return RightNode;
                 }
             }
@@ -359,32 +347,32 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Is this a leaf
         /// </summary>
-        public virtual bool IsLeaf { get { return Left == null && Right == null; } }
+        public bool IsLeaf => Left == null && Right == null;
 
         /// <summary>
         /// Is this the root
         /// </summary>
-        public virtual bool IsRoot { get { return Parent == null; } }
+        public bool IsRoot => Parent == null;
 
         /// <summary>
         /// Left node
         /// </summary>
-        public virtual TreeNode<T> Left { get; set; }
+        public TreeNode<T> Left { get; set; }
 
         /// <summary>
         /// Parent node
         /// </summary>
-        public virtual TreeNode<T> Parent { get; set; }
+        public TreeNode<T> Parent { get; set; }
 
         /// <summary>
         /// Right node
         /// </summary>
-        public virtual TreeNode<T> Right { get; set; }
+        public TreeNode<T> Right { get; set; }
 
         /// <summary>
         /// Value of the node
         /// </summary>
-        public virtual T Value { get; set; }
+        public T Value { get; set; }
 
         /// <summary>
         /// Visited?

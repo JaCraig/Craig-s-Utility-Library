@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Threading;
 using Utilities.DataTypes.Comparison;
 
@@ -34,8 +33,6 @@ namespace Utilities.DataTypes
     /// <typeparam name="T">Type of the data it holds</typeparam>
     public class RingBuffer<T> : ICollection<T>, ICollection
     {
-        private object Root;
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -47,19 +44,20 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="MaxCapacity">Max capacity for the circular buffer</param>
-        /// <param name="AllowOverflow">Is overflow allowed (defaults to false)</param>
-        public RingBuffer(int MaxCapacity, bool AllowOverflow = false)
+        /// <param name="maxCapacity">Max capacity for the circular buffer</param>
+        /// <param name="allowOverflow">Is overflow allowed (defaults to false)</param>
+        public RingBuffer(int maxCapacity, bool allowOverflow = false)
         {
-            Contract.Requires<ArgumentException>(MaxCapacity > 0, "Max capacity must be above 0");
+            if (maxCapacity <= 0)
+                maxCapacity = 1;
             Count = 0;
             IsReadOnly = false;
-            this.AllowOverflow = AllowOverflow;
-            this.MaxCapacity = MaxCapacity;
+            AllowOverflow = allowOverflow;
+            MaxCapacity = maxCapacity;
             IsSynchronized = false;
             ReadPosition = 0;
             WritePosition = 0;
-            Buffer = new T[MaxCapacity];
+            Buffer = new T[maxCapacity];
         }
 
         /// <summary>
@@ -118,40 +116,43 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Allows getting an item at a specific position in the buffer
         /// </summary>
-        /// <param name="Position">Position to look at</param>
+        /// <param name="position">Position to look at</param>
         /// <returns>The specified item</returns>
-        public T this[int Position]
+        public T this[int position]
         {
             get
             {
-                Position %= Count;
-                int FinalPosition = (ReadPosition + Position) % MaxCapacity;
+                position %= Count;
+                int FinalPosition = (ReadPosition + position) % MaxCapacity;
                 return Buffer[FinalPosition];
             }
             set
             {
-                Position %= Count;
-                int FinalPosition = (ReadPosition + Position) % MaxCapacity;
+                position %= Count;
+                int FinalPosition = (ReadPosition + position) % MaxCapacity;
                 Buffer[FinalPosition] = value;
             }
         }
 
+        private object Root;
+
         /// <summary>
         /// Converts the object to a string
         /// </summary>
-        /// <param name="Value">Value to convert</param>
+        /// <param name="value">Value to convert</param>
         /// <returns>The value as a string</returns>
-        public static implicit operator string(RingBuffer<T> Value)
+        public static implicit operator string(RingBuffer<T> value)
         {
-            Contract.Requires<ArgumentNullException>(Value != null, "Value");
-            return Value.ToString();
+            if (value == null)
+                return "";
+            return value.ToString();
         }
 
         /// <summary>
         /// Adds an item to the buffer
         /// </summary>
         /// <param name="item">Item to add</param>
-        public virtual void Add(T item)
+        public void Add(T item)
         {
             if (Count >= MaxCapacity && !AllowOverflow)
                 throw new InvalidOperationException("Unable to add item to circular buffer because the buffer is full");
@@ -167,11 +168,12 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Adds a number of items to the buffer
         /// </summary>
-        /// <param name="Items">Items to add</param>
-        public virtual void Add(IEnumerable<T> Items)
+        /// <param name="items">Items to add</param>
+        public void Add(IEnumerable<T> items)
         {
-            Contract.Requires<ArgumentNullException>(Items != null, "Items");
-            Items.ForEach(x => Add(x));
+            if (items == null)
+                return;
+            items.ForEach(x => Add(x));
         }
 
         /// <summary>
@@ -180,10 +182,17 @@ namespace Utilities.DataTypes
         /// <param name="buffer">Items to add</param>
         /// <param name="count">Number of items to add</param>
         /// <param name="offset">Offset to start at</param>
-        public virtual void Add(T[] buffer, int offset, int count)
+        public void Add(T[] buffer, int offset, int count)
         {
-            Contract.Requires<ArgumentNullException>(buffer != null, "buffer");
-            Contract.Requires<ArgumentOutOfRangeException>(count <= buffer.Length - offset, "buffer");
+            buffer = buffer ?? new T[0];
+            if (offset < 0)
+                offset = 0;
+            else if (offset >= buffer.Length)
+                offset = buffer.Length - 1;
+            if (count < 0)
+                count = 0;
+            else if (offset + count > buffer.Length)
+                count = buffer.Length - offset;
             for (int x = offset; x < offset + count; ++x)
                 Add(buffer[x]);
         }
@@ -191,7 +200,7 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Clears the buffer
         /// </summary>
-        public virtual void Clear()
+        public void Clear()
         {
             ReadPosition = 0;
             WritePosition = 0;
@@ -205,7 +214,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="item">Item to check</param>
         /// <returns>True if the item is present, false otherwise</returns>
-        public virtual bool Contains(T item)
+        public bool Contains(T item)
         {
             int y = ReadPosition;
             var Comparer = new GenericEqualityComparer<T>();
@@ -225,7 +234,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="array">Array to copy to</param>
         /// <param name="arrayIndex">Array index to start at</param>
-        public virtual void CopyTo(T[] array, int arrayIndex)
+        public void CopyTo(T[] array, int arrayIndex)
         {
             int y = ReadPosition;
             int y2 = arrayIndex;
@@ -245,7 +254,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="array">Array to copy to</param>
         /// <param name="index">Array index to start at</param>
-        public virtual void CopyTo(Array array, int index)
+        public void CopyTo(Array array, int index)
         {
             int y = ReadPosition;
             int y2 = index;
@@ -264,7 +273,7 @@ namespace Utilities.DataTypes
         /// Gets the enumerator for the buffer
         /// </summary>
         /// <returns>The enumerator</returns>
-        public virtual IEnumerator<T> GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             int y = ReadPosition;
             for (int x = 0; x < Count; ++x)
@@ -282,14 +291,14 @@ namespace Utilities.DataTypes
         /// <returns>The enumerator</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return (IEnumerator)GetEnumerator();
+            return GetEnumerator();
         }
 
         /// <summary>
         /// Reads the next item from the buffer
         /// </summary>
         /// <returns>The next item from the buffer</returns>
-        public virtual T Remove()
+        public T Remove()
         {
             if (Count == 0)
                 return default(T);
@@ -304,14 +313,14 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Reads the next X number of items from the buffer
         /// </summary>
-        /// <param name="Amount">Number of items to return</param>
+        /// <param name="amount">Number of items to return</param>
         /// <returns>The next X items from the buffer</returns>
-        public virtual IEnumerable<T> Remove(int Amount)
+        public IEnumerable<T> Remove(int amount)
         {
             if (Count == 0)
                 return new List<T>();
             var ReturnValue = new List<T>();
-            for (int x = 0; x < Amount; ++x)
+            for (int x = 0; x < amount; ++x)
                 ReturnValue.Add(Remove());
             return ReturnValue;
         }
@@ -321,7 +330,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="item">Item to remove</param>
         /// <returns>True if it is removed, false otherwise</returns>
-        public virtual bool Remove(T item)
+        public bool Remove(T item)
         {
             int y = ReadPosition;
             var Comparer = new GenericEqualityComparer<T>();
@@ -346,10 +355,17 @@ namespace Utilities.DataTypes
         /// <param name="offset">Offset to start at</param>
         /// <param name="count">Number of items to read</param>
         /// <returns>The number of items that were read</returns>
-        public virtual int Remove(T[] array, int offset, int count)
+        public int Remove(T[] array, int offset, int count)
         {
-            Contract.Requires<ArgumentException>(array != null, "array");
-            Contract.Requires<ArgumentOutOfRangeException>(Count <= array.Length - offset, "array");
+            array = array ?? new T[0];
+            if (offset < 0)
+                offset = 0;
+            else if (offset >= array.Length)
+                offset = array.Length - 1;
+            if (count < 0)
+                count = 0;
+            else if (offset + count > array.Length)
+                count = array.Length - offset;
             if (Count == 0)
                 return 0;
             int y = ReadPosition;
@@ -363,20 +379,20 @@ namespace Utilities.DataTypes
                 if (y >= MaxCapacity)
                     y = 0;
             }
-            this.Count -= MaxLength;
+            Count -= MaxLength;
             return MaxLength;
         }
 
         /// <summary>
         /// Skips ahead in the buffer
         /// </summary>
-        /// <param name="Count">Number of items in the buffer to skip</param>
-        public virtual void Skip(int Count)
+        /// <param name="count">Number of items in the buffer to skip</param>
+        public void Skip(int count)
         {
-            if (Count > this.Count)
-                Count = this.Count;
-            ReadPosition += Count;
-            this.Count -= Count;
+            if (count > Count)
+                count = Count;
+            ReadPosition += count;
+            Count -= count;
             if (ReadPosition >= MaxCapacity)
                 ReadPosition %= MaxCapacity;
         }

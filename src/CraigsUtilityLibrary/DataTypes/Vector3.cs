@@ -20,40 +20,36 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Diagnostics.Contracts;
-using System.Xml.Serialization;
 
 namespace Utilities.DataTypes
 {
     /// <summary>
     /// Vector class (holds three items)
     /// </summary>
-    [Serializable]
     public class Vector3
     {
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="X">X direction</param>
-        /// <param name="Y">Y direction</param>
-        /// <param name="Z">Z direction</param>
-        public Vector3(double X, double Y, double Z)
+        /// <param name="x">X direction</param>
+        /// <param name="y">Y direction</param>
+        /// <param name="z">Z direction</param>
+        public Vector3(double x, double y, double z)
         {
-            this.X = X;
-            this.Y = Y;
-            this.Z = Z;
+            X = x;
+            Y = y;
+            Z = z;
         }
 
         /// <summary>
         /// Used for converting this to an array and back
         /// </summary>
-        public virtual double[] Array
+        public double[] Array
         {
             get { return new double[] { X, Y, Z }; }
             set
             {
-                Contract.Requires<ArgumentNullException>(value != null, "value");
-                if (value.Length == 3)
+                if (value != null && value.Length == 3)
                 {
                     X = value[0];
                     Y = value[1];
@@ -65,254 +61,248 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Returns the magnitude of the vector
         /// </summary>
-        public virtual double Magnitude
-        {
-            get { return ((X * X) + (Y * Y) + (Z * Z)).Sqrt(); }
-        }
+        public double Magnitude => ((X * X) + (Y * Y) + (Z * Z)).Sqrt();
 
         /// <summary>
         /// X value
         /// </summary>
-        [XmlElement]
-        public virtual double X { get; set; }
+        public double X { get; set; }
 
         /// <summary>
         /// Y Value
         /// </summary>
-        [XmlElement]
-        public virtual double Y { get; set; }
+        public double Y { get; set; }
 
         /// <summary>
         /// Z value
         /// </summary>
-        [XmlElement]
-        public virtual double Z { get; set; }
+        public double Z { get; set; }
 
         /// <summary>
         /// Determines the angle between the vectors
         /// </summary>
-        /// <param name="V1">Vector 1</param>
-        /// <param name="V2">Vector 2</param>
+        /// <param name="v1">Vector 1</param>
+        /// <param name="v2">Vector 2</param>
         /// <returns>Angle between the vectors</returns>
-        public static double Angle(Vector3 V1, Vector3 V2)
+        public static double Angle(Vector3 v1, Vector3 v2)
         {
-            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
-            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
-            V1.Normalize();
-            V2.Normalize();
-            return System.Math.Acos(Vector3.DotProduct(V1, V2));
+            v1 = v1 ?? new Vector3(0, 0, 0);
+            v2 = v2 ?? new Vector3(0, 0, 0);
+            v1.Normalize();
+            v2.Normalize();
+            return Math.Acos(DotProduct(v1, v2));
         }
 
         /// <summary>
         /// The distance between two vectors
         /// </summary>
-        /// <param name="V1">Vector 1</param>
-        /// <param name="V2">Vector 2</param>
+        /// <param name="v1">Vector 1</param>
+        /// <param name="v2">Vector 2</param>
         /// <returns>Distance between the vectors</returns>
-        public static double Distance(Vector3 V1, Vector3 V2)
+        public static double Distance(Vector3 v1, Vector3 v2)
         {
-            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
-            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
-            return (((V1.X - V2.X) * (V1.X - V2.X)) + ((V1.Y - V2.Y) * (V1.Y - V2.Y)) + ((V1.Z - V2.Z) * (V1.Z - V2.Z))).Sqrt();
+            v1 = v1 ?? new Vector3(0, 0, 0);
+            v2 = v2 ?? new Vector3(0, 0, 0);
+            return (((v1.X - v2.X) * (v1.X - v2.X)) + ((v1.Y - v2.Y) * (v1.Y - v2.Y)) + ((v1.Z - v2.Z) * (v1.Z - v2.Z))).Sqrt();
         }
 
         /// <summary>
         /// Does a dot product
         /// </summary>
-        /// <param name="V1">Vector 1</param>
-        /// <param name="V2">Vector 2</param>
+        /// <param name="v1">Vector 1</param>
+        /// <param name="v2">Vector 2</param>
         /// <returns>a dot product</returns>
-        public static double DotProduct(Vector3 V1, Vector3 V2)
+        public static double DotProduct(Vector3 v1, Vector3 v2)
         {
-            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
-            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
-            return (V1.X * V2.X) + (V1.Y * V2.Y) + (V1.Z * V2.Z);
+            v1 = v1 ?? new Vector3(0, 0, 0);
+            v2 = v2 ?? new Vector3(0, 0, 0);
+            return (v1.X * v2.X) + (v1.Y * v2.Y) + (v1.Z * v2.Z);
         }
 
         /// <summary>
         /// Interpolates between the vectors
         /// </summary>
-        /// <param name="V1">Vector 1</param>
-        /// <param name="V2">Vector 2</param>
-        /// <param name="Control">Percent to move between 1 and 2</param>
+        /// <param name="v1">Vector 1</param>
+        /// <param name="v2">Vector 2</param>
+        /// <param name="control">Percent to move between 1 and 2</param>
         /// <returns>The interpolated vector</returns>
-        public static Vector3 Interpolate(Vector3 V1, Vector3 V2, double Control)
+        public static Vector3 Interpolate(Vector3 v1, Vector3 v2, double control)
         {
-            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
-            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
+            v1 = v1 ?? new Vector3(0, 0, 0);
+            v2 = v2 ?? new Vector3(0, 0, 0);
             var TempVector = new Vector3(0.0, 0.0, 0.0);
-            TempVector.X = (V1.X * (1 - Control)) + (V2.X * Control);
-            TempVector.Y = (V1.Y * (1 - Control)) + (V2.Y * Control);
-            TempVector.Z = (V1.Z * (1 - Control)) - (V2.Z * Control);
+            TempVector.X = (v1.X * (1 - control)) + (v2.X * control);
+            TempVector.Y = (v1.Y * (1 - control)) + (v2.Y * control);
+            TempVector.Z = (v1.Z * (1 - control)) - (v2.Z * control);
             return TempVector;
         }
 
         /// <summary>
         /// Subtraction
         /// </summary>
-        /// <param name="V1">Item 1</param>
-        /// <param name="V2">Item 2</param>
+        /// <param name="v1">Item 1</param>
+        /// <param name="v2">Item 2</param>
         /// <returns>The resulting vector</returns>
-        public static Vector3 operator -(Vector3 V1, Vector3 V2)
+        public static Vector3 operator -(Vector3 v1, Vector3 v2)
         {
-            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
-            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
-            return new Vector3(V1.X - V2.X, V1.Y - V2.Y, V1.Z - V2.Z);
+            v1 = v1 ?? new Vector3(0, 0, 0);
+            v2 = v2 ?? new Vector3(0, 0, 0);
+            return new Vector3(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z);
         }
 
         /// <summary>
         /// Negation
         /// </summary>
-        /// <param name="V1">Item 1</param>
+        /// <param name="v1">Item 1</param>
         /// <returns>The resulting vector</returns>
-        public static Vector3 operator -(Vector3 V1)
+        public static Vector3 operator -(Vector3 v1)
         {
-            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
-            return new Vector3(-V1.X, -V1.Y, -V1.Z);
+            v1 = v1 ?? new Vector3(0, 0, 0);
+            return new Vector3(-v1.X, -v1.Y, -v1.Z);
         }
 
         /// <summary>
         /// Not equals
         /// </summary>
-        /// <param name="V1">Item 1</param>
-        /// <param name="V2">Item 2</param>
+        /// <param name="v1">Item 1</param>
+        /// <param name="v2">Item 2</param>
         /// <returns>The resulting vector</returns>
-        public static bool operator !=(Vector3 V1, Vector3 V2)
+        public static bool operator !=(Vector3 v1, Vector3 v2)
         {
-            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
-            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
-            return !(V1 == V2);
+            return !(v1 == v2);
         }
 
         /// <summary>
         /// Multiplication
         /// </summary>
-        /// <param name="V1">Item 1</param>
-        /// <param name="D">Item 2</param>
+        /// <param name="v1">Item 1</param>
+        /// <param name="d">Item 2</param>
         /// <returns>The resulting vector</returns>
-        public static Vector3 operator *(Vector3 V1, double D)
+        public static Vector3 operator *(Vector3 v1, double d)
         {
-            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
-            return new Vector3(V1.X * D, V1.Y * D, V1.Z * D);
+            v1 = v1 ?? new Vector3(0, 0, 0);
+            return new Vector3(v1.X * d, v1.Y * d, v1.Z * d);
         }
 
         /// <summary>
         /// Multiplication
         /// </summary>
-        /// <param name="V1">Item 1</param>
-        /// <param name="D">Item 2</param>
+        /// <param name="v1">Item 1</param>
+        /// <param name="d">Item 2</param>
         /// <returns>The resulting vector</returns>
-        public static Vector3 operator *(double D, Vector3 V1)
+        public static Vector3 operator *(double d, Vector3 v1)
         {
-            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
-            return new Vector3(V1.X * D, V1.Y * D, V1.Z * D);
+            v1 = v1 ?? new Vector3(0, 0, 0);
+            return new Vector3(v1.X * d, v1.Y * d, v1.Z * d);
         }
 
         /// <summary>
         /// Does a cross product
         /// </summary>
-        /// <param name="V1">Item 1</param>
-        /// <param name="V2">Item 2</param>
+        /// <param name="v1">Item 1</param>
+        /// <param name="v2">Item 2</param>
         /// <returns>The resulting vector</returns>
-        public static Vector3 operator *(Vector3 V1, Vector3 V2)
+        public static Vector3 operator *(Vector3 v1, Vector3 v2)
         {
-            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
-            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
+            v1 = v1 ?? new Vector3(0, 0, 0);
+            v2 = v2 ?? new Vector3(0, 0, 0);
             var TempVector = new Vector3(0.0, 0.0, 0.0);
-            TempVector.X = (V1.Y * V2.Z) - (V1.Z * V2.Y);
-            TempVector.Y = (V1.Z * V2.X) - (V1.X * V2.Z);
-            TempVector.Z = (V1.X * V2.Y) - (V1.Y * V2.X);
+            TempVector.X = (v1.Y * v2.Z) - (v1.Z * v2.Y);
+            TempVector.Y = (v1.Z * v2.X) - (v1.X * v2.Z);
+            TempVector.Z = (v1.X * v2.Y) - (v1.Y * v2.X);
             return TempVector;
         }
 
         /// <summary>
         /// Division
         /// </summary>
-        /// <param name="V1">Item 1</param>
-        /// <param name="D">Item 2</param>
+        /// <param name="v1">Item 1</param>
+        /// <param name="d">Item 2</param>
         /// <returns>The resulting vector</returns>
-        public static Vector3 operator /(Vector3 V1, double D)
+        public static Vector3 operator /(Vector3 v1, double d)
         {
-            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
-            return new Vector3(V1.X / D, V1.Y / D, V1.Z / D);
+            v1 = v1 ?? new Vector3(0, 0, 0);
+            return new Vector3(v1.X / d, v1.Y / d, v1.Z / d);
         }
 
         /// <summary>
         /// Addition
         /// </summary>
-        /// <param name="V1">Item 1</param>
-        /// <param name="V2">Item 2</param>
+        /// <param name="v1">Item 1</param>
+        /// <param name="v2">Item 2</param>
         /// <returns>The resulting vector</returns>
-        public static Vector3 operator +(Vector3 V1, Vector3 V2)
+        public static Vector3 operator +(Vector3 v1, Vector3 v2)
         {
-            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
-            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
-            return new Vector3(V1.X + V2.X, V1.Y + V2.Y, V1.Z + V2.Z);
+            v1 = v1 ?? new Vector3(0, 0, 0);
+            v2 = v2 ?? new Vector3(0, 0, 0);
+            return new Vector3(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z);
         }
 
         /// <summary>
         /// Less than
         /// </summary>
-        /// <param name="V1">Item 1</param>
-        /// <param name="V2">Item 2</param>
+        /// <param name="v1">Item 1</param>
+        /// <param name="v2">Item 2</param>
         /// <returns>The resulting vector</returns>
-        public static bool operator <(Vector3 V1, Vector3 V2)
+        public static bool operator <(Vector3 v1, Vector3 v2)
         {
-            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
-            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
-            return V1.Magnitude < V2.Magnitude;
+            v1 = v1 ?? new Vector3(0, 0, 0);
+            v2 = v2 ?? new Vector3(0, 0, 0);
+            return v1.Magnitude < v2.Magnitude;
         }
 
         /// <summary>
         /// Less than or equal
         /// </summary>
-        /// <param name="V1">Item 1</param>
-        /// <param name="V2">Item 2</param>
+        /// <param name="v1">Item 1</param>
+        /// <param name="v2">Item 2</param>
         /// <returns>The resulting vector</returns>
-        public static bool operator <=(Vector3 V1, Vector3 V2)
+        public static bool operator <=(Vector3 v1, Vector3 v2)
         {
-            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
-            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
-            return V1.Magnitude <= V2.Magnitude;
+            v1 = v1 ?? new Vector3(0, 0, 0);
+            v2 = v2 ?? new Vector3(0, 0, 0);
+            return v1.Magnitude <= v2.Magnitude;
         }
 
         /// <summary>
         /// Equals
         /// </summary>
-        /// <param name="V1">Item 1</param>
-        /// <param name="V2">Item 2</param>
+        /// <param name="v1">Item 1</param>
+        /// <param name="v2">Item 2</param>
         /// <returns>The resulting vector</returns>
-        public static bool operator ==(Vector3 V1, Vector3 V2)
+        public static bool operator ==(Vector3 v1, Vector3 v2)
         {
-            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
-            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
-            return V1.X == V2.X && V1.Y == V2.Y && V1.Z == V2.Z;
+            if (ReferenceEquals(v1, null) && ReferenceEquals(v2, null))
+                return true;
+            if (ReferenceEquals(v1, null) || ReferenceEquals(v2, null))
+                return false;
+            return Equals(v1.X, v2.X) && Equals(v1.Y, v2.Y) && Equals(v1.Z, v2.Z);
         }
 
         /// <summary>
         /// Greater than
         /// </summary>
-        /// <param name="V1">Item 1</param>
-        /// <param name="V2">Item 2</param>
+        /// <param name="v1">Item 1</param>
+        /// <param name="v2">Item 2</param>
         /// <returns>The resulting vector</returns>
-        public static bool operator >(Vector3 V1, Vector3 V2)
+        public static bool operator >(Vector3 v1, Vector3 v2)
         {
-            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
-            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
-            return V1.Magnitude > V2.Magnitude;
+            v1 = v1 ?? new Vector3(0, 0, 0);
+            v2 = v2 ?? new Vector3(0, 0, 0);
+            return v1.Magnitude > v2.Magnitude;
         }
 
         /// <summary>
         /// Greater than or equal
         /// </summary>
-        /// <param name="V1">Item 1</param>
-        /// <param name="V2">Item 2</param>
+        /// <param name="v1">Item 1</param>
+        /// <param name="v2">Item 2</param>
         /// <returns>The resulting vector</returns>
-        public static bool operator >=(Vector3 V1, Vector3 V2)
+        public static bool operator >=(Vector3 v1, Vector3 v2)
         {
-            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
-            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
-            return V1.Magnitude >= V2.Magnitude;
+            v1 = v1 ?? new Vector3(0, 0, 0);
+            v2 = v2 ?? new Vector3(0, 0, 0);
+            return v1.Magnitude >= v2.Magnitude;
         }
 
         /// <summary>
@@ -332,13 +322,13 @@ namespace Utilities.DataTypes
         /// <returns>The hash code</returns>
         public override int GetHashCode()
         {
-            return (int)(X + Y + Z) % Int32.MaxValue;
+            return (int)(X + Y + Z) % int.MaxValue;
         }
 
         /// <summary>
         /// Normalizes the vector
         /// </summary>
-        public virtual void Normalize()
+        public void Normalize()
         {
             double Normal = Magnitude;
             if (Normal > 0)
@@ -356,7 +346,7 @@ namespace Utilities.DataTypes
         /// <returns>String representation of the vector</returns>
         public override string ToString()
         {
-            return "(" + X + "," + Y + "," + Z + ")";
+            return string.Format("({0},{1},{2})", X, Y, Z);
         }
     }
 }

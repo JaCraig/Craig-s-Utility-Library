@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -36,7 +35,6 @@ namespace Utilities.DataTypes
         /// Constructor
         /// </summary>
         public PriorityQueue()
-            : base()
         {
             HighestKey = int.MinValue;
             Items = new Dictionary<int, ICollection<T>>();
@@ -45,26 +43,17 @@ namespace Utilities.DataTypes
         /// <summary>
         /// The number of items in the listing
         /// </summary>
-        public virtual int Count
-        {
-            get { return Items.Count; }
-        }
+        public int Count => Items.Count;
 
         /// <summary>
         /// Not read only
         /// </summary>
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         /// <summary>
         /// The list of keys within the mapping
         /// </summary>
-        public virtual ICollection<int> Keys
-        {
-            get { return Items.Keys; }
-        }
+        public ICollection<int> Keys => Items.Keys;
 
         /// <summary>
         /// List that contains the list of values
@@ -83,7 +72,7 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Highest value key
         /// </summary>
-        protected virtual int HighestKey { get; set; }
+        protected int HighestKey { get; set; }
 
         /// <summary>
         /// Container holding the data
@@ -95,7 +84,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="key">Key to look for</param>
         /// <returns>The list of values</returns>
-        public virtual ICollection<T> this[int key]
+        public ICollection<T> this[int key]
         {
             get { return Items.GetValue(key, new List<T>()); }
             set { Items.SetValue(key, value); }
@@ -104,20 +93,20 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Adds an item to the mapping
         /// </summary>
-        /// <param name="Key">Key value</param>
-        /// <param name="Value">The value to add</param>
-        public virtual void Add(int Key, T Value)
+        /// <param name="key">Key value</param>
+        /// <param name="value">The value to add</param>
+        public void Add(int key, T value)
         {
-            if (Key > HighestKey)
-                HighestKey = Key;
-            Items.SetValue(Key, Items.GetValue(Key, new List<T>()).Add(new T[] { Value }));
+            if (key > HighestKey)
+                HighestKey = key;
+            Items.SetValue(key, Items.GetValue(key, new List<T>()).Add(new T[] { value }));
         }
 
         /// <summary>
         /// Adds a key value pair
         /// </summary>
         /// <param name="item">Key value pair to add</param>
-        public virtual void Add(KeyValuePair<int, ICollection<T>> item)
+        public void Add(KeyValuePair<int, ICollection<T>> item)
         {
             if (item.Key > HighestKey)
                 HighestKey = item.Key;
@@ -127,19 +116,19 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Adds a list of items to the mapping
         /// </summary>
-        /// <param name="Key">Key value</param>
-        /// <param name="Value">The values to add</param>
-        public virtual void Add(int Key, ICollection<T> Value)
+        /// <param name="key">Key value</param>
+        /// <param name="value">The values to add</param>
+        public void Add(int key, ICollection<T> value)
         {
-            if (Key > HighestKey)
-                HighestKey = Key;
-            Items.SetValue(Key, Items.GetValue(Key, new List<T>()).Add(Value));
+            if (key > HighestKey)
+                HighestKey = key;
+            Items.SetValue(key, Items.GetValue(key, new List<T>()).Add(value));
         }
 
         /// <summary>
         /// Clears all items from the listing
         /// </summary>
-        public virtual void Clear()
+        public void Clear()
         {
             Items.Clear();
         }
@@ -149,7 +138,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="item">Key value pair to check</param>
         /// <returns>True if it exists, false otherwise</returns>
-        public virtual bool Contains(KeyValuePair<int, ICollection<T>> item)
+        public bool Contains(KeyValuePair<int, ICollection<T>> item)
         {
             if (!ContainsKey(item.Key))
                 return false;
@@ -161,15 +150,15 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Does the list mapping contain the key value pairs?
         /// </summary>
-        /// <param name="Key">Key value</param>
-        /// <param name="Values">Value</param>
+        /// <param name="key">Key value</param>
+        /// <param name="values">Value</param>
         /// <returns>True if it exists, false otherwise</returns>
-        public virtual bool Contains(int Key, ICollection<T> Values)
+        public bool Contains(int key, ICollection<T> values)
         {
-            if (!ContainsKey(Key))
+            if (!ContainsKey(key))
                 return false;
-            foreach (T Value in Values)
-                if (!Contains(Key, Value))
+            foreach (T Value in values)
+                if (!Contains(key, Value))
                     return false;
             return true;
         }
@@ -177,14 +166,14 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Does the list mapping contain the key value pair?
         /// </summary>
-        /// <param name="Key">Key</param>
-        /// <param name="Value">Value</param>
+        /// <param name="key">Key</param>
+        /// <param name="value">Value</param>
         /// <returns>True if it exists, false otherwise</returns>
-        public bool Contains(int Key, T Value)
+        public bool Contains(int key, T value)
         {
-            if (!ContainsKey(Key))
+            if (!ContainsKey(key))
                 return false;
-            if (!this[Key].Contains(Value))
+            if (!this[key].Contains(value))
                 return false;
             return true;
         }
@@ -194,7 +183,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="key">Key to check on</param>
         /// <returns>True if it exists, false otherwise</returns>
-        public virtual bool ContainsKey(int key)
+        public bool ContainsKey(int key)
         {
             return Items.ContainsKey(key);
         }
@@ -223,7 +212,7 @@ namespace Utilities.DataTypes
         /// Peek at the next thing in the queue
         /// </summary>
         /// <returns>The next item in queue or default(T) if it is empty</returns>
-        public virtual T Peek()
+        public T Peek()
         {
             if (Items.ContainsKey(HighestKey))
                 return Items[HighestKey].FirstOrDefault();
@@ -234,7 +223,7 @@ namespace Utilities.DataTypes
         /// Removes an item from the queue and returns it
         /// </summary>
         /// <returns>The next item in the queue</returns>
-        public virtual T Pop()
+        public T Pop()
         {
             T ReturnValue = default(T);
             if (Items.ContainsKey(HighestKey) && Items[HighestKey].Count > 0)
@@ -257,7 +246,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="key">Key to use</param>
         /// <returns>True if the key is found, false otherwise</returns>
-        public virtual bool Remove(int key)
+        public bool Remove(int key)
         {
             return Items.Remove(key);
         }
@@ -267,7 +256,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="item">items to remove</param>
         /// <returns>True if it is removed, false otherwise</returns>
-        public virtual bool Remove(KeyValuePair<int, ICollection<T>> item)
+        public bool Remove(KeyValuePair<int, ICollection<T>> item)
         {
             if (!Contains(item))
                 return false;
@@ -280,16 +269,16 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Removes a key value pair from the list mapping
         /// </summary>
-        /// <param name="Key">Key to remove</param>
+        /// <param name="key">Key to remove</param>
         /// <param name="Value">Value to remove</param>
         /// <returns>True if it is removed, false otherwise</returns>
-        public virtual bool Remove(int Key, T Value)
+        public bool Remove(int key, T Value)
         {
-            if (!Contains(Key, Value))
+            if (!Contains(key, Value))
                 return false;
-            Items[Key].Remove(Value);
-            if (this[Key].Count == 0)
-                Remove(Key);
+            Items[key].Remove(Value);
+            if (this[key].Count == 0)
+                Remove(key);
             return true;
         }
 
@@ -307,12 +296,12 @@ namespace Utilities.DataTypes
         /// Tries to get the value associated with the key
         /// </summary>
         /// <param name="Key">Key value</param>
-        /// <param name="Value">The values getting</param>
+        /// <param name="value">The values getting</param>
         /// <returns>True if it was able to get the value, false otherwise</returns>
-        public virtual bool TryGetValue(int Key, out ICollection<T> Value)
+        public bool TryGetValue(int Key, out ICollection<T> value)
         {
-            Value = new List<T>();
-            return Items.TryGetValue(Key, out Value);
+            value = new List<T>();
+            return Items.TryGetValue(Key, out value);
         }
     }
 }

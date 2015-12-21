@@ -22,8 +22,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics.Contracts;
+using System.Data.Common;
 using System.Linq;
 
 namespace Utilities.DataTypes
@@ -36,15 +35,17 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="ColumnNames">Column names</param>
-        /// <param name="ColumnValues">Column values</param>
-        /// <param name="ColumnNameHash">Column name hash</param>
-        public Row(Hashtable ColumnNameHash, string[] ColumnNames, params object[] ColumnValues)
+        /// <param name="columnNames">Column names</param>
+        /// <param name="columnValues">Column values</param>
+        /// <param name="columnNameHash">Column name hash</param>
+        public Row(Hashtable columnNameHash, string[] columnNames, params object[] columnValues)
         {
-            Contract.Requires<ArgumentNullException>(ColumnValues != null, "ColumnValues");
-            this.ColumnNameHash = ColumnNameHash;
-            this.ColumnNames = ColumnNames;
-            this.ColumnValues = (object[])ColumnValues.Clone();
+            columnValues = columnValues ?? new object[0];
+            columnNames = columnNames ?? new string[0];
+            columnNameHash = columnNameHash ?? new Hashtable();
+            ColumnNameHash = columnNameHash;
+            ColumnNames = columnNames;
+            ColumnValues = (object[])columnValues.Clone();
         }
 
         /// <summary>
@@ -65,18 +66,16 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Returns a column based on the column name specified
         /// </summary>
-        /// <param name="ColumnName">Column name to search for</param>
+        /// <param name="columnName">Column name to search for</param>
         /// <returns>The value specified</returns>
-        public object this[string ColumnName]
+        public object this[string columnName]
         {
             get
             {
-                Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ColumnName), "ColumnName");
-                Contract.Requires<NullReferenceException>(ColumnNameHash != null, "ColumnNameHash");
-                Contract.Requires<NullReferenceException>(ColumnValues != null, "ColumnValues");
-                var Column = (int)ColumnNameHash[ColumnName];//.PositionOf(ColumnName);
+                columnName = columnName ?? "";
+                var Column = (int)ColumnNameHash[columnName];
                 if (Column <= -1)
-                    throw new ArgumentOutOfRangeException(ColumnName + " is not present in the row");
+                    return null;
                 return this[Column];
             }
         }
@@ -84,17 +83,17 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Returns a column based on the value specified
         /// </summary>
-        /// <param name="Column">Column number</param>
+        /// <param name="column">Column number</param>
         /// <returns>The value specified</returns>
-        public object this[int Column]
+        public object this[int column]
         {
             get
             {
-                Contract.Requires<ArgumentOutOfRangeException>(Column >= 0, "Column");
-                Contract.Requires<NullReferenceException>(ColumnValues != null, "ColumnValues");
-                if (ColumnValues.Length <= Column)
+                if (column < 0)
+                    column = 0;
+                if (ColumnValues.Length <= column)
                     return null;
-                return ColumnValues[Column];
+                return ColumnValues[column];
             }
         }
     }
@@ -107,50 +106,52 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="ColumnNames">Column names</param>
-        public Table(params string[] ColumnNames)
+        /// <param name="columnNames">Column names</param>
+        public Table(params string[] columnNames)
         {
-            Contract.Requires<ArgumentNullException>(ColumnNames != null, "ColumnNames");
-            this.ColumnNames = (string[])ColumnNames.Clone();
-            this.Rows = new List<Row>();
-            this.ColumnNameHash = new Hashtable();
+            columnNames = columnNames ?? new string[0];
+            ColumnNames = (string[])columnNames.Clone();
+            Rows = new List<Row>();
+            ColumnNameHash = new Hashtable();
             int x = 0;
-            foreach (string ColumnName in ColumnNames)
+            foreach (string ColumnName in columnNames)
             {
-                if (!this.ColumnNameHash.ContainsKey(ColumnName))
-                    this.ColumnNameHash.Add(ColumnName, x++);
+                if (!ColumnNameHash.ContainsKey(ColumnName))
+                    ColumnNameHash.Add(ColumnName, x++);
             }
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Reader">Data reader to get the data from</param>
-        public Table(IDataReader Reader)
+        /// <param name="reader">Data reader to get the data from</param>
+        public Table(DbDataReader reader)
         {
-            Contract.Requires<ArgumentNullException>(Reader != null, "Reader");
-            Contract.Requires<ArgumentOutOfRangeException>(Reader.FieldCount >= 0, "Reader.FieldCount needs to have at least 0 fields");
-            this.ColumnNames = new string[Reader.FieldCount];
-            for (int x = 0; x < Reader.FieldCount; ++x)
+            if (reader == null)
+                throw new ArgumentNullException(nameof(reader));
+            if (reader.FieldCount == 0)
+                throw new ArgumentOutOfRangeException(nameof(reader), "reader.FieldCount needs to have at least 0 fields");
+            ColumnNames = new string[reader.FieldCount];
+            for (int x = 0; x < reader.FieldCount; ++x)
             {
-                this.ColumnNames[x] = Reader.GetName(x);
+                ColumnNames[x] = reader.GetName(x);
             }
-            this.ColumnNameHash = new Hashtable();
+            ColumnNameHash = new Hashtable();
             int y = 0;
             foreach (string ColumnName in ColumnNames)
             {
-                if (!this.ColumnNameHash.ContainsKey(ColumnName))
-                    this.ColumnNameHash.Add(ColumnName, y++);
+                if (!ColumnNameHash.ContainsKey(ColumnName))
+                    ColumnNameHash.Add(ColumnName, y++);
             }
-            this.Rows = new List<Row>();
-            while (Reader.Read())
+            Rows = new List<Row>();
+            while (reader.Read())
             {
                 object[] Values = new object[ColumnNames.Length];
-                for (int x = 0; x < Reader.FieldCount; ++x)
+                for (int x = 0; x < reader.FieldCount; ++x)
                 {
-                    Values[x] = Reader[x];
+                    Values[x] = reader[x];
                 }
-                this.Rows.Add(new Row(this.ColumnNameHash, this.ColumnNames, Values));
+                Rows.Add(new Row(ColumnNameHash, ColumnNames, Values));
             }
         }
 
@@ -172,27 +173,30 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Gets a specific row
         /// </summary>
-        /// <param name="RowNumber">Row number</param>
+        /// <param name="rowNumber">Row number</param>
         /// <returns>The row specified</returns>
-        public Row this[int RowNumber]
+        public Row this[int rowNumber]
         {
             get
             {
-                Contract.Requires<NullReferenceException>(Rows != null, "Rows");
-                return Rows.Count > RowNumber ? Rows.ElementAt(RowNumber) : null;
+                if (Rows == null)
+                    return null;
+                return Rows.Count > rowNumber ? Rows.ElementAt(rowNumber) : null;
             }
         }
 
         /// <summary>
         /// Adds a row using the objects passed in
         /// </summary>
-        /// <param name="Objects">Objects to create the row from</param>
+        /// <param name="objects">Objects to create the row from</param>
         /// <returns>This</returns>
-        public virtual Table AddRow(params object[] Objects)
+        public Table AddRow(params object[] objects)
         {
-            Contract.Requires<ArgumentNullException>(Objects != null, "Objects");
-            Contract.Requires<ArgumentNullException>(Rows != null, "Rows");
-            this.Rows.Add(new Row(ColumnNameHash, ColumnNames, Objects));
+            if (objects == null)
+                return this;
+            if (Rows == null)
+                return this;
+            Rows.Add(new Row(ColumnNameHash, ColumnNames, objects));
             return this;
         }
     }

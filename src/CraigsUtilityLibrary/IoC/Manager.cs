@@ -33,16 +33,47 @@ namespace Utilities.IoC
     /// <summary>
     /// IoC manager class
     /// </summary>
-    public class Manager : IDisposable
+    public static class Manager
     {
         /// <summary>
-        /// Constructor
+        /// Bootstrapper object
         /// </summary>
-        /// <param name="assemblies">Assemblies to scan for modules</param>
-        public Manager(params Assembly[] assemblies)
+        public static IBootstrapper Bootstrapper { get; private set; }
+
+        /// <summary>
+        /// Creates the IoC Container
+        /// </summary>
+        /// <param name="descriptors">The service descriptors.</param>
+        /// <param name="assemblies">The assemblies to scan for modules/types.</param>
+        /// <returns>The resulting bootstrapper</returns>
+        public static IBootstrapper CreateContainer(IEnumerable<ServiceDescriptor> descriptors, params Assembly[] assemblies)
         {
             assemblies = assemblies ?? new Assembly[0];
-            Assemblies = new List<Assembly>();
+            var Assemblies = LoadAssemblies(assemblies);
+            var LoadedTypes = Assemblies.SelectMany(x => x.ExportedTypes);
+            Bootstrapper = GetBootstrapper(Assemblies, LoadedTypes);
+            Bootstrapper.Register<IServiceProvider>(Bootstrapper, ServiceLifetime.Singleton);
+            RegisterModules();
+            RegisterServiceDescriptors(descriptors);
+            return Bootstrapper;
+        }
+
+        private static IBootstrapper GetBootstrapper(IEnumerable<Assembly> Assemblies, IEnumerable<Type> LoadedTypes)
+        {
+            var Bootstrappers = LoadedTypes.Where(x => x.GetInterfaces().Contains(typeof(IBootstrapper))
+                                                                                  && x.GetTypeInfo().IsClass
+                                                                                  && !x.GetTypeInfo().IsAbstract
+                                                                                  && !x.GetTypeInfo().ContainsGenericParameters
+                                                                                  && !x.GetTypeInfo().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase))
+                                                       .ToList();
+            if (Bootstrappers.Count == 0)
+                Bootstrappers.Add(typeof(DefaultBootstrapper));
+            return (IBootstrapper)Activator.CreateInstance(Bootstrappers[0], Assemblies, LoadedTypes);
+        }
+
+        private static IEnumerable<Assembly> LoadAssemblies(Assembly[] assemblies)
+        {
+            var Assemblies = new List<Assembly>();
             Assemblies.AddRange(assemblies);
             if (Assemblies.Count == 0 || !Assemblies.Contains(typeof(Manager).GetTypeInfo().Assembly))
                 Assemblies.Add(typeof(Manager).GetTypeInfo().Assembly);
@@ -52,17 +83,11 @@ namespace Utilities.IoC
             {
                 Assemblies.Add(Assembly.Load(new AssemblyName(GeneratedFile.FullName)));
             }
-            var LoadedTypes = Assemblies.SelectMany(x => x.ExportedTypes);
-            var Bootstrappers = LoadedTypes.Where(x => x.GetInterfaces().Contains(typeof(IBootstrapper))
-                                                                      && x.GetTypeInfo().IsClass
-                                                                      && !x.GetTypeInfo().IsAbstract
-                                                                      && !x.GetTypeInfo().ContainsGenericParameters
-                                                                      && !x.GetTypeInfo().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase))
-                                           .ToList();
-            if (Bootstrappers.Count == 0)
-                Bootstrappers.Add(typeof(DefaultBootstrapper));
-            Bootstrapper = (IBootstrapper)Activator.CreateInstance(Bootstrappers[0], Assemblies, LoadedTypes);
-            Bootstrapper.Register<IServiceProvider>(Bootstrapper, ServiceLifetime.Singleton);
+            return Assemblies;
+        }
+
+        private static void RegisterModules()
+        {
             Bootstrapper.RegisterAll<IModule>();
             foreach (IModule Module in Bootstrapper.ResolveAll<IModule>().OrderBy(x => x.Order))
             {
@@ -70,54 +95,11 @@ namespace Utilities.IoC
             }
         }
 
-        /// <summary>
-        /// Bootstrapper object
-        /// </summary>
-        public IBootstrapper Bootstrapper { get; private set; }
-
-        /// <summary>
-        /// The list of assemblies that the system is using.
-        /// </summary>
-        private List<Assembly> Assemblies { get; set; }
-
-        /// <summary>
-        /// Disposes of the object
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Displays information about the IoC container in string form
-        /// </summary>
-        /// <returns>Information about the IoC container</returns>
-        public override string ToString()
-        {
-            return Bootstrapper.Name;
-        }
-
-        /// <summary>
-        /// Disposes of the object
-        /// </summary>
-        /// <param name="Managed">
-        /// Determines if all objects should be disposed or just managed objects
-        /// </param>
-        protected virtual void Dispose(bool Managed)
-        {
-            if (Bootstrapper != null)
-            {
-                Bootstrapper.Dispose();
-                Bootstrapper = null;
-            }
-        }
-
-        private IBootstrapper Register(IEnumerable<ServiceDescriptor> descriptors)
+        private static void RegisterServiceDescriptors(IEnumerable<ServiceDescriptor> descriptors)
         {
             var RegisterTypes = typeof(IBootstrapper).GetTypeInfo()
-                                                     .GetDeclaredMethods("Register")
-                                                     .First(x => x.GetGenericArguments().Count() == 2);
+                                                                 .GetDeclaredMethods("Register")
+                                                                 .First(x => x.GetGenericArguments().Count() == 2);
             var RegisterFunc = typeof(IBootstrapper).GetTypeInfo()
                                                     .GetDeclaredMethods("Register")
                                                      .First(x => x.GetGenericArguments().Count() == 1 &&
@@ -156,15 +138,6 @@ namespace Utilities.IoC
                     tempRegistration.Invoke(Bootstrapper, new object[] { item.ImplementationInstance, item.Lifetime, "" });
                 }
             }
-            return Bootstrapper;
-        }
-
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        ~Manager()
-        {
-            Dispose(false);
         }
     }
 }

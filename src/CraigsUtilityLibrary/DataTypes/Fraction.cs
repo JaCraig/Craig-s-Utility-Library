@@ -33,71 +33,71 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Numerator">Numerator</param>
-        /// <param name="Denominator">Denominator</param>
-        public Fraction(int Numerator, int Denominator)
+        /// <param name="numerator">Numerator</param>
+        /// <param name="denominator">Denominator</param>
+        public Fraction(int numerator, int denominator)
         {
-            this.Numerator = Numerator;
-            this.Denominator = Denominator;
+            Numerator = numerator;
+            Denominator = denominator;
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Numerator">Numerator</param>
-        /// <param name="Denominator">Denominator</param>
-        public Fraction(double Numerator, double Denominator)
+        /// <param name="numerator">Numerator</param>
+        /// <param name="denominator">Denominator</param>
+        public Fraction(double numerator, double denominator)
         {
-            while (Numerator != System.Math.Round(Numerator, MidpointRounding.AwayFromZero)
-                || Denominator != System.Math.Round(Denominator, MidpointRounding.AwayFromZero))
+            while (numerator != Math.Round(numerator, MidpointRounding.AwayFromZero)
+                || denominator != Math.Round(denominator, MidpointRounding.AwayFromZero))
             {
-                Numerator *= 10;
-                Denominator *= 10;
+                numerator *= 10;
+                denominator *= 10;
             }
-            this.Numerator = (int)Numerator;
-            this.Denominator = (int)Denominator;
-            if (this.Denominator == int.MinValue)
+            Numerator = (int)numerator;
+            Denominator = (int)denominator;
+            if (Denominator == int.MinValue)
                 return;
-            this.Reduce();
+            Reduce();
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Numerator">Numerator</param>
-        /// <param name="Denominator">Denominator</param>
-        public Fraction(decimal Numerator, decimal Denominator)
+        /// <param name="numerator">Numerator</param>
+        /// <param name="denominator">Denominator</param>
+        public Fraction(decimal numerator, decimal denominator)
         {
-            while (Numerator != System.Math.Round(Numerator, MidpointRounding.AwayFromZero)
-                || Denominator != System.Math.Round(Denominator, MidpointRounding.AwayFromZero))
+            while (numerator != Math.Round(numerator, MidpointRounding.AwayFromZero)
+                || denominator != Math.Round(denominator, MidpointRounding.AwayFromZero))
             {
-                Numerator *= 10;
-                Denominator *= 10;
+                numerator *= 10;
+                denominator *= 10;
             }
-            this.Numerator = (int)Numerator;
-            this.Denominator = (int)Denominator;
-            this.Reduce();
+            Numerator = (int)numerator;
+            Denominator = (int)denominator;
+            Reduce();
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Numerator">Numerator</param>
-        /// <param name="Denominator">Denominator</param>
-        public Fraction(float Numerator, float Denominator)
+        /// <param name="numerator">Numerator</param>
+        /// <param name="denominator">Denominator</param>
+        public Fraction(float numerator, float denominator)
         {
-            Contract.Requires<ArgumentException>(Denominator != Int32.MinValue);
-            while (Numerator != System.Math.Round(Numerator, MidpointRounding.AwayFromZero)
-                || Denominator != System.Math.Round(Denominator, MidpointRounding.AwayFromZero))
+            Contract.Requires<ArgumentException>(denominator != Int32.MinValue);
+            while (numerator != Math.Round(numerator, MidpointRounding.AwayFromZero)
+                || denominator != Math.Round(denominator, MidpointRounding.AwayFromZero))
             {
-                Numerator *= 10;
-                Denominator *= 10;
+                numerator *= 10;
+                denominator *= 10;
             }
-            this.Numerator = (int)Numerator;
-            this.Denominator = (int)Denominator;
-            if (this.Denominator == int.MinValue)
+            Numerator = (int)numerator;
+            Denominator = (int)denominator;
+            if (Denominator == int.MinValue)
                 return;
-            this.Reduce();
+            Reduce();
         }
 
         /// <summary>
@@ -113,110 +113,115 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Converts the fraction to a decimal
         /// </summary>
-        /// <param name="Fraction">Fraction</param>
+        /// <param name="fraction">Fraction</param>
         /// <returns>The fraction as a decimal</returns>
-        public static implicit operator decimal(Fraction Fraction)
+        public static implicit operator decimal(Fraction fraction)
         {
-            Contract.Requires<ArgumentNullException>(Fraction != null, "Fraction");
-            return ((decimal)Fraction.Numerator / (decimal)Fraction.Denominator);
+            if (fraction == null)
+                throw new ArgumentNullException(nameof(fraction));
+            return ((decimal)fraction.Numerator / (decimal)fraction.Denominator);
         }
 
         /// <summary>
         /// Converts the fraction to a double
         /// </summary>
-        /// <param name="Fraction">Fraction</param>
+        /// <param name="fraction">Fraction</param>
         /// <returns>The fraction as a double</returns>
-        public static implicit operator double(Fraction Fraction)
+        public static implicit operator double(Fraction fraction)
         {
-            Contract.Requires<ArgumentNullException>(Fraction != null, "Fraction");
-            return ((double)Fraction.Numerator / (double)Fraction.Denominator);
+            if (fraction == null)
+                throw new ArgumentNullException(nameof(fraction));
+            return ((double)fraction.Numerator / (double)fraction.Denominator);
         }
 
         /// <summary>
         /// Converts the fraction to a float
         /// </summary>
-        /// <param name="Fraction">Fraction</param>
+        /// <param name="fraction">Fraction</param>
         /// <returns>The fraction as a float</returns>
-        public static implicit operator float(Fraction Fraction)
+        public static implicit operator float(Fraction fraction)
         {
-            Contract.Requires<ArgumentNullException>(Fraction != null, "Fraction");
-            return ((float)Fraction.Numerator / (float)Fraction.Denominator);
+            if (fraction == null)
+                throw new ArgumentNullException(nameof(fraction));
+            return ((float)fraction.Numerator / (float)fraction.Denominator);
         }
 
         /// <summary>
         /// Converts the double to a fraction
         /// </summary>
-        /// <param name="Fraction">Fraction</param>
+        /// <param name="fraction">Fraction</param>
         /// <returns>The double as a fraction</returns>
-        public static implicit operator Fraction(double Fraction)
+        public static implicit operator Fraction(double fraction)
         {
-            return new Fraction(Fraction, 1.0);
+            return new Fraction(fraction, 1.0);
         }
 
         /// <summary>
         /// Converts the decimal to a fraction
         /// </summary>
-        /// <param name="Fraction">Fraction</param>
+        /// <param name="fraction">Fraction</param>
         /// <returns>The decimal as a fraction</returns>
-        public static implicit operator Fraction(decimal Fraction)
+        public static implicit operator Fraction(decimal fraction)
         {
-            return new Fraction(Fraction, 1.0m);
+            return new Fraction(fraction, 1.0m);
         }
 
         /// <summary>
         /// Converts the float to a fraction
         /// </summary>
-        /// <param name="Fraction">Fraction</param>
+        /// <param name="fraction">Fraction</param>
         /// <returns>The float as a fraction</returns>
-        public static implicit operator Fraction(float Fraction)
+        public static implicit operator Fraction(float fraction)
         {
-            return new Fraction(Fraction, 1.0);
+            return new Fraction(fraction, 1.0);
         }
 
         /// <summary>
         /// Converts the int to a fraction
         /// </summary>
-        /// <param name="Fraction">Fraction</param>
+        /// <param name="fraction">Fraction</param>
         /// <returns>The int as a fraction</returns>
-        public static implicit operator Fraction(int Fraction)
+        public static implicit operator Fraction(int fraction)
         {
-            return new Fraction(Fraction, 1);
+            return new Fraction(fraction, 1);
         }
 
         /// <summary>
         /// Converts the uint to a fraction
         /// </summary>
-        /// <param name="Fraction">Fraction</param>
+        /// <param name="fraction">Fraction</param>
         /// <returns>The uint as a fraction</returns>
-        [CLSCompliant(false)]
-        public static implicit operator Fraction(uint Fraction)
+        public static implicit operator Fraction(uint fraction)
         {
-            return new Fraction((int)Fraction, 1);
+            return new Fraction((int)fraction, 1);
         }
 
         /// <summary>
         /// Converts the fraction to a string
         /// </summary>
-        /// <param name="Fraction">Fraction</param>
+        /// <param name="fraction">Fraction</param>
         /// <returns>The fraction as a string</returns>
-        public static implicit operator string(Fraction Fraction)
+        public static implicit operator string(Fraction fraction)
         {
-            Contract.Requires<ArgumentNullException>(Fraction != null, "Fraction");
-            return Fraction.ToString();
+            if (fraction == null)
+                return "";
+            return fraction.ToString();
         }
 
         /// <summary>
         /// Subtraction
         /// </summary>
-        /// <param name="First">First fraction</param>
-        /// <param name="Second">Second fraction</param>
+        /// <param name="first">First fraction</param>
+        /// <param name="second">Second fraction</param>
         /// <returns>The subtracted fraction</returns>
-        public static Fraction operator -(Fraction First, Fraction Second)
+        public static Fraction operator -(Fraction first, Fraction second)
         {
-            Contract.Requires<ArgumentNullException>(First != null, "First");
-            Contract.Requires<ArgumentNullException>(Second != null, "Second");
-            var Value1 = new Fraction(First.Numerator * (int)Second.Denominator, First.Denominator * Second.Denominator);
-            var Value2 = new Fraction(Second.Numerator * (int)First.Denominator, Second.Denominator * First.Denominator);
+            if (first == null)
+                throw new ArgumentNullException(nameof(first));
+            if (second == null)
+                throw new ArgumentNullException(nameof(second));
+            var Value1 = new Fraction(first.Numerator * (int)second.Denominator, first.Denominator * second.Denominator);
+            var Value2 = new Fraction(second.Numerator * (int)first.Denominator, second.Denominator * first.Denominator);
             var Result = new Fraction(Value1.Numerator - Value2.Numerator, Value1.Denominator);
             Result.Reduce();
             return Result;
@@ -225,58 +230,61 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Negation of the fraction
         /// </summary>
-        /// <param name="First">Fraction to negate</param>
+        /// <param name="first">Fraction to negate</param>
         /// <returns>The negated fraction</returns>
-        public static Fraction operator -(Fraction First)
+        public static Fraction operator -(Fraction first)
         {
-            Contract.Requires<ArgumentNullException>(First != null, "First");
-            return new Fraction(-First.Numerator, First.Denominator);
+            if (first == null)
+                throw new ArgumentNullException(nameof(first));
+            return new Fraction(-first.Numerator, first.Denominator);
         }
 
         /// <summary>
         /// Not equals operator
         /// </summary>
-        /// <param name="First">First item</param>
-        /// <param name="Second">Second item</param>
+        /// <param name="first">First item</param>
+        /// <param name="second">Second item</param>
         /// <returns>True if they are, false otherwise</returns>
-        public static bool operator !=(Fraction First, Fraction Second)
+        public static bool operator !=(Fraction first, Fraction second)
         {
-            return !(First == Second);
+            return !(first == second);
         }
 
         /// <summary>
         /// Not equals operator
         /// </summary>
-        /// <param name="First">First item</param>
-        /// <param name="Second">Second item</param>
+        /// <param name="first">First item</param>
+        /// <param name="second">Second item</param>
         /// <returns>True if they are, false otherwise</returns>
-        public static bool operator !=(Fraction First, double Second)
+        public static bool operator !=(Fraction first, double second)
         {
-            return !(First == Second);
+            return !(first == second);
         }
 
         /// <summary>
         /// Not equals operator
         /// </summary>
-        /// <param name="First">First item</param>
-        /// <param name="Second">Second item</param>
+        /// <param name="first">First item</param>
+        /// <param name="second">Second item</param>
         /// <returns>True if they are, false otherwise</returns>
-        public static bool operator !=(double First, Fraction Second)
+        public static bool operator !=(double first, Fraction second)
         {
-            return !(First == Second);
+            return !(first == second);
         }
 
         /// <summary>
         /// Multiplication
         /// </summary>
-        /// <param name="First">First fraction</param>
-        /// <param name="Second">Second fraction</param>
+        /// <param name="first">First fraction</param>
+        /// <param name="second">Second fraction</param>
         /// <returns>The resulting fraction</returns>
-        public static Fraction operator *(Fraction First, Fraction Second)
+        public static Fraction operator *(Fraction first, Fraction second)
         {
-            Contract.Requires<ArgumentNullException>(First != null, "First");
-            Contract.Requires<ArgumentNullException>(Second != null, "Second");
-            var Result = new Fraction(First.Numerator * Second.Numerator, First.Denominator * Second.Denominator);
+            if (first == null)
+                throw new ArgumentNullException(nameof(first));
+            if (second == null)
+                throw new ArgumentNullException(nameof(second));
+            var Result = new Fraction(first.Numerator * second.Numerator, first.Denominator * second.Denominator);
             Result.Reduce();
             return Result;
         }
@@ -284,28 +292,32 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Division
         /// </summary>
-        /// <param name="First">First item</param>
-        /// <param name="Second">Second item</param>
+        /// <param name="first">First item</param>
+        /// <param name="second">Second item</param>
         /// <returns>The divided fraction</returns>
-        public static Fraction operator /(Fraction First, Fraction Second)
+        public static Fraction operator /(Fraction first, Fraction second)
         {
-            Contract.Requires<ArgumentNullException>(First != null, "First");
-            Contract.Requires<ArgumentNullException>(Second != null, "Second");
-            return First * Second.Inverse();
+            if (first == null)
+                throw new ArgumentNullException(nameof(first));
+            if (second == null)
+                throw new ArgumentNullException(nameof(second));
+            return first * second.Inverse();
         }
 
         /// <summary>
         /// Addition
         /// </summary>
-        /// <param name="First">First fraction</param>
-        /// <param name="Second">Second fraction</param>
+        /// <param name="first">First fraction</param>
+        /// <param name="second">Second fraction</param>
         /// <returns>The added fraction</returns>
-        public static Fraction operator +(Fraction First, Fraction Second)
+        public static Fraction operator +(Fraction first, Fraction second)
         {
-            Contract.Requires<ArgumentNullException>(First != null, "First");
-            Contract.Requires<ArgumentNullException>(Second != null, "Second");
-            var Value1 = new Fraction(First.Numerator * (int)Second.Denominator, First.Denominator * Second.Denominator);
-            var Value2 = new Fraction(Second.Numerator * (int)First.Denominator, Second.Denominator * First.Denominator);
+            if (first == null)
+                throw new ArgumentNullException(nameof(first));
+            if (second == null)
+                throw new ArgumentNullException(nameof(second));
+            var Value1 = new Fraction(first.Numerator * (int)second.Denominator, first.Denominator * second.Denominator);
+            var Value2 = new Fraction(second.Numerator * (int)first.Denominator, second.Denominator * first.Denominator);
             var Result = new Fraction(Value1.Numerator + Value2.Numerator, Value1.Denominator);
             Result.Reduce();
             return Result;
@@ -314,34 +326,34 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Equals operator
         /// </summary>
-        /// <param name="First">First item</param>
-        /// <param name="Second">Second item</param>
+        /// <param name="first">First item</param>
+        /// <param name="second">Second item</param>
         /// <returns>True if they are, false otherwise</returns>
-        public static bool operator ==(Fraction First, Fraction Second)
+        public static bool operator ==(Fraction first, Fraction second)
         {
-            return First.Equals(Second);
+            return first.Equals(second);
         }
 
         /// <summary>
         /// Equals operator
         /// </summary>
-        /// <param name="First">First item</param>
-        /// <param name="Second">Second item</param>
+        /// <param name="first">First item</param>
+        /// <param name="second">Second item</param>
         /// <returns>True if they are, false otherwise</returns>
-        public static bool operator ==(Fraction First, double Second)
+        public static bool operator ==(Fraction first, double second)
         {
-            return First.Equals(Second);
+            return first.Equals(second);
         }
 
         /// <summary>
         /// Equals operator
         /// </summary>
-        /// <param name="First">First item</param>
-        /// <param name="Second">Second item</param>
+        /// <param name="first">First item</param>
+        /// <param name="second">Second item</param>
         /// <returns>True if they are, false otherwise</returns>
-        public static bool operator ==(double First, Fraction Second)
+        public static bool operator ==(double first, Fraction second)
         {
-            return Second.Equals(First);
+            return second.Equals(first);
         }
 
         /// <summary>
@@ -383,13 +395,15 @@ namespace Utilities.DataTypes
         /// </summary>
         public void Reduce()
         {
-            Contract.Requires<ArgumentOutOfRangeException>(Numerator != Int32.MinValue, "Numerator can't equal Int32.MinValue");
-            Contract.Requires<ArgumentOutOfRangeException>(Denominator != Int32.MinValue, "Denominator can't equal Int32.MinValue");
+            if (Numerator == int.MinValue)
+                Numerator = int.MinValue + 1;
+            if (Denominator == int.MinValue)
+                Denominator = int.MinValue + 1;
             int GCD = Numerator.GreatestCommonDenominator(Denominator);
             if (GCD != 0)
             {
-                this.Numerator /= GCD;
-                this.Denominator /= GCD;
+                Numerator /= GCD;
+                Denominator /= GCD;
             }
         }
 

@@ -19,10 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Utilities.DataTypes
@@ -46,34 +44,22 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Number of items in the dictionary
         /// </summary>
-        public int Count
-        {
-            get { return Items.Count(); }
-        }
+        public int Count => Items.Count();
 
         /// <summary>
         /// Always false
         /// </summary>
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         /// <summary>
         /// Gets the keys found in the dictionary
         /// </summary>
-        public ICollection<Key> Keys
-        {
-            get { return KeyList; }
-        }
+        public ICollection<Key> Keys => KeyList;
 
         /// <summary>
         /// Gets the values found in the dictionary
         /// </summary>
-        public ICollection<IEnumerable<Value>> Values
-        {
-            get { return new IEnumerable<Value>[] { Items.ToArray(x => x.Value) }; }
-        }
+        public ICollection<IEnumerable<Value>> Values => new IEnumerable<Value>[] { Items.ToArray(x => x.Value) };
 
         /// <summary>
         /// Items in the dictionary
@@ -116,13 +102,13 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Adds a value to the dicionary
         /// </summary>
-        /// <param name="Value">Value to add</param>
-        /// <param name="Keys">Keys to associate the value with</param>
-        public void Add(Value Value, params Key[] Keys)
+        /// <param name="value">Value to add</param>
+        /// <param name="keys">Keys to associate the value with</param>
+        public void Add(Value value, params Key[] keys)
         {
-            Contract.Requires<ArgumentNullException>(Keys != null, "Keys");
-            Items.Add(new TaggedItem<Key, Value>(Keys, Value));
-            Keys.ForEach(x => KeyList.AddIfUnique(x));
+            keys = keys ?? new Key[0];
+            Items.Add(new TaggedItem<Key, Value>(keys, value));
+            keys.ForEach(x => KeyList.AddIfUnique(x));
         }
 
         /// <summary>
@@ -249,23 +235,23 @@ namespace Utilities.DataTypes
             /// <summary>
             /// Constructor
             /// </summary>
-            /// <param name="Keys">Keys</param>
-            /// <param name="Value">Value</param>
-            public TaggedItem(IEnumerable<TKey> Keys, TValue Value)
+            /// <param name="keys">Keys</param>
+            /// <param name="value">Value</param>
+            public TaggedItem(IEnumerable<TKey> keys, TValue value)
             {
-                this.Keys = new ConcurrentBag<TKey>(Keys);
-                this.Value = Value;
+                Keys = new ConcurrentBag<TKey>(keys);
+                Value = value;
             }
 
             /// <summary>
             /// Constructor
             /// </summary>
-            /// <param name="Key">Key</param>
-            /// <param name="Value">Value</param>
-            public TaggedItem(TKey Key, TValue Value)
+            /// <param name="key">Key</param>
+            /// <param name="value">Value</param>
+            public TaggedItem(TKey key, TValue value)
             {
-                this.Keys = new ConcurrentBag<TKey>(new TKey[] { Key });
-                this.Value = Value;
+                Keys = new ConcurrentBag<TKey>(new TKey[] { key });
+                Value = value;
             }
 
             /// <summary>

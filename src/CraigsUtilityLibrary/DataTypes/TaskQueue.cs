@@ -21,7 +21,6 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Concurrent;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,39 +37,34 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Capacity">
+        /// <param name="capacity">
         /// Number of items that are allowed to be processed in the queue at one time
         /// </param>
-        /// <param name="ProcessItem">Action that is used to process each item</param>
-        /// <param name="HandleError">
+        /// <param name="processItem">Action that is used to process each item</param>
+        /// <param name="handleError">
         /// Handles an exception if it occurs (defaults to eating the error)
         /// </param>
-        public TaskQueue(int Capacity, Action<T> ProcessItem, Action<Exception> HandleError = null)
+        public TaskQueue(int capacity, Action<T> processItem, Action<Exception> handleError = null)
             : base(new ConcurrentQueue<T>())
         {
-            Contract.Requires<ArgumentException>(Capacity > 0, "Capacity must be greater than 0");
-            this.ProcessItem = ProcessItem;
-            this.HandleError = HandleError.Check(x => { });
-            this.CancellationToken = new CancellationTokenSource();
-            Tasks = new Task[Capacity];
-            Capacity.Times(x => Tasks[x] = Task.Factory.StartNew(Process));
+            if (capacity < 1)
+                capacity = 1;
+            ProcessItem = processItem;
+            HandleError = handleError.Check(x => { });
+            CancellationToken = new CancellationTokenSource();
+            Tasks = new Task[capacity];
+            capacity.Times(x => Tasks[x] = Task.Factory.StartNew(Process));
         }
 
         /// <summary>
         /// Determines if it has been cancelled
         /// </summary>
-        public bool IsCanceled
-        {
-            get { return CancellationToken.IsCancellationRequested; }
-        }
+        public bool IsCanceled => CancellationToken.IsCancellationRequested;
 
         /// <summary>
         /// Determines if it has completed all tasks
         /// </summary>
-        public bool IsComplete
-        {
-            get { return Tasks.All(x => x.IsCompleted); }
-        }
+        public bool IsComplete => Tasks.All(x => x.IsCompleted);
 
         /// <summary>
         /// Token used to signal cancellation
@@ -95,26 +89,31 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Cancels the queue from processing
         /// </summary>
-        /// <param name="Wait">
+        /// <param name="wait">
         /// Determines if the function should wait for the tasks to complete before returning
         /// </param>
-        public void Cancel(bool Wait = false)
+        /// <returns>True if it is cancelled, false otherwise</returns>
+        public bool Cancel(bool wait = false)
         {
             if (IsCompleted || IsCanceled)
-                return;
+                return true;
             CancellationToken.Cancel(false);
-            if (Wait)
+            if (wait)
                 Task.WaitAll(Tasks);
+            return true;
         }
 
         /// <summary>
         /// Adds the item to the queue to be processed
         /// </summary>
-        /// <param name="Item">Item to process</param>
-        public void Enqueue(T Item)
+        /// <param name="item">Item to process</param>
+        /// <returns>True if it is enqueued, false otherwise</returns>
+        public bool Enqueue(T item)
         {
-            Contract.Requires<InvalidOperationException>(!IsCompleted && !IsCanceled, "TaskQueue has been stopped");
-            Add(Item);
+            if (IsCompleted || IsCanceled)
+                return false;
+            Add(item);
+            return true;
         }
 
         /// <summary>
@@ -147,8 +146,8 @@ namespace Utilities.DataTypes
         /// </summary>
         private void Process()
         {
-            Contract.Requires<NullReferenceException>(CancellationToken != null, "CancellationToken");
-            Contract.Requires<NullReferenceException>(ProcessItem != null, "ProcessItem");
+            if (CancellationToken == null || ProcessItem == null)
+                return;
             while (true)
             {
                 try

@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Diagnostics.Contracts;
 using System.Text;
 
 namespace Utilities.DataTypes
@@ -28,138 +27,137 @@ namespace Utilities.DataTypes
     /// <summary>
     /// Matrix used in linear algebra
     /// </summary>
-    [Serializable]
     public class Matrix
     {
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Width">Width of the matrix</param>
-        /// <param name="Height">Height of the matrix</param>
-        /// <param name="Values">Values to use in the matrix</param>
-        public Matrix(int Width, int Height, double[,] Values = null)
+        /// <param name="width">Width of the matrix</param>
+        /// <param name="height">Height of the matrix</param>
+        /// <param name="values">Values to use in the matrix</param>
+        public Matrix(int width, int height, double[,] values = null)
         {
-            _Width = Width;
-            _Height = Height;
-            this.Values = Values ?? new double[Width, Height];
+            Width = width > -1 ? width : 0;
+            Height = height > -1 ? height : 0;
+            Values = values ?? new double[width, height];
         }
 
         /// <summary>
         /// Height of the matrix
         /// </summary>
-        public virtual int Height
-        {
-            get { return _Height; }
-            set { _Height = value; Values = new double[Width, Height]; }
-        }
+        public int Height { get; private set; }
 
         /// <summary>
         /// Values for the matrix
         /// </summary>
-        public virtual double[,] Values { get; set; }
+        public double[,] Values { get; private set; }
 
         /// <summary>
         /// Width of the matrix
         /// </summary>
-        public virtual int Width
-        {
-            get { return _Width; }
-            set { _Width = value; Values = new double[Width, Height]; }
-        }
+        public int Width { get; private set; }
 
         /// <summary>
         /// Sets the values of the matrix
         /// </summary>
-        /// <param name="X">X position</param>
-        /// <param name="Y">Y position</param>
+        /// <param name="x">X position</param>
+        /// <param name="y">Y position</param>
         /// <returns>the value at a point in the matrix</returns>
-        public virtual double this[int X, int Y]
+        public double this[int x, int y]
         {
             get
             {
-                Contract.Requires<ArgumentOutOfRangeException>(X >= 0 && X <= Width, "X");
-                Contract.Requires<ArgumentOutOfRangeException>(Y >= 0 && Y <= Height, "Y");
-                Contract.Requires<NullReferenceException>(Values != null, "Values");
-                return Values[X, Y];
+                if (x < 0)
+                    x = 0;
+                else if (x >= Width)
+                    x = Width - 1;
+                if (y < 0)
+                    y = 0;
+                else if (y >= Height)
+                    y = Height - 1;
+                return Values[x, y];
             }
 
             set
             {
-                Contract.Requires<ArgumentOutOfRangeException>(X >= 0 && X <= Width, "X");
-                Contract.Requires<ArgumentOutOfRangeException>(Y >= 0 && Y <= Height, "Y");
-                Contract.Requires<NullReferenceException>(Values != null, "Values");
-                Values[X, Y] = value;
+                if (x < 0)
+                    x = 0;
+                else if (x >= Width)
+                    x = Width - 1;
+                if (y < 0)
+                    y = 0;
+                else if (y >= Height)
+                    y = Height - 1;
+                Values[x, y] = value;
             }
         }
-
-        private int _Height = 1;
-
-        private int _Width = 1;
 
         /// <summary>
         /// Subtracts two matrices
         /// </summary>
-        /// <param name="M1">Matrix 1</param>
-        /// <param name="M2">Matrix 2</param>
+        /// <param name="m1">Matrix 1</param>
+        /// <param name="m2">Matrix 2</param>
         /// <returns>The result</returns>
-        public static Matrix operator -(Matrix M1, Matrix M2)
+        public static Matrix operator -(Matrix m1, Matrix m2)
         {
-            Contract.Requires<ArgumentNullException>(M1 != null, "M1");
-            Contract.Requires<ArgumentNullException>(M2 != null, "M2");
-            Contract.Requires<ArgumentException>(M1.Width == M2.Width && M1.Height == M2.Height, "Both matrices must be the same dimensions.");
-            var TempMatrix = new Matrix(M1.Width, M1.Height);
-            for (int x = 0; x < M1.Width; ++x)
-                for (int y = 0; y < M1.Height; ++y)
-                    TempMatrix[x, y] = M1[x, y] - M2[x, y];
+            m1 = m1 ?? new Matrix(0, 0);
+            m2 = m2 ?? new Matrix(0, 0);
+            if (m1.Width != m2.Width || m1.Height != m2.Height)
+                throw new ArgumentException("Both matrices must be the same dimensions.");
+            var TempMatrix = new Matrix(m1.Width, m1.Height);
+            for (int x = 0; x < m1.Width; ++x)
+                for (int y = 0; y < m1.Height; ++y)
+                    TempMatrix[x, y] = m1[x, y] - m2[x, y];
             return TempMatrix;
         }
 
         /// <summary>
         /// Negates a matrix
         /// </summary>
-        /// <param name="M1">Matrix 1</param>
+        /// <param name="m1">Matrix 1</param>
         /// <returns>The result</returns>
-        public static Matrix operator -(Matrix M1)
+        public static Matrix operator -(Matrix m1)
         {
-            Contract.Requires<ArgumentNullException>(M1 != null, "M1");
-            var TempMatrix = new Matrix(M1.Width, M1.Height);
-            for (int x = 0; x < M1.Width; ++x)
-                for (int y = 0; y < M1.Height; ++y)
-                    TempMatrix[x, y] = -M1[x, y];
+            m1 = m1 ?? new Matrix(0, 0);
+            var TempMatrix = new Matrix(m1.Width, m1.Height);
+            for (int x = 0; x < m1.Width; ++x)
+                for (int y = 0; y < m1.Height; ++y)
+                    TempMatrix[x, y] = -m1[x, y];
             return TempMatrix;
         }
 
         /// <summary>
         /// Determines if two matrices are unequal
         /// </summary>
-        /// <param name="M1">Matrix 1</param>
-        /// <param name="M2">Matrix 2</param>
+        /// <param name="m1">Matrix 1</param>
+        /// <param name="m2">Matrix 2</param>
         /// <returns>True if they are not equal, false otherwise</returns>
-        public static bool operator !=(Matrix M1, Matrix M2)
+        public static bool operator !=(Matrix m1, Matrix m2)
         {
-            return !(M1 == M2);
+            return !(m1 == m2);
         }
 
         /// <summary>
         /// Multiplies two matrices
         /// </summary>
-        /// <param name="M1">Matrix 1</param>
-        /// <param name="M2">Matrix 2</param>
+        /// <param name="m1">Matrix 1</param>
+        /// <param name="m2">Matrix 2</param>
         /// <returns>The result</returns>
-        public static Matrix operator *(Matrix M1, Matrix M2)
+        public static Matrix operator *(Matrix m1, Matrix m2)
         {
-            Contract.Requires<ArgumentNullException>(M1 != null, "M1");
-            Contract.Requires<ArgumentNullException>(M2 != null, "M2");
-            Contract.Requires<ArgumentException>(M1.Width == M2.Width && M1.Height == M2.Height, "Both matrices must be the same dimensions.");
-            var TempMatrix = new Matrix(M2.Width, M1.Height);
-            for (int x = 0; x < M2.Width; ++x)
+            m1 = m1 ?? new Matrix(0, 0);
+            m2 = m2 ?? new Matrix(0, 0);
+            if (m1.Width != m2.Width || m1.Height != m2.Height)
+                throw new ArgumentException("Both matrices must be the same dimensions.");
+            var TempMatrix = new Matrix(m2.Width, m1.Height);
+            for (int x = 0; x < m2.Width; ++x)
             {
-                for (int y = 0; y < M1.Height; ++y)
+                for (int y = 0; y < m1.Height; ++y)
                 {
                     TempMatrix[x, y] = 0.0;
-                    for (int i = 0; i < M1.Width; ++i)
-                        for (int j = 0; j < M2.Height; ++j)
-                            TempMatrix[x, y] += (M1[i, y] * M2[x, j]);
+                    for (int i = 0; i < m1.Width; ++i)
+                        for (int j = 0; j < m2.Height; ++j)
+                            TempMatrix[x, y] += (m1[i, y] * m2[x, j]);
                 }
             }
             return TempMatrix;
@@ -168,96 +166,97 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Multiplies a matrix by a value
         /// </summary>
-        /// <param name="M1">Matrix 1</param>
-        /// <param name="D">Value to multiply by</param>
+        /// <param name="m1">Matrix 1</param>
+        /// <param name="d">Value to multiply by</param>
         /// <returns>The result</returns>
-        public static Matrix operator *(Matrix M1, double D)
+        public static Matrix operator *(Matrix m1, double d)
         {
-            Contract.Requires<ArgumentNullException>(M1 != null, "M1");
-            var TempMatrix = new Matrix(M1.Width, M1.Height);
-            for (int x = 0; x < M1.Width; ++x)
-                for (int y = 0; y < M1.Height; ++y)
-                    TempMatrix[x, y] = M1[x, y] * D;
+            m1 = m1 ?? new Matrix(0, 0);
+            var TempMatrix = new Matrix(m1.Width, m1.Height);
+            for (int x = 0; x < m1.Width; ++x)
+                for (int y = 0; y < m1.Height; ++y)
+                    TempMatrix[x, y] = m1[x, y] * d;
             return TempMatrix;
         }
 
         /// <summary>
         /// Multiplies a matrix by a value
         /// </summary>
-        /// <param name="M1">Matrix 1</param>
-        /// <param name="D">Value to multiply by</param>
+        /// <param name="m1">Matrix 1</param>
+        /// <param name="d">Value to multiply by</param>
         /// <returns>The result</returns>
-        public static Matrix operator *(double D, Matrix M1)
+        public static Matrix operator *(double d, Matrix m1)
         {
-            Contract.Requires<ArgumentNullException>(M1 != null, "M1");
-            var TempMatrix = new Matrix(M1.Width, M1.Height);
-            for (int x = 0; x < M1.Width; ++x)
-                for (int y = 0; y < M1.Height; ++y)
-                    TempMatrix[x, y] = M1[x, y] * D;
+            m1 = m1 ?? new Matrix(0, 0);
+            var TempMatrix = new Matrix(m1.Width, m1.Height);
+            for (int x = 0; x < m1.Width; ++x)
+                for (int y = 0; y < m1.Height; ++y)
+                    TempMatrix[x, y] = m1[x, y] * d;
             return TempMatrix;
         }
 
         /// <summary>
         /// Divides a matrix by a value
         /// </summary>
-        /// <param name="M1">Matrix 1</param>
-        /// <param name="D">Value to divide by</param>
+        /// <param name="m1">Matrix 1</param>
+        /// <param name="d">Value to divide by</param>
         /// <returns>The result</returns>
-        public static Matrix operator /(Matrix M1, double D)
+        public static Matrix operator /(Matrix m1, double d)
         {
-            Contract.Requires<ArgumentNullException>(M1 != null, "M1");
-            return M1 * (1 / D);
+            m1 = m1 ?? new Matrix(0, 0);
+            return m1 * (1 / d);
         }
 
         /// <summary>
         /// Divides a matrix by a value
         /// </summary>
-        /// <param name="M1">Matrix 1</param>
-        /// <param name="D">Value to divide by</param>
+        /// <param name="m1">Matrix 1</param>
+        /// <param name="d">Value to divide by</param>
         /// <returns>The result</returns>
-        public static Matrix operator /(double D, Matrix M1)
+        public static Matrix operator /(double d, Matrix m1)
         {
-            Contract.Requires<ArgumentNullException>(M1 != null, "M1");
-            return M1 * (1 / D);
+            m1 = m1 ?? new Matrix(0, 0);
+            return m1 * (1 / d);
         }
 
         /// <summary>
         /// Adds two matrices
         /// </summary>
-        /// <param name="M1">Matrix 1</param>
-        /// <param name="M2">Matrix 2</param>
+        /// <param name="m1">Matrix 1</param>
+        /// <param name="m2">Matrix 2</param>
         /// <returns>The result</returns>
-        public static Matrix operator +(Matrix M1, Matrix M2)
+        public static Matrix operator +(Matrix m1, Matrix m2)
         {
-            Contract.Requires<ArgumentNullException>(M1 != null, "M1");
-            Contract.Requires<ArgumentNullException>(M2 != null, "M2");
-            Contract.Requires<ArgumentException>(M1.Width == M2.Width && M1.Height == M2.Height, "Both matrices must be the same dimensions.");
-            var TempMatrix = new Matrix(M1.Width, M1.Height);
-            for (int x = 0; x < M1.Width; ++x)
-                for (int y = 0; y < M1.Height; ++y)
-                    TempMatrix[x, y] = M1[x, y] + M2[x, y];
+            m1 = m1 ?? new Matrix(0, 0);
+            m2 = m2 ?? new Matrix(0, 0);
+            if (m1.Width != m2.Width || m1.Height != m2.Height)
+                throw new ArgumentException("Both matrices must be the same dimensions.");
+            var TempMatrix = new Matrix(m1.Width, m1.Height);
+            for (int x = 0; x < m1.Width; ++x)
+                for (int y = 0; y < m1.Height; ++y)
+                    TempMatrix[x, y] = m1[x, y] + m2[x, y];
             return TempMatrix;
         }
 
         /// <summary>
         /// Determines if two matrices are equal
         /// </summary>
-        /// <param name="M1">Matrix 1</param>
-        /// <param name="M2">Matrix 2</param>
+        /// <param name="m1">Matrix 1</param>
+        /// <param name="m2">Matrix 2</param>
         /// <returns>True if they are equal, false otherwise</returns>
-        public static bool operator ==(Matrix M1, Matrix M2)
+        public static bool operator ==(Matrix m1, Matrix m2)
         {
-            if ((object)M1 == null && (object)M2 == null)
+            if ((object)m1 == null && (object)m2 == null)
                 return true;
-            if ((object)M1 == null)
+            if ((object)m1 == null)
                 return false;
-            if ((object)M2 == null)
+            if ((object)m2 == null)
                 return false;
-            if (M1.Width != M2.Width || M1.Height != M2.Height)
+            if (m1.Width != m2.Width || m1.Height != m2.Height)
                 return false;
-            for (int x = 0; x <= M1.Width; ++x)
-                for (int y = 0; y <= M1.Height; ++y)
-                    if (M1[x, y] != M2[x, y])
+            for (int x = 0; x <= m1.Width; ++x)
+                for (int y = 0; y <= m1.Height; ++y)
+                    if (m1[x, y] != m2[x, y])
                         return false;
             return true;
         }
@@ -266,9 +265,10 @@ namespace Utilities.DataTypes
         /// Gets the determinant of a square matrix
         /// </summary>
         /// <returns>The determinant of a square matrix</returns>
-        public virtual double Determinant()
+        public double Determinant()
         {
-            Contract.Requires<InvalidOperationException>(Width == Height, "The determinant can not be calculated for a non square matrix");
+            if (Width != Height)
+                throw new InvalidOperationException("The determinant can not be calculated for a non square matrix");
             if (Width == 2)
                 return (this[0, 0] * this[1, 1]) - (this[0, 1] * this[1, 0]);
             double Answer = 0.0;
@@ -329,7 +329,7 @@ namespace Utilities.DataTypes
         {
             var Builder = new StringBuilder();
             string Seperator = "";
-            Builder.Append("{").Append(System.Environment.NewLine);
+            Builder.Append("{").Append(Environment.NewLine);
             for (int x = 0; x < Width; ++x)
             {
                 Builder.Append("{");
@@ -338,7 +338,7 @@ namespace Utilities.DataTypes
                     Builder.Append(Seperator).Append(this[x, y]);
                     Seperator = ",";
                 }
-                Builder.Append("}").Append(System.Environment.NewLine);
+                Builder.Append("}").Append(Environment.NewLine);
                 Seperator = "";
             }
             Builder.Append("}");
@@ -349,7 +349,7 @@ namespace Utilities.DataTypes
         /// Transposes the matrix
         /// </summary>
         /// <returns>Returns a new transposed matrix</returns>
-        public virtual Matrix Transpose()
+        public Matrix Transpose()
         {
             var TempValues = new Matrix(Height, Width);
             for (int x = 0; x < Width; ++x)

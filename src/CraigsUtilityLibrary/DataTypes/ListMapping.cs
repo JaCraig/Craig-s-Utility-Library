@@ -45,26 +45,17 @@ namespace Utilities.DataTypes
         /// <summary>
         /// The number of items in the listing
         /// </summary>
-        public virtual int Count
-        {
-            get { return Items.Count; }
-        }
+        public int Count => Items.Count;
 
         /// <summary>
         /// Not read only
         /// </summary>
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         /// <summary>
         /// The list of keys within the mapping
         /// </summary>
-        public virtual ICollection<T1> Keys
-        {
-            get { return Items.Keys; }
-        }
+        public ICollection<T1> Keys => Items.Keys;
 
         /// <summary>
         /// List that contains the list of values
@@ -90,7 +81,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="key">Key to look for</param>
         /// <returns>The list of values</returns>
-        public virtual IEnumerable<T2> this[T1 key]
+        public IEnumerable<T2> this[T1 key]
         {
             get { return Items.GetValue(key, new ConcurrentBag<T2>()); }
             set { Items.SetValue(key, new ConcurrentBag<T2>(value)); }
@@ -99,21 +90,21 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Adds an item to the mapping
         /// </summary>
-        /// <param name="Key">Key value</param>
-        /// <param name="Value">The value to add</param>
-        public virtual void Add(T1 Key, T2 Value)
+        /// <param name="key">Key value</param>
+        /// <param name="value">The value to add</param>
+        public void Add(T1 key, T2 value)
         {
-            Items.AddOrUpdate(Key,
+            Items.AddOrUpdate(key,
                               x => new ConcurrentBag<T2>(),
                               (x, y) => y)
-                 .Add(Value);
+                 .Add(value);
         }
 
         /// <summary>
         /// Adds a key value pair
         /// </summary>
         /// <param name="item">Key value pair to add</param>
-        public virtual void Add(KeyValuePair<T1, IEnumerable<T2>> item)
+        public void Add(KeyValuePair<T1, IEnumerable<T2>> item)
         {
             Add(item.Key, item.Value);
         }
@@ -121,20 +112,20 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Adds a list of items to the mapping
         /// </summary>
-        /// <param name="Key">Key value</param>
-        /// <param name="Value">The values to add</param>
-        public virtual void Add(T1 Key, IEnumerable<T2> Value)
+        /// <param name="key">Key value</param>
+        /// <param name="value">The values to add</param>
+        public void Add(T1 key, IEnumerable<T2> value)
         {
-            Items.AddOrUpdate(Key,
+            Items.AddOrUpdate(key,
                               x => new ConcurrentBag<T2>(),
                               (x, y) => y)
-                 .Add(Value);
+                 .Add(value);
         }
 
         /// <summary>
         /// Clears all items from the listing
         /// </summary>
-        public virtual void Clear()
+        public void Clear()
         {
             Items.Clear();
         }
@@ -144,7 +135,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="item">Key value pair to check</param>
         /// <returns>True if it exists, false otherwise</returns>
-        public virtual bool Contains(KeyValuePair<T1, IEnumerable<T2>> item)
+        public bool Contains(KeyValuePair<T1, IEnumerable<T2>> item)
         {
             if (!ContainsKey(item.Key))
                 return false;
@@ -156,15 +147,15 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Does the list mapping contain the key value pairs?
         /// </summary>
-        /// <param name="Key">Key value</param>
-        /// <param name="Values">Value</param>
+        /// <param name="key">Key value</param>
+        /// <param name="values">Value</param>
         /// <returns>True if it exists, false otherwise</returns>
-        public virtual bool Contains(T1 Key, IEnumerable<T2> Values)
+        public bool Contains(T1 key, IEnumerable<T2> values)
         {
-            if (!ContainsKey(Key))
+            if (!ContainsKey(key))
                 return false;
-            foreach (T2 Value in Values)
-                if (!Contains(Key, Value))
+            foreach (T2 Value in values)
+                if (!Contains(key, Value))
                     return false;
             return true;
         }
@@ -172,14 +163,14 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Does the list mapping contain the key value pair?
         /// </summary>
-        /// <param name="Key">Key</param>
-        /// <param name="Value">Value</param>
+        /// <param name="key">Key</param>
+        /// <param name="value">Value</param>
         /// <returns>True if it exists, false otherwise</returns>
-        public bool Contains(T1 Key, T2 Value)
+        public bool Contains(T1 key, T2 value)
         {
-            if (!ContainsKey(Key))
+            if (!ContainsKey(key))
                 return false;
-            if (!Items[Key].Contains(Value))
+            if (!Items[key].Contains(value))
                 return false;
             return true;
         }
@@ -189,7 +180,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="key">Key to check on</param>
         /// <returns>True if it exists, false otherwise</returns>
-        public virtual bool ContainsKey(T1 key)
+        public bool ContainsKey(T1 key)
         {
             return Items.ContainsKey(key);
         }
@@ -219,7 +210,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="key">Key to use</param>
         /// <returns>True if the key is found, false otherwise</returns>
-        public virtual bool Remove(T1 key)
+        public bool Remove(T1 key)
         {
             var Value = new ConcurrentBag<T2>();
             return Items.TryRemove(key, out Value);
@@ -230,7 +221,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="item">items to remove</param>
         /// <returns>True if it is removed, false otherwise</returns>
-        public virtual bool Remove(KeyValuePair<T1, IEnumerable<T2>> item)
+        public bool Remove(KeyValuePair<T1, IEnumerable<T2>> item)
         {
             if (!Contains(item))
                 return false;
@@ -243,20 +234,20 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Removes a key value pair from the list mapping
         /// </summary>
-        /// <param name="Key">Key to remove</param>
-        /// <param name="Value">Value to remove</param>
+        /// <param name="key">Key to remove</param>
+        /// <param name="value">Value to remove</param>
         /// <returns>True if it is removed, false otherwise</returns>
-        public virtual bool Remove(T1 Key, T2 Value)
+        public bool Remove(T1 key, T2 value)
         {
-            if (!Contains(Key, Value))
+            if (!Contains(key, value))
                 return false;
-            List<T2> TempValue = Items[Key].ToList(z => z);
-            TempValue.Remove(Value);
-            Items.AddOrUpdate(Key,
+            List<T2> TempValue = Items[key].ToList(z => z);
+            TempValue.Remove(value);
+            Items.AddOrUpdate(key,
                 new ConcurrentBag<T2>(TempValue),
                 (x, y) => new ConcurrentBag<T2>(TempValue));
-            if (this[Key].Count() == 0)
-                Remove(Key);
+            if (this[key].Count() == 0)
+                Remove(key);
             return true;
         }
 
@@ -289,16 +280,16 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Tries to get the value associated with the key
         /// </summary>
-        /// <param name="Key">Key value</param>
-        /// <param name="Value">The values getting</param>
+        /// <param name="key">Key value</param>
+        /// <param name="value">The values getting</param>
         /// <returns>True if it was able to get the value, false otherwise</returns>
-        public virtual bool TryGetValue(T1 Key, out IEnumerable<T2> Value)
+        public bool TryGetValue(T1 key, out IEnumerable<T2> value)
         {
-            Value = new List<T2>();
+            value = new List<T2>();
             var TempValue = new ConcurrentBag<T2>();
-            if (Items.TryGetValue(Key, out TempValue))
+            if (Items.TryGetValue(key, out TempValue))
             {
-                Value = TempValue.ToList(x => x);
+                value = TempValue.ToList(x => x);
                 return true;
             }
             return false;

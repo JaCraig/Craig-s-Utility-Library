@@ -38,7 +38,6 @@ namespace Utilities.DataTypes
         /// Initializes a virtual instance of the <see cref="ObservableList{T}"/> class.
         /// </summary>
         public ObservableList()
-            : base()
         {
             BaseList = new List<T>();
         }
@@ -50,7 +49,6 @@ namespace Utilities.DataTypes
         /// The number of elements that the virtual list can initially store.
         /// </param>
         public ObservableList(int capacity)
-            : base()
         {
             BaseList = new List<T>(capacity);
         }
@@ -60,9 +58,44 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="collection">The collection.</param>
         public ObservableList(IEnumerable<T> collection)
-            : base()
         {
             BaseList = new List<T>(collection);
+        }
+
+        /// <summary>
+        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// </summary>
+        public int Count => BaseList.Count;
+
+        /// <summary>
+        /// Gets a value indicating whether the <see
+        /// cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+        /// </summary>
+        public bool IsReadOnly => false;
+
+        /// <summary>
+        /// Gets or sets the base list.
+        /// </summary>
+        /// <value>The base list.</value>
+        private List<T> BaseList { get; set; }
+
+        /// <summary>
+        /// Gets or sets the element at the specified index.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns></returns>
+        public T this[int index]
+        {
+            get
+            {
+                return BaseList[index];
+            }
+
+            set
+            {
+                NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, value, BaseList[index]));
+                BaseList[index] = value;
+            }
         }
 
         /// <summary>
@@ -120,48 +153,6 @@ namespace Utilities.DataTypes
             {
                 propertyChanged_ += value;
                 PropertyChangedDelegates.Add(value);
-            }
-        }
-
-        /// <summary>
-        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
-        /// </summary>
-        public int Count
-        {
-            get { return BaseList.Count; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the <see
-        /// cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
-        /// </summary>
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// Gets or sets the base list.
-        /// </summary>
-        /// <value>The base list.</value>
-        private List<T> BaseList { get; set; }
-
-        /// <summary>
-        /// Gets or sets the element at the specified index.
-        /// </summary>
-        /// <param name="index">The index.</param>
-        /// <returns></returns>
-        public T this[int index]
-        {
-            get
-            {
-                return BaseList[index];
-            }
-
-            set
-            {
-                NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, value, BaseList[index]));
-                BaseList[index] = value;
             }
         }
 

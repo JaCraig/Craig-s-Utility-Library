@@ -31,7 +31,6 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Security;
 using System.Text;
-using System.Xml.Serialization;
 using Utilities.DataTypes.DataMapper;
 
 namespace Utilities.DataTypes
@@ -55,19 +54,18 @@ namespace Utilities.DataTypes
         /// <summary>
         /// New value
         /// </summary>
-        public object NewValue { get; set; }
+        public object NewValue { get; private set; }
 
         /// <summary>
         /// Original value
         /// </summary>
-        public object OriginalValue { get; set; }
+        public object OriginalValue { get; private set; }
     }
 
     /// <summary>
     /// Dynamic object implementation (used when inheriting)
     /// </summary>
     /// <typeparam name="T">Child object type</typeparam>
-    [Serializable]
     public abstract class Dynamo<T> : Dynamo
         where T : Dynamo<T>
     {
@@ -95,17 +93,6 @@ namespace Utilities.DataTypes
         protected Dynamo(IDictionary<string, object> dictionary)
             : base(dictionary)
         {
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="info">Serialization info</param>
-        /// <param name="context">Streaming context</param>
-        protected Dynamo(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            Contract.Requires<ArgumentNullException>(info != null, "info");
         }
 
         /// <summary>
@@ -145,26 +132,26 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Gets a value
         /// </summary>
-        /// <param name="Name">Name of the item</param>
-        /// <param name="ReturnType">Return value type</param>
+        /// <param name="name">Name of the item</param>
+        /// <param name="returnType">Return value type</param>
         /// <returns>The returned value</returns>
-        protected override object GetValue(string Name, Type ReturnType)
+        protected override object GetValue(string name, Type returnType)
         {
-            if (ContainsKey(Name))
-                return InternalValues[Name].To(ReturnType, null);
-            if (!ChildValues.ContainsKey(Name))
+            if (ContainsKey(name))
+                return InternalValues[name].To(returnType, null);
+            if (!ChildValues.ContainsKey(name))
             {
                 Type ObjectType = GetType();
-                PropertyInfo Property = ObjectType.GetProperty(Name);
+                PropertyInfo Property = ObjectType.GetProperty(name);
                 if (Property != null)
                 {
                     Func<T, object> Temp = Property.PropertyGetter<T>().Compile();
-                    ChildValues.AddOrUpdate(Name, x => () => Temp((T)this), (x, y) => () => Temp((T)this));
+                    ChildValues.AddOrUpdate(name, x => () => Temp((T)this), (x, y) => () => Temp((T)this));
                 }
                 else
-                    ChildValues.AddOrUpdate(Name, x => () => null, (x, y) => null);
+                    ChildValues.AddOrUpdate(name, x => () => null, (x, y) => null);
             }
-            return ChildValues[Name]().To(ReturnType, null);
+            return ChildValues[name]().To(returnType, null);
         }
 
         /// <summary>
@@ -189,8 +176,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// Dynamic object implementation
     /// </summary>
-    [Serializable]
-    public class Dynamo : DynamicObject, IDictionary<string, object>, INotifyPropertyChanged, ISerializable, IXmlSerializable
+    public class Dynamo : DynamicObject, IDictionary<string, object>, INotifyPropertyChanged
     {
         /// <summary>
         /// Constructor
@@ -205,7 +191,6 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="item">Item to copy values from</param>
         public Dynamo(object item)
-            : base()
         {
             InternalValues = new ConcurrentDictionary<string, object>(StringComparer.OrdinalIgnoreCase);
             ChildValues = new ConcurrentDictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
@@ -230,7 +215,6 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="dictionary">Dictionary to copy</param>
         public Dynamo(IDictionary<string, object> dictionary)
-            : base()
         {
             InternalValues = new ConcurrentDictionary<string, object>(dictionary, StringComparer.OrdinalIgnoreCase);
             ChildValues = new ConcurrentDictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
@@ -243,7 +227,6 @@ namespace Utilities.DataTypes
         /// <param name="info">Serialization info</param>
         /// <param name="context">Streaming context</param>
         protected Dynamo(SerializationInfo info, StreamingContext context)
-            : base()
         {
             Contract.Requires<ArgumentNullException>(info != null, "info");
             InternalValues = new ConcurrentDictionary<string, object>(StringComparer.OrdinalIgnoreCase);
@@ -263,22 +246,22 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Number of items
         /// </summary>
-        public int Count { get { return InternalValues.Count; } }
+        public int Count => InternalValues.Count;
 
         /// <summary>
         /// Is this read only?
         /// </summary>
-        public bool IsReadOnly { get { return false; } }
+        public bool IsReadOnly => false;
 
         /// <summary>
         /// Keys
         /// </summary>
-        public virtual ICollection<string> Keys { get { return InternalValues.Keys; } }
+        public virtual ICollection<string> Keys => InternalValues.Keys;
 
         /// <summary>
         /// Values
         /// </summary>
-        public virtual ICollection<object> Values { get { return InternalValues.Values; } }
+        public virtual ICollection<object> Values => InternalValues.Values;
 
         /// <summary>
         /// Child class key/value dictionary
@@ -294,13 +277,13 @@ namespace Utilities.DataTypes
         /// Gets or sets the aop manager.
         /// </summary>
         /// <value>The aop manager.</value>
-        private static AOP.Manager AOPManager { get { return IoC.Manager.Bootstrapper.Resolve<AOP.Manager>(); } }
+        private static AOP.Manager AOPManager => IoC.Manager.Bootstrapper.Resolve<AOP.Manager>();
 
         /// <summary>
         /// Gets or sets the data mapper.
         /// </summary>
         /// <value>The data mapper.</value>
-        private static Manager DataMapper { get { return IoC.Manager.Bootstrapper.Resolve<Manager>(); } }
+        private static Manager DataMapper => IoC.Manager.Bootstrapper.Resolve<Manager>();
 
         /// <summary>
         /// Gets the value associated with the key specified
@@ -435,14 +418,14 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Copies the properties from an item
         /// </summary>
-        /// <param name="Item">Item to copy from</param>
-        public void Copy(object Item)
+        /// <param name="item">Item to copy from</param>
+        public void Copy(object item)
         {
-            if (Item == null)
+            if (item == null)
                 return;
-            var DictItem = Item as IDictionary<string, object>;
-            if (Item is string || Item.GetType().IsValueType)
-                SetValue("Value", Item);
+            var DictItem = item as IDictionary<string, object>;
+            if (item is string || item.GetType().IsValueType)
+                SetValue("Value", item);
             else if (DictItem != null)
             {
                 foreach (string Key in DictItem.Keys)
@@ -450,12 +433,12 @@ namespace Utilities.DataTypes
                     InternalValues.AddOrUpdate(Key, x => DictItem[Key], (x, y) => DictItem[Key]);
                 }
             }
-            else if (Item is IEnumerable)
-                SetValue("Items", Item);
+            else if (item is IEnumerable)
+                SetValue("Items", item);
             else
-                DataMapper.Map(Item.GetType(), GetType())
+                DataMapper.Map(item.GetType(), GetType())
                           .AutoMap()
-                          .Copy(Item, this);
+                          .Copy(item, this);
         }
 
         /// <summary>
@@ -559,6 +542,15 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
+        /// Gets the enumerator for the object
+        /// </summary>
+        /// <returns>The enumerator</returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return InternalValues.GetEnumerator();
+        }
+
+        /// <summary>
         /// Reads the data from an XML doc
         /// </summary>
         /// <param name="reader">XML reader</param>
@@ -598,28 +590,19 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Returns a subset of the current Dynamo object
         /// </summary>
-        /// <param name="Keys">Property keys to return</param>
+        /// <param name="keys">Property keys to return</param>
         /// <returns>A new Dynamo object containing only the keys specified</returns>
-        public dynamic SubSet(params string[] Keys)
+        public dynamic SubSet(params string[] keys)
         {
-            if (Keys == null)
+            if (keys == null)
                 return new Dynamo();
             var ReturnValue = new Dynamo();
             ReturnValue.Clear();
-            foreach (string Key in Keys)
+            foreach (string Key in keys)
             {
                 ReturnValue.Add(Key, this[Key]);
             }
             return ReturnValue;
-        }
-
-        /// <summary>
-        /// Gets the enumerator for the object
-        /// </summary>
-        /// <returns>The enumerator</returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return InternalValues.GetEnumerator();
         }
 
         /// <summary>
@@ -751,65 +734,65 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Gets a value
         /// </summary>
-        /// <param name="Name">Name of the item</param>
-        /// <param name="ReturnType">Return value type</param>
+        /// <param name="name">Name of the item</param>
+        /// <param name="returnType">Return value type</param>
         /// <returns>The returned value</returns>
-        protected virtual object GetValue(string Name, Type ReturnType)
+        protected virtual object GetValue(string name, Type returnType)
         {
-            object Value = RaiseGetValueStart(Name);
+            object Value = RaiseGetValueStart(name);
             if (Value != null)
                 return Value;
-            if (ContainsKey(Name))
+            if (ContainsKey(name))
             {
-                if (InternalValues.TryGetValue(Name, out Value))
-                    return Value.To(ReturnType, null);
+                if (InternalValues.TryGetValue(name, out Value))
+                    return Value.To(returnType, null);
             }
-            if (!ChildValues.ContainsKey(Name))
+            if (!ChildValues.ContainsKey(name))
             {
                 Type ObjectType = GetType();
-                PropertyInfo Property = ObjectType.GetProperty(Name);
+                PropertyInfo Property = ObjectType.GetProperty(name);
                 if (Property != null)
                 {
                     Func<Dynamo, object> Temp = Property.PropertyGetter<Dynamo>().Compile();
-                    ChildValues.AddOrUpdate(Name, x => () => Temp(this), (x, y) => () => Temp(this));
+                    ChildValues.AddOrUpdate(name, x => () => Temp(this), (x, y) => () => Temp(this));
                 }
                 else
-                    ChildValues.AddOrUpdate(Name, x => () => null, (x, y) => null);
+                    ChildValues.AddOrUpdate(name, x => () => null, (x, y) => null);
             }
-            object ReturnValue = ChildValues[Name]().To(ReturnType, null);
-            Value = RaiseGetValueEnd(Name, ReturnValue);
+            object ReturnValue = ChildValues[name]().To(returnType, null);
+            Value = RaiseGetValueEnd(name, ReturnValue);
             return Value ?? ReturnValue;
         }
 
         /// <summary>
         /// Raises the get value end event
         /// </summary>
-        /// <param name="PropertyName">Property name</param>
-        /// <param name="Value">Value initially being returned</param>
+        /// <param name="propertyName">Property name</param>
+        /// <param name="value">Value initially being returned</param>
         /// <returns>
         /// Returns null if the function should continue, any other value should be immediately
         /// returned to the user
         /// </returns>
-        protected object RaiseGetValueEnd(string PropertyName, object Value)
+        protected object RaiseGetValueEnd(string propertyName, object value)
         {
-            var End = new EventArgs.OnEndEventArgs() { Content = Value };
+            var End = new EventArgs.OnEndEventArgs() { Content = value };
             var Handler = getValueEnd_;
             if (Handler != null)
-                Handler(this, PropertyName, End);
+                Handler(this, propertyName, End);
             return End.Stop ? End.Content : null;
         }
 
         /// <summary>
         /// Raises the get value start event
         /// </summary>
-        /// <param name="PropertyName">Property name</param>
+        /// <param name="propertyName">Property name</param>
         /// <returns>
         /// Returns null if the function should continue, any other value should be immediately
         /// returned to the user
         /// </returns>
-        protected object RaiseGetValueStart(string PropertyName)
+        protected object RaiseGetValueStart(string propertyName)
         {
-            var Start = new EventArgs.OnStartEventArgs() { Content = PropertyName };
+            var Start = new EventArgs.OnStartEventArgs() { Content = propertyName };
             var Handler = getValueStart_;
             if (Handler != null)
                 Handler(this, Start);
@@ -819,18 +802,18 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Raises the property changed event
         /// </summary>
-        /// <param name="PropertyName">Property name</param>
-        /// <param name="NewValue">New value for the property</param>
-        protected void RaisePropertyChanged(string PropertyName, object NewValue)
+        /// <param name="propertyName">Property name</param>
+        /// <param name="newValue">New value for the property</param>
+        protected void RaisePropertyChanged(string propertyName, object newValue)
         {
             Contract.Requires<NullReferenceException>(ChangeLog != null, "ChangeLog");
-            if (ChangeLog.ContainsKey(PropertyName))
-                ChangeLog.SetValue(PropertyName, new Change(this[PropertyName], NewValue));
+            if (ChangeLog.ContainsKey(propertyName))
+                ChangeLog.SetValue(propertyName, new Change(this[propertyName], newValue));
             else
-                ChangeLog.SetValue(PropertyName, new Change(NewValue, NewValue));
+                ChangeLog.SetValue(propertyName, new Change(newValue, newValue));
             var Handler = propertyChanged_;
             if (Handler != null)
-                Handler(this, new PropertyChangedEventArgs(PropertyName));
+                Handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
         /// <summary>

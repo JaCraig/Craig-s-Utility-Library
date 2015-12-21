@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Diagnostics.Contracts;
 
 namespace Utilities.DataTypes
 {
@@ -36,7 +35,12 @@ namespace Utilities.DataTypes
         /// <param name="end">End of the date span</param>
         public DateSpan(DateTime start, DateTime end)
         {
-            Contract.Requires<ArgumentException>(start <= end, "Start is after End");
+            if (start > end)
+            {
+                var Temp = start;
+                start = end;
+                end = Temp;
+            }
             Start = start;
             End = end;
         }
@@ -44,102 +48,103 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Days between the two dates
         /// </summary>
-        public virtual int Days { get { return (End - Start).DaysRemainder(); } }
+        public int Days => (End - Start).DaysRemainder();
 
         /// <summary>
         /// End date
         /// </summary>
-        public virtual DateTime End { get; protected set; }
+        public DateTime End { get; protected set; }
 
         /// <summary>
         /// Hours between the two dates
         /// </summary>
-        public virtual int Hours { get { return (End - Start).Hours; } }
+        public int Hours => (End - Start).Hours;
 
         /// <summary>
         /// Milliseconds between the two dates
         /// </summary>
-        public virtual int MilliSeconds { get { return (End - Start).Milliseconds; } }
+        public int MilliSeconds => (End - Start).Milliseconds;
 
         /// <summary>
         /// Minutes between the two dates
         /// </summary>
-        public virtual int Minutes { get { return (End - Start).Minutes; } }
+        public int Minutes => (End - Start).Minutes;
 
         /// <summary>
         /// Months between the two dates
         /// </summary>
-        public virtual int Months { get { return (End - Start).Months(); } }
+        public int Months => (End - Start).Months();
 
         /// <summary>
         /// Seconds between the two dates
         /// </summary>
-        public virtual int Seconds { get { return (End - Start).Seconds; } }
+        public int Seconds => (End - Start).Seconds;
 
         /// <summary>
         /// Start date
         /// </summary>
-        public virtual DateTime Start { get; protected set; }
+        public DateTime Start { get; protected set; }
 
         /// <summary>
         /// Years between the two dates
         /// </summary>
-        public virtual int Years { get { return (End - Start).Years(); } }
+        public int Years => (End - Start).Years();
+
+        /// <summary>
+        /// Converts the object to a string
+        /// </summary>
+        /// <param name="value">Value to convert</param>
+        /// <returns>The value as a string</returns>
+        public static implicit operator string(DateSpan value)
+        {
+            if (value == null)
+                return "";
+            return value.ToString();
+        }
 
         /// <summary>
         /// Determines if two DateSpans are not equal
         /// </summary>
-        /// <param name="Span1">Span 1</param>
-        /// <param name="Span2">Span 2</param>
+        /// <param name="span1">Span 1</param>
+        /// <param name="span2">Span 2</param>
         /// <returns>True if they are not equal, false otherwise</returns>
-        public static bool operator !=(DateSpan Span1, DateSpan Span2)
+        public static bool operator !=(DateSpan span1, DateSpan span2)
         {
-            return !(Span1 == Span2);
+            return !(span1 == span2);
         }
 
         /// <summary>
         /// Addition operator
         /// </summary>
-        /// <param name="Span1">Span 1</param>
-        /// <param name="Span2">Span 2</param>
+        /// <param name="span1">Span 1</param>
+        /// <param name="span2">Span 2</param>
         /// <returns>The combined date span</returns>
-        public static DateSpan operator +(DateSpan Span1, DateSpan Span2)
+        public static DateSpan operator +(DateSpan span1, DateSpan span2)
         {
-            if (Span1 == null && Span2 == null)
+            if (span1 == null && span2 == null)
                 return null;
-            if (Span1 == null)
-                return new DateSpan(Span2.Start, Span2.End);
-            if (Span2 == null)
-                return new DateSpan(Span1.Start, Span1.End);
-            DateTime Start = Span1.Start < Span2.Start ? Span1.Start : Span2.Start;
-            DateTime End = Span1.End > Span2.End ? Span1.End : Span2.End;
+            if (span1 == null)
+                return new DateSpan(span2.Start, span2.End);
+            if (span2 == null)
+                return new DateSpan(span1.Start, span1.End);
+            DateTime Start = span1.Start < span2.Start ? span1.Start : span2.Start;
+            DateTime End = span1.End > span2.End ? span1.End : span2.End;
             return new DateSpan(Start, End);
         }
 
         /// <summary>
         /// Determines if two DateSpans are equal
         /// </summary>
-        /// <param name="Span1">Span 1</param>
-        /// <param name="Span2">Span 2</param>
+        /// <param name="span1">Span 1</param>
+        /// <param name="span2">Span 2</param>
         /// <returns>True if they are, false otherwise</returns>
-        public static bool operator ==(DateSpan Span1, DateSpan Span2)
+        public static bool operator ==(DateSpan span1, DateSpan span2)
         {
-            if ((object)Span1 == null && (object)Span2 == null)
+            if ((object)span1 == null && (object)span2 == null)
                 return true;
-            if ((object)Span1 == null || (object)Span2 == null)
+            if ((object)span1 == null || (object)span2 == null)
                 return false;
-            return Span1.Start == Span2.Start && Span1.End == Span2.End;
-        }
-
-        /// <summary>
-        /// Converts the object to a string
-        /// </summary>
-        /// <param name="Value">Value to convert</param>
-        /// <returns>The value as a string</returns>
-        public static implicit operator string (DateSpan Value)
-        {
-            Contract.Requires<ArgumentNullException>(Value != null, "Value");
-            return Value.ToString();
+            return span1.Start == span2.Start && span1.End == span2.End;
         }
 
         /// <summary>
@@ -165,28 +170,29 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Returns the intersecting time span between the two values
         /// </summary>
-        /// <param name="Span">Span to use</param>
+        /// <param name="span">Span to use</param>
         /// <returns>The intersection of the two time spans</returns>
-        public DateSpan Intersection(DateSpan Span)
+        public DateSpan Intersection(DateSpan span)
         {
-            if (Span == null)
+            if (span == null)
                 return null;
-            if (!Overlap(Span))
+            if (!Overlap(span))
                 return null;
-            DateTime Start = Span.Start > this.Start ? Span.Start : this.Start;
-            DateTime End = Span.End < this.End ? Span.End : this.End;
+            DateTime Start = span.Start > this.Start ? span.Start : this.Start;
+            DateTime End = span.End < this.End ? span.End : this.End;
             return new DateSpan(Start, End);
         }
 
         /// <summary>
         /// Determines if two DateSpans overlap
         /// </summary>
-        /// <param name="Span">The span to compare to</param>
+        /// <param name="span">The span to compare to</param>
         /// <returns>True if they overlap, false otherwise</returns>
-        public bool Overlap(DateSpan Span)
+        public bool Overlap(DateSpan span)
         {
-            Contract.Requires<ArgumentNullException>(Span != null, "Span");
-            return ((Start >= Span.Start && Start < Span.End) || (End <= Span.End && End > Span.Start) || (Start <= Span.Start && End >= Span.End));
+            if (span == null)
+                return false;
+            return ((Start >= span.Start && Start < span.End) || (End <= span.End && End > span.Start) || (Start <= span.Start && End >= span.End));
         }
 
         /// <summary>
