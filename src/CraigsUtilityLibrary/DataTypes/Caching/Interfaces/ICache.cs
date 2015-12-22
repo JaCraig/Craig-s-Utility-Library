@@ -42,22 +42,22 @@ namespace Utilities.DataTypes.Caching.Interfaces
         /// <summary>
         /// Adds a value/key combination and assigns tags to it
         /// </summary>
-        /// <param name="Key">Key to add</param>
-        /// <param name="Tags">Tags to associate with the key/value pair</param>
-        /// <param name="Value">Value to add</param>
-        void Add(string Key, object Value, IEnumerable<string> Tags);
+        /// <param name="key">Key to add</param>
+        /// <param name="tags">Tags to associate with the key/value pair</param>
+        /// <param name="value">Value to add</param>
+        void Add(string key, object value, IEnumerable<string> tags);
 
         /// <summary>
         /// Gets the objects associated with a specific tag
         /// </summary>
-        /// <param name="Tag">Tag to use</param>
+        /// <param name="tag">Tag to use</param>
         /// <returns>The objects associated with the tag</returns>
-        IEnumerable<object> GetByTag(string Tag);
+        IEnumerable<object> GetByTag(string tag);
 
         /// <summary>
         /// Removes all items associated with the tag specified
         /// </summary>
-        /// <param name="Tag">Tag to remove</param>
-        void RemoveByTag(string Tag);
+        /// <param name="tag">Tag to remove</param>
+        void RemoveByTag(string tag);
     }
 }

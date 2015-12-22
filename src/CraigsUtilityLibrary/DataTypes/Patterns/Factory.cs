@@ -47,41 +47,41 @@ namespace Utilities.DataTypes.Patterns
         /// <summary>
         /// Creates an instance associated with the key
         /// </summary>
-        /// <param name="Key">Registered item</param>
+        /// <param name="key">Registered item</param>
         /// <returns>The type returned by the initializer</returns>
-        public virtual T Create(Key Key)
+        public T Create(Key key)
         {
-            return Constructors.GetValue(Key, () => default(T))();
+            return Constructors.GetValue(key, () => default(T))();
         }
 
         /// <summary>
         /// Determines if a key has been registered
         /// </summary>
-        /// <param name="Key">Key to check</param>
+        /// <param name="key">Key to check</param>
         /// <returns>True if it exists, false otherwise</returns>
-        public virtual bool Exists(Key Key)
+        public bool Exists(Key key)
         {
-            return Constructors.ContainsKey(Key);
+            return Constructors.ContainsKey(key);
         }
 
         /// <summary>
         /// Registers an item
         /// </summary>
-        /// <param name="Key">Item to register</param>
-        /// <param name="Result">The object to be returned</param>
-        public virtual void Register(Key Key, T Result)
+        /// <param name="key">Item to register</param>
+        /// <param name="result">The object to be returned</param>
+        public void Register(Key key, T result)
         {
-            Register(Key, () => Result);
+            Register(key, () => result);
         }
 
         /// <summary>
         /// Registers an item
         /// </summary>
-        /// <param name="Key">Item to register</param>
-        /// <param name="Constructor">The function to call when creating the item</param>
-        public virtual void Register(Key Key, Func<T> Constructor)
+        /// <param name="key">Item to register</param>
+        /// <param name="constructor">The function to call when creating the item</param>
+        public void Register(Key key, Func<T> constructor)
         {
-            Constructors.SetValue(Key, Constructor);
+            Constructors.SetValue(key, constructor);
         }
     }
 }

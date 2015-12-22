@@ -15,7 +15,13 @@
         "dnx451": {
             "frameworkAssemblies": {
                 "System.Data": "4.0.0.0",
-                "System.Xml": "4.0.0.0"
+                "System.Xml": "4.0.0.0",
+                "System.Runtime": "4.0.10.0",
+                "System.Text.Encoding": "4.0.0.0",
+                "System.Threading.Tasks": "4.0.0.0",
+                "System.IO": "4.0.0.0",
+                "System.Collections": "4.0.0.0",
+                "System.Collections.Concurrent": "4.0.0.0"
             }
         },
         "dnxcore50": {
@@ -38,6 +44,7 @@
         }
     },
     "dependencies": {
+        "Microsoft.CodeAnalysis.CSharp": "1.1.0-rc1-20151109-01",
         "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-beta8-15653",
         "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta8-15611",
         "System.Xml.ReaderWriter": "4.0.11-beta-23516"

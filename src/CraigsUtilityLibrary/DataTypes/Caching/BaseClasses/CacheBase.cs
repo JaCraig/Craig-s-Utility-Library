@@ -34,7 +34,6 @@ namespace Utilities.DataTypes.Caching.BaseClasses
         /// Constructor
         /// </summary>
         protected CacheBase()
-            : base()
         {
             TagMappings = new ListMapping<string, string>();
         }
@@ -47,7 +46,7 @@ namespace Utilities.DataTypes.Caching.BaseClasses
         /// <summary>
         /// Read only
         /// </summary>
-        public bool IsReadOnly { get { return false; } }
+        public bool IsReadOnly => false;
 
         /// <summary>
         /// Keys
@@ -62,7 +61,7 @@ namespace Utilities.DataTypes.Caching.BaseClasses
         /// <summary>
         /// The tags used thus far
         /// </summary>
-        public IEnumerable<string> Tags { get { return TagMappings.Keys; } }
+        public IEnumerable<string> Tags => TagMappings.Keys;
 
         /// <summary>
         /// Values
@@ -112,13 +111,13 @@ namespace Utilities.DataTypes.Caching.BaseClasses
         /// <summary>
         /// Adds a value/key combination and assigns tags to it
         /// </summary>
-        /// <param name="Key">Key to add</param>
-        /// <param name="Tags">Tags to associate with the key/value pair</param>
-        /// <param name="Value">Value to add</param>
-        public void Add(string Key, object Value, IEnumerable<string> Tags)
+        /// <param name="key">Key to add</param>
+        /// <param name="tags">Tags to associate with the key/value pair</param>
+        /// <param name="value">Value to add</param>
+        public void Add(string key, object value, IEnumerable<string> tags)
         {
-            Add(Key, Value);
-            Tags.ForEach(x => TagMappings.Add(x, Key));
+            Add(key, value);
+            tags.ForEach(x => TagMappings.Add(x, key));
         }
 
         /// <summary>
@@ -150,14 +149,14 @@ namespace Utilities.DataTypes.Caching.BaseClasses
         /// <summary>
         /// Gets the objects associated with a specific tag
         /// </summary>
-        /// <param name="Tag">Tag to use</param>
+        /// <param name="tag">Tag to use</param>
         /// <returns>The objects associated with the tag</returns>
-        public IEnumerable<object> GetByTag(string Tag)
+        public IEnumerable<object> GetByTag(string tag)
         {
             var ReturnValue = new List<object>();
-            if (!TagMappings.ContainsKey(Tag))
+            if (!TagMappings.ContainsKey(tag))
                 return ReturnValue;
-            foreach (string Key in TagMappings[Tag])
+            foreach (string Key in TagMappings[tag])
             {
                 if (ContainsKey(Key))
                     ReturnValue.Add(this[Key]);
@@ -188,13 +187,13 @@ namespace Utilities.DataTypes.Caching.BaseClasses
         /// <summary>
         /// Removes all items associated with the tag specified
         /// </summary>
-        /// <param name="Tag">Tag to remove</param>
-        public void RemoveByTag(string Tag)
+        /// <param name="tag">Tag to remove</param>
+        public void RemoveByTag(string tag)
         {
-            if (!TagMappings.ContainsKey(Tag))
+            if (!TagMappings.ContainsKey(tag))
                 return;
-            TagMappings[Tag].ForEach(x => Remove(x));
-            TagMappings.Remove(Tag);
+            TagMappings[tag].ForEach(x => Remove(x));
+            TagMappings.Remove(tag);
         }
 
         /// <summary>

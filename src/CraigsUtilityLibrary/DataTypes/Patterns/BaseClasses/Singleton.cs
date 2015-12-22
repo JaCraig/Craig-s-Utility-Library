@@ -30,10 +30,6 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
     /// <typeparam name="T">The class type</typeparam>
     public class Singleton<T> where T : class
     {
-        private static T _Instance = null;
-
-        private static object Temp = 1;
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -65,5 +61,9 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
                 return _Instance;
             }
         }
+
+        private static T _Instance = null;
+
+        private static object Temp = 1;
     }
 }

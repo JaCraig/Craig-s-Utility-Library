@@ -36,7 +36,6 @@ namespace Utilities.DataTypes.Caching.Default
         /// Constructor
         /// </summary>
         public Cache()
-            : base()
         {
             InternalCache = new ConcurrentDictionary<string, object>();
         }
@@ -44,22 +43,22 @@ namespace Utilities.DataTypes.Caching.Default
         /// <summary>
         /// The number of items in the cache
         /// </summary>
-        public override int Count { get { return InternalCache.Count; } }
+        public override int Count => InternalCache.Count;
 
         /// <summary>
         /// Keys
         /// </summary>
-        public override ICollection<string> Keys { get { return InternalCache.Keys; } }
+        public override ICollection<string> Keys => InternalCache.Keys;
 
         /// <summary>
         /// Name
         /// </summary>
-        public override string Name { get { return "Default"; } }
+        public override string Name => "Default";
 
         /// <summary>
         /// Values
         /// </summary>
-        public override ICollection<object> Values { get { return InternalCache.Values; } }
+        public override ICollection<object> Values => InternalCache.Values;
 
         /// <summary>
         /// Internal cache

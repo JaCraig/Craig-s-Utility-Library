@@ -42,37 +42,37 @@ namespace Utilities.DataTypes.CodeGen
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="AssemblyName">Assembly name</param>
-        /// <param name="AssemblyDirectory">Assembly directory</param>
-        /// <param name="Optimize">Optimize the assembly?</param>
-        public Compiler(string AssemblyName, string AssemblyDirectory, bool Optimize)
-            : base(AssemblyName, AssemblyDirectory, Optimize)
+        /// <param name="assemblyName">Assembly name</param>
+        /// <param name="assemblyDirectory">Assembly directory</param>
+        /// <param name="optimize">Optimize the assembly?</param>
+        public Compiler(string assemblyName, string assemblyDirectory, bool optimize, bool overwriteIfExists)
+            : base(assemblyName, assemblyDirectory, optimize, overwriteIfExists)
         {
-        }
-
-        /// <summary>
-        /// Creates a class object
-        /// </summary>
-        /// <param name="ClassName">Class name</param>
-        /// <param name="Code">Code</param>
-        /// <param name="References">Assembly references</param>
-        /// <param name="Usings">Namespace usings</param>
-        /// <returns>Type generated</returns>
-        public Type CreateClass(string ClassName, string Code, IEnumerable<string> Usings, params Assembly[] References)
-        {
-            return Add(ClassName, Code, Usings, References);
         }
 
         /// <summary>
         /// Compiles the specified code and returns the types that are created
         /// </summary>
-        /// <param name="Code">The code.</param>
-        /// <param name="Usings">The usings.</param>
-        /// <param name="References">The references.</param>
+        /// <param name="code">The code.</param>
+        /// <param name="usings">The usings.</param>
+        /// <param name="references">The references.</param>
         /// <returns>The list of types that are generated</returns>
-        public IEnumerable<Type> Create(string Code, IEnumerable<string> Usings, params Assembly[] References)
+        public IEnumerable<Type> Create(string code, IEnumerable<string> usings, params Assembly[] references)
         {
-            return Add(Code, Usings, References);
+            return Add(code, usings, references);
+        }
+
+        /// <summary>
+        /// Creates a class object
+        /// </summary>
+        /// <param name="className">Class name</param>
+        /// <param name="code">Code</param>
+        /// <param name="references">Assembly references</param>
+        /// <param name="usings">Namespace usings</param>
+        /// <returns>Type generated</returns>
+        public Type CreateClass(string className, string code, IEnumerable<string> usings, params Assembly[] references)
+        {
+            return Add(className, code, usings, references);
         }
     }
 }

@@ -24,7 +24,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -40,31 +39,33 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="AssemblyDirectory">Directory to save the generated types (optional)</param>
-        /// <param name="AssemblyName">Assembly name to save the generated types as</param>
-        /// <param name="Optimize">Should this be optimized (defaults to true)</param>
-        protected CompilerBase(string AssemblyName, string AssemblyDirectory = "", bool Optimize = true)
+        /// <param name="assemblyName">Assembly name to save the generated types as</param>
+        /// <param name="assemblyDirectory">Directory to save the generated types (optional)</param>
+        /// <param name="optimize">Should this be optimized (defaults to true)</param>
+        /// <param name="overwriteIfExists">if set to <c>true</c> [overwrite if exists].</param>
+        protected CompilerBase(string assemblyName, string assemblyDirectory = "", bool optimize = true, bool overwriteIfExists = false)
         {
-            this.AssemblyDirectory = string.IsNullOrEmpty(AssemblyDirectory) ?
+            AssemblyDirectory = string.IsNullOrEmpty(assemblyDirectory) ?
                 typeof(CompilerBase).Assembly.Location.Left(typeof(CompilerBase).Assembly.Location.LastIndexOf('\\')) :
-                AssemblyDirectory;
-            this.AssemblyName = AssemblyName;
-            this.Optimize = Optimize;
+                assemblyDirectory;
+            AssemblyName = assemblyName;
+            Optimize = optimize;
             Classes = new List<Type>();
-            var CurrentFile = new FileInfo(this.AssemblyDirectory + "\\" + this.AssemblyName + ".dll");
-            RegenerateAssembly = (!CurrentFile.Exists
-                                      || AppDomain.CurrentDomain.GetAssemblies()
-                                                                .Where(x => !x.FullName.Contains("vshost32") && !x.IsDynamic && !string.IsNullOrEmpty(x.Location))
-                                                                .Any(x => new System.IO.FileInfo(x.Location).LastWriteTime > CurrentFile.LastWriteTime));
-            if (string.IsNullOrEmpty(this.AssemblyDirectory)
-                || !new FileInfo(this.AssemblyDirectory + "\\" + this.AssemblyName + ".dll").Exists
+            var CurrentFile = new FileInfo(AssemblyDirectory + "\\" + AssemblyName + ".dll");
+            RegenerateAssembly = !CurrentFile.Exists || overwriteIfExists;
+            if (string.IsNullOrEmpty(AssemblyDirectory)
+                || !new FileInfo(AssemblyDirectory + "\\" + AssemblyName + ".dll").Exists
                 || RegenerateAssembly)
             {
                 AssemblyStream = new MemoryStream();
             }
             else
             {
-                AppDomain.CurrentDomain.Load(System.Reflection.AssemblyName.GetAssemblyName(CurrentFile.FullName)).GetTypes().ForEach(x => Classes.Add(x));
+                using (var TempFile = CurrentFile.OpenRead())
+                {
+                    var AssemblyBinary = TempFile.ReadAllBinary();
+                    Assembly.Load(AssemblyBinary).GetTypes().ForEach(x => Classes.Add(x));
+                }
             }
         }
 
@@ -112,51 +113,52 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         /// Creates an object using the type specified
         /// </summary>
         /// <typeparam name="T">Type to cast to</typeparam>
-        /// <param name="TypeToCreate">Type to create</param>
-        /// <param name="Args">Args to pass to the constructor</param>
+        /// <param name="typeToCreate">Type to create</param>
+        /// <param name="args">Args to pass to the constructor</param>
         /// <returns>The created object</returns>
-        protected static T Create<T>(Type TypeToCreate, params object[] Args)
+        protected static T Create<T>(Type typeToCreate, params object[] args)
         {
-            Contract.Requires<ArgumentNullException>(TypeToCreate != null, "TypeToCreate");
-            return (T)Activator.CreateInstance(TypeToCreate, Args);
+            if (typeToCreate == null)
+                throw new ArgumentNullException(nameof(typeToCreate));
+            return (T)Activator.CreateInstance(typeToCreate, args);
         }
 
         /// <summary>
         /// Compiles and adds the item to the module
         /// </summary>
-        /// <param name="ClassName">Class name</param>
-        /// <param name="Code">Code to compile</param>
-        /// <param name="Usings">Usings for the code</param>
-        /// <param name="References">References to add for the compiler</param>
+        /// <param name="className">Class name</param>
+        /// <param name="code">Code to compile</param>
+        /// <param name="usings">Usings for the code</param>
+        /// <param name="references">References to add for the compiler</param>
         /// <returns>This</returns>
-        protected Type Add(string ClassName, string Code, IEnumerable<string> Usings, params Assembly[] References)
+        protected Type Add(string className, string code, IEnumerable<string> usings, params Assembly[] references)
         {
             if (AssemblyStream == null)
                 return null;
-            return Add(Code, Usings, References).FirstOrDefault(x => x.FullName == ClassName);
+            return Add(code, usings, references).FirstOrDefault(x => x.FullName == className);
         }
 
         /// <summary>
         /// Adds the specified code.
         /// </summary>
-        /// <param name="Code">The code.</param>
-        /// <param name="Usings">The usings.</param>
-        /// <param name="References">The references.</param>
+        /// <param name="code">The code.</param>
+        /// <param name="usings">The usings.</param>
+        /// <param name="references">The references.</param>
         /// <returns>The list of types that have been added</returns>
         /// <exception cref="System.Exception">Any errors that are sent back by Roslyn</exception>
-        protected IEnumerable<Type> Add(string Code, IEnumerable<string> Usings, params Assembly[] References)
+        protected IEnumerable<Type> Add(string code, IEnumerable<string> usings, params Assembly[] references)
         {
             if (AssemblyStream == null)
                 return null;
             CSharpCompilation CSharpCompiler = CSharpCompilation.Create(AssemblyName + ".dll",
-                                                    new SyntaxTree[] { CSharpSyntaxTree.ParseText(Code) },
-                                                    References.ForEach(x => MetadataReference.CreateFromFile(x.Location)),
-                                                    new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, usings: Usings, optimizationLevel: Optimize ? OptimizationLevel.Release : OptimizationLevel.Debug));
+                                                    new SyntaxTree[] { CSharpSyntaxTree.ParseText(code) },
+                                                    references.ForEach(x => MetadataReference.CreateFromFile(x.Location)),
+                                                    new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, usings: usings, optimizationLevel: Optimize ? OptimizationLevel.Release : OptimizationLevel.Debug));
             using (MemoryStream TempStream = new MemoryStream())
             {
                 EmitResult Result = CSharpCompiler.Emit(TempStream);
                 if (!Result.Success)
-                    throw new Exception(Code + System.Environment.NewLine + System.Environment.NewLine + Result.Diagnostics.ToString(x => x.GetMessage() + " : " + x.Location.GetLineSpan().StartLinePosition.Line, System.Environment.NewLine));
+                    throw new Exception(code + Environment.NewLine + Environment.NewLine + Result.Diagnostics.ToString(x => x.GetMessage() + " : " + x.Location.GetLineSpan().StartLinePosition.Line, Environment.NewLine));
                 byte[] MiniAssembly = TempStream.ToArray();
                 Classes.AddIfUnique((x, y) => x.FullName == y.FullName, AppDomain.CurrentDomain.Load(MiniAssembly).GetTypes());
                 AssemblyStream.Write(MiniAssembly, 0, MiniAssembly.Length);
@@ -167,13 +169,13 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         /// <summary>
         /// Compiles and adds the item to the module
         /// </summary>
-        /// <param name="ClassName">Class name</param>
-        /// <param name="Code">Code to compile</param>
-        /// <param name="References">References to add for the compiler</param>
+        /// <param name="className">Class name</param>
+        /// <param name="code">Code to compile</param>
+        /// <param name="references">References to add for the compiler</param>
         /// <returns>This</returns>
-        protected Type Add(string ClassName, string Code, params Assembly[] References)
+        protected Type Add(string className, string code, params Assembly[] references)
         {
-            return Add(ClassName, Code, null, References);
+            return Add(className, code, null, references);
         }
 
         /// <summary>

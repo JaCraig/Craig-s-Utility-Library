@@ -21,9 +21,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Web;
 using Utilities.DataTypes.Caching.Default;
 using Utilities.DataTypes.Caching.Interfaces;
 using Utilities.DataTypes.Patterns.BaseClasses;
@@ -38,22 +36,13 @@ namespace Utilities.DataTypes.Caching
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager(IEnumerable<ICache> Caches)
+        public Manager(IEnumerable<ICache> caches)
         {
-            Contract.Requires<ArgumentNullException>(Caches != null, "Caches");
-            this.Caches = Caches.Where(x => !x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase))
+            caches = caches ?? new List<ICache>();
+            Caches = caches.Where(x => !x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase))
                                 .ToDictionary(x => x.Name);
-            if (!this.Caches.ContainsKey("Default"))
-                this.Caches.Add("Default", new Cache());
-            if (HttpContext.Current != null)
-            {
-                if (!this.Caches.ContainsKey("Cache"))
-                    this.Caches.Add("Cache", new CacheCache());
-                if (!this.Caches.ContainsKey("Session"))
-                    this.Caches.Add("Session", new SessionCache());
-                if (!this.Caches.ContainsKey("Item"))
-                    this.Caches.Add("Item", new ItemCache());
-            }
+            if (!Caches.ContainsKey("Default"))
+                Caches.Add("Default", new Cache());
         }
 
         /// <summary>
@@ -64,16 +53,16 @@ namespace Utilities.DataTypes.Caching
         /// <summary>
         /// Gets the specified cache
         /// </summary>
-        /// <param name="Name">Name of the cache (defaults to Default)</param>
+        /// <param name="name">Name of the cache (defaults to Default)</param>
         /// <returns>
         /// Returns the ICache specified if it exists, otherwise creates a default cache and
         /// associates it with the name
         /// </returns>
-        public ICache Cache(string Name = "Default")
+        public ICache Cache(string name = "Default")
         {
-            if (!Caches.ContainsKey(Name))
-                Caches.Add(Name, new Cache());
-            return Caches[Name];
+            if (!Caches.ContainsKey(name))
+                Caches.Add(name, new Cache());
+            return Caches[name];
         }
 
         /// <summary>
