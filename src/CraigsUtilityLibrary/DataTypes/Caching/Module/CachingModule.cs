@@ -32,19 +32,16 @@ namespace Utilities.DataTypes.Caching.Module
         /// <summary>
         /// Order to run it in
         /// </summary>
-        public int Order
-        {
-            get { return 1; }
-        }
+        public int Order => 1;
 
         /// <summary>
         /// Loads the module
         /// </summary>
-        /// <param name="Bootstrapper">Bootstrapper to register with</param>
-        public void Load(IBootstrapper Bootstrapper)
+        /// <param name="bootstrapper">Bootstrapper to register with</param>
+        public void Load(IBootstrapper bootstrapper)
         {
-            Bootstrapper.RegisterAll<ICache>();
-            Bootstrapper.Register(new Manager(Bootstrapper.ResolveAll<ICache>()));
+            bootstrapper.RegisterAll<ICache>();
+            bootstrapper.Register(new Manager(bootstrapper.ResolveAll<ICache>()));
         }
     }
 }

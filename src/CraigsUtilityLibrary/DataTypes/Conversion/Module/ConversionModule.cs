@@ -32,19 +32,16 @@ namespace Utilities.DataTypes.Conversion.Module
         /// <summary>
         /// Order to run it in
         /// </summary>
-        public int Order
-        {
-            get { return 0; }
-        }
+        public int Order => 0;
 
         /// <summary>
         /// Loads the module
         /// </summary>
-        /// <param name="Bootstrapper">Bootstrapper to register with</param>
-        public void Load(IBootstrapper Bootstrapper)
+        /// <param name="bootstrapper">Bootstrapper to register with</param>
+        public void Load(IBootstrapper bootstrapper)
         {
-            Bootstrapper.RegisterAll<IConverter>();
-            Bootstrapper.Register(new Manager(Bootstrapper.ResolveAll<IConverter>()));
+            bootstrapper.RegisterAll<IConverter>();
+            bootstrapper.Register(new Manager(bootstrapper.ResolveAll<IConverter>()));
         }
     }
 }

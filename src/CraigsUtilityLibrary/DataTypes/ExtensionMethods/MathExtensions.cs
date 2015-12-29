@@ -166,7 +166,6 @@ namespace Utilities.DataTypes
         /// <param name="value1">Value 1</param>
         /// <param name="value2">Value 2</param>
         /// <returns>The greatest common denominator if one exists</returns>
-        [CLSCompliant(false)]
         public static int GreatestCommonDenominator(this uint value1, uint value2)
         {
             if (value1 == 2147483648)

@@ -22,8 +22,8 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Linq;
 using Utilities.DataTypes.Conversion.Converters.Interfaces;
 
 namespace Utilities.DataTypes.Conversion
@@ -36,15 +36,20 @@ namespace Utilities.DataTypes.Conversion
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Converters">The converters.</param>
-        public Manager(IEnumerable<IConverter> Converters)
+        /// <param name="converters">The converters.</param>
+        public Manager(IEnumerable<IConverter> converters)
         {
-            Contract.Requires<ArgumentNullException>(Converters != null, "Converters");
-            foreach (IConverter TypeConverter in Converters)
-            {
-                TypeDescriptor.AddAttributes(TypeConverter.AssociatedType, new TypeConverterAttribute(TypeConverter.GetType()));
-            }
+            converters = converters ?? new List<IConverter>();
+            Converters = converters.ForEach(x => (TypeConverter)x);
         }
+
+        /// <summary>
+        /// Gets or sets the converters.
+        /// </summary>
+        /// <value>
+        /// The converters.
+        /// </value>
+        private static IEnumerable<TypeConverter> Converters { get; set; }
 
         /// <summary>
         /// Converts item from type T to R
@@ -62,7 +67,7 @@ namespace Utilities.DataTypes.Conversion
         }
 
         /// <summary>
-        /// Converts item from type T to R
+        /// Converts item from type T to the result type
         /// </summary>
         /// <typeparam name="T">Incoming type</typeparam>
         /// <param name="Item">Incoming object</param>
@@ -98,12 +103,18 @@ namespace Utilities.DataTypes.Conversion
                 Converter = TypeDescriptor.GetConverter(ResultType);
                 if (Converter.CanConvertFrom(ObjectType))
                     return Converter.ConvertFrom(Item);
+                Converter = Converters.FirstOrDefault(x => (x.CanConvertFrom(ObjectType) && x.CanConvertTo(ResultType)));
+                if (Converter != null)
+                    return Converter.ConvertTo(Item, ResultType);
+                Converter = Converters.FirstOrDefault(x => (x.CanConvertFrom(ResultType) && x.CanConvertTo(ObjectType)));
+                if (Converter != null)
+                    return Converter.ConvertFrom(Item);
                 if (ResultType.IsEnum)
                 {
                     if (ObjectType == ResultType.GetEnumUnderlyingType())
-                        return System.Enum.ToObject(ResultType, Item);
+                        return Enum.ToObject(ResultType, Item);
                     if (ObjectType == typeof(string))
-                        return System.Enum.Parse(ResultType, Item as string, true);
+                        return Enum.Parse(ResultType, Item as string, true);
                 }
                 if (ResultType.IsClass)
                 {

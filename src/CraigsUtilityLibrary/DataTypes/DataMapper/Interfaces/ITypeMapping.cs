@@ -20,16 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
-using Utilities.DataTypes.DataMapper.Interfaces.Contracts;
 
 namespace Utilities.DataTypes.DataMapper.Interfaces
 {
     /// <summary>
     /// Type mapping interface
     /// </summary>
-    [ContractClass(typeof(ITypeMappingContract))]
     public interface ITypeMapping
     {
         /// <summary>
@@ -40,9 +37,9 @@ namespace Utilities.DataTypes.DataMapper.Interfaces
         /// <summary>
         /// Copies from the source to the destination
         /// </summary>
-        /// <param name="Source">Source object</param>
-        /// <param name="Destination">Destination object</param>
-        void Copy(object Source, object Destination);
+        /// <param name="source">Source object</param>
+        /// <param name="destination">Destination object</param>
+        void Copy(object source, object destination);
     }
 
     /// <summary>
@@ -50,69 +47,68 @@ namespace Utilities.DataTypes.DataMapper.Interfaces
     /// </summary>
     /// <typeparam name="Left">Left type</typeparam>
     /// <typeparam name="Right">Right type</typeparam>
-    [ContractClass(typeof(ITypeMappingContract<,>))]
     public interface ITypeMapping<Left, Right> : ITypeMapping
     {
         /// <summary>
         /// Adds a mapping
         /// </summary>
-        /// <param name="LeftExpression">Left expression</param>
-        /// <param name="RightExpression">Right expression</param>
-        ITypeMapping<Left, Right> AddMapping(Expression<Func<Left, object>> LeftExpression, Expression<Func<Right, object>> RightExpression);
+        /// <param name="leftExpression">Left expression</param>
+        /// <param name="rightExpression">Right expression</param>
+        ITypeMapping<Left, Right> AddMapping(Expression<Func<Left, object>> leftExpression, Expression<Func<Right, object>> rightExpression);
 
         /// <summary>
         /// Adds a mapping
         /// </summary>
-        /// <param name="LeftGet">Left get function</param>
-        /// <param name="LeftSet">Left set action</param>
-        /// <param name="RightExpression">Right expression</param>
-        ITypeMapping<Left, Right> AddMapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Expression<Func<Right, object>> RightExpression);
+        /// <param name="leftGet">Left get function</param>
+        /// <param name="leftSet">Left set action</param>
+        /// <param name="rightExpression">Right expression</param>
+        ITypeMapping<Left, Right> AddMapping(Func<Left, object> leftGet, Action<Left, object> leftSet, Expression<Func<Right, object>> rightExpression);
 
         /// <summary>
         /// Adds a mapping
         /// </summary>
-        /// <param name="LeftExpression">Left expression</param>
-        /// <param name="RightGet">Right get function</param>
-        /// <param name="RightSet">Right set function</param>
-        ITypeMapping<Left, Right> AddMapping(Expression<Func<Left, object>> LeftExpression, Func<Right, object> RightGet, Action<Right, object> RightSet);
+        /// <param name="leftExpression">Left expression</param>
+        /// <param name="rightGet">Right get function</param>
+        /// <param name="rightSet">Right set function</param>
+        ITypeMapping<Left, Right> AddMapping(Expression<Func<Left, object>> leftExpression, Func<Right, object> rightGet, Action<Right, object> rightSet);
 
         /// <summary>
         /// Adds a mapping
         /// </summary>
-        /// <param name="LeftGet">Left get function</param>
-        /// <param name="LeftSet">Left set function</param>
-        /// <param name="RightGet">Right get function</param>
-        /// <param name="RightSet">Right set function</param>
-        ITypeMapping<Left, Right> AddMapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Func<Right, object> RightGet, Action<Right, object> RightSet);
+        /// <param name="leftGet">Left get function</param>
+        /// <param name="leftSet">Left set function</param>
+        /// <param name="rightGet">Right get function</param>
+        /// <param name="rightSet">Right set function</param>
+        ITypeMapping<Left, Right> AddMapping(Func<Left, object> leftGet, Action<Left, object> leftSet, Func<Right, object> rightGet, Action<Right, object> rightSet);
 
         /// <summary>
         /// Copies from the source to the destination
         /// </summary>
-        /// <param name="Source">Source object</param>
-        /// <param name="Destination">Destination object</param>
-        void Copy(Left Source, Right Destination);
+        /// <param name="source">Source object</param>
+        /// <param name="destination">Destination object</param>
+        void Copy(Left source, Right destination);
 
         /// <summary>
         /// Copies from the source to the destination
         /// </summary>
-        /// <param name="Source">Source object</param>
-        /// <param name="Destination">Destination object</param>
-        void Copy(Right Source, Left Destination);
+        /// <param name="source">Source object</param>
+        /// <param name="destination">Destination object</param>
+        void Copy(Right source, Left destination);
 
         /// <summary>
         /// Copies from the source to the destination (used in instances when both Left and Right
         /// are the same type and thus Copy is ambiguous)
         /// </summary>
-        /// <param name="Source">Source</param>
-        /// <param name="Destination">Destination</param>
-        void CopyLeftToRight(Left Source, Right Destination);
+        /// <param name="source">Source</param>
+        /// <param name="destination">Destination</param>
+        void CopyLeftToRight(Left source, Right destination);
 
         /// <summary>
         /// Copies from the source to the destination (used in instances when both Left and Right
         /// are the same type and thus Copy is ambiguous)
         /// </summary>
-        /// <param name="Source">Source</param>
-        /// <param name="Destination">Destination</param>
-        void CopyRightToLeft(Right Source, Left Destination);
+        /// <param name="source">Source</param>
+        /// <param name="destination">Destination</param>
+        void CopyRightToLeft(Right source, Left destination);
     }
 }

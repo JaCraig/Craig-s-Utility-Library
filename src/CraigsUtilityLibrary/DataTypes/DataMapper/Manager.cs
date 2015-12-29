@@ -21,7 +21,6 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes.DataMapper.Interfaces;
 
@@ -35,16 +34,16 @@ namespace Utilities.DataTypes.DataMapper
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="DataMappers">The data mappers.</param>
-        /// <param name="MapperModules">The mapper modules.</param>
-        public Manager(IEnumerable<IDataMapper> DataMappers, IEnumerable<IMapperModule> MapperModules)
+        /// <param name="dataMappers">The data mappers.</param>
+        /// <param name="mapperModules">The mapper modules.</param>
+        public Manager(IEnumerable<IDataMapper> dataMappers, IEnumerable<IMapperModule> mapperModules)
         {
-            Contract.Requires<ArgumentNullException>(DataMappers != null, "DataMappers");
-            Contract.Requires<ArgumentNullException>(MapperModules != null, "MapperModules");
-            DataMapper = DataMappers.FirstOrDefault(x => !x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
+            dataMappers = dataMappers ?? new List<IDataMapper>();
+            mapperModules = mapperModules ?? new List<IMapperModule>();
+            DataMapper = dataMappers.FirstOrDefault(x => !x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
             if (DataMapper == null)
-                DataMapper = DataMappers.FirstOrDefault(x => x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
-            MapperModules.ForEach(x => x.Map(this));
+                DataMapper = dataMappers.FirstOrDefault(x => x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
+            mapperModules.ForEach(x => x.Map(this));
         }
 
         /// <summary>
@@ -66,12 +65,12 @@ namespace Utilities.DataTypes.DataMapper
         /// <summary>
         /// Adds or returns a mapping between two types
         /// </summary>
-        /// <param name="Left">Left type</param>
-        /// <param name="Right">Right type</param>
+        /// <param name="left">Left type</param>
+        /// <param name="right">Right type</param>
         /// <returns>A mapping object for the two types specified</returns>
-        public ITypeMapping Map(Type Left, Type Right)
+        public ITypeMapping Map(Type left, Type right)
         {
-            return DataMapper.Map(Left, Right);
+            return DataMapper.Map(left, right);
         }
 
         /// <summary>

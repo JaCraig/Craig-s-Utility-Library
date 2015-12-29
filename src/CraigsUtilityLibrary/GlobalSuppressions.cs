@@ -1,8 +1,15 @@
-﻿
-// This file is used by Code Analysis to maintain SuppressMessage 
+﻿// This file is used by Code Analysis to maintain SuppressMessage
 // attributes that are applied to this project.
-// Project-level suppressions either have no target or are given 
+// Project-level suppressions either have no target or are given
 // a specific target and scoped to a namespace, type, member, etc.
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Potential Code Quality Issues", "RECS0020:Delegate subtraction has unpredictable result", Justification = "<Pending>", Scope = "member", Target = "~E:Utilities.DataTypes.ObservableList`1.CollectionChanged")]
-
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Common Practices and Code Improvements", "RECS0035:Possible mistaken call to 'object.GetType()'", Justification = "<Pending>", Scope = "member", Target = "~M:Utilities.DataTypes.Conversion.Converters.SqlDbTypeTypeConverter.#ctor")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Common Practices and Code Improvements", "RECS0035:Possible mistaken call to 'object.GetType()'", Justification = "<Pending>", Scope = "member", Target = "~M:Utilities.DataTypes.Conversion.Converters.DbTypeTypeConverter.#ctor")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Potential Code Quality Issues", "RECS0017:Possible compare of value type with 'null'", Justification = "<Pending>", Scope = "member", Target = "~M:Utilities.DataTypes.Conversion.Manager.To``1(``0,System.Type,System.Object)~System.Object")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Potential Code Quality Issues", "RECS0022:A catch clause that catches System.Exception and has an empty body", Justification = "<Pending>", Scope = "member", Target = "~M:Utilities.DataTypes.Conversion.Manager.To``1(``0,System.Type,System.Object)~System.Object")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Potential Code Quality Issues", "RECS0021:Warns about calls to virtual member functions occuring in the constructor", Justification = "<Pending>", Scope = "member", Target = "~M:Utilities.DataTypes.Dynamo.#ctor(System.Object)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Potential Code Quality Issues", "RECS0020:Delegate subtraction has unpredictable result", Justification = "<Pending>", Scope = "member", Target = "~E:Utilities.DataTypes.Dynamo.GetValueEnd")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Potential Code Quality Issues", "RECS0020:Delegate subtraction has unpredictable result", Justification = "<Pending>", Scope = "member", Target = "~E:Utilities.DataTypes.Dynamo.GetValueStart")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Potential Code Quality Issues", "RECS0020:Delegate subtraction has unpredictable result", Justification = "<Pending>", Scope = "member", Target = "~E:Utilities.DataTypes.Dynamo.PropertyChanged")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Potential Code Quality Issues", "RECS0018:Comparison of floating point numbers with equality operator", Justification = "<Pending>", Scope = "member", Target = "~M:Utilities.DataTypes.Fraction.#ctor(System.Single,System.Single)")]

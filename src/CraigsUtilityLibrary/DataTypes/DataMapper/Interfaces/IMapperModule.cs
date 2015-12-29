@@ -19,21 +19,17 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System.Diagnostics.Contracts;
-using Utilities.DataTypes.DataMapper.Interfaces.Contracts;
-
 namespace Utilities.DataTypes.DataMapper.Interfaces
 {
     /// <summary>
     /// Mapping interface
     /// </summary>
-    [ContractClass(typeof(IMapperModuleContract))]
     public interface IMapperModule
     {
         /// <summary>
         /// Called when mapping various classes to one another
         /// </summary>
-        /// <param name="Manager">Mapping manager class</param>
-        void Map(Manager Manager);
+        /// <param name="manager">Mapping manager class</param>
+        void Map(Manager manager);
     }
 }

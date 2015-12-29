@@ -365,7 +365,7 @@ namespace Utilities.DataTypes
         public static T ThrowIfNotNull<T>(this T item, Exception exception)
             where T : class
         {
-            return item.ThrowIf(x => x != null && !Convert.IsDBNull(x), exception);
+            return item.ThrowIf(x => x != null, exception);
         }
 
         /// <summary>
@@ -414,7 +414,7 @@ namespace Utilities.DataTypes
         public static T ThrowIfNull<T>(this T item, Exception exception)
             where T : class
         {
-            return item.ThrowIf(x => x == null || Convert.IsDBNull(x), exception);
+            return item.ThrowIf(x => x == null, exception);
         }
 
         /// <summary>

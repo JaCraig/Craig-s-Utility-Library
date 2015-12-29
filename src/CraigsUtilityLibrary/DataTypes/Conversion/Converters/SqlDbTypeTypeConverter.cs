@@ -21,7 +21,6 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
@@ -38,7 +37,6 @@ namespace Utilities.DataTypes.Conversion.Converters
         /// Constructor
         /// </summary>
         public SqlDbTypeTypeConverter()
-            : base()
         {
             ConvertToTypes.Add(typeof(Type), SqlDbTypeToType);
             ConvertToTypes.Add(typeof(DbType), SqlDbTypeToDbType);
@@ -122,40 +120,58 @@ namespace Utilities.DataTypes.Conversion.Converters
             {
                 case DbType.Byte:
                     return typeof(byte);
+
                 case DbType.SByte:
                     return typeof(sbyte);
+
                 case DbType.Int16:
                     return typeof(short);
+
                 case DbType.UInt16:
                     return typeof(ushort);
+
                 case DbType.Int32:
                     return typeof(int);
+
                 case DbType.UInt32:
                     return typeof(uint);
+
                 case DbType.Int64:
                     return typeof(long);
+
                 case DbType.UInt64:
                     return typeof(ulong);
+
                 case DbType.Single:
                     return typeof(float);
+
                 case DbType.Double:
                     return typeof(double);
+
                 case DbType.Decimal:
                     return typeof(decimal);
+
                 case DbType.Boolean:
                     return typeof(bool);
+
                 case DbType.String:
                     return typeof(string);
+
                 case DbType.StringFixedLength:
                     return typeof(char);
+
                 case DbType.Guid:
                     return typeof(Guid);
+
                 case DbType.DateTime2:
                     return typeof(DateTime);
+
                 case DbType.DateTime:
                     return typeof(DateTime);
+
                 case DbType.DateTimeOffset:
                     return typeof(DateTimeOffset);
+
                 case DbType.Binary:
                     return typeof(byte[]);
             }

@@ -35,58 +35,57 @@ namespace Utilities.DataTypes.DataMapper.Default
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="LeftExpression">Left expression</param>
-        /// <param name="RightExpression">Right expression</param>
-        public Mapping(Expression<Func<Left, object>> LeftExpression, Expression<Func<Right, object>> RightExpression)
-            : this(LeftExpression == null ? null : LeftExpression.Compile(),
-                    LeftExpression == null ? null : LeftExpression.PropertySetter<Left>().Compile(),
-                    RightExpression == null ? null : RightExpression.Compile(),
-                    RightExpression == null ? null : RightExpression.PropertySetter<Right>().Compile())
+        /// <param name="leftExpression">Left expression</param>
+        /// <param name="rightExpression">Right expression</param>
+        public Mapping(Expression<Func<Left, object>> leftExpression, Expression<Func<Right, object>> rightExpression)
+            : this(leftExpression == null ? null : leftExpression.Compile(),
+                    leftExpression == null ? null : leftExpression.PropertySetter<Left>().Compile(),
+                    rightExpression == null ? null : rightExpression.Compile(),
+                    rightExpression == null ? null : rightExpression.PropertySetter<Right>().Compile())
         {
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="LeftGet">Left get function</param>
-        /// <param name="LeftSet">Left set action</param>
-        /// <param name="RightExpression">Right expression</param>
-        public Mapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Expression<Func<Right, object>> RightExpression)
-            : this(LeftGet,
-                    LeftSet,
-                    RightExpression == null ? null : RightExpression.Compile(),
-                    RightExpression == null ? null : RightExpression.PropertySetter<Right>().Compile())
+        /// <param name="leftGet">Left get function</param>
+        /// <param name="leftSet">Left set action</param>
+        /// <param name="rightExpression">Right expression</param>
+        public Mapping(Func<Left, object> leftGet, Action<Left, object> leftSet, Expression<Func<Right, object>> rightExpression)
+            : this(leftGet,
+                    leftSet,
+                    rightExpression == null ? null : rightExpression.Compile(),
+                    rightExpression == null ? null : rightExpression.PropertySetter<Right>().Compile())
         {
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="LeftExpression">Left expression</param>
-        /// <param name="RightGet">Right get function</param>
-        /// <param name="RightSet">Right set function</param>
-        public Mapping(Expression<Func<Left, object>> LeftExpression, Func<Right, object> RightGet, Action<Right, object> RightSet)
-            : this(LeftExpression == null ? null : LeftExpression.Compile(),
-                    LeftExpression == null ? null : LeftExpression.PropertySetter<Left>().Compile(),
-                    RightGet,
-                    RightSet)
+        /// <param name="leftExpression">Left expression</param>
+        /// <param name="rightGet">Right get function</param>
+        /// <param name="rightSet">Right set function</param>
+        public Mapping(Expression<Func<Left, object>> leftExpression, Func<Right, object> rightGet, Action<Right, object> rightSet)
+            : this(leftExpression == null ? null : leftExpression.Compile(),
+                    leftExpression == null ? null : leftExpression.PropertySetter<Left>().Compile(),
+                    rightGet,
+                    rightSet)
         {
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="LeftGet">Left get function</param>
-        /// <param name="LeftSet">Left set function</param>
-        /// <param name="RightGet">Right get function</param>
-        /// <param name="RightSet">Right set function</param>
-        public Mapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Func<Right, object> RightGet, Action<Right, object> RightSet)
-            : base()
+        /// <param name="leftGet">Left get function</param>
+        /// <param name="leftSet">Left set function</param>
+        /// <param name="rightGet">Right get function</param>
+        /// <param name="rightSet">Right set function</param>
+        public Mapping(Func<Left, object> leftGet, Action<Left, object> leftSet, Func<Right, object> rightGet, Action<Right, object> rightSet)
         {
-            this.LeftGet = LeftGet;
-            this.LeftSet = LeftSet.Check((x, y) => { });
-            this.RightGet = RightGet;
-            this.RightSet = RightSet.Check((x, y) => { });
+            LeftGet = leftGet;
+            LeftSet = leftSet.Check((x, y) => { });
+            RightGet = rightGet;
+            RightSet = rightSet.Check((x, y) => { });
         }
 
         /// <summary>
@@ -112,47 +111,47 @@ namespace Utilities.DataTypes.DataMapper.Default
         /// <summary>
         /// Copies the source to the destination
         /// </summary>
-        /// <param name="Source">Source object</param>
-        /// <param name="Destination">Destination object</param>
-        public virtual void Copy(Left Source, Right Destination)
+        /// <param name="source">Source object</param>
+        /// <param name="destination">Destination object</param>
+        public virtual void Copy(Left source, Right destination)
         {
             if (LeftGet == null) return;
-            RightSet(Destination, LeftGet(Source));
+            RightSet(destination, LeftGet(source));
         }
 
         /// <summary>
         /// Copies the source to the destination
         /// </summary>
-        /// <param name="Source">Source object</param>
-        /// <param name="Destination">Destination object</param>
-        public virtual void Copy(Right Source, Left Destination)
+        /// <param name="source">Source object</param>
+        /// <param name="destination">Destination object</param>
+        public virtual void Copy(Right source, Left destination)
         {
             if (RightGet == null) return;
-            LeftSet(Destination, RightGet(Source));
+            LeftSet(destination, RightGet(source));
         }
 
         /// <summary>
         /// Copies from the source to the destination (used in instances when both Left and Right
         /// are the same type and thus Copy is ambiguous)
         /// </summary>
-        /// <param name="Source">Source object</param>
-        /// <param name="Destination">Destination object</param>
-        public virtual void CopyLeftToRight(Left Source, Right Destination)
+        /// <param name="source">Source object</param>
+        /// <param name="destination">Destination object</param>
+        public virtual void CopyLeftToRight(Left source, Right destination)
         {
             if (LeftGet == null) return;
-            RightSet(Destination, LeftGet(Source));
+            RightSet(destination, LeftGet(source));
         }
 
         /// <summary>
         /// Copies from the source to the destination (used in instances when both Left and Right
         /// are the same type and thus Copy is ambiguous)
         /// </summary>
-        /// <param name="Source">Source object</param>
-        /// <param name="Destination">Destination object</param>
-        public virtual void CopyRightToLeft(Right Source, Left Destination)
+        /// <param name="source">Source object</param>
+        /// <param name="destination">Destination object</param>
+        public virtual void CopyRightToLeft(Right source, Left destination)
         {
             if (RightGet == null) return;
-            LeftSet(Destination, RightGet(Source));
+            LeftSet(destination, RightGet(source));
         }
     }
 }

@@ -63,9 +63,9 @@ namespace Utilities.DataTypes
             {
                 Methods.AddIf(x => x.DeclaringType != null
                     && !excludedAssemblies.Contains(x.DeclaringType.GetTypeInfo().Assembly)
-                    && !x.DeclaringType.GetTypeInfo().Assembly.FullName.StartsWith("System", StringComparison.InvariantCulture)
-                    && !x.DeclaringType.GetTypeInfo().Assembly.FullName.StartsWith("mscorlib", StringComparison.InvariantCulture)
-                    && !x.DeclaringType.GetTypeInfo().Assembly.FullName.StartsWith("WebDev.WebHost40", StringComparison.InvariantCulture),
+                    && !x.DeclaringType.GetTypeInfo().Assembly.FullName.StartsWith("System", StringComparison.Ordinal)
+                    && !x.DeclaringType.GetTypeInfo().Assembly.FullName.StartsWith("mscorlib", StringComparison.Ordinal)
+                    && !x.DeclaringType.GetTypeInfo().Assembly.FullName.StartsWith("WebDev.WebHost40", StringComparison.Ordinal),
                         Frame.GetMethod());
             }
             return Methods;

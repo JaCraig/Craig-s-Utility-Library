@@ -48,46 +48,46 @@ namespace Utilities.DataTypes.AOP.Interfaces
         /// <summary>
         /// Used to hook into the object once it has been created
         /// </summary>
-        /// <param name="Object">Object created by the system</param>
-        void Setup(object Object);
+        /// <param name="value">Object created by the system</param>
+        void Setup(object value);
 
         /// <summary>
         /// Used to insert code into the default constructor
         /// </summary>
-        /// <param name="BaseType">Base type</param>
+        /// <param name="baseType">Base type</param>
         /// <returns>The code to insert</returns>
-        string SetupDefaultConstructor(Type BaseType);
+        string SetupDefaultConstructor(Type baseType);
 
         /// <summary>
         /// Used to insert code at the end of the method
         /// </summary>
         /// <param name="Method">Overridding Method</param>
-        /// <param name="BaseType">Base type</param>
-        /// <param name="ReturnValueName">Local holder for the value returned by the function</param>
+        /// <param name="baseType">Base type</param>
+        /// <param name="returnValueName">Local holder for the value returned by the function</param>
         /// <returns>The code to insert</returns>
-        string SetupEndMethod(MethodInfo Method, Type BaseType, string ReturnValueName);
+        string SetupEndMethod(MethodInfo method, Type baseType, string returnValueName);
 
         /// <summary>
         /// Used to insert code within the catch portion of the try/catch portion of the method
         /// </summary>
-        /// <param name="Method">Overridding Method</param>
-        /// <param name="BaseType">Base type</param>
+        /// <param name="method">Overridding Method</param>
+        /// <param name="baseType">Base type</param>
         /// <returns>The code to insert</returns>
-        string SetupExceptionMethod(MethodInfo Method, Type BaseType);
+        string SetupExceptionMethod(MethodInfo method, Type baseType);
 
         /// <summary>
         /// Used to set up any interfaces, extra fields, methods, etc. prior to overridding any methods.
         /// </summary>
-        /// <param name="Type">Type of the object</param>
+        /// <param name="type">Type of the object</param>
         /// <returns>The code to insert</returns>
-        string SetupInterfaces(Type Type);
+        string SetupInterfaces(Type type);
 
         /// <summary>
         /// Used to insert code at the beginning of the method
         /// </summary>
-        /// <param name="Method">Overridding Method</param>
-        /// <param name="BaseType">Base type</param>
+        /// <param name="method">Overridding Method</param>
+        /// <param name="baseType">Base type</param>
         /// <returns>The code to insert</returns>
-        string SetupStartMethod(MethodInfo Method, Type BaseType);
+        string SetupStartMethod(MethodInfo method, Type baseType);
     }
 }

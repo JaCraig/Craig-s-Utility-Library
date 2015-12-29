@@ -33,20 +33,17 @@ namespace Utilities.DataTypes.AOP.Module
         /// <summary>
         /// Order to run it in
         /// </summary>
-        public int Order
-        {
-            get { return 2; }
-        }
+        public int Order => 2;
 
         /// <summary>
         /// Loads the module
         /// </summary>
-        /// <param name="Bootstrapper">Bootstrapper to register with</param>
-        public void Load(IBootstrapper Bootstrapper)
+        /// <param name="bootstrapper">Bootstrapper to register with</param>
+        public void Load(IBootstrapper bootstrapper)
         {
-            Bootstrapper.RegisterAll<IAspect>();
-            Bootstrapper.RegisterAll<IAOPModule>();
-            Bootstrapper.Register(new Manager(Bootstrapper.Resolve<Compiler>(), Bootstrapper.ResolveAll<IAspect>(), Bootstrapper.ResolveAll<IAOPModule>()));
+            bootstrapper.RegisterAll<IAspect>();
+            bootstrapper.RegisterAll<IAOPModule>();
+            bootstrapper.Register(new Manager(bootstrapper.Resolve<Compiler>(), bootstrapper.ResolveAll<IAspect>(), bootstrapper.ResolveAll<IAOPModule>()));
         }
     }
 }

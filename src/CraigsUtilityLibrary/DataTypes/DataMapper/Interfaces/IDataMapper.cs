@@ -20,15 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Diagnostics.Contracts;
-using Utilities.DataTypes.DataMapper.Interfaces.Contracts;
 
 namespace Utilities.DataTypes.DataMapper.Interfaces
 {
     /// <summary>
     /// Data mapper interface
     /// </summary>
-    [ContractClass(typeof(IDataMapperContract))]
     public interface IDataMapper
     {
         /// <summary>
@@ -42,9 +39,9 @@ namespace Utilities.DataTypes.DataMapper.Interfaces
         /// <summary>
         /// Adds or returns a mapping between two types
         /// </summary>
-        /// <param name="Left">Left type</param>
-        /// <param name="Right">Right type</param>
+        /// <param name="left">Left type</param>
+        /// <param name="right">Right type</param>
         /// <returns>A mapping object for the two types specified</returns>
-        ITypeMapping Map(Type Left, Type Right);
+        ITypeMapping Map(Type left, Type right);
     }
 }

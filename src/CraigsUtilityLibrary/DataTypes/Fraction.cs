@@ -86,7 +86,7 @@ namespace Utilities.DataTypes
         /// <param name="denominator">Denominator</param>
         public Fraction(float numerator, float denominator)
         {
-            Contract.Requires<ArgumentException>(denominator != Int32.MinValue);
+            Contract.Requires<ArgumentException>(denominator != int.MinValue);
             while (numerator != Math.Round(numerator, MidpointRounding.AwayFromZero)
                 || denominator != Math.Round(denominator, MidpointRounding.AwayFromZero))
             {

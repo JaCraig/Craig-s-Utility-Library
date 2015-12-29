@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using Utilities.DataTypes.Conversion.Converters.Interfaces;
 
 namespace Utilities.DataTypes.Conversion.Converters.BaseClasses
@@ -36,7 +37,6 @@ namespace Utilities.DataTypes.Conversion.Converters.BaseClasses
         /// Constructor
         /// </summary>
         protected TypeConverterBase()
-            : base()
         {
             ConvertToTypes = new Dictionary<Type, Func<object, object>>();
             ConvertFromTypes = new Dictionary<Type, Func<object, object>>();
@@ -69,7 +69,7 @@ namespace Utilities.DataTypes.Conversion.Converters.BaseClasses
         /// <param name="context">Context object</param>
         /// <param name="sourceType">Source type</param>
         /// <returns>True if it can convert from it, false otherwise</returns>
-        public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, Type sourceType)
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
             return ConvertFromTypes.Keys.Contains(sourceType) || base.CanConvertFrom(context, sourceType);
         }
@@ -80,7 +80,7 @@ namespace Utilities.DataTypes.Conversion.Converters.BaseClasses
         /// <param name="context">Context object</param>
         /// <param name="destinationType">Destination type</param>
         /// <returns>True if it can convert from it, false otherwise</returns>
-        public override bool CanConvertTo(System.ComponentModel.ITypeDescriptorContext context, Type destinationType)
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             return ConvertToTypes.Keys.Contains(destinationType) || base.CanConvertTo(context, destinationType);
         }
@@ -92,7 +92,7 @@ namespace Utilities.DataTypes.Conversion.Converters.BaseClasses
         /// <param name="culture">Culture info</param>
         /// <param name="value">Value</param>
         /// <returns>The DbType version</returns>
-        public override object ConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             if (value == null)
                 return null;
@@ -110,7 +110,7 @@ namespace Utilities.DataTypes.Conversion.Converters.BaseClasses
         /// <param name="value"></param>
         /// <param name="destinationType"></param>
         /// <returns></returns>
-        public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             if (value == null)
                 return null;

@@ -127,10 +127,6 @@ namespace Utilities.DataTypes
             if (Tasks != null)
             {
                 Cancel(true);
-                foreach (Task Task in Tasks)
-                {
-                    Task.Dispose();
-                }
                 Tasks = null;
             }
             if (CancellationToken != null)

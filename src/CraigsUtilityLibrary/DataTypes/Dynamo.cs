@@ -24,12 +24,9 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Contracts;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
-using System.Security;
 using System.Text;
 using Utilities.DataTypes.DataMapper;
 
@@ -219,23 +216,6 @@ namespace Utilities.DataTypes
             InternalValues = new ConcurrentDictionary<string, object>(dictionary, StringComparer.OrdinalIgnoreCase);
             ChildValues = new ConcurrentDictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
             ChangeLog = new ConcurrentDictionary<string, Change>(StringComparer.OrdinalIgnoreCase);
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="info">Serialization info</param>
-        /// <param name="context">Streaming context</param>
-        protected Dynamo(SerializationInfo info, StreamingContext context)
-        {
-            Contract.Requires<ArgumentNullException>(info != null, "info");
-            InternalValues = new ConcurrentDictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-            ChildValues = new ConcurrentDictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
-            ChangeLog = new ConcurrentDictionary<string, Change>(StringComparer.OrdinalIgnoreCase);
-            foreach (SerializationEntry Item in info)
-            {
-                SetValue(Item.Name, Item.Value);
-            }
         }
 
         /// <summary>
@@ -457,7 +437,8 @@ namespace Utilities.DataTypes
         /// <param name="result">Result</param>
         public void CopyTo(object result)
         {
-            Contract.Requires<ArgumentNullException>(result != null, "result");
+            if (result == null)
+                return;
             DataMapper.Map(GetType(), result.GetType())
                       .AutoMap()
                       .Copy(this, result);
@@ -516,20 +497,6 @@ namespace Utilities.DataTypes
                 }
             }
             return Value;
-        }
-
-        /// <summary>
-        /// Gets the object data and serializes it
-        /// </summary>
-        /// <param name="info">Serialization info object</param>
-        /// <param name="context">Streaming context object</param>
-        [SecurityCritical]
-        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            foreach (string Key in Keys)
-            {
-                info.AddValue(Key, GetValue(Key, typeof(object)));
-            }
         }
 
         /// <summary>
@@ -806,11 +773,13 @@ namespace Utilities.DataTypes
         /// <param name="newValue">New value for the property</param>
         protected void RaisePropertyChanged(string propertyName, object newValue)
         {
-            Contract.Requires<NullReferenceException>(ChangeLog != null, "ChangeLog");
-            if (ChangeLog.ContainsKey(propertyName))
-                ChangeLog.SetValue(propertyName, new Change(this[propertyName], newValue));
-            else
-                ChangeLog.SetValue(propertyName, new Change(newValue, newValue));
+            if (ChangeLog != null)
+            {
+                if (ChangeLog.ContainsKey(propertyName))
+                    ChangeLog.SetValue(propertyName, new Change(this[propertyName], newValue));
+                else
+                    ChangeLog.SetValue(propertyName, new Change(newValue, newValue));
+            }
             var Handler = propertyChanged_;
             if (Handler != null)
                 Handler(this, new PropertyChangedEventArgs(propertyName));

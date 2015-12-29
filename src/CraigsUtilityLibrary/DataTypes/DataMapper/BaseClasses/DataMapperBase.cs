@@ -35,7 +35,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// </summary>
         protected DataMapperBase()
         {
-            this.Mappings = new ConcurrentDictionary<Tuple<Type, Type>, ITypeMapping>();
+            Mappings = new ConcurrentDictionary<Tuple<Type, Type>, ITypeMapping>();
         }
 
         /// <summary>
@@ -66,12 +66,12 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <summary>
         /// Adds or returns a mapping between two types
         /// </summary>
-        /// <param name="Left">Left type</param>
-        /// <param name="Right">Right type</param>
+        /// <param name="left">Left type</param>
+        /// <param name="right">Right type</param>
         /// <returns>A mapping object for the two types specified</returns>
-        public ITypeMapping Map(Type Left, Type Right)
+        public ITypeMapping Map(Type left, Type right)
         {
-            var Key = new Tuple<Type, Type>(Left, Right);
+            var Key = new Tuple<Type, Type>(left, right);
             Mappings.AddOrUpdate(Key, x => CreateTypeMapping(x.Item1, x.Item2), (x, y) => y);
             ITypeMapping ReturnValue = null;
             Mappings.TryGetValue(Key, out ReturnValue);
@@ -98,9 +98,9 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <summary>
         /// Used internally to create type mappings
         /// </summary>
-        /// <param name="Left">Left type</param>
-        /// <param name="Right">Right type</param>
+        /// <param name="left">Left type</param>
+        /// <param name="right">Right type</param>
         /// <returns>A mapping object for the two types specified</returns>
-        protected abstract ITypeMapping CreateTypeMapping(Type Left, Type Right);
+        protected abstract ITypeMapping CreateTypeMapping(Type left, Type right);
     }
 }

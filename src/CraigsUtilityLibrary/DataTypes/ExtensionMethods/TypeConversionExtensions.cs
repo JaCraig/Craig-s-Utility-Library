@@ -21,6 +21,8 @@ THE SOFTWARE.*/
 
 using System;
 using System.ComponentModel;
+using Utilities.DataTypes.Conversion;
+using Utilities.DataTypes.DataMapper.Interfaces;
 
 namespace Utilities.DataTypes
 {
@@ -46,17 +48,17 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Sets up a mapping between two types
         /// </summary>
-        /// <param name="LeftType">Left type</param>
-        /// <param name="RightType">Right type</param>
+        /// <param name="leftType">Left type</param>
+        /// <param name="rightType">Right type</param>
         /// <returns>The type mapping</returns>
-        public static ITypeMapping MapTo(this Type LeftType, Type RightType)
+        public static ITypeMapping MapTo(this Type leftType, Type rightType)
         {
-            Contract.Requires<ArgumentNullException>(LeftType != null);
-            Contract.Requires<ArgumentNullException>(RightType != null);
-            var TempManager = IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.DataMapper.Manager>();
+            if (leftType == null || rightType == null)
+                return null;
+            var TempManager = IoC.Manager.Bootstrapper.Resolve<DataMapper.Manager>();
             if (TempManager == null)
                 return null;
-            return TempManager.Map(LeftType, RightType);
+            return TempManager.Map(leftType, rightType);
         }
 
         /// <summary>
@@ -64,11 +66,11 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="Left">Left type</typeparam>
         /// <typeparam name="Right">Right type</typeparam>
-        /// <param name="Object">Object to set up mapping for</param>
+        /// <param name="item">Object to set up mapping for</param>
         /// <returns>The type mapping</returns>
-        public static ITypeMapping<Left, Right> MapTo<Left, Right>(this Left Object)
+        public static ITypeMapping<Left, Right> MapTo<Left, Right>(this Left item)
         {
-            var TempManager = IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.DataMapper.Manager>();
+            var TempManager = IoC.Manager.Bootstrapper.Resolve<DataMapper.Manager>();
             if (TempManager == null)
                 return null;
             return TempManager.Map<Left, Right>();
@@ -79,11 +81,11 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="Left">Left type</typeparam>
         /// <typeparam name="Right">Right type</typeparam>
-        /// <param name="ObjectType">Object type to set up mapping for</param>
+        /// <param name="objectType">Object type to set up mapping for</param>
         /// <returns>The type mapping</returns>
-        public static ITypeMapping<Left, Right> MapTo<Left, Right>(this Type ObjectType)
+        public static ITypeMapping<Left, Right> MapTo<Left, Right>(this Type objectType)
         {
-            var TempManager = IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.DataMapper.Manager>();
+            var TempManager = IoC.Manager.Bootstrapper.Resolve<DataMapper.Manager>();
             if (TempManager == null)
                 return null;
             return TempManager.Map<Left, Right>();
@@ -94,35 +96,35 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="T">Type to convert from</typeparam>
         /// <typeparam name="R">Return type</typeparam>
-        /// <param name="Object">Object to convert</param>
-        /// <param name="DefaultValue">
+        /// <param name="item">Object to convert</param>
+        /// <param name="defaultValue">
         /// Default value to return if there is an issue or it can't be converted
         /// </param>
         /// <returns>
         /// The object converted to the other type or the default value if there is an error or
         /// can't be converted
         /// </returns>
-        public static R To<T, R>(this T Object, R DefaultValue = default(R))
+        public static R To<T, R>(this T item, R defaultValue = default(R))
         {
-            return Manager.To(Object, DefaultValue);
+            return Manager.To(item, defaultValue);
         }
 
         /// <summary>
         /// Attempts to convert the object to another type and returns the value
         /// </summary>
         /// <typeparam name="T">Type to convert from</typeparam>
-        /// <param name="ResultType">Result type</param>
-        /// <param name="Object">Object to convert</param>
-        /// <param name="DefaultValue">
+        /// <param name="resultType">Result type</param>
+        /// <param name="item">Object to convert</param>
+        /// <param name="defaultValue">
         /// Default value to return if there is an issue or it can't be converted
         /// </param>
         /// <returns>
         /// The object converted to the other type or the default value if there is an error or
         /// can't be converted
         /// </returns>
-        public static object To<T>(this T Object, Type ResultType, object DefaultValue = null)
+        public static object To<T>(this T item, Type resultType, object defaultValue = null)
         {
-            return Manager.To(Object, ResultType, DefaultValue);
+            return Manager.To(item, resultType, defaultValue);
         }
     }
 }

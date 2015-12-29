@@ -31,18 +31,15 @@ namespace Utilities.DataTypes.CodeGen.Module
         /// <summary>
         /// Order to run it in
         /// </summary>
-        public int Order
-        {
-            get { return 0; }
-        }
+        public int Order => 0;
 
         /// <summary>
         /// Loads the module
         /// </summary>
-        /// <param name="Bootstrapper">Bootstrapper to register with</param>
-        public void Load(IBootstrapper Bootstrapper)
+        /// <param name="bootstrapper">Bootstrapper to register with</param>
+        public void Load(IBootstrapper bootstrapper)
         {
-            Bootstrapper.Register(new Compiler());
+            bootstrapper.Register(new Compiler());
         }
     }
 }

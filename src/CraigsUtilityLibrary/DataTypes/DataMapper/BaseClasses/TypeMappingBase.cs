@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -41,7 +40,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// </summary>
         protected TypeMappingBase()
         {
-            this.Mappings = new ConcurrentBag<IMapping<Left, Right>>();
+            Mappings = new ConcurrentBag<IMapping<Left, Right>>();
         }
 
         /// <summary>
@@ -52,38 +51,38 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <summary>
         /// Adds a mapping
         /// </summary>
-        /// <param name="LeftExpression">Left expression</param>
-        /// <param name="RightExpression">Right expression</param>
+        /// <param name="leftExpression">Left expression</param>
+        /// <param name="rightExpression">Right expression</param>
         /// <returns>This</returns>
-        public abstract ITypeMapping<Left, Right> AddMapping(Expression<Func<Left, object>> LeftExpression, Expression<Func<Right, object>> RightExpression);
+        public abstract ITypeMapping<Left, Right> AddMapping(Expression<Func<Left, object>> leftExpression, Expression<Func<Right, object>> rightExpression);
 
         /// <summary>
         /// Adds a mapping
         /// </summary>
-        /// <param name="LeftGet">Left get function</param>
-        /// <param name="LeftSet">Left set action</param>
-        /// <param name="RightExpression">Right expression</param>
+        /// <param name="leftGet">Left get function</param>
+        /// <param name="leftSet">Left set action</param>
+        /// <param name="rightExpression">Right expression</param>
         /// <returns>This</returns>
-        public abstract ITypeMapping<Left, Right> AddMapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Expression<Func<Right, object>> RightExpression);
+        public abstract ITypeMapping<Left, Right> AddMapping(Func<Left, object> leftGet, Action<Left, object> leftSet, Expression<Func<Right, object>> rightExpression);
 
         /// <summary>
         /// Adds a mapping
         /// </summary>
-        /// <param name="LeftExpression">Left expression</param>
-        /// <param name="RightGet">Right get function</param>
-        /// <param name="RightSet">Right set function</param>
+        /// <param name="leftExpression">Left expression</param>
+        /// <param name="rightGet">Right get function</param>
+        /// <param name="rightSet">Right set function</param>
         /// <returns>This</returns>
-        public abstract ITypeMapping<Left, Right> AddMapping(Expression<Func<Left, object>> LeftExpression, Func<Right, object> RightGet, Action<Right, object> RightSet);
+        public abstract ITypeMapping<Left, Right> AddMapping(Expression<Func<Left, object>> leftExpression, Func<Right, object> rightGet, Action<Right, object> rightSet);
 
         /// <summary>
         /// Adds a mapping
         /// </summary>
-        /// <param name="LeftGet">Left get function</param>
-        /// <param name="LeftSet">Left set function</param>
-        /// <param name="RightGet">Right get function</param>
-        /// <param name="RightSet">Right set function</param>
+        /// <param name="leftGet">Left get function</param>
+        /// <param name="leftSet">Left set function</param>
+        /// <param name="rightGet">Right get function</param>
+        /// <param name="rightSet">Right set function</param>
         /// <returns>This</returns>
-        public abstract ITypeMapping<Left, Right> AddMapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Func<Right, object> RightGet, Action<Right, object> RightSet);
+        public abstract ITypeMapping<Left, Right> AddMapping(Func<Left, object> leftGet, Action<Left, object> leftSet, Func<Right, object> rightGet, Action<Right, object> rightSet);
 
         /// <summary>
         /// Automatically maps properties that are named the same thing
@@ -117,7 +116,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
                     {
                         Expression<Func<Left, object>> LeftGet = Properties[x].PropertyGetter<Left>();
                         Expression<Func<Right, object>> RightGet = DestinationProperty.PropertyGetter<Right>();
-                        this.AddMapping(LeftGet, RightGet);
+                        AddMapping(LeftGet, RightGet);
                     }
                 });
             }
@@ -127,46 +126,46 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <summary>
         /// Copies from the source to the destination
         /// </summary>
-        /// <param name="Source">Source object</param>
-        /// <param name="Destination">Destination object</param>
-        public void Copy(object Source, object Destination)
+        /// <param name="source">Source object</param>
+        /// <param name="destination">Destination object</param>
+        public void Copy(object source, object destination)
         {
-            Copy((Left)Source, (Right)Destination);
+            Copy((Left)source, (Right)destination);
         }
 
         /// <summary>
         /// Copies from the source to the destination
         /// </summary>
-        /// <param name="Source">Source object</param>
-        /// <param name="Destination">Destination object</param>
-        public abstract void Copy(Left Source, Right Destination);
+        /// <param name="source">Source object</param>
+        /// <param name="destination">Destination object</param>
+        public abstract void Copy(Left source, Right destination);
 
         /// <summary>
         /// Copies from the source to the destination
         /// </summary>
-        /// <param name="Source">Source object</param>
-        /// <param name="Destination">Destination object</param>
-        public abstract void Copy(Right Source, Left Destination);
+        /// <param name="source">Source object</param>
+        /// <param name="destination">Destination object</param>
+        public abstract void Copy(Right source, Left destination);
 
         /// <summary>
         /// Copies from the source to the destination (used in instances when both Left and Right
         /// are the same type and thus Copy is ambiguous)
         /// </summary>
-        /// <param name="Source">Source</param>
-        /// <param name="Destination">Destination</param>
-        public abstract void CopyLeftToRight(Left Source, Right Destination);
+        /// <param name="source">Source</param>
+        /// <param name="destination">Destination</param>
+        public abstract void CopyLeftToRight(Left source, Right destination);
 
         /// <summary>
         /// Copies from the source to the destination (used in instances when both Left and Right
         /// are the same type and thus Copy is ambiguous)
         /// </summary>
-        /// <param name="Source">Source</param>
-        /// <param name="Destination">Destination</param>
-        public abstract void CopyRightToLeft(Right Source, Left Destination);
+        /// <param name="source">Source</param>
+        /// <param name="destination">Destination</param>
+        public abstract void CopyRightToLeft(Right source, Left destination);
 
         private void AddIDictionaryMappings()
         {
-            this.AddMapping(x => x,
+            AddMapping(x => x,
             new Action<Left, object>((x, y) =>
             {
                 var LeftSide = (IDictionary<string, object>)x;
@@ -182,30 +181,30 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
             }));
         }
 
-        private void AddLeftIDictionaryMapping(Type LeftType, Type RightType)
+        private void AddLeftIDictionaryMapping(Type leftType, Type rightType)
         {
-            Contract.Requires<ArgumentNullException>(RightType != null, "RightType");
-            Contract.Requires<ArgumentNullException>(LeftType != null, "LeftType");
-            PropertyInfo[] Properties = RightType.GetProperties();
+            if (rightType == null || leftType == null)
+                return;
+            PropertyInfo[] Properties = rightType.GetProperties();
             Parallel.For(0, Properties.Length, x =>
             {
                 PropertyInfo Property = Properties[x];
                 Expression<Func<Right, object>> RightGet = Properties[x].PropertyGetter<Right>();
                 Action<Right, object> RightSet = RightGet.PropertySetter<Right>().Compile();
-                PropertyInfo LeftProperty = LeftType.GetProperty(Property.Name);
+                PropertyInfo LeftProperty = leftType.GetProperty(Property.Name);
                 if (LeftProperty != null)
                 {
                     Expression<Func<Left, object>> LeftGet = LeftProperty.PropertyGetter<Left>();
-                    this.AddMapping(LeftGet, RightGet);
+                    AddMapping(LeftGet, RightGet);
                 }
                 else
                 {
-                    this.AddMapping(new Func<Left, object>(y =>
+                    AddMapping(new Func<Left, object>(y =>
                     {
                         var Temp = (IDictionary<string, object>)y;
                         if (Temp.ContainsKey(Property.Name))
                             return Temp[Property.Name];
-                        string Key = Temp.Keys.FirstOrDefault(z => string.Equals(z.Replace("_", ""), Property.Name, StringComparison.InvariantCultureIgnoreCase));
+                        string Key = Temp.Keys.FirstOrDefault(z => string.Equals(z.Replace("_", ""), Property.Name, StringComparison.OrdinalIgnoreCase));
                         if (!string.IsNullOrEmpty(Key))
                             return Temp[Key];
                         return null;
@@ -228,25 +227,25 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
             });
         }
 
-        private void AddRightIDictionaryMapping(Type LeftType, Type RightType)
+        private void AddRightIDictionaryMapping(Type leftType, Type rightType)
         {
-            Contract.Requires<ArgumentNullException>(RightType != null, "RightType");
-            Contract.Requires<ArgumentNullException>(LeftType != null, "LeftType");
-            PropertyInfo[] Properties = LeftType.GetProperties();
+            if (rightType == null || leftType == null)
+                return;
+            PropertyInfo[] Properties = leftType.GetProperties();
             Parallel.For(0, Properties.Length, x =>
             {
                 PropertyInfo Property = Properties[x];
                 Expression<Func<Left, object>> LeftGet = Property.PropertyGetter<Left>();
                 Action<Left, object> LeftSet = LeftGet.PropertySetter<Left>().Compile();
-                PropertyInfo RightProperty = RightType.GetProperty(Property.Name);
+                PropertyInfo RightProperty = rightType.GetProperty(Property.Name);
                 if (RightProperty != null)
                 {
                     Expression<Func<Right, object>> RightGet = RightProperty.PropertyGetter<Right>();
-                    this.AddMapping(LeftGet, RightGet);
+                    AddMapping(LeftGet, RightGet);
                 }
                 else
                 {
-                    this.AddMapping(LeftGet.Compile(),
+                    AddMapping(LeftGet.Compile(),
                     new Action<Left, object>((y, z) =>
                     {
                         if (z != null)
@@ -257,7 +256,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
                         var Temp = (IDictionary<string, object>)y;
                         if (Temp.ContainsKey(Property.Name))
                             return Temp[Property.Name];
-                        string Key = Temp.Keys.FirstOrDefault(z => string.Equals(z.Replace("_", ""), Property.Name, StringComparison.InvariantCultureIgnoreCase));
+                        string Key = Temp.Keys.FirstOrDefault(z => string.Equals(z.Replace("_", ""), Property.Name, StringComparison.OrdinalIgnoreCase));
                         if (!string.IsNullOrEmpty(Key))
                             return Temp[Key];
                         return null;

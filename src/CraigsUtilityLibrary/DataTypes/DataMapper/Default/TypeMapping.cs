@@ -35,78 +35,78 @@ namespace Utilities.DataTypes.DataMapper.Default
         /// <summary>
         /// Adds a mapping
         /// </summary>
-        /// <param name="LeftExpression">Left expression</param>
-        /// <param name="RightExpression">Right expression</param>
+        /// <param name="leftExpression">Left expression</param>
+        /// <param name="rightExpression">Right expression</param>
         /// <returns>This</returns>
-        public override ITypeMapping<Left, Right> AddMapping(Expression<Func<Left, object>> LeftExpression, Expression<Func<Right, object>> RightExpression)
+        public override ITypeMapping<Left, Right> AddMapping(Expression<Func<Left, object>> leftExpression, Expression<Func<Right, object>> rightExpression)
         {
-            this.Mappings.Add(new Mapping<Left, Right>(LeftExpression, RightExpression));
+            Mappings.Add(new Mapping<Left, Right>(leftExpression, rightExpression));
             return this;
         }
 
         /// <summary>
         /// Adds a mapping
         /// </summary>
-        /// <param name="LeftGet">Left get function</param>
-        /// <param name="LeftSet">Left set action</param>
-        /// <param name="RightExpression">Right expression</param>
+        /// <param name="leftGet">Left get function</param>
+        /// <param name="leftSet">Left set action</param>
+        /// <param name="rightExpression">Right expression</param>
         /// <returns>This</returns>
-        public override ITypeMapping<Left, Right> AddMapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Expression<Func<Right, object>> RightExpression)
+        public override ITypeMapping<Left, Right> AddMapping(Func<Left, object> leftGet, Action<Left, object> leftSet, Expression<Func<Right, object>> rightExpression)
         {
-            this.Mappings.Add(new Mapping<Left, Right>(LeftGet, LeftSet, RightExpression));
+            Mappings.Add(new Mapping<Left, Right>(leftGet, leftSet, rightExpression));
             return this;
         }
 
         /// <summary>
         /// Adds a mapping
         /// </summary>
-        /// <param name="LeftExpression">Left expression</param>
-        /// <param name="RightGet">Right get function</param>
-        /// <param name="RightSet">Right set function</param>
+        /// <param name="leftExpression">Left expression</param>
+        /// <param name="rightGet">Right get function</param>
+        /// <param name="rightSet">Right set function</param>
         /// <returns>This</returns>
-        public override ITypeMapping<Left, Right> AddMapping(Expression<Func<Left, object>> LeftExpression, Func<Right, object> RightGet, Action<Right, object> RightSet)
+        public override ITypeMapping<Left, Right> AddMapping(Expression<Func<Left, object>> leftExpression, Func<Right, object> rightGet, Action<Right, object> rightSet)
         {
-            this.Mappings.Add(new Mapping<Left, Right>(LeftExpression, RightGet, RightSet));
+            Mappings.Add(new Mapping<Left, Right>(leftExpression, rightGet, rightSet));
             return this;
         }
 
         /// <summary>
         /// Adds a mapping
         /// </summary>
-        /// <param name="LeftGet">Left get function</param>
-        /// <param name="LeftSet">Left set function</param>
-        /// <param name="RightGet">Right get function</param>
-        /// <param name="RightSet">Right set function</param>
+        /// <param name="leftGet">Left get function</param>
+        /// <param name="leftSet">Left set function</param>
+        /// <param name="rightGet">Right get function</param>
+        /// <param name="rightSet">Right set function</param>
         /// <returns>This</returns>
-        public override ITypeMapping<Left, Right> AddMapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Func<Right, object> RightGet, Action<Right, object> RightSet)
+        public override ITypeMapping<Left, Right> AddMapping(Func<Left, object> leftGet, Action<Left, object> leftSet, Func<Right, object> rightGet, Action<Right, object> rightSet)
         {
-            this.Mappings.Add(new Mapping<Left, Right>(LeftGet, LeftSet, RightGet, RightSet));
+            Mappings.Add(new Mapping<Left, Right>(leftGet, leftSet, rightGet, rightSet));
             return this;
         }
 
         /// <summary>
         /// Copies from the source to the destination
         /// </summary>
-        /// <param name="Source">Source object</param>
-        /// <param name="Destination">Destination object</param>
-        public override void Copy(Left Source, Right Destination)
+        /// <param name="source">Source object</param>
+        /// <param name="destination">Destination object</param>
+        public override void Copy(Left source, Right destination)
         {
             foreach (Mapping<Left, Right> Mapping in Mappings.OfType<Mapping<Left, Right>>())
             {
-                Mapping.Copy(Source, Destination);
+                Mapping.Copy(source, destination);
             }
         }
 
         /// <summary>
         /// Copies from the source to the destination
         /// </summary>
-        /// <param name="Source">Source object</param>
-        /// <param name="Destination">Destination object</param>
-        public override void Copy(Right Source, Left Destination)
+        /// <param name="source">Source object</param>
+        /// <param name="destination">Destination object</param>
+        public override void Copy(Right source, Left destination)
         {
             foreach (Mapping<Left, Right> Mapping in Mappings.OfType<Mapping<Left, Right>>())
             {
-                Mapping.Copy(Source, Destination);
+                Mapping.Copy(source, destination);
             }
         }
 
@@ -114,13 +114,13 @@ namespace Utilities.DataTypes.DataMapper.Default
         /// Copies from the source to the destination (used in instances when both Left and Right
         /// are the same type and thus Copy is ambiguous)
         /// </summary>
-        /// <param name="Source">Source</param>
-        /// <param name="Destination">Destination</param>
-        public override void CopyLeftToRight(Left Source, Right Destination)
+        /// <param name="source">Source</param>
+        /// <param name="destination">Destination</param>
+        public override void CopyLeftToRight(Left source, Right destination)
         {
             foreach (Mapping<Left, Right> Mapping in Mappings.OfType<Mapping<Left, Right>>())
             {
-                Mapping.CopyLeftToRight(Source, Destination);
+                Mapping.CopyLeftToRight(source, destination);
             }
         }
 
@@ -128,13 +128,13 @@ namespace Utilities.DataTypes.DataMapper.Default
         /// Copies from the source to the destination (used in instances when both Left and Right
         /// are the same type and thus Copy is ambiguous)
         /// </summary>
-        /// <param name="Source">Source</param>
-        /// <param name="Destination">Destination</param>
-        public override void CopyRightToLeft(Right Source, Left Destination)
+        /// <param name="source">Source</param>
+        /// <param name="destination">Destination</param>
+        public override void CopyRightToLeft(Right source, Left destination)
         {
             foreach (Mapping<Left, Right> Mapping in Mappings.OfType<Mapping<Left, Right>>())
             {
-                Mapping.CopyRightToLeft(Source, Destination);
+                Mapping.CopyRightToLeft(source, destination);
             }
         }
     }

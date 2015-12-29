@@ -29,7 +29,7 @@ namespace Utilities.DataTypes.AOP.Interfaces
         /// <summary>
         /// Used to add a class to the AOP system
         /// </summary>
-        /// <param name="Manager">AOP manager</param>
-        void Setup(Manager Manager);
+        /// <param name="manager">AOP manager</param>
+        void Setup(Manager manager);
     }
 }

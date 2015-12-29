@@ -33,7 +33,7 @@ namespace Utilities.DataTypes.DataMapper.Default
         /// <summary>
         /// The name of the data mapper
         /// </summary>
-        public override string Name { get { return "Default"; } }
+        public override string Name => "Default";
 
         /// <summary>
         /// Used internally to create type mappings
@@ -49,12 +49,12 @@ namespace Utilities.DataTypes.DataMapper.Default
         /// <summary>
         /// Used internally to create type mappings
         /// </summary>
-        /// <param name="Left">Left type</param>
-        /// <param name="Right">Right type</param>
+        /// <param name="left">Left type</param>
+        /// <param name="right">Right type</param>
         /// <returns>A mapping object for the two types specified</returns>
-        protected override ITypeMapping CreateTypeMapping(Type Left, Type Right)
+        protected override ITypeMapping CreateTypeMapping(Type left, Type right)
         {
-            return (ITypeMapping)typeof(TypeMapping<,>).MakeGenericType(Left, Right).Create();
+            return (ITypeMapping)typeof(TypeMapping<,>).MakeGenericType(left, right).Create();
         }
     }
 }
