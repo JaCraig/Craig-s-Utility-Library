@@ -19,6 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.Framework.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -81,7 +82,7 @@ namespace Utilities.IoC
             if (GeneratedFile.Exists
                 && !Assemblies.Any(x => new FileInfo(x.ManifestModule.FullyQualifiedName).LastWriteTime > GeneratedFile.LastWriteTime))
             {
-                Assemblies.Add(Assembly.Load(new AssemblyName(GeneratedFile.FullName)));
+                Assemblies.Add(PlatformServices.Default.AssemblyLoadContextAccessor.Default.LoadFile(GeneratedFile.FullName));
             }
             return Assemblies;
         }

@@ -195,7 +195,7 @@ namespace Utilities.DataTypes
             var DictItem = item as IDictionary<string, object>;
             if (item == null)
                 return;
-            if (item is string || item.GetType().IsValueType)
+            if (item is string || item.GetType().GetTypeInfo().IsValueType)
                 SetValue("Value", item);
             else if (DictItem != null)
                 InternalValues = new ConcurrentDictionary<string, object>(DictItem, StringComparer.OrdinalIgnoreCase);
@@ -216,70 +216,6 @@ namespace Utilities.DataTypes
             InternalValues = new ConcurrentDictionary<string, object>(dictionary, StringComparer.OrdinalIgnoreCase);
             ChildValues = new ConcurrentDictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
             ChangeLog = new ConcurrentDictionary<string, Change>(StringComparer.OrdinalIgnoreCase);
-        }
-
-        /// <summary>
-        /// Change log
-        /// </summary>
-        public ConcurrentDictionary<string, Change> ChangeLog { get; private set; }
-
-        /// <summary>
-        /// Number of items
-        /// </summary>
-        public int Count => InternalValues.Count;
-
-        /// <summary>
-        /// Is this read only?
-        /// </summary>
-        public bool IsReadOnly => false;
-
-        /// <summary>
-        /// Keys
-        /// </summary>
-        public virtual ICollection<string> Keys => InternalValues.Keys;
-
-        /// <summary>
-        /// Values
-        /// </summary>
-        public virtual ICollection<object> Values => InternalValues.Values;
-
-        /// <summary>
-        /// Child class key/value dictionary
-        /// </summary>
-        internal ConcurrentDictionary<string, Func<object>> ChildValues { get; set; }
-
-        /// <summary>
-        /// Internal key/value dictionary
-        /// </summary>
-        internal ConcurrentDictionary<string, object> InternalValues { get; set; }
-
-        /// <summary>
-        /// Gets or sets the aop manager.
-        /// </summary>
-        /// <value>The aop manager.</value>
-        private static AOP.Manager AOPManager => IoC.Manager.Bootstrapper.Resolve<AOP.Manager>();
-
-        /// <summary>
-        /// Gets or sets the data mapper.
-        /// </summary>
-        /// <value>The data mapper.</value>
-        private static Manager DataMapper => IoC.Manager.Bootstrapper.Resolve<Manager>();
-
-        /// <summary>
-        /// Gets the value associated with the key specified
-        /// </summary>
-        /// <param name="key">Key to get</param>
-        /// <returns>The object associated with the key</returns>
-        public object this[string key]
-        {
-            get
-            {
-                return GetValue(key, typeof(object));
-            }
-            set
-            {
-                SetValue(key, value);
-            }
         }
 
         /// <summary>
@@ -348,6 +284,70 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
+        /// Change log
+        /// </summary>
+        public ConcurrentDictionary<string, Change> ChangeLog { get; private set; }
+
+        /// <summary>
+        /// Number of items
+        /// </summary>
+        public int Count => InternalValues.Count;
+
+        /// <summary>
+        /// Is this read only?
+        /// </summary>
+        public bool IsReadOnly => false;
+
+        /// <summary>
+        /// Keys
+        /// </summary>
+        public virtual ICollection<string> Keys => InternalValues.Keys;
+
+        /// <summary>
+        /// Values
+        /// </summary>
+        public virtual ICollection<object> Values => InternalValues.Values;
+
+        /// <summary>
+        /// Child class key/value dictionary
+        /// </summary>
+        internal ConcurrentDictionary<string, Func<object>> ChildValues { get; set; }
+
+        /// <summary>
+        /// Internal key/value dictionary
+        /// </summary>
+        internal ConcurrentDictionary<string, object> InternalValues { get; set; }
+
+        /// <summary>
+        /// Gets or sets the aop manager.
+        /// </summary>
+        /// <value>The aop manager.</value>
+        private static AOP.Manager AOPManager => IoC.Manager.Bootstrapper.Resolve<AOP.Manager>();
+
+        /// <summary>
+        /// Gets or sets the data mapper.
+        /// </summary>
+        /// <value>The data mapper.</value>
+        private static Manager DataMapper => IoC.Manager.Bootstrapper.Resolve<Manager>();
+
+        /// <summary>
+        /// Gets the value associated with the key specified
+        /// </summary>
+        /// <param name="key">Key to get</param>
+        /// <returns>The object associated with the key</returns>
+        public object this[string key]
+        {
+            get
+            {
+                return GetValue(key, typeof(object));
+            }
+            set
+            {
+                SetValue(key, value);
+            }
+        }
+
+        /// <summary>
         /// Adds a key/value pair to the object
         /// </summary>
         /// <param name="key">key</param>
@@ -404,7 +404,7 @@ namespace Utilities.DataTypes
             if (item == null)
                 return;
             var DictItem = item as IDictionary<string, object>;
-            if (item is string || item.GetType().IsValueType)
+            if (item is string || item.GetType().GetTypeInfo().IsValueType)
                 SetValue("Value", item);
             else if (DictItem != null)
             {
@@ -742,7 +742,7 @@ namespace Utilities.DataTypes
         /// </returns>
         protected object RaiseGetValueEnd(string propertyName, object value)
         {
-            var End = new EventArgs.OnEndEventArgs() { Content = value };
+            var End = new EventArgs.OnEndEventArgs { Content = value };
             var Handler = getValueEnd_;
             if (Handler != null)
                 Handler(this, propertyName, End);
@@ -759,7 +759,7 @@ namespace Utilities.DataTypes
         /// </returns>
         protected object RaiseGetValueStart(string propertyName)
         {
-            var Start = new EventArgs.OnStartEventArgs() { Content = propertyName };
+            var Start = new EventArgs.OnStartEventArgs { Content = propertyName };
             var Handler = getValueStart_;
             if (Handler != null)
                 Handler(this, Start);

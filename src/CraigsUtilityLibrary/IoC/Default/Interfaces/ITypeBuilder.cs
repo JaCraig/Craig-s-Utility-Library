@@ -43,9 +43,7 @@ namespace Utilities.IoC.Default.Interfaces
         /// Creates the object
         /// </summary>
         /// <param name="provider">The provider.</param>
-        /// <returns>
-        /// The object
-        /// </returns>
+        /// <returns>The object</returns>
         object Create(IServiceProvider provider);
     }
 }

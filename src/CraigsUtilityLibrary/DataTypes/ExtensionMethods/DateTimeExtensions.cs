@@ -123,9 +123,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="date">Date to base off of</param>
         /// <param name="timeFrame">Time frame to use</param>
-        /// <param name="culture">
-        /// Culture to use for calculating (defaults to the current culture)
-        /// </param>
+        /// <param name="culture">Culture to use for calculating (defaults to the current culture)</param>
         /// <returns>The beginning of a specific time frame</returns>
         public static DateTime BeginningOf(this DateTime date, TimeFrame timeFrame, CultureInfo culture = null)
         {
@@ -146,9 +144,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="date">Date to base off of</param>
         /// <param name="timeFrame">Time frame to use</param>
-        /// <param name="culture">
-        /// Culture to use for calculating (defaults to the current culture)
-        /// </param>
+        /// <param name="culture">Culture to use for calculating (defaults to the current culture)</param>
         /// <param name="startOfQuarter1">Start of the first quarter</param>
         /// <returns>The beginning of a specific time frame</returns>
         public static DateTime BeginningOf(this DateTime date, TimeFrame timeFrame, DateTime startOfQuarter1, CultureInfo culture = null)
@@ -170,9 +166,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="date">Date</param>
         /// <param name="timeFrame">Time frame to calculate the number of days from</param>
-        /// <param name="culture">
-        /// Culture to use for calculating (defaults to the current culture)
-        /// </param>
+        /// <param name="culture">Culture to use for calculating (defaults to the current culture)</param>
         /// <returns>The number of days in the time frame</returns>
         public static int DaysIn(this DateTime date, TimeFrame timeFrame, CultureInfo culture = null)
         {
@@ -193,9 +187,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="date">Date</param>
         /// <param name="timeFrame">Time frame to calculate the number of days from</param>
-        /// <param name="culture">
-        /// Culture to use for calculating (defaults to the current culture)
-        /// </param>
+        /// <param name="culture">Culture to use for calculating (defaults to the current culture)</param>
         /// <param name="startOfQuarter1">Start of the first quarter</param>
         /// <returns>The number of days in the time frame</returns>
         public static int DaysIn(this DateTime date, TimeFrame timeFrame, DateTime startOfQuarter1, CultureInfo culture = null)
@@ -211,9 +203,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="date">Date</param>
         /// <param name="timeFrame">Time frame to calculate the number of days left</param>
-        /// <param name="culture">
-        /// Culture to use for calculating (defaults to the current culture)
-        /// </param>
+        /// <param name="culture">Culture to use for calculating (defaults to the current culture)</param>
         /// <returns>The number of days left in the time frame</returns>
         public static int DaysLeftIn(this DateTime date, TimeFrame timeFrame, CultureInfo culture = null)
         {
@@ -234,9 +224,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="date">Date</param>
         /// <param name="timeFrame">Time frame to calculate the number of days left</param>
-        /// <param name="culture">
-        /// Culture to use for calculating (defaults to the current culture)
-        /// </param>
+        /// <param name="culture">Culture to use for calculating (defaults to the current culture)</param>
         /// <param name="startOfQuarter1">Start of the first quarter</param>
         /// <returns>The number of days left in the time frame</returns>
         public static int DaysLeftIn(this DateTime date, TimeFrame timeFrame, DateTime startOfQuarter1, CultureInfo culture = null)
@@ -252,9 +240,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="date">Date to base off of</param>
         /// <param name="timeFrame">Time frame to use</param>
-        /// <param name="culture">
-        /// Culture to use for calculating (defaults to the current culture)
-        /// </param>
+        /// <param name="culture">Culture to use for calculating (defaults to the current culture)</param>
         /// <returns>
         /// The end of a specific time frame (TimeFrame.Day is the only one that sets the time to
         /// 12: 59:59 PM, all else are the beginning of the day)
@@ -278,9 +264,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="date">Date to base off of</param>
         /// <param name="timeFrame">Time frame to use</param>
-        /// <param name="culture">
-        /// Culture to use for calculating (defaults to the current culture)
-        /// </param>
+        /// <param name="culture">Culture to use for calculating (defaults to the current culture)</param>
         /// <param name="startOfQuarter1">Start of the first quarter</param>
         /// <returns>
         /// The end of a specific time frame (TimeFrame.Day is the only one that sets the time to
@@ -410,10 +394,9 @@ namespace Utilities.DataTypes
 
         /// <summary>
         /// Converts the DateTime object to string describing, relatively how long ago or how far in
-        /// the future the input is based off of another DateTime object specified.
-        /// ex:
-        /// Input=March 21, 2013 Epoch=March 22, 2013 returns "1 day ago" Input=March 22, 2013
-        /// Epoch=March 21, 2013 returns "1 day from now"
+        /// the future the input is based off of another DateTime object specified. ex: Input=March
+        /// 21, 2013 Epoch=March 22, 2013 returns "1 day ago" Input=March 22, 2013 Epoch=March 21,
+        /// 2013 returns "1 day from now"
         /// </summary>
         /// <param name="input">Input</param>
         /// <param name="epoch">DateTime object that the input is comparred to</param>

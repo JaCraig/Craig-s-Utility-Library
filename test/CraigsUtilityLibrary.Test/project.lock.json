@@ -7,10 +7,10 @@
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
-          "Microsoft.CodeAnalysis.CSharp": "1.1.0-rc1-20151109-01",
-          "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-beta8-15653",
-          "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta8-15611",
-          "System.Xml.ReaderWriter": "4.0.11-beta-23516"
+          "Microsoft.CodeAnalysis.CSharp": "1.1.1",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
+          "Microsoft.Framework.DependencyInjection": "1.0.0",
+          "System.Xml.ReaderWriter": "4.0.11"
         },
         "frameworkAssemblies": [
           "System.Collections",
@@ -18,21 +18,22 @@
           "System.Data",
           "System.IO",
           "System.Runtime",
+          "System.Runtime.Serialization",
           "System.Text.Encoding",
           "System.Threading.Tasks",
           "System.Xml"
         ]
       },
-      "Microsoft.CodeAnalysis.Analyzers/1.0.0": {
+      "Microsoft.CodeAnalysis.Analyzers/1.1.0": {
         "type": "package",
         "frameworkAssemblies": [
           "System"
         ]
       },
-      "Microsoft.CodeAnalysis.Common/1.1.0-rc1-20151109-01": {
+      "Microsoft.CodeAnalysis.Common/1.1.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.CodeAnalysis.Analyzers": "[1.0.0, 1.2.0)",
+          "Microsoft.CodeAnalysis.Analyzers": "1.1.0",
           "System.Collections.Immutable": "1.1.37",
           "System.Reflection.Metadata": "1.1.0"
         },
@@ -43,10 +44,10 @@
           "lib/net45/Microsoft.CodeAnalysis.dll": {}
         }
       },
-      "Microsoft.CodeAnalysis.CSharp/1.1.0-rc1-20151109-01": {
+      "Microsoft.CodeAnalysis.CSharp/1.1.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.CodeAnalysis.Common": "[1.1.0-rc1-20151109-01]"
+          "Microsoft.CodeAnalysis.Common": "[1.1.1]"
         },
         "compile": {
           "lib/net45/Microsoft.CodeAnalysis.CSharp.dll": {}
@@ -83,21 +84,6 @@
         },
         "runtime": {
           "lib/net451/Microsoft.Dnx.Compilation.Abstractions.dll": {}
-        }
-      },
-      "Microsoft.Dnx.Runtime.Abstractions/1.0.0-beta8-15653": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Dnx.Runtime.Abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Dnx.Runtime.Abstractions.dll": {}
         }
       },
       "Microsoft.Dnx.TestHost/1.0.0-rc1-final": {
@@ -203,7 +189,25 @@
           "lib/net451/Microsoft.Extensions.PlatformAbstractions.dll": {}
         }
       },
-      "Microsoft.Framework.DependencyInjection.Abstractions/1.0.0-beta8-15611": {
+      "Microsoft.Framework.DependencyInjection/1.0.0-beta8": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta8"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/dnx451/Microsoft.Framework.DependencyInjection.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Microsoft.Framework.DependencyInjection.dll": {}
+        }
+      },
+      "Microsoft.Framework.DependencyInjection.Abstractions/1.0.0-beta8": {
         "type": "package",
         "frameworkAssemblies": [
           "Microsoft.CSharp",
@@ -530,37 +534,41 @@
         "type": "project",
         "framework": "DNXCore,Version=v5.0",
         "dependencies": {
-          "Microsoft.CodeAnalysis.CSharp": "1.1.0-rc1-20151109-01",
-          "Microsoft.CSharp": "4.0.1-beta-23516",
-          "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-beta8-15653",
-          "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta8-15611",
-          "System.Collections": "4.0.11-rc2-23512",
-          "System.Collections.Concurrent": "4.0.11-beta-23516",
-          "System.Collections.Specialized": "4.0.1-beta-23516",
-          "System.ComponentModel.TypeConverter": "4.0.1-beta-23516",
-          "System.Data.Common": "4.0.1-beta-23516",
-          "System.Data.SqlClient": "4.0.0-beta-23516",
-          "System.Diagnostics.Contracts": "4.0.1-beta-23516",
-          "System.Diagnostics.Process": "4.1.0-beta-23516",
-          "System.Diagnostics.StackTrace": "4.0.1-beta-23516",
-          "System.IO.FileSystem": "4.0.1-beta-23516",
-          "System.Linq": "4.0.1-beta-23516",
-          "System.Reflection": "4.1.0-beta-23516",
-          "System.Runtime": "4.0.21-rc2-23512",
-          "System.Text.Encoding": "4.0.11-beta-23225",
-          "System.Text.RegularExpressions": "4.0.11-beta-23516",
-          "System.Threading": "4.0.11-beta-23516",
-          "System.Threading.Tasks.Parallel": "4.0.1-beta-23516",
-          "System.Xml.ReaderWriter": "4.0.11-beta-23516"
+          "Microsoft.CodeAnalysis.CSharp": "1.1.1",
+          "Microsoft.CSharp": "4.0.1",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
+          "Microsoft.Framework.DependencyInjection": "1.0.0",
+          "System.Collections": "4.0.10",
+          "System.Collections.Concurrent": "4.0.11",
+          "System.Collections.Specialized": "4.0.1",
+          "System.ComponentModel.TypeConverter": "4.0.1",
+          "System.Data.Common": "4.0.1",
+          "System.Data.SqlClient": "4.0.0",
+          "System.Diagnostics.Contracts": "4.0.1",
+          "System.Diagnostics.Process": "4.1.0",
+          "System.Diagnostics.StackTrace": "4.0.1",
+          "System.Diagnostics.Tools": "4.0.1",
+          "System.IO.FileSystem": "4.0.1",
+          "System.Linq": "4.0.1",
+          "System.Reflection": "4.1.0",
+          "System.Reflection.Emit": "4.0.1",
+          "System.Runtime": "4.0.21",
+          "System.Runtime.Serialization.Json": "4.0.1",
+          "System.Text.Encoding": "4.0.11",
+          "System.Text.RegularExpressions": "4.0.11",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks.Parallel": "4.0.1",
+          "System.Threading.Thread": "4.0.0",
+          "System.Xml.ReaderWriter": "4.0.11"
         }
       },
-      "Microsoft.CodeAnalysis.Analyzers/1.0.0": {
+      "Microsoft.CodeAnalysis.Analyzers/1.1.0": {
         "type": "package"
       },
-      "Microsoft.CodeAnalysis.Common/1.1.0-rc1-20151109-01": {
+      "Microsoft.CodeAnalysis.Common/1.1.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.CodeAnalysis.Analyzers": "[1.0.0, 1.2.0)",
+          "Microsoft.CodeAnalysis.Analyzers": "1.1.0",
           "System.Collections.Immutable": "1.1.37",
           "System.Reflection.Metadata": "1.1.0"
         },
@@ -571,10 +579,10 @@
           "lib/portable-net45+win8/Microsoft.CodeAnalysis.dll": {}
         }
       },
-      "Microsoft.CodeAnalysis.CSharp/1.1.0-rc1-20151109-01": {
+      "Microsoft.CodeAnalysis.CSharp/1.1.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.CodeAnalysis.Common": "[1.1.0-rc1-20151109-01]"
+          "Microsoft.CodeAnalysis.Common": "[1.1.1]"
         },
         "compile": {
           "lib/portable-net45+win8/Microsoft.CodeAnalysis.CSharp.dll": {}
@@ -621,25 +629,6 @@
         },
         "runtime": {
           "lib/dotnet5.4/Microsoft.Dnx.Compilation.Abstractions.dll": {}
-        }
-      },
-      "Microsoft.Dnx.Runtime.Abstractions/1.0.0-beta8-15653": {
-        "type": "package",
-        "dependencies": {
-          "System.Collections": "4.0.11-beta-23302",
-          "System.ComponentModel": "4.0.1-beta-23302",
-          "System.IO": "4.0.11-beta-23302",
-          "System.Linq": "4.0.1-beta-23302",
-          "System.Reflection": "4.1.0-beta-23225",
-          "System.Runtime": "4.0.21-beta-23302",
-          "System.Runtime.Extensions": "4.0.11-beta-23302",
-          "System.Threading.Tasks": "4.0.11-beta-23302"
-        },
-        "compile": {
-          "lib/dnxcore50/Microsoft.Dnx.Runtime.Abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/dnxcore50/Microsoft.Dnx.Runtime.Abstractions.dll": {}
         }
       },
       "Microsoft.Dnx.TestHost/1.0.0-rc1-final": {
@@ -757,22 +746,38 @@
           "lib/dotnet5.4/Microsoft.Extensions.PlatformAbstractions.dll": {}
         }
       },
-      "Microsoft.Framework.DependencyInjection.Abstractions/1.0.0-beta8-15611": {
+      "Microsoft.Framework.DependencyInjection/1.0.0-beta8": {
         "type": "package",
         "dependencies": {
-          "System.ComponentModel": "4.0.1-beta-23302",
-          "System.Diagnostics.Debug": "4.0.11-beta-23302",
-          "System.Globalization": "4.0.11-beta-23302",
-          "System.Linq": "4.0.1-beta-23302",
-          "System.Linq.Expressions": "4.0.11-beta-23302",
-          "System.Reflection": "4.1.0-beta-23225",
-          "System.Resources.ResourceManager": "4.0.1-beta-23302"
+          "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta8",
+          "System.Collections": "4.0.11-beta-23409",
+          "System.Collections.Concurrent": "4.0.11-beta-23409",
+          "System.Threading": "4.0.11-beta-23409",
+          "System.Threading.Tasks": "4.0.11-beta-23409"
         },
         "compile": {
-          "lib/dotnet/Microsoft.Framework.DependencyInjection.Abstractions.dll": {}
+          "lib/dnxcore50/Microsoft.Framework.DependencyInjection.dll": {}
         },
         "runtime": {
-          "lib/dotnet/Microsoft.Framework.DependencyInjection.Abstractions.dll": {}
+          "lib/dnxcore50/Microsoft.Framework.DependencyInjection.dll": {}
+        }
+      },
+      "Microsoft.Framework.DependencyInjection.Abstractions/1.0.0-beta8": {
+        "type": "package",
+        "dependencies": {
+          "System.ComponentModel": "4.0.1-beta-23409",
+          "System.Diagnostics.Debug": "4.0.11-beta-23409",
+          "System.Globalization": "4.0.11-beta-23409",
+          "System.Linq": "4.0.1-beta-23409",
+          "System.Linq.Expressions": "4.0.11-beta-23409",
+          "System.Reflection": "4.1.0-beta-23225",
+          "System.Resources.ResourceManager": "4.0.1-beta-23409"
+        },
+        "compile": {
+          "lib/dnxcore50/Microsoft.Framework.DependencyInjection.Abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/dnxcore50/Microsoft.Framework.DependencyInjection.Abstractions.dll": {}
         }
       },
       "Microsoft.Win32.Primitives/4.0.0": {
@@ -1037,13 +1042,13 @@
           "lib/DNXCore50/System.Diagnostics.TextWriterTraceListener.dll": {}
         }
       },
-      "System.Diagnostics.Tools/4.0.0": {
+      "System.Diagnostics.Tools/4.0.1-beta-23516": {
         "type": "package",
         "dependencies": {
           "System.Runtime": "4.0.0"
         },
         "compile": {
-          "ref/dotnet/System.Diagnostics.Tools.dll": {}
+          "ref/dotnet5.1/System.Diagnostics.Tools.dll": {}
         },
         "runtime": {
           "lib/DNXCore50/System.Diagnostics.Tools.dll": {}
@@ -1260,7 +1265,13 @@
           "lib/dotnet/System.ObjectModel.dll": {}
         }
       },
-      "System.Private.Uri/4.0.1-rc2-23512": {
+      "System.Private.DataContractSerialization/4.1.0-beta-23516": {
+        "type": "package",
+        "compile": {
+          "ref/dnxcore50/_._": {}
+        }
+      },
+      "System.Private.Uri/4.0.1-beta-23516": {
         "type": "package",
         "compile": {
           "ref/dnxcore50/_._": {}
@@ -1278,6 +1289,36 @@
         },
         "runtime": {
           "lib/DNXCore50/System.Reflection.dll": {}
+        }
+      },
+      "System.Reflection.Emit/4.0.1-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.IO": "4.0.0",
+          "System.Reflection": "4.0.0",
+          "System.Reflection.Emit.ILGeneration": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Runtime": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet5.2/System.Reflection.Emit.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Reflection.Emit.dll": {}
+        }
+      },
+      "System.Reflection.Emit.ILGeneration/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Reflection": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Runtime": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet/System.Reflection.Emit.ILGeneration.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Reflection.Emit.ILGeneration.dll": {}
         }
       },
       "System.Reflection.Extensions/4.0.1-beta-23516": {
@@ -1357,10 +1398,10 @@
           "lib/DNXCore50/System.Resources.ResourceManager.dll": {}
         }
       },
-      "System.Runtime/4.0.21-rc2-23512": {
+      "System.Runtime/4.0.21-beta-23516": {
         "type": "package",
         "dependencies": {
-          "System.Private.Uri": "4.0.1-rc2-23512"
+          "System.Private.Uri": "4.0.1-beta-23516"
         },
         "compile": {
           "ref/dotnet5.4/System.Runtime.dll": {}
@@ -1405,6 +1446,18 @@
           "lib/DNXCore50/System.Runtime.InteropServices.dll": {}
         }
       },
+      "System.Runtime.Serialization.Json/4.0.1-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.Private.DataContractSerialization": "4.1.0-beta-23516"
+        },
+        "compile": {
+          "ref/dotnet5.1/System.Runtime.Serialization.Json.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Runtime.Serialization.Json.dll": {}
+        }
+      },
       "System.Security.Cryptography.Algorithms/4.0.0-beta-23516": {
         "type": "package",
         "dependencies": {
@@ -1434,13 +1487,13 @@
           "lib/dotnet5.4/System.Security.Cryptography.Primitives.dll": {}
         }
       },
-      "System.Text.Encoding/4.0.11-beta-23225": {
+      "System.Text.Encoding/4.0.11-beta-23516": {
         "type": "package",
         "dependencies": {
           "System.Runtime": "4.0.0"
         },
         "compile": {
-          "ref/dotnet/System.Text.Encoding.dll": {}
+          "ref/dotnet5.4/System.Text.Encoding.dll": {}
         },
         "runtime": {
           "lib/DNXCore50/System.Text.Encoding.dll": {}
@@ -1758,10 +1811,10 @@
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
-          "Microsoft.CodeAnalysis.CSharp": "1.1.0-rc1-20151109-01",
-          "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-beta8-15653",
-          "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta8-15611",
-          "System.Xml.ReaderWriter": "4.0.11-beta-23516"
+          "Microsoft.CodeAnalysis.CSharp": "1.1.1",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
+          "Microsoft.Framework.DependencyInjection": "1.0.0",
+          "System.Xml.ReaderWriter": "4.0.11"
         },
         "frameworkAssemblies": [
           "System.Collections",
@@ -1769,21 +1822,22 @@
           "System.Data",
           "System.IO",
           "System.Runtime",
+          "System.Runtime.Serialization",
           "System.Text.Encoding",
           "System.Threading.Tasks",
           "System.Xml"
         ]
       },
-      "Microsoft.CodeAnalysis.Analyzers/1.0.0": {
+      "Microsoft.CodeAnalysis.Analyzers/1.1.0": {
         "type": "package",
         "frameworkAssemblies": [
           "System"
         ]
       },
-      "Microsoft.CodeAnalysis.Common/1.1.0-rc1-20151109-01": {
+      "Microsoft.CodeAnalysis.Common/1.1.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.CodeAnalysis.Analyzers": "[1.0.0, 1.2.0)",
+          "Microsoft.CodeAnalysis.Analyzers": "1.1.0",
           "System.Collections.Immutable": "1.1.37",
           "System.Reflection.Metadata": "1.1.0"
         },
@@ -1794,10 +1848,10 @@
           "lib/net45/Microsoft.CodeAnalysis.dll": {}
         }
       },
-      "Microsoft.CodeAnalysis.CSharp/1.1.0-rc1-20151109-01": {
+      "Microsoft.CodeAnalysis.CSharp/1.1.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.CodeAnalysis.Common": "[1.1.0-rc1-20151109-01]"
+          "Microsoft.CodeAnalysis.Common": "[1.1.1]"
         },
         "compile": {
           "lib/net45/Microsoft.CodeAnalysis.CSharp.dll": {}
@@ -1834,21 +1888,6 @@
         },
         "runtime": {
           "lib/net451/Microsoft.Dnx.Compilation.Abstractions.dll": {}
-        }
-      },
-      "Microsoft.Dnx.Runtime.Abstractions/1.0.0-beta8-15653": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Dnx.Runtime.Abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Dnx.Runtime.Abstractions.dll": {}
         }
       },
       "Microsoft.Dnx.TestHost/1.0.0-rc1-final": {
@@ -1954,7 +1993,25 @@
           "lib/net451/Microsoft.Extensions.PlatformAbstractions.dll": {}
         }
       },
-      "Microsoft.Framework.DependencyInjection.Abstractions/1.0.0-beta8-15611": {
+      "Microsoft.Framework.DependencyInjection/1.0.0-beta8": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta8"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/dnx451/Microsoft.Framework.DependencyInjection.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Microsoft.Framework.DependencyInjection.dll": {}
+        }
+      },
+      "Microsoft.Framework.DependencyInjection.Abstractions/1.0.0-beta8": {
         "type": "package",
         "frameworkAssemblies": [
           "Microsoft.CSharp",
@@ -2287,10 +2344,10 @@
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
-          "Microsoft.CodeAnalysis.CSharp": "1.1.0-rc1-20151109-01",
-          "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-beta8-15653",
-          "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta8-15611",
-          "System.Xml.ReaderWriter": "4.0.11-beta-23516"
+          "Microsoft.CodeAnalysis.CSharp": "1.1.1",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
+          "Microsoft.Framework.DependencyInjection": "1.0.0",
+          "System.Xml.ReaderWriter": "4.0.11"
         },
         "frameworkAssemblies": [
           "System.Collections",
@@ -2298,21 +2355,22 @@
           "System.Data",
           "System.IO",
           "System.Runtime",
+          "System.Runtime.Serialization",
           "System.Text.Encoding",
           "System.Threading.Tasks",
           "System.Xml"
         ]
       },
-      "Microsoft.CodeAnalysis.Analyzers/1.0.0": {
+      "Microsoft.CodeAnalysis.Analyzers/1.1.0": {
         "type": "package",
         "frameworkAssemblies": [
           "System"
         ]
       },
-      "Microsoft.CodeAnalysis.Common/1.1.0-rc1-20151109-01": {
+      "Microsoft.CodeAnalysis.Common/1.1.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.CodeAnalysis.Analyzers": "[1.0.0, 1.2.0)",
+          "Microsoft.CodeAnalysis.Analyzers": "1.1.0",
           "System.Collections.Immutable": "1.1.37",
           "System.Reflection.Metadata": "1.1.0"
         },
@@ -2323,10 +2381,10 @@
           "lib/net45/Microsoft.CodeAnalysis.dll": {}
         }
       },
-      "Microsoft.CodeAnalysis.CSharp/1.1.0-rc1-20151109-01": {
+      "Microsoft.CodeAnalysis.CSharp/1.1.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.CodeAnalysis.Common": "[1.1.0-rc1-20151109-01]"
+          "Microsoft.CodeAnalysis.Common": "[1.1.1]"
         },
         "compile": {
           "lib/net45/Microsoft.CodeAnalysis.CSharp.dll": {}
@@ -2363,21 +2421,6 @@
         },
         "runtime": {
           "lib/net451/Microsoft.Dnx.Compilation.Abstractions.dll": {}
-        }
-      },
-      "Microsoft.Dnx.Runtime.Abstractions/1.0.0-beta8-15653": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Dnx.Runtime.Abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Dnx.Runtime.Abstractions.dll": {}
         }
       },
       "Microsoft.Dnx.TestHost/1.0.0-rc1-final": {
@@ -2483,7 +2526,25 @@
           "lib/net451/Microsoft.Extensions.PlatformAbstractions.dll": {}
         }
       },
-      "Microsoft.Framework.DependencyInjection.Abstractions/1.0.0-beta8-15611": {
+      "Microsoft.Framework.DependencyInjection/1.0.0-beta8": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta8"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/dnx451/Microsoft.Framework.DependencyInjection.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Microsoft.Framework.DependencyInjection.dll": {}
+        }
+      },
+      "Microsoft.Framework.DependencyInjection.Abstractions/1.0.0-beta8": {
         "type": "package",
         "frameworkAssemblies": [
           "Microsoft.CSharp",
@@ -2816,37 +2877,41 @@
         "type": "project",
         "framework": "DNXCore,Version=v5.0",
         "dependencies": {
-          "Microsoft.CodeAnalysis.CSharp": "1.1.0-rc1-20151109-01",
-          "Microsoft.CSharp": "4.0.1-beta-23516",
-          "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-beta8-15653",
-          "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta8-15611",
-          "System.Collections": "4.0.11-rc2-23512",
-          "System.Collections.Concurrent": "4.0.11-beta-23516",
-          "System.Collections.Specialized": "4.0.1-beta-23516",
-          "System.ComponentModel.TypeConverter": "4.0.1-beta-23516",
-          "System.Data.Common": "4.0.1-beta-23516",
-          "System.Data.SqlClient": "4.0.0-beta-23516",
-          "System.Diagnostics.Contracts": "4.0.1-beta-23516",
-          "System.Diagnostics.Process": "4.1.0-beta-23516",
-          "System.Diagnostics.StackTrace": "4.0.1-beta-23516",
-          "System.IO.FileSystem": "4.0.1-beta-23516",
-          "System.Linq": "4.0.1-beta-23516",
-          "System.Reflection": "4.1.0-beta-23516",
-          "System.Runtime": "4.0.21-rc2-23512",
-          "System.Text.Encoding": "4.0.11-beta-23225",
-          "System.Text.RegularExpressions": "4.0.11-beta-23516",
-          "System.Threading": "4.0.11-beta-23516",
-          "System.Threading.Tasks.Parallel": "4.0.1-beta-23516",
-          "System.Xml.ReaderWriter": "4.0.11-beta-23516"
+          "Microsoft.CodeAnalysis.CSharp": "1.1.1",
+          "Microsoft.CSharp": "4.0.1",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
+          "Microsoft.Framework.DependencyInjection": "1.0.0",
+          "System.Collections": "4.0.10",
+          "System.Collections.Concurrent": "4.0.11",
+          "System.Collections.Specialized": "4.0.1",
+          "System.ComponentModel.TypeConverter": "4.0.1",
+          "System.Data.Common": "4.0.1",
+          "System.Data.SqlClient": "4.0.0",
+          "System.Diagnostics.Contracts": "4.0.1",
+          "System.Diagnostics.Process": "4.1.0",
+          "System.Diagnostics.StackTrace": "4.0.1",
+          "System.Diagnostics.Tools": "4.0.1",
+          "System.IO.FileSystem": "4.0.1",
+          "System.Linq": "4.0.1",
+          "System.Reflection": "4.1.0",
+          "System.Reflection.Emit": "4.0.1",
+          "System.Runtime": "4.0.21",
+          "System.Runtime.Serialization.Json": "4.0.1",
+          "System.Text.Encoding": "4.0.11",
+          "System.Text.RegularExpressions": "4.0.11",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks.Parallel": "4.0.1",
+          "System.Threading.Thread": "4.0.0",
+          "System.Xml.ReaderWriter": "4.0.11"
         }
       },
-      "Microsoft.CodeAnalysis.Analyzers/1.0.0": {
+      "Microsoft.CodeAnalysis.Analyzers/1.1.0": {
         "type": "package"
       },
-      "Microsoft.CodeAnalysis.Common/1.1.0-rc1-20151109-01": {
+      "Microsoft.CodeAnalysis.Common/1.1.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.CodeAnalysis.Analyzers": "[1.0.0, 1.2.0)",
+          "Microsoft.CodeAnalysis.Analyzers": "1.1.0",
           "System.Collections.Immutable": "1.1.37",
           "System.Reflection.Metadata": "1.1.0"
         },
@@ -2857,10 +2922,10 @@
           "lib/portable-net45+win8/Microsoft.CodeAnalysis.dll": {}
         }
       },
-      "Microsoft.CodeAnalysis.CSharp/1.1.0-rc1-20151109-01": {
+      "Microsoft.CodeAnalysis.CSharp/1.1.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.CodeAnalysis.Common": "[1.1.0-rc1-20151109-01]"
+          "Microsoft.CodeAnalysis.Common": "[1.1.1]"
         },
         "compile": {
           "lib/portable-net45+win8/Microsoft.CodeAnalysis.CSharp.dll": {}
@@ -2907,25 +2972,6 @@
         },
         "runtime": {
           "lib/dotnet5.4/Microsoft.Dnx.Compilation.Abstractions.dll": {}
-        }
-      },
-      "Microsoft.Dnx.Runtime.Abstractions/1.0.0-beta8-15653": {
-        "type": "package",
-        "dependencies": {
-          "System.Collections": "4.0.11-beta-23302",
-          "System.ComponentModel": "4.0.1-beta-23302",
-          "System.IO": "4.0.11-beta-23302",
-          "System.Linq": "4.0.1-beta-23302",
-          "System.Reflection": "4.1.0-beta-23225",
-          "System.Runtime": "4.0.21-beta-23302",
-          "System.Runtime.Extensions": "4.0.11-beta-23302",
-          "System.Threading.Tasks": "4.0.11-beta-23302"
-        },
-        "compile": {
-          "lib/dnxcore50/Microsoft.Dnx.Runtime.Abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/dnxcore50/Microsoft.Dnx.Runtime.Abstractions.dll": {}
         }
       },
       "Microsoft.Dnx.TestHost/1.0.0-rc1-final": {
@@ -3043,22 +3089,38 @@
           "lib/dotnet5.4/Microsoft.Extensions.PlatformAbstractions.dll": {}
         }
       },
-      "Microsoft.Framework.DependencyInjection.Abstractions/1.0.0-beta8-15611": {
+      "Microsoft.Framework.DependencyInjection/1.0.0-beta8": {
         "type": "package",
         "dependencies": {
-          "System.ComponentModel": "4.0.1-beta-23302",
-          "System.Diagnostics.Debug": "4.0.11-beta-23302",
-          "System.Globalization": "4.0.11-beta-23302",
-          "System.Linq": "4.0.1-beta-23302",
-          "System.Linq.Expressions": "4.0.11-beta-23302",
-          "System.Reflection": "4.1.0-beta-23225",
-          "System.Resources.ResourceManager": "4.0.1-beta-23302"
+          "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta8",
+          "System.Collections": "4.0.11-beta-23409",
+          "System.Collections.Concurrent": "4.0.11-beta-23409",
+          "System.Threading": "4.0.11-beta-23409",
+          "System.Threading.Tasks": "4.0.11-beta-23409"
         },
         "compile": {
-          "lib/dotnet/Microsoft.Framework.DependencyInjection.Abstractions.dll": {}
+          "lib/dnxcore50/Microsoft.Framework.DependencyInjection.dll": {}
         },
         "runtime": {
-          "lib/dotnet/Microsoft.Framework.DependencyInjection.Abstractions.dll": {}
+          "lib/dnxcore50/Microsoft.Framework.DependencyInjection.dll": {}
+        }
+      },
+      "Microsoft.Framework.DependencyInjection.Abstractions/1.0.0-beta8": {
+        "type": "package",
+        "dependencies": {
+          "System.ComponentModel": "4.0.1-beta-23409",
+          "System.Diagnostics.Debug": "4.0.11-beta-23409",
+          "System.Globalization": "4.0.11-beta-23409",
+          "System.Linq": "4.0.1-beta-23409",
+          "System.Linq.Expressions": "4.0.11-beta-23409",
+          "System.Reflection": "4.1.0-beta-23225",
+          "System.Resources.ResourceManager": "4.0.1-beta-23409"
+        },
+        "compile": {
+          "lib/dnxcore50/Microsoft.Framework.DependencyInjection.Abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/dnxcore50/Microsoft.Framework.DependencyInjection.Abstractions.dll": {}
         }
       },
       "Microsoft.Win32.Primitives/4.0.0": {
@@ -3099,6 +3161,39 @@
         },
         "runtime": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        }
+      },
+      "runtime.any.System.Private.DataContractSerialization/4.1.0-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Globalization": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Linq": "4.0.0",
+          "System.Reflection": "4.0.10",
+          "System.Reflection.Emit.ILGeneration": "4.0.0",
+          "System.Reflection.Emit.Lightweight": "4.0.0",
+          "System.Reflection.Extensions": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Reflection.TypeExtensions": "4.0.0",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Runtime.Serialization.Primitives": "4.1.0-beta-23516",
+          "System.Text.Encoding": "4.0.10",
+          "System.Text.Encoding.Extensions": "4.0.10",
+          "System.Text.RegularExpressions": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Threading.Tasks": "4.0.10",
+          "System.Xml.ReaderWriter": "4.0.10",
+          "System.Xml.XmlSerializer": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/_._": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Private.DataContractSerialization.dll": {}
         }
       },
       "runtime.win7.System.Console/4.0.0-beta-23516": {
@@ -3164,7 +3259,7 @@
           "runtimes/win7/lib/DNXCore50/System.Data.SqlClient.dll": {}
         }
       },
-      "runtime.win7.System.Diagnostics.Debug/4.0.11-beta-23516": {
+      "runtime.win7.System.Diagnostics.Debug/4.0.11-beta-23409": {
         "type": "package",
         "compile": {
           "ref/dotnet/_._": {}
@@ -3270,7 +3365,7 @@
           "lib/DNXCore50/System.Net.Sockets.dll": {}
         }
       },
-      "runtime.win7.System.Private.Uri/4.0.1-rc2-23512": {
+      "runtime.win7.System.Private.Uri/4.0.1-beta-23516": {
         "type": "package",
         "compile": {
           "ref/dotnet/_._": {}
@@ -3577,13 +3672,13 @@
           "lib/DNXCore50/System.Diagnostics.TextWriterTraceListener.dll": {}
         }
       },
-      "System.Diagnostics.Tools/4.0.0": {
+      "System.Diagnostics.Tools/4.0.1-beta-23516": {
         "type": "package",
         "dependencies": {
           "System.Runtime": "4.0.0"
         },
         "compile": {
-          "ref/dotnet/System.Diagnostics.Tools.dll": {}
+          "ref/dotnet5.1/System.Diagnostics.Tools.dll": {}
         },
         "runtime": {
           "lib/DNXCore50/System.Diagnostics.Tools.dll": {}
@@ -3830,6 +3925,12 @@
           "lib/dotnet/System.ObjectModel.dll": {}
         }
       },
+      "System.Private.DataContractSerialization/4.1.0-beta-23516": {
+        "type": "package",
+        "compile": {
+          "ref/dnxcore50/_._": {}
+        }
+      },
       "System.Private.Networking/4.0.1-beta-23516": {
         "type": "package",
         "dependencies": {
@@ -3862,7 +3963,7 @@
           "lib/DNXCore50/System.Private.Networking.dll": {}
         }
       },
-      "System.Private.Uri/4.0.1-rc2-23512": {
+      "System.Private.Uri/4.0.1-beta-23516": {
         "type": "package",
         "compile": {
           "ref/dnxcore50/_._": {}
@@ -3880,6 +3981,22 @@
         },
         "runtime": {
           "lib/DNXCore50/System.Reflection.dll": {}
+        }
+      },
+      "System.Reflection.Emit/4.0.1-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.IO": "4.0.0",
+          "System.Reflection": "4.0.0",
+          "System.Reflection.Emit.ILGeneration": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Runtime": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet5.2/System.Reflection.Emit.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Reflection.Emit.dll": {}
         }
       },
       "System.Reflection.Emit.ILGeneration/4.0.0": {
@@ -3988,10 +4105,10 @@
           "lib/DNXCore50/System.Resources.ResourceManager.dll": {}
         }
       },
-      "System.Runtime/4.0.21-rc2-23512": {
+      "System.Runtime/4.0.21-beta-23516": {
         "type": "package",
         "dependencies": {
-          "System.Private.Uri": "4.0.1-rc2-23512"
+          "System.Private.Uri": "4.0.1-beta-23516"
         },
         "compile": {
           "ref/dotnet5.4/System.Runtime.dll": {}
@@ -4034,6 +4151,31 @@
         },
         "runtime": {
           "lib/DNXCore50/System.Runtime.InteropServices.dll": {}
+        }
+      },
+      "System.Runtime.Serialization.Json/4.0.1-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.Private.DataContractSerialization": "4.1.0-beta-23516"
+        },
+        "compile": {
+          "ref/dotnet5.1/System.Runtime.Serialization.Json.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Runtime.Serialization.Json.dll": {}
+        }
+      },
+      "System.Runtime.Serialization.Primitives/4.1.0-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20"
+        },
+        "compile": {
+          "ref/dotnet5.4/System.Runtime.Serialization.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/System.Runtime.Serialization.Primitives.dll": {}
         }
       },
       "System.Security.Claims/4.0.0": {
@@ -4140,13 +4282,13 @@
           "lib/DNXCore50/System.Security.Principal.Windows.dll": {}
         }
       },
-      "System.Text.Encoding/4.0.11-beta-23225": {
+      "System.Text.Encoding/4.0.11-beta-23516": {
         "type": "package",
         "dependencies": {
           "System.Runtime": "4.0.0"
         },
         "compile": {
-          "ref/dotnet/System.Text.Encoding.dll": {}
+          "ref/dotnet5.4/System.Text.Encoding.dll": {}
         },
         "runtime": {
           "lib/DNXCore50/System.Text.Encoding.dll": {}
@@ -4343,6 +4485,54 @@
           "lib/dotnet5.4/System.Xml.XDocument.dll": {}
         }
       },
+      "System.Xml.XmlDocument/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Globalization": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Text.Encoding": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Xml.ReaderWriter": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/System.Xml.XmlDocument.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet/System.Xml.XmlDocument.dll": {}
+        }
+      },
+      "System.Xml.XmlSerializer/4.0.10": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Globalization": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Linq": "4.0.0",
+          "System.Reflection": "4.0.10",
+          "System.Reflection.Extensions": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Reflection.TypeExtensions": "4.0.0",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Text.RegularExpressions": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Xml.ReaderWriter": "4.0.10",
+          "System.Xml.XmlDocument": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet/System.Xml.XmlSerializer.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Xml.XmlSerializer.dll": {}
+        }
+      },
       "xunit/2.1.0": {
         "type": "package",
         "dependencies": {
@@ -4511,37 +4701,41 @@
         "type": "project",
         "framework": "DNXCore,Version=v5.0",
         "dependencies": {
-          "Microsoft.CodeAnalysis.CSharp": "1.1.0-rc1-20151109-01",
-          "Microsoft.CSharp": "4.0.1-beta-23516",
-          "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-beta8-15653",
-          "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta8-15611",
-          "System.Collections": "4.0.11-rc2-23512",
-          "System.Collections.Concurrent": "4.0.11-beta-23516",
-          "System.Collections.Specialized": "4.0.1-beta-23516",
-          "System.ComponentModel.TypeConverter": "4.0.1-beta-23516",
-          "System.Data.Common": "4.0.1-beta-23516",
-          "System.Data.SqlClient": "4.0.0-beta-23516",
-          "System.Diagnostics.Contracts": "4.0.1-beta-23516",
-          "System.Diagnostics.Process": "4.1.0-beta-23516",
-          "System.Diagnostics.StackTrace": "4.0.1-beta-23516",
-          "System.IO.FileSystem": "4.0.1-beta-23516",
-          "System.Linq": "4.0.1-beta-23516",
-          "System.Reflection": "4.1.0-beta-23516",
-          "System.Runtime": "4.0.21-rc2-23512",
-          "System.Text.Encoding": "4.0.11-beta-23225",
-          "System.Text.RegularExpressions": "4.0.11-beta-23516",
-          "System.Threading": "4.0.11-beta-23516",
-          "System.Threading.Tasks.Parallel": "4.0.1-beta-23516",
-          "System.Xml.ReaderWriter": "4.0.11-beta-23516"
+          "Microsoft.CodeAnalysis.CSharp": "1.1.1",
+          "Microsoft.CSharp": "4.0.1",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
+          "Microsoft.Framework.DependencyInjection": "1.0.0",
+          "System.Collections": "4.0.10",
+          "System.Collections.Concurrent": "4.0.11",
+          "System.Collections.Specialized": "4.0.1",
+          "System.ComponentModel.TypeConverter": "4.0.1",
+          "System.Data.Common": "4.0.1",
+          "System.Data.SqlClient": "4.0.0",
+          "System.Diagnostics.Contracts": "4.0.1",
+          "System.Diagnostics.Process": "4.1.0",
+          "System.Diagnostics.StackTrace": "4.0.1",
+          "System.Diagnostics.Tools": "4.0.1",
+          "System.IO.FileSystem": "4.0.1",
+          "System.Linq": "4.0.1",
+          "System.Reflection": "4.1.0",
+          "System.Reflection.Emit": "4.0.1",
+          "System.Runtime": "4.0.21",
+          "System.Runtime.Serialization.Json": "4.0.1",
+          "System.Text.Encoding": "4.0.11",
+          "System.Text.RegularExpressions": "4.0.11",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks.Parallel": "4.0.1",
+          "System.Threading.Thread": "4.0.0",
+          "System.Xml.ReaderWriter": "4.0.11"
         }
       },
-      "Microsoft.CodeAnalysis.Analyzers/1.0.0": {
+      "Microsoft.CodeAnalysis.Analyzers/1.1.0": {
         "type": "package"
       },
-      "Microsoft.CodeAnalysis.Common/1.1.0-rc1-20151109-01": {
+      "Microsoft.CodeAnalysis.Common/1.1.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.CodeAnalysis.Analyzers": "[1.0.0, 1.2.0)",
+          "Microsoft.CodeAnalysis.Analyzers": "1.1.0",
           "System.Collections.Immutable": "1.1.37",
           "System.Reflection.Metadata": "1.1.0"
         },
@@ -4552,10 +4746,10 @@
           "lib/portable-net45+win8/Microsoft.CodeAnalysis.dll": {}
         }
       },
-      "Microsoft.CodeAnalysis.CSharp/1.1.0-rc1-20151109-01": {
+      "Microsoft.CodeAnalysis.CSharp/1.1.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.CodeAnalysis.Common": "[1.1.0-rc1-20151109-01]"
+          "Microsoft.CodeAnalysis.Common": "[1.1.1]"
         },
         "compile": {
           "lib/portable-net45+win8/Microsoft.CodeAnalysis.CSharp.dll": {}
@@ -4602,25 +4796,6 @@
         },
         "runtime": {
           "lib/dotnet5.4/Microsoft.Dnx.Compilation.Abstractions.dll": {}
-        }
-      },
-      "Microsoft.Dnx.Runtime.Abstractions/1.0.0-beta8-15653": {
-        "type": "package",
-        "dependencies": {
-          "System.Collections": "4.0.11-beta-23302",
-          "System.ComponentModel": "4.0.1-beta-23302",
-          "System.IO": "4.0.11-beta-23302",
-          "System.Linq": "4.0.1-beta-23302",
-          "System.Reflection": "4.1.0-beta-23225",
-          "System.Runtime": "4.0.21-beta-23302",
-          "System.Runtime.Extensions": "4.0.11-beta-23302",
-          "System.Threading.Tasks": "4.0.11-beta-23302"
-        },
-        "compile": {
-          "lib/dnxcore50/Microsoft.Dnx.Runtime.Abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/dnxcore50/Microsoft.Dnx.Runtime.Abstractions.dll": {}
         }
       },
       "Microsoft.Dnx.TestHost/1.0.0-rc1-final": {
@@ -4738,22 +4913,38 @@
           "lib/dotnet5.4/Microsoft.Extensions.PlatformAbstractions.dll": {}
         }
       },
-      "Microsoft.Framework.DependencyInjection.Abstractions/1.0.0-beta8-15611": {
+      "Microsoft.Framework.DependencyInjection/1.0.0-beta8": {
         "type": "package",
         "dependencies": {
-          "System.ComponentModel": "4.0.1-beta-23302",
-          "System.Diagnostics.Debug": "4.0.11-beta-23302",
-          "System.Globalization": "4.0.11-beta-23302",
-          "System.Linq": "4.0.1-beta-23302",
-          "System.Linq.Expressions": "4.0.11-beta-23302",
-          "System.Reflection": "4.1.0-beta-23225",
-          "System.Resources.ResourceManager": "4.0.1-beta-23302"
+          "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta8",
+          "System.Collections": "4.0.11-beta-23409",
+          "System.Collections.Concurrent": "4.0.11-beta-23409",
+          "System.Threading": "4.0.11-beta-23409",
+          "System.Threading.Tasks": "4.0.11-beta-23409"
         },
         "compile": {
-          "lib/dotnet/Microsoft.Framework.DependencyInjection.Abstractions.dll": {}
+          "lib/dnxcore50/Microsoft.Framework.DependencyInjection.dll": {}
         },
         "runtime": {
-          "lib/dotnet/Microsoft.Framework.DependencyInjection.Abstractions.dll": {}
+          "lib/dnxcore50/Microsoft.Framework.DependencyInjection.dll": {}
+        }
+      },
+      "Microsoft.Framework.DependencyInjection.Abstractions/1.0.0-beta8": {
+        "type": "package",
+        "dependencies": {
+          "System.ComponentModel": "4.0.1-beta-23409",
+          "System.Diagnostics.Debug": "4.0.11-beta-23409",
+          "System.Globalization": "4.0.11-beta-23409",
+          "System.Linq": "4.0.1-beta-23409",
+          "System.Linq.Expressions": "4.0.11-beta-23409",
+          "System.Reflection": "4.1.0-beta-23225",
+          "System.Resources.ResourceManager": "4.0.1-beta-23409"
+        },
+        "compile": {
+          "lib/dnxcore50/Microsoft.Framework.DependencyInjection.Abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/dnxcore50/Microsoft.Framework.DependencyInjection.Abstractions.dll": {}
         }
       },
       "Microsoft.Win32.Primitives/4.0.0": {
@@ -4794,6 +4985,39 @@
         },
         "runtime": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        }
+      },
+      "runtime.any.System.Private.DataContractSerialization/4.1.0-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Globalization": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Linq": "4.0.0",
+          "System.Reflection": "4.0.10",
+          "System.Reflection.Emit.ILGeneration": "4.0.0",
+          "System.Reflection.Emit.Lightweight": "4.0.0",
+          "System.Reflection.Extensions": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Reflection.TypeExtensions": "4.0.0",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Runtime.Serialization.Primitives": "4.1.0-beta-23516",
+          "System.Text.Encoding": "4.0.10",
+          "System.Text.Encoding.Extensions": "4.0.10",
+          "System.Text.RegularExpressions": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Threading.Tasks": "4.0.10",
+          "System.Xml.ReaderWriter": "4.0.10",
+          "System.Xml.XmlSerializer": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/_._": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Private.DataContractSerialization.dll": {}
         }
       },
       "runtime.win7.System.Console/4.0.0-beta-23516": {
@@ -4859,7 +5083,7 @@
           "runtimes/win7/lib/DNXCore50/System.Data.SqlClient.dll": {}
         }
       },
-      "runtime.win7.System.Diagnostics.Debug/4.0.11-beta-23516": {
+      "runtime.win7.System.Diagnostics.Debug/4.0.11-beta-23409": {
         "type": "package",
         "compile": {
           "ref/dotnet/_._": {}
@@ -4965,7 +5189,7 @@
           "lib/DNXCore50/System.Net.Sockets.dll": {}
         }
       },
-      "runtime.win7.System.Private.Uri/4.0.1-rc2-23512": {
+      "runtime.win7.System.Private.Uri/4.0.1-beta-23516": {
         "type": "package",
         "compile": {
           "ref/dotnet/_._": {}
@@ -5272,13 +5496,13 @@
           "lib/DNXCore50/System.Diagnostics.TextWriterTraceListener.dll": {}
         }
       },
-      "System.Diagnostics.Tools/4.0.0": {
+      "System.Diagnostics.Tools/4.0.1-beta-23516": {
         "type": "package",
         "dependencies": {
           "System.Runtime": "4.0.0"
         },
         "compile": {
-          "ref/dotnet/System.Diagnostics.Tools.dll": {}
+          "ref/dotnet5.1/System.Diagnostics.Tools.dll": {}
         },
         "runtime": {
           "lib/DNXCore50/System.Diagnostics.Tools.dll": {}
@@ -5525,6 +5749,12 @@
           "lib/dotnet/System.ObjectModel.dll": {}
         }
       },
+      "System.Private.DataContractSerialization/4.1.0-beta-23516": {
+        "type": "package",
+        "compile": {
+          "ref/dnxcore50/_._": {}
+        }
+      },
       "System.Private.Networking/4.0.1-beta-23516": {
         "type": "package",
         "dependencies": {
@@ -5557,7 +5787,7 @@
           "lib/DNXCore50/System.Private.Networking.dll": {}
         }
       },
-      "System.Private.Uri/4.0.1-rc2-23512": {
+      "System.Private.Uri/4.0.1-beta-23516": {
         "type": "package",
         "compile": {
           "ref/dnxcore50/_._": {}
@@ -5575,6 +5805,22 @@
         },
         "runtime": {
           "lib/DNXCore50/System.Reflection.dll": {}
+        }
+      },
+      "System.Reflection.Emit/4.0.1-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.IO": "4.0.0",
+          "System.Reflection": "4.0.0",
+          "System.Reflection.Emit.ILGeneration": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Runtime": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet5.2/System.Reflection.Emit.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Reflection.Emit.dll": {}
         }
       },
       "System.Reflection.Emit.ILGeneration/4.0.0": {
@@ -5683,10 +5929,10 @@
           "lib/DNXCore50/System.Resources.ResourceManager.dll": {}
         }
       },
-      "System.Runtime/4.0.21-rc2-23512": {
+      "System.Runtime/4.0.21-beta-23516": {
         "type": "package",
         "dependencies": {
-          "System.Private.Uri": "4.0.1-rc2-23512"
+          "System.Private.Uri": "4.0.1-beta-23516"
         },
         "compile": {
           "ref/dotnet5.4/System.Runtime.dll": {}
@@ -5729,6 +5975,31 @@
         },
         "runtime": {
           "lib/DNXCore50/System.Runtime.InteropServices.dll": {}
+        }
+      },
+      "System.Runtime.Serialization.Json/4.0.1-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.Private.DataContractSerialization": "4.1.0-beta-23516"
+        },
+        "compile": {
+          "ref/dotnet5.1/System.Runtime.Serialization.Json.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Runtime.Serialization.Json.dll": {}
+        }
+      },
+      "System.Runtime.Serialization.Primitives/4.1.0-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20"
+        },
+        "compile": {
+          "ref/dotnet5.4/System.Runtime.Serialization.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/System.Runtime.Serialization.Primitives.dll": {}
         }
       },
       "System.Security.Claims/4.0.0": {
@@ -5835,13 +6106,13 @@
           "lib/DNXCore50/System.Security.Principal.Windows.dll": {}
         }
       },
-      "System.Text.Encoding/4.0.11-beta-23225": {
+      "System.Text.Encoding/4.0.11-beta-23516": {
         "type": "package",
         "dependencies": {
           "System.Runtime": "4.0.0"
         },
         "compile": {
-          "ref/dotnet/System.Text.Encoding.dll": {}
+          "ref/dotnet5.4/System.Text.Encoding.dll": {}
         },
         "runtime": {
           "lib/DNXCore50/System.Text.Encoding.dll": {}
@@ -6038,6 +6309,54 @@
           "lib/dotnet5.4/System.Xml.XDocument.dll": {}
         }
       },
+      "System.Xml.XmlDocument/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Globalization": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Text.Encoding": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Xml.ReaderWriter": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/System.Xml.XmlDocument.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet/System.Xml.XmlDocument.dll": {}
+        }
+      },
+      "System.Xml.XmlSerializer/4.0.10": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Globalization": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Linq": "4.0.0",
+          "System.Reflection": "4.0.10",
+          "System.Reflection.Extensions": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Reflection.TypeExtensions": "4.0.0",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Text.RegularExpressions": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Xml.ReaderWriter": "4.0.10",
+          "System.Xml.XmlDocument": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet/System.Xml.XmlSerializer.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Xml.XmlSerializer.dll": {}
+        }
+      },
       "xunit/2.1.0": {
         "type": "package",
         "dependencies": {
@@ -6207,46 +6526,46 @@
       "type": "project",
       "path": "../../src/CraigsUtilityLibrary/project.json"
     },
-    "Microsoft.CodeAnalysis.Analyzers/1.0.0": {
+    "Microsoft.CodeAnalysis.Analyzers/1.1.0": {
       "type": "package",
-      "sha512": "E7VdmGw6xO3VHWapC+pNLZmo6yncS53UY3bmb5WZm9wliJBB1A6brgzKA4fcqiLrmJFx71r0M2zEbRDphRLUNg==",
+      "sha512": "HS3iRWZKcUw/8eZ/08GXKY2Bn7xNzQPzf8gRPHGSowX7u7XXu9i9YEaBeBNKUXWfI7qjvT2zXtLUvbN0hds8vg==",
       "files": [
         "analyzers/dotnet/cs/Microsoft.CodeAnalysis.Analyzers.dll",
         "analyzers/dotnet/cs/Microsoft.CodeAnalysis.CSharp.Analyzers.dll",
         "analyzers/dotnet/vb/Microsoft.CodeAnalysis.Analyzers.dll",
         "analyzers/dotnet/vb/Microsoft.CodeAnalysis.VisualBasic.Analyzers.dll",
-        "Microsoft.CodeAnalysis.Analyzers.1.0.0.nupkg",
-        "Microsoft.CodeAnalysis.Analyzers.1.0.0.nupkg.sha512",
+        "Microsoft.CodeAnalysis.Analyzers.1.1.0.nupkg",
+        "Microsoft.CodeAnalysis.Analyzers.1.1.0.nupkg.sha512",
         "Microsoft.CodeAnalysis.Analyzers.nuspec",
         "ThirdPartyNotices.rtf",
         "tools/install.ps1",
         "tools/uninstall.ps1"
       ]
     },
-    "Microsoft.CodeAnalysis.Common/1.1.0-rc1-20151109-01": {
+    "Microsoft.CodeAnalysis.Common/1.1.1": {
       "type": "package",
-      "sha512": "5eea4BzS8/ge6aVWbweZ3LxMZumN7lm1hPPjSn3iAS3yi1ozsg1aCZ+lHq2nbS/ZNT+Z3QmTcmKaQd3b4bTqeA==",
+      "sha512": "r958nYjnl//vgjLljJLu52N2FJKlKYF5pqzyXM/C6K0w8uMcKIkJS4RXygqRBhW7ZjlsJXfiEX/JxLeDxMQUWQ==",
       "files": [
         "lib/net45/Microsoft.CodeAnalysis.dll",
         "lib/net45/Microsoft.CodeAnalysis.xml",
         "lib/portable-net45+win8/Microsoft.CodeAnalysis.dll",
         "lib/portable-net45+win8/Microsoft.CodeAnalysis.xml",
-        "Microsoft.CodeAnalysis.Common.1.1.0-rc1-20151109-01.nupkg",
-        "Microsoft.CodeAnalysis.Common.1.1.0-rc1-20151109-01.nupkg.sha512",
+        "Microsoft.CodeAnalysis.Common.1.1.1.nupkg",
+        "Microsoft.CodeAnalysis.Common.1.1.1.nupkg.sha512",
         "Microsoft.CodeAnalysis.Common.nuspec",
         "ThirdPartyNotices.rtf"
       ]
     },
-    "Microsoft.CodeAnalysis.CSharp/1.1.0-rc1-20151109-01": {
+    "Microsoft.CodeAnalysis.CSharp/1.1.1": {
       "type": "package",
-      "sha512": "2u8FpEIzbjvW6kveLYDwVgrrw7rkqN123dQSMLL3aRBcNFpKL4+hJkrU5uutsVNmjrzxjQkrSKQjIw6L2yjU9w==",
+      "sha512": "HH8f/KK4fjTWNaKhHPgjF1Hm7lGMEB6A3DK+CUzW9ZbudZTFdNwb3Oa4qDZ25HWF+ifImSdu+1bLgqKCWRbsNQ==",
       "files": [
         "lib/net45/Microsoft.CodeAnalysis.CSharp.dll",
         "lib/net45/Microsoft.CodeAnalysis.CSharp.xml",
         "lib/portable-net45+win8/Microsoft.CodeAnalysis.CSharp.dll",
         "lib/portable-net45+win8/Microsoft.CodeAnalysis.CSharp.xml",
-        "Microsoft.CodeAnalysis.CSharp.1.1.0-rc1-20151109-01.nupkg",
-        "Microsoft.CodeAnalysis.CSharp.1.1.0-rc1-20151109-01.nupkg.sha512",
+        "Microsoft.CodeAnalysis.CSharp.1.1.1.nupkg",
+        "Microsoft.CodeAnalysis.CSharp.1.1.1.nupkg.sha512",
         "Microsoft.CodeAnalysis.CSharp.nuspec",
         "ThirdPartyNotices.rtf"
       ]
@@ -6313,20 +6632,6 @@
         "Microsoft.Dnx.Compilation.Abstractions.1.0.0-rc1-final.nupkg",
         "Microsoft.Dnx.Compilation.Abstractions.1.0.0-rc1-final.nupkg.sha512",
         "Microsoft.Dnx.Compilation.Abstractions.nuspec"
-      ]
-    },
-    "Microsoft.Dnx.Runtime.Abstractions/1.0.0-beta8-15653": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "vpgfR5nej/76NVV1U6sgZoiDkxbg+i4ymSkH3c+gt3M01RGzZpM0kCwzSPyykUdO0NumI0KeBDvWOjP5Gcjjzg==",
-      "files": [
-        "lib/dnx451/Microsoft.Dnx.Runtime.Abstractions.dll",
-        "lib/dnx451/Microsoft.Dnx.Runtime.Abstractions.xml",
-        "lib/dnxcore50/Microsoft.Dnx.Runtime.Abstractions.dll",
-        "lib/dnxcore50/Microsoft.Dnx.Runtime.Abstractions.xml",
-        "Microsoft.Dnx.Runtime.Abstractions.1.0.0-beta8-15653.nupkg",
-        "Microsoft.Dnx.Runtime.Abstractions.1.0.0-beta8-15653.nupkg.sha512",
-        "Microsoft.Dnx.Runtime.Abstractions.nuspec"
       ]
     },
     "Microsoft.Dnx.TestHost/1.0.0-rc1-final": {
@@ -6420,19 +6725,39 @@
         "Microsoft.Extensions.PlatformAbstractions.nuspec"
       ]
     },
-    "Microsoft.Framework.DependencyInjection.Abstractions/1.0.0-beta8-15611": {
+    "Microsoft.Framework.DependencyInjection/1.0.0-beta8": {
       "type": "package",
       "serviceable": true,
-      "sha512": "/pBneYgnjjFpWbzB2iOp8z7wvzRzOTNIh9sQjiX1tBbFwt9y9BHvnGoQ3McF783tvSe3hCZ+9YwFZwG3z8WJFA==",
+      "sha512": "6TmUFq/mt2l7QKoDyCuJOrDFcJ9A3ljZ/P3SBQMb+IYJ9J7XivUb47E+E9dQXhIjs5FpFHUGAE5Mxj2oKpxkfA==",
+      "files": [
+        "lib/dnx451/Microsoft.Framework.DependencyInjection.dll",
+        "lib/dnx451/Microsoft.Framework.DependencyInjection.xml",
+        "lib/dnxcore50/Microsoft.Framework.DependencyInjection.dll",
+        "lib/dnxcore50/Microsoft.Framework.DependencyInjection.xml",
+        "lib/dotnet/Microsoft.Framework.DependencyInjection.dll",
+        "lib/dotnet/Microsoft.Framework.DependencyInjection.xml",
+        "lib/net45/Microsoft.Framework.DependencyInjection.dll",
+        "lib/net45/Microsoft.Framework.DependencyInjection.xml",
+        "Microsoft.Framework.DependencyInjection.1.0.0-beta8.nupkg",
+        "Microsoft.Framework.DependencyInjection.1.0.0-beta8.nupkg.sha512",
+        "Microsoft.Framework.DependencyInjection.nuspec"
+      ]
+    },
+    "Microsoft.Framework.DependencyInjection.Abstractions/1.0.0-beta8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "7WL9hy+7bYDyBtIrrW5tw57dChBcizjSyuD0p5pVkay+gSseLqvAk72a4KldMmRgH//7t74d/YVrTvLhw83b7w==",
       "files": [
         "lib/dnx451/Microsoft.Framework.DependencyInjection.Abstractions.dll",
         "lib/dnx451/Microsoft.Framework.DependencyInjection.Abstractions.xml",
+        "lib/dnxcore50/Microsoft.Framework.DependencyInjection.Abstractions.dll",
+        "lib/dnxcore50/Microsoft.Framework.DependencyInjection.Abstractions.xml",
         "lib/dotnet/Microsoft.Framework.DependencyInjection.Abstractions.dll",
         "lib/dotnet/Microsoft.Framework.DependencyInjection.Abstractions.xml",
         "lib/net45/Microsoft.Framework.DependencyInjection.Abstractions.dll",
         "lib/net45/Microsoft.Framework.DependencyInjection.Abstractions.xml",
-        "Microsoft.Framework.DependencyInjection.Abstractions.1.0.0-beta8-15611.nupkg",
-        "Microsoft.Framework.DependencyInjection.Abstractions.1.0.0-beta8-15611.nupkg.sha512",
+        "Microsoft.Framework.DependencyInjection.Abstractions.1.0.0-beta8.nupkg",
+        "Microsoft.Framework.DependencyInjection.Abstractions.1.0.0-beta8.nupkg.sha512",
         "Microsoft.Framework.DependencyInjection.Abstractions.nuspec"
       ]
     },
@@ -6514,6 +6839,20 @@
         "tools/install.ps1"
       ]
     },
+    "runtime.any.System.Private.DataContractSerialization/4.1.0-beta-23516": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "QWDhadlWo2DhOvVJtnm1400utV8KunqX+rDJTeIUvC+Q+GVqTCZCJLNoRoVSoZp2GEU958vg8IU9hojNVFqZKg==",
+      "files": [
+        "lib/DNXCore50/System.Private.DataContractSerialization.dll",
+        "lib/netcore50/System.Private.DataContractSerialization.dll",
+        "ref/dotnet/_._",
+        "runtime.any.System.Private.DataContractSerialization.4.1.0-beta-23516.nupkg",
+        "runtime.any.System.Private.DataContractSerialization.4.1.0-beta-23516.nupkg.sha512",
+        "runtime.any.System.Private.DataContractSerialization.nuspec",
+        "runtimes/aot/lib/netcore50/_._"
+      ]
+    },
     "runtime.win7.System.Console/4.0.0-beta-23516": {
       "type": "package",
       "serviceable": true,
@@ -6543,17 +6882,37 @@
         "runtimes/win7/lib/wpa81/_._"
       ]
     },
-    "runtime.win7.System.Diagnostics.Debug/4.0.11-beta-23516": {
+    "runtime.win7.System.Diagnostics.Debug/4.0.11-beta-23409": {
       "type": "package",
       "serviceable": true,
-      "sha512": "TxSgeP23B6bPfE0QFX8u4/1p1jP6Ugn993npTRf3e9F3y61BIQeCkt5Im0gGdjz0dxioHkuTr+C2m4ELsMos8Q==",
+      "sha512": "ITLu13a/DQDMq1mHgxQnAjy4mFlYTTo+veCZ0K9PDYnzg9sNNjF+GhcKMkh3yOcMXwxdJr5gInXuqGHlD7bEug==",
       "files": [
         "ref/dotnet/_._",
-        "runtime.win7.System.Diagnostics.Debug.4.0.11-beta-23516.nupkg",
-        "runtime.win7.System.Diagnostics.Debug.4.0.11-beta-23516.nupkg.sha512",
+        "runtime.win7.System.Diagnostics.Debug.4.0.11-beta-23409.nupkg",
+        "runtime.win7.System.Diagnostics.Debug.4.0.11-beta-23409.nupkg.sha512",
         "runtime.win7.System.Diagnostics.Debug.nuspec",
+        "runtimes/win7/lib/DNXCore50/de/System.Diagnostics.Debug.xml",
+        "runtimes/win7/lib/DNXCore50/es/System.Diagnostics.Debug.xml",
+        "runtimes/win7/lib/DNXCore50/fr/System.Diagnostics.Debug.xml",
+        "runtimes/win7/lib/DNXCore50/it/System.Diagnostics.Debug.xml",
+        "runtimes/win7/lib/DNXCore50/ja/System.Diagnostics.Debug.xml",
+        "runtimes/win7/lib/DNXCore50/ko/System.Diagnostics.Debug.xml",
+        "runtimes/win7/lib/DNXCore50/ru/System.Diagnostics.Debug.xml",
         "runtimes/win7/lib/DNXCore50/System.Diagnostics.Debug.dll",
+        "runtimes/win7/lib/DNXCore50/System.Diagnostics.Debug.xml",
+        "runtimes/win7/lib/DNXCore50/zh-hans/System.Diagnostics.Debug.xml",
+        "runtimes/win7/lib/DNXCore50/zh-hant/System.Diagnostics.Debug.xml",
+        "runtimes/win7/lib/netcore50/de/System.Diagnostics.Debug.xml",
+        "runtimes/win7/lib/netcore50/es/System.Diagnostics.Debug.xml",
+        "runtimes/win7/lib/netcore50/fr/System.Diagnostics.Debug.xml",
+        "runtimes/win7/lib/netcore50/it/System.Diagnostics.Debug.xml",
+        "runtimes/win7/lib/netcore50/ja/System.Diagnostics.Debug.xml",
+        "runtimes/win7/lib/netcore50/ko/System.Diagnostics.Debug.xml",
+        "runtimes/win7/lib/netcore50/ru/System.Diagnostics.Debug.xml",
         "runtimes/win7/lib/netcore50/System.Diagnostics.Debug.dll",
+        "runtimes/win7/lib/netcore50/System.Diagnostics.Debug.xml",
+        "runtimes/win7/lib/netcore50/zh-hans/System.Diagnostics.Debug.xml",
+        "runtimes/win7/lib/netcore50/zh-hant/System.Diagnostics.Debug.xml",
         "runtimes/win8-aot/lib/netcore50/System.Diagnostics.Debug.dll"
       ]
     },
@@ -6635,14 +6994,14 @@
         "runtimes/win7/lib/net/_._"
       ]
     },
-    "runtime.win7.System.Private.Uri/4.0.1-rc2-23512": {
+    "runtime.win7.System.Private.Uri/4.0.1-beta-23516": {
       "type": "package",
       "serviceable": true,
-      "sha512": "2dQV8OKLo0HLUK/iMS/AJrSf0tCaGdXtb8i4IgUc54TgNYfIEG41EwO567QdIrAouvMFVx5JK3/ZQO/4a8KhPw==",
+      "sha512": "HphDhue34J/4+1rIMtInY1FWK1oLEMpxIpxGeNnhIlQf7hv5QDf05aWEC6180qbgkPBCFwyGnwWRBnONApwbBQ==",
       "files": [
         "ref/dotnet/_._",
-        "runtime.win7.System.Private.Uri.4.0.1-rc2-23512.nupkg",
-        "runtime.win7.System.Private.Uri.4.0.1-rc2-23512.nupkg.sha512",
+        "runtime.win7.System.Private.Uri.4.0.1-beta-23516.nupkg",
+        "runtime.win7.System.Private.Uri.4.0.1-beta-23516.nupkg.sha512",
         "runtime.win7.System.Private.Uri.nuspec",
         "runtimes/win7/lib/DNXCore50/System.Private.Uri.dll",
         "runtimes/win7/lib/netcore50/System.Private.Uri.dll",
@@ -7405,10 +7764,10 @@
         "System.Diagnostics.TextWriterTraceListener.nuspec"
       ]
     },
-    "System.Diagnostics.Tools/4.0.0": {
+    "System.Diagnostics.Tools/4.0.1-beta-23516": {
       "type": "package",
       "serviceable": true,
-      "sha512": "uw5Qi2u5Cgtv4xv3+8DeB63iaprPcaEHfpeJqlJiLjIVy6v0La4ahJ6VW9oPbJNIjcavd24LKq0ctT9ssuQXsw==",
+      "sha512": "E8oQK7C7tScD+2oTpsx36a60BWTjBpw/RLzoll4niFX39EF/ZBCYhRx7SoniwF9ql3iKG0UWY/p0VmaCh/Y9Nw==",
       "files": [
         "lib/DNXCore50/System.Diagnostics.Tools.dll",
         "lib/net45/_._",
@@ -7416,26 +7775,35 @@
         "lib/win8/_._",
         "lib/wp80/_._",
         "lib/wpa81/_._",
-        "ref/dotnet/de/System.Diagnostics.Tools.xml",
-        "ref/dotnet/es/System.Diagnostics.Tools.xml",
-        "ref/dotnet/fr/System.Diagnostics.Tools.xml",
-        "ref/dotnet/it/System.Diagnostics.Tools.xml",
-        "ref/dotnet/ja/System.Diagnostics.Tools.xml",
-        "ref/dotnet/ko/System.Diagnostics.Tools.xml",
-        "ref/dotnet/ru/System.Diagnostics.Tools.xml",
-        "ref/dotnet/System.Diagnostics.Tools.dll",
-        "ref/dotnet/System.Diagnostics.Tools.xml",
-        "ref/dotnet/zh-hans/System.Diagnostics.Tools.xml",
-        "ref/dotnet/zh-hant/System.Diagnostics.Tools.xml",
+        "ref/dotnet5.1/de/System.Diagnostics.Tools.xml",
+        "ref/dotnet5.1/es/System.Diagnostics.Tools.xml",
+        "ref/dotnet5.1/fr/System.Diagnostics.Tools.xml",
+        "ref/dotnet5.1/it/System.Diagnostics.Tools.xml",
+        "ref/dotnet5.1/ja/System.Diagnostics.Tools.xml",
+        "ref/dotnet5.1/ko/System.Diagnostics.Tools.xml",
+        "ref/dotnet5.1/ru/System.Diagnostics.Tools.xml",
+        "ref/dotnet5.1/System.Diagnostics.Tools.dll",
+        "ref/dotnet5.1/System.Diagnostics.Tools.xml",
+        "ref/dotnet5.1/zh-hans/System.Diagnostics.Tools.xml",
+        "ref/dotnet5.1/zh-hant/System.Diagnostics.Tools.xml",
         "ref/net45/_._",
+        "ref/netcore50/de/System.Diagnostics.Tools.xml",
+        "ref/netcore50/es/System.Diagnostics.Tools.xml",
+        "ref/netcore50/fr/System.Diagnostics.Tools.xml",
+        "ref/netcore50/it/System.Diagnostics.Tools.xml",
+        "ref/netcore50/ja/System.Diagnostics.Tools.xml",
+        "ref/netcore50/ko/System.Diagnostics.Tools.xml",
+        "ref/netcore50/ru/System.Diagnostics.Tools.xml",
         "ref/netcore50/System.Diagnostics.Tools.dll",
         "ref/netcore50/System.Diagnostics.Tools.xml",
+        "ref/netcore50/zh-hans/System.Diagnostics.Tools.xml",
+        "ref/netcore50/zh-hant/System.Diagnostics.Tools.xml",
         "ref/win8/_._",
         "ref/wp80/_._",
         "ref/wpa81/_._",
         "runtimes/win8-aot/lib/netcore50/System.Diagnostics.Tools.dll",
-        "System.Diagnostics.Tools.4.0.0.nupkg",
-        "System.Diagnostics.Tools.4.0.0.nupkg.sha512",
+        "System.Diagnostics.Tools.4.0.1-beta-23516.nupkg",
+        "System.Diagnostics.Tools.4.0.1-beta-23516.nupkg.sha512",
         "System.Diagnostics.Tools.nuspec"
       ]
     },
@@ -8273,6 +8641,18 @@
         "System.ObjectModel.nuspec"
       ]
     },
+    "System.Private.DataContractSerialization/4.1.0-beta-23516": {
+      "type": "package",
+      "sha512": "fXa/GBzfgpOyV2vch4fv1Qy7IWCm2HxC//4LXyLXtkk/R+ODcxZ4NPmPSMqx6+0T37X4uf9YTf+omKCZevgmxA==",
+      "files": [
+        "ref/dnxcore50/_._",
+        "ref/netcore50/_._",
+        "runtime.json",
+        "System.Private.DataContractSerialization.4.1.0-beta-23516.nupkg",
+        "System.Private.DataContractSerialization.4.1.0-beta-23516.nupkg.sha512",
+        "System.Private.DataContractSerialization.nuspec"
+      ]
+    },
     "System.Private.Networking/4.0.1-beta-23516": {
       "type": "package",
       "serviceable": true,
@@ -8287,15 +8667,15 @@
         "System.Private.Networking.nuspec"
       ]
     },
-    "System.Private.Uri/4.0.1-rc2-23512": {
+    "System.Private.Uri/4.0.1-beta-23516": {
       "type": "package",
-      "sha512": "hCQQouxJ9GqcAK+7zG22BaLCxzeRinTcBtVfFb7SMTx2BWNSP5Xiw+RtT5XlOsANQPzqZMAE5D3qE2e6pIeRYw==",
+      "sha512": "MG79ArOc8KhfAkjrimI5GFH4tML7XFo+Z1sEQGLPxrBlwfbITwrrNfYb3YoH6CpAlJHc4pcs/gZrUas/pEkTdg==",
       "files": [
         "ref/dnxcore50/_._",
         "ref/netcore50/_._",
         "runtime.json",
-        "System.Private.Uri.4.0.1-rc2-23512.nupkg",
-        "System.Private.Uri.4.0.1-rc2-23512.nupkg.sha512",
+        "System.Private.Uri.4.0.1-beta-23516.nupkg",
+        "System.Private.Uri.4.0.1-beta-23516.nupkg.sha512",
         "System.Private.Uri.nuspec"
       ]
     },
@@ -8409,6 +8789,36 @@
         "System.Reflection.4.1.0-beta-23516.nupkg",
         "System.Reflection.4.1.0-beta-23516.nupkg.sha512",
         "System.Reflection.nuspec"
+      ]
+    },
+    "System.Reflection.Emit/4.0.1-beta-23516": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "3j5EhKPGh7cbUu5QLP1RAabvjNIpJOr5hA1Ip5UQ4ozccUb6Fd3SZiP4VKpqm/RyVAZDnOc9vdNuazZebtJeHw==",
+      "files": [
+        "lib/DNXCore50/System.Reflection.Emit.dll",
+        "lib/MonoAndroid10/_._",
+        "lib/net45/_._",
+        "lib/netcore50/System.Reflection.Emit.dll",
+        "lib/xamarinmac20/_._",
+        "ref/dotnet5.2/de/System.Reflection.Emit.xml",
+        "ref/dotnet5.2/es/System.Reflection.Emit.xml",
+        "ref/dotnet5.2/fr/System.Reflection.Emit.xml",
+        "ref/dotnet5.2/it/System.Reflection.Emit.xml",
+        "ref/dotnet5.2/ja/System.Reflection.Emit.xml",
+        "ref/dotnet5.2/ko/System.Reflection.Emit.xml",
+        "ref/dotnet5.2/ru/System.Reflection.Emit.xml",
+        "ref/dotnet5.2/System.Reflection.Emit.dll",
+        "ref/dotnet5.2/System.Reflection.Emit.xml",
+        "ref/dotnet5.2/zh-hans/System.Reflection.Emit.xml",
+        "ref/dotnet5.2/zh-hant/System.Reflection.Emit.xml",
+        "ref/MonoAndroid10/_._",
+        "ref/net45/_._",
+        "ref/xamarinmac20/_._",
+        "runtimes/aot/lib/netcore50/_._",
+        "System.Reflection.Emit.4.0.1-beta-23516.nupkg",
+        "System.Reflection.Emit.4.0.1-beta-23516.nupkg.sha512",
+        "System.Reflection.Emit.nuspec"
       ]
     },
     "System.Reflection.Emit.ILGeneration/4.0.0": {
@@ -8591,7 +9001,7 @@
     "System.Reflection.TypeExtensions/4.0.1-beta-23409": {
       "type": "package",
       "serviceable": true,
-      "sha512": "n8m144jjCwhN/qtLih35a2sO33fLWm1U3eg51KxqAcAjJcw0nq1zWie8FZognBTPv7BXdW/G8xGbbvDGFoJwZA==",
+      "sha512": "Q3FiCsJ/4s2nuyhOHAFhc0Te10LzPjv6QzVcywA3oWI1msfDg583RIXQ9YifDfOuig+wg+SX0p133qV71HVfyw==",
       "files": [
         "lib/DNXCore50/de/System.Reflection.TypeExtensions.xml",
         "lib/DNXCore50/es/System.Reflection.TypeExtensions.xml",
@@ -8787,10 +9197,10 @@
         "System.Runtime.nuspec"
       ]
     },
-    "System.Runtime/4.0.21-rc2-23512": {
+    "System.Runtime/4.0.21-beta-23516": {
       "type": "package",
       "serviceable": true,
-      "sha512": "VBA22skvInFicT1LU/ErUVp2ajO5jqkxRv/qfkLyfA1N5A3ejOPjhR+dK0J4EH/PVPGANyqwxNO/ECEXJjibAw==",
+      "sha512": "R174ctQjJnCIVxA2Yzp1v68wfLfPSROZWrbaSBcnEzHAQbOjprBQi37aWdr5y05Pq2J/O7h6SjTsYhVOLdiRYQ==",
       "files": [
         "lib/DNXCore50/System.Runtime.dll",
         "lib/MonoAndroid10/_._",
@@ -8855,8 +9265,8 @@
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
         "runtimes/win8-aot/lib/netcore50/System.Runtime.dll",
-        "System.Runtime.4.0.21-rc2-23512.nupkg",
-        "System.Runtime.4.0.21-rc2-23512.nupkg.sha512",
+        "System.Runtime.4.0.21-beta-23516.nupkg",
+        "System.Runtime.4.0.21-beta-23516.nupkg.sha512",
         "System.Runtime.nuspec"
       ]
     },
@@ -9119,6 +9529,110 @@
         "System.Runtime.InteropServices.nuspec"
       ]
     },
+    "System.Runtime.Serialization.Json/4.0.1-beta-23516": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "hb2m3v95DOXgLetqFTbHSowGE+Wqz8WerrZ5wRe1upezLU2DtK2SIhXaZC01BxGCmRKUM0fpIXEOvocKnZMt2A==",
+      "files": [
+        "lib/DNXCore50/System.Runtime.Serialization.Json.dll",
+        "lib/net45/_._",
+        "lib/netcore50/System.Runtime.Serialization.Json.dll",
+        "lib/win8/_._",
+        "lib/wp80/_._",
+        "lib/wpa81/_._",
+        "ref/dotnet5.1/de/System.Runtime.Serialization.Json.xml",
+        "ref/dotnet5.1/es/System.Runtime.Serialization.Json.xml",
+        "ref/dotnet5.1/fr/System.Runtime.Serialization.Json.xml",
+        "ref/dotnet5.1/it/System.Runtime.Serialization.Json.xml",
+        "ref/dotnet5.1/ja/System.Runtime.Serialization.Json.xml",
+        "ref/dotnet5.1/ko/System.Runtime.Serialization.Json.xml",
+        "ref/dotnet5.1/ru/System.Runtime.Serialization.Json.xml",
+        "ref/dotnet5.1/System.Runtime.Serialization.Json.dll",
+        "ref/dotnet5.1/System.Runtime.Serialization.Json.xml",
+        "ref/dotnet5.1/zh-hans/System.Runtime.Serialization.Json.xml",
+        "ref/dotnet5.1/zh-hant/System.Runtime.Serialization.Json.xml",
+        "ref/net45/_._",
+        "ref/netcore50/de/System.Runtime.Serialization.Json.xml",
+        "ref/netcore50/es/System.Runtime.Serialization.Json.xml",
+        "ref/netcore50/fr/System.Runtime.Serialization.Json.xml",
+        "ref/netcore50/it/System.Runtime.Serialization.Json.xml",
+        "ref/netcore50/ja/System.Runtime.Serialization.Json.xml",
+        "ref/netcore50/ko/System.Runtime.Serialization.Json.xml",
+        "ref/netcore50/ru/System.Runtime.Serialization.Json.xml",
+        "ref/netcore50/System.Runtime.Serialization.Json.dll",
+        "ref/netcore50/System.Runtime.Serialization.Json.xml",
+        "ref/netcore50/zh-hans/System.Runtime.Serialization.Json.xml",
+        "ref/netcore50/zh-hant/System.Runtime.Serialization.Json.xml",
+        "ref/win8/_._",
+        "ref/wp80/_._",
+        "ref/wpa81/_._",
+        "runtimes/win8-aot/lib/netcore50/System.Runtime.Serialization.Json.dll",
+        "System.Runtime.Serialization.Json.4.0.1-beta-23516.nupkg",
+        "System.Runtime.Serialization.Json.4.0.1-beta-23516.nupkg.sha512",
+        "System.Runtime.Serialization.Json.nuspec"
+      ]
+    },
+    "System.Runtime.Serialization.Primitives/4.1.0-beta-23516": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "Dsl95PE2vyGIy9voclfTVKSqYD8O4PjsMS+TV0bM3N1xNraS2BBaChGk1stGmf04cn2/xA3cZyh80bkZL+v1/Q==",
+      "files": [
+        "lib/dotnet5.4/System.Runtime.Serialization.Primitives.dll",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net45/_._",
+        "lib/netcore50/System.Runtime.Serialization.Primitives.dll",
+        "lib/win8/_._",
+        "lib/wp80/_._",
+        "lib/wpa81/_._",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "ref/dotnet5.1/de/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet5.1/es/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet5.1/fr/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet5.1/it/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet5.1/ja/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet5.1/ko/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet5.1/ru/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet5.1/System.Runtime.Serialization.Primitives.dll",
+        "ref/dotnet5.1/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet5.1/zh-hans/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet5.1/zh-hant/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet5.4/de/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet5.4/es/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet5.4/fr/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet5.4/it/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet5.4/ja/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet5.4/ko/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet5.4/ru/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet5.4/System.Runtime.Serialization.Primitives.dll",
+        "ref/dotnet5.4/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet5.4/zh-hans/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet5.4/zh-hant/System.Runtime.Serialization.Primitives.xml",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net45/_._",
+        "ref/netcore50/de/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/es/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/fr/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/it/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/ja/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/ko/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/ru/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/System.Runtime.Serialization.Primitives.dll",
+        "ref/netcore50/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/zh-hans/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/zh-hant/System.Runtime.Serialization.Primitives.xml",
+        "ref/win8/_._",
+        "ref/wp80/_._",
+        "ref/wpa81/_._",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "System.Runtime.Serialization.Primitives.4.1.0-beta-23516.nupkg",
+        "System.Runtime.Serialization.Primitives.4.1.0-beta-23516.nupkg.sha512",
+        "System.Runtime.Serialization.Primitives.nuspec"
+      ]
+    },
     "System.Security.Claims/4.0.0": {
       "type": "package",
       "serviceable": true,
@@ -9364,27 +9878,65 @@
         "System.Text.Encoding.nuspec"
       ]
     },
-    "System.Text.Encoding/4.0.11-beta-23225": {
+    "System.Text.Encoding/4.0.11-beta-23516": {
       "type": "package",
       "serviceable": true,
-      "sha512": "z86Mk322Z8s3g7pKYB7ZsXcIhfSNuBmziUc5vEgKtrMggpWNcZ6DOhPiqAEJBSfymv2N+h/0xVpzeSVE/iLMHw==",
+      "sha512": "gk4da/Y3VReZpIeQ3UDTCknbkO/FuYKOJtP+5+Vtc07mTcPHvhgbZLXEGTTneP6yWPDWTTh20nZZMF/19YsRtA==",
       "files": [
         "lib/DNXCore50/System.Text.Encoding.dll",
         "lib/MonoAndroid10/_._",
         "lib/MonoTouch10/_._",
-        "lib/net46/_._",
+        "lib/net45/_._",
         "lib/netcore50/System.Text.Encoding.dll",
+        "lib/win8/_._",
+        "lib/wp80/_._",
+        "lib/wpa81/_._",
         "lib/xamarinios10/_._",
         "lib/xamarinmac20/_._",
-        "ref/dotnet/System.Text.Encoding.dll",
+        "ref/dotnet5.1/de/System.Text.Encoding.xml",
+        "ref/dotnet5.1/es/System.Text.Encoding.xml",
+        "ref/dotnet5.1/fr/System.Text.Encoding.xml",
+        "ref/dotnet5.1/it/System.Text.Encoding.xml",
+        "ref/dotnet5.1/ja/System.Text.Encoding.xml",
+        "ref/dotnet5.1/ko/System.Text.Encoding.xml",
+        "ref/dotnet5.1/ru/System.Text.Encoding.xml",
+        "ref/dotnet5.1/System.Text.Encoding.dll",
+        "ref/dotnet5.1/System.Text.Encoding.xml",
+        "ref/dotnet5.1/zh-hans/System.Text.Encoding.xml",
+        "ref/dotnet5.1/zh-hant/System.Text.Encoding.xml",
+        "ref/dotnet5.4/de/System.Text.Encoding.xml",
+        "ref/dotnet5.4/es/System.Text.Encoding.xml",
+        "ref/dotnet5.4/fr/System.Text.Encoding.xml",
+        "ref/dotnet5.4/it/System.Text.Encoding.xml",
+        "ref/dotnet5.4/ja/System.Text.Encoding.xml",
+        "ref/dotnet5.4/ko/System.Text.Encoding.xml",
+        "ref/dotnet5.4/ru/System.Text.Encoding.xml",
+        "ref/dotnet5.4/System.Text.Encoding.dll",
+        "ref/dotnet5.4/System.Text.Encoding.xml",
+        "ref/dotnet5.4/zh-hans/System.Text.Encoding.xml",
+        "ref/dotnet5.4/zh-hant/System.Text.Encoding.xml",
         "ref/MonoAndroid10/_._",
         "ref/MonoTouch10/_._",
-        "ref/net46/_._",
+        "ref/net45/_._",
+        "ref/netcore50/de/System.Text.Encoding.xml",
+        "ref/netcore50/es/System.Text.Encoding.xml",
+        "ref/netcore50/fr/System.Text.Encoding.xml",
+        "ref/netcore50/it/System.Text.Encoding.xml",
+        "ref/netcore50/ja/System.Text.Encoding.xml",
+        "ref/netcore50/ko/System.Text.Encoding.xml",
+        "ref/netcore50/ru/System.Text.Encoding.xml",
+        "ref/netcore50/System.Text.Encoding.dll",
+        "ref/netcore50/System.Text.Encoding.xml",
+        "ref/netcore50/zh-hans/System.Text.Encoding.xml",
+        "ref/netcore50/zh-hant/System.Text.Encoding.xml",
+        "ref/win8/_._",
+        "ref/wp80/_._",
+        "ref/wpa81/_._",
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
         "runtimes/win8-aot/lib/netcore50/System.Text.Encoding.dll",
-        "System.Text.Encoding.4.0.11-beta-23225.nupkg",
-        "System.Text.Encoding.4.0.11-beta-23225.nupkg.sha512",
+        "System.Text.Encoding.4.0.11-beta-23516.nupkg",
+        "System.Text.Encoding.4.0.11-beta-23516.nupkg.sha512",
         "System.Text.Encoding.nuspec"
       ]
     },
@@ -9964,6 +10516,73 @@
         "System.Xml.XDocument.nuspec"
       ]
     },
+    "System.Xml.XmlDocument/4.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "H5qTx2+AXgaKE5wehU1ZYeYPFpp/rfFh69/937NvwCrDqbIkvJRmIFyKKpkoMI6gl9hGfuVizfIudVTMyowCXw==",
+      "files": [
+        "lib/dotnet/System.Xml.XmlDocument.dll",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Xml.XmlDocument.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "ref/dotnet/de/System.Xml.XmlDocument.xml",
+        "ref/dotnet/es/System.Xml.XmlDocument.xml",
+        "ref/dotnet/fr/System.Xml.XmlDocument.xml",
+        "ref/dotnet/it/System.Xml.XmlDocument.xml",
+        "ref/dotnet/ja/System.Xml.XmlDocument.xml",
+        "ref/dotnet/ko/System.Xml.XmlDocument.xml",
+        "ref/dotnet/ru/System.Xml.XmlDocument.xml",
+        "ref/dotnet/System.Xml.XmlDocument.dll",
+        "ref/dotnet/System.Xml.XmlDocument.xml",
+        "ref/dotnet/zh-hans/System.Xml.XmlDocument.xml",
+        "ref/dotnet/zh-hant/System.Xml.XmlDocument.xml",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Xml.XmlDocument.dll",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "System.Xml.XmlDocument.4.0.0.nupkg",
+        "System.Xml.XmlDocument.4.0.0.nupkg.sha512",
+        "System.Xml.XmlDocument.nuspec"
+      ]
+    },
+    "System.Xml.XmlSerializer/4.0.10": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "OKhE6vruk88z/hl0lmfrMvXteTASgJUagu6PT6S10i9uLbvDR3pTwB6jVgiwa2D2qtTB+eneZbS9jljhPXhTtg==",
+      "files": [
+        "lib/DNXCore50/System.Xml.XmlSerializer.dll",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/_._",
+        "lib/netcore50/System.Xml.XmlSerializer.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "ref/dotnet/de/System.Xml.XmlSerializer.xml",
+        "ref/dotnet/es/System.Xml.XmlSerializer.xml",
+        "ref/dotnet/fr/System.Xml.XmlSerializer.xml",
+        "ref/dotnet/it/System.Xml.XmlSerializer.xml",
+        "ref/dotnet/ja/System.Xml.XmlSerializer.xml",
+        "ref/dotnet/ko/System.Xml.XmlSerializer.xml",
+        "ref/dotnet/ru/System.Xml.XmlSerializer.xml",
+        "ref/dotnet/System.Xml.XmlSerializer.dll",
+        "ref/dotnet/System.Xml.XmlSerializer.xml",
+        "ref/dotnet/zh-hans/System.Xml.XmlSerializer.xml",
+        "ref/dotnet/zh-hant/System.Xml.XmlSerializer.xml",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/_._",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "runtime.json",
+        "runtimes/win8-aot/lib/netcore50/System.Xml.XmlSerializer.dll",
+        "System.Xml.XmlSerializer.4.0.10.nupkg",
+        "System.Xml.XmlSerializer.4.0.10.nupkg.sha512",
+        "System.Xml.XmlSerializer.nuspec"
+      ]
+    },
     "xunit/2.1.0": {
       "type": "package",
       "sha512": "u/7VQSOSXa7kSG4iK6Lcn7RqKZQ3hk7cnyMNVMpXHSP0RI5VQEtc44hvkG3LyWOVsx1dhUDD3rPAHAxyOUDQJw==",
@@ -10131,14 +10750,14 @@
   "projectFileDependencyGroups": {
     "": [
       "CraigsUtilityLibrary >= 5.0.0-*",
-      "Microsoft.CSharp >= 4.0.1-beta-23516",
-      "System.Collections >= 4.0.11-beta-23516",
-      "System.Linq >= 4.0.1-beta-23516",
+      "Microsoft.CSharp >= 4.0.1-*",
+      "System.Collections >= 4.0.11-*",
+      "System.Linq >= 4.0.1-*",
       "xunit >= 2.1.0",
-      "xunit.runner.dnx >= 2.1.0-rc1-build204"
+      "xunit.runner.dnx >= 2.1.0-*"
     ],
     "DNX,Version=v4.5.1": [
-      "System.Threading >= 4.0.11-beta-23516"
+      "System.Threading >= 4.0.11-*"
     ],
     "DNXCore,Version=v5.0": []
   }

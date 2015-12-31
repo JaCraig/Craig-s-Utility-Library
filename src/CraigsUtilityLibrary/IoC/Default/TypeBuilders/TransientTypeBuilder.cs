@@ -44,9 +44,7 @@ namespace Utilities.IoC.Default.TypeBuilders
         /// <summary>
         /// Copies this instance.
         /// </summary>
-        /// <returns>
-        /// A copy of this instance.
-        /// </returns>
+        /// <returns>A copy of this instance.</returns>
         public override ITypeBuilder Copy()
         {
             return new TransientTypeBuilder<T>(Implementation);
@@ -62,7 +60,8 @@ namespace Utilities.IoC.Default.TypeBuilders
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting
+        /// unmanaged resources.
         /// </summary>
         public override void Dispose()
         {

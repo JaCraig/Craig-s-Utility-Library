@@ -24,6 +24,7 @@ using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Reflection;
 using Utilities.DataTypes.Conversion.Converters.BaseClasses;
 
 namespace Utilities.DataTypes.Conversion.Converters
@@ -185,7 +186,7 @@ namespace Utilities.DataTypes.Conversion.Converters
             if (TempValue == null)
                 return SqlDbType.Int;
             DbType Item = DbType.Int32;
-            if (TempValue.IsEnum)
+            if (TempValue.GetTypeInfo().IsEnum)
                 TempValue = Enum.GetUnderlyingType(TempValue);
             Item = Conversions.GetValue(TempValue, DbType.Int32);
             var Parameter = new SqlParameter();

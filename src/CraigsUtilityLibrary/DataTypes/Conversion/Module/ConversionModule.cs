@@ -40,6 +40,8 @@ namespace Utilities.DataTypes.Conversion.Module
         /// <param name="bootstrapper">Bootstrapper to register with</param>
         public void Load(IBootstrapper bootstrapper)
         {
+            if (bootstrapper == null)
+                return;
             bootstrapper.RegisterAll<IConverter>();
             bootstrapper.Register(new Manager(bootstrapper.ResolveAll<IConverter>()));
         }

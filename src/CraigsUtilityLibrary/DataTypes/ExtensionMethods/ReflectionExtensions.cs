@@ -19,6 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using Microsoft.Extensions.PlatformAbstractions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -356,9 +357,9 @@ namespace Utilities.DataTypes
                 return true;
             if (type == objectType || objectType.GetInterfaces().Any(x => x == type))
                 return true;
-            if (objectType.BaseType == null)
+            if (objectType.GetTypeInfo().BaseType == null)
                 return false;
-            return objectType.BaseType.Is(type);
+            return objectType.GetTypeInfo().BaseType.Is(type);
         }
 
         /// <summary>
@@ -398,7 +399,7 @@ namespace Utilities.DataTypes
                 return null;
             try
             {
-                return Assembly.Load(name);
+                return PlatformServices.Default.AssemblyLoadContextAccessor.Default.Load(name);
             }
             catch (BadImageFormatException) { return null; }
         }
@@ -423,7 +424,7 @@ namespace Utilities.DataTypes
                 if (Property.CanRead
                         && Property.CanWrite
                         && simpleTypesOnly
-                        && Property.PropertyType.IsValueType)
+                        && Property.PropertyType.GetTypeInfo().IsValueType)
                     Property.SetValue(ClassInstance, Property.GetValue(inputObject, null), null);
                 else if (!simpleTypesOnly
                             && Property.CanRead
@@ -456,7 +457,7 @@ namespace Utilities.DataTypes
         {
             if (types == null)
                 return null;
-            return types.Where(x => x.IsDefined(typeof(T), inherit) && !x.IsAbstract);
+            return types.Where(x => x.GetTypeInfo().IsDefined(typeof(T), inherit) && !x.GetTypeInfo().IsAbstract);
         }
 
         /// <summary>
@@ -471,7 +472,7 @@ namespace Utilities.DataTypes
         {
             if (assembly == null)
                 return new List<ClassType>();
-            return assembly.Types<ClassType>().Where(x => !x.ContainsGenericParameters).Create<ClassType>(args);
+            return assembly.Types<ClassType>().Where(x => !x.GetTypeInfo().ContainsGenericParameters).Create<ClassType>(args);
         }
 
         /// <summary>

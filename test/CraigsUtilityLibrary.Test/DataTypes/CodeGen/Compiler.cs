@@ -28,7 +28,7 @@ using Xunit;
 
 namespace UnitTests.DataTypes.CodeGen
 {
-    public class Compiler:TestingDirectoryFixture
+    public class Compiler : TestingDirectoryFixture
     {
         [Fact]
         public void CreateMultipleTypes()

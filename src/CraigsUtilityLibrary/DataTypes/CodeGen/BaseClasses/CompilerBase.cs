@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
+using Microsoft.Extensions.PlatformAbstractions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -42,17 +43,19 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         /// <param name="assemblyName">Assembly name to save the generated types as</param>
         /// <param name="assemblyDirectory">Directory to save the generated types (optional)</param>
         /// <param name="optimize">Should this be optimized (defaults to true)</param>
-        /// <param name="overwriteIfExists">if set to <c>true</c> [overwrite if exists].</param>
-        protected CompilerBase(string assemblyName, string assemblyDirectory = "", bool optimize = true, bool overwriteIfExists = false)
+        protected CompilerBase(string assemblyName, string assemblyDirectory = "", bool optimize = true)
         {
             AssemblyDirectory = string.IsNullOrEmpty(assemblyDirectory) ?
-                typeof(CompilerBase).Assembly.Location.Left(typeof(CompilerBase).Assembly.Location.LastIndexOf('\\')) :
+                typeof(CompilerBase).GetTypeInfo().Assembly.Location.Left(typeof(CompilerBase).GetTypeInfo().Assembly.Location.LastIndexOf('\\')) :
                 assemblyDirectory;
             AssemblyName = assemblyName;
             Optimize = optimize;
             Classes = new List<Type>();
             var CurrentFile = new FileInfo(AssemblyDirectory + "\\" + AssemblyName + ".dll");
-            RegenerateAssembly = !CurrentFile.Exists || overwriteIfExists;
+            RegenerateAssembly = (!CurrentFile.Exists
+                          || new DirectoryInfo(PlatformServices.Default.Application.ApplicationBasePath).EnumerateFiles("*.dll", SearchOption.AllDirectories)
+                                                    .Where(x => !x.FullName.Contains("vshost32"))
+                                                    .Any(x => x.LastWriteTime > CurrentFile.LastWriteTime));
             if (string.IsNullOrEmpty(AssemblyDirectory)
                 || !new FileInfo(AssemblyDirectory + "\\" + AssemblyName + ".dll").Exists
                 || RegenerateAssembly)
@@ -63,8 +66,11 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
             {
                 using (var TempFile = CurrentFile.OpenRead())
                 {
-                    var AssemblyBinary = TempFile.ReadAllBinary();
-                    Assembly.Load(AssemblyBinary).GetTypes().ForEach(x => Classes.Add(x));
+                    using (Stream TempStream = new MemoryStream(TempFile.ReadAllBinary()))
+                    {
+                        var ResultingAssembly = PlatformServices.Default.AssemblyLoadContextAccessor.Default.LoadStream(TempStream, null);
+                        ResultingAssembly.GetTypes().ForEach(x => Classes.Add(x));
+                    }
                 }
             }
         }
@@ -160,7 +166,8 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
                 if (!Result.Success)
                     throw new Exception(code + Environment.NewLine + Environment.NewLine + Result.Diagnostics.ToString(x => x.GetMessage() + " : " + x.Location.GetLineSpan().StartLinePosition.Line, Environment.NewLine));
                 byte[] MiniAssembly = TempStream.ToArray();
-                Classes.AddIfUnique((x, y) => x.FullName == y.FullName, AppDomain.CurrentDomain.Load(MiniAssembly).GetTypes());
+                var ResultingAssembly = PlatformServices.Default.AssemblyLoadContextAccessor.Default.LoadStream(TempStream, null);
+                Classes.AddIfUnique((x, y) => x.FullName == y.FullName, ResultingAssembly.GetTypes());
                 AssemblyStream.Write(MiniAssembly, 0, MiniAssembly.Length);
             }
             return Classes;

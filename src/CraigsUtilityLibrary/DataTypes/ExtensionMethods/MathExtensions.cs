@@ -212,9 +212,7 @@ namespace Utilities.DataTypes
         /// <typeparam name="T">The data type of the list</typeparam>
         /// <param name="values">The list of values</param>
         /// <param name="orderBy">Function used to order the values</param>
-        /// <returns>
-        /// The median value
-        /// </returns>
+        /// <returns>The median value</returns>
         public static T Median<T>(this IEnumerable<T> values, Func<T, T> orderBy = null)
         {
             if (values == null)
@@ -231,9 +229,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="T">The data type of the list</typeparam>
         /// <param name="values">The list of values</param>
-        /// <returns>
-        /// The mode value
-        /// </returns>
+        /// <returns>The mode value</returns>
         public static T Mode<T>(this IEnumerable<T> values)
         {
             if (values == null)
@@ -400,9 +396,7 @@ namespace Utilities.DataTypes
         /// <typeparam name="T"></typeparam>
         /// <param name="values">List of values</param>
         /// <param name="selector">The selector.</param>
-        /// <returns>
-        /// The standard deviation
-        /// </returns>
+        /// <returns>The standard deviation</returns>
         public static double StandardDeviation<T>(this IEnumerable<T> values, Func<T, double> selector = null)
         {
             return values.Variance(selector).Sqrt();
@@ -414,9 +408,7 @@ namespace Utilities.DataTypes
         /// <typeparam name="T"></typeparam>
         /// <param name="values">List of values</param>
         /// <param name="selector">The selector.</param>
-        /// <returns>
-        /// The standard deviation
-        /// </returns>
+        /// <returns>The standard deviation</returns>
         public static double StandardDeviation<T>(this IEnumerable<T> values, Func<T, decimal> selector)
         {
             return values.Variance(selector).Sqrt();
@@ -428,9 +420,7 @@ namespace Utilities.DataTypes
         /// <typeparam name="T"></typeparam>
         /// <param name="values">List of values</param>
         /// <param name="selector">The selector.</param>
-        /// <returns>
-        /// The standard deviation
-        /// </returns>
+        /// <returns>The standard deviation</returns>
         public static double StandardDeviation<T>(this IEnumerable<T> values, Func<T, float> selector)
         {
             return values.Variance(selector).Sqrt();
@@ -442,9 +432,7 @@ namespace Utilities.DataTypes
         /// <typeparam name="T"></typeparam>
         /// <param name="values">List of values</param>
         /// <param name="selector">The selector.</param>
-        /// <returns>
-        /// The standard deviation
-        /// </returns>
+        /// <returns>The standard deviation</returns>
         public static double StandardDeviation<T>(this IEnumerable<T> values, Func<T, long> selector)
         {
             return values.Variance(selector).Sqrt();
@@ -456,9 +444,7 @@ namespace Utilities.DataTypes
         /// <typeparam name="T"></typeparam>
         /// <param name="values">List of values</param>
         /// <param name="selector">The selector.</param>
-        /// <returns>
-        /// The standard deviation
-        /// </returns>
+        /// <returns>The standard deviation</returns>
         public static double StandardDeviation<T>(this IEnumerable<T> values, Func<T, int> selector)
         {
             return values.Variance(selector).Sqrt();
@@ -520,9 +506,7 @@ namespace Utilities.DataTypes
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="values">List of values</param>
         /// <param name="Selector">The selector.</param>
-        /// <returns>
-        /// The variance
-        /// </returns>
+        /// <returns>The variance</returns>
         public static double Variance<T>(this IEnumerable<T> values, Func<T, double> selector)
         {
             if (selector == null)
@@ -536,9 +520,7 @@ namespace Utilities.DataTypes
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="values">List of values</param>
         /// <param name="selector">The selector.</param>
-        /// <returns>
-        /// The variance
-        /// </returns>
+        /// <returns>The variance</returns>
         public static double Variance<T>(this IEnumerable<T> values, Func<T, int> selector)
         {
             return values.Variance(x => (decimal)selector(x));
@@ -550,9 +532,7 @@ namespace Utilities.DataTypes
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="values">List of values</param>
         /// <param name="selector">The selector.</param>
-        /// <returns>
-        /// The variance
-        /// </returns>
+        /// <returns>The variance</returns>
         public static double Variance<T>(this IEnumerable<T> values, Func<T, long> selector)
         {
             return values.Variance(x => (decimal)selector(x));
@@ -564,9 +544,7 @@ namespace Utilities.DataTypes
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="values">List of values</param>
         /// <param name="selector">The selector.</param>
-        /// <returns>
-        /// The variance
-        /// </returns>
+        /// <returns>The variance</returns>
         public static double Variance<T>(this IEnumerable<T> values, Func<T, float> selector)
         {
             return values.Variance(x => (decimal)selector(x));
@@ -578,9 +556,7 @@ namespace Utilities.DataTypes
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="values">List of values</param>
         /// <param name="selector">The selector.</param>
-        /// <returns>
-        /// The variance
-        /// </returns>
+        /// <returns>The variance</returns>
         public static double Variance<T>(this IEnumerable<T> values, Func<T, decimal> selector)
         {
             if (values == null || values.Count() == 0)

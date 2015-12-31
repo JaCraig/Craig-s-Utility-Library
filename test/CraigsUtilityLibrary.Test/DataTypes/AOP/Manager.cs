@@ -25,7 +25,8 @@ using UnitTests.Fixtures;
 using Utilities.DataTypes;
 using Utilities.DataTypes.AOP.Interfaces;
 using Utilities.DataTypes.CodeGen;
-using Utilities.ORM.Manager.Mapper.Interfaces;
+
+//using Utilities.ORM.Manager.Mapper.Interfaces;
 using Xunit;
 
 namespace UnitTests.DataTypes.AOP
@@ -47,7 +48,7 @@ namespace UnitTests.DataTypes.AOP
         public void Create()
         {
             var Test = new Utilities.DataTypes.AOP.Manager(new Compiler(), AppDomain.CurrentDomain.GetAssemblies().Objects<IAspect>(), AppDomain.CurrentDomain.GetAssemblies().Objects<IAOPModule>());
-            Utilities.ORM.Aspect.ORMAspect.Mapper = new Utilities.ORM.Manager.Mapper.Manager(new List<IMapping>());
+            //Utilities.ORM.Aspect.ORMAspect.Mapper = new Utilities.ORM.Manager.Mapper.Manager(new List<IMapping>());
             var Item = (AOPTestClass)Test.Create(typeof(AOPTestClass));
             Assert.NotNull(Item);
         }

@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using Utilities.DataTypes.Conversion.Converters.Interfaces;
 
 namespace Utilities.DataTypes.Conversion
@@ -46,9 +47,7 @@ namespace Utilities.DataTypes.Conversion
         /// <summary>
         /// Gets or sets the converters.
         /// </summary>
-        /// <value>
-        /// The converters.
-        /// </value>
+        /// <value>The converters.</value>
         private static IEnumerable<TypeConverter> Converters { get; set; }
 
         /// <summary>
@@ -82,22 +81,22 @@ namespace Utilities.DataTypes.Conversion
             {
                 if (Item == null)
                 {
-                    return (DefaultValue == null && ResultType.IsValueType) ?
+                    return (DefaultValue == null && ResultType.GetTypeInfo().IsValueType) ?
                         Activator.CreateInstance(ResultType) :
                         DefaultValue;
                 }
                 Type ObjectType = Item.GetType();
                 if (ObjectType == typeof(DBNull))
                 {
-                    return (DefaultValue == null && ResultType.IsValueType) ?
+                    return (DefaultValue == null && ResultType.GetTypeInfo().IsValueType) ?
                         Activator.CreateInstance(ResultType) :
                         DefaultValue;
                 }
                 if (ResultType.IsAssignableFrom(ObjectType))
                     return Item;
-                if (Item as IConvertible != null && !ObjectType.IsEnum && !ResultType.IsEnum)
+                if (Item as IConvertible != null && !ObjectType.GetTypeInfo().IsEnum && !ResultType.GetTypeInfo().IsEnum)
                     return Convert.ChangeType(Item, ResultType, CultureInfo.InvariantCulture);
-                TypeConverter Converter = TypeDescriptor.GetConverter(Item);
+                TypeConverter Converter = TypeDescriptor.GetConverter(ObjectType);
                 if (Converter.CanConvertTo(ResultType))
                     return Converter.ConvertTo(Item, ResultType);
                 Converter = TypeDescriptor.GetConverter(ResultType);
@@ -109,14 +108,13 @@ namespace Utilities.DataTypes.Conversion
                 Converter = Converters.FirstOrDefault(x => (x.CanConvertFrom(ResultType) && x.CanConvertTo(ObjectType)));
                 if (Converter != null)
                     return Converter.ConvertFrom(Item);
-                if (ResultType.IsEnum)
+                if (ResultType.GetTypeInfo().IsEnum)
                 {
-                    if (ObjectType == ResultType.GetEnumUnderlyingType())
-                        return Enum.ToObject(ResultType, Item);
                     if (ObjectType == typeof(string))
                         return Enum.Parse(ResultType, Item as string, true);
+                    return Enum.ToObject(ResultType, Item);
                 }
-                if (ResultType.IsClass)
+                if (ResultType.GetTypeInfo().IsClass)
                 {
                     object ReturnValue = Activator.CreateInstance(ResultType);
                     var TempMapping = ObjectType.MapTo(ResultType);
@@ -131,7 +129,7 @@ namespace Utilities.DataTypes.Conversion
             catch
             {
             }
-            return (DefaultValue == null && ResultType.IsValueType) ?
+            return (DefaultValue == null && ResultType.GetTypeInfo().IsValueType) ?
                 Activator.CreateInstance(ResultType) :
                 DefaultValue;
         }

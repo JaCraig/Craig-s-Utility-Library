@@ -35,9 +35,7 @@ namespace Utilities.DataTypes
         /// Takes all of the data in the stream and returns it as a string
         /// </summary>
         /// <param name="input">Input stream</param>
-        /// <param name="encodingUsing">
-        /// Encoding that the string should be in (defaults to UTF8)
-        /// </param>
+        /// <param name="encodingUsing">Encoding that the string should be in (defaults to UTF8)</param>
         /// <returns>A string containing the content of the stream</returns>
         public static string ReadAll(this Stream input, Encoding encodingUsing = null)
         {

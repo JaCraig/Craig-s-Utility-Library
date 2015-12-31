@@ -39,9 +39,7 @@ namespace Utilities.DataTypes
         /// <param name="value">Value to check</param>
         /// <param name="min">Minimum value</param>
         /// <param name="max">Maximum value</param>
-        /// <param name="comparer">
-        /// Comparer used to compare the values (defaults to GenericComparer)"
-        /// </param>
+        /// <param name="comparer">Comparer used to compare the values (defaults to GenericComparer)"</param>
         /// <returns>True if it is between the values, false otherwise</returns>
         public static bool Between<T>(this T value, T min, T max, IComparer<T> comparer = null)
             where T : IComparable

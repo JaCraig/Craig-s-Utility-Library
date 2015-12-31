@@ -35,9 +35,7 @@ namespace Utilities.DataTypes
         /// Clears the array completely
         /// </summary>
         /// <param name="array">Array to clear</param>
-        /// <returns>
-        /// The final array
-        /// </returns>
+        /// <returns>The final array</returns>
         public static Array Clear(this Array array)
         {
             if (array == null)
@@ -51,9 +49,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="ArrayType">Array type</typeparam>
         /// <param name="array">Array to clear</param>
-        /// <returns>
-        /// The final array
-        /// </returns>
+        /// <returns>The final array</returns>
         public static ArrayType[] Clear<ArrayType>(this ArrayType[] array)
         {
             return (ArrayType[])((Array)array).Clear();

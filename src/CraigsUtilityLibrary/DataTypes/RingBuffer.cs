@@ -60,6 +60,8 @@ namespace Utilities.DataTypes
             Buffer = new T[maxCapacity];
         }
 
+        private object Root;
+
         /// <summary>
         /// Is overflow allowed?
         /// </summary>
@@ -133,8 +135,6 @@ namespace Utilities.DataTypes
                 Buffer[FinalPosition] = value;
             }
         }
-
-        private object Root;
 
         /// <summary>
         /// Converts the object to a string

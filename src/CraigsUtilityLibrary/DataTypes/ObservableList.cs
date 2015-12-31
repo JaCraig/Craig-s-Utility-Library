@@ -63,6 +63,70 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
+        /// The collection changed
+        /// </summary>
+        private NotifyCollectionChangedEventHandler collectionChanged_;
+
+        /// <summary>
+        /// The delegates_
+        /// </summary>
+        private List<NotifyCollectionChangedEventHandler> CollectionChangedDelegates = new List<NotifyCollectionChangedEventHandler>();
+
+        /// <summary>
+        /// The property changed
+        /// </summary>
+        private PropertyChangedEventHandler propertyChanged_;
+
+        /// <summary>
+        /// The property changed delegates
+        /// </summary>
+        private List<PropertyChangedEventHandler> PropertyChangedDelegates = new List<PropertyChangedEventHandler>();
+
+        /// <summary>
+        /// Occurs when the collection changes.
+        /// </summary>
+        public event NotifyCollectionChangedEventHandler CollectionChanged
+        {
+            add
+            {
+                if (collectionChanged_ != null)
+                {
+                    collectionChanged_ -= value;
+                }
+                CollectionChangedDelegates.Remove(value);
+                collectionChanged_ += value;
+                CollectionChangedDelegates.Add(value);
+            }
+            remove
+            {
+                collectionChanged_ += value;
+                CollectionChangedDelegates.Add(value);
+            }
+        }
+
+        /// <summary>
+        /// Occurs when a property value changes.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged
+        {
+            add
+            {
+                if (propertyChanged_ != null)
+                {
+                    propertyChanged_ -= value;
+                }
+                PropertyChangedDelegates.Remove(value);
+                propertyChanged_ += value;
+                PropertyChangedDelegates.Add(value);
+            }
+            remove
+            {
+                propertyChanged_ += value;
+                PropertyChangedDelegates.Add(value);
+            }
+        }
+
+        /// <summary>
         /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
         public int Count => BaseList.Count;
@@ -95,64 +159,6 @@ namespace Utilities.DataTypes
             {
                 NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, value, BaseList[index]));
                 BaseList[index] = value;
-            }
-        }
-
-        /// <summary>
-        /// The collection changed
-        /// </summary>
-        private NotifyCollectionChangedEventHandler collectionChanged_;
-
-        /// <summary>
-        /// The delegates_
-        /// </summary>
-        private List<NotifyCollectionChangedEventHandler> CollectionChangedDelegates = new List<NotifyCollectionChangedEventHandler>();
-
-        /// <summary>
-        /// The property changed
-        /// </summary>
-        private PropertyChangedEventHandler propertyChanged_;
-
-        /// <summary>
-        /// The property changed delegates
-        /// </summary>
-        private List<PropertyChangedEventHandler> PropertyChangedDelegates = new List<PropertyChangedEventHandler>();
-
-        /// <summary>
-        /// Occurs when the collection changes.
-        /// </summary>
-        public event NotifyCollectionChangedEventHandler CollectionChanged
-        {
-            add
-            {
-                collectionChanged_ -= value;
-                CollectionChangedDelegates.Remove(value);
-                collectionChanged_ += value;
-                CollectionChangedDelegates.Add(value);
-            }
-            remove
-            {
-                collectionChanged_ += value;
-                CollectionChangedDelegates.Add(value);
-            }
-        }
-
-        /// <summary>
-        /// Occurs when a property value changes.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged
-        {
-            add
-            {
-                propertyChanged_ -= value;
-                PropertyChangedDelegates.Remove(value);
-                propertyChanged_ += value;
-                PropertyChangedDelegates.Add(value);
-            }
-            remove
-            {
-                propertyChanged_ += value;
-                PropertyChangedDelegates.Add(value);
             }
         }
 

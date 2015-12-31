@@ -49,14 +49,9 @@ namespace Utilities.DataTypes.AOP
             Compiler = compiler;
             if (Aspects.Count == 0)
                 Aspects.Add(aspects);
-            compiler.Classes.ForEachParallel(x => Classes.AddOrUpdate(x.BaseType, y => x, (y, z) => x));
+            compiler.Classes.ForEachParallel(x => Classes.AddOrUpdate(x.GetTypeInfo().BaseType, y => x, (y, z) => x));
             modules.ForEachParallel(x => x.Setup(this));
         }
-
-        /// <summary>
-        /// Gets the system's compiler
-        /// </summary>
-        protected static Compiler Compiler { get; private set; }
 
         /// <summary>
         /// The list of aspects that are being used
@@ -67,6 +62,11 @@ namespace Utilities.DataTypes.AOP
         /// Dictionary containing generated types and associates it with original type
         /// </summary>
         private static ConcurrentDictionary<Type, Type> Classes = new ConcurrentDictionary<Type, Type>();
+
+        /// <summary>
+        /// Gets the system's compiler
+        /// </summary>
+        protected static Compiler Compiler { get; private set; }
 
         /// <summary>
         /// Creates an object of the specified base type, registering the type if necessary
@@ -143,7 +143,7 @@ namespace Utilities.DataTypes.AOP
                 foreach (Type Type in TempTypes)
                 {
                     Classes.AddOrUpdate(Type,
-                        Types.FirstOrDefault(x => x.BaseType == Type),
+                        Types.FirstOrDefault(x => x.GetTypeInfo().BaseType == Type),
                         (x, y) => x);
                 }
             }
@@ -175,16 +175,20 @@ namespace Utilities.DataTypes.AOP
         private static Type[] FilterTypesToSetup(IEnumerable<Type> enumerable)
         {
             enumerable = enumerable ?? new List<Type>();
-            return enumerable.Where(x => !Classes.ContainsKey(x)
-                                && !x.ContainsGenericParameters
-                                && x.IsClass
-                                && (x.IsPublic || x.IsNestedPublic)
-                                && !x.IsSealed
-                                && x.IsVisible
-                                && !x.IsCOMObject
-                                && x.HasDefaultConstructor()
-                                && !string.IsNullOrEmpty(x.Namespace))
-                          .ToArray();
+            return enumerable.Where(x =>
+            {
+                var TempTypeInfo = x.GetTypeInfo();
+                return !Classes.ContainsKey(x)
+                        && !TempTypeInfo.ContainsGenericParameters
+                        && TempTypeInfo.IsClass
+                        && (TempTypeInfo.IsPublic || TempTypeInfo.IsNestedPublic)
+                        && !TempTypeInfo.IsSealed
+                        && TempTypeInfo.IsVisible
+                        && !TempTypeInfo.IsCOMObject
+                        && x.HasDefaultConstructor()
+                        && !string.IsNullOrEmpty(x.Namespace);
+            })
+            .ToArray();
         }
 
         private static Assembly[] GetAssemblies(Type type)
@@ -193,18 +197,7 @@ namespace Utilities.DataTypes.AOP
             Type TempType = type;
             while (TempType != null)
             {
-                Types.AddIfUnique(TempType.GetTypeInfo().Assembly.GetReferencedAssemblies().ForEach(x =>
-                {
-                    try
-                    {
-                        return Assembly.Load(x);
-                    }
-                    catch
-                    {
-                        return null;
-                    }
-                }).Where(x => x != null));
-                Types.AddIfUnique(TempType.Assembly);
+                Types.AddIfUnique(TempType.GetTypeInfo().Assembly);
                 TempType.GetInterfaces().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x)));
                 TempType.GetEvents().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x.EventHandlerType)));
                 TempType.GetFields().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x.FieldType)));
@@ -214,7 +207,7 @@ namespace Utilities.DataTypes.AOP
                     Types.AddIfUnique(GetAssembliesSimple(x.ReturnType));
                     x.GetParameters().ForEach(y => Types.AddIfUnique(GetAssembliesSimple(y.ParameterType)));
                 });
-                TempType = TempType.BaseType;
+                TempType = TempType.GetTypeInfo().BaseType;
                 if (TempType == typeof(object))
                     break;
             }
@@ -227,9 +220,9 @@ namespace Utilities.DataTypes.AOP
             Type TempType = type;
             while (TempType != null)
             {
-                Types.AddIfUnique(TempType.Assembly);
+                Types.AddIfUnique(TempType.GetTypeInfo().Assembly);
                 TempType.GetInterfaces().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x)));
-                TempType = TempType.BaseType;
+                TempType = TempType.GetTypeInfo().BaseType;
                 if (TempType == typeof(object))
                     break;
             }
@@ -370,7 +363,7 @@ namespace Utilities.DataTypes.AOP
                         MethodsAlreadyDone.Add(Method.Name);
                     }
                 }
-                TempType = TempType.BaseType;
+                TempType = TempType.GetTypeInfo().BaseType;
                 if (TempType == typeof(object))
                     break;
             }

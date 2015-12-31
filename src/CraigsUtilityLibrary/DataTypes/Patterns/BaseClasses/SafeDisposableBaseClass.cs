@@ -36,14 +36,6 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
         }
 
         /// <summary>
-        /// Destructor
-        /// </summary>
-        ~SafeDisposableBaseClass()
-        {
-            Dispose(false);
-        }
-
-        /// <summary>
         /// Dispose function
         /// </summary>
         public void Dispose()
@@ -59,5 +51,13 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
         /// If true, managed and unmanaged objects should be disposed. Otherwise unmanaged objects only.
         /// </param>
         protected abstract void Dispose(bool Managed);
+
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        ~SafeDisposableBaseClass()
+        {
+            Dispose(false);
+        }
     }
 }

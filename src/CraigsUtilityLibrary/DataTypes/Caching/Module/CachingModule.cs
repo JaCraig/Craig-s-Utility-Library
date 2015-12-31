@@ -40,6 +40,8 @@ namespace Utilities.DataTypes.Caching.Module
         /// <param name="bootstrapper">Bootstrapper to register with</param>
         public void Load(IBootstrapper bootstrapper)
         {
+            if (bootstrapper == null)
+                return;
             bootstrapper.RegisterAll<ICache>();
             bootstrapper.Register(new Manager(bootstrapper.ResolveAll<ICache>()));
         }

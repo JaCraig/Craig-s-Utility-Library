@@ -45,8 +45,8 @@ namespace Utilities.DataTypes.CodeGen
         /// <param name="assemblyName">Assembly name</param>
         /// <param name="assemblyDirectory">Assembly directory</param>
         /// <param name="optimize">Optimize the assembly?</param>
-        public Compiler(string assemblyName, string assemblyDirectory, bool optimize, bool overwriteIfExists)
-            : base(assemblyName, assemblyDirectory, optimize, overwriteIfExists)
+        public Compiler(string assemblyName, string assemblyDirectory, bool optimize)
+            : base(assemblyName, assemblyDirectory, optimize)
         {
         }
 

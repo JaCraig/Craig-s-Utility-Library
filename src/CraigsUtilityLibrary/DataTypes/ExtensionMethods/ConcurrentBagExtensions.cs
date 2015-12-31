@@ -84,9 +84,7 @@ namespace Utilities.DataTypes
         /// <typeparam name="T">Collection type</typeparam>
         /// <param name="collection">Collection to add to</param>
         /// <param name="items">Items to add to the collection</param>
-        /// <param name="predicate">
-        /// Predicate that an item needs to satisfy in order to be added
-        /// </param>
+        /// <param name="predicate">Predicate that an item needs to satisfy in order to be added</param>
         /// <returns>True if any are added, false otherwise</returns>
         public static bool AddIf<T>(this ConcurrentBag<T> collection, Predicate<T> predicate, params T[] items)
         {
@@ -111,9 +109,7 @@ namespace Utilities.DataTypes
         /// <typeparam name="T">Collection type</typeparam>
         /// <param name="collection">Collection to add to</param>
         /// <param name="items">Items to add to the collection</param>
-        /// <param name="predicate">
-        /// Predicate that an item needs to satisfy in order to be added
-        /// </param>
+        /// <param name="predicate">Predicate that an item needs to satisfy in order to be added</param>
         /// <returns>True if it is added, false otherwise</returns>
         public static bool AddIf<T>(this ConcurrentBag<T> collection, Predicate<T> predicate, IEnumerable<T> items)
         {
@@ -169,7 +165,9 @@ namespace Utilities.DataTypes
         /// <typeparam name="T">Collection type</typeparam>
         /// <param name="collection">Collection to add to</param>
         /// <param name="items">Items to add to the collection</param>
-        /// <param name="comparer">Equality comparer, if null then a generic equality comparer is used</param>
+        /// <param name="comparer">
+        /// Equality comparer, if null then a generic equality comparer is used
+        /// </param>
         /// <returns>True if it is added, false otherwise</returns>
         public static bool AddIfUnique<T>(this ConcurrentBag<T> collection, IEqualityComparer<T> comparer, IEnumerable<T> items)
         {
@@ -214,9 +212,7 @@ namespace Utilities.DataTypes
         /// <param name="collection">The collection.</param>
         /// <param name="item">The item.</param>
         /// <param name="comparer">The comparer.</param>
-        /// <returns>
-        /// True if the item is present, false otherwise
-        /// </returns>
+        /// <returns>True if the item is present, false otherwise</returns>
         public static bool Contains<T>(this ConcurrentBag<T> collection, T item, IEqualityComparer<T> comparer = null)
         {
             if (collection == null)
@@ -251,7 +247,9 @@ namespace Utilities.DataTypes
         /// <typeparam name="T">The type of the items in the collection</typeparam>
         /// <param name="collection">Collection</param>
         /// <param name="items">Items to remove</param>
-        /// <param name="comparer">Equality comparer, if null then a generic equality comparer is used.</param>
+        /// <param name="comparer">
+        /// Equality comparer, if null then a generic equality comparer is used.
+        /// </param>
         /// <returns>The collection with the items removed</returns>
         public static ConcurrentBag<T> Remove<T>(this ConcurrentBag<T> collection, IEnumerable<T> items, IEqualityComparer<T> comparer = null)
         {

@@ -43,17 +43,13 @@ namespace Utilities.IoC.Default.TypeBuilders
         /// <summary>
         /// Gets or sets the resolved object.
         /// </summary>
-        /// <value>
-        /// The resolved object.
-        /// </value>
+        /// <value>The resolved object.</value>
         protected T ResolvedObject { get; set; }
 
         /// <summary>
         /// Copies this instance.
         /// </summary>
-        /// <returns>
-        /// A copy of this instance.
-        /// </returns>
+        /// <returns>A copy of this instance.</returns>
         public override ITypeBuilder Copy()
         {
             return this;
@@ -63,9 +59,7 @@ namespace Utilities.IoC.Default.TypeBuilders
         /// Creates the object
         /// </summary>
         /// <param name="provider">The provider.</param>
-        /// <returns>
-        /// The created object
-        /// </returns>
+        /// <returns>The created object</returns>
         public override object Create(IServiceProvider provider)
         {
             if (Equals(ResolvedObject, default(T)))
@@ -74,7 +68,8 @@ namespace Utilities.IoC.Default.TypeBuilders
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting
+        /// unmanaged resources.
         /// </summary>
         public override void Dispose()
         {

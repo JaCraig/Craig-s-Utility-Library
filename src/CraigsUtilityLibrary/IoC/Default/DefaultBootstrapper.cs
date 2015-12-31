@@ -64,7 +64,7 @@ namespace Utilities.IoC.Default
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultBootstrapper" /> class.
+        /// Initializes a new instance of the <see cref="DefaultBootstrapper"/> class.
         /// </summary>
         /// <param name="bootstrapper">The bootstrapper.</param>
         public DefaultBootstrapper(DefaultBootstrapper bootstrapper)
@@ -80,6 +80,11 @@ namespace Utilities.IoC.Default
         }
 
         /// <summary>
+        /// The application container
+        /// </summary>
+        private ConcurrentDictionary<Tuple<Type, string>, ITypeBuilder> _AppContainer = null;
+
+        /// <summary>
         /// Name of the bootstrapper
         /// </summary>
         public override string Name => "Default bootstrapper";
@@ -87,9 +92,7 @@ namespace Utilities.IoC.Default
         /// <summary>
         /// Gets the service provider.
         /// </summary>
-        /// <value>
-        /// The service provider.
-        /// </value>
+        /// <value>The service provider.</value>
         public IServiceProvider ServiceProvider => this;
 
         /// <summary>
@@ -118,15 +121,8 @@ namespace Utilities.IoC.Default
         /// <summary>
         /// Gets or sets the parent.
         /// </summary>
-        /// <value>
-        /// The parent.
-        /// </value>
+        /// <value>The parent.</value>
         private DefaultBootstrapper Parent { get; set; }
-
-        /// <summary>
-        /// The application container
-        /// </summary>
-        private ConcurrentDictionary<Tuple<Type, string>, ITypeBuilder> _AppContainer = null;
 
         /// <summary>
         /// Creates a new sub scope.
@@ -144,9 +140,7 @@ namespace Utilities.IoC.Default
         /// <param name="objectToRegister">The object to register.</param>
         /// <param name="lifeTime">The life time.</param>
         /// <param name="name">The name.</param>
-        /// <returns>
-        /// This
-        /// </returns>
+        /// <returns>This</returns>
         public override IBootstrapper Register<T>(T objectToRegister, ServiceLifetime lifeTime = ServiceLifetime.Transient, string name = "")
         {
             return Register(x => objectToRegister, lifeTime, name);
@@ -158,9 +152,7 @@ namespace Utilities.IoC.Default
         /// <typeparam name="T">Type to register</typeparam>
         /// <param name="lifeTime">The life time.</param>
         /// <param name="name">The name.</param>
-        /// <returns>
-        /// This
-        /// </returns>
+        /// <returns>This</returns>
         public override IBootstrapper Register<T>(ServiceLifetime lifeTime = ServiceLifetime.Transient, string name = "")
         {
             return Register<T, T>(lifeTime, name);
@@ -232,9 +224,7 @@ namespace Utilities.IoC.Default
         /// </summary>
         /// <typeparam name="T">Type of object to return</typeparam>
         /// <param name="defaultObject">The default object.</param>
-        /// <returns>
-        /// Object of the type specified
-        /// </returns>
+        /// <returns>Object of the type specified</returns>
         public override T Resolve<T>(T defaultObject = default(T))
         {
             return (T)Resolve(typeof(T), "", defaultObject);
@@ -246,9 +236,7 @@ namespace Utilities.IoC.Default
         /// <typeparam name="T">Type of object to return</typeparam>
         /// <param name="name">The name.</param>
         /// <param name="defaultObject">The default object.</param>
-        /// <returns>
-        /// Object of the type specified
-        /// </returns>
+        /// <returns>Object of the type specified</returns>
         public override T Resolve<T>(string name, T defaultObject = default(T))
         {
             return (T)Resolve(typeof(T), name, defaultObject);
@@ -259,9 +247,7 @@ namespace Utilities.IoC.Default
         /// </summary>
         /// <param name="objectType">Type of the object.</param>
         /// <param name="defaultObject">The default object.</param>
-        /// <returns>
-        /// Object of the type specified
-        /// </returns>
+        /// <returns>Object of the type specified</returns>
         public override object Resolve(Type objectType, object defaultObject = null)
         {
             return Resolve(objectType, "", defaultObject);
@@ -273,9 +259,7 @@ namespace Utilities.IoC.Default
         /// <param name="objectType">Type of the object.</param>
         /// <param name="name">The name.</param>
         /// <param name="defaultObject">The default object.</param>
-        /// <returns>
-        /// Object of the type specified
-        /// </returns>
+        /// <returns>Object of the type specified</returns>
         public override object Resolve(Type objectType, string name, object defaultObject = null)
         {
             try
@@ -301,9 +285,7 @@ namespace Utilities.IoC.Default
         /// Resolves all objects of the type specified
         /// </summary>
         /// <param name="objectType">Type of the object.</param>
-        /// <returns>
-        /// An IEnumerable containing all objects of the type specified
-        /// </returns>
+        /// <returns>An IEnumerable containing all objects of the type specified</returns>
         public override IEnumerable<object> ResolveAll(Type objectType)
         {
             var ReturnValues = new ConcurrentBag<object>();
@@ -332,7 +314,9 @@ namespace Utilities.IoC.Default
         /// Disposes of the object
         /// </summary>
         /// <param name="managed">
-        ///   <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release
+        /// only unmanaged resources.
+        /// </param>
         protected override void Dispose(bool managed)
         {
             if (_AppContainer != null)
@@ -372,9 +356,7 @@ namespace Utilities.IoC.Default
         /// Finds the constructor.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <returns>
-        /// The constructor that should be used
-        /// </returns>
+        /// <returns>The constructor that should be used</returns>
         private ConstructorInfo FindConstructor(Type type)
         {
             if (type == null)
@@ -415,9 +397,7 @@ namespace Utilities.IoC.Default
         /// Gets the parameters.
         /// </summary>
         /// <param name="constructor">The constructor.</param>
-        /// <returns>
-        /// The parameters
-        /// </returns>
+        /// <returns>The parameters</returns>
         private List<object> GetParameters(ConstructorInfo constructor)
         {
             if (constructor == null)

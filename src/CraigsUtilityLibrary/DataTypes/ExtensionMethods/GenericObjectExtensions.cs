@@ -45,13 +45,8 @@ namespace Utilities.DataTypes
         /// <param name="defaultObjectValue">Default object value</param>
         /// <returns>The original object</returns>
         public static T Chain<T>(this T inputObject, Action<T> action, T defaultObjectValue = default(T))
-            where T : class
         {
-            inputObject = inputObject ?? defaultObjectValue;
-            if (action == null || inputObject == null)
-                return inputObject;
-            action(inputObject);
-            return inputObject;
+            return inputObject.Chain(x => { action(x); return x; }, defaultObjectValue, defaultObjectValue);
         }
 
         /// <summary>
@@ -70,10 +65,10 @@ namespace Utilities.DataTypes
         /// <param name="defaultReturnValue">Default return value</param>
         /// <returns>The result from the function</returns>
         public static R Chain<T, R>(this T inputObject, Func<T, R> function, R defaultReturnValue = default(R), T defaultObjectValue = default(T))
-            where T : class
         {
-            inputObject = inputObject ?? defaultObjectValue;
-            if (function == null || inputObject == null)
+            if (Equals(inputObject, default(T)))
+                inputObject = defaultObjectValue;
+            if (function == null || ReferenceEquals(inputObject, null))
                 return defaultReturnValue;
             var returnValue = function(inputObject);
             return Equals(returnValue, default(R)) ? defaultReturnValue : returnValue;

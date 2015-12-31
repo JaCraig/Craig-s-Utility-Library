@@ -40,9 +40,7 @@ namespace Utilities.DataTypes
         /// <typeparam name="TValue">The type of the value.</typeparam>
         /// <param name="dictionary">The dictionary.</param>
         /// <param name="target">The target dictionary.</param>
-        /// <returns>
-        /// This
-        /// </returns>
+        /// <returns>This</returns>
         public static IDictionary<TKey, TValue> CopyTo<TKey, TValue>(this IDictionary<TKey, TValue> dictionary,
             IDictionary<TKey, TValue> target)
         {

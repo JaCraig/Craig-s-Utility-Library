@@ -38,9 +38,7 @@ namespace Utilities.DataTypes
         /// <typeparam name="TValue">The type of the value.</typeparam>
         /// <param name="dictionary">The dictionary.</param>
         /// <param name="target">The target dictionary.</param>
-        /// <returns>
-        /// This
-        /// </returns>
+        /// <returns>This</returns>
         public static ConcurrentDictionary<TKey, TValue> CopyTo<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dictionary, ConcurrentDictionary<TKey, TValue> target)
         {
             dictionary = dictionary ?? new ConcurrentDictionary<TKey, TValue>();

@@ -39,6 +39,8 @@ namespace Utilities.DataTypes.CodeGen.Module
         /// <param name="bootstrapper">Bootstrapper to register with</param>
         public void Load(IBootstrapper bootstrapper)
         {
+            if (bootstrapper == null)
+                return;
             bootstrapper.Register(new Compiler());
         }
     }

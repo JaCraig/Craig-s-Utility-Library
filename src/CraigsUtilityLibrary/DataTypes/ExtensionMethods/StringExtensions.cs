@@ -185,7 +185,9 @@ namespace Utilities.DataTypes
         /// Converts base 64 string based on the encoding passed in
         /// </summary>
         /// <param name="input">Input string</param>
-        /// <param name="encodingUsing">The type of encoding the string is using (defaults to UTF8)</param>
+        /// <param name="encodingUsing">
+        /// The type of encoding the string is using (defaults to UTF8)
+        /// </param>
         /// <returns>string in the encoding format</returns>
         public static string FromBase64(this string input, Encoding encodingUsing)
         {
@@ -532,7 +534,9 @@ namespace Utilities.DataTypes
         /// Converts a string to a byte array
         /// </summary>
         /// <param name="input">input string</param>
-        /// <param name="encodingUsing">The type of encoding the string is using (defaults to UTF8)</param>
+        /// <param name="encodingUsing">
+        /// The type of encoding the string is using (defaults to UTF8)
+        /// </param>
         /// <returns>the byte array representing the string</returns>
         public static byte[] ToByteArray(this string input, Encoding encodingUsing = null)
         {

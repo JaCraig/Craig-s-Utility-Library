@@ -40,6 +40,8 @@ namespace Utilities.DataTypes.DataMapper.Module
         /// <param name="bootstrapper">Bootstrapper to register with</param>
         public void Load(IBootstrapper bootstrapper)
         {
+            if (bootstrapper == null)
+                return;
             bootstrapper.RegisterAll<IDataMapper>();
             bootstrapper.RegisterAll<IMapperModule>();
             bootstrapper.Register(new Manager(bootstrapper.ResolveAll<IDataMapper>(), bootstrapper.ResolveAll<IMapperModule>()));

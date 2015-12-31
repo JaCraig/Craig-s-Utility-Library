@@ -41,6 +41,8 @@ namespace Utilities.DataTypes.AOP.Module
         /// <param name="bootstrapper">Bootstrapper to register with</param>
         public void Load(IBootstrapper bootstrapper)
         {
+            if (bootstrapper == null)
+                return;
             bootstrapper.RegisterAll<IAspect>();
             bootstrapper.RegisterAll<IAOPModule>();
             bootstrapper.Register(new Manager(bootstrapper.Resolve<Compiler>(), bootstrapper.ResolveAll<IAspect>(), bootstrapper.ResolveAll<IAOPModule>()));

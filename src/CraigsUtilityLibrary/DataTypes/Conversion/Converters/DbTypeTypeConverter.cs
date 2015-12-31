@@ -23,6 +23,7 @@ using System;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Reflection;
 using Utilities.DataTypes.Conversion.Converters.BaseClasses;
 
 namespace Utilities.DataTypes.Conversion.Converters
@@ -141,7 +142,7 @@ namespace Utilities.DataTypes.Conversion.Converters
             var TempValue = Object as Type;
             if (TempValue == null)
                 return DbType.Int32;
-            if (TempValue.IsEnum)
+            if (TempValue.GetTypeInfo().IsEnum)
                 TempValue = Enum.GetUnderlyingType(TempValue);
             if (TempValue == typeof(byte)) return DbType.Byte;
             else if (TempValue == typeof(sbyte)) return DbType.SByte;

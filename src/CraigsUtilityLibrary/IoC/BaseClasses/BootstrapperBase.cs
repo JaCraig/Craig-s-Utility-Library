@@ -117,9 +117,7 @@ namespace Utilities.IoC.BaseClasses
         /// <param name="objectToRegister">The object to register.</param>
         /// <param name="lifeTime">The life time.</param>
         /// <param name="name">The name.</param>
-        /// <returns>
-        /// This
-        /// </returns>
+        /// <returns>This</returns>
         public abstract IBootstrapper Register<T>(T objectToRegister, ServiceLifetime lifeTime = ServiceLifetime.Transient, string name = "")
             where T : class;
 
@@ -129,9 +127,7 @@ namespace Utilities.IoC.BaseClasses
         /// <typeparam name="T">Object type to register</typeparam>
         /// <param name="lifeTime">The life time.</param>
         /// <param name="name">The name.</param>
-        /// <returns>
-        /// This
-        /// </returns>
+        /// <returns>This</returns>
         public abstract IBootstrapper Register<T>(ServiceLifetime lifeTime = ServiceLifetime.Transient, string name = "")
             where T : class, new();
 
@@ -142,9 +138,7 @@ namespace Utilities.IoC.BaseClasses
         /// <typeparam name="T2">Child class type</typeparam>
         /// <param name="lifeTime">The life time.</param>
         /// <param name="name">The name.</param>
-        /// <returns>
-        /// This
-        /// </returns>
+        /// <returns>This</returns>
         public abstract IBootstrapper Register<T1, T2>(ServiceLifetime lifeTime = ServiceLifetime.Transient, string name = "")
             where T2 : class, T1
             where T1 : class;
@@ -156,9 +150,7 @@ namespace Utilities.IoC.BaseClasses
         /// <param name="function">The function.</param>
         /// <param name="lifeTime">The life time.</param>
         /// <param name="name">The name.</param>
-        /// <returns>
-        /// This
-        /// </returns>
+        /// <returns>This</returns>
         public abstract IBootstrapper Register<T>(Func<IServiceProvider, T> function, ServiceLifetime lifeTime = ServiceLifetime.Transient, string name = "")
             where T : class;
 
@@ -167,9 +159,7 @@ namespace Utilities.IoC.BaseClasses
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="lifeTime">The life time.</param>
-        /// <returns>
-        /// This
-        /// </returns>
+        /// <returns>This</returns>
         public abstract IBootstrapper RegisterAll<T>(ServiceLifetime lifeTime = ServiceLifetime.Transient)
             where T : class;
 
@@ -178,9 +168,7 @@ namespace Utilities.IoC.BaseClasses
         /// </summary>
         /// <typeparam name="T">Type to resolve</typeparam>
         /// <param name="defaultObject">The default object.</param>
-        /// <returns>
-        /// An object of the specified type
-        /// </returns>
+        /// <returns>An object of the specified type</returns>
         public abstract T Resolve<T>(T defaultObject = default(T))
             where T : class;
 
@@ -190,9 +178,7 @@ namespace Utilities.IoC.BaseClasses
         /// <typeparam name="T">Type to resolve</typeparam>
         /// <param name="name">The name.</param>
         /// <param name="defaultObject">The default object.</param>
-        /// <returns>
-        /// An object of the specified type
-        /// </returns>
+        /// <returns>An object of the specified type</returns>
         public abstract T Resolve<T>(string name, T defaultObject = default(T))
             where T : class;
 
@@ -201,9 +187,7 @@ namespace Utilities.IoC.BaseClasses
         /// </summary>
         /// <param name="objectType">Type of the object.</param>
         /// <param name="defaultObject">The default object.</param>
-        /// <returns>
-        /// An object of the specified type
-        /// </returns>
+        /// <returns>An object of the specified type</returns>
         public abstract object Resolve(Type objectType, object defaultObject = null);
 
         /// <summary>
@@ -212,9 +196,7 @@ namespace Utilities.IoC.BaseClasses
         /// <param name="objectType">Type of the object.</param>
         /// <param name="name">The name.</param>
         /// <param name="defaultObject">The default object.</param>
-        /// <returns>
-        /// An object of the specified type
-        /// </returns>
+        /// <returns>An object of the specified type</returns>
         public abstract object Resolve(Type objectType, string name, object defaultObject = null);
 
         /// <summary>
@@ -229,15 +211,16 @@ namespace Utilities.IoC.BaseClasses
         /// Resolves all objects based on the type specified
         /// </summary>
         /// <param name="objectType">Type of the object.</param>
-        /// <returns>
-        /// A list of objects of the specified type
-        /// </returns>
+        /// <returns>A list of objects of the specified type</returns>
         public abstract IEnumerable<object> ResolveAll(Type objectType);
 
         /// <summary>
         /// Disposes of the object
         /// </summary>
-        /// <param name="managed"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        /// <param name="managed">
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release
+        /// only unmanaged resources.
+        /// </param>
         protected virtual void Dispose(bool managed)
         {
         }

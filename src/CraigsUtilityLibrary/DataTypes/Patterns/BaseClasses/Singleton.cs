@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Linq;
 using System.Reflection;
 
 namespace Utilities.DataTypes.Patterns.BaseClasses
@@ -37,6 +38,10 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
         {
         }
 
+        private static T _Instance = null;
+
+        private static object Temp = 1;
+
         /// <summary>
         /// Gets the instance of the singleton
         /// </summary>
@@ -50,8 +55,11 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
                     {
                         if (_Instance == null)
                         {
-                            ConstructorInfo Constructor = typeof(T).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic,
-                                null, new Type[0], null);
+                            ConstructorInfo Constructor = typeof(T).GetTypeInfo()
+                                                                   .DeclaredConstructors
+                                                                   .FirstOrDefault(x => !x.IsPublic
+                                                                                     && !x.IsStatic
+                                                                                     && x.GetParameters().Length == 0);
                             if (Constructor == null || Constructor.IsAssembly)
                                 throw new InvalidOperationException("Constructor is not private or protected for type " + typeof(T).Name);
                             _Instance = (T)Constructor.Invoke(null);
@@ -61,9 +69,5 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
                 return _Instance;
             }
         }
-
-        private static T _Instance = null;
-
-        private static object Temp = 1;
     }
 }

@@ -54,22 +54,19 @@ namespace Utilities.IoC.Default.BaseClasses
         /// <summary>
         /// Copies this instance.
         /// </summary>
-        /// <returns>
-        /// A copy of this instance.
-        /// </returns>
+        /// <returns>A copy of this instance.</returns>
         public abstract ITypeBuilder Copy();
 
         /// <summary>
         /// Creates the object
         /// </summary>
         /// <param name="provider">The provider.</param>
-        /// <returns>
-        /// The object
-        /// </returns>
+        /// <returns>The object</returns>
         public abstract object Create(IServiceProvider provider);
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting
+        /// unmanaged resources.
         /// </summary>
         public abstract void Dispose();
 

@@ -100,9 +100,7 @@ namespace Utilities.IoC.Interfaces
         /// </summary>
         /// <typeparam name="T">Type to resolve</typeparam>
         /// <param name="defaultObject">The default object.</param>
-        /// <returns>
-        /// An object of the specified type
-        /// </returns>
+        /// <returns>An object of the specified type</returns>
         T Resolve<T>(T defaultObject = default(T))
             where T : class;
 
@@ -112,9 +110,7 @@ namespace Utilities.IoC.Interfaces
         /// <typeparam name="T">Type to resolve</typeparam>
         /// <param name="name">The name.</param>
         /// <param name="defaultObject">The default object.</param>
-        /// <returns>
-        /// An object of the specified type
-        /// </returns>
+        /// <returns>An object of the specified type</returns>
         T Resolve<T>(string name, T defaultObject = default(T))
             where T : class;
 
@@ -123,9 +119,7 @@ namespace Utilities.IoC.Interfaces
         /// </summary>
         /// <param name="objectType">Type of the object.</param>
         /// <param name="defaultObject">The default object.</param>
-        /// <returns>
-        /// An object of the specified type
-        /// </returns>
+        /// <returns>An object of the specified type</returns>
         object Resolve(Type objectType, object defaultObject = null);
 
         /// <summary>
@@ -134,9 +128,7 @@ namespace Utilities.IoC.Interfaces
         /// <param name="objectType">Type of the object.</param>
         /// <param name="name">The name.</param>
         /// <param name="defaultObject">The default object.</param>
-        /// <returns>
-        /// An object of the specified type
-        /// </returns>
+        /// <returns>An object of the specified type</returns>
         object Resolve(Type objectType, string name, object defaultObject = null);
 
         /// <summary>
@@ -151,9 +143,7 @@ namespace Utilities.IoC.Interfaces
         /// Resolves all objects based on the type specified
         /// </summary>
         /// <param name="objectType">Type of the object.</param>
-        /// <returns>
-        /// A list of objects of the specified type
-        /// </returns>
+        /// <returns>A list of objects of the specified type</returns>
         IEnumerable<object> ResolveAll(Type objectType);
     }
 }
