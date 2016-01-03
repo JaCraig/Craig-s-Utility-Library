@@ -36,7 +36,8 @@ namespace Utilities.IO
         /// <returns>The log specified</returns>
         public static ILog Get(string name = "Default")
         {
-            return IoC.Manager.Bootstrapper.Resolve<Manager>().GetLog(name);
+            var Manager = IoC.Manager.Bootstrapper.Resolve<Manager>();
+            return Manager == null ? null : Manager.GetLog(name);
         }
     }
 }

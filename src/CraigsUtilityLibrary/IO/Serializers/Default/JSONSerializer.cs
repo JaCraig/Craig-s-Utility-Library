@@ -19,6 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Mvc.Infrastructure;
 using System;
 using System.Globalization;
 using System.IO;
@@ -26,6 +28,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.IO.Serializers.BaseClasses;
+using Utilities.IoC.Interfaces;
 
 namespace Utilities.IO.Serializers.Default
 {
@@ -35,9 +38,13 @@ namespace Utilities.IO.Serializers.Default
     public class JSONSerializer : SerializerBase<string>
     {
         /// <summary>
-        /// JSONP regex filter
+        /// Initializes a new instance of the <see cref="JSONSerializer"/> class.
         /// </summary>
-        private static Regex JsonPRegex = new Regex(@"[^\(]+\(([^\)]*)\);", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        /// <param name="bootstrapper">The bootstrapper.</param>
+        public JSONSerializer(IBootstrapper bootstrapper)
+            : base(bootstrapper)
+        {
+        }
 
         /// <summary>
         /// Content type (MIME type)
@@ -53,6 +60,11 @@ namespace Utilities.IO.Serializers.Default
         /// Name
         /// </summary>
         public override string Name => "JSON";
+
+        /// <summary>
+        /// JSONP regex filter
+        /// </summary>
+        private static Regex JsonPRegex = new Regex(@"[^\(]+\(([^\)]*)\);", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Deserializes the data
@@ -89,12 +101,13 @@ namespace Utilities.IO.Serializers.Default
                 Serializer.WriteObject(Stream, data);
                 Stream.Flush();
                 ReturnValue = Encoding.UTF8.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);
-                if (HttpContext.Current != null)
+                var CurrentContext = Bootstrapper.Resolve<IActionContextAccessor>()?.ActionContext?.HttpContext;
+                if (CurrentContext != null)
                 {
-                    HttpRequest Request = HttpContext.Current.Request;
-                    if (!string.IsNullOrEmpty(Request.QueryString["callback"]) || !string.IsNullOrEmpty(Request.QueryString["jsonp"]))
+                    HttpRequest Request = CurrentContext.Request;
+                    if (!string.IsNullOrEmpty(Request.Query["callback"]) || !string.IsNullOrEmpty(Request.Query["jsonp"]))
                     {
-                        string Callback = Request.QueryString["callback"] ?? Request.QueryString["jsonp"];
+                        string Callback = string.IsNullOrEmpty(Request.Query["callback"]) ? Request.Query["jsonp"] : Request.Query["callback"];
                         ReturnValue = string.Format(CultureInfo.InvariantCulture, "{0}({1});", Callback, ReturnValue);
                     }
                 }

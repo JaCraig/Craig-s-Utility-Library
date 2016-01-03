@@ -24,6 +24,7 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 using Utilities.IO.Serializers.BaseClasses;
+using Utilities.IoC.Interfaces;
 
 namespace Utilities.IO.Serializers.Default
 {
@@ -33,33 +34,42 @@ namespace Utilities.IO.Serializers.Default
     public class XMLSerializer : SerializerBase<string>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="XMLSerializer"/> class.
+        /// </summary>
+        /// <param name="bootstrapper">The bootstrapper.</param>
+        public XMLSerializer(IBootstrapper bootstrapper)
+            : base(bootstrapper)
+        {
+        }
+
+        /// <summary>
         /// Content type (MIME type)
         /// </summary>
-        public override string ContentType { get { return "text/xml"; } }
+        public override string ContentType => "text/xml";
 
         /// <summary>
         /// File type
         /// </summary>
-        public override string FileType { get { return ".xml"; } }
+        public override string FileType => ".xml";
 
         /// <summary>
         /// Name
         /// </summary>
-        public override string Name { get { return "XML"; } }
+        public override string Name => "XML";
 
         /// <summary>
         /// Deserializes the data
         /// </summary>
-        /// <param name="ObjectType">Object type</param>
-        /// <param name="Data">Data to deserialize</param>
+        /// <param name="objectType">Object type</param>
+        /// <param name="data">Data to deserialize</param>
         /// <returns>The deserialized data</returns>
-        public override object Deserialize(Type ObjectType, string Data)
+        public override object Deserialize(Type objectType, string data)
         {
-            if (string.IsNullOrEmpty(Data) || ObjectType == null)
+            if (string.IsNullOrEmpty(data) || objectType == null)
                 return null;
-            using (MemoryStream Stream = new MemoryStream(Encoding.UTF8.GetBytes(Data)))
+            using (MemoryStream Stream = new MemoryStream(Encoding.UTF8.GetBytes(data)))
             {
-                var Serializer = new XmlSerializer(ObjectType);
+                var Serializer = new XmlSerializer(objectType);
                 return Serializer.Deserialize(Stream);
             }
         }
@@ -67,17 +77,17 @@ namespace Utilities.IO.Serializers.Default
         /// <summary>
         /// Serializes the object
         /// </summary>
-        /// <param name="ObjectType">Object type</param>
-        /// <param name="Data">Data to serialize</param>
+        /// <param name="objectType">Object type</param>
+        /// <param name="data">Data to serialize</param>
         /// <returns>The serialized data</returns>
-        public override string Serialize(Type ObjectType, object Data)
+        public override string Serialize(Type objectType, object data)
         {
-            if (Data == null || ObjectType == null)
+            if (data == null || objectType == null)
                 return null;
             using (MemoryStream Stream = new MemoryStream())
             {
-                var Serializer = new XmlSerializer(ObjectType);
-                Serializer.Serialize(Stream, Data);
+                var Serializer = new XmlSerializer(objectType);
+                Serializer.Serialize(Stream, data);
                 Stream.Flush();
                 return Encoding.UTF8.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);
             }

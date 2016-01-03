@@ -1,0 +1,10 @@
+Issues found
+============
+
+1) IoC "specifics": MVC seems to be rather particular in how it deals with IoC containers. Nothing too horrible, but most containers will need to change or have a shim put in place to deal with the new service provider model that they're using.
+2) Where's my cheese?: It's difficult to figure out where the heck anything is located. Visual Studio will make suggested packages about half the time but not always. You will need the github repository open for corefx at all times to do searches.
+3) Assembly: Loading assemblies, security boundries, etc. is mostly thrown out the window. At this point you have to go into PlatformServices.Default.AssemblyLoadContextAccessor.Default.LoadFile, which is not great.
+4) Reflection: Type no longer holds any real info... Except sometimes it holds the info that you want... But probably not, instead call GetTypeInfo() on Type to get the info about the Type that should be in Type? Logic doesn't make much sense to me on this one.
+5) System.Net.Mail: It's not there.
+6) Serialization: Binary, SOAP, etc. serialization is not available nor will they be available. You're left with pretty much just Json and XML.
+7) ADO.Net: So they got rid of about half the things that everyone used. The interfaces are gone for things like IDbConnection, etc. DataTable, DataSet, etc. are gone. So if you used anything that wasn't EF, it will need some work. Also very few of the providers other than SQL Server work at this point in time. Oh and all the schema related functions are gone...

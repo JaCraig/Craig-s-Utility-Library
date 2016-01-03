@@ -50,14 +50,18 @@
                 "System.Reflection": "4.1.0-*",
                 "System.Diagnostics.Tools": "4.0.1-*",
                 "System.Reflection.Emit": "4.0.1-*",
-                "System.Runtime.Serialization.Json": "4.0.1-*"
+                "System.Runtime.Serialization.Json": "4.0.1-*",
+                "System.Xml.XmlSerializer": "4.0.11-*"
             }
         }
     },
     "dependencies": {
         "Microsoft.CodeAnalysis.CSharp": "1.1.1",
-        "Microsoft.Extensions.PlatformAbstractions": "1.0.0-*",
+        "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
         "Microsoft.Framework.DependencyInjection": "1.0.0-*",
-        "System.Xml.ReaderWriter": "4.0.11-*"
+        "System.Xml.ReaderWriter": "4.0.11-*",
+        "Microsoft.Win32.Registry": "4.0.0-*",
+        "Microsoft.AspNet.Http.Abstractions": "1.0.0-*",
+        "Microsoft.AspNet.Mvc.Core": "6.0.0-*"
     }
 }

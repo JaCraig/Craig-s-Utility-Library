@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 using System;
 using Utilities.IO.Serializers.Interfaces;
+using Utilities.IoC.Interfaces;
 
 namespace Utilities.IO.Serializers.BaseClasses
 {
@@ -33,8 +34,10 @@ namespace Utilities.IO.Serializers.BaseClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        protected SerializerBase()
+        /// <param name="bootstrapper">The bootstrapper.</param>
+        protected SerializerBase(IBootstrapper bootstrapper)
         {
+            Bootstrapper = bootstrapper;
         }
 
         /// <summary>
@@ -56,6 +59,14 @@ namespace Utilities.IO.Serializers.BaseClasses
         /// Return type
         /// </summary>
         public Type ReturnType => typeof(T);
+
+        /// <summary>
+        /// Gets the bootstrapper.
+        /// </summary>
+        /// <value>
+        /// The bootstrapper.
+        /// </value>
+        protected IBootstrapper Bootstrapper { get; private set; }
 
         /// <summary>
         /// Deserializes the data
