@@ -22,7 +22,7 @@ When attaching your preferred system, note that exceptions should not be thrown.
 When building plugins for the system, you will need to register your types with the IoC container. In order to do this, simply create a class that implements the Utilities.IoC.Interfaces.IModule interface. This interface has an Order property (telling it when to run, lower numbers run first) and a Load function. The load function will be called at application start and will feed you the bootstrapper object. You should be able to use this to register your types.
 
 Ex:
-```
+``` 
     /// <summary>
     /// File system module
     /// </summary>
