@@ -30,6 +30,17 @@ using Xunit;
 
 namespace UnitTests.DataTypes.AOP
 {
+    public interface IAOPTestInterface
+    {
+        string A { get; set; }
+
+        int B { get; set; }
+
+        float C { get; set; }
+
+        List<string> D { get; set; }
+    }
+
     public class AOPTestClass
     {
         public virtual string A { get; set; }
@@ -44,11 +55,20 @@ namespace UnitTests.DataTypes.AOP
     public class Manager : TestingDirectoryFixture
     {
         [Fact]
-        public void Create()
+        public void CreateClass()
         {
             var Test = new Utilities.DataTypes.AOP.Manager(new Compiler(), AppDomain.CurrentDomain.GetAssemblies().Objects<IAspect>(), AppDomain.CurrentDomain.GetAssemblies().Objects<IAOPModule>());
             Utilities.ORM.Aspect.ORMAspect.Mapper = new Utilities.ORM.Manager.Mapper.Manager(new List<IMapping>());
             var Item = (AOPTestClass)Test.Create(typeof(AOPTestClass));
+            Assert.NotNull(Item);
+        }
+
+        [Fact]
+        public void CreateInterface()
+        {
+            var Test = new Utilities.DataTypes.AOP.Manager(new Compiler(), AppDomain.CurrentDomain.GetAssemblies().Objects<IAspect>(), AppDomain.CurrentDomain.GetAssemblies().Objects<IAOPModule>());
+            Utilities.ORM.Aspect.ORMAspect.Mapper = new Utilities.ORM.Manager.Mapper.Manager(new List<IMapping>());
+            var Item = (IAOPTestInterface)Test.Create(typeof(IAOPTestInterface));
             Assert.NotNull(Item);
         }
     }

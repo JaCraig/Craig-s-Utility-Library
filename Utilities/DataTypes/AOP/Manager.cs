@@ -178,12 +178,10 @@ namespace Utilities.DataTypes.AOP
             Contract.Requires<ArgumentNullException>(enumerable != null);
             return enumerable.Where(x => !Classes.ContainsKey(x)
                                 && !x.ContainsGenericParameters
-                                && x.IsClass
                                 && (x.IsPublic || x.IsNestedPublic)
                                 && !x.IsSealed
                                 && x.IsVisible
                                 && !x.IsCOMObject
-                                && x.HasDefaultConstructor()
                                 && !string.IsNullOrEmpty(x.Namespace))
                           .ToArray();
         }
@@ -251,6 +249,7 @@ namespace Utilities.DataTypes.AOP
             string ClassName, List<string> Usings,
             List<Type> Interfaces, List<Assembly> AssembliesUsing)
         {
+            bool IsClass = Type.IsClass;
             var Builder = new StringBuilder();
             Builder.AppendLineFormat(@"namespace {1}
 {{
@@ -310,8 +309,8 @@ namespace Utilities.DataTypes.AOP
         }}",
                                                     Property.PropertyType.GetName(),
                                                     Property.Name,
-                                                    SetupMethod(Type, GetMethodInfo, true),
-                                                    SetupMethod(Type, SetMethodInfo, true));
+                                                    SetupMethod(Type, GetMethodInfo, true, IsClass),
+                                                    SetupMethod(Type, SetMethodInfo, true, IsClass));
                         MethodsAlreadyDone.Add(GetMethodInfo.Name);
                         MethodsAlreadyDone.Add(SetMethodInfo.Name);
                     }
@@ -333,7 +332,7 @@ namespace Utilities.DataTypes.AOP
         }}",
                                                     Property.PropertyType.GetName(),
                                                     Property.Name,
-                                                    SetupMethod(Type, GetMethodInfo, true));
+                                                    SetupMethod(Type, GetMethodInfo, true, IsClass));
                         MethodsAlreadyDone.Add(GetMethodInfo.Name);
                     }
                     else
@@ -366,7 +365,7 @@ namespace Utilities.DataTypes.AOP
                                                     Static + Method.ReturnType.GetName(),
                                                     Method.Name,
                                                     Method.GetParameters().ToString(x => (x.IsOut ? "out " : "") + x.ParameterType.GetName() + " " + x.Name),
-                                                    SetupMethod(Type, Method, false),
+                                                    SetupMethod(Type, Method, false, IsClass),
                                                     MethodAttribute);
                         MethodsAlreadyDone.Add(Method.Name);
                     }
@@ -380,7 +379,7 @@ namespace Utilities.DataTypes.AOP
             return Builder.ToString();
         }
 
-        private static string SetupMethod(Type Type, MethodInfo MethodInfo, bool IsProperty)
+        private static string SetupMethod(Type Type, MethodInfo MethodInfo, bool IsProperty, bool IsClass)
         {
             if (MethodInfo == null)
                 return "";
@@ -388,19 +387,22 @@ namespace Utilities.DataTypes.AOP
             string BaseMethodName = MethodInfo.Name.Replace("get_", "").Replace("set_", "");
             string ReturnValue = MethodInfo.ReturnType != typeof(void) ? "FinalReturnValue" : "";
             string BaseCall = "";
-            if (IsProperty)
-                BaseCall = string.IsNullOrEmpty(ReturnValue) ? "base." + BaseMethodName : ReturnValue + "=base." + BaseMethodName;
-            else
-                BaseCall = string.IsNullOrEmpty(ReturnValue) ? "base." + BaseMethodName + "(" : ReturnValue + "=base." + BaseMethodName + "(";
-            ParameterInfo[] Parameters = MethodInfo.GetParameters();
-            if (IsProperty)
+            if (IsClass && !MethodInfo.IsAbstract)
             {
-                BaseCall += Parameters.Length > 0 ? "=" + Parameters.ToString(x => x.Name) + ";" : ";";
-            }
-            else
-            {
-                BaseCall += Parameters.Length > 0 ? Parameters.ToString(x => (x.IsOut ? "out " : "") + x.Name) : "";
-                BaseCall += ");\r\n";
+                if (IsProperty)
+                    BaseCall = string.IsNullOrEmpty(ReturnValue) ? "base." + BaseMethodName : ReturnValue + "=base." + BaseMethodName;
+                else
+                    BaseCall = string.IsNullOrEmpty(ReturnValue) ? "base." + BaseMethodName + "(" : ReturnValue + "=base." + BaseMethodName + "(";
+                ParameterInfo[] Parameters = MethodInfo.GetParameters();
+                if (IsProperty)
+                {
+                    BaseCall += Parameters.Length > 0 ? "=" + Parameters.ToString(x => x.Name) + ";" : ";";
+                }
+                else
+                {
+                    BaseCall += Parameters.Length > 0 ? Parameters.ToString(x => (x.IsOut ? "out " : "") + x.Name) : "";
+                    BaseCall += ");\r\n";
+                }
             }
             Builder.AppendLineFormat(@"
                 try

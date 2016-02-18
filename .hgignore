@@ -23,3 +23,4 @@ TestResults/Utilities.TE.Tests.mdf
 packages/*
 .vs/*
 */Bin/*
+App_Data/Workflows.obj
