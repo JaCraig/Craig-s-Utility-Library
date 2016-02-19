@@ -1,6 +1,7 @@
 var searchData=
 [
   ['generatorattributebase_2ecs',['GeneratorAttributeBase.cs',['../_generator_attribute_base_8cs.html',1,'']]],
+  ['generatorbase_2ecs',['GeneratorBase.cs',['../_generator_base_8cs.html',1,'']]],
   ['genericcomparer_2ecs',['GenericComparer.cs',['../_generic_comparer_8cs.html',1,'']]],
   ['genericconstraint_2ecs',['GenericConstraint.cs',['../_generic_constraint_8cs.html',1,'']]],
   ['genericequalitycomparer_2ecs',['GenericEqualityComparer.cs',['../_generic_equality_comparer_8cs.html',1,'']]],

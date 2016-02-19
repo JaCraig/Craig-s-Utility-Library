@@ -3,7 +3,7 @@ var dir_0737bc85ba905bb4baae5d38e522b5e8 =
     [ "BoolGenerator.cs", "_bool_generator_8cs.html", [
       [ "BoolGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_bool_generator.html", "class_utilities_1_1_random_1_1_default_classes_1_1_bool_generator" ]
     ] ],
-    [ "ClassGenerator.cs", "_class_generator_8cs.html", [
+    [ "ClassGenerator.cs", "_random_2_default_classes_2_class_generator_8cs.html", [
       [ "ClassGenerator", "class_utilities_1_1_random_1_1_default_classes_1_1_class_generator.html", "class_utilities_1_1_random_1_1_default_classes_1_1_class_generator" ]
     ] ],
     [ "ColorGenerator.cs", "_color_generator_8cs.html", [

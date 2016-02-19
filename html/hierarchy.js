@@ -122,6 +122,13 @@ var hierarchy =
       ] ]
     ] ],
     [ "Utilities.DataTypes.Fraction", "class_utilities_1_1_data_types_1_1_fraction.html", null ],
+    [ "Utilities.DataTypes.AOP.Generators.BaseClasses.GeneratorBase", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_generators_1_1_base_classes_1_1_generator_base.html", [
+      [ "Utilities.DataTypes.AOP.Generators.ClassGenerator", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_generators_1_1_class_generator.html", null ],
+      [ "Utilities.DataTypes.AOP.Generators.ConstructorGenerator", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_generators_1_1_constructor_generator.html", null ],
+      [ "Utilities.DataTypes.AOP.Generators.MethodGenerator", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_generators_1_1_method_generator.html", null ],
+      [ "Utilities.DataTypes.AOP.Generators.ParameterGenerator", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_generators_1_1_parameter_generator.html", null ],
+      [ "Utilities.DataTypes.AOP.Generators.PropertyGenerator", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_generators_1_1_property_generator.html", null ]
+    ] ],
     [ "Utilities.IO.FileFormats.RSS.GUID", "class_utilities_1_1_i_o_1_1_file_formats_1_1_r_s_s_1_1_g_u_i_d.html", null ],
     [ "Utilities.DataTypes.AOP.Interfaces.IAOPModule", "interface_utilities_1_1_data_types_1_1_a_o_p_1_1_interfaces_1_1_i_a_o_p_module.html", null ],
     [ "Utilities.DataTypes.AOP.Interfaces.IAspect", "interface_utilities_1_1_data_types_1_1_a_o_p_1_1_interfaces_1_1_i_aspect.html", [
@@ -145,6 +152,9 @@ var hierarchy =
       [ "Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders.Tables", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_s_q_l_server_1_1_builders_1_1_tables.html", null ],
       [ "Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders.TableTriggers", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_s_q_l_server_1_1_builders_1_1_table_triggers.html", null ],
       [ "Utilities.ORM.Manager.Schema.Default.Database.SQLServer.Builders.Views", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_s_q_l_server_1_1_builders_1_1_views.html", null ]
+    ] ],
+    [ "Utilities.DataTypes.AOP.Interfaces.IClassGenerator", "interface_utilities_1_1_data_types_1_1_a_o_p_1_1_interfaces_1_1_i_class_generator.html", [
+      [ "Utilities.DataTypes.AOP.Generators.ClassGenerator", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_generators_1_1_class_generator.html", null ]
     ] ],
     [ "IClientValidatable", null, [
       [ "Utilities.Validation.BetweenAttribute", "class_utilities_1_1_validation_1_1_between_attribute.html", null ],
@@ -614,15 +624,15 @@ var hierarchy =
     [ "Utilities.IO.Logging.BaseClasses.LogBase< DefaultLog >", "class_utilities_1_1_i_o_1_1_logging_1_1_base_classes_1_1_log_base.html", [
       [ "Utilities.IO.Logging.Default.DefaultLog", "class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_log.html", null ]
     ] ],
+    [ "Utilities.IO.Compression.Manager", "class_utilities_1_1_i_o_1_1_compression_1_1_manager.html", null ],
+    [ "Utilities.ORM.Manager.QueryProvider.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_manager.html", null ],
+    [ "Utilities.ORM.Manager.Schema.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html", null ],
+    [ "Utilities.IO.Serializers.Manager", "class_utilities_1_1_i_o_1_1_serializers_1_1_manager.html", null ],
+    [ "Utilities.DataTypes.AOP.Manager", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html", null ],
+    [ "Utilities.DataTypes.Conversion.Manager", "class_utilities_1_1_data_types_1_1_conversion_1_1_manager.html", null ],
     [ "Utilities.IO.Encryption.Manager", "class_utilities_1_1_i_o_1_1_encryption_1_1_manager.html", null ],
     [ "Utilities.IO.Messaging.Manager", "class_utilities_1_1_i_o_1_1_messaging_1_1_manager.html", null ],
     [ "Utilities.DataTypes.DataMapper.Manager", "class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html", null ],
-    [ "Utilities.ORM.Manager.QueryProvider.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_manager.html", null ],
-    [ "Utilities.DataTypes.AOP.Manager", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html", null ],
-    [ "Utilities.ORM.Manager.Schema.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html", null ],
-    [ "Utilities.DataTypes.Conversion.Manager", "class_utilities_1_1_data_types_1_1_conversion_1_1_manager.html", null ],
-    [ "Utilities.IO.Serializers.Manager", "class_utilities_1_1_i_o_1_1_serializers_1_1_manager.html", null ],
-    [ "Utilities.IO.Compression.Manager", "class_utilities_1_1_i_o_1_1_compression_1_1_manager.html", null ],
     [ "Utilities.DataTypes.Matrix", "class_utilities_1_1_data_types_1_1_matrix.html", null ],
     [ "Utilities.DataTypes.AI.NaiveBayes< T >", "class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html", null ],
     [ "Utilities.ORM.Manager.ORMManager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_o_r_m_manager.html", null ],
