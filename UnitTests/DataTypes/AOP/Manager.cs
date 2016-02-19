@@ -39,6 +39,33 @@ namespace UnitTests.DataTypes.AOP
         float C { get; set; }
 
         List<string> D { get; set; }
+
+        void TestMethod1();
+
+        int TestMethod2();
+    }
+
+    public abstract class AOPAbstractTestClass
+    {
+        public abstract string A { get; set; }
+
+        public abstract int B { get; set; }
+
+        public abstract float C { get; set; }
+
+        public abstract List<string> D { get; set; }
+
+        public virtual string E { get; set; }
+
+        public virtual int F { get; set; }
+
+        public virtual float G { get; set; }
+
+        public virtual List<string> H { get; set; }
+
+        public abstract void TestMethod1();
+
+        public abstract int TestMethod2();
     }
 
     public class AOPTestClass
@@ -55,12 +82,53 @@ namespace UnitTests.DataTypes.AOP
     public class Manager : TestingDirectoryFixture
     {
         [Fact]
+        public void CreateAbstractClass()
+        {
+            var Test = new Utilities.DataTypes.AOP.Manager(new Compiler(), AppDomain.CurrentDomain.GetAssemblies().Objects<IAspect>(), AppDomain.CurrentDomain.GetAssemblies().Objects<IAOPModule>());
+            Utilities.ORM.Aspect.ORMAspect.Mapper = new Utilities.ORM.Manager.Mapper.Manager(new List<IMapping>());
+            var Item = (AOPAbstractTestClass)Test.Create(typeof(AOPAbstractTestClass));
+            Assert.NotNull(Item);
+            Item.A = "ASDF";
+            Item.B = 543;
+            Item.C = 9.56f;
+            Item.D = new List<string>();
+            Item.D.Add("POI");
+            Item.E = "ASDF";
+            Item.F = 543;
+            Item.G = 9.56f;
+            Item.H = new List<string>();
+            Item.H.Add("POI");
+            Assert.Equal("ASDF", Item.A);
+            Assert.Equal(543, Item.B);
+            Assert.Equal(9.56f, Item.C);
+            Assert.Equal(1, Item.D.Count);
+            Assert.Equal("POI", Item.D[0]);
+            Assert.Equal("ASDF", Item.E);
+            Assert.Equal(543, Item.F);
+            Assert.Equal(9.56f, Item.G);
+            Assert.Equal(1, Item.H.Count);
+            Assert.Equal("POI", Item.H[0]);
+            Item.TestMethod1();
+            Assert.Equal(0, Item.TestMethod2());
+        }
+
+        [Fact]
         public void CreateClass()
         {
             var Test = new Utilities.DataTypes.AOP.Manager(new Compiler(), AppDomain.CurrentDomain.GetAssemblies().Objects<IAspect>(), AppDomain.CurrentDomain.GetAssemblies().Objects<IAOPModule>());
             Utilities.ORM.Aspect.ORMAspect.Mapper = new Utilities.ORM.Manager.Mapper.Manager(new List<IMapping>());
             var Item = (AOPTestClass)Test.Create(typeof(AOPTestClass));
             Assert.NotNull(Item);
+            Item.A = "ASDF";
+            Item.B = 543;
+            Item.C = 9.56f;
+            Item.D = new List<string>();
+            Item.D.Add("POI");
+            Assert.Equal("ASDF", Item.A);
+            Assert.Equal(543, Item.B);
+            Assert.Equal(9.56f, Item.C);
+            Assert.Equal(1, Item.D.Count);
+            Assert.Equal("POI", Item.D[0]);
         }
 
         [Fact]
@@ -70,6 +138,18 @@ namespace UnitTests.DataTypes.AOP
             Utilities.ORM.Aspect.ORMAspect.Mapper = new Utilities.ORM.Manager.Mapper.Manager(new List<IMapping>());
             var Item = (IAOPTestInterface)Test.Create(typeof(IAOPTestInterface));
             Assert.NotNull(Item);
+            Item.A = "ASDF";
+            Item.B = 543;
+            Item.C = 9.56f;
+            Item.D = new List<string>();
+            Item.D.Add("POI");
+            Assert.Equal("ASDF", Item.A);
+            Assert.Equal(543, Item.B);
+            Assert.Equal(9.56f, Item.C);
+            Assert.Equal(1, Item.D.Count);
+            Assert.Equal("POI", Item.D[0]);
+            Item.TestMethod1();
+            Assert.Equal(0, Item.TestMethod2());
         }
     }
 }

@@ -43,6 +43,13 @@ namespace UnitTests.ORM.Manager
                 Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>());
         }
 
+        public enum TestEnum
+        {
+            Value1 = 0,
+            Value2,
+            Value3
+        }
+
         [Fact]
         public void All()
         {
@@ -708,13 +715,6 @@ namespace UnitTests.ORM.Manager
             Assert.Equal(2, Item.ManyToOneList.Count);
         }
 
-        public enum TestEnum
-        {
-            Value1 = 0,
-            Value2,
-            Value3
-        }
-
         public class TestClass
         {
             public virtual bool BoolReference { get; set; }
@@ -741,20 +741,17 @@ namespace UnitTests.ORM.Manager
 
             public virtual long LongReference { get; set; }
 
+            public virtual ICollection<TestClass> ManyToManyICollection { get; set; }
             public virtual IEnumerable<TestClass> ManyToManyIEnumerable { get; set; }
 
             public virtual IList<TestClass> ManyToManyIList { get; set; }
 
             public virtual List<TestClass> ManyToManyList { get; set; }
 
+            public virtual ICollection<TestClass> ManyToOneICollection { get; set; }
             public virtual IEnumerable<TestClass> ManyToOneIEnumerable { get; set; }
 
             public virtual IList<TestClass> ManyToOneIList { get; set; }
-
-            public virtual ICollection<TestClass> ManyToOneICollection { get; set; }
-
-            public virtual ICollection<TestClass> ManyToManyICollection { get; set; }
-
             public virtual TestClass ManyToOneItem { get; set; }
 
             public virtual List<TestClass> ManyToOneList { get; set; }

@@ -208,6 +208,13 @@
     <Compile Include="Configuration\Manager\Manager.cs" />
     <Compile Include="Configuration\Manager\Module\ConfigModule.cs" />
     <Compile Include="Configuration\XMLConfig.cs" />
+    <Compile Include="DataTypes\AOP\Generators\BaseClasses\GeneratorBase.cs" />
+    <Compile Include="DataTypes\AOP\Generators\ClassGenerator.cs" />
+    <Compile Include="DataTypes\AOP\Generators\ConstructorGenerator.cs" />
+    <Compile Include="DataTypes\AOP\Generators\ParameterGenerator.cs" />
+    <Compile Include="DataTypes\AOP\Generators\MethodGenerator.cs" />
+    <Compile Include="DataTypes\AOP\Generators\PropertyGenerator.cs" />
+    <Compile Include="DataTypes\AOP\Interfaces\IClassGenerator.cs" />
     <Compile Include="DataTypes\AOP\Interfaces\IAOPModule.cs" />
     <Compile Include="DataTypes\Caching\BaseClasses\CacheBase.cs" />
     <Compile Include="DataTypes\Caching\Default\Cache.cs" />

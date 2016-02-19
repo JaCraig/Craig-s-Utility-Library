@@ -173,6 +173,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IO\Compression\BaseClasses\CompressorBase.cs" />
     <Compile Include="IO\Compression\Default\DeflateCompressor.cs" />
