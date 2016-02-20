@@ -27,6 +27,17 @@ namespace UnitTests.DataTypes.Dynamic
     public class Dynamo
     {
         [Fact]
+        public void AbstractClass()
+        {
+            dynamic Temp = new Utilities.DataTypes.Dynamo(new { A = "Testing", B = 1 });
+            Assert.Equal("Testing", Temp.A);
+            Assert.Equal(1, Temp.B);
+            TestAbstractClass Temp2 = Temp;
+            Assert.Equal("Testing", Temp2.A);
+            Assert.Equal(1, Temp2.B);
+        }
+
+        [Fact]
         public void CallMethod()
         {
             dynamic Temp = new TestClass();
@@ -150,6 +161,17 @@ namespace UnitTests.DataTypes.Dynamic
         }
 
         [Fact]
+        public void Interface()
+        {
+            dynamic Temp = new Utilities.DataTypes.Dynamo(new { A = "Testing", B = 1 });
+            Assert.Equal("Testing", Temp.A);
+            Assert.Equal(1, Temp.B);
+            ITestInterface Temp2 = Temp;
+            Assert.Equal("Testing", Temp2.A);
+            Assert.Equal(1, Temp2.B);
+        }
+
+        [Fact]
         public void Keys()
         {
             dynamic Temp = new TestClass();
@@ -197,6 +219,20 @@ namespace UnitTests.DataTypes.Dynamic
             Temp.B = new Func<string>(() => Temp.A);
             Assert.Equal(2, Temp.Values.Count);
             Assert.Contains("Testing", Temp.Values);
+        }
+
+        public interface ITestInterface
+        {
+            string A { get; set; }
+
+            int B { get; set; }
+        }
+
+        public abstract class TestAbstractClass
+        {
+            public abstract string A { get; set; }
+
+            public int B { get; set; }
         }
 
         public class TestClass : Utilities.DataTypes.Dynamo<TestClass>

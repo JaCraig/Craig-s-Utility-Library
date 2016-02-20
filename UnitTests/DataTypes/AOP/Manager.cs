@@ -47,6 +47,10 @@ namespace UnitTests.DataTypes.AOP
 
     public abstract class AOPAbstractTestClass
     {
+        protected AOPAbstractTestClass()
+        {
+        }
+
         public abstract string A { get; set; }
 
         public abstract int B { get; set; }
