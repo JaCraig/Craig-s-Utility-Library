@@ -77,13 +77,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ORM", "ORM", "{E77EC32E-E90
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CUL.PostgreSQL", "CUL.PostgreSQL\CUL.PostgreSQL.csproj", "{1B512BFD-90E4-45ED-9E6E-07EECFA3D3A8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E3A74E00-E5E0-41E6-A892-9880D8F433FA}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Addons", "Addons", "{6657711C-6ED8-4CE2-8FA3-1297BFEB8CF8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CUL.fastJSON.Tests", "CUL.fastJSON.Tests\CUL.fastJSON.Tests.csproj", "{4A88954F-7DA0-46F7-9B01-425B083911DF}"

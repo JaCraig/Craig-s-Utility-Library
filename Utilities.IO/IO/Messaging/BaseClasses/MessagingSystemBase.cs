@@ -108,7 +108,7 @@ namespace Utilities.IO.Messaging.BaseClasses
         /// <summary>
         /// Internal function
         /// </summary>
-        /// <param name="Message">Message to send</param>
-        protected abstract void InternalSend(IMessage Message);
+        /// <param name="message">The message.</param>
+        protected abstract void InternalSend(IMessage message);
     }
 }

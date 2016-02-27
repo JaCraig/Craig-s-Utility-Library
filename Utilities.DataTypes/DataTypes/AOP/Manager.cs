@@ -26,6 +26,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Utilities.DataTypes.AOP.Generators;
 using Utilities.DataTypes.AOP.Interfaces;
 using Utilities.DataTypes.CodeGen;
 
@@ -144,7 +145,7 @@ namespace Utilities.DataTypes.AOP
                 foreach (Type Type in TempTypes)
                 {
                     Manager.Classes.AddOrUpdate(Type,
-                        Types.FirstOrDefault(x => x.BaseType == Type),
+                        Types.FirstOrDefault(x => x.Is(Type)),
                         (x, y) => x);
                 }
             }
@@ -178,12 +179,10 @@ namespace Utilities.DataTypes.AOP
             Contract.Requires<ArgumentNullException>(enumerable != null);
             return enumerable.Where(x => !Classes.ContainsKey(x)
                                 && !x.ContainsGenericParameters
-                                && x.IsClass
                                 && (x.IsPublic || x.IsNestedPublic)
                                 && !x.IsSealed
                                 && x.IsVisible
                                 && !x.IsCOMObject
-                                && x.HasDefaultConstructor()
                                 && !string.IsNullOrEmpty(x.Namespace))
                           .ToArray();
         }
@@ -251,6 +250,20 @@ namespace Utilities.DataTypes.AOP
             string ClassName, List<string> Usings,
             List<Type> Interfaces, List<Assembly> AssembliesUsing)
         {
+            if (Type.IsInterface)
+                return new ClassGenerator(Type, Aspects).Generate(Namespace, ClassName, Usings, Interfaces, AssembliesUsing);
+            if (Type.IsAbstract)
+                return new ClassGenerator(Type, Aspects).Generate(Namespace, ClassName, Usings, Interfaces, AssembliesUsing);
+            return new ClassGenerator(Type, Aspects).Generate(Namespace, ClassName, Usings, Interfaces, AssembliesUsing);
+        }
+
+        private static string SetupAbstract(Type type, string @namespace, string className, List<string> usings, List<Type> interfaces, List<Assembly> assembliesUsing)
+        {
+            return "";
+        }
+
+        private static string SetupClass(Type type, string @namespace, string className, List<string> usings, List<Type> interfaces, List<Assembly> assembliesUsing)
+        {
             var Builder = new StringBuilder();
             Builder.AppendLineFormat(@"namespace {1}
 {{
@@ -258,27 +271,19 @@ namespace Utilities.DataTypes.AOP
 
     public class {2} : {3}{4} {5}
     {{
-", Usings.ToString(x => "using " + x + ";", "\r\n"),
- Namespace,
- ClassName,
- Type.FullName.Replace("+", "."),
- Interfaces.Count > 0 ? "," : "", Interfaces.ToString(x => x.Name));
-            if (Type.HasDefaultConstructor())
+", usings.ToString(x => "using " + x + ";", "\r\n"),
+ @namespace,
+ className,
+ type.FullName.Replace("+", "."),
+ interfaces.Count > 0 ? "," : "", interfaces.ToString(x => x.Name));
+            if (type.HasDefaultConstructor())
             {
-                Builder.AppendLineFormat(@"
-        public {0}()
-            :base()
-        {{
-            ",
-               Type.Name + "Derived");
-                Aspects.ForEach(x => Builder.AppendLine(x.SetupDefaultConstructor(Type)));
-                Builder.AppendLineFormat(@"
-        }}");
+                //Builder.AppendLine(new ConstructorGenerator(type.GetConstructors(BindingFlags.Public | BindingFlags.Instance).First(x => x.GetParameters().Length == 0)).Generate(assembliesUsing, Aspects));
             }
 
-            Aspects.ForEach(x => Builder.AppendLine(x.SetupInterfaces(Type)));
+            Aspects.ForEach(x => Builder.AppendLine(x.SetupInterfaces(type)));
 
-            Type TempType = Type;
+            Type TempType = type;
             var MethodsAlreadyDone = new List<string>();
             while (TempType != null)
             {
@@ -295,23 +300,7 @@ namespace Utilities.DataTypes.AOP
                         && !GetMethodInfo.IsFinal
                         && Property.GetIndexParameters().Length == 0)
                     {
-                        AssembliesUsing.AddIfUnique(GetAssemblies(Property.PropertyType));
-                        Builder.AppendLineFormat(@"
-        public override {0} {1}
-        {{
-            get
-            {{
-                {2}
-            }}
-            set
-            {{
-                {3}
-            }}
-        }}",
-                                                    Property.PropertyType.GetName(),
-                                                    Property.Name,
-                                                    SetupMethod(Type, GetMethodInfo, true),
-                                                    SetupMethod(Type, SetMethodInfo, true));
+                        Builder.AppendLine(new PropertyGenerator(Property).Generate(assembliesUsing, Aspects));
                         MethodsAlreadyDone.Add(GetMethodInfo.Name);
                         MethodsAlreadyDone.Add(SetMethodInfo.Name);
                     }
@@ -322,18 +311,7 @@ namespace Utilities.DataTypes.AOP
                         && !GetMethodInfo.IsFinal
                         && Property.GetIndexParameters().Length == 0)
                     {
-                        AssembliesUsing.AddIfUnique(GetAssemblies(Property.PropertyType));
-                        Builder.AppendLineFormat(@"
-        public override {0} {1}
-        {{
-            get
-            {{
-                {2}
-            }}
-        }}",
-                                                    Property.PropertyType.GetName(),
-                                                    Property.Name,
-                                                    SetupMethod(Type, GetMethodInfo, true));
+                        Builder.AppendLine(new PropertyGenerator(Property).Generate(assembliesUsing, Aspects));
                         MethodsAlreadyDone.Add(GetMethodInfo.Name);
                     }
                     else
@@ -344,32 +322,17 @@ namespace Utilities.DataTypes.AOP
                             MethodsAlreadyDone.Add(SetMethodInfo.Name);
                     }
                 }
-                foreach (MethodInfo Method in TempType.GetMethods(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance))
+                foreach (MethodInfo Method in TempType.GetMethods(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance)
+                                                        .Where(x => !MethodsAlreadyDone.Contains(x.Name)
+                                                            && x.IsVirtual
+                                                            && !x.IsFinal
+                                                            && !x.IsPrivate
+                                                            && !x.Name.StartsWith("add_", StringComparison.InvariantCultureIgnoreCase)
+                                                            && !x.Name.StartsWith("remove_", StringComparison.InvariantCultureIgnoreCase)
+                                                            && !x.IsGenericMethod))
                 {
-                    string MethodAttribute = "public";
-                    if (!MethodsAlreadyDone.Contains(Method.Name)
-                        && Method.IsVirtual
-                        && !Method.IsFinal
-                        && !Method.IsPrivate
-                        && !Method.Name.StartsWith("add_", StringComparison.InvariantCultureIgnoreCase)
-                        && !Method.Name.StartsWith("remove_", StringComparison.InvariantCultureIgnoreCase)
-                        && !Method.IsGenericMethod)
-                    {
-                        AssembliesUsing.AddIfUnique(GetAssemblies(Method.ReturnType));
-                        Method.GetParameters().ForEach(x => AssembliesUsing.AddIfUnique(GetAssemblies(x.ParameterType)));
-                        string Static = Method.IsStatic ? "static " : "";
-                        Builder.AppendLineFormat(@"
-        {4} override {0} {1}({2})
-        {{
-            {3}
-        }}",
-                                                    Static + Method.ReturnType.GetName(),
-                                                    Method.Name,
-                                                    Method.GetParameters().ToString(x => (x.IsOut ? "out " : "") + x.ParameterType.GetName() + " " + x.Name),
-                                                    SetupMethod(Type, Method, false),
-                                                    MethodAttribute);
-                        MethodsAlreadyDone.Add(Method.Name);
-                    }
+                    Builder.AppendLine(new MethodGenerator(Method).Generate(assembliesUsing, Aspects));
+                    MethodsAlreadyDone.Add(Method.Name);
                 }
                 TempType = TempType.BaseType;
                 if (TempType == typeof(object))
@@ -378,6 +341,11 @@ namespace Utilities.DataTypes.AOP
             Builder.AppendLine(@"   }
 }");
             return Builder.ToString();
+        }
+
+        private static string SetupInterface(Type type, string @namespace, string className, List<string> usings, List<Type> interfaces, List<Assembly> assembliesUsing)
+        {
+            return "";
         }
 
         private static string SetupMethod(Type Type, MethodInfo MethodInfo, bool IsProperty)

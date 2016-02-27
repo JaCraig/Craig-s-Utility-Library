@@ -47,22 +47,22 @@ namespace Utilities.IO.Messaging.Default
         /// <summary>
         /// Internal send message
         /// </summary>
-        /// <param name="Message2">Message</param>
-        protected override void InternalSend(Interfaces.IMessage Message2)
+        /// <param name="message">The message.</param>
+        protected override void InternalSend(Interfaces.IMessage message)
         {
-            var Message = Message2 as EmailMessage;
+            var Message = message as EmailMessage;
             if (Message == null)
                 return;
             if (string.IsNullOrEmpty(Message.Body))
                 Message.Body = " ";
-            using (System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage())
+            using (MailMessage TempMailMessage = new MailMessage())
             {
                 char[] Splitter = { ',', ';' };
                 string[] AddressCollection = Message.To.Split(Splitter);
                 for (int x = 0; x < AddressCollection.Length; ++x)
                 {
                     if (!string.IsNullOrEmpty(AddressCollection[x].Trim()))
-                        message.To.Add(AddressCollection[x]);
+                        TempMailMessage.To.Add(AddressCollection[x]);
                 }
                 if (!string.IsNullOrEmpty(Message.CC))
                 {
@@ -70,7 +70,7 @@ namespace Utilities.IO.Messaging.Default
                     for (int x = 0; x < AddressCollection.Length; ++x)
                     {
                         if (!string.IsNullOrEmpty(AddressCollection[x].Trim()))
-                            message.CC.Add(AddressCollection[x]);
+                            TempMailMessage.CC.Add(AddressCollection[x]);
                     }
                 }
                 if (!string.IsNullOrEmpty(Message.Bcc))
@@ -79,34 +79,34 @@ namespace Utilities.IO.Messaging.Default
                     for (int x = 0; x < AddressCollection.Length; ++x)
                     {
                         if (!string.IsNullOrEmpty(AddressCollection[x].Trim()))
-                            message.Bcc.Add(AddressCollection[x]);
+                            TempMailMessage.Bcc.Add(AddressCollection[x]);
                     }
                 }
-                message.Subject = Message.Subject;
+                TempMailMessage.Subject = Message.Subject;
                 if (!string.IsNullOrEmpty(Message.From))
-                    message.From = new System.Net.Mail.MailAddress(Message.From);
+                    TempMailMessage.From = new System.Net.Mail.MailAddress(Message.From);
                 using (AlternateView BodyView = AlternateView.CreateAlternateViewFromString(Message.Body, null, MediaTypeNames.Text.Html))
                 {
                     foreach (LinkedResource Resource in Message.EmbeddedResources.Check(new List<LinkedResource>()))
                     {
                         BodyView.LinkedResources.Add(Resource);
                     }
-                    message.AlternateViews.Add(BodyView);
-                    message.Priority = Message.Priority;
-                    message.SubjectEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
-                    message.BodyEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
-                    message.IsBodyHtml = true;
+                    TempMailMessage.AlternateViews.Add(BodyView);
+                    TempMailMessage.Priority = Message.Priority;
+                    TempMailMessage.SubjectEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
+                    TempMailMessage.BodyEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
+                    TempMailMessage.IsBodyHtml = true;
                     foreach (Attachment TempAttachment in Message.Attachments.Check(new List<Attachment>()))
                     {
-                        message.Attachments.Add(TempAttachment);
+                        TempMailMessage.Attachments.Add(TempAttachment);
                     }
                     if (!string.IsNullOrEmpty(Message.Server))
                     {
-                        SendMessage(new System.Net.Mail.SmtpClient(Message.Server, Message.Port), Message, message);
+                        SendMessage(new SmtpClient(Message.Server, Message.Port), Message, TempMailMessage);
                     }
                     else
                     {
-                        SendMessage(new SmtpClient(), Message, message);
+                        SendMessage(new SmtpClient(), Message, TempMailMessage);
                     }
                 }
             }
@@ -123,7 +123,7 @@ namespace Utilities.IO.Messaging.Default
             Contract.Requires<ArgumentNullException>(Message != null, "Message");
             Contract.Requires<ArgumentNullException>(smtpClient != null, "smtpClient");
             Contract.Requires<ArgumentNullException>(message != null, "message");
-            using (System.Net.Mail.SmtpClient smtp = smtpClient)
+            using (SmtpClient smtp = smtpClient)
             {
                 if (!string.IsNullOrEmpty(Message.UserName) && !string.IsNullOrEmpty(Message.Password))
                 {
