@@ -36,7 +36,6 @@ namespace Utilities.DataTypes.Caching.Default
         /// Constructor
         /// </summary>
         public Cache()
-            : base()
         {
             InternalCache = new ConcurrentDictionary<string, object>();
         }

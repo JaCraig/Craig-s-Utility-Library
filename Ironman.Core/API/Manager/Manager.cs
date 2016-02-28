@@ -44,7 +44,6 @@ namespace Ironman.Core.API.Manager
         /// <param name="Modules">The workflow modules.</param>
         /// <param name="WorkflowManager">The workflow manager.</param>
         public Manager(IEnumerable<IAPIMapping> Mappings, IEnumerable<IService> Services, IEnumerable<IWorkflowModule> Modules, Utilities.Workflow.Manager.Manager WorkflowManager)
-            : base()
         {
             Contract.Requires<ArgumentNullException>(Mappings != null);
             Contract.Requires<ArgumentNullException>(Services != null);

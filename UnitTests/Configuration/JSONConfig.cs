@@ -58,7 +58,6 @@ namespace UnitTests.Configuration
         public class TestClass : Utilities.Configuration.JSONConfig<TestClass>
         {
             public TestClass()
-                : base()
             {
                 A = "A";
                 B = "B";

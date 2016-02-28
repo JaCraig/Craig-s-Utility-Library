@@ -38,7 +38,6 @@ namespace Utilities.Random
         /// Constructor
         /// </summary>
         public Random()
-            : base()
         {
         }
 

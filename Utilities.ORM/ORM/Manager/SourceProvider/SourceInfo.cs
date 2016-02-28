@@ -38,7 +38,6 @@ namespace Utilities.ORM.Manager.SourceProvider
         public SourceInfo(string Connection, string Name, string SourceType = "System.Data.SqlClient",
                         string ParameterPrefix = "@", bool Writable = true, bool Readable = true,
                         IDatabase Database = null)
-            : base()
         {
             this.Name = string.IsNullOrEmpty(Name) && ConfigurationManager.ConnectionStrings[0] != null ? ConfigurationManager.ConnectionStrings[0].Name : Name;
             if (string.IsNullOrEmpty(Connection) && ConfigurationManager.ConnectionStrings[this.Name] != null)

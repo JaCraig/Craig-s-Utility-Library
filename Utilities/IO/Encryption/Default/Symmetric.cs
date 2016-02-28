@@ -34,7 +34,6 @@ namespace Utilities.IO.Encryption.Default
         /// Constructor
         /// </summary>
         public Symmetric()
-            : base()
         {
             ImplementedAlgorithms.Add("RIJNDAEL", () => new RijndaelManaged());
             ImplementedAlgorithms.Add("TRIPLEDES", () => new TripleDESCryptoServiceProvider());

@@ -33,7 +33,6 @@ namespace UnitTests.ORM.Manager
     public class Session : DatabaseBaseClass
     {
         public Session()
-            : base()
         {
             var BootLoader = Utilities.IoC.Manager.Bootstrapper;
             new Utilities.ORM.Manager.ORMManager(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.Mapper.Manager>(),
@@ -686,16 +685,16 @@ namespace UnitTests.ORM.Manager
             Assert.Equal(5423, Item.ShortReference);
             Assert.Equal("agsdpghasdg", Item.StringReference);
 
-            Item.Map = new TestClass() { FloatReference = 10f };
+            Item.Map = new TestClass { FloatReference = 10f };
             Item.ManyToManyIEnumerable.First().FloatReference = 11f;
-            Item.ManyToManyList.Add(new TestClass() { FloatReference = 12f });
+            Item.ManyToManyList.Add(new TestClass { FloatReference = 12f });
             Item.ManyToOneIEnumerable.First().FloatReference = 13f;
             Item.ManyToOneItem.FloatReference = 14f;
             Item.ManyToOneList = new TestClass[] { new TestClass(), new TestClass() }.ToList();
-            Item.ManyToManyIList.Add(new TestClass() { FloatReference = 15f });
-            Item.ManyToOneIList.Add(new TestClass() { FloatReference = 16f });
-            Item.ManyToManyICollection.Add(new TestClass() { FloatReference = 17f });
-            Item.ManyToOneICollection.Add(new TestClass() { FloatReference = 18f });
+            Item.ManyToManyIList.Add(new TestClass { FloatReference = 15f });
+            Item.ManyToOneIList.Add(new TestClass { FloatReference = 16f });
+            Item.ManyToManyICollection.Add(new TestClass { FloatReference = 17f });
+            Item.ManyToOneICollection.Add(new TestClass { FloatReference = 18f });
             TestObject.Save<TestClass, int>(Item);
 
             Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=SessionTestDatabase;Integrated Security=SSPI;Pooling=false"));
@@ -801,7 +800,6 @@ namespace UnitTests.ORM.Manager
         public class TestClassMapping : MappingBaseClass<TestClass, TestClassDatabase>
         {
             public TestClassMapping()
-                : base()
             {
                 ID(x => x.ID).SetAutoIncrement();
                 ManyToMany(x => x.ManyToManyIEnumerable).SetTableName("ManyToManyIEnumerable").SetCascade();

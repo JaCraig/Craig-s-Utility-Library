@@ -149,7 +149,6 @@ namespace UnitTests.ORM.Manager.Mapper.Default
         public class TestClassMapping : MappingBaseClass<TestClass, TestClassDatabase>
         {
             public TestClassMapping()
-                : base()
             {
                 ID(x => x.ID).SetFieldName("ID").SetAutoIncrement();
                 ManyToOne(x => x.A).SetCascade();

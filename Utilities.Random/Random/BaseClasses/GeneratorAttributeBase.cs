@@ -36,7 +36,6 @@ namespace Utilities.Random.BaseClasses
         /// <param name="Min">Minimum value</param>
         /// <param name="Max">Maximum value</param>
         protected GeneratorAttributeBase(object Min, object Max)
-            : base()
         {
             this.Min = Min;
             this.Max = Max;

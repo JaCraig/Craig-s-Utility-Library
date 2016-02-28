@@ -31,7 +31,7 @@ namespace UnitTests.Validation.Extensions
         [Fact]
         public void ObjectValidationTest()
         {
-            var dog = new Dog() { Age = -1, Name = "Jim" };
+            var dog = new Dog { Age = -1, Name = "Jim" };
             var validationResults = new List<ValidationResult>();
             Assert.False(dog.TryValidate(validationResults));
             Assert.Equal(1, validationResults.Count);

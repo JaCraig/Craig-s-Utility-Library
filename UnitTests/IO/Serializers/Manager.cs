@@ -54,8 +54,8 @@ namespace UnitTests.IO.Serializers
         public void SerializeDeserialize()
         {
             var Temp = new Utilities.IO.Serializers.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<ISerializer>());
-            Assert.Equal("{\"A\":10}", Temp.Serialize<string>(new Temp() { A = 10 }, typeof(Temp)));
-            Assert.Equal(new Temp() { A = 10 }.A, ((Temp)Temp.Deserialize<string>("{\"A\":10}", typeof(Temp))).A);
+            Assert.Equal("{\"A\":10}", Temp.Serialize<string>(new Temp { A = 10 }, typeof(Temp)));
+            Assert.Equal(new Temp { A = 10 }.A, ((Temp)Temp.Deserialize<string>("{\"A\":10}", typeof(Temp))).A);
         }
 
         [Serializable]

@@ -73,7 +73,6 @@ namespace SpeedTests.Models
     public class EmployeeMapping3Source1 : Utilities.ORM.BaseClasses.MappingBaseClass<Employee3, Source1Config>
     {
         public EmployeeMapping3Source1()
-            : base()
         {
             ID(x => x.ID).SetAutoIncrement();
             Reference(x => x.DateCreated);
@@ -91,7 +90,6 @@ namespace SpeedTests.Models
     public class EmployeeMapping3Source2 : Utilities.ORM.BaseClasses.MappingBaseClass<Employee3, Source2Config>
     {
         public EmployeeMapping3Source2()
-            : base()
         {
             ID(x => x.ID).SetAutoIncrement();
             Reference(x => x.LastName);

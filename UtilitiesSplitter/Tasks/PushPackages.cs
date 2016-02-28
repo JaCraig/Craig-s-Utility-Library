@@ -33,7 +33,7 @@ namespace UtilitiesSplitter.Tasks
                 .ForEach(x =>
             {
                 new FileInfo("..\\..\\..\\.nuget\\nuget.exe")
-                    .Execute(new ProcessStartInfo() { Arguments = "push \"" + x.FullName + "\"", CreateNoWindow = false })
+                    .Execute(new ProcessStartInfo { Arguments = "push \"" + x.FullName + "\"", CreateNoWindow = false })
                     .WaitForExit();
             });
             new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\Packages\\").Delete();

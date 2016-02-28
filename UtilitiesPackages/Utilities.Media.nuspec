@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-Media</id>
-		<version>4.0.288</version>
+		<version>4.0.291</version>
 		<title>Craig's Utility Library Media Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -15,8 +15,8 @@
 		<copyright>Copyright 2011</copyright>
 		<tags>utility utilities</tags>
 		<dependencies>
-			<dependency id="CraigsUtilityLibrary-DataTypes" version="[4.0.288]" />
-			<dependency id="CraigsUtilityLibrary-Random" version="[4.0.288]" />
+			<dependency id="CraigsUtilityLibrary-DataTypes" version="[4.0.291]" />
+			<dependency id="CraigsUtilityLibrary-Random" version="[4.0.291]" />
 		</dependencies>
 		<references>
 			<reference file="Utilities.Media.dll" />

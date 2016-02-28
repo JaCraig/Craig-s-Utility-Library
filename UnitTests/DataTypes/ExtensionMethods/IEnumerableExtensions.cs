@@ -294,7 +294,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void Transverse()
         {
-            var TestObject = new TraverseClass() { Children = new TraverseClass[] { new TraverseClass(), new TraverseClass(), new TraverseClass(), new TraverseClass() }.ToList() };
+            var TestObject = new TraverseClass { Children = new TraverseClass[] { new TraverseClass(), new TraverseClass(), new TraverseClass(), new TraverseClass() }.ToList() };
             Assert.Equal(5, TestObject.Transverse(x => x.Children).Count());
         }
 

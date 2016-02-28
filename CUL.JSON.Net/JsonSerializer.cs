@@ -58,7 +58,7 @@ namespace CUL.Serialization
         {
             if (string.IsNullOrEmpty(Data) || ObjectType == null)
                 return null;
-            return JsonConvert.DeserializeObject(Data, ObjectType, new JsonSerializerSettings() { DateFormatHandling = DateFormatHandling.IsoDateFormat });
+            return JsonConvert.DeserializeObject(Data, ObjectType, new JsonSerializerSettings { DateFormatHandling = DateFormatHandling.IsoDateFormat });
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace CUL.Serialization
         {
             if (Data == null || ObjectType == null)
                 return "";
-            string ReturnValue = JsonConvert.SerializeObject(Data, ObjectType, new JsonSerializerSettings() { DateFormatHandling = DateFormatHandling.IsoDateFormat });
+            string ReturnValue = JsonConvert.SerializeObject(Data, ObjectType, new JsonSerializerSettings { DateFormatHandling = DateFormatHandling.IsoDateFormat });
             HttpRequest Request = HttpContext.Current.Chain(x => x.Request);
             if (Request != null &&
                 (!string.IsNullOrEmpty(Request.QueryString["callback"]) ||

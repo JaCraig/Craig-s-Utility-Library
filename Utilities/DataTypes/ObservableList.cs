@@ -38,7 +38,6 @@ namespace Utilities.DataTypes
         /// Initializes a virtual instance of the <see cref="ObservableList{T}"/> class.
         /// </summary>
         public ObservableList()
-            : base()
         {
             BaseList = new List<T>();
         }
@@ -50,7 +49,6 @@ namespace Utilities.DataTypes
         /// The number of elements that the virtual list can initially store.
         /// </param>
         public ObservableList(int capacity)
-            : base()
         {
             BaseList = new List<T>(capacity);
         }
@@ -60,7 +58,6 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="collection">The collection.</param>
         public ObservableList(IEnumerable<T> collection)
-            : base()
         {
             BaseList = new List<T>(collection);
         }

@@ -68,7 +68,6 @@ namespace SpeedTests.Models
     public class EmployeeMapping : Utilities.ORM.BaseClasses.MappingBaseClass<Employee, DatabaseConfig>
     {
         public EmployeeMapping()
-            : base()
         {
             ID(x => x.ID).SetAutoIncrement();
             Reference(x => x.DateCreated);

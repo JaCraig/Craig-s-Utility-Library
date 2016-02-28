@@ -84,7 +84,6 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="bitmap">The bitmap.</param>
         public SwiftBitmap(Bitmap bitmap)
-            : base()
         {
             Contract.Requires<ArgumentNullException>(bitmap != null);
             InternalBitmap = bitmap;

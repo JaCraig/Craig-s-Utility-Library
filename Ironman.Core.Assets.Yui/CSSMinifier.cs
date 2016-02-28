@@ -59,7 +59,7 @@ namespace Ironman.Core.Assets.Yui
             IEnumerable<IAsset> Processable = Assets.Where(x => !x.Minified);
             if (Processable.FirstOrDefault() == null)
                 return Assets;
-            var Minifier = new CssCompressor() { CompressionType = CompressionType.Standard, RemoveComments = true };
+            var Minifier = new CssCompressor { CompressionType = CompressionType.Standard, RemoveComments = true };
             foreach (IAsset Asset in Processable.Where(x => x != null))
             {
                 try

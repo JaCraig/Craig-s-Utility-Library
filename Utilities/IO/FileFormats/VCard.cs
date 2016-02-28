@@ -134,7 +134,6 @@ namespace Utilities.IO.FileFormats
         /// Constructor
         /// </summary>
         public VCard()
-            : base()
         {
             Relationships = new List<Relationship>();
         }

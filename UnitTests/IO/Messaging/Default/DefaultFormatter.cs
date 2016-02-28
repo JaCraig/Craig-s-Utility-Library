@@ -36,8 +36,8 @@ namespace UnitTests.IO.Messaging.Default
         public void Format()
         {
             var TestObject = new Utilities.IO.Messaging.Default.DefaultFormatter();
-            var TestMessage = new Utilities.IO.EmailMessage() { Body = "There are {A} items in the {B}" };
-            TestObject.Format(TestMessage, new TestClass() { A = 2, B = "class" });
+            var TestMessage = new Utilities.IO.EmailMessage { Body = "There are {A} items in the {B}" };
+            TestObject.Format(TestMessage, new TestClass { A = 2, B = "class" });
             Assert.Equal("There are 2 items in the class", TestMessage.Body);
             TestObject.Format(TestMessage, "Testing this out");
             Assert.Equal("Testing this out", TestMessage.Body);

@@ -34,7 +34,6 @@ namespace Utilities.IO.FileFormats.BaseClasses
         /// Constructor
         /// </summary>
         protected StringFormatBase()
-            : base()
         {
         }
 

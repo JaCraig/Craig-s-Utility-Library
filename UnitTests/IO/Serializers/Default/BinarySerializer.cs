@@ -38,7 +38,7 @@ namespace UnitTests.IO.Serializers.Default
         public void SerializeDeserialize()
         {
             var Temp = new Utilities.IO.Serializers.Default.BinarySerializer();
-            Assert.Equal(new Temp() { A = 10 }.A, ((Temp)Temp.Deserialize(typeof(Temp), Temp.Serialize(typeof(Temp), new Temp() { A = 10 }))).A);
+            Assert.Equal(new Temp { A = 10 }.A, ((Temp)Temp.Deserialize(typeof(Temp), Temp.Serialize(typeof(Temp), new Temp { A = 10 }))).A);
         }
 
         [Serializable]

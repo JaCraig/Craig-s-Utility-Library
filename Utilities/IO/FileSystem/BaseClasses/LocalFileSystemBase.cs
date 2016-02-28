@@ -33,7 +33,6 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// Constructor
         /// </summary>
         protected LocalFileSystemBase()
-            : base()
         {
         }
 

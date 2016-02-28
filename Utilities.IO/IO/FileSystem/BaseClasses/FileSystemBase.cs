@@ -34,7 +34,6 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// Constructor
         /// </summary>
         protected FileSystemBase()
-            : base()
         {
             HandleRegex = new Regex(HandleRegexString, RegexOptions.Compiled | RegexOptions.IgnoreCase);
         }

@@ -618,12 +618,7 @@ namespace Utilities.Media
         {
             Contract.Requires<ArgumentNullException>(Image != null, "Image");
             return Image.BlackAndWhite().ApplyConvolutionFilter(new int[][]{
-                            new int[] {-1, -1, -1, -1, -1},
-                            new int[] {-1, -1, -1, -1, -1},
-                            new int[] {-1, -1, 24, -1, -1},
-                            new int[] {-1, -1, -1, -1, -1},
-                            new int[] {-1, -1, -1, -1, -1},
-                        });
+                            new int[] {-1, -1, -1, -1, -1},                            new int[] {-1, -1, -1, -1, -1},                            new int[] {-1, -1, 24, -1, -1},                            new int[] {-1, -1, -1, -1, -1},                            new int[] {-1, -1, -1, -1, -1}                        });
         }
 
         /// <summary>

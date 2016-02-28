@@ -44,7 +44,6 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// </summary>
         /// <param name="Source">Source info</param>
         public DatabaseBatch(ISourceInfo Source)
-            : base()
         {
             this.Commands = new List<Command>();
             this.Source = Source;

@@ -41,7 +41,6 @@ namespace Utilities.IO.FileSystem.Default
         /// Constructor
         /// </summary>
         public FtpDirectory()
-            : base()
         {
         }
 

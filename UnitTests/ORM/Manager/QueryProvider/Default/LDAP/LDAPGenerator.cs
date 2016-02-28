@@ -31,7 +31,6 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.LDAP
     public class LDAPGenerator : DatabaseBaseClass
     {
         public LDAPGenerator()
-            : base()
         {
             var Temp = new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>());
             QueryProvider = new Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPQueryProvider();
@@ -141,7 +140,6 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.LDAP
         public class DynamoMapping : MappingBaseClass<Dynamo, DynamoDatabase>
         {
             public DynamoMapping()
-                : base()
             {
                 ID(x => x.Count).SetFieldName("Count").SetAutoIncrement();
             }

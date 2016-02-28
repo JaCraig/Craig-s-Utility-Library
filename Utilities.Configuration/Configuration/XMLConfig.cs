@@ -36,7 +36,6 @@ namespace Utilities.Configuration
         /// Constructor
         /// </summary>
         protected XMLConfig()
-            : base()
         {
         }
     }

@@ -41,7 +41,6 @@ namespace Ironman.Core.Serialization
         /// </summary>
         /// <param name="Manager">The manager.</param>
         public GeneralValueProvider(Utilities.IO.Serializers.Manager Manager)
-            : base()
         {
             this.Manager = Manager;
         }

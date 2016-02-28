@@ -33,7 +33,6 @@ namespace Utilities.IO.FileFormats.BaseClasses
         /// Constructor
         /// </summary>
         protected StringListFormatBase()
-            : base()
         {
             Records = new List<RecordType>();
         }

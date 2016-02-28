@@ -38,7 +38,6 @@ namespace Utilities.DataTypes.Conversion.Converters
         /// Constructor
         /// </summary>
         public SqlDbTypeTypeConverter()
-            : base()
         {
             ConvertToTypes.Add(typeof(Type), SqlDbTypeToType);
             ConvertToTypes.Add(typeof(DbType), SqlDbTypeToDbType);

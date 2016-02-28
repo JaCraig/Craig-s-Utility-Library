@@ -36,7 +36,6 @@ namespace Utilities.DataTypes
         /// Constructor
         /// </summary>
         public Set()
-            : base()
         {
         }
 

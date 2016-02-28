@@ -205,7 +205,6 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="item">Item to copy values from</param>
         public Dynamo(object item)
-            : base()
         {
             InternalValues = new ConcurrentDictionary<string, object>(StringComparer.OrdinalIgnoreCase);
             ChildValues = new ConcurrentDictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
@@ -230,7 +229,6 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="dictionary">Dictionary to copy</param>
         public Dynamo(IDictionary<string, object> dictionary)
-            : base()
         {
             InternalValues = new ConcurrentDictionary<string, object>(dictionary, StringComparer.OrdinalIgnoreCase);
             ChildValues = new ConcurrentDictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
@@ -243,7 +241,6 @@ namespace Utilities.DataTypes
         /// <param name="info">Serialization info</param>
         /// <param name="context">Streaming context</param>
         protected Dynamo(SerializationInfo info, StreamingContext context)
-            : base()
         {
             Contract.Requires<ArgumentNullException>(info != null, "info");
             InternalValues = new ConcurrentDictionary<string, object>(StringComparer.OrdinalIgnoreCase);
@@ -792,7 +789,7 @@ namespace Utilities.DataTypes
         /// </returns>
         protected object RaiseGetValueEnd(string PropertyName, object Value)
         {
-            var End = new EventArgs.OnEndEventArgs() { Content = Value };
+            var End = new EventArgs.OnEndEventArgs { Content = Value };
             var Handler = getValueEnd_;
             if (Handler != null)
                 Handler(this, PropertyName, End);
@@ -809,7 +806,7 @@ namespace Utilities.DataTypes
         /// </returns>
         protected object RaiseGetValueStart(string PropertyName)
         {
-            var Start = new EventArgs.OnStartEventArgs() { Content = PropertyName };
+            var Start = new EventArgs.OnStartEventArgs { Content = PropertyName };
             var Handler = getValueStart_;
             if (Handler != null)
                 Handler(this, Start);

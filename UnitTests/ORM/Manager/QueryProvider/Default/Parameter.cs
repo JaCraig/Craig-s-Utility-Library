@@ -31,7 +31,6 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
     public class Parameter
     {
         public Parameter()
-            : base()
         {
             var TestObject = new Utilities.DataTypes.Conversion.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IConverter>());
         }

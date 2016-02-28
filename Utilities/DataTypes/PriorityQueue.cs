@@ -36,7 +36,6 @@ namespace Utilities.DataTypes
         /// Constructor
         /// </summary>
         public PriorityQueue()
-            : base()
         {
             HighestKey = int.MinValue;
             Items = new Dictionary<int, ICollection<T>>();

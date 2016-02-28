@@ -31,7 +31,7 @@ namespace UnitTests.DataTypes.Conversion.Converter
         [Fact]
         public void ConvertFrom()
         {
-            IDictionary<string, object> Result = new TestClass() { A = "This is a test", B = 10 }.To<TestClass, ExpandoObject>();
+            IDictionary<string, object> Result = new TestClass { A = "This is a test", B = 10 }.To<TestClass, ExpandoObject>();
             Assert.Equal(10, Result["B"]);
             Assert.Equal("This is a test", Result["A"]);
         }

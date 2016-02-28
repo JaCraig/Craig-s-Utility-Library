@@ -35,7 +35,6 @@ namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
         /// Constructor
         /// </summary>
         protected DatabaseQueryProviderBase()
-            : base()
         {
         }
 

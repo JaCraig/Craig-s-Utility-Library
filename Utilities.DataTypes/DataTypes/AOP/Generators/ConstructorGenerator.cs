@@ -44,7 +44,7 @@ namespace Utilities.DataTypes.AOP.Generators
         /// <returns></returns>
         public string Generate(List<Assembly> assembliesUsing, IEnumerable<IAspect> aspects)
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.AppendLineFormat(@"
                 public {0}()
                     {1}

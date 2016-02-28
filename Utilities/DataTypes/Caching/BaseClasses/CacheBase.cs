@@ -34,7 +34,6 @@ namespace Utilities.DataTypes.Caching.BaseClasses
         /// Constructor
         /// </summary>
         protected CacheBase()
-            : base()
         {
             TagMappings = new ListMapping<string, string>();
         }

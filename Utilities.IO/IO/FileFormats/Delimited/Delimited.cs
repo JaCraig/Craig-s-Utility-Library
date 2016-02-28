@@ -38,7 +38,6 @@ namespace Utilities.IO.FileFormats.Delimited
         /// Constructor
         /// </summary>
         public Delimited()
-            : base()
         {
         }
 
@@ -47,7 +46,6 @@ namespace Utilities.IO.FileFormats.Delimited
         /// </summary>
         /// <param name="FileContent">File content</param>
         public Delimited(string FileContent)
-            : base()
         {
             Parse(FileContent);
         }
@@ -58,7 +56,6 @@ namespace Utilities.IO.FileFormats.Delimited
         /// <param name="FileContent">File content</param>
         /// <param name="Delimiter">Delimiter that the system uses</param>
         public Delimited(string FileContent, string Delimiter)
-            : base()
         {
             this.Delimiter = Delimiter;
             Parse(FileContent);

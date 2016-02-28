@@ -35,7 +35,6 @@ namespace UnitTests.ORM
     public abstract class DatabaseBaseClass : IDisposable
     {
         protected DatabaseBaseClass()
-            : base()
         {
             DatabaseSource = new Utilities.ORM.Manager.SourceProvider.Manager(new List<IDatabase>()).GetSource("Data Source=localhost;Integrated Security=SSPI;Pooling=false");
             LDAPSource = new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("LDAP");

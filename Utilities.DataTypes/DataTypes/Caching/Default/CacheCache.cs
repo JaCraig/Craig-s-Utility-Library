@@ -36,7 +36,6 @@ namespace Utilities.DataTypes.Caching.Default
         /// Constructor
         /// </summary>
         public CacheCache()
-            : base()
         {
             InternalKeys = new List<string>();
         }

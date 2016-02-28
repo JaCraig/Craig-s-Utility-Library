@@ -40,7 +40,6 @@ namespace Utilities.IO.FileSystem.Default
         /// Constructor
         /// </summary>
         public FtpFile()
-            : base()
         {
         }
 

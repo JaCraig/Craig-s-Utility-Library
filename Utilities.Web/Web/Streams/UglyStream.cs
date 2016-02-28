@@ -57,7 +57,6 @@ namespace Utilities.Web.Streams
         /// <param name="Compression">The compression we're using (gzip or deflate)</param>
         /// <param name="Type">Minification type to use (defaults to HTML)</param>
         public UglyStream(Stream StreamUsing, CompressionType Compression, MinificationType Type = MinificationType.HTML)
-            : base()
         {
             this.Compression = Compression;
             this.StreamUsing = StreamUsing;

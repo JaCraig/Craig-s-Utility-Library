@@ -97,7 +97,6 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.SQLServer
         public class TestClassMapping : MappingBaseClass<TestClass, TestClassDatabase>
         {
             public TestClassMapping()
-                : base()
             {
                 ID(x => x.ID).SetFieldName("ID").SetAutoIncrement();
             }

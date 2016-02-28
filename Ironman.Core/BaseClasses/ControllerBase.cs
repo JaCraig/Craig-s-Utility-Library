@@ -39,7 +39,6 @@ namespace Ironman.Core.BaseClasses
         /// Constructor
         /// </summary>
         protected ControllerBase()
-            : base()
         {
         }
 

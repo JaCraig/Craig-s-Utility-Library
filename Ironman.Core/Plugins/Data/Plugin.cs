@@ -41,7 +41,6 @@ namespace Ironman.Models.Plugins
         /// Constructor
         /// </summary>
         public Plugin()
-            : base()
         {
             Files = new List<PluginFile>();
         }
@@ -184,13 +183,13 @@ namespace Ironman.Models.Plugins
                 var ContentDirectory = new DirectoryInfo(string.Format(HttpContext.Current != null ? HttpContext.Current.Server.MapPath("~/App_Data/packages/{0}.{1}/content") : "./App_Data/packages/{0}.{1}/content", PluginID, Version));
                 int y = 0;
                 var TempFiles = new List<PluginFile>();
-                TempFiles.Add(LibDirectory.EnumerateFiles("*", System.IO.SearchOption.AllDirectories).ForEach(x => new PluginFile()
+                TempFiles.Add(LibDirectory.EnumerateFiles("*", System.IO.SearchOption.AllDirectories).ForEach(x => new PluginFile
                 {
                     IsDirectory = false,
                     Order = y++,
                     Path = "~/App_Data/plugins/" + PluginID + x.FullName.Replace(LibDirectory.FullName, "").Replace("\\", "/")
                 }));
-                TempFiles.Add(ContentDirectory.EnumerateFiles("*", System.IO.SearchOption.AllDirectories).ForEach(x => new PluginFile()
+                TempFiles.Add(ContentDirectory.EnumerateFiles("*", System.IO.SearchOption.AllDirectories).ForEach(x => new PluginFile
                 {
                     IsDirectory = false,
                     Order = y++,

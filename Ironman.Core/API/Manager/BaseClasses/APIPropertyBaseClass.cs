@@ -44,7 +44,6 @@ namespace Ironman.Core.API.Manager.BaseClasses
         /// </summary>
         /// <param name="Expression">Expression</param>
         protected APIPropertyBaseClass(Expression<Func<ClassType, DataType>> Expression)
-            : base()
         {
             Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
             CompiledExpression = Expression.Compile();

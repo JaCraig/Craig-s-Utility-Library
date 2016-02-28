@@ -45,7 +45,6 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
         /// </summary>
         /// <param name="Source">Source info</param>
         public LDAPBatch(ISourceInfo Source)
-            : base()
         {
             this.Commands = new List<Command>();
             this.Source = Source;

@@ -44,7 +44,7 @@ namespace CUL.Bender.Tests
         public void Serialize()
         {
             var Serializer = new XmlSerializer();
-            var Object = new TestObject() { A = 5, B = "ASDF" };
+            var Object = new TestObject { A = 5, B = "ASDF" };
             Assert.Equal("<?xml version=\"1.0\" encoding=\"utf-8\"?><TestObject><A>5</A><B>ASDF</B></TestObject>", Serializer.Serialize(Object.GetType(), Object));
         }
 

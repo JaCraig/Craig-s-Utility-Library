@@ -44,7 +44,6 @@ namespace Ironman.Core.API.Manager.BaseClasses
         /// Constructor
         /// </summary>
         protected APIMappingBaseClass(params int[] Versions)
-            : base()
         {
             ObjectType = typeof(ClassType);
             Name = ObjectType.Name;

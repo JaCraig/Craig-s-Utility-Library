@@ -36,7 +36,6 @@ namespace Utilities.DataTypes.Conversion.Converters.BaseClasses
         /// Constructor
         /// </summary>
         protected TypeConverterBase()
-            : base()
         {
             ConvertToTypes = new Dictionary<Type, Func<object, object>>();
             ConvertFromTypes = new Dictionary<Type, Func<object, object>>();

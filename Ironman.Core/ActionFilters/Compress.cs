@@ -41,7 +41,6 @@ namespace Ironman.Core.ActionFilters
         /// Constructor
         /// </summary>
         public Compress()
-            : base()
         {
             Type = MinificationType.HTML;
             Minify = true;

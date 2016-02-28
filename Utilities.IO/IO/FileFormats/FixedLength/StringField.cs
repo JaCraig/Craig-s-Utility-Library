@@ -36,7 +36,6 @@ namespace Utilities.IO.FileFormats.FixedLength
         /// <param name="Value">Value to place in the field</param>
         /// <param name="Length">Max length of the value</param>
         public StringField(string Value = "", int Length = -1)
-            : base()
         {
             Parse(Value, Length);
         }

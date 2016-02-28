@@ -40,7 +40,7 @@ namespace UtilitiesSplitter.Tasks
 
                 if (!File.Name.Contains("Ironman.Default"))
                     new DirectoryInfo("..\\..\\..\\" + File.Name.Replace(".nuspec", "") + "\\bin\\Release").CopyTo(new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\lib"));
-                Process NugetProcess = new FileInfo("..\\..\\..\\.nuget\\nuget.exe").Execute(new ProcessStartInfo() { Arguments = "pack \"" + File.FullName + "\"", WorkingDirectory = "..\\..\\..\\UtilitiesPackages\\Packages", CreateNoWindow = false });
+                Process NugetProcess = new FileInfo("..\\..\\..\\.nuget\\nuget.exe").Execute(new ProcessStartInfo { Arguments = "pack \"" + File.FullName + "\"", WorkingDirectory = "..\\..\\..\\UtilitiesPackages\\Packages", CreateNoWindow = false });
                 NugetProcess.WaitForExit();
 
                 while (new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\lib").Exists)
@@ -61,10 +61,10 @@ namespace UtilitiesSplitter.Tasks
                 new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\content").Create();
 
                 new FileInfo(@"C:\Program Files\doxygen\bin\doxygen.exe")
-                    .Execute(new ProcessStartInfo() { Arguments = "\"" + File.FullName.Replace(".nuspec", ".doxy") + "\"", WorkingDirectory = "..\\..\\..\\UtilitiesPackages", CreateNoWindow = false })
+                    .Execute(new ProcessStartInfo { Arguments = "\"" + File.FullName.Replace(".nuspec", ".doxy") + "\"", WorkingDirectory = "..\\..\\..\\UtilitiesPackages", CreateNoWindow = false })
                     .WaitForExit();
                 new FileInfo("..\\..\\..\\.nuget\\nuget.exe")
-                    .Execute(new ProcessStartInfo() { Arguments = "pack \"" + File.FullName + "\"", WorkingDirectory = "..\\..\\..\\UtilitiesPackages\\Packages", CreateNoWindow = false })
+                    .Execute(new ProcessStartInfo { Arguments = "pack \"" + File.FullName + "\"", WorkingDirectory = "..\\..\\..\\UtilitiesPackages\\Packages", CreateNoWindow = false })
                     .WaitForExit();
 
                 new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\lib").Delete();

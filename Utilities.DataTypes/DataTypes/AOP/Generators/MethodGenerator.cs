@@ -46,7 +46,7 @@ namespace Utilities.DataTypes.AOP.Generators
         public string Generate(List<Assembly> assembliesUsing, IEnumerable<IAspect> aspects)
         {
             aspects = aspects ?? new List<IAspect>();
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             if (assembliesUsing != null)
                 assembliesUsing.AddIfUnique(GetAssemblies(MethodInfo.ReturnType));
             Builder.AppendLineFormat(@"

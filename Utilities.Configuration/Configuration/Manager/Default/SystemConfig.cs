@@ -59,7 +59,7 @@ namespace Utilities.Configuration.Manager.Default
             {
                 foreach (ConnectionStringSettings Connection in System.Configuration.ConfigurationManager.ConnectionStrings)
                 {
-                    ConnectionStrings.Add(Connection.Name, new ConnectionString() { Connection = Connection.ConnectionString, ProviderName = Connection.ProviderName });
+                    ConnectionStrings.Add(Connection.Name, new ConnectionString { Connection = Connection.ConnectionString, ProviderName = Connection.ProviderName });
                 }
                 foreach (string Key in System.Configuration.ConfigurationManager.AppSettings.Keys)
                 {
@@ -70,7 +70,7 @@ namespace Utilities.Configuration.Manager.Default
             {
                 foreach (ConnectionStringSettings Connection in WebConfigurationManager.ConnectionStrings)
                 {
-                    ConnectionStrings.Add(Connection.Name, new ConnectionString() { Connection = Connection.ConnectionString, ProviderName = Connection.ProviderName });
+                    ConnectionStrings.Add(Connection.Name, new ConnectionString { Connection = Connection.ConnectionString, ProviderName = Connection.ProviderName });
                 }
                 foreach (string Key in WebConfigurationManager.AppSettings.Keys)
                 {

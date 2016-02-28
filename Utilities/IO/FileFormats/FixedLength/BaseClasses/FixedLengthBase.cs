@@ -37,7 +37,6 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
         /// Constructor
         /// </summary>
         protected FixedLengthBase()
-            : base()
         {
         }
 

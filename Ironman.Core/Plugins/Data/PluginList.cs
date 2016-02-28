@@ -40,7 +40,6 @@ namespace Ironman.Models.Plugins
         /// Initializes a new instance of the <see cref="PluginList"/> class.
         /// </summary>
         public PluginList()
-            : base()
         {
             Plugins = new List<Plugin>();
         }

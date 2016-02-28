@@ -81,7 +81,6 @@ namespace Utilities.DataTypes.DataMapper.Default
         /// <param name="RightGet">Right get function</param>
         /// <param name="RightSet">Right set function</param>
         public Mapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Func<Right, object> RightGet, Action<Right, object> RightSet)
-            : base()
         {
             this.LeftGet = LeftGet;
             this.LeftSet = LeftSet.Check((x, y) => { });

@@ -35,7 +35,6 @@ namespace CUL.Serialization
         /// Constructor
         /// </summary>
         public JsonSerializer()
-            : base()
         {
             fastJSON.JSON.Parameters.EnableAnonymousTypes = true;
         }

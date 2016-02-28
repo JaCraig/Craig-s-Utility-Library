@@ -39,7 +39,6 @@ namespace Utilities.IO.FileFormats
         /// Constructor
         /// </summary>
         public Excel()
-            : base()
         {
             ColumnNames = new List<string>();
         }

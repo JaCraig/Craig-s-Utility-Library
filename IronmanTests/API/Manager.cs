@@ -120,15 +120,14 @@ namespace IronmanTests.API
         public class TestClassMapping : APIMappingBaseClass<TestClass, int>
         {
             public TestClassMapping()
-                : base()
             {
                 ID(x => x.B);
                 Reference(x => x.A);
                 Reference(x => x.C);
                 Map(x => x.D);
                 Map(x => x.E);
-                this.SetAll(() => new TestClass[] { new TestClass() { A = "ASDFG", B = 10, C = 2.13f }, new TestClass { A = "ZXCV", B = 212, C = 213f } }.ToList());
-                this.SetAny(x => new TestClass() { A = "ASDFG", B = 10, C = 2.13f });
+                this.SetAll(() => new TestClass[] { new TestClass { A = "ASDFG", B = 10, C = 2.13f }, new TestClass { A = "ZXCV", B = 212, C = 213f } }.ToList());
+                this.SetAny(x => new TestClass { A = "ASDFG", B = 10, C = 2.13f });
                 this.SetCanGet(x => true);
                 this.SetCanDelete(x => true);
                 this.SetCanSave(x => true);

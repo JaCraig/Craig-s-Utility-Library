@@ -41,7 +41,6 @@ namespace Ironman.Core.Plugins.BaseClasses
         /// Initializes a new instance of the <see cref="PluginBase" /> class.
         /// </summary>
         protected PluginBase()
-            : base()
         {
             PluginData = PluginList.Load().Get(ID);
         }

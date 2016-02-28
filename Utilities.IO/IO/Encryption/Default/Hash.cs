@@ -34,7 +34,6 @@ namespace Utilities.IO.Encryption.Default
         /// Constructor
         /// </summary>
         public Hash()
-            : base()
         {
             ImplementedAlgorithms.Add("SHA1", () => new SHA1CryptoServiceProvider());
             ImplementedAlgorithms.Add("SHA256", () => new SHA256CryptoServiceProvider());

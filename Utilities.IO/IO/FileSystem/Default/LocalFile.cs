@@ -37,7 +37,6 @@ namespace Utilities.IO.FileSystem.Default
         /// Constructor
         /// </summary>
         public LocalFile()
-            : base()
         {
         }
 

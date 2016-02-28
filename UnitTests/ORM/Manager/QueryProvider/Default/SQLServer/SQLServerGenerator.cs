@@ -30,7 +30,6 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.SQLServer
     public class SQLServerGenerator : DatabaseBaseClass
     {
         public SQLServerGenerator()
-            : base()
         {
             var Temp = new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>());
             QueryProvider = new Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider();
@@ -152,7 +151,6 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.SQLServer
         public class TestClassMapping : MappingBaseClass<TestClass, TestClassDatabase>
         {
             public TestClassMapping()
-                : base()
             {
                 ID(x => x.ID).SetFieldName("ID").SetAutoIncrement();
             }
