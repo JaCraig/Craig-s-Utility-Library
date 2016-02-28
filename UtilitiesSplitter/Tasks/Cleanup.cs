@@ -38,6 +38,7 @@ namespace UtilitiesSplitter.Tasks
             new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\lib").Delete();
             new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\tools").Delete();
             new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\content").Delete();
+            new FileInfo("..\\..\\..\\UtilitiesPackages\\readme.txt").Delete();
             return true;
         }
     }
