@@ -35,6 +35,64 @@ using Utilities.Media.Procedural;
 namespace Utilities.Media
 {
     /// <summary>
+    /// Enum defining alignment
+    /// </summary>
+    public enum Align
+    {
+        /// <summary>
+        /// Top
+        /// </summary>
+        Top,
+
+        /// <summary>
+        /// Bottom
+        /// </summary>
+        Bottom,
+
+        /// <summary>
+        /// Left
+        /// </summary>
+        Left,
+
+        /// <summary>
+        /// Right
+        /// </summary>
+        Right
+    }
+
+    /// <summary>
+    /// Direction
+    /// </summary>
+    public enum Direction
+    {
+        /// <summary>
+        /// Top to bottom
+        /// </summary>
+        TopBottom = 0,
+
+        /// <summary>
+        /// Left to right
+        /// </summary>
+        LeftRight
+    };
+
+    /// <summary>
+    /// Enum defining quality
+    /// </summary>
+    public enum Quality
+    {
+        /// <summary>
+        /// High
+        /// </summary>
+        High,
+
+        /// <summary>
+        /// Low
+        /// </summary>
+        Low
+    }
+
+    /// <summary>
     /// SwiftBitmap extensions
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -1294,63 +1352,5 @@ namespace Utilities.Media
             TempVal /= (double)(Max - Min);
             return ((int)(TempVal * 255)).Clamp(255, 0);
         }
-    }
-
-    /// <summary>
-    /// Enum defining alignment
-    /// </summary>
-    public enum Align
-    {
-        /// <summary>
-        /// Top
-        /// </summary>
-        Top,
-
-        /// <summary>
-        /// Bottom
-        /// </summary>
-        Bottom,
-
-        /// <summary>
-        /// Left
-        /// </summary>
-        Left,
-
-        /// <summary>
-        /// Right
-        /// </summary>
-        Right
-    }
-
-    /// <summary>
-    /// Direction
-    /// </summary>
-    public enum Direction
-    {
-        /// <summary>
-        /// Top to bottom
-        /// </summary>
-        TopBottom = 0,
-
-        /// <summary>
-        /// Left to right
-        /// </summary>
-        LeftRight
-    };
-
-    /// <summary>
-    /// Enum defining quality
-    /// </summary>
-    public enum Quality
-    {
-        /// <summary>
-        /// High
-        /// </summary>
-        High,
-
-        /// <summary>
-        /// Low
-        /// </summary>
-        Low
     }
 }

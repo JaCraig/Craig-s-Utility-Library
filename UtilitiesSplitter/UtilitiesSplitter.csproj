@@ -46,6 +46,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tasks\Cleanup.cs" />
     <Compile Include="Tasks\CreatePackages.cs" />
     <Compile Include="Tasks\Interfaces\ITask.cs" />
     <Compile Include="Tasks\PushPackages.cs" />

@@ -32,11 +32,10 @@ namespace UtilitiesSplitter.Tasks
                 .EnumerateFiles("*.nupkg", System.IO.SearchOption.AllDirectories)
                 .ForEach(x =>
             {
-                new FileInfo("..\\..\\..\\.nuget\\nuget.exe")
+                new FileInfo("C:\\dev\\nuget\\nuget.exe")
                     .Execute(new ProcessStartInfo { Arguments = "push \"" + x.FullName + "\"", CreateNoWindow = false })
                     .WaitForExit();
             });
-            new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\Packages\\").Delete();
             return true;
         }
     }
