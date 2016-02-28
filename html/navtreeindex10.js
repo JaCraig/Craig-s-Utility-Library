@@ -1,5 +1,11 @@
 var NAVTREEINDEX10 =
 {
+"class_utilities_1_1_media_1_1_swift_bitmap.html#aee4cb77c5c788984bb644c39800aa281":[1,0,0,4,2,26],
+"class_utilities_1_1_media_1_1_swift_bitmap.html#af089e976cdc7b4021d4501b52e904948":[1,0,0,4,2,30],
+"class_utilities_1_1_media_1_1_swift_bitmap.html#af30de166ea7b85adb90de3576b5090df":[1,0,0,4,2,2],
+"class_utilities_1_1_media_1_1_swift_bitmap.html#af377e9b2419704ba48f6d22e8517940c":[1,0,0,4,2,5],
+"class_utilities_1_1_media_1_1_swift_bitmap.html#af5681c605b6061345dbcd8951b832b6c":[1,0,0,4,2,13],
+"class_utilities_1_1_media_1_1_swift_bitmap.html#afc7b753ed942da8db69cc164dd4f2c78":[1,0,0,4,2,17],
 "class_utilities_1_1_o_r_m_1_1_aspect_1_1_o_r_m_aspect.html":[1,0,0,5,0,0],
 "class_utilities_1_1_o_r_m_1_1_aspect_1_1_o_r_m_aspect.html#a3a77351f1dbb859253fc74561382c617":[1,0,0,5,0,0,9],
 "class_utilities_1_1_o_r_m_1_1_aspect_1_1_o_r_m_aspect.html#a4c97af4d1243e7f1bd4d61168eb907b5":[1,0,0,5,0,0,1],
@@ -243,11 +249,5 @@ var NAVTREEINDEX10 =
 "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_reference.html#ad42e6cc5521f3dddc87756e4ff7d0fe1":[1,0,0,5,3,1,1,11,3],
 "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_reference.html#adc1341f96ea3f2a5d376f9f455365115":[1,0,0,5,3,1,1,11,10],
 "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_manager.html":[1,0,0,5,3,1,3],
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_manager.html#a33b822480ba91f5a6eed6cac80abd366":[1,0,0,5,3,1,3,3],
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_manager.html#a3a06ebde56fb5c4288097f2f57b240b7":[1,0,0,5,3,1,3,0],
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_manager.html#a4698b41da00efe1a39c5aef4a1bde0bc":[1,0,0,5,3,1,3,2],
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_manager.html#a86215ad62ecaeb2f128417385dff915b":[1,0,0,5,3,1,3,1],
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_manager.html#acc6cecce741f90e299ad1b312241c097":[1,0,0,5,3,1,3,5],
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_manager.html#ade8e1fcee96f9beee9b40c83be20a27e":[1,0,0,5,3,1,3,4],
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_module_1_1_o_r_m_module.html":[1,0,0,5,3,2,0]
+"class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_manager.html#a33b822480ba91f5a6eed6cac80abd366":[1,0,0,5,3,1,3,3]
 };

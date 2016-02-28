@@ -6,12 +6,11 @@ var NAVTREE =
       [ "Package Functions", "namespacemembers.html", [
         [ "All", "namespacemembers.html", null ],
         [ "Functions", "namespacemembers_func.html", null ],
-        [ "Enumerations", "namespacemembers_enum.html", null ],
-        [ "Enumerator", "namespacemembers_eval.html", null ]
+        [ "Enumerations", "namespacemembers_enum.html", null ]
       ] ]
     ] ],
-    [ "Classes", null, [
-      [ "Class List", "annotated.html", "annotated" ],
+    [ "Classes", "annotated.html", [
+      [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
@@ -33,20 +32,20 @@ var NAVTREEINDEX =
 "_event_args_8cs.html",
 "_i_string_formatter_8cs.html",
 "_s_o_a_p_serializer_8cs.html",
-"class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html#aba2fc940d0ff3b31e005784277450572",
-"class_utilities_1_1_data_types_1_1_data_mapper_1_1_base_classes_1_1_type_mapping_base.html#a10a268348541e3b106458eb2ba00ba22",
-"class_utilities_1_1_data_types_1_1_priority_queue.html#adf36aec73410ca1ef321e7dacfd601e0",
-"class_utilities_1_1_i_o_1_1_file_formats_1_1_base_classes_1_1_format_base.html#a80c9389772c7418aedd0a0124b602804",
-"class_utilities_1_1_i_o_1_1_file_info.html#a92597de4300035b686395314f90d8254",
-"class_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_contracts_1_1_i_directory_contract.html#a7f3fce7cb3109d7ecd5cafa5334d58c2",
-"class_utilities_1_1_o_r_m_1_1_aspect_1_1_o_r_m_aspect.html",
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_module_1_1_o_r_m_module.html#a5644f4021eed687f63565940340e7fdf",
-"class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_stored_procedure.html#a98281e6f6a876e01ab8ac64eddb8fcf1",
-"class_utilities_1_1_random_1_1_contact_info_generators_1_1_street_address_generator.html#ad2e93202dc5e8228e2f55639bc4ec455",
-"class_utilities_1_1_validation_1_1_not_in_range_attribute.html#aac6694b4275be5ccb9a78d2c965850e5",
-"functions_func_o.html",
-"interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_mapping.html",
-"namespace_utilities_1_1_data_types_1_1_conversion_1_1_converters.html"
+"class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html#a57ae43a2f4d65aef3753f89a03f61b84",
+"class_utilities_1_1_data_types_1_1_data_mapper_1_1_base_classes_1_1_data_mapper_base.html#ad067535359802456173b85d8be5f80bd",
+"class_utilities_1_1_data_types_1_1_priority_queue.html#aa86fad3c7cc3a5ea95bcd5ef5ebe117d",
+"class_utilities_1_1_i_o_1_1_encryption_1_1_module_1_1_encryption_module.html",
+"class_utilities_1_1_i_o_1_1_file_info.html#a6c28aa74bfb148588d988b1804ee95dc",
+"class_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_contracts_1_1_i_directory_contract.html#a3f88cccf33cc10e177a1f3f68a601670",
+"class_utilities_1_1_media_1_1_swift_bitmap.html#aee4cb77c5c788984bb644c39800aa281",
+"class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_manager.html#a3a06ebde56fb5c4288097f2f57b240b7",
+"class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_s_q_l_server_1_1_s_q_l_server_schema_generator.html#abc2e60ce1cf79691b98547a31a4d1cd0",
+"class_utilities_1_1_random_1_1_contact_info_generators_1_1_state_generator.html#aad61d2596620e00b30f9e302ee3ff630",
+"class_utilities_1_1_validation_1_1_not_empty_attribute.html#a882ef590dfc739c9eefee1c459541de7",
+"functions_func_f.html",
+"interface_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_interfaces_1_1_i_i_enumerable_many_to_one.html",
+"namespace_utilities_1_1_data_types_1_1_code_gen_1_1_base_classes.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
