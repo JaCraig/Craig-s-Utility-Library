@@ -283,6 +283,7 @@
     <Compile Include="DataTypes\ExtensionMethods\ValueTypeExtensions.cs" />
     <Compile Include="DataTypes\Formatters\GenericStringFormatter.cs" />
     <Compile Include="DataTypes\Formatters\Interfaces\IStringFormatter.cs" />
+    <Compile Include="DataTypes\Graph.cs" />
     <Compile Include="DataTypes\ListMapping.cs" />
     <Compile Include="DataTypes\ExtensionMethods\MathExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\PermutationExtensions.cs" />
@@ -634,4 +635,3 @@
   </Target>
   -->
 </Project>
-

@@ -59,6 +59,7 @@ namespace Utilities.ORM.Manager
             this.SchemaProvider = SchemaProvider;
             this.SourceProvider = SourceProvider;
             SetupMappings(Databases);
+            SortMappings();
             foreach (IDatabase Database in Mappings.Keys.Where(x => x.Update))
             {
                 this.SchemaProvider.Setup(Mappings, QueryProvider, Database, SourceProvider.GetSource(Database.GetType()));
@@ -99,6 +100,142 @@ namespace Utilities.ORM.Manager
             return "ORM Manager\r\n";
         }
 
+        private Graph<IMapping> FindGraph(IEnumerable<IMapping> mappings)
+        {
+            var Graph = new Graph<IMapping>();
+            foreach (var Mapping in mappings)
+            {
+                Graph.AddVertex(Mapping);
+            }
+            foreach (var Mapping in mappings)
+            {
+                Type ObjectType = Mapping.ObjectType;
+                Type BaseType = ObjectType.BaseType;
+                while (BaseType != typeof(object)
+                    && BaseType != null)
+                {
+                    var BaseMapping = mappings.FirstOrDefault(x => x.ObjectType == BaseType);
+                    if (BaseMapping != null)
+                    {
+                        var SinkVertex = Graph.Vertices.First(x => x.Data == BaseMapping);
+                        var SourceVertex = Graph.Vertices.First(x => x.Data == Mapping);
+                        SourceVertex.AddOutgoingEdge(SinkVertex);
+                    }
+                    BaseType = BaseType.BaseType;
+                }
+                foreach (Type Interface in ObjectType.GetInterfaces())
+                {
+                    var BaseMapping = mappings.FirstOrDefault(x => x.ObjectType == Interface);
+                    if (BaseMapping != null)
+                    {
+                        var SinkVertex = Graph.Vertices.First(x => x.Data == BaseMapping);
+                        var SourceVertex = Graph.Vertices.First(x => x.Data == Mapping);
+                        SourceVertex.AddOutgoingEdge(SinkVertex);
+                    }
+                }
+            }
+            return Graph;
+        }
+
+        private void FindOrderBaseClasses(IMapping mapping, IEnumerable<IMapping> mappings, int baseOrder)
+        {
+            Stack<IMapping> TempStack = new Stack<IMapping>();
+            Type ObjectType = mapping.ObjectType;
+            TempStack.Push(mapping);
+            while (ObjectType != typeof(object))
+            {
+                var BaseMapping = mappings.FirstOrDefault(x => x.ObjectType == ObjectType);
+                if (BaseMapping != null)
+                {
+                    TempStack.Push(BaseMapping);
+                }
+                ObjectType = ObjectType.BaseType;
+            }
+            var Order = baseOrder;
+            while (TempStack.Count > 0)
+            {
+                var Mapping = TempStack.Pop();
+                if (Mapping.Order == 0 || Order > Mapping.Order)
+                {
+                    Mapping.Order = Order;
+                }
+                else if (Order < Mapping.Order)
+                {
+                    Order = Mapping.Order;
+                }
+                ++Order;
+            }
+        }
+
+        private void FindOrderInterfaces(IMapping mapping, IEnumerable<IMapping> mappings, int baseOrder)
+        {
+            Stack<IMapping> TempStack = new Stack<IMapping>();
+            var ObjectType = mapping.ObjectType;
+            var Order = baseOrder;
+            foreach (Type Interface in mapping.ObjectType.GetInterfaces())
+            {
+                var PreviousOrder = mapping.Order;
+                while (ObjectType != typeof(object))
+                {
+                    if (!ObjectType.GetInterfaces().Contains(Interface))
+                    {
+                        var BaseMapping = mappings.FirstOrDefault(x => x.ObjectType == ObjectType);
+                        if (BaseMapping != null)
+                        {
+                            TempStack.Push(BaseMapping);
+                        }
+                        ObjectType = ObjectType.BaseType;
+                    }
+                }
+            }
+            var Order = baseOrder;
+            while (TempStack.Count > 0)
+            {
+                var Mapping = TempStack.Pop();
+                if (Mapping.Order == 0 || Order > Mapping.Order)
+                {
+                    Mapping.Order = Order;
+                }
+                else if (Order < Mapping.Order)
+                {
+                    Order = Mapping.Order;
+                }
+                ++Order;
+            }
+        }
+
+        private List<IMapping> FindStartingNodes(Graph<IMapping> graph)
+        {
+            return graph.Vertices.Where(x => x.IncomingEdges.Count == 0).Select(x => x.Data).ToList();
+        }
+
+        private IEnumerable<IMapping> KhanSort(IEnumerable<IMapping> mappings)
+        {
+            /*L ← Empty list that will contain the sorted elements
+S ← Set of all nodes with no incoming edges
+while S is non-empty do
+    remove a node n from S
+    add n to tail of L
+    for each node m with an edge e from n to m do
+        remove edge e from the graph
+        if m has no other incoming edges then
+            insert m into S
+if graph has edges then
+    return error (graph has at least one cycle)
+else
+    return L (a topologically sorted order)*/
+            List<IMapping> ResultList = new List<IMapping>();
+            Graph<IMapping> Graph = FindGraph(mappings);
+            List<IMapping> StartingNodes = FindStartingNodes(Graph);
+            while (StartingNodes.Count > 0)
+            {
+                var Mapping = StartingNodes.First();
+                StartingNodes.Remove(Mapping);
+                ResultList.Add(Mapping);
+            }
+            return ResultList;
+        }
+
         private void SetupMappings(IEnumerable<IDatabase> Databases)
         {
             Contract.Requires<NullReferenceException>(MapperProvider != null, "MapperProvider");
@@ -113,6 +250,23 @@ namespace Utilities.ORM.Manager
                 {
                     Mapping.Setup(SourceProvider.GetSource(Database.GetType()), MapperProvider, QueryProvider);
                 }
+            }
+        }
+
+        private void SortMappings()
+        {
+            var BaseOrder = 0;
+            foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
+            {
+                foreach (var Mapping in Mappings[Database])
+                {
+                    if (Mapping.Order == 0)
+                    {
+                        FindOrderBaseClasses(Mapping, Mappings[Database], BaseOrder);
+                        FindOrderInterfaces(Mapping, Mappings[Database], BaseOrder);
+                    }
+                }
+                BaseOrder += Mappings[Database].Count();
             }
         }
     }

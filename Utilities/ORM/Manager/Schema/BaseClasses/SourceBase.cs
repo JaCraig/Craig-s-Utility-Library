@@ -36,10 +36,10 @@ namespace Utilities.ORM.Manager.Schema.BaseClasses
         protected SourceBase(string Name)
         {
             this.Name = Name;
-            this.Tables = new List<ITable>();
-            this.StoredProcedures = new List<ITable>();
-            this.Views = new List<ITable>();
-            this.Functions = new List<IFunction>();
+            Tables = new List<ITable>();
+            StoredProcedures = new List<ITable>();
+            Views = new List<ITable>();
+            Functions = new List<IFunction>();
         }
 
         /// <summary>
@@ -66,13 +66,6 @@ namespace Utilities.ORM.Manager.Schema.BaseClasses
         /// Views within the source
         /// </summary>
         public ICollection<ITable> Views { get; private set; }
-
-        /// <summary>
-        /// Gets a specific table based on the name
-        /// </summary>
-        /// <param name="Name">Name of the table</param>
-        /// <returns>The table specified</returns>
-        public ITable this[string Name] { get { return Tables.FirstOrDefault(x => string.Equals(x.Name, Name, System.StringComparison.CurrentCultureIgnoreCase)); } }
 
         /// <summary>
         /// Adds a function to the source
@@ -103,5 +96,12 @@ namespace Utilities.ORM.Manager.Schema.BaseClasses
         /// <param name="ViewName">View name</param>
         /// <returns>View that was created/added</returns>
         public abstract ITable AddView(string ViewName);
+
+        /// <summary>
+        /// Gets a specific table based on the name
+        /// </summary>
+        /// <param name="Name">Name of the table</param>
+        /// <returns>The table specified</returns>
+        public ITable this[string Name] { get { return Tables.FirstOrDefault(x => string.Equals(x.Name, Name, System.StringComparison.CurrentCultureIgnoreCase)); } }
     }
 }

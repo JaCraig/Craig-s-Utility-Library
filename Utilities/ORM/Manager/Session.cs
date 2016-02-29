@@ -77,7 +77,7 @@ namespace Utilities.ORM.Manager
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>All items that match the criteria</returns>
         public IEnumerable<ObjectType> All<ObjectType>(params IParameter[] Parameters)
-            where ObjectType : class,new()
+            where ObjectType : class
         {
             Parameters = Parameters.Check(new IParameter[] { });
             var ReturnValue = new List<Dynamo>();
@@ -110,7 +110,7 @@ namespace Utilities.ORM.Manager
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>A single object matching the criteria</returns>
         public ObjectType Any<ObjectType>(params IParameter[] Parameters)
-            where ObjectType : class,new()
+            where ObjectType : class
         {
             Parameters = Parameters.Check(new IParameter[] { });
             Dynamo ReturnValue = null;
@@ -141,7 +141,7 @@ namespace Utilities.ORM.Manager
         /// <param name="ID">ID of the object to load</param>
         /// <returns>A single object matching the ID</returns>
         public ObjectType Any<ObjectType, IDType>(IDType ID)
-            where ObjectType : class,new()
+            where ObjectType : class
             where IDType : IComparable
         {
             Dynamo ReturnValue = null;
@@ -176,7 +176,7 @@ namespace Utilities.ORM.Manager
         /// <typeparam name="ObjectType">Object type</typeparam>
         /// <param name="Object">Object to delete</param>
         public void Delete<ObjectType>(ObjectType Object)
-            where ObjectType : class,new()
+            where ObjectType : class
         {
             Cache.RemoveByTag(typeof(ObjectType).GetName());
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Writable).OrderBy(x => x.Order))
@@ -202,8 +202,8 @@ namespace Utilities.ORM.Manager
         /// <param name="PropertyName">Property name</param>
         /// <returns>The appropriate property value</returns>
         public IList<DataType> LoadProperties<ObjectType, DataType>(ObjectType Object, string PropertyName)
-            where ObjectType : class,new()
-            where DataType : class,new()
+            where ObjectType : class
+            where DataType : class
         {
             var ReturnValue = new System.Collections.Generic.List<Dynamo>();
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
@@ -268,8 +268,8 @@ namespace Utilities.ORM.Manager
         /// <param name="PropertyName">Property name</param>
         /// <returns>The appropriate property value</returns>
         public DataType LoadProperty<ObjectType, DataType>(ObjectType Object, string PropertyName)
-            where ObjectType : class,new()
-            where DataType : class,new()
+            where ObjectType : class
+            where DataType : class
         {
             return LoadProperties<ObjectType, DataType>(Object, PropertyName).FirstOrDefault();
         }
@@ -282,7 +282,7 @@ namespace Utilities.ORM.Manager
         /// <typeparam name="ObjectType">Object type to get the page count of</typeparam>
         /// <returns>The number of pages that the table contains for the specified page size</returns>
         public int PageCount<ObjectType>(int PageSize = 25, params IParameter[] Parameters)
-            where ObjectType : class,new()
+            where ObjectType : class
         {
             Parameters = Parameters.Check(new IParameter[] { });
             string KeyName = typeof(ObjectType).GetName() + "_PageCount_" + PageSize.ToString(CultureInfo.InvariantCulture) + "_" + Parameters.ToString(x => x.ToString(), "_");
@@ -322,7 +322,7 @@ namespace Utilities.ORM.Manager
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>A paged list of items that match the criteria</returns>
         public IEnumerable<ObjectType> Paged<ObjectType>(int PageSize = 25, int CurrentPage = 0, string OrderBy = "", params IParameter[] Parameters)
-            where ObjectType : class,new()
+            where ObjectType : class
         {
             Parameters = Parameters.Check(new IParameter[] { });
             string KeyName = typeof(ObjectType).GetName() + "_Paged_" + PageSize.ToString(CultureInfo.InvariantCulture) + "_" + CurrentPage.ToString(CultureInfo.InvariantCulture) + "_" + Parameters.ToString(x => x.ToString(), "_");
@@ -360,7 +360,7 @@ namespace Utilities.ORM.Manager
         /// <typeparam name="PrimaryKeyType">Primary key type</typeparam>
         /// <param name="Object">Object to save</param>
         public void Save<ObjectType, PrimaryKeyType>(ObjectType Object)
-            where ObjectType : class,new()
+            where ObjectType : class
         {
             Cache.RemoveByTag(typeof(ObjectType).GetName());
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Writable).OrderBy(x => x.Order))
@@ -384,7 +384,7 @@ namespace Utilities.ORM.Manager
         }
 
         private static void CascadeDelete<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch, List<object> ObjectsSeen)
-            where ObjectType : class, new()
+            where ObjectType : class
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             Contract.Requires<ArgumentNullException>(Mapping.Properties != null, "Mapping.Properties");
@@ -395,7 +395,7 @@ namespace Utilities.ORM.Manager
         }
 
         private static void CascadeSave<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch, List<object> ObjectsSeen)
-            where ObjectType : class, new()
+            where ObjectType : class
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             Contract.Requires<ArgumentNullException>(Mapping.Properties != null, "Mapping.Properties");
@@ -433,7 +433,7 @@ namespace Utilities.ORM.Manager
         }
 
         private static void JoinsDelete<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch, List<object> ObjectsSeen)
-            where ObjectType : class, new()
+            where ObjectType : class
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             Contract.Requires<ArgumentNullException>(Mapping.Properties != null, "Mapping.Properties");
@@ -457,7 +457,7 @@ namespace Utilities.ORM.Manager
         }
 
         private static void JoinsSave<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch, List<object> ObjectsSeen)
-            where ObjectType : class, new()
+            where ObjectType : class
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             Contract.Requires<ArgumentNullException>(Mapping.Properties != null, "Mapping.Properties");
@@ -480,28 +480,28 @@ namespace Utilities.ORM.Manager
             }
         }
 
-        private ObjectType ConvertValue<ObjectType>(Dynamo ReturnValue) where ObjectType : class,new()
+        private ObjectType ConvertValue<ObjectType>(Dynamo ReturnValue) where ObjectType : class
         {
             if (ReturnValue == null)
                 return default(ObjectType);
             return ReturnValue.To<ObjectType>().Chain(x => { ((IORMObject)x).Session0 = this; });
         }
 
-        private IEnumerable<ObjectType> ConvertValues<ObjectType>(List<Dynamo> ReturnValue) where ObjectType : class, new()
+        private IEnumerable<ObjectType> ConvertValues<ObjectType>(List<Dynamo> ReturnValue) where ObjectType : class
         {
             if (ReturnValue == null)
                 ReturnValue = new List<Dynamo>();
             return ReturnValue.ForEachParallel(x => ConvertValue<ObjectType>(x));
         }
 
-        private ObjectType GetCached<ObjectType>(ref Dynamo ReturnValue, string KeyName) where ObjectType : class, new()
+        private ObjectType GetCached<ObjectType>(ref Dynamo ReturnValue, string KeyName) where ObjectType : class
         {
             Contract.Requires(this.Cache != null);
             ReturnValue = (Dynamo)Cache[KeyName];
             return ConvertValue<ObjectType>(ReturnValue);
         }
 
-        private IEnumerable<ObjectType> GetListCached<ObjectType>(ref List<Dynamo> ReturnValue, string KeyName) where ObjectType : class, new()
+        private IEnumerable<ObjectType> GetListCached<ObjectType>(ref List<Dynamo> ReturnValue, string KeyName) where ObjectType : class
         {
             Contract.Requires(this.Cache != null);
             ReturnValue = (List<Dynamo>)Cache[KeyName];

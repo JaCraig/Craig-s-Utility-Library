@@ -41,8 +41,8 @@ namespace Utilities.ORM.Manager.Schema.BaseClasses
         {
             this.Name = Name;
             this.Source = Source;
-            this.Columns = new List<IColumn>();
-            this.Triggers = new List<ITrigger>();
+            Columns = new List<IColumn>();
+            Triggers = new List<ITrigger>();
         }
 
         /// <summary>
@@ -64,13 +64,6 @@ namespace Utilities.ORM.Manager.Schema.BaseClasses
         /// List of triggers associated with the table
         /// </summary>
         public ICollection<ITrigger> Triggers { get; private set; }
-
-        /// <summary>
-        /// The column specified
-        /// </summary>
-        /// <param name="Name">Name of the column</param>
-        /// <returns>The column specified</returns>
-        public IColumn this[string Name] { get { return Columns.FirstOrDefault(x => string.Equals(x.Name, Name, System.StringComparison.CurrentCultureIgnoreCase)); } }
 
         /// <summary>
         /// Adds a column
@@ -127,7 +120,14 @@ namespace Utilities.ORM.Manager.Schema.BaseClasses
         /// </summary>
         public void SetupForeignKeys()
         {
-            this.Columns.ForEach(x => x.SetupForeignKeys());
+            Columns.ForEach(x => x.SetupForeignKeys());
         }
+
+        /// <summary>
+        /// The column specified
+        /// </summary>
+        /// <param name="Name">Name of the column</param>
+        /// <returns>The column specified</returns>
+        public IColumn this[string Name] { get { return Columns.FirstOrDefault(x => string.Equals(x.Name, Name, System.StringComparison.CurrentCultureIgnoreCase)); } }
     }
 }

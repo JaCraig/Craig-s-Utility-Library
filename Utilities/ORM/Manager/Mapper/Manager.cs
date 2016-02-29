@@ -52,21 +52,6 @@ namespace Utilities.ORM.Manager.Mapper
         protected ListMapping<Type, IMapping> Mappings { get; private set; }
 
         /// <summary>
-        /// Gets the mapping specified by the object type
-        /// </summary>
-        /// <param name="Key">The object type</param>
-        /// <returns>The mapping specified</returns>
-        public IEnumerable<IMapping> this[Type Key] { get { return Mappings.GetValue(Key).Check(new ConcurrentBag<IMapping>()); } }
-
-        /// <summary>
-        /// Gets the mapping specified by the object type and source
-        /// </summary>
-        /// <param name="Key">The object type</param>
-        /// <param name="Source">Source information</param>
-        /// <returns>The mapping specified</returns>
-        public IMapping this[Type Key, ISourceInfo Source] { get { return this[Key].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType()); } }
-
-        /// <summary>
         /// Gets the enumerator for the mappings
         /// </summary>
         /// <returns>The enumerator</returns>
@@ -104,5 +89,20 @@ namespace Utilities.ORM.Manager.Mapper
         {
             return "Mappers: " + Mappings.ToString(x => x.Value.OrderBy(y => y.ToString()).ToString(y => y.ToString())) + "\r\n";
         }
+
+        /// <summary>
+        /// Gets the mapping specified by the object type
+        /// </summary>
+        /// <param name="Key">The object type</param>
+        /// <returns>The mapping specified</returns>
+        public IEnumerable<IMapping> this[Type Key] { get { return Mappings.GetValue(Key) ?? new ConcurrentBag<IMapping>(); } }
+
+        /// <summary>
+        /// Gets the mapping specified by the object type and source
+        /// </summary>
+        /// <param name="Key">The object type</param>
+        /// <param name="Source">Source information</param>
+        /// <returns>The mapping specified</returns>
+        public IMapping this[Type Key, ISourceInfo Source] { get { return this[Key].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType()); } }
     }
 }

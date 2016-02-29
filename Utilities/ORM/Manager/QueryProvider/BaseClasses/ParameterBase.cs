@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
 using System.Data;
 using System.Data.Common;
 using Utilities.DataTypes;
@@ -80,9 +79,9 @@ namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
         {
             this.ID = ID;
             this.Value = (DataType)Value;
-            this.DatabaseType = Type;
+            DatabaseType = Type;
             this.Direction = Direction;
-            this.BatchID = ID;
+            BatchID = ID;
             this.ParameterStarter = ParameterStarter;
         }
 
@@ -141,7 +140,7 @@ namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
         /// <returns>true if the first and second item are the same, false otherwise</returns>
         public static bool operator ==(ParameterBase<DataType> first, ParameterBase<DataType> second)
         {
-            if (Object.ReferenceEquals(first, second))
+            if (ReferenceEquals(first, second))
                 return true;
 
             if ((object)first == null || (object)second == null)

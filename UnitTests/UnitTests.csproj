@@ -239,6 +239,9 @@
     <Compile Include="ORM\Manager\Schema\Default\View.cs" />
     <Compile Include="ORM\Manager\Schema\Manager.cs" />
     <Compile Include="ORM\Manager\Session.cs" />
+    <Compile Include="ORM\Manager\SessionUsingComposition.cs" />
+    <Compile Include="ORM\Manager\SessionWithAbstractClasses.cs" />
+    <Compile Include="ORM\Manager\SessionWithInterface.cs" />
     <Compile Include="ORM\Manager\SourceProvider\DefaultDatabase.cs" />
     <Compile Include="ORM\Manager\SourceProvider\Manager.cs" />
     <Compile Include="ORM\Manager\SourceProvider\SourceInfo.cs" />
@@ -321,4 +324,3 @@
   </Target>
   -->
 </Project>
-

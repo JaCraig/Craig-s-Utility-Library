@@ -150,7 +150,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// <summary>
         /// Order that the mappings are initialized
         /// </summary>
-        int Order { get; }
+        int Order { get; set; }
 
         /// <summary>
         /// Prefix used for defining properties/table name

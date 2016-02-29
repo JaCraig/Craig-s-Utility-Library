@@ -49,7 +49,7 @@ namespace Utilities.ORM
             for (int x = 0; x < Reader.FieldCount; ++x)
             {
                 if (Reader.GetName(x) == ID)
-                    return Reader.GetParameter<DataType>(x, Default);
+                    return Reader.GetParameter(x, Default);
             }
             return Default;
         }

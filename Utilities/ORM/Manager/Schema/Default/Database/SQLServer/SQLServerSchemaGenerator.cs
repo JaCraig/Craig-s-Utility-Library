@@ -657,7 +657,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         private static void SetupJoiningTables(ListMapping<IDatabase, IMapping> Mappings, IDatabase Key, Schema.Default.Database.Database TempDatabase)
         {
             Contract.Requires<NullReferenceException>(Mappings != null, "Mappings");
-            foreach (IMapping Mapping in Mappings[Key])
+            foreach (IMapping Mapping in Mappings[Key].OrderBy(x => x.Order))
             {
                 foreach (IProperty Property in Mapping.Properties)
                 {
@@ -808,7 +808,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         private static void SetupTables(ListMapping<IDatabase, IMapping> Mappings, IDatabase Key, Schema.Default.Database.Database TempDatabase)
         {
             Contract.Requires<NullReferenceException>(Mappings != null, "Mappings");
-            foreach (IMapping Mapping in Mappings[Key])
+            foreach (IMapping Mapping in Mappings[Key].OrderBy(x => x.Order))
             {
                 TempDatabase.AddTable(Mapping.TableName);
                 SetupProperties(TempDatabase[Mapping.TableName], Mapping);

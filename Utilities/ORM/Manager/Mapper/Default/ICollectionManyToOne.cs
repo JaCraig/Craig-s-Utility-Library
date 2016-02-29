@@ -80,7 +80,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         public override IBatch CascadeDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
-            Mapper.Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
+            Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Manager>();
             IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
             IBatch Batch = Provider.Batch(Source);
             var AspectObject = Object as IORMObject;
@@ -99,7 +99,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
                 }
                 Batch.AddCommand(Provider.Generate<DataType>(Source, PropertyMapping).Delete(Item));
             }
-            Utilities.IoC.Manager.Bootstrapper.Resolve<DataTypes.Caching.Manager>().Cache().RemoveByTag(typeof(DataType).GetName());
+            IoC.Manager.Bootstrapper.Resolve<DataTypes.Caching.Manager>().Cache().RemoveByTag(typeof(DataType).GetName());
             return Batch;
         }
 
@@ -113,7 +113,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         public override IBatch CascadeJoinsDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
-            Mapper.Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
+            Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Manager>();
             IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
             IBatch Batch = Provider.Batch(Source);
             var AspectObject = Object as IORMObject;
@@ -154,7 +154,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         public override IBatch CascadeJoinsSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
-            Mapper.Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
+            Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Manager>();
             IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
             IBatch Batch = Provider.Batch(Source);
             var AspectObject = Object as IORMObject;
@@ -195,7 +195,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         public override IBatch CascadeSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
-            Mapper.Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
+            Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Manager>();
             IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
             IBatch Batch = Provider.Batch(Source);
             var AspectObject = Object as IORMObject;
@@ -214,7 +214,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
                 }
                 Batch.AddCommand(((IProperty<DataType>)PropertyMapping.IDProperties.FirstOrDefault()).CascadeSave(Item, Source, ObjectsSeen.ToList()));
             }
-            Utilities.IoC.Manager.Bootstrapper.Resolve<DataTypes.Caching.Manager>().Cache().RemoveByTag(typeof(DataType).GetName());
+            IoC.Manager.Bootstrapper.Resolve<DataTypes.Caching.Manager>().Cache().RemoveByTag(typeof(DataType).GetName());
             return Batch;
         }
 
@@ -280,7 +280,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <param name="MappingProvider">Mapping provider</param>
         /// <param name="QueryProvider">Query provider</param>
         /// <param name="Source">Source info</param>
-        public override void Setup(ISourceInfo Source, Mapper.Manager MappingProvider, QueryProvider.Manager QueryProvider)
+        public override void Setup(ISourceInfo Source, Manager MappingProvider, QueryProvider.Manager QueryProvider)
         {
             ForeignMapping = MappingProvider[Type, Source];
             QueryProvider.Generate<ClassType>(Source, Mapping).SetupLoadCommands(this);

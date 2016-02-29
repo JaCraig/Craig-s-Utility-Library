@@ -99,7 +99,7 @@ namespace Utilities.ORM.BaseClasses
         /// The order in which the mappings are initialized (lower items are initialized prior to
         /// higher number items)
         /// </summary>
-        public int Order { get; private set; }
+        public int Order { get; set; }
 
         /// <summary>
         /// Prefix used to define names of properties/table name

@@ -19,9 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System.Data;
 using Utilities.ORM.Manager.Mapper.Interfaces;
-using Utilities.ORM.Manager.Schema.Default.Database;
 using Xunit;
 
 namespace UnitTests.ORM.Manager.Mapper
@@ -32,7 +30,7 @@ namespace UnitTests.ORM.Manager.Mapper
         public void Create()
         {
             new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>());
-            Assert.Equal(150, new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>()).ToString().Length);
+            Assert.Equal(220, new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>()).ToString().Length);
         }
     }
 }
