@@ -34,7 +34,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
     /// </summary>
     /// <typeparam name="ClassType">Class type</typeparam>
     public interface IMapping<ClassType> : IMapping
-        where ClassType : class,new()
+        where ClassType : class
     {
         /// <summary>
         /// Declares a property as an ID
@@ -51,7 +51,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// <param name="Expression">Expression pointing to the many to many property</param>
         /// <returns>The many to many object</returns>
         ManyToMany<ClassType, DataType> ManyToMany<DataType>(Expression<Func<ClassType, IEnumerable<DataType>>> Expression)
-            where DataType : class,new();
+            where DataType : class;
 
         /// <summary>
         /// Many to many mapping
@@ -60,7 +60,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// <param name="Expression">Expression pointing to the many to many property</param>
         /// <returns>The many to many object</returns>
         ListManyToMany<ClassType, DataType> ManyToMany<DataType>(Expression<Func<ClassType, List<DataType>>> Expression)
-            where DataType : class,new();
+            where DataType : class;
 
         /// <summary>
         /// Many to one
@@ -69,7 +69,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// <param name="Expression">Expression pointing to the property</param>
         /// <returns>The many to one object</returns>
         ManyToOne<ClassType, DataType> ManyToOne<DataType>(Expression<Func<ClassType, DataType>> Expression)
-            where DataType : class,new();
+            where DataType : class;
 
         /// <summary>
         /// IEnumerable many to one
@@ -78,7 +78,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// <param name="Expression">Expression pointint to the property</param>
         /// <returns>The many to one object</returns>
         IEnumerableManyToOne<ClassType, DataType> ManyToOne<DataType>(Expression<Func<ClassType, IEnumerable<DataType>>> Expression)
-            where DataType : class,new();
+            where DataType : class;
 
         /// <summary>
         /// IEnumerable many to one
@@ -87,7 +87,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// <param name="Expression">Expression pointint to the property</param>
         /// <returns>The many to one object</returns>
         ListManyToOne<ClassType, DataType> ManyToOne<DataType>(Expression<Func<ClassType, List<DataType>>> Expression)
-            where DataType : class,new();
+            where DataType : class;
 
         /// <summary>
         /// Sets a property as a map type
@@ -96,7 +96,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// <param name="Expression">Expression pointing to the property</param>
         /// <returns>the map object</returns>
         Map<ClassType, DataType> Map<DataType>(Expression<Func<ClassType, DataType>> Expression)
-            where DataType : class,new();
+            where DataType : class;
 
         /// <summary>
         /// Sets a property as a reference type

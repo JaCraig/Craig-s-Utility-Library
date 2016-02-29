@@ -39,8 +39,8 @@ namespace Utilities.ORM.Manager.Mapper.Default
     /// <typeparam name="ClassType">Class type</typeparam>
     /// <typeparam name="DataType">Data type</typeparam>
     public class IEnumerableManyToOne<ClassType, DataType> : PropertyBase<ClassType, IEnumerable<DataType>, IEnumerableManyToOne<ClassType, DataType>>, IIEnumerableManyToOne
-        where ClassType : class,new()
-        where DataType : class,new()
+        where ClassType : class
+        where DataType : class
     {
         /// <summary>
         /// Constructor
@@ -64,9 +64,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <summary>
         /// Gets the name of the type.
         /// </summary>
-        /// <value>
-        /// The name of the type.
-        /// </value>
+        /// <value>The name of the type.</value>
         public override string TypeName
         {
             get { return typeof(IEnumerable<>).MakeGenericType(Type).GetName(); }

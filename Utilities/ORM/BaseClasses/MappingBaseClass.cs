@@ -36,7 +36,7 @@ namespace Utilities.ORM.BaseClasses
     /// <typeparam name="DatabaseType">Database type</typeparam>
     public abstract class MappingBaseClass<ClassType, DatabaseType> : IMapping, IMapping<ClassType>
         where DatabaseType : IDatabase
-        where ClassType : class, new()
+        where ClassType : class
     {
         /// <summary>
         /// Constructor
@@ -218,7 +218,7 @@ namespace Utilities.ORM.BaseClasses
         /// <param name="Expression">Expression</param>
         /// <returns>The many to many object</returns>
         public ManyToMany<ClassType, DataType> ManyToMany<DataType>(System.Linq.Expressions.Expression<Func<ClassType, IEnumerable<DataType>>> Expression)
-            where DataType : class, new()
+            where DataType : class
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
@@ -234,7 +234,7 @@ namespace Utilities.ORM.BaseClasses
         /// <param name="Expression">Expression</param>
         /// <returns>The many to many object</returns>
         public ListManyToMany<ClassType, DataType> ManyToMany<DataType>(System.Linq.Expressions.Expression<Func<ClassType, List<DataType>>> Expression)
-            where DataType : class, new()
+            where DataType : class
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
@@ -250,7 +250,7 @@ namespace Utilities.ORM.BaseClasses
         /// <param name="Expression">Expression</param>
         /// <returns>The many to many object</returns>
         public IListManyToMany<ClassType, DataType> ManyToMany<DataType>(System.Linq.Expressions.Expression<Func<ClassType, IList<DataType>>> Expression)
-            where DataType : class, new()
+            where DataType : class
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
@@ -266,7 +266,7 @@ namespace Utilities.ORM.BaseClasses
         /// <param name="Expression">Expression</param>
         /// <returns>The many to many object</returns>
         public ICollectionManyToMany<ClassType, DataType> ManyToMany<DataType>(System.Linq.Expressions.Expression<Func<ClassType, ICollection<DataType>>> Expression)
-            where DataType : class, new()
+            where DataType : class
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
@@ -282,7 +282,7 @@ namespace Utilities.ORM.BaseClasses
         /// <param name="Expression">Expression</param>
         /// <returns>The many to one object</returns>
         public ManyToOne<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> Expression)
-            where DataType : class, new()
+            where DataType : class
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
@@ -298,7 +298,7 @@ namespace Utilities.ORM.BaseClasses
         /// <param name="Expression">Expression</param>
         /// <returns>The many to one object</returns>
         public IEnumerableManyToOne<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, IEnumerable<DataType>>> Expression)
-            where DataType : class, new()
+            where DataType : class
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
@@ -314,7 +314,7 @@ namespace Utilities.ORM.BaseClasses
         /// <param name="Expression">Expression</param>
         /// <returns>The many to one object</returns>
         public IListManyToOne<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, IList<DataType>>> Expression)
-            where DataType : class, new()
+            where DataType : class
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
@@ -330,7 +330,7 @@ namespace Utilities.ORM.BaseClasses
         /// <param name="Expression">Expression</param>
         /// <returns>The many to one object</returns>
         public ICollectionManyToOne<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, ICollection<DataType>>> Expression)
-            where DataType : class, new()
+            where DataType : class
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
@@ -346,7 +346,7 @@ namespace Utilities.ORM.BaseClasses
         /// <param name="Expression">Expression</param>
         /// <returns>The many to one object</returns>
         public ListManyToOne<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, List<DataType>>> Expression)
-            where DataType : class, new()
+            where DataType : class
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));
@@ -362,7 +362,7 @@ namespace Utilities.ORM.BaseClasses
         /// <param name="Expression">Expression</param>
         /// <returns>The map object</returns>
         public Map<ClassType, DataType> Map<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> Expression)
-            where DataType : class, new()
+            where DataType : class
         {
             if (Expression == null)
                 throw new ArgumentNullException(nameof(Expression));

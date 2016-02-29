@@ -49,6 +49,6 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <param name="Mapping">Mapping info</param>
         /// <returns>Generator object</returns>
         IGenerator<T> Generate<T>(ISourceInfo Source, IMapping Mapping)
-            where T : class,new();
+            where T : class;
     }
 }

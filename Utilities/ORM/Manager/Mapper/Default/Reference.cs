@@ -37,7 +37,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
     /// <typeparam name="ClassType">Class type</typeparam>
     /// <typeparam name="DataType">Data type</typeparam>
     public class Reference<ClassType, DataType> : PropertyBase<ClassType, DataType, Reference<ClassType, DataType>>, IReference
-        where ClassType : class,new()
+        where ClassType : class
     {
         /// <summary>
         /// Constructor
@@ -51,6 +51,15 @@ namespace Utilities.ORM.Manager.Mapper.Default
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             SetTableName(Mapping.TableName);
             SetFieldName(Name + "_");
+        }
+
+        /// <summary>
+        /// Gets the name of the type.
+        /// </summary>
+        /// <value>The name of the type.</value>
+        public override string TypeName
+        {
+            get { return Type.GetName(); }
         }
 
         /// <summary>
@@ -159,17 +168,6 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <param name="Source">Source info</param>
         public override void Setup(ISourceInfo Source, Mapper.Manager MappingProvider, QueryProvider.Manager QueryProvider)
         {
-        }
-
-        /// <summary>
-        /// Gets the name of the type.
-        /// </summary>
-        /// <value>
-        /// The name of the type.
-        /// </value>
-        public override string TypeName
-        {
-            get { return Type.GetName(); }
         }
     }
 }

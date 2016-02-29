@@ -39,8 +39,8 @@ namespace Utilities.ORM.Manager.Mapper.Default
     /// <typeparam name="ClassType">Class type</typeparam>
     /// <typeparam name="DataType">Data type</typeparam>
     public class ManyToOne<ClassType, DataType> : PropertyBase<ClassType, DataType, ManyToOne<ClassType, DataType>>, IManyToOne
-        where ClassType : class,new()
-        where DataType : class,new()
+        where ClassType : class
+        where DataType : class
     {
         /// <summary>
         /// Constructor
@@ -58,6 +58,15 @@ namespace Utilities.ORM.Manager.Mapper.Default
                 SetTableName(Class1 + "_" + Class2);
             else
                 SetTableName(Class2 + "_" + Class1);
+        }
+
+        /// <summary>
+        /// Gets the name of the type.
+        /// </summary>
+        /// <value>The name of the type.</value>
+        public override string TypeName
+        {
+            get { return Type.GetName(); }
         }
 
         /// <summary>
@@ -88,17 +97,6 @@ namespace Utilities.ORM.Manager.Mapper.Default
             Batch.AddCommand(Provider.Generate<DataType>(Source, PropertyMapping).Delete(Item));
             Utilities.IoC.Manager.Bootstrapper.Resolve<DataTypes.Caching.Manager>().Cache().RemoveByTag(typeof(DataType).GetName());
             return Batch;
-        }
-
-        /// <summary>
-        /// Gets the name of the type.
-        /// </summary>
-        /// <value>
-        /// The name of the type.
-        /// </value>
-        public override string TypeName
-        {
-            get { return Type.GetName(); }
         }
 
         /// <summary>

@@ -69,7 +69,7 @@ namespace Utilities.ORM.Manager.QueryProvider
         /// <param name="Mapping">Mapping info</param>
         /// <returns>The generator object</returns>
         public IGenerator<T> Generate<T>(ISourceInfo Source, IMapping Mapping)
-            where T : class,new()
+            where T : class
         {
             Contract.Requires<ArgumentNullException>(Source != null, "Source");
             return Providers.ContainsKey(Source.SourceType) ? Providers[Source.SourceType].Generate<T>(Source, Mapping) : null;

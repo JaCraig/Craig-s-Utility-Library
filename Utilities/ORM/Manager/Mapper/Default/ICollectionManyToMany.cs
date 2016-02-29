@@ -39,8 +39,8 @@ namespace Utilities.ORM.Manager.Mapper.Default
     /// <typeparam name="ClassType">Class type</typeparam>
     /// <typeparam name="DataType">Data type</typeparam>
     public class ICollectionManyToMany<ClassType, DataType> : PropertyBase<ClassType, ICollection<DataType>, ICollectionManyToMany<ClassType, DataType>>, ICollectionManyToMany
-        where ClassType : class,new()
-        where DataType : class,new()
+        where ClassType : class
+        where DataType : class
     {
         /// <summary>
         /// Constructor
@@ -59,6 +59,15 @@ namespace Utilities.ORM.Manager.Mapper.Default
                 SetTableName(Class1 + "_" + Class2);
             else
                 SetTableName(Class2 + "_" + Class1);
+        }
+
+        /// <summary>
+        /// Gets the name of the type.
+        /// </summary>
+        /// <value>The name of the type.</value>
+        public override string TypeName
+        {
+            get { return typeof(ICollection<>).MakeGenericType(Type).GetName(); }
         }
 
         /// <summary>
@@ -275,17 +284,6 @@ namespace Utilities.ORM.Manager.Mapper.Default
         {
             ForeignMapping = MappingProvider[Type, Source];
             QueryProvider.Generate<ClassType>(Source, Mapping).SetupLoadCommands(this);
-        }
-
-        /// <summary>
-        /// Gets the name of the type.
-        /// </summary>
-        /// <value>
-        /// The name of the type.
-        /// </value>
-        public override string TypeName
-        {
-            get { return typeof(ICollection<>).MakeGenericType(Type).GetName(); }
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
     /// </summary>
     /// <typeparam name="T">Class type to generate</typeparam>
     public interface IGenerator<T>
-        where T : class,new()
+        where T : class
     {
         /// <summary>
         /// Generates a batch that will get all items for the given type the parameters specified
@@ -148,7 +148,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">Map property</param>
         void SetupLoadCommands<D>(Map<T, D> Property)
-            where D : class,new();
+            where D : class;
 
         /// <summary>
         /// Sets up the default load command for a IEnumerableManyToOne property
@@ -156,7 +156,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">IEnumerableManyToOne property</param>
         void SetupLoadCommands<D>(IEnumerableManyToOne<T, D> Property)
-            where D : class,new();
+            where D : class;
 
         /// <summary>
         /// Sets up the default load command for a ListManyToOne property
@@ -164,7 +164,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">ListManyToOne property</param>
         void SetupLoadCommands<D>(ListManyToOne<T, D> Property)
-            where D : class,new();
+            where D : class;
 
         /// <summary>
         /// Sets up the default load command for a ListManyToMany property
@@ -172,7 +172,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">ListManyToMany property</param>
         void SetupLoadCommands<D>(ListManyToMany<T, D> Property)
-            where D : class,new();
+            where D : class;
 
         /// <summary>
         /// Sets up the default load command for a ListManyToMany property
@@ -180,7 +180,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">ListManyToMany property</param>
         void SetupLoadCommands<D>(IListManyToMany<T, D> Property)
-            where D : class,new();
+            where D : class;
 
         /// <summary>
         /// Setups the load commands.
@@ -188,7 +188,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <typeparam name="D"></typeparam>
         /// <param name="Property">The property.</param>
         void SetupLoadCommands<D>(IListManyToOne<T, D> Property)
-            where D : class,new();
+            where D : class;
 
         /// <summary>
         /// Sets up the default load command for a ListManyToMany property
@@ -196,7 +196,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">ListManyToMany property</param>
         void SetupLoadCommands<D>(ICollectionManyToMany<T, D> Property)
-            where D : class,new();
+            where D : class;
 
         /// <summary>
         /// Setups the load commands.
@@ -204,7 +204,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <typeparam name="D"></typeparam>
         /// <param name="Property">The property.</param>
         void SetupLoadCommands<D>(ICollectionManyToOne<T, D> Property)
-            where D : class,new();
+            where D : class;
 
         /// <summary>
         /// Sets up the default load command for a ManyToMany property
@@ -212,7 +212,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">ManyToMany property</param>
         void SetupLoadCommands<D>(ManyToMany<T, D> Property)
-            where D : class,new();
+            where D : class;
 
         /// <summary>
         /// Sets up the default load command for a ManyToOne property
@@ -220,7 +220,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">ManyToOne property</param>
         void SetupLoadCommands<D>(ManyToOne<T, D> Property)
-            where D : class,new();
+            where D : class;
 
         /// <summary>
         /// Generates a batch that will update the data from the object

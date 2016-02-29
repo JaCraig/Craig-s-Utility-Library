@@ -66,6 +66,6 @@ namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
         /// <param name="Mapping">Mapping info</param>
         /// <returns>A generator class</returns>
         public abstract IGenerator<T> Generate<T>(ISourceInfo Source, IMapping Mapping)
-            where T : class,new();
+            where T : class;
     }
 }

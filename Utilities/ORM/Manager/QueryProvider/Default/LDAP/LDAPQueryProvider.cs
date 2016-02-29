@@ -59,7 +59,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
         /// <param name="Mapping">Mapping information</param>
         /// <returns>A generator class</returns>
         public IGenerator<T> Generate<T>(ISourceInfo Source, IMapping Mapping)
-            where T : class, new()
+            where T : class
         {
             return new LDAPGenerator<T>(this, Source, Mapping);
         }

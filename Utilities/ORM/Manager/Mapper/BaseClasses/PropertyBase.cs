@@ -35,7 +35,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
     /// Property base class
     /// </summary>
     public abstract class PropertyBase<ClassType, DataType, ReturnType> : IProperty<ClassType, DataType, ReturnType>, IProperty<ClassType, DataType>
-        where ClassType : class,new()
+        where ClassType : class
         where ReturnType : IProperty<ClassType, DataType, ReturnType>
     {
         /// <summary>
@@ -144,9 +144,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <summary>
         /// Gets the name of the type.
         /// </summary>
-        /// <value>
-        /// The name of the type.
-        /// </value>
+        /// <value>The name of the type.</value>
         public abstract string TypeName { get; }
 
         /// <summary>

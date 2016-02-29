@@ -39,7 +39,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
     /// </summary>
     /// <typeparam name="T">Class type</typeparam>
     public class SQLServerGenerator<T> : IGenerator<T>
-        where T : class,new()
+        where T : class
     {
         /// <summary>
         /// Constructor
@@ -445,7 +445,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// </summary>
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">Map property</param>
-        public void SetupLoadCommands<D>(Mapper.Default.Map<T, D> Property) where D : class, new()
+        public void SetupLoadCommands<D>(Mapper.Default.Map<T, D> Property) where D : class
         {
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
@@ -469,7 +469,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">IEnumerableManyToOne property</param>
         public void SetupLoadCommands<D>(Mapper.Default.IEnumerableManyToOne<T, D> Property)
-            where D : class, new()
+            where D : class
         {
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
@@ -493,7 +493,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">ListManyToOne property</param>
         public void SetupLoadCommands<D>(Mapper.Default.ListManyToOne<T, D> Property)
-                    where D : class, new()
+                    where D : class
         {
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
@@ -517,7 +517,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">ListManyToMany property</param>
         public void SetupLoadCommands<D>(Mapper.Default.ListManyToMany<T, D> Property)
-            where D : class, new()
+            where D : class
         {
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
@@ -541,7 +541,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">ManyToOne property</param>
         public void SetupLoadCommands<D>(Mapper.Default.ManyToOne<T, D> Property)
-            where D : class, new()
+            where D : class
         {
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
@@ -565,7 +565,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">ManyToMany property</param>
         public void SetupLoadCommands<D>(Mapper.Default.ManyToMany<T, D> Property)
-            where D : class, new()
+            where D : class
         {
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
@@ -589,7 +589,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">Map property</param>
         public void SetupLoadCommands<D>(Mapper.Default.IListManyToMany<T, D> Property)
-            where D : class, new()
+            where D : class
         {
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
@@ -612,7 +612,55 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// </summary>
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">Map property</param>
-        public void SetupLoadCommands<D>(Mapper.Default.IListManyToOne<T, D> Property) where D : class, new()
+        public void SetupLoadCommands<D>(Mapper.Default.IListManyToOne<T, D> Property) where D : class
+        {
+            if (string.IsNullOrEmpty(Property.LoadCommand))
+            {
+                IMapping ForeignMapping = Property.ForeignMapping;
+                Property.SetLoadUsingCommand(string.Format(CultureInfo.CurrentCulture, ForeignMapping.TableName == Mapping.TableName ?
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}2={1}.{3} WHERE {2}.{4}{5}=@0" :
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}={1}.{3} WHERE {2}.{4}{5}=@0",
+                    GetColumns(ForeignMapping),
+                    ForeignMapping.TableName,
+                    Property.TableName,
+                    ForeignMapping.IDProperties.FirstOrDefault().FieldName,
+                    Mapping.TableName,
+                    Mapping.IDProperties.FirstOrDefault().FieldName),
+                CommandType.Text);
+            }
+        }
+
+        /// <summary>
+        /// Sets up the default load command for a map property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">Map property</param>
+        public void SetupLoadCommands<D>(Mapper.Default.ICollectionManyToMany<T, D> Property)
+            where D : class
+        {
+            if (string.IsNullOrEmpty(Property.LoadCommand))
+            {
+                IMapping ForeignMapping = Property.ForeignMapping;
+                Property.SetLoadUsingCommand(string.Format(CultureInfo.CurrentCulture, ForeignMapping.TableName == Mapping.TableName ?
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}2={1}.{3} WHERE {2}.{4}{5}=@0" :
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}={1}.{3} WHERE {2}.{4}{5}=@0",
+                    GetColumns(ForeignMapping),
+                    ForeignMapping.TableName,
+                    Property.TableName,
+                    ForeignMapping.IDProperties.FirstOrDefault().FieldName,
+                    Mapping.TableName,
+                    Mapping.IDProperties.FirstOrDefault().FieldName),
+                CommandType.Text);
+            }
+        }
+
+        /// <summary>
+        /// Sets up the default load command for a map property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">Map property</param>
+        public void SetupLoadCommands<D>(Mapper.Default.ICollectionManyToOne<T, D> Property)
+            where D : class
         {
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
@@ -788,54 +836,6 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                     ParameterList,
                     IDProperties),
                 CommandType.Text);
-        }
-
-        /// <summary>
-        /// Sets up the default load command for a map property
-        /// </summary>
-        /// <typeparam name="D">Data type</typeparam>
-        /// <param name="Property">Map property</param>
-        public void SetupLoadCommands<D>(Mapper.Default.ICollectionManyToMany<T, D> Property)
-            where D : class, new()
-        {
-            if (string.IsNullOrEmpty(Property.LoadCommand))
-            {
-                IMapping ForeignMapping = Property.ForeignMapping;
-                Property.SetLoadUsingCommand(string.Format(CultureInfo.CurrentCulture, ForeignMapping.TableName == Mapping.TableName ?
-                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}2={1}.{3} WHERE {2}.{4}{5}=@0" :
-                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}={1}.{3} WHERE {2}.{4}{5}=@0",
-                    GetColumns(ForeignMapping),
-                    ForeignMapping.TableName,
-                    Property.TableName,
-                    ForeignMapping.IDProperties.FirstOrDefault().FieldName,
-                    Mapping.TableName,
-                    Mapping.IDProperties.FirstOrDefault().FieldName),
-                CommandType.Text);
-            }
-        }
-
-        /// <summary>
-        /// Sets up the default load command for a map property
-        /// </summary>
-        /// <typeparam name="D">Data type</typeparam>
-        /// <param name="Property">Map property</param>
-        public void SetupLoadCommands<D>(Mapper.Default.ICollectionManyToOne<T, D> Property)
-            where D : class, new()
-        {
-            if (string.IsNullOrEmpty(Property.LoadCommand))
-            {
-                IMapping ForeignMapping = Property.ForeignMapping;
-                Property.SetLoadUsingCommand(string.Format(CultureInfo.CurrentCulture, ForeignMapping.TableName == Mapping.TableName ?
-                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}2={1}.{3} WHERE {2}.{4}{5}=@0" :
-                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}={1}.{3} WHERE {2}.{4}{5}=@0",
-                    GetColumns(ForeignMapping),
-                    ForeignMapping.TableName,
-                    Property.TableName,
-                    ForeignMapping.IDProperties.FirstOrDefault().FieldName,
-                    Mapping.TableName,
-                    Mapping.IDProperties.FirstOrDefault().FieldName),
-                CommandType.Text);
-            }
         }
     }
 }
