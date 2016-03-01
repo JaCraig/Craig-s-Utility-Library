@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Utilities.DataTypes
 {
@@ -31,6 +32,19 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <value>The source vertex</value>
         public Vertex<T> Source { get; private set; }
+
+        /// <summary>
+        /// Removes this edge from the sink and source vertices.
+        /// </summary>
+        /// <returns>This</returns>
+        public Edge<T> Remove()
+        {
+            Sink.RemoveEdge(this);
+            Source.RemoveEdge(this);
+            Sink = null;
+            Source = null;
+            return this;
+        }
     }
 
     /// <summary>
@@ -54,15 +68,49 @@ namespace Utilities.DataTypes
         public List<Vertex<T>> Vertices { get; private set; }
 
         /// <summary>
+        /// Adds the edge.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="sink">The sink.</param>
+        /// <returns>The new edge</returns>
+        public Edge<T> AddEdge(Vertex<T> source, Vertex<T> sink)
+        {
+            return source.AddOutgoingEdge(sink);
+        }
+
+        /// <summary>
         /// Adds the vertex.
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns>The new vertex</returns>
         public Vertex<T> AddVertex(T data)
         {
-            Vertex<T> ReturnValue = new Vertex<T>(data);
+            Vertex<T> ReturnValue = new Vertex<T>(data, this);
             Vertices.Add(ReturnValue);
             return ReturnValue;
+        }
+
+        /// <summary>
+        /// Copies this instance.
+        /// </summary>
+        /// <returns>A copy of this graph</returns>
+        public Graph<T> Copy()
+        {
+            Graph<T> Result = new Graph<T>();
+            foreach (var Vertex in Vertices)
+            {
+                Result.AddVertex(Vertex.Data);
+            }
+            foreach (var Vertex in Vertices)
+            {
+                var TempSource = Result.Vertices.First(x => x.Data.Equals(Vertex.Data));
+                foreach (var Edge in Vertex.OutgoingEdges)
+                {
+                    var TempSink = Result.Vertices.First(x => x.Data.Equals(Edge.Sink.Data));
+                    Result.AddEdge(TempSource, TempSink);
+                }
+            }
+            return Result;
         }
 
         /// <summary>
@@ -85,6 +133,17 @@ namespace Utilities.DataTypes
         {
             return Vertices.GetEnumerator();
         }
+
+        /// <summary>
+        /// Removes the vertex.
+        /// </summary>
+        /// <param name="vertex">The vertex.</param>
+        /// <returns>This</returns>
+        public Graph<T> RemoveVertex(Vertex<T> vertex)
+        {
+            vertex.Remove();
+            return this;
+        }
     }
 
     /// <summary>
@@ -97,9 +156,13 @@ namespace Utilities.DataTypes
         /// Initializes a new instance of the <see cref="Vertex{T}"/> class.
         /// </summary>
         /// <param name="data">The data.</param>
-        public Vertex(T data)
+        /// <param name="graph">The graph.</param>
+        public Vertex(T data, Graph<T> graph)
         {
             Data = data;
+            Graph = graph;
+            IncomingEdges = new List<Edge<T>>();
+            OutgoingEdges = new List<Edge<T>>();
         }
 
         /// <summary>
@@ -121,6 +184,12 @@ namespace Utilities.DataTypes
         public List<Edge<T>> OutgoingEdges { get; private set; }
 
         /// <summary>
+        /// Gets or sets the graph.
+        /// </summary>
+        /// <value>The graph.</value>
+        private Graph<T> Graph { get; set; }
+
+        /// <summary>
         /// Adds an outgoing edge to the vertex specified
         /// </summary>
         /// <param name="sink">The sink.</param>
@@ -131,6 +200,34 @@ namespace Utilities.DataTypes
             OutgoingEdges.Add(ReturnValue);
             sink.IncomingEdges.Add(ReturnValue);
             return ReturnValue;
+        }
+
+        /// <summary>
+        /// Removes all edges from this vertex and removes it from the graph.
+        /// </summary>
+        /// <returns>This</returns>
+        public Vertex<T> Remove()
+        {
+            IncomingEdges.ForEach(x => x.Remove());
+            OutgoingEdges.ForEach(x => x.Remove());
+            IncomingEdges.Clear();
+            OutgoingEdges.Clear();
+            Graph.Vertices.Remove(this);
+            return this;
+        }
+
+        /// <summary>
+        /// Removes the edge.
+        /// </summary>
+        /// <param name="edge">The edge.</param>
+        /// <returns>This</returns>
+        public Vertex<T> RemoveEdge(Edge<T> edge)
+        {
+            if (edge.Sink == this)
+                IncomingEdges.Remove(edge);
+            else
+                OutgoingEdges.Remove(edge);
+            return this;
         }
     }
 }

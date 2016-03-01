@@ -119,11 +119,12 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         /// <param name="Mappings">The mappings.</param>
         /// <param name="Database">The database.</param>
         /// <param name="QueryProvider">The query provider.</param>
-        public void Setup(ListMapping<IDatabase, IMapping> Mappings, IDatabase Database, QueryProvider.Manager QueryProvider)
+        /// <param name="Structure">The structure.</param>
+        public void Setup(ListMapping<IDatabase, IMapping> Mappings, IDatabase Database, QueryProvider.Manager QueryProvider, Graph<IMapping> Structure)
         {
             ISourceInfo TempSource = SourceProvider.GetSource(Database.Name);
             var TempDatabase = new Schema.Default.Database.Database(Regex.Match(TempSource.Connection, "Initial Catalog=(.*?;)").Value.Replace("Initial Catalog=", "").Replace(";", ""));
-            SetupTables(Mappings, Database, TempDatabase);
+            SetupTables(Mappings, Database, TempDatabase, Structure);
             SetupJoiningTables(Mappings, Database, TempDatabase);
             SetupAuditTables(Database, TempDatabase);
 
@@ -805,13 +806,29 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                    });
         }
 
-        private static void SetupTables(ListMapping<IDatabase, IMapping> Mappings, IDatabase Key, Schema.Default.Database.Database TempDatabase)
+        private static void SetupTables(ListMapping<IDatabase, IMapping> Mappings, IDatabase Key, Database TempDatabase, Graph<IMapping> Structure)
         {
             Contract.Requires<NullReferenceException>(Mappings != null, "Mappings");
             foreach (IMapping Mapping in Mappings[Key].OrderBy(x => x.Order))
             {
                 TempDatabase.AddTable(Mapping.TableName);
                 SetupProperties(TempDatabase[Mapping.TableName], Mapping);
+            }
+            foreach (Vertex<IMapping> Vertex in Structure.Where(x => x.OutgoingEdges.Count > 0))
+            {
+                var Mapping = Vertex.Data;
+                var ForeignMappings = Vertex.OutgoingEdges.Select(x => x.Sink.Data);
+                foreach (var Property in Mapping.IDProperties)
+                {
+                    foreach (var ForeignMapping in ForeignMappings)
+                    {
+                        var ForeignProperty = ForeignMapping.IDProperties.FirstOrDefault(x => x.Name == Property.Name);
+                        if (ForeignProperty != null)
+                        {
+                            TempDatabase[Mapping.TableName].AddForeignKey(Property.FieldName, ForeignMapping.TableName, ForeignProperty.FieldName);
+                        }
+                    }
+                }
             }
         }
 

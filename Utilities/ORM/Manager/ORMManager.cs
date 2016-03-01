@@ -54,6 +54,7 @@ namespace Utilities.ORM.Manager
             Contract.Requires<ArgumentNullException>(SourceProvider != null, "SourceProvider");
             Contract.Requires<ArgumentNullException>(Databases != null, "Databases");
             this.Mappings = new ListMapping<IDatabase, IMapping>();
+            MappingTypeStructure = new Dictionary<IDatabase, Graph<IMapping>>();
             this.MapperProvider = MapperProvider;
             this.QueryProvider = QueryProvider;
             this.SchemaProvider = SchemaProvider;
@@ -62,7 +63,7 @@ namespace Utilities.ORM.Manager
             SortMappings();
             foreach (IDatabase Database in Mappings.Keys.Where(x => x.Update))
             {
-                this.SchemaProvider.Setup(Mappings, QueryProvider, Database, SourceProvider.GetSource(Database.GetType()));
+                this.SchemaProvider.Setup(Mappings, QueryProvider, Database, SourceProvider.GetSource(Database.GetType()), MappingTypeStructure[Database]);
             }
         }
 
@@ -75,6 +76,12 @@ namespace Utilities.ORM.Manager
         /// Mappings associate with a source
         /// </summary>
         private ListMapping<IDatabase, IMapping> Mappings { get; set; }
+
+        /// <summary>
+        /// Gets or sets the mapping type structure.
+        /// </summary>
+        /// <value>The mapping type structure.</value>
+        private Dictionary<IDatabase, Graph<IMapping>> MappingTypeStructure { get; set; }
 
         /// <summary>
         /// Query provider
@@ -137,101 +144,30 @@ namespace Utilities.ORM.Manager
             return Graph;
         }
 
-        private void FindOrderBaseClasses(IMapping mapping, IEnumerable<IMapping> mappings, int baseOrder)
+        private List<Vertex<IMapping>> FindStartingVertices(Graph<IMapping> graph)
         {
-            Stack<IMapping> TempStack = new Stack<IMapping>();
-            Type ObjectType = mapping.ObjectType;
-            TempStack.Push(mapping);
-            while (ObjectType != typeof(object))
-            {
-                var BaseMapping = mappings.FirstOrDefault(x => x.ObjectType == ObjectType);
-                if (BaseMapping != null)
-                {
-                    TempStack.Push(BaseMapping);
-                }
-                ObjectType = ObjectType.BaseType;
-            }
-            var Order = baseOrder;
-            while (TempStack.Count > 0)
-            {
-                var Mapping = TempStack.Pop();
-                if (Mapping.Order == 0 || Order > Mapping.Order)
-                {
-                    Mapping.Order = Order;
-                }
-                else if (Order < Mapping.Order)
-                {
-                    Order = Mapping.Order;
-                }
-                ++Order;
-            }
+            return graph.Vertices.Where(x => x.IncomingEdges.Count == 0).ToList();
         }
 
-        private void FindOrderInterfaces(IMapping mapping, IEnumerable<IMapping> mappings, int baseOrder)
+        private IEnumerable<IMapping> KahnSort(Graph<IMapping> graph)
         {
-            Stack<IMapping> TempStack = new Stack<IMapping>();
-            var ObjectType = mapping.ObjectType;
-            var Order = baseOrder;
-            foreach (Type Interface in mapping.ObjectType.GetInterfaces())
-            {
-                var PreviousOrder = mapping.Order;
-                while (ObjectType != typeof(object))
-                {
-                    if (!ObjectType.GetInterfaces().Contains(Interface))
-                    {
-                        var BaseMapping = mappings.FirstOrDefault(x => x.ObjectType == ObjectType);
-                        if (BaseMapping != null)
-                        {
-                            TempStack.Push(BaseMapping);
-                        }
-                        ObjectType = ObjectType.BaseType;
-                    }
-                }
-            }
-            var Order = baseOrder;
-            while (TempStack.Count > 0)
-            {
-                var Mapping = TempStack.Pop();
-                if (Mapping.Order == 0 || Order > Mapping.Order)
-                {
-                    Mapping.Order = Order;
-                }
-                else if (Order < Mapping.Order)
-                {
-                    Order = Mapping.Order;
-                }
-                ++Order;
-            }
-        }
-
-        private List<IMapping> FindStartingNodes(Graph<IMapping> graph)
-        {
-            return graph.Vertices.Where(x => x.IncomingEdges.Count == 0).Select(x => x.Data).ToList();
-        }
-
-        private IEnumerable<IMapping> KhanSort(IEnumerable<IMapping> mappings)
-        {
-            /*L ← Empty list that will contain the sorted elements
-S ← Set of all nodes with no incoming edges
-while S is non-empty do
-    remove a node n from S
-    add n to tail of L
-    for each node m with an edge e from n to m do
-        remove edge e from the graph
-        if m has no other incoming edges then
-            insert m into S
-if graph has edges then
-    return error (graph has at least one cycle)
-else
-    return L (a topologically sorted order)*/
             List<IMapping> ResultList = new List<IMapping>();
-            Graph<IMapping> Graph = FindGraph(mappings);
-            List<IMapping> StartingNodes = FindStartingNodes(Graph);
+            var StartingNodes = FindStartingVertices(graph);
             while (StartingNodes.Count > 0)
             {
-                var Mapping = StartingNodes.First();
-                StartingNodes.Remove(Mapping);
-                ResultList.Add(Mapping);
+                var Vertex = StartingNodes.First();
+                StartingNodes.Remove(Vertex);
+                ResultList.AddIfUnique(Vertex.Data);
+                foreach (Edge<IMapping> Edge in Vertex.OutgoingEdges.ToList())
+                {
+                    Vertex<IMapping> Sink = Edge.Sink;
+                    Edge.Remove();
+                    if (Sink.IncomingEdges.Count == 0)
+                    {
+                        ResultList.AddIfUnique(Sink.Data);
+                        StartingNodes.AddIfUnique(Sink);
+                    }
+                }
             }
             return ResultList;
         }
@@ -255,18 +191,16 @@ else
 
         private void SortMappings()
         {
-            var BaseOrder = 0;
             foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
             {
-                foreach (var Mapping in Mappings[Database])
+                var Order = 0;
+                var Graph = FindGraph(Mappings[Database]);
+                MappingTypeStructure.Add(Database, Graph);
+                foreach (var Mapping in KahnSort(Graph.Copy()).Reverse())
                 {
-                    if (Mapping.Order == 0)
-                    {
-                        FindOrderBaseClasses(Mapping, Mappings[Database], BaseOrder);
-                        FindOrderInterfaces(Mapping, Mappings[Database], BaseOrder);
-                    }
+                    Mapping.Order = Order;
+                    ++Order;
                 }
-                BaseOrder += Mappings[Database].Count();
             }
         }
     }

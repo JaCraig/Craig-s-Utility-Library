@@ -74,10 +74,11 @@ namespace Utilities.ORM.Manager.Schema
         /// <param name="QueryProvider">The query provider.</param>
         /// <param name="Database">The database.</param>
         /// <param name="Source">The source.</param>
-        public void Setup(ListMapping<IDatabase, IMapping> Mappings, QueryProvider.Manager QueryProvider, IDatabase Database, ISourceInfo Source)
+        /// <param name="Structure">The structure.</param>
+        public void Setup(ListMapping<IDatabase, IMapping> Mappings, QueryProvider.Manager QueryProvider, IDatabase Database, ISourceInfo Source, Graph<IMapping> Structure)
         {
             Contract.Requires<NullReferenceException>(Mappings != null, "Mappings");
-            SchemaGenerators[Source.SourceType].Setup(Mappings, Database, QueryProvider);
+            SchemaGenerators[Source.SourceType].Setup(Mappings, Database, QueryProvider, Structure);
         }
 
         /// <summary>

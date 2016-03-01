@@ -60,7 +60,8 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
         /// <param name="Mappings">The mappings.</param>
         /// <param name="Database">The database.</param>
         /// <param name="QueryProvider">The query provider.</param>
-        void Setup(ListMapping<IDatabase, IMapping> Mappings, IDatabase Database, QueryProvider.Manager QueryProvider);
+        /// <param name="Structure">The structure.</param>
+        void Setup(ListMapping<IDatabase, IMapping> Mappings, IDatabase Database, QueryProvider.Manager QueryProvider, Graph<IMapping> Structure);
 
         /// <summary>
         /// Checks if a source exists

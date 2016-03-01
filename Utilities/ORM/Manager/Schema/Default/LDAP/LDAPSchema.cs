@@ -19,11 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Utilities.DataTypes;
 using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.Mapper.Interfaces;
@@ -90,7 +86,8 @@ namespace Utilities.ORM.Manager.Schema.Default.LDAP
         /// <param name="Mappings">The mappings.</param>
         /// <param name="Database">The database.</param>
         /// <param name="QueryProvider">The query provider.</param>
-        public void Setup(ListMapping<IDatabase, IMapping> Mappings, IDatabase Database, QueryProvider.Manager QueryProvider)
+        /// <param name="Structure">The structure.</param>
+        public void Setup(ListMapping<IDatabase, IMapping> Mappings, IDatabase Database, QueryProvider.Manager QueryProvider, Graph<IMapping> Structure)
         {
         }
 

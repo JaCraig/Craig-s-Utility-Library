@@ -71,11 +71,11 @@ namespace UnitTests.ORM.Manager
                 TempObject.NullStringReference = null;
                 TempObject.ShortReference = 5423;
                 TempObject.StringReference = "agsdpghasdg";
-                TestObject.Save<TestAbstractClass, int>(TempObject);
+                TestObject.Save<TestClass2, int>(TempObject);
             }
-            IEnumerable<TestAbstractClass> ItemList = TestObject.All<TestAbstractClass>();
+            IEnumerable<TestClass2> ItemList = TestObject.All<TestClass2>();
             Assert.Equal(100, ItemList.Count());
-            foreach (TestAbstractClass Item in ItemList)
+            foreach (TestClass2 Item in ItemList)
             {
                 Assert.Equal(true, Item.BoolReference);
                 Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
@@ -116,9 +116,9 @@ namespace UnitTests.ORM.Manager
                 TempObject.NullStringReference = null;
                 TempObject.ShortReference = 5423;
                 TempObject.StringReference = "agsdpghasdg";
-                TestObject.Save<TestAbstractClass, int>(TempObject);
+                TestObject.Save<TestClass2, int>(TempObject);
             }
-            TestAbstractClass Item = TestObject.Any<TestAbstractClass>();
+            TestClass2 Item = TestObject.Any<TestClass2>();
             Assert.Equal(true, Item.BoolReference);
             Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
             Assert.Equal(12, Item.ByteReference);
@@ -134,10 +134,10 @@ namespace UnitTests.ORM.Manager
             Assert.Equal(5423, Item.ShortReference);
             Assert.Equal("agsdpghasdg", Item.StringReference);
 
-            Item = TestObject.Any<TestAbstractClass>(new Utilities.ORM.Parameters.EqualParameter<int>(1000, "ID_"));
+            Item = TestObject.Any<TestClass2>(new Utilities.ORM.Parameters.EqualParameter<int>(1000, "ID_"));
             Assert.Null(Item);
 
-            Item = TestObject.Any<TestAbstractClass>(new Utilities.ORM.Parameters.EqualParameter<int>(10, "ID_"));
+            Item = TestObject.Any<TestClass2>(new Utilities.ORM.Parameters.EqualParameter<int>(10, "ID_"));
             Assert.Equal(true, Item.BoolReference);
             Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
             Assert.Equal(12, Item.ByteReference);
@@ -154,7 +154,7 @@ namespace UnitTests.ORM.Manager
             Assert.Equal("agsdpghasdg", Item.StringReference);
             Assert.Equal(10, Item.ID);
 
-            Item = TestObject.Any<TestAbstractClass>(new Utilities.ORM.Parameters.EqualParameter<int>(20, "ID_"));
+            Item = TestObject.Any<TestClass2>(new Utilities.ORM.Parameters.EqualParameter<int>(20, "ID_"));
             Assert.Equal(true, Item.BoolReference);
             Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
             Assert.Equal(12, Item.ByteReference);
@@ -194,9 +194,9 @@ namespace UnitTests.ORM.Manager
                 TempObject.NullStringReference = null;
                 TempObject.ShortReference = 5423;
                 TempObject.StringReference = "agsdpghasdg";
-                TestObject.Save<TestAbstractClass, int>(TempObject);
+                TestObject.Save<TestClass2, int>(TempObject);
             }
-            TestAbstractClass Item = TestObject.Any<TestAbstractClass, int>(10);
+            TestClass2 Item = TestObject.Any<TestClass2, int>(10);
             Assert.Equal(10, Item.ID);
             Assert.Equal(true, Item.BoolReference);
             Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
@@ -213,7 +213,7 @@ namespace UnitTests.ORM.Manager
             Assert.Equal(5423, Item.ShortReference);
             Assert.Equal("agsdpghasdg", Item.StringReference);
 
-            Item = TestObject.Any<TestAbstractClass, int>(20);
+            Item = TestObject.Any<TestClass2, int>(20);
             Assert.Equal(20, Item.ID);
             Assert.Equal(true, Item.BoolReference);
             Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
@@ -259,10 +259,10 @@ namespace UnitTests.ORM.Manager
                 TempObject.NullStringReference = null;
                 TempObject.ShortReference = 5423;
                 TempObject.StringReference = "agsdpghasdg";
-                TestObject.Save<TestAbstractClass, int>(TempObject);
+                TestObject.Save<TestClass2, int>(TempObject);
             }
-            TestObject.Delete(TestObject.Any<TestAbstractClass>());
-            IEnumerable<TestAbstractClass> ItemList = TestObject.All<TestAbstractClass>();
+            TestObject.Delete(TestObject.Any<TestClass2>());
+            IEnumerable<TestClass2> ItemList = TestObject.All<TestClass2>();
             Assert.Equal(99, ItemList.Count());
         }
 
@@ -302,9 +302,9 @@ namespace UnitTests.ORM.Manager
                 TempObject.NullStringReference = null;
                 TempObject.ShortReference = 5423;
                 TempObject.StringReference = "agsdpghasdg";
-                TestObject.Save<TestAbstractClass, int>(TempObject);
+                TestObject.Save<TestClass2, int>(TempObject);
             }
-            Assert.Equal(4, TestObject.PageCount<TestAbstractClass>());
+            Assert.Equal(4, TestObject.PageCount<TestClass2>());
         }
 
         [Fact]
@@ -329,11 +329,11 @@ namespace UnitTests.ORM.Manager
                 TempObject.NullStringReference = null;
                 TempObject.ShortReference = 5423;
                 TempObject.StringReference = "agsdpghasdg";
-                TestObject.Save<TestAbstractClass, int>(TempObject);
+                TestObject.Save<TestClass2, int>(TempObject);
             }
-            IEnumerable<TestAbstractClass> ItemList = TestObject.Paged<TestAbstractClass>();
+            IEnumerable<TestClass2> ItemList = TestObject.Paged<TestClass2>();
             Assert.Equal(25, ItemList.Count());
-            foreach (TestAbstractClass Item in ItemList)
+            foreach (TestClass2 Item in ItemList)
             {
                 Assert.Equal(true, Item.BoolReference);
                 Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
@@ -350,9 +350,9 @@ namespace UnitTests.ORM.Manager
                 Assert.Equal(5423, Item.ShortReference);
                 Assert.Equal("agsdpghasdg", Item.StringReference);
             }
-            ItemList = TestObject.Paged<TestAbstractClass>(CurrentPage: 1);
+            ItemList = TestObject.Paged<TestClass2>(CurrentPage: 1);
             Assert.Equal(25, ItemList.Count());
-            foreach (TestAbstractClass Item in ItemList)
+            foreach (TestClass2 Item in ItemList)
             {
                 Assert.Equal(true, Item.BoolReference);
                 Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
@@ -369,9 +369,9 @@ namespace UnitTests.ORM.Manager
                 Assert.Equal(5423, Item.ShortReference);
                 Assert.Equal("agsdpghasdg", Item.StringReference);
             }
-            ItemList = TestObject.Paged<TestAbstractClass>(CurrentPage: 2);
+            ItemList = TestObject.Paged<TestClass2>(CurrentPage: 2);
             Assert.Equal(25, ItemList.Count());
-            foreach (TestAbstractClass Item in ItemList)
+            foreach (TestClass2 Item in ItemList)
             {
                 Assert.Equal(true, Item.BoolReference);
                 Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
@@ -388,9 +388,9 @@ namespace UnitTests.ORM.Manager
                 Assert.Equal(5423, Item.ShortReference);
                 Assert.Equal("agsdpghasdg", Item.StringReference);
             }
-            ItemList = TestObject.Paged<TestAbstractClass>(CurrentPage: 3);
+            ItemList = TestObject.Paged<TestClass2>(CurrentPage: 3);
             Assert.Equal(25, ItemList.Count());
-            foreach (TestAbstractClass Item in ItemList)
+            foreach (TestClass2 Item in ItemList)
             {
                 Assert.Equal(true, Item.BoolReference);
                 Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
@@ -407,7 +407,7 @@ namespace UnitTests.ORM.Manager
                 Assert.Equal(5423, Item.ShortReference);
                 Assert.Equal("agsdpghasdg", Item.StringReference);
             }
-            ItemList = TestObject.Paged<TestAbstractClass>(CurrentPage: 4);
+            ItemList = TestObject.Paged<TestClass2>(CurrentPage: 4);
             Assert.Equal(0, ItemList.Count());
         }
 
@@ -437,7 +437,7 @@ namespace UnitTests.ORM.Manager
             TempObject.NullStringReference = null;
             TempObject.ShortReference = 5423;
             TempObject.StringReference = "agsdpghasdg";
-            TestObject.Save<TestAbstractClass, int>(TempObject);
+            TestObject.Save<TestClass2, int>(TempObject);
 
             Assert.Equal(true, TempObject.BoolReference);
             Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, TempObject.ByteArrayReference);
@@ -462,8 +462,8 @@ namespace UnitTests.ORM.Manager
 
             var Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=SessionUsingComposition;Integrated Security=SSPI;Pooling=false"));
 
-            IList<dynamic> Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestAbstractClass_").Execute().First();
-            TestAbstractClass Item = Items.FirstOrDefault(x => x.BoolReference_);
+            IList<dynamic> Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestClass2_").Execute().First();
+            TestClass2 Item = Items.FirstOrDefault(x => x.BoolReference_);
             ((IORMObject)Item).Session0 = new Utilities.ORM.Manager.Session();
             Assert.Equal(true, Item.BoolReference);
             Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
@@ -513,7 +513,7 @@ namespace UnitTests.ORM.Manager
             TempObject.NullStringReference = null;
             TempObject.ShortReference = 5423;
             TempObject.StringReference = "agsdpghasdg";
-            TestObject.Save<TestAbstractClass, int>(TempObject);
+            TestObject.Save<TestClass2, int>(TempObject);
 
             Assert.Equal(true, TempObject.BoolReference);
             Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, TempObject.ByteArrayReference);
@@ -538,8 +538,8 @@ namespace UnitTests.ORM.Manager
 
             var Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=SessionUsingComposition;Integrated Security=SSPI;Pooling=false"));
 
-            IList<dynamic> Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestAbstractClass_").Execute().First();
-            TestAbstractClass Item = Items.FirstOrDefault(x => x.BoolReference_);
+            IList<dynamic> Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestClass2_").Execute().First();
+            TestClass2 Item = Items.FirstOrDefault(x => x.BoolReference_);
             ((IORMObject)Item).Session0 = new Utilities.ORM.Manager.Session();
             Assert.Equal(true, Item.BoolReference);
             Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
@@ -573,11 +573,11 @@ namespace UnitTests.ORM.Manager
             Item.LongReference = 7634121;
             Item.ShortReference = 43;
             Item.StringReference = "Something";
-            TestObject.Save<TestAbstractClass, int>(Item);
+            TestObject.Save<TestClass2, int>(Item);
 
             Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=SessionUsingComposition;Integrated Security=SSPI;Pooling=false"));
 
-            Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestAbstractClass_").Execute().First();
+            Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestClass2_").Execute().First();
             Item = Items.FirstOrDefault(x => x.BoolReference_);
             ((IORMObject)Item).Session0 = new Utilities.ORM.Manager.Session();
             Assert.Equal(true, Item.BoolReference);
@@ -632,7 +632,7 @@ namespace UnitTests.ORM.Manager
             TempObject.NullStringReference = null;
             TempObject.ShortReference = 5423;
             TempObject.StringReference = "agsdpghasdg";
-            TestObject.Save<TestAbstractClass, int>(TempObject);
+            TestObject.Save<TestClass2, int>(TempObject);
 
             Assert.Equal(true, TempObject.BoolReference);
             Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, TempObject.ByteArrayReference);
@@ -661,8 +661,8 @@ namespace UnitTests.ORM.Manager
 
             var Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=SessionUsingComposition;Integrated Security=SSPI;Pooling=false"));
 
-            IList<dynamic> Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestAbstractClass_").Execute().First();
-            TestAbstractClass Item = Items.FirstOrDefault(x => x.BoolReference_);
+            IList<dynamic> Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestClass2_").Execute().First();
+            TestClass2 Item = Items.FirstOrDefault(x => x.BoolReference_);
             ((IORMObject)Item).Session0 = new Utilities.ORM.Manager.Session();
             Assert.Equal(true, Item.BoolReference);
             Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
@@ -695,11 +695,11 @@ namespace UnitTests.ORM.Manager
             Item.ManyToOneIList.Add(new TestClass2 { FloatReference = 16f });
             Item.ManyToManyICollection.Add(new TestClass2 { FloatReference = 17f });
             Item.ManyToOneICollection.Add(new TestClass2 { FloatReference = 18f });
-            TestObject.Save<TestAbstractClass, int>(Item);
+            TestObject.Save<TestClass2, int>(Item);
 
             Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=SessionUsingComposition;Integrated Security=SSPI;Pooling=false"));
 
-            Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestAbstractClass_").Execute().First();
+            Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestClass2_").Execute().First();
             Item = Items.FirstOrDefault(x => x.BoolReference_);
             ((IORMObject)Item).Session0 = new Utilities.ORM.Manager.Session();
             Assert.Equal(10, Item.Map.FloatReference);
@@ -758,16 +758,13 @@ namespace UnitTests.ORM.Manager
             public abstract ITestInterface ManyToOneItem { get; set; }
             public abstract List<ITestInterface> ManyToOneList { get; set; }
             public abstract ITestInterface Map { get; set; }
-            public abstract string NullStringReference { get; set; }
-            public abstract short ShortReference { get; set; }
-            public abstract string StringReference { get; set; }
         }
 
         public class TestAbstractClassMapping : MappingBaseClass<TestAbstractClass, TestCompositionDatabase>
         {
             public TestAbstractClassMapping()
             {
-                ID(x => x.ID).SetAutoIncrement();
+                ID(x => x.ID);
                 ManyToMany(x => x.ManyToManyIEnumerable).SetTableName("ManyToManyIEnumerable").SetCascade();
                 ManyToMany(x => x.ManyToManyList).SetTableName("ManyToManyList").SetCascade();
                 ManyToOne(x => x.ManyToOneIEnumerable).SetTableName("ManyToOneIEnumerable").SetCascade();
@@ -778,9 +775,6 @@ namespace UnitTests.ORM.Manager
                 ManyToOne(x => x.ManyToOneICollection).SetTableName("ManyToOneICollection").SetCascade();
                 ManyToMany(x => x.ManyToManyICollection).SetTableName("ManyToManyICollection").SetCascade();
                 Map(x => x.Map).SetCascade();
-                Reference(x => x.NullStringReference).SetMaxLength(100);
-                Reference(x => x.ShortReference);
-                Reference(x => x.StringReference).SetMaxLength(100);
             }
         }
 
@@ -827,11 +821,22 @@ namespace UnitTests.ORM.Manager
 
             public override ITestInterface Map { get; set; }
 
-            public override string NullStringReference { get; set; }
+            public string NullStringReference { get; set; }
 
-            public override short ShortReference { get; set; }
+            public short ShortReference { get; set; }
 
-            public override string StringReference { get; set; }
+            public string StringReference { get; set; }
+        }
+
+        public class TestClass2Mapping : MappingBaseClass<TestClass2, TestCompositionDatabase>
+        {
+            public TestClass2Mapping()
+            {
+                ID(x => x.ID);
+                Reference(x => x.NullStringReference).SetMaxLength(100);
+                Reference(x => x.ShortReference);
+                Reference(x => x.StringReference).SetMaxLength(100);
+            }
         }
 
         public class TestCompositionDatabase : IDatabase

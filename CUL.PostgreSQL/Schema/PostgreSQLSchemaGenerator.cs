@@ -107,7 +107,7 @@ namespace CUL.PostgreSQL.Schema
         /// <param name="Mappings">The mappings.</param>
         /// <param name="Database">The database.</param>
         /// <param name="QueryProvider">The query provider.</param>
-        public void Setup(ListMapping<IDatabase, IMapping> Mappings, IDatabase Database, Utilities.ORM.Manager.QueryProvider.Manager QueryProvider)
+        public void Setup(ListMapping<IDatabase, IMapping> Mappings, IDatabase Database, Utilities.ORM.Manager.QueryProvider.Manager QueryProvider, Graph<IMapping> Structure)
         {
             ISourceInfo TempSource = SourceProvider.GetSource(Database.Name);
             var TempDatabase = new Utilities.ORM.Manager.Schema.Default.Database.Database(Regex.Match(TempSource.Connection, "Initial Catalog=(.*?;)").Value.Replace("Initial Catalog=", "").Replace(";", ""));
