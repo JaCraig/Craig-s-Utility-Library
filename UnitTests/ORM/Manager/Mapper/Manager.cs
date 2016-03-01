@@ -30,7 +30,7 @@ namespace UnitTests.ORM.Manager.Mapper
         public void Create()
         {
             new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>());
-            Assert.Equal(220, new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>()).ToString().Length);
+            Assert.Equal(232, new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>()).ToString().Length);
         }
     }
 }
