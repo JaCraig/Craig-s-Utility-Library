@@ -441,11 +441,12 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <param name="Mapping"></param>
         public void SetupCommands(IMapping<T> Mapping)
         {
-            SetupUpdate(Mapping);
-            SetupInsert(Mapping);
-            SetupDelete(Mapping);
-            SetupAllSelect(Mapping);
-            SetupAnySelect(Mapping);
+            var FinalNodes = FindChildren(Mapping, Structure.Copy());
+            SetupUpdate(Mapping, FinalNodes);
+            SetupInsert(Mapping, FinalNodes);
+            SetupDelete(Mapping, FinalNodes);
+            SetupAllSelect(Mapping, FinalNodes);
+            SetupAnySelect(Mapping, FinalNodes);
         }
 
         /// <summary>
@@ -718,6 +719,29 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             return TempBatch;
         }
 
+        private static IEnumerable<IMapping> FindChildren(IMapping Mapping, Graph<IMapping> graph)
+        {
+            List<IMapping> ResultList = new List<IMapping>();
+            var StartingNodes = new Vertex<IMapping>[] { graph.Vertices.First(x => x.Data == Mapping) }.ToList();
+            while (StartingNodes.Count > 0)
+            {
+                var Vertex = StartingNodes.First();
+                StartingNodes.Remove(Vertex);
+                ResultList.AddIfUnique(Vertex.Data);
+                foreach (Edge<IMapping> Edge in Vertex.OutgoingEdges.ToList())
+                {
+                    Vertex<IMapping> Sink = Edge.Sink;
+                    Edge.Remove();
+                    if (Sink.IncomingEdges.Count == 0)
+                    {
+                        ResultList.AddIfUnique(Sink.Data);
+                        StartingNodes.AddIfUnique(Sink);
+                    }
+                }
+            }
+            return ResultList;
+        }
+
         private static string GetColumns(IMapping Mapping)
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
@@ -729,7 +753,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                           .ToString(x => x.TableName + "." + x.FieldName + " AS [" + x.Name + "]");
         }
 
-        private static void SetupAllSelect(IMapping<T> Mapping)
+        private static void SetupAllSelect(IMapping<T> Mapping, IEnumerable<IMapping> ParentMappings)
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             if (!string.IsNullOrEmpty(Mapping.SelectAllCommand))
@@ -741,7 +765,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 CommandType.Text);
         }
 
-        private static void SetupAnySelect(IMapping<T> Mapping)
+        private static void SetupAnySelect(IMapping<T> Mapping, IEnumerable<IMapping> ParentMappings)
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             if (!string.IsNullOrEmpty(Mapping.SelectAnyCommand))
@@ -753,7 +777,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 CommandType.Text);
         }
 
-        private static void SetupDelete(IMapping<T> Mapping)
+        private static void SetupDelete(IMapping<T> Mapping, IEnumerable<IMapping> ParentMappings)
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             if (!string.IsNullOrEmpty(Mapping.DeleteCommand))
@@ -774,11 +798,12 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 CommandType.Text);
         }
 
-        private static void SetupInsert(IMapping<T> Mapping)
+        private static void SetupInsert(IMapping Mapping, IEnumerable<IMapping> ParentMappings)
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             if (!string.IsNullOrEmpty(Mapping.InsertCommand))
                 return;
+
             string ParameterList = "";
             string ValueList = "";
             string Splitter = "";
@@ -812,7 +837,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 CommandType.Text);
         }
 
-        private static void SetupUpdate(IMapping<T> Mapping)
+        private static void SetupUpdate(IMapping<T> Mapping, IEnumerable<IMapping> ParentMappings)
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             if (!string.IsNullOrEmpty(Mapping.UpdateCommand))
