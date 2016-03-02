@@ -447,7 +447,7 @@ namespace Utilities.ORM.BaseClasses
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void Setup(ISourceInfo Source, Utilities.ORM.Manager.Mapper.Manager MappingProvider, Utilities.ORM.Manager.QueryProvider.Manager QueryProvider)
         {
-            QueryProvider.Generate<ClassType>(Source, this)
+            QueryProvider.Generate<ClassType>(Source, this, MappingProvider.GetStructure(DatabaseConfigType))
                          .SetupCommands(this);
 
             foreach (IProperty Property in Properties)

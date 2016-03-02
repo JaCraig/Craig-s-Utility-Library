@@ -132,6 +132,12 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         public bool NotNull { get; private set; }
 
         /// <summary>
+        /// Gets the structure.
+        /// </summary>
+        /// <value>The structure.</value>
+        public Graph<IMapping> Structure { get; protected set; }
+
+        /// <summary>
         /// Table name
         /// </summary>
         public string TableName { get; private set; }

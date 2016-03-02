@@ -54,7 +54,6 @@ namespace Utilities.ORM.Manager
             Contract.Requires<ArgumentNullException>(SourceProvider != null, "SourceProvider");
             Contract.Requires<ArgumentNullException>(Databases != null, "Databases");
             this.Mappings = new ListMapping<IDatabase, IMapping>();
-            MappingTypeStructure = new Dictionary<IDatabase, Graph<IMapping>>();
             this.MapperProvider = MapperProvider;
             this.QueryProvider = QueryProvider;
             this.SchemaProvider = SchemaProvider;
@@ -63,7 +62,7 @@ namespace Utilities.ORM.Manager
             SortMappings();
             foreach (IDatabase Database in Mappings.Keys.Where(x => x.Update))
             {
-                this.SchemaProvider.Setup(Mappings, QueryProvider, Database, SourceProvider.GetSource(Database.GetType()), MappingTypeStructure[Database]);
+                this.SchemaProvider.Setup(Mappings, QueryProvider, Database, SourceProvider.GetSource(Database.GetType()), MapperProvider.GetStructure(Database.GetType()));
             }
         }
 
@@ -76,12 +75,6 @@ namespace Utilities.ORM.Manager
         /// Mappings associate with a source
         /// </summary>
         private ListMapping<IDatabase, IMapping> Mappings { get; set; }
-
-        /// <summary>
-        /// Gets or sets the mapping type structure.
-        /// </summary>
-        /// <value>The mapping type structure.</value>
-        private Dictionary<IDatabase, Graph<IMapping>> MappingTypeStructure { get; set; }
 
         /// <summary>
         /// Query provider
@@ -105,43 +98,6 @@ namespace Utilities.ORM.Manager
         public override string ToString()
         {
             return "ORM Manager\r\n";
-        }
-
-        private Graph<IMapping> FindGraph(IEnumerable<IMapping> mappings)
-        {
-            var Graph = new Graph<IMapping>();
-            foreach (var Mapping in mappings)
-            {
-                Graph.AddVertex(Mapping);
-            }
-            foreach (var Mapping in mappings)
-            {
-                Type ObjectType = Mapping.ObjectType;
-                Type BaseType = ObjectType.BaseType;
-                while (BaseType != typeof(object)
-                    && BaseType != null)
-                {
-                    var BaseMapping = mappings.FirstOrDefault(x => x.ObjectType == BaseType);
-                    if (BaseMapping != null)
-                    {
-                        var SinkVertex = Graph.Vertices.First(x => x.Data == BaseMapping);
-                        var SourceVertex = Graph.Vertices.First(x => x.Data == Mapping);
-                        SourceVertex.AddOutgoingEdge(SinkVertex);
-                    }
-                    BaseType = BaseType.BaseType;
-                }
-                foreach (Type Interface in ObjectType.GetInterfaces())
-                {
-                    var BaseMapping = mappings.FirstOrDefault(x => x.ObjectType == Interface);
-                    if (BaseMapping != null)
-                    {
-                        var SinkVertex = Graph.Vertices.First(x => x.Data == BaseMapping);
-                        var SourceVertex = Graph.Vertices.First(x => x.Data == Mapping);
-                        SourceVertex.AddOutgoingEdge(SinkVertex);
-                    }
-                }
-            }
-            return Graph;
         }
 
         private List<Vertex<IMapping>> FindStartingVertices(Graph<IMapping> graph)
@@ -194,8 +150,7 @@ namespace Utilities.ORM.Manager
             foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
             {
                 var Order = 0;
-                var Graph = FindGraph(Mappings[Database]);
-                MappingTypeStructure.Add(Database, Graph);
+                var Graph = MapperProvider.GetStructure(Database.GetType());
                 foreach (var Mapping in KahnSort(Graph.Copy()).Reverse())
                 {
                     Mapping.Order = Order;

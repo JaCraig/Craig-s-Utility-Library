@@ -168,6 +168,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <param name="Source">Source info</param>
         public override void Setup(ISourceInfo Source, Mapper.Manager MappingProvider, QueryProvider.Manager QueryProvider)
         {
+            Structure = MappingProvider.GetStructure(Mapping.DatabaseConfigType);
         }
     }
 }

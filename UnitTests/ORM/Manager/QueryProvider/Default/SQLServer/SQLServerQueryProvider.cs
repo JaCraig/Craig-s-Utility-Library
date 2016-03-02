@@ -52,7 +52,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.SQLServer
         public void Generate()
         {
             var Temp = new Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider();
-            IGenerator<TestClass> Generator = Temp.Generate<TestClass>(TestDatabaseSource, new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>())[typeof(TestClass), TestDatabaseSource]);
+            IGenerator<TestClass> Generator = Temp.Generate<TestClass>(TestDatabaseSource, new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>())[typeof(TestClass), TestDatabaseSource], null);
             Assert.Equal(typeof(Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerGenerator<TestClass>), Generator.GetType());
         }
 

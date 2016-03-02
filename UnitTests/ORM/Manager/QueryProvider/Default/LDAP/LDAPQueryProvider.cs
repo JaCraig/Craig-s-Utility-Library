@@ -49,7 +49,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.LDAP
         public void Generate()
         {
             var Temp = new Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPQueryProvider();
-            IGenerator<Dynamo> Generator = Temp.Generate<Dynamo>(TestDatabaseSource, new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>())[typeof(Dynamo), TestDatabaseSource]);
+            IGenerator<Dynamo> Generator = Temp.Generate<Dynamo>(TestDatabaseSource, new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>())[typeof(Dynamo), TestDatabaseSource], null);
             Assert.Equal(typeof(Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPGenerator<Dynamo>), Generator.GetType());
         }
     }

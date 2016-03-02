@@ -19,11 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System.Data;
 using Utilities.ORM.BaseClasses;
 using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
-using Utilities.ORM.Manager.Schema.Default.Database;
 using Xunit;
 
 namespace UnitTests.ORM.Manager.QueryProvider
@@ -46,7 +44,7 @@ namespace UnitTests.ORM.Manager.QueryProvider
         [Fact]
         public void Generate()
         {
-            Assert.NotNull(new Utilities.ORM.Manager.QueryProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IQueryProvider>()).Generate<TestClass>(TestDatabaseSource, null));
+            Assert.NotNull(new Utilities.ORM.Manager.QueryProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IQueryProvider>()).Generate<TestClass>(TestDatabaseSource, null, null));
         }
 
         public class TestClass

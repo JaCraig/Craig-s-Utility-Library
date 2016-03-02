@@ -19,6 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using Utilities.DataTypes;
 using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.BaseClasses;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
@@ -29,6 +30,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
     /// <summary>
     /// SQL Server query provider
     /// </summary>
+    /// <seealso cref="Utilities.ORM.Manager.QueryProvider.BaseClasses.DatabaseQueryProviderBase"/>
     public class SQLServerQueryProvider : DatabaseQueryProviderBase
     {
         /// <summary>
@@ -47,10 +49,11 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="Source">Source information</param>
         /// <param name="Mapping">Mapping information</param>
+        /// <param name="Structure">The structure.</param>
         /// <returns>A generator class</returns>
-        public override IGenerator<T> Generate<T>(ISourceInfo Source, IMapping Mapping)
+        public override IGenerator<T> Generate<T>(ISourceInfo Source, IMapping Mapping, Graph<IMapping> Structure)
         {
-            return new SQLServerGenerator<T>(this, Source, Mapping);
+            return new SQLServerGenerator<T>(this, Source, Mapping, Structure);
         }
     }
 }

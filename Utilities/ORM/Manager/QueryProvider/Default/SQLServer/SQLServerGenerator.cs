@@ -47,11 +47,13 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <param name="QueryProvider">Query provider</param>
         /// <param name="Source">Source info</param>
         /// <param name="Mapping">Mapping info</param>
-        public SQLServerGenerator(SQLServerQueryProvider QueryProvider, ISourceInfo Source, IMapping Mapping)
+        /// <param name="Structure">The structure.</param>
+        public SQLServerGenerator(SQLServerQueryProvider QueryProvider, ISourceInfo Source, IMapping Mapping, Graph<IMapping> Structure)
         {
             this.QueryProvider = QueryProvider;
             this.Source = Source;
             this.Mapping = Mapping;
+            this.Structure = Structure;
         }
 
         /// <summary>
@@ -68,6 +70,12 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// Source used to connect
         /// </summary>
         protected ISourceInfo Source { get; private set; }
+
+        /// <summary>
+        /// Gets the structure.
+        /// </summary>
+        /// <value>The structure.</value>
+        protected Graph<IMapping> Structure { get; private set; }
 
         /// <summary>
         /// Generates a batch that will get all items for the given type the parameters specified

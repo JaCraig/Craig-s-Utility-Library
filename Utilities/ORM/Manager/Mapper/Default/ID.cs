@@ -113,7 +113,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             if (Object == null || ObjectsSeen.Contains(GetValue(Object)))
                 return Provider.Batch(Source);
-            return Provider.Generate<ClassType>(Source, Mapping).Save<DataType>(Object);
+            return Provider.Generate<ClassType>(Source, Mapping, Structure).Save<DataType>(Object);
         }
 
         /// <summary>
@@ -170,6 +170,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <param name="Source">Source info</param>
         public override void Setup(ISourceInfo Source, Mapper.Manager MappingProvider, QueryProvider.Manager QueryProvider)
         {
+            Structure = MappingProvider.GetStructure(Mapping.DatabaseConfigType);
         }
     }
 }
