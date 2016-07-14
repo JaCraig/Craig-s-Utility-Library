@@ -78,7 +78,7 @@ namespace Utilities.IO.Encryption
         public string CreateKey(bool PrivatePublic)
         {
             Contract.Requires<NullReferenceException>(AsymmetricAlgorithms != null, "AsymmetricAlgorithms");
-            IAsymmetric Found = AsymmetricAlgorithms.FirstOrDefault();
+            var Found = AsymmetricAlgorithms.FirstOrDefault();
             if (Found == null)
                 throw new ArgumentException("No asymmetric encryption algorithm found");
             return Found.CreateKey(PrivatePublic);
@@ -101,7 +101,7 @@ namespace Utilities.IO.Encryption
             int KeySize = 256)
         {
             Contract.Requires<NullReferenceException>(SymmetricAlgorithms != null, "SymmetricAlgorithms");
-            ISymmetric Found = SymmetricAlgorithms.FirstOrDefault(x => x.CanHandle(Algorithm));
+            var Found = SymmetricAlgorithms.FirstOrDefault(x => x.CanHandle(Algorithm));
             if (Found == null)
                 throw new ArgumentException(Algorithm + " not found");
             return Found.Decrypt(Data, Key, Algorithm, InitialVector, KeySize);
@@ -130,7 +130,7 @@ namespace Utilities.IO.Encryption
             int KeySize = 256)
         {
             Contract.Requires<NullReferenceException>(SymmetricAlgorithms != null, "SymmetricAlgorithms");
-            ISymmetric Found = SymmetricAlgorithms.FirstOrDefault(x => x.CanHandle(Algorithm));
+            var Found = SymmetricAlgorithms.FirstOrDefault(x => x.CanHandle(Algorithm));
             if (Found == null)
                 throw new ArgumentException(Algorithm + " not found");
             return Found.Decrypt(Data, Key, Algorithm, Salt, HashAlgorithm, PasswordIterations, InitialVector, KeySize);
@@ -145,7 +145,7 @@ namespace Utilities.IO.Encryption
         public byte[] Decrypt(byte[] Data, byte[] Key)
         {
             Contract.Requires<NullReferenceException>(ShiftAlgorithms != null, "ShiftAlgorithms");
-            IShift Found = ShiftAlgorithms.FirstOrDefault();
+            var Found = ShiftAlgorithms.FirstOrDefault();
             if (Found == null)
                 throw new ArgumentException("No shift based encryption algorithm found");
             return Found.Decrypt(Data, Key);
@@ -162,7 +162,7 @@ namespace Utilities.IO.Encryption
         public byte[] Decrypt(byte[] Input, string Key)
         {
             Contract.Requires<NullReferenceException>(AsymmetricAlgorithms != null, "AsymmetricAlgorithms");
-            IAsymmetric Found = AsymmetricAlgorithms.FirstOrDefault();
+            var Found = AsymmetricAlgorithms.FirstOrDefault();
             if (Found == null)
                 throw new ArgumentException("No asymmetric encryption algorithm found");
             return Found.Decrypt(Input, Key);
@@ -185,7 +185,7 @@ namespace Utilities.IO.Encryption
             int KeySize = 256)
         {
             Contract.Requires<NullReferenceException>(SymmetricAlgorithms != null, "SymmetricAlgorithms");
-            ISymmetric Found = SymmetricAlgorithms.FirstOrDefault(x => x.CanHandle(Algorithm));
+            var Found = SymmetricAlgorithms.FirstOrDefault(x => x.CanHandle(Algorithm));
             if (Found == null)
                 throw new ArgumentException(Algorithm + " not found");
             return Found.Encrypt(Data, Key, Algorithm, InitialVector, KeySize);
@@ -214,7 +214,7 @@ namespace Utilities.IO.Encryption
             int KeySize = 256)
         {
             Contract.Requires<NullReferenceException>(SymmetricAlgorithms != null, "SymmetricAlgorithms");
-            ISymmetric Found = SymmetricAlgorithms.FirstOrDefault(x => x.CanHandle(Algorithm));
+            var Found = SymmetricAlgorithms.FirstOrDefault(x => x.CanHandle(Algorithm));
             if (Found == null)
                 throw new ArgumentException(Algorithm + " not found");
             return Found.Encrypt(Data, Key, Algorithm, Salt, HashAlgorithm, PasswordIterations, InitialVector, KeySize);
@@ -229,7 +229,7 @@ namespace Utilities.IO.Encryption
         public byte[] Encrypt(byte[] Data, byte[] Key)
         {
             Contract.Requires<NullReferenceException>(ShiftAlgorithms != null, "ShiftAlgorithms");
-            IShift Found = ShiftAlgorithms.FirstOrDefault();
+            var Found = ShiftAlgorithms.FirstOrDefault();
             if (Found == null)
                 throw new ArgumentException("No shift based encryption algorithm found");
             return Found.Encrypt(Data, Key);
@@ -246,7 +246,7 @@ namespace Utilities.IO.Encryption
         public byte[] Encrypt(byte[] Input, string Key)
         {
             Contract.Requires<NullReferenceException>(AsymmetricAlgorithms != null, "AsymmetricAlgorithms");
-            IAsymmetric Found = AsymmetricAlgorithms.FirstOrDefault();
+            var Found = AsymmetricAlgorithms.FirstOrDefault();
             if (Found == null)
                 throw new ArgumentException("No asymmetric encryption algorithm found");
             return Found.Encrypt(Input, Key);
@@ -261,7 +261,7 @@ namespace Utilities.IO.Encryption
         public byte[] Hash(byte[] Data, string Algorithm)
         {
             Contract.Requires<NullReferenceException>(HasherAlgorithms != null, "HasherAlgorithms");
-            IHasher Found = HasherAlgorithms.FirstOrDefault(x => x.CanHandle(Algorithm));
+            var Found = HasherAlgorithms.FirstOrDefault(x => x.CanHandle(Algorithm));
             if (Found == null)
                 throw new ArgumentException(Algorithm + " not found");
             return Found.Hash(Data, Algorithm);
@@ -278,7 +278,7 @@ namespace Utilities.IO.Encryption
         public string SignHash(string Input, string Key, out string Hash, Encoding EncodingUsing = null)
         {
             Contract.Requires<NullReferenceException>(AsymmetricAlgorithms != null, "AsymmetricAlgorithms");
-            IAsymmetric Found = AsymmetricAlgorithms.FirstOrDefault();
+            var Found = AsymmetricAlgorithms.FirstOrDefault();
             if (Found == null)
                 throw new ArgumentException("No asymmetric encryption algorithm found");
             return Found.SignHash(Input, Key, out Hash, EncodingUsing);
@@ -308,7 +308,7 @@ namespace Utilities.IO.Encryption
         public bool VerifyHash(string Hash, string SignedHash, string Key)
         {
             Contract.Requires<NullReferenceException>(AsymmetricAlgorithms != null, "AsymmetricAlgorithms");
-            IAsymmetric Found = AsymmetricAlgorithms.FirstOrDefault();
+            var Found = AsymmetricAlgorithms.FirstOrDefault();
             if (Found == null)
                 throw new ArgumentException("No asymmetric encryption algorithm found");
             return Found.VerifyHash(Hash, SignedHash, Key);

@@ -28,7 +28,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void Load()
         {
-            Utilities.IO.FileFormats.Excel Docs = Utilities.IO.FileFormats.Excel.Load("../../Data/Testing/Test.xlsx", "Sheet1");
+            var Docs = Utilities.IO.FileFormats.Excel.Load("../../Data/Testing/Test.xlsx", "Sheet1");
             Assert.Equal(4, Docs.Count);
             Assert.Equal(3, Docs.ColumnNames.Count);
             Assert.Equal("Header 1", Docs.ColumnNames[0]);

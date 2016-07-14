@@ -86,7 +86,7 @@ namespace Utilities.IO.Compression.BaseClasses
                             byte[] Buffer = new byte[4096];
                             while (true)
                             {
-                                int Size = ZipStream.Read(Buffer, 0, Buffer.Length);
+                                var Size = ZipStream.Read(Buffer, 0, Buffer.Length);
                                 if (Size > 0) Stream.Write(Buffer, 0, Size);
                                 else break;
                             }

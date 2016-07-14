@@ -249,7 +249,7 @@ namespace Utilities.IO.FileSystem.Default
                 Request.ContentLength = 0;
                 return;
             }
-            byte[] ByteData = Data.ToByteArray();
+            var ByteData = Data.ToByteArray();
             Request.ContentLength = ByteData.Length;
             using (Stream RequestStream = Request.GetRequestStream())
             {

@@ -306,7 +306,7 @@ namespace Utilities.IO.FileFormats
                 switch (TempMatch.Groups["Title"].Value.ToUpperInvariant())
                 {
                     case "N":
-                        string[] Name = TempMatch.Groups["Value"].Value.Split(';');
+                        var Name = TempMatch.Groups["Value"].Value.Split(';');
                         if (Name.Length > 0)
                         {
                             LastName = Name[0];

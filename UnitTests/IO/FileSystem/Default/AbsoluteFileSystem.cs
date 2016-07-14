@@ -47,7 +47,7 @@ namespace UnitTests.IO.FileSystem.Default
         public void Directory()
         {
             var Temp = new Utilities.IO.FileSystem.Default.AbsoluteLocalFileSystem();
-            IDirectory Dir = Temp.Directory(@"C:\");
+            var Dir = Temp.Directory(@"C:\");
             Assert.NotNull(Dir);
             Assert.IsType<Utilities.IO.FileSystem.Default.LocalDirectory>(Dir);
             Assert.True(Dir.Exists);
@@ -57,7 +57,7 @@ namespace UnitTests.IO.FileSystem.Default
         public void File()
         {
             var Temp = new Utilities.IO.FileSystem.Default.AbsoluteLocalFileSystem();
-            IFile File = Temp.File(@"C:\Test.txt");
+            var File = Temp.File(@"C:\Test.txt");
             Assert.NotNull(File);
             Assert.IsType<Utilities.IO.FileSystem.Default.LocalFile>(File);
             Assert.False(File.Exists);

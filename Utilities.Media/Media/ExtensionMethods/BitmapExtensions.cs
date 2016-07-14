@@ -117,11 +117,11 @@ namespace Utilities.Media
             {
                 for (int y = 0; y < Image.Height; ++y)
                 {
-                    Color CurrentPixel = Image.GetPixel(x, y);
+                    var CurrentPixel = Image.GetPixel(x, y);
                     int R = CurrentPixel.R + Random.Random.ThreadSafeNext(-Amount, Amount + 1);
                     int G = CurrentPixel.G + Random.Random.ThreadSafeNext(-Amount, Amount + 1);
                     int B = CurrentPixel.B + Random.Random.ThreadSafeNext(-Amount, Amount + 1);
-                    Color TempValue = Color.FromArgb(R.Clamp(255, 0), G.Clamp(255, 0), B.Clamp(255, 0));
+                    var TempValue = Color.FromArgb(R.Clamp(255, 0), G.Clamp(255, 0), B.Clamp(255, 0));
                     Image.SetPixel(x, y, TempValue);
                 }
             });
@@ -163,7 +163,7 @@ namespace Utilities.Media
             {
                 for (int y = 0; y < OriginalImage.Height; ++y)
                 {
-                    Color Pixel = OriginalImage.GetPixel(x, y);
+                    var Pixel = OriginalImage.GetPixel(x, y);
                     float Red = Pixel.R / 255.0f;
                     float Green = Pixel.G / 255.0f;
                     float Blue = Pixel.B / 255.0f;
@@ -198,7 +198,7 @@ namespace Utilities.Media
             {
                 for (int y = 0; y < OriginalImage.Height; ++y)
                 {
-                    Color Pixel = OriginalImage.GetPixel(x, y);
+                    var Pixel = OriginalImage.GetPixel(x, y);
                     int Red = Ramp[Pixel.R];
                     int Green = Ramp[Pixel.G];
                     int Blue = Ramp[Pixel.B];
@@ -371,7 +371,7 @@ namespace Utilities.Media
                                     int TempY = y + y2;
                                     if (TempY >= 0 && TempY < OriginalImage.Height)
                                     {
-                                        Color TempColor = OriginalImage.GetPixel(TempX, TempY);
+                                        var TempColor = OriginalImage.GetPixel(TempX, TempY);
                                         RValue = RValue.Max(TempColor.R);
                                         GValue = GValue.Max(TempColor.G);
                                         BValue = BValue.Max(TempColor.B);
@@ -439,22 +439,22 @@ namespace Utilities.Media
                 {
                     for (int y = 0; y < OriginalImage.Height; ++y)
                     {
-                        Color CurrentColor = OriginalImage.GetPixel(x, y);
+                        var CurrentColor = OriginalImage.GetPixel(x, y);
                         if (y < OriginalImage.Height - 1 && x < OriginalImage.Width - 1)
                         {
-                            Color TempColor = OriginalImage.GetPixel(x + 1, y + 1);
+                            var TempColor = OriginalImage.GetPixel(x + 1, y + 1);
                             if (Distance(CurrentColor.R, TempColor.R, CurrentColor.G, TempColor.G, CurrentColor.B, TempColor.B) > Threshold)
                                 NewImage.SetPixel(x, y, EdgeColor);
                         }
                         else if (y < OriginalImage.Height - 1)
                         {
-                            Color TempColor = OriginalImage.GetPixel(x, y + 1);
+                            var TempColor = OriginalImage.GetPixel(x, y + 1);
                             if (Distance(CurrentColor.R, TempColor.R, CurrentColor.G, TempColor.G, CurrentColor.B, TempColor.B) > Threshold)
                                 NewImage.SetPixel(x, y, EdgeColor);
                         }
                         else if (x < OriginalImage.Width - 1)
                         {
-                            Color TempColor = OriginalImage.GetPixel(x + 1, y);
+                            var TempColor = OriginalImage.GetPixel(x + 1, y);
                             if (Distance(CurrentColor.R, TempColor.R, CurrentColor.G, TempColor.G, CurrentColor.B, TempColor.B) > Threshold)
                                 NewImage.SetPixel(x, y, EdgeColor);
                         }
@@ -498,7 +498,7 @@ namespace Utilities.Media
                 {
                     for (int y = 0; y < OriginalImage.Height; ++y)
                     {
-                        Color Current = OriginalImage.GetPixel(x, y);
+                        var Current = OriginalImage.GetPixel(x, y);
                         var NewR = (int)TempHistogram.R[Current.R];
                         var NewG = (int)TempHistogram.G[Current.G];
                         var NewB = (int)TempHistogram.B[Current.B];
@@ -559,8 +559,8 @@ namespace Utilities.Media
                 {
                     for (int y = 0; y < OriginalImage.Height; ++y)
                     {
-                        int NewX = Random.Random.ThreadSafeNext(-MaxJitter, MaxJitter);
-                        int NewY = Random.Random.ThreadSafeNext(-MaxJitter, MaxJitter);
+                        var NewX = Random.Random.ThreadSafeNext(-MaxJitter, MaxJitter);
+                        var NewY = Random.Random.ThreadSafeNext(-MaxJitter, MaxJitter);
                         NewX += x;
                         NewY += y;
                         NewX = NewX.Clamp(OriginalImage.Width - 1, 0);
@@ -619,7 +619,7 @@ namespace Utilities.Media
                                         int TempY = y + y2;
                                         if (TempY >= 0 && TempY < Height)
                                         {
-                                            Color TempColor = OriginalImage.GetPixel(TempX, TempY);
+                                            var TempColor = OriginalImage.GetPixel(TempX, TempY);
                                             RValues[i] += TempColor.R;
                                             GValues[i] += TempColor.G;
                                             BValues[i] += TempColor.B;
@@ -656,7 +656,7 @@ namespace Utilities.Media
                             }
                         }
 
-                        Color MeanPixel = Color.FromArgb(RValues[j] / NumPixels[j],
+                        var MeanPixel = Color.FromArgb(RValues[j] / NumPixels[j],
                             GValues[j] / NumPixels[j],
                             BValues[j] / NumPixels[j]);
                         NewSwiftBitmap.SetPixel(x, y, MeanPixel);
@@ -713,7 +713,7 @@ namespace Utilities.Media
                                     int TempY = y + y2;
                                     if (TempY >= 0 && TempY < Height)
                                     {
-                                        Color TempColor = OriginalImage.GetPixel(TempX, TempY);
+                                        var TempColor = OriginalImage.GetPixel(TempX, TempY);
                                         RValues.Add(TempColor.R);
                                         GValues.Add(TempColor.G);
                                         BValues.Add(TempColor.B);
@@ -721,7 +721,7 @@ namespace Utilities.Media
                                 }
                             }
                         }
-                        Color MedianPixel = Color.FromArgb(RValues.Median(),
+                        var MedianPixel = Color.FromArgb(RValues.Median(),
                             GValues.Median(),
                             BValues.Median());
                         NewSwiftBitmap.SetPixel(x, y, MedianPixel);
@@ -750,8 +750,8 @@ namespace Utilities.Media
                 {
                     for (int y = 0; y < Height; ++y)
                     {
-                        Color CurrentPixel = OriginalImage.GetPixel(x, y);
-                        Color TempValue = Color.FromArgb(255 - CurrentPixel.R, 255 - CurrentPixel.G, 255 - CurrentPixel.B);
+                        var CurrentPixel = OriginalImage.GetPixel(x, y);
+                        var TempValue = Color.FromArgb(255 - CurrentPixel.R, 255 - CurrentPixel.G, 255 - CurrentPixel.B);
                         NewSwiftBitmap.SetPixel(x, y, TempValue);
                     }
                 });
@@ -786,8 +786,8 @@ namespace Utilities.Media
                             var TempVector = new Vector3(0.0, 0.0, 0.0);
                             for (int x = 0; x < Width; ++x)
                             {
-                                Color TempPixelX = TempImageX.GetPixel(x, y);
-                                Color TempPixelY = TempImageY.GetPixel(x, y);
+                                var TempPixelX = TempImageX.GetPixel(x, y);
+                                var TempPixelY = TempImageY.GetPixel(x, y);
                                 TempVector.X = (double)(TempPixelX.R) / 255.0;
                                 TempVector.Y = (double)(TempPixelY.R) / 255.0;
                                 TempVector.Z = 1.0;
@@ -825,20 +825,20 @@ namespace Utilities.Media
                 OriginalImage.Lock();
                 for (int x = 0; x < NewSwiftBitmap.Width; x += (PixelSize / 2))
                 {
-                    int MinX = (x - (PixelSize / 2)).Clamp(NewSwiftBitmap.Width, 0);
-                    int MaxX = (x + (PixelSize / 2)).Clamp(NewSwiftBitmap.Width, 0);
+                    var MinX = (x - (PixelSize / 2)).Clamp(NewSwiftBitmap.Width, 0);
+                    var MaxX = (x + (PixelSize / 2)).Clamp(NewSwiftBitmap.Width, 0);
                     for (int y = 0; y < NewSwiftBitmap.Height; y += (PixelSize / 2))
                     {
                         int RValue = 0;
                         int GValue = 0;
                         int BValue = 0;
-                        int MinY = (y - (PixelSize / 2)).Clamp(NewSwiftBitmap.Height, 0);
-                        int MaxY = (y + (PixelSize / 2)).Clamp(NewSwiftBitmap.Height, 0);
+                        var MinY = (y - (PixelSize / 2)).Clamp(NewSwiftBitmap.Height, 0);
+                        var MaxY = (y + (PixelSize / 2)).Clamp(NewSwiftBitmap.Height, 0);
                         for (int x2 = MinX; x2 < MaxX; ++x2)
                         {
                             for (int y2 = MinY; y2 < MaxY; ++y2)
                             {
-                                Color Pixel = OriginalImage.GetPixel(x2, y2);
+                                var Pixel = OriginalImage.GetPixel(x2, y2);
                                 RValue += Pixel.R;
                                 GValue += Pixel.G;
                                 BValue += Pixel.B;
@@ -847,7 +847,7 @@ namespace Utilities.Media
                         RValue = RValue / (PixelSize * PixelSize);
                         GValue = GValue / (PixelSize * PixelSize);
                         BValue = BValue / (PixelSize * PixelSize);
-                        Color TempPixel = Color.FromArgb(RValue.Clamp(255, 0), GValue.Clamp(255, 0), BValue.Clamp(255, 0));
+                        var TempPixel = Color.FromArgb(RValue.Clamp(255, 0), GValue.Clamp(255, 0), BValue.Clamp(255, 0));
                         Parallel.For(MinX, MaxX, x2 =>
                         {
                             for (int y2 = MinY; y2 < MaxY; ++y2)
@@ -1011,9 +1011,9 @@ namespace Utilities.Media
                                     int TempY2 = y - y2;
                                     if (TempY1 >= 0 && TempY1 < Height && TempY2 >= 0 && TempY2 < Height)
                                     {
-                                        Color TempColor = OriginalImage.GetPixel(x, y);
-                                        Color TempColor2 = OriginalImage.GetPixel(TempX1, TempY1);
-                                        Color TempColor3 = OriginalImage.GetPixel(TempX2, TempY2);
+                                        var TempColor = OriginalImage.GetPixel(x, y);
+                                        var TempColor2 = OriginalImage.GetPixel(TempX1, TempY1);
+                                        var TempColor3 = OriginalImage.GetPixel(TempX2, TempY2);
                                         if (Distance(TempColor.R, TempColor2.R, TempColor.G, TempColor2.G, TempColor.B, TempColor2.B) <
                                             Distance(TempColor.R, TempColor3.R, TempColor.G, TempColor3.G, TempColor.B, TempColor3.B))
                                         {
@@ -1032,7 +1032,7 @@ namespace Utilities.Media
                                 }
                             }
                         }
-                        Color MeanPixel = Color.FromArgb(RValue / NumPixels,
+                        var MeanPixel = Color.FromArgb(RValue / NumPixels,
                             GValue / NumPixels,
                             BValue / NumPixels);
                         NewSwiftBitmap.SetPixel(x, y, MeanPixel);
@@ -1075,8 +1075,8 @@ namespace Utilities.Media
                         {
                             for (int y = 0; y < Height; ++y)
                             {
-                                Color Pixel1 = TempImageX.GetPixel(x, y);
-                                Color Pixel2 = TempImageY.GetPixel(x, y);
+                                var Pixel1 = TempImageX.GetPixel(x, y);
+                                var Pixel2 = TempImageY.GetPixel(x, y);
                                 NewBitmap.SetPixel(x, y,
                                     Color.FromArgb((Pixel1.R + Pixel2.R).Clamp(255, 0),
                                         (Pixel1.G + Pixel2.G).Clamp(255, 0),
@@ -1128,8 +1128,8 @@ namespace Utilities.Media
                 {
                     for (int y = 0; y < Height; ++y)
                     {
-                        Color CurrentPixel = OriginalImage.GetPixel(x, y);
-                        Color TempValue = Color.FromArgb(Map(CurrentPixel.R, MinValue.R, MaxValue.R),
+                        var CurrentPixel = OriginalImage.GetPixel(x, y);
+                        var TempValue = Color.FromArgb(Map(CurrentPixel.R, MinValue.R, MaxValue.R),
                             Map(CurrentPixel.G, MinValue.G, MaxValue.G),
                             Map(CurrentPixel.B, MinValue.B, MaxValue.B));
                         NewBitmap.SetPixel(x, y, TempValue);
@@ -1161,7 +1161,7 @@ namespace Utilities.Media
                 {
                     for (int y = 0; y < Height; ++y)
                     {
-                        Color TempColor = OriginalImage.GetPixel(x, y);
+                        var TempColor = OriginalImage.GetPixel(x, y);
                         if ((TempColor.R + TempColor.G + TempColor.B) / 755.0f > Threshold)
                             NewSwiftBitmap.SetPixel(x, y, Color.White);
                         else
@@ -1191,7 +1191,7 @@ namespace Utilities.Media
                     {
                         if (ShowLine)
                         {
-                            Color CurrentPixel = TempImage.GetPixel(y, x);
+                            var CurrentPixel = TempImage.GetPixel(y, x);
                             Builder.Append(_ASCIICharacters[((CurrentPixel.R * _ASCIICharacters.Length) / 255)]);
                         }
                     }
@@ -1239,8 +1239,8 @@ namespace Utilities.Media
                             {
                                 float XDistortion = x + (GetHeight(x, y, XNoise) * Power);
                                 float YDistortion = y + (GetHeight(x, y, YNoise) * Power);
-                                int X1 = ((int)XDistortion).Clamp(Width - 1, 0);
-                                int Y1 = ((int)YDistortion).Clamp(Height - 1, 0);
+                                var X1 = ((int)XDistortion).Clamp(Width - 1, 0);
+                                var Y1 = ((int)YDistortion).Clamp(Height - 1, 0);
                                 NewSwiftBitmap.SetPixel(x, y, OriginalImage.GetPixel(X1, Y1));
                             }
                         });
@@ -1307,7 +1307,7 @@ namespace Utilities.Media
         private static float GetHeight(int x, int y, SwiftBitmap BlackAndWhiteData)
         {
             Contract.Requires<ArgumentNullException>(BlackAndWhiteData != null, "BlackAndWhiteData");
-            Color TempColor = BlackAndWhiteData.GetPixel(x, y);
+            var TempColor = BlackAndWhiteData.GetPixel(x, y);
             return GetHeight(TempColor);
         }
 
@@ -1325,7 +1325,7 @@ namespace Utilities.Media
             {
                 for (int y = 0; y < ImageData.Height; ++y)
                 {
-                    Color TempImage = ImageData.GetPixel(x, y);
+                    var TempImage = ImageData.GetPixel(x, y);
                     if (MinR > TempImage.R)
                         MinR = TempImage.R;
                     if (MaxR < TempImage.R)

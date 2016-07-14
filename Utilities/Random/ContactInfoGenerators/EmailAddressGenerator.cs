@@ -61,7 +61,7 @@ namespace Utilities.Random.ContactInfoGenerators
         public string Next(System.Random Rand)
         {
             string DomainName = (Rand.Next<bool>()) ? Rand.Next(FreeAccounts) + (CommonEndings ? Rand.Next(MostCommonEndings) : Rand.Next(Endings)) : new DomainNameGenerator(CommonEndings).Next(Rand);
-            int AddressStyle = Rand.Next(1, 6);
+            var AddressStyle = Rand.Next(1, 6);
             switch (AddressStyle)
             {
                 case 1:

@@ -251,7 +251,7 @@ namespace Utilities.DataTypes
         {
             if (!Contains(Key, Value))
                 return false;
-            List<T2> TempValue = Items[Key].ToList(z => z);
+            var TempValue = Items[Key].ToList(z => z);
             TempValue.Remove(Value);
             Items.AddOrUpdate(Key,
                 new ConcurrentBag<T2>(TempValue),

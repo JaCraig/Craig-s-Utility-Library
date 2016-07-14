@@ -47,8 +47,8 @@ namespace Ironman.Core.ActionFilters
                 return;
             HttpContextBase Context = filterContext.HttpContext;
             Context.Response.Cache.VaryByHeaders["Accept-Encoding"] = true;
-            DateTime Date = GetDateLastModified(Context);
-            string Etag = GetETag(Context);
+            var Date = GetDateLastModified(Context);
+            var Etag = GetETag(Context);
             string IncomingEtag = Context.Request.Headers["If-None-Match"];
             string ModifiedSince = Context.Request.Headers["If-Modified-Since"];
             DateTime ModifiedSinceDate = DateTime.Now;

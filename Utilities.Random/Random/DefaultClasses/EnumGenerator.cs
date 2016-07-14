@@ -48,8 +48,8 @@ namespace Utilities.Random.DefaultClasses
         /// <returns>A randomly generated object of the specified type</returns>
         public T Next(System.Random Rand, T Min, T Max)
         {
-            Array Values = Enum.GetValues(typeof(T));
-            int Index = Rand.Next(0, Values.Length);
+            var Values = Enum.GetValues(typeof(T));
+            var Index = Rand.Next(0, Values.Length);
             return (T)Values.GetValue(Index);
         }
 

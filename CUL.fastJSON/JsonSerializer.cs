@@ -77,8 +77,8 @@ namespace CUL.Serialization
         {
             if (Data == null || ObjectType == null)
                 return "";
-            string ReturnValue = fastJSON.JSON.ToJSON(Data);
-            HttpRequest Request = HttpContext.Current.Chain(x => x.Request);
+            var ReturnValue = fastJSON.JSON.ToJSON(Data);
+            var Request = HttpContext.Current.Chain(x => x.Request);
             if (Request != null &&
                 (!string.IsNullOrEmpty(Request.QueryString["callback"]) ||
                 !string.IsNullOrEmpty(Request.QueryString["jsonp"])))

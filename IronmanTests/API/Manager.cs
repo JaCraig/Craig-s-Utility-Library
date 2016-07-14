@@ -34,7 +34,7 @@ namespace IronmanTests.API
         public void All()
         {
             var TestObject = new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflowModule>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.Workflow.Manager.Manager>());
-            List<Dynamo> Objects = TestObject.All(1, "TestClass").Select(x => (Dynamo)x).ToList();
+            var Objects = TestObject.All(1, "TestClass").Select(x => (Dynamo)x).ToList();
             Assert.Equal("ASDFG", Objects[0]["A"]);
             Assert.Equal(10, Objects[0]["B"]);
             Assert.Equal(2.13f, Objects[0]["C"]);
@@ -51,7 +51,7 @@ namespace IronmanTests.API
         public void Any()
         {
             var TestObject = new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflowModule>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.Workflow.Manager.Manager>());
-            Dynamo Object = TestObject.Any(1, "TestClass", "A");
+            var Object = TestObject.Any(1, "TestClass", "A");
             Assert.Equal("ASDFG", Object["A"]);
             Assert.Equal(10, Object["B"]);
             Assert.Equal(2.13f, Object["C"]);
@@ -63,7 +63,7 @@ namespace IronmanTests.API
         public void AnyEmbedded()
         {
             var TestObject = new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflowModule>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.Workflow.Manager.Manager>());
-            Dynamo Object = TestObject.Any(1, "TestClass", "A", "E");
+            var Object = TestObject.Any(1, "TestClass", "A", "E");
             Assert.Equal("ASDFG", Object["A"]);
             Assert.Equal(10, Object["B"]);
             Assert.Equal(2.13f, Object["C"]);
@@ -81,7 +81,7 @@ namespace IronmanTests.API
         public void Delete()
         {
             var TestObject = new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflowModule>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.Workflow.Manager.Manager>());
-            Dynamo Object = TestObject.Delete(1, "TestClass", "A");
+            var Object = TestObject.Delete(1, "TestClass", "A");
             Assert.Equal("Object deleted successfully", Object["Message"]);
             Assert.Equal("Success", Object["Status"]);
         }
@@ -90,7 +90,7 @@ namespace IronmanTests.API
         public void Save()
         {
             var TestObject = new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflowModule>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.Workflow.Manager.Manager>());
-            Dynamo Object = TestObject.Save(1, "TestClass", new Dynamo[] { new Dynamo() });
+            var Object = TestObject.Save(1, "TestClass", new Dynamo[] { new Dynamo() });
             Assert.Equal("Object saved successfully", Object["Message"]);
             Assert.Equal("Success", Object["Status"]);
         }
@@ -99,7 +99,7 @@ namespace IronmanTests.API
         public void Service()
         {
             var TestObject = new Ironman.Core.API.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IAPIMapping>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IService>(), Utilities.IoC.Manager.Bootstrapper.ResolveAll<IWorkflowModule>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.Workflow.Manager.Manager>());
-            Dynamo Value = TestObject.CallService(1, "TestService", new Dynamo(new { A = 1 }));
+            var Value = TestObject.CallService(1, "TestService", new Dynamo(new { A = 1 }));
             Assert.NotNull(Value);
             Assert.Equal(1, Value["A"]);
         }

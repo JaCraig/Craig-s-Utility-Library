@@ -47,8 +47,8 @@ namespace Utilities.DataTypes.AOP.Generators
         {
             aspects = aspects ?? new List<IAspect>();
             var Builder = new StringBuilder();
-            MethodInfo GetMethodInfo = PropertyInfo.GetGetMethod();
-            MethodInfo SetMethodInfo = PropertyInfo.GetSetMethod();
+            var GetMethodInfo = PropertyInfo.GetGetMethod();
+            var SetMethodInfo = PropertyInfo.GetSetMethod();
             if (assembliesUsing != null)
                 assembliesUsing.AddIfUnique(GetAssemblies(PropertyInfo.PropertyType));
             if (GetMethodInfo != null && SetMethodInfo != null)
@@ -114,7 +114,7 @@ namespace Utilities.DataTypes.AOP.Generators
             if (methodInfo == null)
                 return "";
             var Builder = new StringBuilder();
-            string BaseMethodName = methodInfo.Name.Replace("get_", "").Replace("set_", "");
+            var BaseMethodName = methodInfo.Name.Replace("get_", "").Replace("set_", "");
             string ReturnValue = methodInfo.ReturnType != typeof(void) ? "FinalReturnValue" : "";
             string BaseCall = "";
             if (!methodInfo.IsAbstract & !DeclaringType.IsInterface)
@@ -125,7 +125,7 @@ namespace Utilities.DataTypes.AOP.Generators
             {
                 BaseCall += (string.IsNullOrEmpty(ReturnValue) ? "_" : ReturnValue + "=_") + PropertyInfo.Name;
             }
-            ParameterInfo[] Parameters = methodInfo.GetParameters();
+            var Parameters = methodInfo.GetParameters();
             BaseCall += Parameters.Length > 0 ? "=" + Parameters.ToString(x => x.Name) + ";" : ";";
             Builder.AppendLineFormat(@"
                 try

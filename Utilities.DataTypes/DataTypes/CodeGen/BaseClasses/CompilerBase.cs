@@ -148,16 +148,16 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         {
             if (AssemblyStream == null)
                 return null;
-            CSharpCompilation CSharpCompiler = CSharpCompilation.Create(AssemblyName + ".dll",
+            var CSharpCompiler = CSharpCompilation.Create(AssemblyName + ".dll",
                                                     new SyntaxTree[] { CSharpSyntaxTree.ParseText(Code) },
                                                     References.ForEach(x => MetadataReference.CreateFromFile(x.Location)),
                                                     new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, usings: Usings, optimizationLevel: Optimize ? OptimizationLevel.Release : OptimizationLevel.Debug));
             using (MemoryStream TempStream = new MemoryStream())
             {
-                EmitResult Result = CSharpCompiler.Emit(TempStream);
+                var Result = CSharpCompiler.Emit(TempStream);
                 if (!Result.Success)
                     throw new Exception(Code + System.Environment.NewLine + System.Environment.NewLine + Result.Diagnostics.ToString(x => x.GetMessage() + " : " + x.Location.GetLineSpan().StartLinePosition.Line, System.Environment.NewLine));
-                byte[] MiniAssembly = TempStream.ToArray();
+                var MiniAssembly = TempStream.ToArray();
                 Classes.AddIfUnique((x, y) => x.FullName == y.FullName, AppDomain.CurrentDomain.Load(MiniAssembly).GetTypes());
                 AssemblyStream.Write(MiniAssembly, 0, MiniAssembly.Length);
             }
@@ -204,7 +204,7 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
             {
                 using (FileStream TempStream = new FileInfo(AssemblyDirectory + "\\" + AssemblyName + ".dll").OpenWrite())
                 {
-                    byte[] TempArray = AssemblyStream.ToArray();
+                    var TempArray = AssemblyStream.ToArray();
                     TempStream.Write(TempArray, 0, TempArray.Length);
                 }
             }

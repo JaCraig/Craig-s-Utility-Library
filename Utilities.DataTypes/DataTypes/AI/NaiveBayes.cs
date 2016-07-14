@@ -152,7 +152,7 @@ namespace Utilities.DataTypes.AI
             double TotalProbability = 1;
             double NegativeTotalProbability = 1;
             int Count = 0;
-            int MaxCount = SortedProbabilities.Count.Min(MaxInterestingTokenCount);
+            var MaxCount = SortedProbabilities.Count.Min(MaxInterestingTokenCount);
             foreach (string Probability in SortedProbabilities.Keys)
             {
                 double TokenProbability = SortedProbabilities[Probability];
@@ -206,8 +206,8 @@ namespace Utilities.DataTypes.AI
             int BCount = SetB.Contains(Item) ? SetB[Item] * BTokenWeight : 0;
             if (ACount + BCount >= MinCountForInclusion)
             {
-                double AProbability = ((double)ACount / (double)TotalA).Min(1);
-                double BProbability = ((double)BCount / (double)TotalB).Min(1);
+                var AProbability = ((double)ACount / (double)TotalA).Min(1);
+                var BProbability = ((double)BCount / (double)TotalB).Min(1);
                 Probability = MinTokenProbability.Max(MaxTokenProbability.Min(AProbability / (AProbability + BProbability)));
             }
             return Probability;

@@ -47,7 +47,7 @@ namespace UnitTests.IO.FileSystem.Default
         public void Directory()
         {
             var Temp = new Utilities.IO.FileSystem.Default.HttpFileSystem();
-            IDirectory Dir = Temp.Directory(@"http://www.google.com");
+            var Dir = Temp.Directory(@"http://www.google.com");
             Assert.NotNull(Dir);
             Assert.IsType<Utilities.IO.FileSystem.Default.WebDirectory>(Dir);
             Assert.True(Dir.Exists);
@@ -57,7 +57,7 @@ namespace UnitTests.IO.FileSystem.Default
         public void File()
         {
             var Temp = new Utilities.IO.FileSystem.Default.HttpFileSystem();
-            IFile Dir = Temp.File(@"http://www.google.com");
+            var Dir = Temp.File(@"http://www.google.com");
             Assert.NotNull(Dir);
             Assert.IsType<Utilities.IO.FileSystem.Default.WebFile>(Dir);
             Assert.True(Dir.Exists);

@@ -45,7 +45,7 @@ namespace Utilities.IO.FileFormats.RSS
         public Thumbnail(IXPathNavigable Doc)
         {
             Contract.Requires<ArgumentNullException>(Doc != null, "Doc");
-            XPathNavigator Element = Doc.CreateNavigator();
+            var Element = Doc.CreateNavigator();
             if (Element.GetAttribute("url", "") != null)
             {
                 Url = Element.GetAttribute("url", "");

@@ -177,7 +177,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <returns>The string representation of the command</returns>
         public override string ToString()
         {
-            string TempCommand = SQLCommand.Check("");
+            var TempCommand = SQLCommand.Check("");
             Parameters.ForEach(x => { TempCommand = x.AddParameter(TempCommand); });
             return TempCommand;
         }

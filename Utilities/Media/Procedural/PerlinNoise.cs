@@ -51,15 +51,15 @@ namespace Utilities.Media.Procedural
         {
             var ReturnValue = new SwiftBitmap(Width, Height);
             ReturnValue.Lock();
-            float[,] Noise = GenerateNoise(Seed, Width, Height);
+            var Noise = GenerateNoise(Seed, Width, Height);
             for (int x = 0; x < Width; ++x)
             {
                 for (int y = 0; y < Height; ++y)
                 {
-                    float Value = GetValue(x, y, Width, Height, Frequency, Amplitude, Persistance, Octaves, Noise);
+                    var Value = GetValue(x, y, Width, Height, Frequency, Amplitude, Persistance, Octaves, Noise);
                     Value = (Value * 0.5f) + 0.5f;
                     Value *= 255;
-                    int RGBValue = ((int)Value).Clamp(MaxRGBValue, MinRGBValue);
+                    var RGBValue = ((int)Value).Clamp(MaxRGBValue, MinRGBValue);
                     ReturnValue.SetPixel(x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue));
                 }
             }

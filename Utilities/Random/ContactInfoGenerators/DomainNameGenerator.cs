@@ -59,7 +59,7 @@ namespace Utilities.Random.ContactInfoGenerators
         /// <returns>A randomly generated object of the specified type</returns>
         public string Next(System.Random Rand)
         {
-            string CompanyName = new CompanyGenerator().Next(Rand);
+            var CompanyName = new CompanyGenerator().Next(Rand);
             return ((CompanyName.Length > 10) ? CleanName(CompanyName.Split(' ')[0]) : CleanName(CompanyName))
                 + (CommonEndings ? Rand.Next(MostCommonEndings) : Rand.Next(Endings));
         }

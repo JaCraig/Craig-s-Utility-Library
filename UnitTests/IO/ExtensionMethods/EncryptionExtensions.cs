@@ -55,7 +55,7 @@ namespace UnitTests.Encryption.ExtensionMethods
         {
             string Data = "This is a test";
             Assert.Equal("This is a test", Data.ToByteArray().Concat(new System.Random().GenerateSalt(100)).ToString(x => ((char)x).ToString(), "").Left(14));
-            byte[] Data2 = Data.ToByteArray();
+            var Data2 = Data.ToByteArray();
             Assert.Equal(1014, Data2.Concat(new System.Random().GenerateSalt(1000)).Length);
         }
 

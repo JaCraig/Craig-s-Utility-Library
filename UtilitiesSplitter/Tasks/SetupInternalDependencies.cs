@@ -28,7 +28,7 @@ namespace UtilitiesSplitter.Tasks
         {
             foreach (FileInfo File in new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\").EnumerateFiles("*.nuspec", System.IO.SearchOption.AllDirectories))
             {
-                string FileContent = File.Read();
+                var FileContent = File.Read();
                 string CurrentVersion = Regex.Match(FileContent, "<version>(?<VersionNumber>.*)</version>").Groups["VersionNumber"].Value;
                 string CurrentID = Regex.Match(FileContent, "<id>(?<ProjectID>.*)</id>").Groups["ProjectID"].Value;
                 foreach (FileInfo File2 in new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\").EnumerateFiles("*.nuspec", System.IO.SearchOption.AllDirectories).Where(x => (FileInfo)x != File))

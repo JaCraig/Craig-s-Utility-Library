@@ -194,7 +194,7 @@ namespace Utilities.DataTypes
         /// <returns>Returns true if the key was found, false otherwise</returns>
         public bool Remove(Key key)
         {
-            bool ReturnValue = ContainsKey(key);
+            var ReturnValue = ContainsKey(key);
             Items = new ConcurrentBag<TaggedItem<Key, Value>>(Items.ToArray(x => x).Where(x => !x.Keys.Contains(key)));
             KeyList.Remove(key);
             return ReturnValue;

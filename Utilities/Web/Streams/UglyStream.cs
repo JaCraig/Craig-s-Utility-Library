@@ -34,23 +34,6 @@ namespace Utilities.Web.Streams
     public class UglyStream : Stream
     {
         /// <summary>
-        /// Compression using
-        /// </summary>
-        private CompressionType Compression;
-
-        /// <summary>
-        /// Final output string
-        /// </summary>
-        private string FinalString;
-
-        /// <summary>
-        /// Stream using
-        /// </summary>
-        private Stream StreamUsing;
-
-        private MinificationType Type;
-
-        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="StreamUsing">The stream for the page</param>
@@ -111,13 +94,30 @@ namespace Utilities.Web.Streams
         }
 
         /// <summary>
+        /// Compression using
+        /// </summary>
+        private CompressionType Compression;
+
+        /// <summary>
+        /// Final output string
+        /// </summary>
+        private string FinalString;
+
+        /// <summary>
+        /// Stream using
+        /// </summary>
+        private Stream StreamUsing;
+
+        private MinificationType Type;
+
+        /// <summary>
         /// Nothing to flush
         /// </summary>
         public override void Flush()
         {
             if (string.IsNullOrEmpty(FinalString))
                 return;
-            byte[] Data = FinalString.Minify(Type).ToByteArray();
+            var Data = FinalString.Minify(Type).ToByteArray();
             Data = Data.Compress(Compression);
             if (Data != null)
                 StreamUsing.Write(Data, 0, Data.Length);
@@ -166,7 +166,7 @@ namespace Utilities.Web.Streams
         {
             byte[] Data = new byte[count];
             Buffer.BlockCopy(buffer, offset, Data, 0, count);
-            string inputstring = Data.ToString(null);
+            var inputstring = Data.ToString(null);
             FinalString += inputstring;
         }
 
@@ -178,7 +178,7 @@ namespace Utilities.Web.Streams
         protected static string Evaluate(Match Matcher)
         {
             Contract.Requires<ArgumentNullException>(Matcher != null, "Matcher");
-            string MyString = Matcher.ToString();
+            var MyString = Matcher.ToString();
             MyString = Regex.Replace(MyString, @"\r\n\s*", "");
             return MyString;
         }

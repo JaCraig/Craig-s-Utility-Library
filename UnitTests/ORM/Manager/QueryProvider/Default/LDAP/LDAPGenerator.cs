@@ -44,63 +44,63 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.LDAP
         [Fact]
         public void All()
         {
-            IBatch Batch = Generator.All();
+            var Batch = Generator.All();
             Assert.Equal(1, Batch.CommandCount);
         }
 
         [Fact]
         public void Any()
         {
-            IBatch Batch = Generator.Any();
+            var Batch = Generator.Any();
             Assert.Equal(1, Batch.CommandCount);
         }
 
         [Fact]
         public void Delete()
         {
-            IBatch Batch = Generator.Delete(new Dynamo());
+            var Batch = Generator.Delete(new Dynamo());
             Assert.Equal(0, Batch.CommandCount);
         }
 
         [Fact]
         public void Delete2()
         {
-            IBatch Batch = Generator.Delete(new Dynamo[] { new Dynamo(), new Dynamo(), new Dynamo() });
+            var Batch = Generator.Delete(new Dynamo[] { new Dynamo(), new Dynamo(), new Dynamo() });
             Assert.Equal(0, Batch.CommandCount);
         }
 
         [Fact]
         public void Insert()
         {
-            IBatch Batch = Generator.Insert(new Dynamo());
+            var Batch = Generator.Insert(new Dynamo());
             Assert.Equal(0, Batch.CommandCount);
         }
 
         [Fact]
         public void PageCount()
         {
-            IBatch Batch = Generator.PageCount(25);
+            var Batch = Generator.PageCount(25);
             Assert.Equal(0, Batch.CommandCount);
         }
 
         [Fact]
         public void Paged()
         {
-            IBatch Batch = Generator.Paged(25, 0, "");
+            var Batch = Generator.Paged(25, 0, "");
             Assert.Equal(1, Batch.CommandCount);
         }
 
         [Fact]
         public void Update()
         {
-            IBatch Batch = Generator.Update(new Dynamo());
+            var Batch = Generator.Update(new Dynamo());
             Assert.Equal(0, Batch.CommandCount);
         }
 
         [Fact]
         public void Update2()
         {
-            IBatch Batch = Generator.Update(new Dynamo[] { new Dynamo(), new Dynamo(), new Dynamo() });
+            var Batch = Generator.Update(new Dynamo[] { new Dynamo(), new Dynamo(), new Dynamo() });
             Assert.Equal(0, Batch.CommandCount);
         }
 

@@ -44,7 +44,7 @@ namespace Utilities.IO.FileFormats.RSS
         public GUID(IXPathNavigable Element)
         {
             Contract.Requires<ArgumentNullException>(Element != null, "Element");
-            XPathNavigator Navigator = Element.CreateNavigator();
+            var Navigator = Element.CreateNavigator();
             if (Navigator.GetAttribute("isPermaLink", "") != null)
             {
                 PermaLink = Navigator.GetAttribute("isPermaLink", "");

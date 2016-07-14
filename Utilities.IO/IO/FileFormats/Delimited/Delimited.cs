@@ -105,7 +105,7 @@ namespace Utilities.IO.FileFormats.Delimited
             if (string.IsNullOrEmpty(FileContent))
                 return;
             var TempSplitter = new Regex("[^\"\r\n]*(\r\n|\n|$)|(([^\"\r\n]*)(\"[^\"]*\")([^\"\r\n]*))*(\r\n|\n|$)");
-            MatchCollection Matches = TempSplitter.Matches(FileContent);
+            var Matches = TempSplitter.Matches(FileContent);
             if (string.IsNullOrEmpty(Delimiter) && Matches != null)
                 Delimiter = CheckDelimiters(Matches.Where(x => !string.IsNullOrEmpty(x.Value)).FirstOrDefault().Chain(x => x.Value, ","));
             Matches.Where(x => !string.IsNullOrEmpty(x.Value))

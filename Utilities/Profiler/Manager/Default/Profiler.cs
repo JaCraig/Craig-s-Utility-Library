@@ -101,7 +101,7 @@ namespace Utilities.Profiler.Manager.Default
         {
             get
             {
-                Profiler ReturnValue = "Current_Profiler".GetFromCache<Profiler>(Cache: "Item");
+                var ReturnValue = "Current_Profiler".GetFromCache<Profiler>(Cache: "Item");
                 if (ReturnValue == null)
                 {
                     ReturnValue = "Root_Profiler".GetFromCache<Profiler>(Cache: "Item");
@@ -122,7 +122,7 @@ namespace Utilities.Profiler.Manager.Default
         {
             get
             {
-                Profiler ReturnValue = "Root_Profiler".GetFromCache<Profiler>(Cache: "Item");
+                var ReturnValue = "Root_Profiler".GetFromCache<Profiler>(Cache: "Item");
                 if (ReturnValue == null)
                 {
                     ReturnValue = new Profiler("Start");

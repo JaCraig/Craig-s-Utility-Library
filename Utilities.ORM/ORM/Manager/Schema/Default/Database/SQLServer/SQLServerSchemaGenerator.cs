@@ -80,7 +80,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         /// <returns>List of commands generated</returns>
         public IEnumerable<string> GenerateSchema(ISource DesiredStructure, ISourceInfo Source)
         {
-            ISource CurrentStructure = GetSourceStructure(Source);
+            var CurrentStructure = GetSourceStructure(Source);
             return BuildCommands(DesiredStructure, CurrentStructure).ToArray();
         }
 
@@ -91,12 +91,12 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         /// <returns>The source structure</returns>
         public ISource GetSourceStructure(ISourceInfo Source)
         {
-            string DatabaseName = Regex.Match(Source.Connection, "Initial Catalog=(.*?;)").Value.Replace("Initial Catalog=", "").Replace(";", "");
-            ISourceInfo DatabaseSource = SourceProvider.GetSource(Regex.Replace(Source.Connection, "Initial Catalog=(.*?;)", ""));
+            var DatabaseName = Regex.Match(Source.Connection, "Initial Catalog=(.*?;)").Value.Replace("Initial Catalog=", "").Replace(";", "");
+            var DatabaseSource = SourceProvider.GetSource(Regex.Replace(Source.Connection, "Initial Catalog=(.*?;)", ""));
             if (!SourceExists(DatabaseName, DatabaseSource))
                 return null;
             var Temp = new Database(DatabaseName);
-            IBatch Batch = Provider.Batch(Source);
+            var Batch = Provider.Batch(Source);
             IBuilder[] Builders = {
                 new Tables(),
                 new TableColumns(),
@@ -121,7 +121,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         /// <param name="QueryProvider">The query provider.</param>
         public void Setup(ListMapping<IDatabase, IMapping> Mappings, IDatabase Database, QueryProvider.Manager QueryProvider)
         {
-            ISourceInfo TempSource = SourceProvider.GetSource(Database.Name);
+            var TempSource = SourceProvider.GetSource(Database.Name);
             var TempDatabase = new Schema.Default.Database.Database(Regex.Match(TempSource.Connection, "Initial Catalog=(.*?;)").Value.Replace("Initial Catalog=", "").Replace(";", ""));
             SetupTables(Mappings, Database, TempDatabase);
             SetupJoiningTables(Mappings, Database, TempDatabase);
@@ -131,8 +131,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             {
                 Table.SetupForeignKeys();
             }
-            List<string> Commands = GenerateSchema(TempDatabase, SourceProvider.GetSource(Database.Name)).ToList();
-            IBatch Batch = QueryProvider.Batch(SourceProvider.GetSource(Database.Name));
+            var Commands = GenerateSchema(TempDatabase, SourceProvider.GetSource(Database.Name)).ToList();
+            var Batch = QueryProvider.Batch(SourceProvider.GetSource(Database.Name));
             for (int x = 0; x < Commands.Count; ++x)
             {
                 if (Commands[x].ToUpperInvariant().Contains("CREATE DATABASE"))
@@ -312,7 +312,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                     }
                     else if (Column.DataType == SqlDbType.Decimal.To(DbType.Int32))
                     {
-                        int Precision = (Column.Length * 2).Clamp(38, 18);
+                        var Precision = (Column.Length * 2).Clamp(38, 18);
                         Command += "(" + Precision.ToString(CultureInfo.InvariantCulture) + "," + Column.Length.Clamp(38, 0).ToString(CultureInfo.InvariantCulture) + ")";
                     }
                     Command += "'";
@@ -353,7 +353,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                     }
                     else if (Column.DataType == SqlDbType.Decimal.To(DbType.Int32))
                     {
-                        int Precision = (Column.Length * 2).Clamp(38, 18);
+                        var Precision = (Column.Length * 2).Clamp(38, 18);
                         Command += "(" + Precision.ToString(CultureInfo.InvariantCulture) + "," + Column.Length.Clamp(38, 0).ToString(CultureInfo.InvariantCulture) + ")";
                     }
                     Command += "'";
@@ -373,13 +373,13 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                 foreach (Trigger Trigger2 in CurrentTable.Triggers)
                 {
                     string Definition1 = Trigger.Definition;
-                    string Definition2 = Trigger2.Definition.Replace("Command0", "");
+                    var Definition2 = Trigger2.Definition.Replace("Command0", "");
                     if (Trigger.Name == Trigger2.Name && string.Equals(Definition1, Definition2, StringComparison.InvariantCultureIgnoreCase))
                     {
                         ReturnValue.Add(string.Format(CultureInfo.CurrentCulture,
                             "EXEC dbo.sp_executesql @statement = N'DROP TRIGGER {0}'",
                             Trigger.Name));
-                        string Definition = Regex.Replace(Trigger.Definition, "-- (.*)", "");
+                        var Definition = Regex.Replace(Trigger.Definition, "-- (.*)", "");
                         ReturnValue.Add(Definition.Replace("\n", " ").Replace("\r", " "));
                         break;
                     }
@@ -417,7 +417,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                 {
                     foreach (IColumn ForeignKey in Column.ForeignKey)
                     {
-                        string Command = string.Format(CultureInfo.CurrentCulture,
+                        var Command = string.Format(CultureInfo.CurrentCulture,
                             "EXEC dbo.sp_executesql @statement = N'ALTER TABLE {0} ADD FOREIGN KEY ({1}) REFERENCES {2}({3})",
                             Column.ParentTable.Name,
                             Column.Name,
@@ -448,7 +448,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                 {
                     foreach (IColumn ForeignKey in Column.ForeignKey)
                     {
-                        string Command = string.Format(CultureInfo.CurrentCulture,
+                        var Command = string.Format(CultureInfo.CurrentCulture,
                             "EXEC dbo.sp_executesql @statement = N'ALTER TABLE {0} ADD FOREIGN KEY ({1}) REFERENCES {2}({3})",
                             Column.ParentTable.Name,
                             Column.Name,
@@ -472,7 +472,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         {
             Contract.Requires<ArgumentNullException>(Function != null, "Function");
             Contract.Requires<ArgumentNullException>(Function.Definition != null, "Function.Definition");
-            string Definition = Regex.Replace(Function.Definition, "-- (.*)", "");
+            var Definition = Regex.Replace(Function.Definition, "-- (.*)", "");
             return new string[] { Definition.Replace("\n", " ").Replace("\r", " ") };
         }
 
@@ -480,7 +480,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         {
             Contract.Requires<ArgumentNullException>(StoredProcedure != null, "StoredProcedure");
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(StoredProcedure.Definition), "StoredProcedure.Definition");
-            string Definition = Regex.Replace(StoredProcedure.Definition, "-- (.*)", "");
+            var Definition = Regex.Replace(StoredProcedure.Definition, "-- (.*)", "");
             return new string[] { Definition.Replace("\n", " ").Replace("\r", " ") };
         }
 
@@ -505,7 +505,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                 }
                 else if (Column.DataType == SqlDbType.Decimal.To(DbType.Int32))
                 {
-                    int Precision = (Column.Length * 2).Clamp(38, 18);
+                    var Precision = (Column.Length * 2).Clamp(38, 18);
                     Builder.Append("(").Append(Precision).Append(",").Append(Column.Length.Clamp(38, 0)).Append(")");
                 }
                 if (!Column.Nullable)
@@ -565,7 +565,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             var ReturnValue = new List<string>();
             foreach (Trigger Trigger in Table.Triggers)
             {
-                string Definition = Regex.Replace(Trigger.Definition, "-- (.*)", "");
+                var Definition = Regex.Replace(Trigger.Definition, "-- (.*)", "");
                 ReturnValue.Add(Definition.Replace("\n", " ").Replace("\r", " "));
             }
             return ReturnValue;
@@ -575,7 +575,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         {
             Contract.Requires<ArgumentNullException>(View != null, "View");
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(View.Definition), "View.Definition");
-            string Definition = Regex.Replace(View.Definition, "-- (.*)", "");
+            var Definition = Regex.Replace(View.Definition, "-- (.*)", "");
             return new string[] { Definition.Replace("\n", " ").Replace("\r", " ") };
         }
 
@@ -663,7 +663,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                 {
                     if (Property is IMap)
                     {
-                        IMapping MapMapping = Mappings[Key].FirstOrDefault(x => x.ObjectType == Property.Type);
+                        var MapMapping = Mappings[Key].FirstOrDefault(x => x.ObjectType == Property.Type);
                         foreach (IProperty IDProperty in MapMapping.IDProperties)
                         {
                             TempDatabase[Mapping.TableName].AddColumn(Property.FieldName,
@@ -696,7 +696,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             Contract.Requires<ArgumentNullException>(TempDatabase.Tables != null, "TempDatabase.Tables");
             if (TempDatabase.Tables.FirstOrDefault(x => x.Name == Property.TableName) != null)
                 return;
-            IMapping MapMapping = Mappings[Key].FirstOrDefault(x => x.ObjectType == Property.Type);
+            var MapMapping = Mappings[Key].FirstOrDefault(x => x.ObjectType == Property.Type);
             if (MapMapping == null)
                 return;
             if (MapMapping == Mapping)

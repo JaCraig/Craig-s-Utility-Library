@@ -205,7 +205,7 @@ namespace Utilities.IO.FileSystem.Default
                 {
                     while (true)
                     {
-                        int Count = Reader.Read(Buffer, 0, Buffer.Length);
+                        var Count = Reader.Read(Buffer, 0, Buffer.Length);
                         if (Count <= 0)
                             return Temp.ToArray();
                         Temp.Write(Buffer, 0, Count);

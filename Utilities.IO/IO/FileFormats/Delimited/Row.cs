@@ -62,7 +62,7 @@ namespace Utilities.IO.FileFormats.Delimited
             this.Cells = new List<Cell>();
             this.Delimiter = Delimiter;
             var TempSplitter = new Regex(string.Format(CultureInfo.InvariantCulture, "(?<Value>\"(?:[^\"]|\"\")*\"|[^{0}\r\n]*?)(?<Delimiter>{0}|\r\n|\n|$)", Regex.Escape(Delimiter)));
-            MatchCollection Matches = TempSplitter.Matches(Content);
+            var Matches = TempSplitter.Matches(Content);
             bool Finished = false;
             foreach (Match Match in Matches)
             {

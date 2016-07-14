@@ -58,7 +58,7 @@ namespace Utilities.IO.Messaging.Default
             using (MailMessage TempMailMessage = new MailMessage())
             {
                 char[] Splitter = { ',', ';' };
-                string[] AddressCollection = Message.To.Split(Splitter);
+                var AddressCollection = Message.To.Split(Splitter);
                 for (int x = 0; x < AddressCollection.Length; ++x)
                 {
                     if (!string.IsNullOrEmpty(AddressCollection[x].Trim()))

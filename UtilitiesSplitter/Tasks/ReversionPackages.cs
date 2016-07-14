@@ -27,10 +27,10 @@ namespace UtilitiesSplitter.Tasks
         {
             foreach (FileInfo File in new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\").EnumerateFiles("*.nuspec", System.IO.SearchOption.AllDirectories))
             {
-                string FileContents = File.Read();
-                Match VersionMatch = Regex.Match(FileContents, "<version>(?<VersionNumber>.*)</version>");
-                bool IsBeta = VersionMatch.Groups["VersionNumber"].Value.Contains("-beta");
-                string[] VersionInfo = VersionMatch.Groups["VersionNumber"].Value.Replace("-beta", "").Split('.');
+                var FileContents = File.Read();
+                var VersionMatch = Regex.Match(FileContents, "<version>(?<VersionNumber>.*)</version>");
+                var IsBeta = VersionMatch.Groups["VersionNumber"].Value.Contains("-beta");
+                var VersionInfo = VersionMatch.Groups["VersionNumber"].Value.Replace("-beta", "").Split('.');
                 string NewVersion = VersionInfo[0] + "." + VersionInfo[1] + ".";
                 NewVersion += VersionInfo.Length > 2 ? (int.Parse(VersionInfo[2]) + 1).ToString() : "1";
                 File.Write(Regex.Replace(FileContents, "<version>(?<VersionNumber>.*)</version>", "<version>" + NewVersion + (IsBeta ? "-beta" : "") + "</version>"));

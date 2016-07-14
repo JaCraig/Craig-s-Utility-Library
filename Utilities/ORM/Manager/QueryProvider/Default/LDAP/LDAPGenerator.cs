@@ -129,7 +129,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Delete(IEnumerable<T> Objects)
         {
-            IBatch TempBatch = QueryProvider.Batch(Source);
+            var TempBatch = QueryProvider.Batch(Source);
             foreach (T Object in Objects)
             {
                 TempBatch.AddCommand(Delete(Object));
@@ -154,7 +154,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Insert(IEnumerable<T> Objects)
         {
-            IBatch TempBatch = QueryProvider.Batch(Source);
+            var TempBatch = QueryProvider.Batch(Source);
             foreach (T Object in Objects)
             {
                 TempBatch.AddCommand(Insert(Object));
@@ -358,7 +358,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.LDAP
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Update(IEnumerable<T> Objects)
         {
-            IBatch TempBatch = QueryProvider.Batch(Source);
+            var TempBatch = QueryProvider.Batch(Source);
             foreach (T Object in Objects)
             {
                 TempBatch.AddCommand(Update(Object));

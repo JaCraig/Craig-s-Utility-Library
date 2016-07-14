@@ -186,18 +186,18 @@ namespace Utilities.IO.FileFormats
             FileContents = new Dictionary<string, Dictionary<string, string>>();
             string Contents = Data;
             var Section = new Regex("[" + Regex.Escape(" ") + "\t]*" + Regex.Escape("[") + ".*" + Regex.Escape("]\r\n"));
-            string[] Sections = Section.Split(Contents);
-            MatchCollection SectionHeaders = Section.Matches(Contents);
+            var Sections = Section.Split(Contents);
+            var SectionHeaders = Section.Matches(Contents);
             int Counter = 1;
             foreach (Match SectionHeader in SectionHeaders)
             {
                 string[] Splitter = { "\r\n" };
                 string[] Splitter2 = { "=" };
-                string[] Items = Sections[Counter].Split(Splitter, StringSplitOptions.RemoveEmptyEntries);
+                var Items = Sections[Counter].Split(Splitter, StringSplitOptions.RemoveEmptyEntries);
                 var SectionValues = new Dictionary<string, string>();
                 foreach (string Item in Items)
                 {
-                    string[] ItemSplit = Item.Split(Splitter2, StringSplitOptions.None);
+                    var ItemSplit = Item.Split(Splitter2, StringSplitOptions.None);
                     if (ItemSplit.Length >= 2)
                         SectionValues.Add(ItemSplit[0], ItemSplit[1]);
                 }

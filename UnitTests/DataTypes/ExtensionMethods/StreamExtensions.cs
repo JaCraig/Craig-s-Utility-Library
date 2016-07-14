@@ -51,7 +51,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             var File = new System.IO.FileInfo(@".\Testing\Test.txt");
             using (System.IO.FileStream Test = File.OpenRead())
             {
-                byte[] Content = Test.ReadAllBinary();
+                var Content = Test.ReadAllBinary();
                 Assert.Equal("This is a test", System.Text.Encoding.ASCII.GetString(Content, 0, Content.Length));
             }
         }
@@ -62,7 +62,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             using (System.IO.MemoryStream Test = new System.IO.MemoryStream())
             {
                 Test.Write("This is a test".ToByteArray(), 0, "This is a test".Length);
-                byte[] Content = Test.ReadAllBinary();
+                var Content = Test.ReadAllBinary();
                 Assert.Equal("This is a test", System.Text.Encoding.ASCII.GetString(Content, 0, Content.Length));
             }
         }

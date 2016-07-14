@@ -58,10 +58,10 @@ namespace UnitTests.DataTypes.Conversion
         {
             var Object1 = new TestA { A = 10, B = "ASDF" };
             var Object2 = new TestB { A = 20, B = "ZXCV" };
-            TestB Result1 = Utilities.DataTypes.Conversion.Manager.To<TestA, TestB>(Object1, null);
+            var Result1 = Utilities.DataTypes.Conversion.Manager.To<TestA, TestB>(Object1, null);
             Assert.Equal(10, Result1.A);
             Assert.Equal("ASDF", Result1.B);
-            TestA Result2 = Utilities.DataTypes.Conversion.Manager.To<TestB, TestA>(Object2, null);
+            var Result2 = Utilities.DataTypes.Conversion.Manager.To<TestB, TestA>(Object2, null);
             Assert.Equal(20, Result2.A);
             Assert.Equal("ZXCV", Result2.B);
         }

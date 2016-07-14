@@ -288,7 +288,7 @@ namespace Utilities.Web
         {
             if (string.IsNullOrEmpty(Input))
                 return Input;
-            string Normalized = Input.Normalize(NormalizationForm.FormD);
+            var Normalized = Input.Normalize(NormalizationForm.FormD);
             var Builder = new StringBuilder();
             for (int i = 0; i < Normalized.Length; i++)
             {

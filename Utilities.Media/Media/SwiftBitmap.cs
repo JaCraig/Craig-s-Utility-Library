@@ -180,8 +180,8 @@ namespace Utilities.Media
             {
                 for (int y = 0; y < Result.Height; ++y)
                 {
-                    Color Pixel1 = Image1.GetPixel(x, y);
-                    Color Pixel2 = Image2.GetPixel(x, y);
+                    var Pixel1 = Image1.GetPixel(x, y);
+                    var Pixel2 = Image2.GetPixel(x, y);
                     Result.SetPixel(x, y,
                         Color.FromArgb(Pixel1.R & Pixel2.R,
                             Pixel1.G & Pixel2.G,
@@ -211,8 +211,8 @@ namespace Utilities.Media
             {
                 for (int y = 0; y < Result.Height; ++y)
                 {
-                    Color Pixel1 = Image1.GetPixel(x, y);
-                    Color Pixel2 = Image2.GetPixel(x, y);
+                    var Pixel1 = Image1.GetPixel(x, y);
+                    var Pixel2 = Image2.GetPixel(x, y);
                     Result.SetPixel(x, y,
                         Color.FromArgb(Pixel1.R ^ Pixel2.R,
                             Pixel1.G ^ Pixel2.G,
@@ -242,8 +242,8 @@ namespace Utilities.Media
             {
                 for (int y = 0; y < Result.Height; ++y)
                 {
-                    Color Pixel1 = Image1.GetPixel(x, y);
-                    Color Pixel2 = Image2.GetPixel(x, y);
+                    var Pixel1 = Image1.GetPixel(x, y);
+                    var Pixel2 = Image2.GetPixel(x, y);
                     Result.SetPixel(x, y,
                         Color.FromArgb(Pixel1.R | Pixel2.R,
                             Pixel1.G | Pixel2.G,
@@ -324,7 +324,7 @@ namespace Utilities.Media
                                 {
                                     if (YCurrent + y < Height && YCurrent + y >= 0)
                                     {
-                                        Color Pixel = GetPixel(XCurrent + x, YCurrent + y);
+                                        var Pixel = GetPixel(XCurrent + x, YCurrent + y);
                                         RValue += filter[x2][y2] * Pixel.R;
                                         GValue += filter[x2][y2] * Pixel.G;
                                         BValue += filter[x2][y2] * Pixel.B;
@@ -335,7 +335,7 @@ namespace Utilities.Media
                             }
                             ++XCurrent;
                         }
-                        Color MeanPixel = GetPixel(x, y);
+                        var MeanPixel = GetPixel(x, y);
                         if (Weight == 0)
                             Weight = 1;
                         if (Weight > 0)

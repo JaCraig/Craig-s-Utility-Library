@@ -31,7 +31,7 @@ namespace UnitTests.SQL.DataClasses
         public void AddColumn()
         {
             var Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
-            Utilities.ORM.Manager.Schema.Interfaces.ITable Function = Database.AddStoredProcedure("TestStoredProcedure", "Definition");
+            var Function = Database.AddStoredProcedure("TestStoredProcedure", "Definition");
             Function.AddColumn<int>("Column1", DbType.Int32, 0);
             Assert.Equal(1, Function.Columns.Count);
         }
@@ -40,7 +40,7 @@ namespace UnitTests.SQL.DataClasses
         public void Create()
         {
             var Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
-            Utilities.ORM.Manager.Schema.Interfaces.ITable Function = Database.AddStoredProcedure("TestStoredProcedure", "Definition");
+            var Function = Database.AddStoredProcedure("TestStoredProcedure", "Definition");
             Assert.Equal(Function, Database.StoredProcedures.First());
             Assert.Equal("TestStoredProcedure", Function.Name);
             Assert.Equal("Definition", ((Utilities.ORM.Manager.Schema.Interfaces.IFunction)Function).Definition);

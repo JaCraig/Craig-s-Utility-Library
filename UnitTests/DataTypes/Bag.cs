@@ -33,8 +33,8 @@ namespace UnitTests.DataTypes
             var Rand = new System.Random();
             for (int x = 0; x < 10; ++x)
             {
-                string Value = x.ToString();
-                int Count = Rand.Next(1, 10);
+                var Value = x.ToString();
+                var Count = Rand.Next(1, 10);
                 for (int y = 0; y < Count; ++y)
                     BagObject.Add(Value);
                 Assert.Equal(Count, BagObject[Value]);

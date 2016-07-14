@@ -179,7 +179,7 @@ namespace Ironman.Models.Plugins
         {
             if (Files.Count == 0)
             {
-                DirectoryInfo LibDirectory = new DirectoryInfo(string.Format(HttpContext.Current != null ? HttpContext.Current.Server.MapPath("~/App_Data/packages/{0}.{1}/lib") : "./App_Data/packages/{0}.{1}/lib", PluginID, Version)).EnumerateDirectories().OrderByDescending(x => x.Name).First();
+                var LibDirectory = new DirectoryInfo(string.Format(HttpContext.Current != null ? HttpContext.Current.Server.MapPath("~/App_Data/packages/{0}.{1}/lib") : "./App_Data/packages/{0}.{1}/lib", PluginID, Version)).EnumerateDirectories().OrderByDescending(x => x.Name).First();
                 var ContentDirectory = new DirectoryInfo(string.Format(HttpContext.Current != null ? HttpContext.Current.Server.MapPath("~/App_Data/packages/{0}.{1}/content") : "./App_Data/packages/{0}.{1}/content", PluginID, Version));
                 int y = 0;
                 var TempFiles = new List<PluginFile>();

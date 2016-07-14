@@ -66,7 +66,7 @@ namespace Ironman.Core.Assets.Less
         {
             if (Assets == null || Assets.Count == 0)
                 return new List<IAsset>();
-            IEnumerable<IAsset> Processable = Assets.Where(x => x.Path.EndsWith("less", StringComparison.OrdinalIgnoreCase));
+            var Processable = Assets.Where(x => x.Path.EndsWith("less", StringComparison.OrdinalIgnoreCase));
             if (Processable.FirstOrDefault() == null)
                 return Assets;
             foreach (IAsset Asset in Processable.Where(x => x != null))

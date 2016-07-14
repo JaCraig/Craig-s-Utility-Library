@@ -117,7 +117,7 @@ namespace Utilities.DataTypes
             {
                 var Temp = new List<string>();
                 Temp.Add(base.Keys);
-                Type ObjectType = GetType();
+                var ObjectType = GetType();
                 foreach (PropertyInfo Property in ObjectType.GetProperties().Where(x => x.DeclaringType != typeof(Dynamo<T>) && x.DeclaringType != typeof(Dynamo)))
                 {
                     Temp.Add(Property.Name);
@@ -154,11 +154,11 @@ namespace Utilities.DataTypes
                 return InternalValues[Name].To(ReturnType, null);
             if (!ChildValues.ContainsKey(Name))
             {
-                Type ObjectType = GetType();
-                PropertyInfo Property = ObjectType.GetProperty(Name);
+                var ObjectType = GetType();
+                var Property = ObjectType.GetProperty(Name);
                 if (Property != null)
                 {
-                    Func<T, object> Temp = Property.PropertyGetter<T>().Compile();
+                    var Temp = Property.PropertyGetter<T>().Compile();
                     ChildValues.AddOrUpdate(Name, x => () => Temp((T)this), (x, y) => () => Temp((T)this));
                 }
                 else
@@ -174,8 +174,8 @@ namespace Utilities.DataTypes
         /// <param name="value">Value associated with the key</param>
         protected override void SetValue(string key, object value)
         {
-            Type ObjectType = GetType();
-            PropertyInfo Property = ObjectType.GetProperty(key);
+            var ObjectType = GetType();
+            var Property = ObjectType.GetProperty(key);
             if (Property != null && Property.CanWrite)
             {
                 RaisePropertyChanged(key, value);
@@ -522,7 +522,7 @@ namespace Utilities.DataTypes
             {
                 unchecked
                 {
-                    object TempValue = GetValue(Key, typeof(object));
+                    var TempValue = GetValue(Key, typeof(object));
                     if (TempValue != null && !TempValue.GetType().Is<Delegate>())
                     {
                         Value = (Value * TempValue.GetHashCode()) % int.MaxValue;
@@ -636,7 +636,7 @@ namespace Utilities.DataTypes
         /// <returns>The object converted to the type specified</returns>
         public object To(Type ObjectType)
         {
-            object Result = AOPManager.Create(ObjectType);
+            var Result = AOPManager.Create(ObjectType);
             DataMapper.Map(GetType(), ObjectType)
                       .AutoMap()
                       .Copy(this, Result);
@@ -653,7 +653,7 @@ namespace Utilities.DataTypes
             Builder.AppendLineFormat("{0} this", GetType().Name);
             foreach (string Key in Keys.OrderBy(x => x))
             {
-                object Item = GetValue(Key, typeof(object));
+                var Item = GetValue(Key, typeof(object));
                 if (Item != null)
                     Builder.AppendLineFormat("\t{0} {1} = {2}", Item.GetType().GetName(), Key, Item.ToString());
                 else
@@ -753,7 +753,7 @@ namespace Utilities.DataTypes
         /// <returns>The returned value</returns>
         protected virtual object GetValue(string Name, Type ReturnType)
         {
-            object Value = RaiseGetValueStart(Name);
+            var Value = RaiseGetValueStart(Name);
             if (Value != null)
                 return Value;
             if (ContainsKey(Name))
@@ -763,17 +763,17 @@ namespace Utilities.DataTypes
             }
             if (!ChildValues.ContainsKey(Name))
             {
-                Type ObjectType = GetType();
-                PropertyInfo Property = ObjectType.GetProperty(Name);
+                var ObjectType = GetType();
+                var Property = ObjectType.GetProperty(Name);
                 if (Property != null)
                 {
-                    Func<Dynamo, object> Temp = Property.PropertyGetter<Dynamo>().Compile();
+                    var Temp = Property.PropertyGetter<Dynamo>().Compile();
                     ChildValues.AddOrUpdate(Name, x => () => Temp(this), (x, y) => () => Temp(this));
                 }
                 else
                     ChildValues.AddOrUpdate(Name, x => () => null, (x, y) => null);
             }
-            object ReturnValue = ChildValues[Name]().To(ReturnType, null);
+            var ReturnValue = ChildValues[Name]().To(ReturnType, null);
             Value = RaiseGetValueEnd(Name, ReturnValue);
             return Value ?? ReturnValue;
         }

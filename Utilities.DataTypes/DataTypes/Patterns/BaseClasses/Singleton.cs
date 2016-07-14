@@ -54,7 +54,7 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
                     {
                         if (_Instance == null)
                         {
-                            ConstructorInfo Constructor = typeof(T).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic,
+                            var Constructor = typeof(T).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic,
                                 null, new Type[0], null);
                             if (Constructor == null || Constructor.IsAssembly)
                                 throw new InvalidOperationException("Constructor is not private or protected for type " + typeof(T).Name);

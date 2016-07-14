@@ -56,11 +56,11 @@ namespace Utilities.IO.FileFormats.RSS
             : this()
         {
             Contract.Requires<ArgumentNullException>(Doc != null, "Element");
-            XPathNavigator Element = Doc.CreateNavigator();
+            var Element = Doc.CreateNavigator();
             if (!Element.Name.Equals("channel", StringComparison.CurrentCultureIgnoreCase))
                 throw new ArgumentException("Element is not a channel");
             var NamespaceManager = new XmlNamespaceManager(Element.NameTable);
-            XPathNavigator Node = Element.SelectSingleNode("./title", NamespaceManager);
+            var Node = Element.SelectSingleNode("./title", NamespaceManager);
             if (Node != null)
             {
                 Title = Node.Value;
@@ -95,7 +95,7 @@ namespace Utilities.IO.FileFormats.RSS
             {
                 PubDate = DateTime.Parse(Node.Value, CultureInfo.InvariantCulture);
             }
-            XPathNodeIterator Nodes = Element.Select("./category", NamespaceManager);
+            var Nodes = Element.Select("./category", NamespaceManager);
             foreach (XmlNode TempNode in Nodes)
             {
                 Categories.Add(Utils.StripIllegalCharacters(TempNode.Value));

@@ -36,15 +36,15 @@ namespace UnitTests.Web.ExtensionMethods
         [Fact]
         public void RemoveURLIllegalCharacters()
         {
-            string Content = "This is a test title that I want to make into a URL".RemoveURLIllegalCharacters();
+            var Content = "This is a test title that I want to make into a URL".RemoveURLIllegalCharacters();
             Assert.Equal("This-is-a-test-title-that-I-want-to-make-into-a-URL", Content);
         }
 
         [Fact]
         public void StripHTML()
         {
-            string FileContent = new FileInfo(@"..\..\Data\Web\HanselmanSite.html").Read();
-            string MinifiedFileContent = new FileInfo(@"..\..\Data\Web\HanselmanSite.html").StripHTML();
+            var FileContent = new FileInfo(@"..\..\Data\Web\HanselmanSite.html").Read();
+            var MinifiedFileContent = new FileInfo(@"..\..\Data\Web\HanselmanSite.html").StripHTML();
             Assert.NotEqual(FileContent.Length, MinifiedFileContent.Length);
             Assert.True(FileContent.Length > MinifiedFileContent.Length);
         }

@@ -109,14 +109,14 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
             }
             else
             {
-                PropertyInfo[] Properties = typeof(Left).GetProperties();
+                var Properties = typeof(Left).GetProperties();
                 Parallel.For(0, Properties.Length, x =>
                 {
-                    PropertyInfo DestinationProperty = RightType.GetProperty(Properties[x].Name);
+                    var DestinationProperty = RightType.GetProperty(Properties[x].Name);
                     if (DestinationProperty != null)
                     {
-                        Expression<Func<Left, object>> LeftGet = Properties[x].PropertyGetter<Left>();
-                        Expression<Func<Right, object>> RightGet = DestinationProperty.PropertyGetter<Right>();
+                        var LeftGet = Properties[x].PropertyGetter<Left>();
+                        var RightGet = DestinationProperty.PropertyGetter<Right>();
                         this.AddMapping(LeftGet, RightGet);
                     }
                 });
@@ -186,16 +186,16 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         {
             Contract.Requires<ArgumentNullException>(RightType != null, "RightType");
             Contract.Requires<ArgumentNullException>(LeftType != null, "LeftType");
-            PropertyInfo[] Properties = RightType.GetProperties();
+            var Properties = RightType.GetProperties();
             Parallel.For(0, Properties.Length, x =>
             {
                 PropertyInfo Property = Properties[x];
-                Expression<Func<Right, object>> RightGet = Properties[x].PropertyGetter<Right>();
-                Action<Right, object> RightSet = RightGet.PropertySetter<Right>().Compile();
-                PropertyInfo LeftProperty = LeftType.GetProperty(Property.Name);
+                var RightGet = Properties[x].PropertyGetter<Right>();
+                var RightSet = RightGet.PropertySetter<Right>().Compile();
+                var LeftProperty = LeftType.GetProperty(Property.Name);
                 if (LeftProperty != null)
                 {
-                    Expression<Func<Left, object>> LeftGet = LeftProperty.PropertyGetter<Left>();
+                    var LeftGet = LeftProperty.PropertyGetter<Left>();
                     this.AddMapping(LeftGet, RightGet);
                 }
                 else
@@ -205,7 +205,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
                         var Temp = (IDictionary<string, object>)y;
                         if (Temp.ContainsKey(Property.Name))
                             return Temp[Property.Name];
-                        string Key = Temp.Keys.FirstOrDefault(z => string.Equals(z.Replace("_", ""), Property.Name, StringComparison.InvariantCultureIgnoreCase));
+                        var Key = Temp.Keys.FirstOrDefault(z => string.Equals(z.Replace("_", ""), Property.Name, StringComparison.InvariantCultureIgnoreCase));
                         if (!string.IsNullOrEmpty(Key))
                             return Temp[Key];
                         return null;
@@ -232,16 +232,16 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         {
             Contract.Requires<ArgumentNullException>(RightType != null, "RightType");
             Contract.Requires<ArgumentNullException>(LeftType != null, "LeftType");
-            PropertyInfo[] Properties = LeftType.GetProperties();
+            var Properties = LeftType.GetProperties();
             Parallel.For(0, Properties.Length, x =>
             {
                 PropertyInfo Property = Properties[x];
-                Expression<Func<Left, object>> LeftGet = Property.PropertyGetter<Left>();
-                Action<Left, object> LeftSet = LeftGet.PropertySetter<Left>().Compile();
-                PropertyInfo RightProperty = RightType.GetProperty(Property.Name);
+                var LeftGet = Property.PropertyGetter<Left>();
+                var LeftSet = LeftGet.PropertySetter<Left>().Compile();
+                var RightProperty = RightType.GetProperty(Property.Name);
                 if (RightProperty != null)
                 {
-                    Expression<Func<Right, object>> RightGet = RightProperty.PropertyGetter<Right>();
+                    var RightGet = RightProperty.PropertyGetter<Right>();
                     this.AddMapping(LeftGet, RightGet);
                 }
                 else
@@ -257,7 +257,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
                         var Temp = (IDictionary<string, object>)y;
                         if (Temp.ContainsKey(Property.Name))
                             return Temp[Property.Name];
-                        string Key = Temp.Keys.FirstOrDefault(z => string.Equals(z.Replace("_", ""), Property.Name, StringComparison.InvariantCultureIgnoreCase));
+                        var Key = Temp.Keys.FirstOrDefault(z => string.Equals(z.Replace("_", ""), Property.Name, StringComparison.InvariantCultureIgnoreCase));
                         if (!string.IsNullOrEmpty(Key))
                             return Temp[Key];
                         return null;

@@ -55,7 +55,7 @@ namespace Ironman.Core
         {
             if (Bootstrapper != null)
             {
-                ILog Logger = Utilities.IO.Log.Get();
+                var Logger = Utilities.IO.Log.Get();
                 if (Logger != null)
                 {
                     Logger.LogMessage("Application ending", MessageType.Info);
@@ -72,7 +72,7 @@ namespace Ironman.Core
         /// </summary>
         public static void PostStart()
         {
-            ILog Log = Utilities.IO.Log.Get();
+            var Log = Utilities.IO.Log.Get();
             Log.LogMessage("Starting post start tasks", MessageType.Info);
             Bootstrapper.Resolve<TaskManager>().Run(RunTime.PostStart);
         }
@@ -83,7 +83,7 @@ namespace Ironman.Core
         public static void PreStart()
         {
             Bootstrapper = Utilities.IoC.Manager.Bootstrapper;
-            ILog Log = Utilities.IO.Log.Get();
+            var Log = Utilities.IO.Log.Get();
             Log.LogMessage("Ironman starting", MessageType.Info);
             Log.LogMessage("{0}", MessageType.Info, Bootstrapper.ToString());
             Log.LogMessage("Starting pre start tasks", MessageType.Info);

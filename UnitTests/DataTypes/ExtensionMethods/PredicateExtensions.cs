@@ -47,7 +47,7 @@ namespace UnitTests.Math.ExtensionMethods
         {
             Predicate<int> Even = x => x % 2 == 0;
             Predicate<int> Multiple3 = x => x % 3 == 0;
-            Func<int, int, bool> CartesianProduct = Even.CartesianProduct(Multiple3);
+            var CartesianProduct = Even.CartesianProduct(Multiple3);
             Assert.True(CartesianProduct(6, 12));
             Assert.False(CartesianProduct(3, 9));
         }
@@ -57,7 +57,7 @@ namespace UnitTests.Math.ExtensionMethods
         {
             Predicate<int> Even = x => x % 2 == 0;
             Predicate<int> Multiple3 = x => x % 3 == 0;
-            Predicate<int> Diff = Even.Difference(Multiple3);
+            var Diff = Even.Difference(Multiple3);
             Assert.True(Diff(2));
             Assert.True(Diff(4));
             Assert.False(Diff(6));
@@ -68,7 +68,7 @@ namespace UnitTests.Math.ExtensionMethods
         {
             Predicate<int> Even = x => x % 2 == 0;
             Predicate<int> Multiple3 = x => x % 3 == 0;
-            Predicate<int> Inter = Even.Intersect(Multiple3);
+            var Inter = Even.Intersect(Multiple3);
             Assert.True(Inter(6));
             Assert.True(Inter(12));
             Assert.False(Inter(2));
@@ -80,7 +80,7 @@ namespace UnitTests.Math.ExtensionMethods
         {
             Predicate<int> Even = x => x % 2 == 0;
             Predicate<int> Multiple3 = x => x % 3 == 0;
-            Predicate<int> Compliement = Even.RelativeComplement(Multiple3);
+            var Compliement = Even.RelativeComplement(Multiple3);
             Assert.True(Compliement(2));
             Assert.False(Compliement(6));
         }
@@ -102,7 +102,7 @@ namespace UnitTests.Math.ExtensionMethods
         {
             Predicate<int> Even = x => x % 2 == 0;
             Predicate<int> Multiple3 = x => x % 3 == 0;
-            Predicate<int> Test = Even.Union(Multiple3);
+            var Test = Even.Union(Multiple3);
             Assert.True(Test(2));
             Assert.True(Test(3));
             Assert.True(Test(4));

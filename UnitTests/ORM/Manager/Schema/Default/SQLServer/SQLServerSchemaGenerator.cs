@@ -40,11 +40,11 @@ namespace UnitTests.ORM.Manager.Schema.Default.SQLServer
         public void GenerateSchema()
         {
             var Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
-            ISource Source = Temp.GetSourceStructure(TestDatabaseSource);
+            var Source = Temp.GetSourceStructure(TestDatabaseSource);
             Source.Tables.First().AddColumn<string>("A", DbType.Int16);
-            ITable Table = Source.AddTable("TestTable2");
+            var Table = Source.AddTable("TestTable2");
             Table.AddColumn<string>("A", DbType.Int16);
-            IEnumerable<string> Commands = Temp.GenerateSchema(Source, TestDatabaseSource);
+            var Commands = Temp.GenerateSchema(Source, TestDatabaseSource);
             Assert.Equal(2, Commands.Count());
             Assert.Equal("EXEC dbo.sp_executesql @statement = N'ALTER TABLE TestTable ADD A SmallInt'", Commands.First());
             Assert.Equal("EXEC dbo.sp_executesql @statement = N'CREATE TABLE TestTable2(A SmallInt)'", Commands.Last());
@@ -54,13 +54,13 @@ namespace UnitTests.ORM.Manager.Schema.Default.SQLServer
         public void GetSourceStructure()
         {
             var Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
-            ISource Source = Temp.GetSourceStructure(TestDatabaseSource);
+            var Source = Temp.GetSourceStructure(TestDatabaseSource);
             Assert.Equal(0, Source.Functions.Count);
             Assert.Equal("TestDatabase", Source.Name);
             Assert.Equal(0, Source.StoredProcedures.Count);
             Assert.Equal(1, Source.Tables.Count);
             Assert.Equal(0, Source.Views.Count);
-            ITable TempTable = Source.Tables.First();
+            var TempTable = Source.Tables.First();
             Assert.Equal(9, TempTable.Columns.Count);
             Assert.Equal("TestTable", TempTable.Name);
             Assert.Equal(Source, TempTable.Source);

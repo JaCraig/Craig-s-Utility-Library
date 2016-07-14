@@ -16,7 +16,7 @@ namespace UnitTests.IoC.Default
             Temp.RegisterAll<ITestClass>();
             Temp.Register<TestClass3>();
             Temp.Register<TestClass4>();
-            TestClass4 Object = Temp.Resolve<TestClass4>();
+            var Object = Temp.Resolve<TestClass4>();
             Assert.NotNull(Object);
             Assert.NotNull(Object.Class);
             Assert.Equal(2, Object.Class.Classes.Count());
@@ -35,7 +35,7 @@ namespace UnitTests.IoC.Default
             var Temp = new Utilities.IoC.Default.DefaultBootstrapper(AppDomain.CurrentDomain.GetAssemblies(), AppDomain.CurrentDomain.GetAssemblies().Types());
             Temp.RegisterAll<ITestClass>();
             Temp.Register<TestClass3>();
-            TestClass3 Object = Temp.Resolve<TestClass3>();
+            var Object = Temp.Resolve<TestClass3>();
             Assert.NotNull(Object);
             Assert.Equal(2, Object.Classes.Count());
         }
@@ -86,7 +86,7 @@ namespace UnitTests.IoC.Default
             Temp.Register(new TestClass { A = 12 });
             Temp.Register(new TestClass { A = 13 }, "A");
             Temp.Register(new TestClass { A = 14 }, "B");
-            IEnumerable<TestClass> Objects = Temp.ResolveAll<TestClass>();
+            var Objects = Temp.ResolveAll<TestClass>();
             Assert.Equal(3, Objects.Count());
             foreach (TestClass Object in Objects)
             {

@@ -129,7 +129,7 @@ namespace Ironman.Core.API.Manager.Properties
             {
                 AssignExpression(TempItem, new List<DataType>());
             }
-            List<DataType> ListValues = CompiledExpression(TempItem).ToList<DataType>();
+            var ListValues = CompiledExpression(TempItem).ToList<DataType>();
             foreach (Dynamo Model in Models)
             {
                 if (Model == null)
@@ -138,7 +138,7 @@ namespace Ironman.Core.API.Manager.Properties
                                                                .Select(x => x.Name)
                                                                .ToArray());
                 DataType Property = TempModel;
-                DataType Value = ListValues.FirstOrDefault(x => x.Equals(Property));
+                var Value = ListValues.FirstOrDefault(x => x.Equals(Property));
                 if (Value == null)
                 {
                     ListValues.Add(Property);

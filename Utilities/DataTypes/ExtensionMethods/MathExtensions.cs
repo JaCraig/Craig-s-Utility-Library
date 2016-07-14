@@ -575,8 +575,8 @@ namespace Utilities.DataTypes
         {
             if (Values == null || Values.Count() == 0)
                 return 0;
-            decimal MeanValue = Values.Average(Selector);
-            double Sum = Values.Sum(x => (Selector(x) - MeanValue).Pow(2));
+            var MeanValue = Values.Average(Selector);
+            var Sum = Values.Sum(x => (Selector(x) - MeanValue).Pow(2));
             return Sum / (double)Values.Count();
         }
     }

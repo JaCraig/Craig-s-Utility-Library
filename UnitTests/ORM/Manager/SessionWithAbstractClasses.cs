@@ -52,7 +52,7 @@ namespace UnitTests.ORM.Manager
         [Fact]
         public void All()
         {
-            Guid TempGuid = Guid.NewGuid();
+            var TempGuid = Guid.NewGuid();
             var TestObject = new Utilities.ORM.Manager.Session();
             for (int x = 0; x < 100; ++x)
             {
@@ -73,7 +73,7 @@ namespace UnitTests.ORM.Manager
                 TempObject.StringReference = "agsdpghasdg";
                 TestObject.Save<TestAbstractClass, int>(TempObject);
             }
-            IEnumerable<TestAbstractClass> ItemList = TestObject.All<TestAbstractClass>();
+            var ItemList = TestObject.All<TestAbstractClass>();
             Assert.Equal(100, ItemList.Count());
             foreach (TestAbstractClass Item in ItemList)
             {
@@ -97,7 +97,7 @@ namespace UnitTests.ORM.Manager
         [Fact]
         public void Any()
         {
-            Guid TempGuid = Guid.NewGuid();
+            var TempGuid = Guid.NewGuid();
             var TestObject = new Utilities.ORM.Manager.Session();
             for (int x = 0; x < 100; ++x)
             {
@@ -118,7 +118,7 @@ namespace UnitTests.ORM.Manager
                 TempObject.StringReference = "agsdpghasdg";
                 TestObject.Save<TestAbstractClass, int>(TempObject);
             }
-            TestAbstractClass Item = TestObject.Any<TestAbstractClass>();
+            var Item = TestObject.Any<TestAbstractClass>();
             Assert.Equal(true, Item.BoolReference);
             Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
             Assert.Equal(12, Item.ByteReference);
@@ -175,7 +175,7 @@ namespace UnitTests.ORM.Manager
         [Fact]
         public void AnyByID()
         {
-            Guid TempGuid = Guid.NewGuid();
+            var TempGuid = Guid.NewGuid();
             var TestObject = new Utilities.ORM.Manager.Session();
             for (int x = 0; x < 100; ++x)
             {
@@ -196,7 +196,7 @@ namespace UnitTests.ORM.Manager
                 TempObject.StringReference = "agsdpghasdg";
                 TestObject.Save<TestAbstractClass, int>(TempObject);
             }
-            TestAbstractClass Item = TestObject.Any<TestAbstractClass, int>(10);
+            var Item = TestObject.Any<TestAbstractClass, int>(10);
             Assert.Equal(10, Item.ID);
             Assert.Equal(true, Item.BoolReference);
             Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
@@ -240,7 +240,7 @@ namespace UnitTests.ORM.Manager
         [Fact]
         public void Delete()
         {
-            Guid TempGuid = Guid.NewGuid();
+            var TempGuid = Guid.NewGuid();
             var TestObject = new Utilities.ORM.Manager.Session();
             for (int x = 0; x < 100; ++x)
             {
@@ -262,7 +262,7 @@ namespace UnitTests.ORM.Manager
                 TestObject.Save<TestAbstractClass, int>(TempObject);
             }
             TestObject.Delete(TestObject.Any<TestAbstractClass>());
-            IEnumerable<TestAbstractClass> ItemList = TestObject.All<TestAbstractClass>();
+            var ItemList = TestObject.All<TestAbstractClass>();
             Assert.Equal(99, ItemList.Count());
         }
 
@@ -283,7 +283,7 @@ namespace UnitTests.ORM.Manager
         [Fact]
         public void PageCount()
         {
-            Guid TempGuid = Guid.NewGuid();
+            var TempGuid = Guid.NewGuid();
             var TestObject = new Utilities.ORM.Manager.Session();
             for (int x = 0; x < 100; ++x)
             {
@@ -310,7 +310,7 @@ namespace UnitTests.ORM.Manager
         [Fact]
         public void Paged()
         {
-            Guid TempGuid = Guid.NewGuid();
+            var TempGuid = Guid.NewGuid();
             var TestObject = new Utilities.ORM.Manager.Session();
             for (int x = 0; x < 100; ++x)
             {
@@ -331,7 +331,7 @@ namespace UnitTests.ORM.Manager
                 TempObject.StringReference = "agsdpghasdg";
                 TestObject.Save<TestAbstractClass, int>(TempObject);
             }
-            IEnumerable<TestAbstractClass> ItemList = TestObject.Paged<TestAbstractClass>();
+            var ItemList = TestObject.Paged<TestAbstractClass>();
             Assert.Equal(25, ItemList.Count());
             foreach (TestAbstractClass Item in ItemList)
             {
@@ -414,7 +414,7 @@ namespace UnitTests.ORM.Manager
         [Fact]
         public void Save()
         {
-            Guid TempGuid = Guid.NewGuid();
+            var TempGuid = Guid.NewGuid();
             var TestObject = new Utilities.ORM.Manager.Session();
             var TempObject = new TestClass2();
             TempObject.BoolReference = true;
@@ -462,7 +462,7 @@ namespace UnitTests.ORM.Manager
 
             var Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=SessionWithAbstractClassTestDatabase;Integrated Security=SSPI;Pooling=false"));
 
-            IList<dynamic> Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestAbstractClass_").Execute().First();
+            var Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestAbstractClass_").Execute().First();
             TestAbstractClass Item = Items.FirstOrDefault(x => x.BoolReference_);
             ((IORMObject)Item).Session0 = new Utilities.ORM.Manager.Session();
             Assert.Equal(true, Item.BoolReference);
@@ -490,7 +490,7 @@ namespace UnitTests.ORM.Manager
         [Fact]
         public void Update()
         {
-            Guid TempGuid = Guid.NewGuid();
+            var TempGuid = Guid.NewGuid();
             var TestObject = new Utilities.ORM.Manager.Session();
             var TempObject = new TestClass2();
             TempObject.BoolReference = true;
@@ -538,7 +538,7 @@ namespace UnitTests.ORM.Manager
 
             var Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=SessionWithAbstractClassTestDatabase;Integrated Security=SSPI;Pooling=false"));
 
-            IList<dynamic> Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestAbstractClass_").Execute().First();
+            var Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestAbstractClass_").Execute().First();
             TestAbstractClass Item = Items.FirstOrDefault(x => x.BoolReference_);
             ((IORMObject)Item).Session0 = new Utilities.ORM.Manager.Session();
             Assert.Equal(true, Item.BoolReference);
@@ -605,7 +605,7 @@ namespace UnitTests.ORM.Manager
         [Fact]
         public void UpdateCascade()
         {
-            Guid TempGuid = Guid.NewGuid();
+            var TempGuid = Guid.NewGuid();
             var TestObject = new Utilities.ORM.Manager.Session();
             var TempObject = new TestClass2();
             TempObject.BoolReference = true;
@@ -661,7 +661,7 @@ namespace UnitTests.ORM.Manager
 
             var Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=SessionWithAbstractClassTestDatabase;Integrated Security=SSPI;Pooling=false"));
 
-            IList<dynamic> Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestAbstractClass_").Execute().First();
+            var Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestAbstractClass_").Execute().First();
             TestAbstractClass Item = Items.FirstOrDefault(x => x.BoolReference_);
             ((IORMObject)Item).Session0 = new Utilities.ORM.Manager.Session();
             Assert.Equal(true, Item.BoolReference);

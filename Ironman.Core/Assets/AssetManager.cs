@@ -107,7 +107,7 @@ namespace Ironman.Core.Assets
         /// <returns>The asset type</returns>
         public AssetType DetermineType(string Path)
         {
-            AssetType Type = Translators.FirstOrDefault(x => Path.EndsWith(x.FileTypeAccepts, StringComparison.Ordinal))
+            var Type = Translators.FirstOrDefault(x => Path.EndsWith(x.FileTypeAccepts, StringComparison.Ordinal))
                               .Chain(x => x.TranslatesTo, AssetType.Unknown);
             if (Type == AssetType.Unknown && Path.EndsWith("css", StringComparison.Ordinal))
                 return AssetType.CSS;
@@ -141,7 +141,7 @@ namespace Ironman.Core.Assets
                     Assets = Filter.Filter(Assets);
                 }
             }
-            string Content = Assets.OrderBy(x => x.Path).ToString(x => x.ToString(), "");
+            var Content = Assets.OrderBy(x => x.Path).ToString(x => x.ToString(), "");
             foreach (IContentFilter Filter in ContentFilters)
             {
                 Content = Filter.Filter(Content);
@@ -182,7 +182,7 @@ namespace Ironman.Core.Assets
         {
             if (Directory == null || !Directory.Exists || string.IsNullOrEmpty(Directory.FullName))
                 return;
-            string BundleDirectory = Directory.FullName.Replace(new DirectoryInfo("~/").FullName, "~/").Replace("\\", "/");
+            var BundleDirectory = Directory.FullName.Replace(new DirectoryInfo("~/").FullName, "~/").Replace("\\", "/");
             var Bundle = new StyleBundle(BundleDirectory + "/bundle/css");
             Bundle.Transforms.Clear();
             Bundle.Transforms.Add(new Transformer(this));

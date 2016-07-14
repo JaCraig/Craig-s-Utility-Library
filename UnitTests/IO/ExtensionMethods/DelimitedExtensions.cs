@@ -31,9 +31,9 @@ namespace UnitTests.IO.FileFormats.ExtensionMethods
         [Fact]
         public void ToDelimitedFile()
         {
-            List<ExportClass> Temp = new ExportClass[] { new ExportClass { ID = 1, Value = "A" }, new ExportClass { ID = 2, Value = "B" }, new ExportClass { ID = 3, Value = "C" } }.ToList();
+            var Temp = new ExportClass[] { new ExportClass { ID = 1, Value = "A" }, new ExportClass { ID = 2, Value = "B" }, new ExportClass { ID = 3, Value = "C" } }.ToList();
             Temp.ToDelimitedFile();
-            Utilities.IO.FileFormats.Delimited.Delimited TestObject = Temp.ToDelimitedFile();
+            var TestObject = Temp.ToDelimitedFile();
             Assert.Equal(4, TestObject.Count);
             Assert.Equal("\"ID\"\t\"Value\"\r\n\"1\"\t\"A\"\r\n\"2\"\t\"B\"\r\n\"3\"\t\"C\"\r\n", TestObject.ToString());
         }

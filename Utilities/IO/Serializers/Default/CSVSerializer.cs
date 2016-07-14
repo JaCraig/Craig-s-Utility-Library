@@ -61,10 +61,10 @@ namespace Utilities.IO.Serializers.Default
         {
             if (string.IsNullOrEmpty(Data) || ObjectType == null)
                 return null;
-            MethodInfo Method = typeof(TypeConversionExtensions).GetMethods().FirstOrDefault(x => x.Name == "To" && x.GetParameters().Any(y => y.ParameterType == typeof(DataTable)));
+            var Method = typeof(TypeConversionExtensions).GetMethods().FirstOrDefault(x => x.Name == "To" && x.GetParameters().Any(y => y.ParameterType == typeof(DataTable)));
             Method = Method.MakeGenericMethod(ObjectType.Is<IEnumerable>() ? ObjectType.GetGenericArguments()[0] : ObjectType);
-            DataTable Table = new Delimited(Data).ToDataTable();
-            object ReturnValue = Method.Invoke(null, new object[] { Table, null });
+            var Table = new Delimited(Data).ToDataTable();
+            var ReturnValue = Method.Invoke(null, new object[] { Table, null });
             return ObjectType.Is<IEnumerable>() ? ReturnValue : ((IEnumerable)ReturnValue).GetEnumerator().Chain(x =>
             {
                 x.MoveNext();

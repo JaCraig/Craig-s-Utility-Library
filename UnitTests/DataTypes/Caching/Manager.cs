@@ -33,7 +33,7 @@ namespace UnitTests.DataTypes.Caching
         {
             using (Utilities.DataTypes.Caching.Manager Test = new Utilities.DataTypes.Caching.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<ICache>()))
             {
-                ICache Temp = Test.Cache();
+                var Temp = Test.Cache();
                 Assert.NotNull(Temp);
                 Assert.Equal(0, Temp.Count);
                 Assert.False(Temp.IsReadOnly);
@@ -41,7 +41,7 @@ namespace UnitTests.DataTypes.Caching
                 Assert.Equal("Default", Temp.Name);
                 Assert.Equal(0, Temp.Values.Count);
 
-                ICache Temp2 = Test.Cache();
+                var Temp2 = Test.Cache();
                 Assert.Equal(Temp, Temp2);
             }
         }

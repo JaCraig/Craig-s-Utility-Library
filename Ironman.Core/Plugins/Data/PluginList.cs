@@ -117,7 +117,7 @@ namespace Ironman.Models.Plugins
             new System.IO.DirectoryInfo(DirectoryLocation).Create();
             using (FileStream Writer = new System.IO.FileInfo(FileLocation).Open(FileMode.Create, FileAccess.Write))
             {
-                byte[] Content = Serialize(this).ToByteArray();
+                var Content = Serialize(this).ToByteArray();
                 Writer.Write(Content, 0, Content.Length);
             }
         }

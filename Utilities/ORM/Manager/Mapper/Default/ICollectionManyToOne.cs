@@ -79,10 +79,10 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <returns>Batch object with the appropriate commands</returns>
         public override IBatch CascadeDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
-            QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
-            Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Manager>();
+            var Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
+            var MappingProvider = IoC.Manager.Bootstrapper.Resolve<Manager>();
             IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
-            IBatch Batch = Provider.Batch(Source);
+            var Batch = Provider.Batch(Source);
             var AspectObject = Object as IORMObject;
             if (Object == null || (AspectObject != null && ObjectsSeen.Contains(Mapping.IDProperties.FirstOrDefault().GetValue(Object))))
                 return Provider.Batch(Source);
@@ -112,10 +112,10 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <returns>Batch object with the appropriate commands</returns>
         public override IBatch CascadeJoinsDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
-            QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
-            Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Manager>();
+            var Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
+            var MappingProvider = IoC.Manager.Bootstrapper.Resolve<Manager>();
             IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
-            IBatch Batch = Provider.Batch(Source);
+            var Batch = Provider.Batch(Source);
             var AspectObject = Object as IORMObject;
             if (Object == null || (AspectObject != null && ObjectsSeen.Contains(Mapping.IDProperties.FirstOrDefault().GetValue(Object))))
                 return Provider.Batch(Source);
@@ -153,10 +153,10 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <returns>Batch object with the appropriate commands</returns>
         public override IBatch CascadeJoinsSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
-            QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
-            Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Manager>();
+            var Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
+            var MappingProvider = IoC.Manager.Bootstrapper.Resolve<Manager>();
             IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
-            IBatch Batch = Provider.Batch(Source);
+            var Batch = Provider.Batch(Source);
             var AspectObject = Object as IORMObject;
             if (Object == null || (AspectObject != null && ObjectsSeen.Contains(Mapping.IDProperties.FirstOrDefault().GetValue(Object))))
                 return Provider.Batch(Source);
@@ -194,10 +194,10 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <returns>Batch object with the appropriate commands</returns>
         public override IBatch CascadeSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
-            QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
-            Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Manager>();
+            var Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
+            var MappingProvider = IoC.Manager.Bootstrapper.Resolve<Manager>();
             IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
-            IBatch Batch = Provider.Batch(Source);
+            var Batch = Provider.Batch(Source);
             var AspectObject = Object as IORMObject;
             if (Object == null || (AspectObject != null && ObjectsSeen.Contains(Mapping.IDProperties.FirstOrDefault().GetValue(Object))))
                 return Provider.Batch(Source);
@@ -247,7 +247,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <returns>Batch object with the appropriate commands</returns>
         public override IBatch JoinsDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
-            QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
+            var Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             var AspectObject = Object as IORMObject;
             if (Object == null || (AspectObject != null && ObjectsSeen.Contains(Mapping.IDProperties.FirstOrDefault().GetValue(Object))))
                 return Provider.Batch(Source);
@@ -265,7 +265,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <returns>Batch object with the appropriate commands</returns>
         public override IBatch JoinsSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
-            QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
+            var Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             var AspectObject = Object as IORMObject;
             if (Object == null || (AspectObject != null && ObjectsSeen.Contains(Mapping.IDProperties.FirstOrDefault().GetValue(Object))))
                 return Provider.Batch(Source);

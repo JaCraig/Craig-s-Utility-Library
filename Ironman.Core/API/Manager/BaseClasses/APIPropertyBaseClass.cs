@@ -48,7 +48,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
             Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
             CompiledExpression = Expression.Compile();
             Name = Expression.PropertyName();
-            Expression<Action<ClassType, DataType>> Assign = Expression.PropertySetter<ClassType, DataType>();
+            var Assign = Expression.PropertySetter<ClassType, DataType>();
             if (Assign != null)
                 AssignExpression = Assign.Compile();
         }

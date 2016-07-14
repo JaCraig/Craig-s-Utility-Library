@@ -40,7 +40,7 @@ namespace UtilitiesSplitter.Tasks
 
                 if (!File.Name.Contains("Ironman.Default"))
                     new DirectoryInfo("..\\..\\..\\" + File.Name.Replace(".nuspec", "") + "\\bin\\Release").CopyTo(new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\lib"));
-                Process NugetProcess = new FileInfo("C:\\dev\\nuget\\nuget.exe").Execute(new ProcessStartInfo { Arguments = "pack \"" + File.FullName + "\"", WorkingDirectory = "..\\..\\..\\UtilitiesPackages\\Packages", CreateNoWindow = false });
+                var NugetProcess = new FileInfo("C:\\dev\\nuget\\nuget.exe").Execute(new ProcessStartInfo { Arguments = "pack \"" + File.FullName + "\"", WorkingDirectory = "..\\..\\..\\UtilitiesPackages\\Packages", CreateNoWindow = false });
                 NugetProcess.WaitForExit();
 
                 while (new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\lib").Exists)

@@ -81,7 +81,7 @@ namespace Utilities.Configuration.Manager.BaseClasses
         {
             if (string.IsNullOrEmpty(ConfigFileLocation))
                 return;
-            string FileContent = new FileInfo(ConfigFileLocation).Read();
+            var FileContent = new FileInfo(ConfigFileLocation).Read();
             if (string.IsNullOrEmpty(FileContent))
             {
                 Save();

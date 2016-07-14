@@ -40,7 +40,7 @@ namespace UnitTests.Configuration.Manager.Default
         public void GetConfig()
         {
             var Temp = new Utilities.Configuration.Manager.Default.ConfigSystem(AppDomain.CurrentDomain.GetAssemblies().Objects<IConfig>());
-            Utilities.Configuration.Manager.Default.SystemConfig ConfigObject = Temp.Config<Utilities.Configuration.Manager.Default.SystemConfig>("Default");
+            var ConfigObject = Temp.Config<Utilities.Configuration.Manager.Default.SystemConfig>("Default");
             Assert.NotNull(ConfigObject);
             Assert.Equal(1, ConfigObject.AppSettings.Count);
             Assert.Equal(2, ConfigObject.ConnectionStrings.Count);

@@ -163,7 +163,7 @@ namespace Ironman.Core.Assets.Filters
             {
                 foreach (IAsset SubAsset in Asset.Included)
                 {
-                    FileInfo Temp = DetermineFile(File, SubAsset, TempFile);
+                    var Temp = DetermineFile(File, SubAsset, TempFile);
                     if (Temp.Exists)
                         return Temp;
                 }

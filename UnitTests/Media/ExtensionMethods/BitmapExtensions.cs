@@ -92,7 +92,7 @@ namespace UnitTests.Media.Image.ExtensionMethods
         {
             using (Utilities.Media.SwiftBitmap TestObject = new Utilities.Media.SwiftBitmap(@"..\..\Data\Image\Lenna.jpg"))
             {
-                string Value = TestObject.ToASCIIArt();
+                var Value = TestObject.ToASCIIArt();
                 Assert.NotNull(Value);
                 Assert.NotEmpty(Value);
                 Assert.Equal(24420, Value.Length);

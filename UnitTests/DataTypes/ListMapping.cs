@@ -44,10 +44,10 @@ namespace UnitTests.DataTypes
             var Rand = new System.Random();
             for (int x = 0; x < 10; ++x)
             {
-                string Name = x.ToString();
+                var Name = x.ToString();
                 for (int y = 0; y < 5; ++y)
                 {
-                    int Value = Rand.Next();
+                    var Value = Rand.Next();
                     TestObject.Add(Name, Value);
                     Assert.Equal(y + 1, TestObject[Name].Count());
                     Assert.True(TestObject[Name].Contains(Value));

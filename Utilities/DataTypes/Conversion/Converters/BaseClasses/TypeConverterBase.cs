@@ -95,7 +95,7 @@ namespace Utilities.DataTypes.Conversion.Converters.BaseClasses
         {
             if (value == null)
                 return null;
-            Type ValueType = value.GetType();
+            var ValueType = value.GetType();
             if (ConvertFromTypes.ContainsKey(ValueType))
                 return ConvertFromTypes[ValueType](value);
             return base.ConvertFrom(context, culture, value);

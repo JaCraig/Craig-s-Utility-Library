@@ -186,7 +186,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
                 ReturnValue.Add(new List<dynamic>());
                 return ReturnValue;
             }
-            DbProviderFactory Factory = DbProviderFactories.GetFactory(Source.SourceType);
+            var Factory = DbProviderFactories.GetFactory(Source.SourceType);
             using (DbConnection Connection = Factory.CreateConnection())
             {
                 Connection.ConnectionString = Source.Connection;

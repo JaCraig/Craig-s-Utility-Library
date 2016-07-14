@@ -50,7 +50,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         [Fact]
         public void Insert()
         {
-            Guid TempGuid = Guid.NewGuid();
+            var TempGuid = Guid.NewGuid();
             var Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
             Temp.AddCommand(null, null, "insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text,
                 "Test String",
@@ -102,7 +102,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         [Fact]
         public void InsertNullString()
         {
-            Guid TempGuid = Guid.NewGuid();
+            var TempGuid = Guid.NewGuid();
             var Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
             Temp.AddCommand(null, null, "insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text,
                 "Test String",
@@ -139,7 +139,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         [Fact]
         public void LargeBatchInsert()
         {
-            Guid TempGuid = Guid.NewGuid();
+            var TempGuid = Guid.NewGuid();
             var Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
             for (int x = 0; x < 1000; ++x)
             {

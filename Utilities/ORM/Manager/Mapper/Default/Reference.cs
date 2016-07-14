@@ -71,7 +71,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <returns>Batch object with the appropriate commands</returns>
         public override IBatch CascadeDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
-            QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
+            var Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             return Provider.Batch(Source);
         }
 
@@ -84,7 +84,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <returns>Batch object with the appropriate commands</returns>
         public override IBatch CascadeJoinsDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
-            QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
+            var Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             return Provider.Batch(Source);
         }
 
@@ -97,7 +97,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <returns>Batch object with the appropriate commands</returns>
         public override IBatch CascadeJoinsSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
-            QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
+            var Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             return Provider.Batch(Source);
         }
 
@@ -110,7 +110,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <returns>Batch object with the appropriate commands</returns>
         public override IBatch CascadeSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
-            QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
+            var Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             return Provider.Batch(Source);
         }
 
@@ -143,7 +143,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <returns>Batch object with the appropriate commands</returns>
         public override IBatch JoinsDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
-            QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
+            var Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             return Provider.Batch(Source);
         }
 
@@ -156,7 +156,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <returns>Batch object with the appropriate commands</returns>
         public override IBatch JoinsSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
-            QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
+            var Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             return Provider.Batch(Source);
         }
 

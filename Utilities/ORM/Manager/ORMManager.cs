@@ -107,7 +107,7 @@ namespace Utilities.ORM.Manager
 
         private IEnumerable<IMapping> KahnSort(Graph<IMapping> graph)
         {
-            List<IMapping> ResultList = new List<IMapping>();
+            var ResultList = new List<IMapping>();
             var StartingNodes = FindStartingVertices(graph);
             while (StartingNodes.Count > 0)
             {

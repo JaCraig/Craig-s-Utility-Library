@@ -55,7 +55,7 @@ namespace Utilities.ORM
                 || Length > 4000
                 || Length < -1)
                 Length = -1;
-            DbParameter Parameter = Command.GetOrCreateParameter(ID);
+            var Parameter = Command.GetOrCreateParameter(ID);
             Parameter.Value = string.IsNullOrEmpty(Value) ? System.DBNull.Value : (object)Value;
             Parameter.IsNullable = string.IsNullOrEmpty(Value);
             Parameter.DbType = DbType.String;
@@ -114,7 +114,7 @@ namespace Utilities.ORM
         {
             Contract.Requires<ArgumentNullException>(Command != null, "Command");
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ID), "ID");
-            DbParameter Parameter = Command.GetOrCreateParameter(ID);
+            var Parameter = Command.GetOrCreateParameter(ID);
             Parameter.Value = Value == null || Convert.IsDBNull(Value) ? System.DBNull.Value : Value;
             Parameter.IsNullable = Value == null || Convert.IsDBNull(Value);
             if (Type != default(DbType))
@@ -224,7 +224,7 @@ namespace Utilities.ORM
                 return Command.Parameters[ID];
             else
             {
-                DbParameter Parameter = Command.CreateParameter();
+                var Parameter = Command.CreateParameter();
                 Parameter.ParameterName = ID;
                 Command.Parameters.Add(Parameter);
                 return Parameter;

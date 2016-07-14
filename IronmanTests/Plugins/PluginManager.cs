@@ -62,7 +62,7 @@ namespace Ironman.Core.Tests.Plugins
         {
             var Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" }, Utilities.IoC.Manager.Bootstrapper);
             Manager.InstallPlugin("xunit");
-            Plugin TempPlugin = PluginList.Load().Get("xunit");
+            var TempPlugin = PluginList.Load().Get("xunit");
             Assert.Equal(6, new DirectoryInfo("~/App_Data/plugins/xunit/").EnumerateFiles().Count());
             Assert.True(new FileInfo("~/App_Data/plugins/xunit/xunit.xml").Exists);
             Assert.True(new FileInfo("~/App_Data/plugins/xunit/xunit.runner.utility.dll").Exists);
@@ -90,9 +90,9 @@ namespace Ironman.Core.Tests.Plugins
             var Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" }, Utilities.IoC.Manager.Bootstrapper);
             Manager.InstallPlugin("xunit");
             Manager.InstallPlugin("xunit");
-            PluginList List = PluginList.Load();
+            var List = PluginList.Load();
             Assert.Equal(1, List.Plugins.Count);
-            Plugin TempPlugin = PluginList.Load().Get("xunit");
+            var TempPlugin = PluginList.Load().Get("xunit");
             Assert.Equal(6, new DirectoryInfo("~/App_Data/plugins/xunit/").EnumerateFiles().Count());
             Assert.True(new FileInfo("~/App_Data/plugins/xunit/xunit.xml").Exists);
             Assert.True(new FileInfo("~/App_Data/plugins/xunit/xunit.runner.utility.dll").Exists);
@@ -119,7 +119,7 @@ namespace Ironman.Core.Tests.Plugins
         {
             var Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" }, Utilities.IoC.Manager.Bootstrapper);
             Manager.InstallPlugin("Copernicus.Models.CRM");
-            Plugin TempPlugin = PluginList.Load().Get("Copernicus.Models.CRM");
+            var TempPlugin = PluginList.Load().Get("Copernicus.Models.CRM");
             Assert.Equal(1, new DirectoryInfo("~/App_Data/plugins/Copernicus.Models.CRM/").EnumerateFiles().Count());
             Assert.True(new FileInfo("~/App_Data/plugins/Copernicus.Models.CRM/Copernicus.Models.CRM.dll").Exists);
             Assert.Equal(1, new DirectoryInfo("~/App_Data/plugins/Copernicus.Models.Content/").EnumerateFiles().Count());
@@ -167,7 +167,7 @@ namespace Ironman.Core.Tests.Plugins
         {
             var Manager = new Core.Plugins.PluginManager(new string[] { "http://localhost:8797/api/v2" }, Utilities.IoC.Manager.Bootstrapper);
             Manager.InstallPlugin("xunit");
-            Plugin TempPlugin = PluginList.Load().Get("xunit");
+            var TempPlugin = PluginList.Load().Get("xunit");
             TempPlugin.OnlineVersion = "2.0.0";
             Manager.UpdatePlugin("xunit");
             TempPlugin = PluginList.Load().Get("xunit");

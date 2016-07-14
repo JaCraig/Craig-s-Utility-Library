@@ -64,7 +64,7 @@ namespace Utilities.DataTypes
             {
                 while (true)
                 {
-                    int Count = Input.Read(Buffer, 0, Buffer.Length);
+                    var Count = Input.Read(Buffer, 0, Buffer.Length);
                     if (Count <= 0)
                     {
                         ReturnValue = Temp.ToArray();

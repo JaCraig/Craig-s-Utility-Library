@@ -161,7 +161,7 @@ namespace Utilities.DataTypes
             TreeNode<T> TempNode = Root;
             while (TempNode != null)
             {
-                int ComparedValue = TempNode.Value.CompareTo(item);
+                var ComparedValue = TempNode.Value.CompareTo(item);
                 if (ComparedValue == 0)
                     return true;
                 else
@@ -206,7 +206,7 @@ namespace Utilities.DataTypes
         /// <returns>True if it is removed, false otherwise</returns>
         public virtual bool Remove(T item)
         {
-            TreeNode<T> Item = Find(item);
+            var Item = Find(item);
             if (Item == null)
                 return false;
             --NumberOfNodes;
@@ -277,7 +277,7 @@ namespace Utilities.DataTypes
             bool Found = false;
             while (!Found)
             {
-                int ComparedValue = TempNode.Value.CompareTo(item);
+                var ComparedValue = TempNode.Value.CompareTo(item);
                 if (ComparedValue > 0)
                 {
                     if (TempNode.Left == null)

@@ -54,9 +54,9 @@ namespace Utilities.Media.Procedural
             {
                 for (int y = 0; y < Height; ++y)
                 {
-                    float Value = GetHeight(x, y, DistanceBuffer, MinimumDistance, MaxDistance);
+                    var Value = GetHeight(x, y, DistanceBuffer, MinimumDistance, MaxDistance);
                     Value *= 255;
-                    int RGBValue = ((int)Value).Clamp(255, 0);
+                    var RGBValue = ((int)Value).Clamp(255, 0);
                     ReturnValue.SetPixel(x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue));
                 }
             }

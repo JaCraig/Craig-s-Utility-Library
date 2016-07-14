@@ -34,7 +34,7 @@ namespace UnitTests.Math.ExtensionMethods
         {
             var TestObject = new System.Collections.Generic.List<string>();
             TestObject.AddRange(new string[] { "this", "is", "a", "test" });
-            ListMapping<int, string> Results = TestObject.Permute();
+            var Results = TestObject.Permute();
             Assert.Equal(24, Results.Keys.Count);
             foreach (int Key in Results.Keys)
                 foreach (string Item in Results[Key])

@@ -35,7 +35,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             var TempObject = new TestClass();
             TempObject.ID = 1;
             var TestObject = new Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int>(x => x.ID, new TestClassMapping());
-            IBatch Result = TestObject.CascadeDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("IDTest"), new List<object>());
+            var Result = TestObject.CascadeDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("IDTest"), new List<object>());
             Assert.NotNull(Result);
             Assert.Equal("", Result.ToString());
             Assert.Equal(0, Result.CommandCount);
@@ -48,7 +48,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             TempObject.ID = 1;
             var TestObject = new Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int>(x => x.ID, new TestClassMapping());
             TestObject.ForeignMapping = new TestClassMapping();
-            IBatch Result = TestObject.CascadeJoinsDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("IDTest"), new List<object>());
+            var Result = TestObject.CascadeJoinsDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("IDTest"), new List<object>());
             Assert.NotNull(Result);
             Assert.Equal("", Result.ToString());
             Assert.Equal(0, Result.CommandCount);
@@ -61,7 +61,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             TempObject.ID = 1;
             var TestObject = new Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int>(x => x.ID, new TestClassMapping());
             TestObject.ForeignMapping = new TestClassMapping();
-            IBatch Result = TestObject.CascadeJoinsSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("IDTest"), new List<object>());
+            var Result = TestObject.CascadeJoinsSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("IDTest"), new List<object>());
             Assert.NotNull(Result);
             Assert.Equal("", Result.ToString());
             Assert.Equal(0, Result.CommandCount);
@@ -73,7 +73,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             var TempObject = new TestClass();
             TempObject.ID = 1;
             var TestObject = new Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int>(x => x.ID, new TestClassMapping());
-            IBatch Result = TestObject.CascadeSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("IDTest"), new List<object>());
+            var Result = TestObject.CascadeSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("IDTest"), new List<object>());
             Assert.NotNull(Result);
             Assert.Equal("", Result.ToString());
             Assert.Equal(1, Result.CommandCount);

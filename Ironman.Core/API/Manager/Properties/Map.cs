@@ -66,7 +66,7 @@ namespace Ironman.Core.API.Manager.Properties
             var Mapping = (IAPIMapping<DataType>)MappingHolder[typeof(DataType).Name];
             if (Mapping == null)
                 return false;
-            DataType Value = CompiledExpression(TempItem);
+            var Value = CompiledExpression(TempItem);
             if (!Mapping.CanDelete(Value))
                 return false;
             return Mapping.Delete(PropertyID);
@@ -88,7 +88,7 @@ namespace Ironman.Core.API.Manager.Properties
             var Mapping = (IAPIMapping<DataType>)Mappings[typeof(DataType).Name];
             if (Mapping == null)
                 return new Dynamo(CompiledExpression(TempItem));
-            DataType Value = CompiledExpression(TempItem);
+            var Value = CompiledExpression(TempItem);
             if (!Mapping.CanGet(Value))
                 return null;
             var ReturnValue = new Dynamo(Value);
@@ -117,14 +117,14 @@ namespace Ironman.Core.API.Manager.Properties
             var ClassMapping = (IAPIMapping<ClassType>)MappingHolder[typeof(ClassType).Name];
             if (Mapping == null || ClassMapping == null || Models == null)
                 return false;
-            Dynamo Model = Models.FirstOrDefault();
+            var Model = Models.FirstOrDefault();
             if (Model == null)
                 return false;
             dynamic TempModel = Model.SubSet(Mapping.Properties.Where(x => x is IReference || x is IID)
                                                            .Select(x => x.Name)
                                                            .ToArray());
             DataType Property = TempModel;
-            DataType Value = CompiledExpression(TempItem);
+            var Value = CompiledExpression(TempItem);
             if (Value == null)
             {
                 AssignExpression(TempItem, Property);

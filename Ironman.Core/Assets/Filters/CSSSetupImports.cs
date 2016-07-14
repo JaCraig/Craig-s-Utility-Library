@@ -80,7 +80,7 @@ namespace Ironman.Core.Assets.Filters
                             var AssetFile = new FileInfo(Asset.Path);
                             File = new FileInfo(AssetFile.Directory.FullName + "\\" + TempFile);
                         }
-                        IAsset SubAsset = Assets.FirstOrDefault(x => x.Path.ToUpperInvariant() == File.FullName.ToUpperInvariant());
+                        var SubAsset = Assets.FirstOrDefault(x => x.Path.ToUpperInvariant() == File.FullName.ToUpperInvariant());
                         if (SubAsset == null)
                         {
                             SubAsset = new Asset(File.FullName.Replace(new DirectoryInfo("~/").FullName, "~/").Replace("\\", "/"), Utilities.IoC.Manager.Bootstrapper.Resolve<AssetManager>());
@@ -122,7 +122,7 @@ namespace Ironman.Core.Assets.Filters
             {
                 foreach (IAsset SubAsset in Asset.Included)
                 {
-                    FileInfo Temp = DetermineFile(File, SubAsset, TempFile);
+                    var Temp = DetermineFile(File, SubAsset, TempFile);
                     if (Temp.Exists)
                         return Temp;
                 }

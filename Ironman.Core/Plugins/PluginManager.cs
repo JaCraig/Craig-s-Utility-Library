@@ -133,10 +133,10 @@ namespace Ironman.Core.Plugins
                 Bootstrapper.AddAssembly(TempPlugin.GetType().Assembly);
                 foreach (IPackageRepository Repo in PackageRepositories)
                 {
-                    IPackage Package = Repo.FindPackage(TempPlugin.PluginData.PluginID);
+                    var Package = Repo.FindPackage(TempPlugin.PluginData.PluginID);
                     if (Package != null)
                     {
-                        Plugin TempPluginData = PluginList.Get(Package.Id);
+                        var TempPluginData = PluginList.Get(Package.Id);
                         TempPluginData.OnlineVersion = Package.Version.ToString();
                     }
                 }
@@ -152,14 +152,14 @@ namespace Ironman.Core.Plugins
         public bool InstallPlugin(string ID)
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ID), "ID");
-            string User = HttpContext.Current.Chain(x => x.User).Chain(x => x.Identity).Chain(x => x.Name, "");
+            var User = HttpContext.Current.Chain(x => x.User).Chain(x => x.Identity).Chain(x => x.Name, "");
             Utilities.IO.Log.Get().LogMessage("Plugin {0} is being installed by {1}", MessageType.Debug, ID, User);
-            Plugin TempPlugin = PluginList.Get(ID);
+            var TempPlugin = PluginList.Get(ID);
             if (TempPlugin != null)
                 UninstallPlugin(ID);
             foreach (IPackageRepository Repo in PackageRepositories)
             {
-                IPackage Package = Repo.FindPackage(ID);
+                var Package = Repo.FindPackage(ID);
                 if (Package != null)
                 {
                     new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/packages/" + Package.Id + "." + Package.Version.ToString() + "/lib").Create();
@@ -189,10 +189,10 @@ namespace Ironman.Core.Plugins
         public bool UninstallPlugin(string ID)
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ID), "ID");
-            Plugin TempPlugin = PluginList.Get(ID);
+            var TempPlugin = PluginList.Get(ID);
             if (TempPlugin == null)
                 return true;
-            string User = HttpContext.Current.Chain(x => x.User).Chain(x => x.Identity).Chain(x => x.Name, "");
+            var User = HttpContext.Current.Chain(x => x.User).Chain(x => x.Identity).Chain(x => x.Name, "");
             Utilities.IO.Log.Get().LogMessage("Plugin {0} is being uninstalled by {1}", MessageType.Debug, ID, User);
             TempPlugin.Delete();
             Utilities.IO.Log.Get().LogMessage("Plugin {0} has been uninstalled by {1}", MessageType.Debug, ID, User);
@@ -209,15 +209,15 @@ namespace Ironman.Core.Plugins
         public bool UpdatePlugin(string ID)
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ID), "ID");
-            Plugin TempPlugin = PluginList.Get(ID);
+            var TempPlugin = PluginList.Get(ID);
             if (TempPlugin == null)
                 return true;
-            string User = HttpContext.Current.Chain(x => x.User).Chain(x => x.Identity).Chain(x => x.Name, "");
+            var User = HttpContext.Current.Chain(x => x.User).Chain(x => x.Identity).Chain(x => x.Name, "");
             bool Result = false;
             Utilities.IO.Log.Get().LogMessage("Plugin {0} is being updated by {1}", MessageType.Debug, ID, User);
             foreach (IPackageRepository Repo in PackageRepositories)
             {
-                IPackage Package = Repo.FindPackage(ID);
+                var Package = Repo.FindPackage(ID);
                 if (Package != null)
                 {
                     TempPlugin = PluginList.Get(ID);

@@ -385,7 +385,7 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentOutOfRangeException>(Numerator != Int32.MinValue, "Numerator can't equal Int32.MinValue");
             Contract.Requires<ArgumentOutOfRangeException>(Denominator != Int32.MinValue, "Denominator can't equal Int32.MinValue");
-            int GCD = Numerator.GreatestCommonDenominator(Denominator);
+            var GCD = Numerator.GreatestCommonDenominator(Denominator);
             if (GCD != 0)
             {
                 this.Numerator /= GCD;

@@ -606,7 +606,7 @@ namespace Utilities.DataTypes
             ReturnValue.Locale = CultureInfo.CurrentCulture;
             if (List == null || List.Count() == 0)
                 return ReturnValue;
-            PropertyInfo[] Properties = typeof(T).GetProperties();
+            var Properties = typeof(T).GetProperties();
             if (Columns.Length == 0)
                 Columns = Properties.ToArray(x => x.Name);
             Columns.ForEach(x => ReturnValue.Columns.Add(x, Properties.FirstOrDefault(z => z.Name == x).PropertyType));
@@ -639,9 +639,9 @@ namespace Utilities.DataTypes
                 ++Count;
             if (List == null || Count == 0)
                 return ReturnValue;
-            IEnumerator ListEnumerator = List.GetEnumerator();
+            var ListEnumerator = List.GetEnumerator();
             ListEnumerator.MoveNext();
-            PropertyInfo[] Properties = ListEnumerator.Current.GetType().GetProperties();
+            var Properties = ListEnumerator.Current.GetType().GetProperties();
             if (Columns.Length == 0)
                 Columns = Properties.ToArray(x => x.Name);
             Columns.ForEach(x => ReturnValue.Columns.Add(x, Properties.FirstOrDefault(z => z.Name == x).PropertyType));

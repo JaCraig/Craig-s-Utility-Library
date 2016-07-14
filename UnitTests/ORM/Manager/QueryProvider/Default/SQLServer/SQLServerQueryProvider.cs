@@ -34,7 +34,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.SQLServer
         public void Batch()
         {
             var Temp = new Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider();
-            IBatch Batch = Temp.Batch(TestDatabaseSource);
+            var Batch = Temp.Batch(TestDatabaseSource);
             Assert.Equal(0, Batch.CommandCount);
             Assert.Equal(0, Batch.Execute().First().Count());
             Assert.Equal(typeof(Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch), Batch.GetType());
@@ -52,7 +52,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.SQLServer
         public void Generate()
         {
             var Temp = new Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider();
-            IGenerator<TestClass> Generator = Temp.Generate<TestClass>(TestDatabaseSource, new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>())[typeof(TestClass), TestDatabaseSource], null);
+            var Generator = Temp.Generate<TestClass>(TestDatabaseSource, new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>())[typeof(TestClass), TestDatabaseSource], null);
             Assert.Equal(typeof(Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerGenerator<TestClass>), Generator.GetType());
         }
 

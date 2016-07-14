@@ -30,7 +30,7 @@ namespace UnitTests.Configuration
         public void Load()
         {
             new FileInfo("./Test.config").Delete();
-            TestClass Temp = Utilities.Configuration.ConfigurationManager.Get<TestClass>("Test1");
+            var Temp = Utilities.Configuration.ConfigurationManager.Get<TestClass>("Test1");
             Assert.Equal("A", Temp.A);
             Assert.Equal("B", Temp.B);
             new FileInfo("./Test.config").Delete();
@@ -40,7 +40,7 @@ namespace UnitTests.Configuration
         public void Save()
         {
             new FileInfo("./Test.config").Delete();
-            TestClass Temp = Utilities.Configuration.ConfigurationManager.Get<TestClass>("Test1");
+            var Temp = Utilities.Configuration.ConfigurationManager.Get<TestClass>("Test1");
             Assert.Equal("A", Temp.A);
             Assert.Equal("B", Temp.B);
             Temp.A = "C";

@@ -57,7 +57,7 @@ namespace CUL.Serialization
         {
             if (Data == null)
                 return null;
-            byte[] Result = Data.ToByteArray();
+            var Result = Data.ToByteArray();
             if (Result == null)
                 return null;
             using (MemoryStream Stream = new MemoryStream(Result))

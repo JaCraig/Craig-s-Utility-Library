@@ -32,7 +32,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.LDAP
         public void Batch()
         {
             var Temp = new Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPQueryProvider();
-            IBatch Batch = Temp.Batch(TestDatabaseSource);
+            var Batch = Temp.Batch(TestDatabaseSource);
             Assert.Equal(0, Batch.CommandCount);
             Assert.Equal(typeof(Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPBatch), Batch.GetType());
         }
@@ -49,7 +49,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.LDAP
         public void Generate()
         {
             var Temp = new Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPQueryProvider();
-            IGenerator<Dynamo> Generator = Temp.Generate<Dynamo>(TestDatabaseSource, new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>())[typeof(Dynamo), TestDatabaseSource], null);
+            var Generator = Temp.Generate<Dynamo>(TestDatabaseSource, new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>())[typeof(Dynamo), TestDatabaseSource], null);
             Assert.Equal(typeof(Utilities.ORM.Manager.QueryProvider.Default.LDAP.LDAPGenerator<Dynamo>), Generator.GetType());
         }
     }

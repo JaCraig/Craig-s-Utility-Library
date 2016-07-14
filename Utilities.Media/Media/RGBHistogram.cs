@@ -141,7 +141,7 @@ namespace Utilities.Media
             {
                 for (int y = 0; y < ImageUsing.Height; ++y)
                 {
-                    Color TempColor = ImageUsing.GetPixel(x, y);
+                    var TempColor = ImageUsing.GetPixel(x, y);
                     ++R[(int)TempColor.R];
                     ++G[(int)TempColor.G];
                     ++B[(int)TempColor.B];

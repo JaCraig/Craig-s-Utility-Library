@@ -77,8 +77,8 @@ namespace Utilities.DataTypes.AOP.Generators
             {
                 foreach (PropertyInfo Property in TempType.GetProperties(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance))
                 {
-                    MethodInfo GetMethodInfo = Property.GetGetMethod();
-                    MethodInfo SetMethodInfo = Property.GetSetMethod();
+                    var GetMethodInfo = Property.GetGetMethod();
+                    var SetMethodInfo = Property.GetSetMethod();
                     if (!MethodsAlreadyDone.Contains("get_" + Property.Name)
                         && !MethodsAlreadyDone.Contains("set_" + Property.Name)
                         && GetMethodInfo != null

@@ -105,7 +105,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ToExpando()
         {
             var TestObject = new MyTestClass();
-            ExpandoObject Object = TestObject.To<MyTestClass, ExpandoObject>();
+            var Object = TestObject.To<MyTestClass, ExpandoObject>();
             Assert.Equal(10, ((IDictionary<string, object>)Object)["B"]);
             ((IDictionary<string, object>)Object)["B"] = 20;
             Assert.Equal(20, Object.To(new MyTestClass()).B);
@@ -114,8 +114,8 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void ToList()
         {
-            List<PreDataTable> Temp = new PreDataTable[] { new PreDataTable { ID = 1, Value = "A" }, new PreDataTable { ID = 2, Value = "B" }, new PreDataTable { ID = 3, Value = "C" } }.ToList();
-            List<PreDataTable> Temp2 = Temp.To().To<PreDataTable>(() => new PreDataTable());
+            var Temp = new PreDataTable[] { new PreDataTable { ID = 1, Value = "A" }, new PreDataTable { ID = 2, Value = "B" }, new PreDataTable { ID = 3, Value = "C" } }.ToList();
+            var Temp2 = Temp.To().To<PreDataTable>(() => new PreDataTable());
             Assert.Equal(Temp, Temp2);
         }
 
@@ -128,7 +128,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.NotNull(((object)new MyTestClass()).To<object, IMyTestClass>());
             Assert.NotNull(new MyTestClass().To<MyTestClass, MyTestClass2>());
             Assert.NotNull(((object)new MyTestClass()).To<object, MyTestClass2>());
-            MyTestClass2 Result = new MyTestClass().To<MyTestClass, MyTestClass2>();
+            var Result = new MyTestClass().To<MyTestClass, MyTestClass2>();
             Assert.Equal(10, Result.B);
         }
 

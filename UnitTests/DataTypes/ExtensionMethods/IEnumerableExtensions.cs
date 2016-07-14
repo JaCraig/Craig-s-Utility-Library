@@ -35,15 +35,15 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void Distinct()
         {
-            List<int> Temp = new int[] { 0, 0, 1, 2, 1, 3, 5, 2 }.ToList();
-            List<int> Results = new int[] { 0, 1, 2, 3, 5 }.ToList();
+            var Temp = new int[] { 0, 0, 1, 2, 1, 3, 5, 2 }.ToList();
+            var Results = new int[] { 0, 1, 2, 3, 5 }.ToList();
             Assert.Equal(Results, Temp.Distinct((x, y) => x == y));
         }
 
         [Fact]
         public void ElementsBetween()
         {
-            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            var Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             Assert.Equal(new int[] { 0, 0, 1 }.ToList(), Temp.ElementsBetween(0, 3));
         }
 
@@ -63,7 +63,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             var Builder = new StringBuilder();
             int[] Temp = { 0, 0, 1, 2, 3 };
-            IEnumerable<string> Values = Temp.ForEachParallel(x => x.ToString());
+            var Values = Temp.ForEachParallel(x => x.ToString());
             Assert.Equal(5, Values.Count());
             Values.ForEach<string>(x => Builder.Append(x));
             var OrderedString = new string(Builder.ToString().OrderBy(x => x).ToArray());
@@ -91,7 +91,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void ForEachTest3()
         {
-            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            var Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             Temp.ForEach<int, float>(x => x > 0 ? (float)x : 1.0f);
         }
 
@@ -111,7 +111,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             var Builder = new StringBuilder();
             int[] Temp = { 0, 0, 1, 2, 3 };
-            IEnumerable<string> Values = Temp.ForParallel(0, Temp.Length - 1, x => x.ToString());
+            var Values = Temp.ForParallel(0, Temp.Length - 1, x => x.ToString());
             Assert.Equal(5, Values.Count());
             Values.ForEach<string>(x => Builder.Append(x));
             var OrderedString = new string(Builder.ToString().OrderBy(x => x).ToArray());
@@ -141,7 +141,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void Last()
         {
-            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            var Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             Assert.Equal(new int[] { 1, 2, 3 }.ToList(), Temp.Last(3));
         }
 
@@ -196,7 +196,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void RemoveDefaultsTest()
         {
-            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            var Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             foreach (int Value in Temp.Remove(x => x == 0))
                 Assert.NotEqual(0, Value);
         }
@@ -237,9 +237,9 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void ToArray()
         {
-            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            var Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             Temp.ToArray<int, double>(x => (double)x);
-            double[] Temp2 = Temp.ToArray<int, double>(x => (double)x);
+            var Temp2 = Temp.ToArray<int, double>(x => (double)x);
             Assert.Equal(0, Temp2[0]);
             Assert.Equal(0, Temp2[1]);
             Assert.Equal(1, Temp2[2]);
@@ -250,9 +250,9 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void ToDataTable()
         {
-            List<PreDataTable> Temp = new PreDataTable[] { new PreDataTable { ID = 1, Value = "A" }, new PreDataTable { ID = 2, Value = "B" }, new PreDataTable { ID = 3, Value = "C" } }.ToList();
+            var Temp = new PreDataTable[] { new PreDataTable { ID = 1, Value = "A" }, new PreDataTable { ID = 2, Value = "B" }, new PreDataTable { ID = 3, Value = "C" } }.ToList();
             Temp.To();
-            DataTable Temp2 = Temp.To();
+            var Temp2 = Temp.To();
             Assert.Equal(1, Temp2.Rows[0].ItemArray[0]);
             Assert.Equal("A", Temp2.Rows[0].ItemArray[1]);
             Assert.Equal(2, Temp2.Rows[1].ItemArray[0]);
@@ -264,7 +264,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void ToList()
         {
-            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList(x => x + 10);
+            var Temp = new int[] { 0, 0, 1, 2, 3 }.ToList(x => x + 10);
             Assert.Equal(10, Temp[0]);
             Assert.Equal(10, Temp[1]);
             Assert.Equal(11, Temp[2]);
@@ -275,7 +275,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void ToObservableList()
         {
-            ObservableList<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToObservableList(x => x + 10);
+            var Temp = new int[] { 0, 0, 1, 2, 3 }.ToObservableList(x => x + 10);
             Assert.Equal(10, Temp[0]);
             Assert.Equal(10, Temp[1]);
             Assert.Equal(11, Temp[2]);
@@ -286,7 +286,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void ToStringTest()
         {
-            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            var Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             Assert.Equal("0,0,1,2,3", Temp.ToString(Seperator: ","));
             Assert.NotEqual("0,0,1,2,3", Temp.ToString());
         }
@@ -301,7 +301,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void TryAll()
         {
-            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            var Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             var Results = new List<int>();
             Temp.ForEach(x => Results.Add(x == 0 ? 4 : x));
             Assert.Equal(4, Results[0]);
@@ -309,7 +309,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(1, Results[2]);
             Assert.Equal(2, Results[3]);
             Assert.Equal(3, Results[4]);
-            List<int?> Temp2 = new int?[] { 0, 0, 1, 2, 3, null }.ToList();
+            var Temp2 = new int?[] { 0, 0, 1, 2, 3, null }.ToList();
             var Results2 = new List<int?>();
             Temp2.ForEach(x => Results2.Add(x == 0 ? 4 : x.Value + 1), (x, y) => Results2.Add(5));
             Assert.Equal(4, Results2[0]);
@@ -323,12 +323,12 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void TryAllParallel()
         {
-            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            var Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             var Results = new List<int>(10);
             Temp.ForEachParallel(x => Results.Add(x == 0 ? 4 : x));
             Assert.Equal(5, Results.Count);
             Assert.Equal(14, Results.Sum());
-            List<int?> Temp2 = new int?[] { 0, 0, 1, 2, 3, null }.ToList();
+            var Temp2 = new int?[] { 0, 0, 1, 2, 3, null }.ToList();
             var Results2 = new List<int?>(10);
             Temp2.ForEachParallel(x => Results2.Add(x == 0 ? 4 : x.Value + 1), (x, y) => Results2.Add(5));
             Assert.Equal(6, Results2.Count);

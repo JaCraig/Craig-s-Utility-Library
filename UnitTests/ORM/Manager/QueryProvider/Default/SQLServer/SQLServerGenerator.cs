@@ -42,70 +42,70 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.SQLServer
         [Fact]
         public void All()
         {
-            IBatch Batch = Generator.All();
+            var Batch = Generator.All();
             Assert.Equal(1, Batch.CommandCount);
         }
 
         [Fact]
         public void Any()
         {
-            IBatch Batch = Generator.Any();
+            var Batch = Generator.Any();
             Assert.Equal(1, Batch.CommandCount);
         }
 
         [Fact]
         public void Delete()
         {
-            IBatch Batch = Generator.Delete(new TestClass());
+            var Batch = Generator.Delete(new TestClass());
             Assert.Equal(1, Batch.CommandCount);
         }
 
         [Fact]
         public void Delete2()
         {
-            IBatch Batch = Generator.Delete(new TestClass[] { new TestClass(), new TestClass(), new TestClass() });
+            var Batch = Generator.Delete(new TestClass[] { new TestClass(), new TestClass(), new TestClass() });
             Assert.Equal(3, Batch.CommandCount);
         }
 
         [Fact]
         public void Insert()
         {
-            IBatch Batch = Generator.Insert(new TestClass());
+            var Batch = Generator.Insert(new TestClass());
             Assert.Equal(1, Batch.CommandCount);
         }
 
         [Fact]
         public void Insert2()
         {
-            IBatch Batch = Generator.Insert(new TestClass[] { new TestClass(), new TestClass(), new TestClass() });
+            var Batch = Generator.Insert(new TestClass[] { new TestClass(), new TestClass(), new TestClass() });
             Assert.Equal(3, Batch.CommandCount);
         }
 
         [Fact]
         public void PageCount()
         {
-            IBatch Batch = Generator.PageCount(25);
+            var Batch = Generator.PageCount(25);
             Assert.Equal(1, Batch.CommandCount);
         }
 
         [Fact]
         public void Paged()
         {
-            IBatch Batch = Generator.Paged(25, 0, "");
+            var Batch = Generator.Paged(25, 0, "");
             Assert.Equal(1, Batch.CommandCount);
         }
 
         [Fact]
         public void Update()
         {
-            IBatch Batch = Generator.Update(new TestClass());
+            var Batch = Generator.Update(new TestClass());
             Assert.Equal(1, Batch.CommandCount);
         }
 
         [Fact]
         public void Update2()
         {
-            IBatch Batch = Generator.Update(new TestClass[] { new TestClass(), new TestClass(), new TestClass() });
+            var Batch = Generator.Update(new TestClass[] { new TestClass(), new TestClass(), new TestClass() });
             Assert.Equal(3, Batch.CommandCount);
         }
 

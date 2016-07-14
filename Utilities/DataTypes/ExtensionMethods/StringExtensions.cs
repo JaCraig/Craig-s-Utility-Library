@@ -179,7 +179,7 @@ namespace Utilities.DataTypes
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
-            byte[] TempArray = Convert.FromBase64String(Input);
+            var TempArray = Convert.FromBase64String(Input);
             return EncodingUsing.Check(() => new UTF8Encoding()).GetString(TempArray);
         }
 
@@ -250,7 +250,7 @@ namespace Utilities.DataTypes
             if (string.IsNullOrEmpty(Input) || string.IsNullOrEmpty(Filter))
                 return "";
             var TempRegex = new Regex(Filter);
-            MatchCollection Collection = TempRegex.Matches(Input);
+            var Collection = TempRegex.Matches(Input);
             var Builder = new StringBuilder();
             foreach (Match Match in Collection)
                 Builder.Append(Match.Value);
@@ -267,7 +267,7 @@ namespace Utilities.DataTypes
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
-            string Value = BuildFilter(Filter);
+            var Value = BuildFilter(Filter);
             return Input.Keep(Value);
         }
 
@@ -397,7 +397,7 @@ namespace Utilities.DataTypes
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
-            string Value = BuildFilter(Filter);
+            var Value = BuildFilter(Filter);
             return Input.Remove(Value);
         }
 
@@ -412,7 +412,7 @@ namespace Utilities.DataTypes
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
-            string FilterValue = BuildFilter(Filter);
+            var FilterValue = BuildFilter(Filter);
             return new Regex(FilterValue).Replace(Input, Value);
         }
 
@@ -553,7 +553,7 @@ namespace Utilities.DataTypes
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
-            byte[] TempArray = OriginalEncodingUsing.Check(new UTF8Encoding()).GetBytes(Input);
+            var TempArray = OriginalEncodingUsing.Check(new UTF8Encoding()).GetBytes(Input);
             return Convert.ToBase64String(TempArray, Options);
         }
 
@@ -569,7 +569,7 @@ namespace Utilities.DataTypes
                 return "";
             if (Case == StringCase.FirstCharacterUpperCase)
             {
-                char[] InputChars = Input.ToCharArray();
+                var InputChars = Input.ToCharArray();
                 for (int x = 0; x < InputChars.Length; ++x)
                 {
                     if (InputChars[x] != ' ' && InputChars[x] != '\t')
@@ -583,7 +583,7 @@ namespace Utilities.DataTypes
             else if (Case == StringCase.SentenceCapitalize)
             {
                 string[] Seperator = { ".", "?", "!" };
-                string[] InputStrings = Input.Split(Seperator, StringSplitOptions.None);
+                var InputStrings = Input.Split(Seperator, StringSplitOptions.None);
                 for (int x = 0; x < InputStrings.Length; ++x)
                 {
                     if (!string.IsNullOrEmpty(InputStrings[x]))
@@ -598,7 +598,7 @@ namespace Utilities.DataTypes
             else if (Case == StringCase.TitleCase)
             {
                 string[] Seperator = { " ", ".", "\t", System.Environment.NewLine, "!", "?" };
-                string[] InputStrings = Input.Split(Seperator, StringSplitOptions.None);
+                var InputStrings = Input.Split(Seperator, StringSplitOptions.None);
                 for (int x = 0; x < InputStrings.Length; ++x)
                 {
                     if (!string.IsNullOrEmpty(InputStrings[x])

@@ -36,7 +36,7 @@ namespace UnitTests.DataTypes.CodeGen
             string File = "";
             using (Utilities.DataTypes.CodeGen.Compiler Test = new Utilities.DataTypes.CodeGen.Compiler("Test", ".", true))
             {
-                Type Object = Test.CreateClass("A", "public class A{ public string Value1{get;set;}}", null, typeof(object).Assembly);
+                var Object = Test.CreateClass("A", "public class A{ public string Value1{get;set;}}", null, typeof(object).Assembly);
                 Assert.Equal("Test.dll, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", Object.Assembly.FullName);
                 Assert.Equal("A", Object.FullName);
                 Object = Test.CreateClass("B", "public class B{ public string Value1{get;set;}}", null, typeof(object).Assembly);
@@ -57,7 +57,7 @@ namespace UnitTests.DataTypes.CodeGen
             string File = "";
             using (Utilities.DataTypes.CodeGen.Compiler Test = new Utilities.DataTypes.CodeGen.Compiler("Test", ".", true))
             {
-                Type Object = Test.CreateClass("A", "public class A{ public string Value1{get;set;}}", null, typeof(object).Assembly);
+                var Object = Test.CreateClass("A", "public class A{ public string Value1{get;set;}}", null, typeof(object).Assembly);
                 Assert.Equal("Test.dll, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", Object.Assembly.FullName);
                 Assert.Equal("A", Object.FullName);
                 File = Test.AssemblyDirectory + "/" + Test.AssemblyName + ".dll";
@@ -87,7 +87,7 @@ namespace UnitTests.DataTypes.CodeGen
             string File = "";
             using (Utilities.DataTypes.CodeGen.Compiler Test = new Utilities.DataTypes.CodeGen.Compiler("Test", ".", true))
             {
-                Type Object = Test.CreateClass("A", "public class A{ public string Value1{get;set;}}", null, typeof(object).Assembly);
+                var Object = Test.CreateClass("A", "public class A{ public string Value1{get;set;}}", null, typeof(object).Assembly);
                 Assert.Equal("Test.dll, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", Object.Assembly.FullName);
                 Assert.Equal("A", Object.FullName);
                 File = Test.AssemblyDirectory + "/" + Test.AssemblyName + ".dll";
@@ -97,7 +97,7 @@ namespace UnitTests.DataTypes.CodeGen
             using (Utilities.DataTypes.CodeGen.Compiler Test = new Utilities.DataTypes.CodeGen.Compiler("Test", ".", true))
             {
                 Assert.Equal(1, Test.Classes.Count);
-                Type Object = Test.Classes.First();
+                var Object = Test.Classes.First();
                 Assert.Equal("Test.dll, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", Object.Assembly.FullName);
                 Assert.Equal("A", Object.FullName);
             }

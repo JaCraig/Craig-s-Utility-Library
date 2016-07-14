@@ -71,8 +71,8 @@ namespace CUL.Serialization
         {
             if (Data == null || ObjectType == null)
                 return "";
-            string ReturnValue = JsonConvert.SerializeObject(Data, ObjectType, new JsonSerializerSettings { DateFormatHandling = DateFormatHandling.IsoDateFormat });
-            HttpRequest Request = HttpContext.Current.Chain(x => x.Request);
+            var ReturnValue = JsonConvert.SerializeObject(Data, ObjectType, new JsonSerializerSettings { DateFormatHandling = DateFormatHandling.IsoDateFormat });
+            var Request = HttpContext.Current.Chain(x => x.Request);
             if (Request != null &&
                 (!string.IsNullOrEmpty(Request.QueryString["callback"]) ||
                 !string.IsNullOrEmpty(Request.QueryString["jsonp"])))

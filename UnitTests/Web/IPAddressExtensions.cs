@@ -30,7 +30,7 @@ namespace UnitTests.Web.ExtensionMethods
         [Fact]
         public void GetHostName()
         {
-            IPAddress Address = IPAddress.Parse("72.125.228.65");
+            var Address = IPAddress.Parse("72.125.228.65");
             Assert.Equal("65.sub-72-125-228.myvzw.com", Address.GetHostName());
             Assert.Equal("65.sub-72-125-228.myvzw.com", "72.125.228.65".GetHostName());
         }

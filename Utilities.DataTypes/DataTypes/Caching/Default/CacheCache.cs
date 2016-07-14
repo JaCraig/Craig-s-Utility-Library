@@ -113,7 +113,7 @@ namespace Utilities.DataTypes.Caching.Default
         /// </summary>
         public override void Clear()
         {
-            List<string> Temp = Keys.ToList();
+            var Temp = Keys.ToList();
             foreach (string Key in Temp)
             {
                 Remove(Key);

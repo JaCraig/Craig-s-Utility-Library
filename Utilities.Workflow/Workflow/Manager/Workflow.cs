@@ -100,7 +100,7 @@ namespace Utilities.Workflow.Manager
         /// <returns>The workflow object</returns>
         public IWorkflow<T> And(IOperation<T> Operation, params IConstraint<T>[] Constraints)
         {
-            IWorkflowNode<T> Node = Nodes.LastOrDefault();
+            var Node = Nodes.LastOrDefault();
             if (Node == null)
                 Node = Nodes.AddAndReturn(new WorkflowNode<T>());
             Node.AddOperation(Operation, Constraints);
@@ -130,7 +130,7 @@ namespace Utilities.Workflow.Manager
         /// <returns>The resulting workflow object</returns>
         public IWorkflow<T> And(IWorkflow<T> Workflow, params IConstraint<T>[] Constraints)
         {
-            IWorkflowNode<T> Node = Nodes.LastOrDefault();
+            var Node = Nodes.LastOrDefault();
             if (Node == null)
                 Node = Nodes.AddAndReturn(new WorkflowNode<T>());
             Node.AddOperation(Workflow, Constraints);
@@ -161,7 +161,7 @@ namespace Utilities.Workflow.Manager
         /// <returns>The workflow object</returns>
         public IWorkflow<T> Do(IOperation<T> Operation, params IConstraint<T>[] Constraints)
         {
-            IWorkflowNode<T> Node = Nodes.AddAndReturn(new WorkflowNode<T>());
+            var Node = Nodes.AddAndReturn(new WorkflowNode<T>());
             Node.AddOperation(Operation, Constraints);
             return this;
         }
@@ -189,7 +189,7 @@ namespace Utilities.Workflow.Manager
         /// <returns>The resulting workflow object</returns>
         public IWorkflow<T> Do(IWorkflow<T> Workflow, params IConstraint<T>[] Constraints)
         {
-            IWorkflowNode<T> Node = Nodes.AddAndReturn(new WorkflowNode<T>());
+            var Node = Nodes.AddAndReturn(new WorkflowNode<T>());
             Node.AddOperation(Workflow, Constraints);
             return this;
         }
@@ -245,7 +245,7 @@ namespace Utilities.Workflow.Manager
             }
             catch (Exception e)
             {
-                Type ExceptionType = e.GetType();
+                var ExceptionType = e.GetType();
                 while (ExceptionType != null && !ExceptionActions.Keys.Contains(ExceptionType))
                 {
                     ExceptionType = ExceptionType.BaseType;

@@ -53,7 +53,7 @@ namespace Utilities.IO.Encryption.Default
             using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
             {
                 RSA.FromXmlString(Key);
-                byte[] EncryptedBytes = RSA.Decrypt(Input, true);
+                var EncryptedBytes = RSA.Decrypt(Input, true);
                 RSA.Clear();
                 return EncryptedBytes;
             }
@@ -74,7 +74,7 @@ namespace Utilities.IO.Encryption.Default
             using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
             {
                 RSA.FromXmlString(Key);
-                byte[] EncryptedBytes = RSA.Encrypt(Input, true);
+                var EncryptedBytes = RSA.Encrypt(Input, true);
                 RSA.Clear();
                 return EncryptedBytes;
             }
@@ -95,8 +95,8 @@ namespace Utilities.IO.Encryption.Default
             using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
             {
                 RSA.FromXmlString(Key);
-                byte[] HashBytes = Input.ToByteArray(EncodingUsing).Hash();
-                byte[] SignedHash = RSA.SignHash(HashBytes, CryptoConfig.MapNameToOID("SHA1"));
+                var HashBytes = Input.ToByteArray(EncodingUsing).Hash();
+                var SignedHash = RSA.SignHash(HashBytes, CryptoConfig.MapNameToOID("SHA1"));
                 RSA.Clear();
                 Hash = HashBytes.ToString(Base64FormattingOptions.None);
                 return SignedHash.ToString(Base64FormattingOptions.None);
@@ -118,9 +118,9 @@ namespace Utilities.IO.Encryption.Default
             using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
             {
                 RSA.FromXmlString(Key);
-                byte[] InputArray = SignedHash.FromBase64();
-                byte[] HashArray = Hash.FromBase64();
-                bool Result = RSA.VerifyHash(HashArray, CryptoConfig.MapNameToOID("SHA1"), InputArray);
+                var InputArray = SignedHash.FromBase64();
+                var HashArray = Hash.FromBase64();
+                var Result = RSA.VerifyHash(HashArray, CryptoConfig.MapNameToOID("SHA1"), InputArray);
                 RSA.Clear();
                 return Result;
             }

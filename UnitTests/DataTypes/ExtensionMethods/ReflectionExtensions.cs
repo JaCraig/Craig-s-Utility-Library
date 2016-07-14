@@ -90,7 +90,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Fact]
         public void GetAttribute()
         {
-            TestingAttribute TestObject = typeof(TestClass).Attribute<TestingAttribute>();
+            var TestObject = typeof(TestClass).Attribute<TestingAttribute>();
             Assert.NotNull(TestObject);
         }
 
@@ -118,7 +118,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Fact]
         public void GetPropertyGetterTest()
         {
-            Expression<Func<TestClass, int>> TestObject = typeof(TestClass).GetProperty("Value").PropertyGetter<TestClass, int>();
+            var TestObject = typeof(TestClass).GetProperty("Value").PropertyGetter<TestClass, int>();
             var TestObject2 = new TestClass();
             TestObject2.Value = 10;
             Assert.Equal(10, TestObject.Compile()(TestObject2));
@@ -137,7 +137,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         public void GetPropertySetterTest()
         {
             Expression<Func<TestClass, int>> TestObject = x => x.Value;
-            Expression<Action<TestClass, int>> TestObject2 = TestObject.PropertySetter<TestClass, int>();
+            var TestObject2 = TestObject.PropertySetter<TestClass, int>();
             var TestObject3 = new TestClass();
             TestObject2.Compile()(TestObject3, 10);
             Assert.Equal(10, TestObject3.Value);
@@ -147,7 +147,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         public void GetPropertySetterTest2()
         {
             Expression<Func<TestClass4, int>> TestObject = x => x.Temp.Value;
-            Expression<Action<TestClass4, int>> TestObject2 = TestObject.PropertySetter<TestClass4, int>();
+            var TestObject2 = TestObject.PropertySetter<TestClass4, int>();
             var TestObject3 = new TestClass4();
             TestObject2.Compile()(TestObject3, 10);
             Assert.Equal(10, TestObject3.Temp.Value);
@@ -217,7 +217,7 @@ namespace UnitTests.Reflection.ExtensionMethods
             var TestObject1 = new TestClass();
             TestObject1.Value = 3;
             TestObject1.Value3 = "This is a test";
-            TestClass TestObject2 = TestObject1.MakeShallowCopy<TestClass>();
+            var TestObject2 = TestObject1.MakeShallowCopy<TestClass>();
             Assert.Equal(TestObject1.Value, TestObject2.Value);
             Assert.Equal(TestObject1.Value2, TestObject2.Value2);
             Assert.Equal(TestObject1.Value3, TestObject2.Value3);
@@ -228,7 +228,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         {
             var TestObject1 = new TestClass();
             TestObject1.Value = 3;
-            TestInterface TestObject2 = TestObject1.MakeShallowCopy<TestInterface>();
+            var TestObject2 = TestObject1.MakeShallowCopy<TestInterface>();
             Assert.Equal(TestObject1.Value, TestObject2.Value);
             Assert.Equal(TestObject1.Value2, TestObject2.Value2);
         }

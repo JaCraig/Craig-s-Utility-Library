@@ -44,7 +44,7 @@ namespace Utilities.IO.FileFormats.RSS
         public Enclosure(IXPathNavigable Doc)
         {
             Contract.Requires<ArgumentNullException>(Doc != null, "Doc");
-            XPathNavigator Element = Doc.CreateNavigator();
+            var Element = Doc.CreateNavigator();
             if (string.IsNullOrEmpty(Element.GetAttribute("url", "")))
             {
                 Url = Element.GetAttribute("url", "");

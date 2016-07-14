@@ -41,9 +41,9 @@ namespace Utilities.IoC
         /// </summary>
         protected Manager()
         {
-            ConcurrentBag<Assembly> LoadedAssemblies = LoadAssemblies();
-            List<Type> LoadedTypes = GetTypes(ref LoadedAssemblies);
-            List<Type> Bootstrappers = LoadedTypes.Where(x => x.GetInterfaces().Contains(typeof(IBootstrapper))
+            var LoadedAssemblies = LoadAssemblies();
+            var LoadedTypes = GetTypes(ref LoadedAssemblies);
+            var Bootstrappers = LoadedTypes.Where(x => x.GetInterfaces().Contains(typeof(IBootstrapper))
                                                                     && x.IsClass
                                                                     && !x.IsAbstract
                                                                     && !x.ContainsGenericParameters
@@ -151,7 +151,7 @@ namespace Utilities.IoC
         /// <returns>The list of assemblies that the system has loaded</returns>
         private static ConcurrentBag<Assembly> LoadAssemblies()
         {
-            List<FileInfo> Files = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).GetFiles("*.dll", SearchOption.TopDirectoryOnly)
+            var Files = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).GetFiles("*.dll", SearchOption.TopDirectoryOnly)
                                                                                               .Where(x => !x.Name.Equals("CULGeneratedTypes.dll", StringComparison.InvariantCultureIgnoreCase))
                                                                                               .ToList();
             if (!new DirectoryInfo(".").FullName.Contains(System.Environment.GetFolderPath(Environment.SpecialFolder.SystemX86))
@@ -190,7 +190,7 @@ namespace Utilities.IoC
                                                       && !x.FullName.StartsWith("Microsoft.", StringComparison.InvariantCultureIgnoreCase)
                                                       && !Assemblies.Any(y => string.Equals(y.FullName, x.FullName, StringComparison.InvariantCultureIgnoreCase))))
             {
-                Assembly TempAssembly = AppDomain.CurrentDomain.Load(Name);
+                var TempAssembly = AppDomain.CurrentDomain.Load(Name);
                 Assemblies.Add(TempAssembly);
                 LoadAssemblies(Assemblies, TempAssembly.GetReferencedAssemblies());
             }

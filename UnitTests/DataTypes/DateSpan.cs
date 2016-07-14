@@ -63,7 +63,7 @@ namespace UnitTests.DataTypes
         {
             var Span1 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1), new DateTime(2003, 1, 1));
             var Span2 = new Utilities.DataTypes.DateSpan(new DateTime(2002, 1, 1), new DateTime(2009, 1, 1));
-            Utilities.DataTypes.DateSpan Span3 = Span1.Intersection(Span2);
+            var Span3 = Span1.Intersection(Span2);
             Assert.Equal(new DateTime(2002, 1, 1), Span3.Start);
             Assert.Equal(new DateTime(2003, 1, 1), Span3.End);
         }

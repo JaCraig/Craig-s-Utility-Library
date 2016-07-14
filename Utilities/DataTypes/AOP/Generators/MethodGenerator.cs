@@ -85,7 +85,7 @@ namespace Utilities.DataTypes.AOP.Generators
             if (!MethodInfo.IsAbstract & !DeclaringType.IsInterface)
             {
                 BaseCall = string.IsNullOrEmpty(ReturnValue) ? "base." + BaseMethodName + "(" : ReturnValue + "=base." + BaseMethodName + "(";
-                ParameterInfo[] Parameters = MethodInfo.GetParameters();
+                var Parameters = MethodInfo.GetParameters();
                 BaseCall += Parameters.Length > 0 ? Parameters.ToString(x => (x.IsOut ? "out " : "") + x.Name) : "";
                 BaseCall += ");\r\n";
             }

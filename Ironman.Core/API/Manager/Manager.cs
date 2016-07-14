@@ -154,7 +154,7 @@ namespace Ironman.Core.API.Manager
                 IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
                 if (!TempMappings.ContainsKey(Mapping))
                     return new List<Dynamo>();
-                IEnumerable<Dynamo> ReturnValue = TempMappings[Mapping].All(Mappings.GetValue(Version), EmbeddedProperties);
+                var ReturnValue = TempMappings[Mapping].All(Mappings.GetValue(Version), EmbeddedProperties);
                 if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PostAll_" + Version).Start(new WorkflowInfo(Mapping, WorkflowType.PostAll, Version, ReturnValue)).Continue)
                     return new List<Dynamo>();
                 return ReturnValue;
@@ -182,7 +182,7 @@ namespace Ironman.Core.API.Manager
                 IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
                 if (!TempMappings.ContainsKey(Mapping))
                     return Error("Error getting item");
-                Dynamo ReturnValue = TempMappings[Mapping].Any(ID, Mappings.GetValue(Version), EmbeddedProperties);
+                var ReturnValue = TempMappings[Mapping].Any(ID, Mappings.GetValue(Version), EmbeddedProperties);
                 if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PostAny_" + Version).Start(new WorkflowInfo(Mapping, WorkflowType.PostAny, Version, ReturnValue)).Continue)
                     return Error("Error getting item");
                 return ReturnValue;
@@ -209,7 +209,7 @@ namespace Ironman.Core.API.Manager
                 IDictionary<string, IService> TempMappings = Services.GetValue(Version).Services;
                 if (!TempMappings.ContainsKey(Mapping))
                     return Error("Error getting item");
-                Dynamo ReturnValue = TempMappings[Mapping].Process(Value);
+                var ReturnValue = TempMappings[Mapping].Process(Value);
                 if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PostService_" + Version).Start(new WorkflowInfo(Mapping, WorkflowType.PostService, Version, ReturnValue)).Continue)
                     return Error("Error running service");
                 return ReturnValue;
@@ -338,7 +338,7 @@ namespace Ironman.Core.API.Manager
                 IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
                 if (!TempMappings.ContainsKey(Mapping))
                     return new List<Dynamo>();
-                IEnumerable<Dynamo> ReturnValue = TempMappings[Mapping].Paged(Mappings.GetValue(Version), PageSize, Page, OrderBy, EmbeddedProperties);
+                var ReturnValue = TempMappings[Mapping].Paged(Mappings.GetValue(Version), PageSize, Page, OrderBy, EmbeddedProperties);
                 if (!WorkflowManager.CreateWorkflow<WorkflowInfo>(Mapping + "_PostPaged_" + Version).Start(new WorkflowInfo(Mapping, WorkflowType.PostAll, Version, ReturnValue)).Continue)
                     return new List<Dynamo>();
                 return ReturnValue;

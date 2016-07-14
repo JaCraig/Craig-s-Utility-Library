@@ -32,18 +32,18 @@ namespace UtilitiesSplitter.Tasks
         /// <returns>True if it runs successfully, false otherwise</returns>
         public bool Run(bool PushToNuget)
         {
-            string Text = new FileInfo(@"..\..\..\Utilities\Utilities.csproj").Read();
+            var Text = new FileInfo(@"..\..\..\Utilities\Utilities.csproj").Read();
             var Doc = new XmlDocument();
             Doc.LoadXml(Text);
             var Manager = new XmlNamespaceManager(Doc.NameTable);
             Manager.AddNamespace("Util", "http://schemas.microsoft.com/developer/msbuild/2003");
-            XmlNodeList Nodes = Doc.DocumentElement.SelectNodes("//Util:ItemGroup/Util:Compile", Manager);
+            var Nodes = Doc.DocumentElement.SelectNodes("//Util:ItemGroup/Util:Compile", Manager);
             var Projects = new List<Project>();
             foreach (XmlNode Node in Nodes)
             {
                 string Path = Node.Attributes["Include"].InnerText;
                 var Splitter = new string[] { "\\" };
-                string[] PathItems = Path.Split(Splitter, StringSplitOptions.None);
+                var PathItems = Path.Split(Splitter, StringSplitOptions.None);
                 if (Projects.Find(x => x.Name == PathItems[0]) != null)
                 {
                     Projects.Find(x => x.Name == PathItems[0]).Includes.Add(Path);
@@ -63,7 +63,7 @@ namespace UtilitiesSplitter.Tasks
             foreach (Project Project in Projects.Where(x => new FileInfo("..\\..\\..\\Utilities." + x.Name + "\\Utilities." + x.Name + ".csproj").Exists))
             {
                 bool Changed = false;
-                string ProjectText = new FileInfo("..\\..\\..\\Utilities." + Project.Name + "\\Utilities." + Project.Name + ".csproj").Read();
+                var ProjectText = new FileInfo("..\\..\\..\\Utilities." + Project.Name + "\\Utilities." + Project.Name + ".csproj").Read();
                 var ProjectDoc = new XmlDocument();
 
                 ProjectDoc.LoadXml(ProjectText);
@@ -90,9 +90,9 @@ namespace UtilitiesSplitter.Tasks
                 }
                 foreach (string Path in Project.Includes)
                 {
-                    XmlElement Node = ProjectDoc.CreateElement("Compile", "http://schemas.microsoft.com/developer/msbuild/2003");
+                    var Node = ProjectDoc.CreateElement("Compile", "http://schemas.microsoft.com/developer/msbuild/2003");
                     Node.RemoveAllAttributes();
-                    XmlAttribute Attribute = ProjectDoc.CreateAttribute("Include");
+                    var Attribute = ProjectDoc.CreateAttribute("Include");
                     Node.Attributes.Append(Attribute);
                     Attribute.InnerText = Path;
                     Parent.AppendChild(Node);

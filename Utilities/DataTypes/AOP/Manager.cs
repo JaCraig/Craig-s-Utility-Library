@@ -90,7 +90,7 @@ namespace Utilities.DataTypes.AOP
         {
             if (!Classes.ContainsKey(BaseType))
                 Setup(BaseType);
-            object ReturnObject = Classes[BaseType].Assembly.CreateInstance(Classes[BaseType].FullName);
+            var ReturnObject = Classes[BaseType].Assembly.CreateInstance(Classes[BaseType].FullName);
             if (Classes[BaseType] != BaseType)
                 Aspects.ForEach(x => x.Setup(ReturnObject));
             return ReturnObject;
@@ -141,7 +141,7 @@ namespace Utilities.DataTypes.AOP
             }
             try
             {
-                IEnumerable<Type> Types = Manager.Compiler.Create(Builder.ToString(), Usings, AssembliesUsing.ToArray());
+                var Types = Manager.Compiler.Create(Builder.ToString(), Usings, AssembliesUsing.ToArray());
                 foreach (Type Type in TempTypes)
                 {
                     Manager.Classes.AddOrUpdate(Type,
@@ -289,8 +289,8 @@ namespace Utilities.DataTypes.AOP
             {
                 foreach (PropertyInfo Property in TempType.GetProperties(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance))
                 {
-                    MethodInfo GetMethodInfo = Property.GetGetMethod();
-                    MethodInfo SetMethodInfo = Property.GetSetMethod();
+                    var GetMethodInfo = Property.GetGetMethod();
+                    var SetMethodInfo = Property.GetSetMethod();
                     if (!MethodsAlreadyDone.Contains("get_" + Property.Name)
                         && !MethodsAlreadyDone.Contains("set_" + Property.Name)
                         && GetMethodInfo != null
@@ -353,14 +353,14 @@ namespace Utilities.DataTypes.AOP
             if (MethodInfo == null)
                 return "";
             var Builder = new StringBuilder();
-            string BaseMethodName = MethodInfo.Name.Replace("get_", "").Replace("set_", "");
+            var BaseMethodName = MethodInfo.Name.Replace("get_", "").Replace("set_", "");
             string ReturnValue = MethodInfo.ReturnType != typeof(void) ? "FinalReturnValue" : "";
             string BaseCall = "";
             if (IsProperty)
                 BaseCall = string.IsNullOrEmpty(ReturnValue) ? "base." + BaseMethodName : ReturnValue + "=base." + BaseMethodName;
             else
                 BaseCall = string.IsNullOrEmpty(ReturnValue) ? "base." + BaseMethodName + "(" : ReturnValue + "=base." + BaseMethodName + "(";
-            ParameterInfo[] Parameters = MethodInfo.GetParameters();
+            var Parameters = MethodInfo.GetParameters();
             if (IsProperty)
             {
                 BaseCall += Parameters.Length > 0 ? "=" + Parameters.ToString(x => x.Name) + ";" : ";";

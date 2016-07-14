@@ -31,8 +31,8 @@ namespace UnitTests.SQL.DataClasses
         public void AddColumns()
         {
             var Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
-            Utilities.ORM.Manager.Schema.Interfaces.ITable Table = Database.AddTable("TestTable");
-            Utilities.ORM.Manager.Schema.Interfaces.IColumn Column = Table.AddColumn<int>("Column1", DbType.Int32);
+            var Table = Database.AddTable("TestTable");
+            var Column = Table.AddColumn<int>("Column1", DbType.Int32);
             Assert.Equal(Column, Table.Columns.First());
             Assert.Equal("Column1", Column.Name);
             Assert.Equal(DbType.Int32, Column.DataType);
@@ -43,7 +43,7 @@ namespace UnitTests.SQL.DataClasses
         public void Create()
         {
             var Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
-            Utilities.ORM.Manager.Schema.Interfaces.ITable Table = Database.AddTable("TestTable");
+            var Table = Database.AddTable("TestTable");
             Assert.Equal(Table, Database.Tables.First());
             Assert.Equal("TestTable", Table.Name);
         }

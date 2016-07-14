@@ -56,7 +56,7 @@ namespace Ironman.Core.Assets.Yui
                 return new List<IAsset>();
             if (Assets.FirstOrDefault().Type != AssetType.Javascript)
                 return Assets;
-            IEnumerable<IAsset> Processable = Assets.Where(x => !x.Minified);
+            var Processable = Assets.Where(x => !x.Minified);
             if (Processable.FirstOrDefault() == null)
                 return Assets;
             var Minifier = new JavaScriptCompressor();

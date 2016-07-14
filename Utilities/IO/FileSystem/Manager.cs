@@ -64,7 +64,7 @@ namespace Utilities.IO.FileSystem
         /// <returns>The directory object</returns>
         public IDirectory Directory(string Path, string UserName = "", string Password = "", string Domain = "")
         {
-            IFileSystem FileSystem = FindSystem(Path);
+            var FileSystem = FindSystem(Path);
             return FileSystem == null ? null : FileSystem.Directory(Path, UserName, Password, Domain);
         }
 
@@ -78,7 +78,7 @@ namespace Utilities.IO.FileSystem
         /// <returns>The file object</returns>
         public IFile File(string Path, string UserName = "", string Password = "", string Domain = "")
         {
-            IFileSystem FileSystem = FindSystem(Path);
+            var FileSystem = FindSystem(Path);
             return FileSystem == null ? null : FileSystem.File(Path, UserName, Password, Domain);
         }
 

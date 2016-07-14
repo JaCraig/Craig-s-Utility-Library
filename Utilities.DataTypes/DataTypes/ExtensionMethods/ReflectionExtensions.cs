@@ -51,7 +51,7 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(Provider != null, "Provider");
             if (Provider.IsDefined(typeof(T), Inherit))
             {
-                T[] Attributes = Provider.Attributes<T>(Inherit);
+                var Attributes = Provider.Attributes<T>(Inherit);
                 if (Attributes.Length > 0)
                     return Attributes[0];
             }
@@ -87,11 +87,11 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(MethodName), "MethodName");
             if (InputVariables == null)
                 InputVariables = new object[0];
-            Type ObjectType = Object.GetType();
+            var ObjectType = Object.GetType();
             Type[] MethodInputTypes = new Type[InputVariables.Length];
             for (int x = 0; x < InputVariables.Length; ++x)
                 MethodInputTypes[x] = InputVariables[x].GetType();
-            MethodInfo Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
+            var Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
             if (Method == null)
                 throw new InvalidOperationException("Could not find method " + MethodName + " with the appropriate input variables.");
             return (ReturnType)Method.Invoke(Object, InputVariables);
@@ -112,11 +112,11 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(MethodName), "MethodName");
             if (InputVariables == null)
                 InputVariables = new object[0];
-            Type ObjectType = Object.GetType();
+            var ObjectType = Object.GetType();
             Type[] MethodInputTypes = new Type[InputVariables.Length];
             for (int x = 0; x < InputVariables.Length; ++x)
                 MethodInputTypes[x] = InputVariables[x].GetType();
-            MethodInfo Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
+            var Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
             if (Method == null)
                 throw new InvalidOperationException("Could not find method " + MethodName + " with the appropriate input variables.");
             Method = Method.MakeGenericMethod(typeof(GenericType1));
@@ -139,11 +139,11 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(MethodName), "MethodName");
             if (InputVariables == null)
                 InputVariables = new object[0];
-            Type ObjectType = Object.GetType();
+            var ObjectType = Object.GetType();
             Type[] MethodInputTypes = new Type[InputVariables.Length];
             for (int x = 0; x < InputVariables.Length; ++x)
                 MethodInputTypes[x] = InputVariables[x].GetType();
-            MethodInfo Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
+            var Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
             if (Method == null)
                 throw new InvalidOperationException("Could not find method " + MethodName + " with the appropriate input variables.");
             Method = Method.MakeGenericMethod(typeof(GenericType1), typeof(GenericType2));
@@ -167,11 +167,11 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(MethodName), "MethodName");
             if (InputVariables == null)
                 InputVariables = new object[0];
-            Type ObjectType = Object.GetType();
+            var ObjectType = Object.GetType();
             Type[] MethodInputTypes = new Type[InputVariables.Length];
             for (int x = 0; x < InputVariables.Length; ++x)
                 MethodInputTypes[x] = InputVariables[x].GetType();
-            MethodInfo Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
+            var Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
             if (Method == null)
                 throw new InvalidOperationException("Could not find method " + MethodName + " with the appropriate input variables.");
             Method = Method.MakeGenericMethod(typeof(GenericType1), typeof(GenericType2), typeof(GenericType3));
@@ -264,7 +264,7 @@ namespace Utilities.DataTypes
                     .Append(".");
                 if (ObjectType.Name.Contains("`"))
                 {
-                    Type[] GenericTypes = ObjectType.GetGenericArguments();
+                    var GenericTypes = ObjectType.GetGenericArguments();
                     Output.Append(ObjectType.Name.Remove(ObjectType.Name.IndexOf("`", StringComparison.OrdinalIgnoreCase)))
                         .Append("<");
                     string Seperator = "";
@@ -401,8 +401,8 @@ namespace Utilities.DataTypes
         {
             if (Object == null)
                 return default(T);
-            Type ObjectType = Object.GetType();
-            T ClassInstance = ObjectType.Create<T>();
+            var ObjectType = Object.GetType();
+            var ClassInstance = ObjectType.Create<T>();
             foreach (PropertyInfo Property in ObjectType.GetProperties())
             {
                 try
@@ -521,9 +521,9 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(Object != null, "Object");
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Property), "Property");
-            string[] Properties = Property.Split(new string[] { "." }, StringSplitOptions.None);
+            var Properties = Property.Split(new string[] { "." }, StringSplitOptions.None);
             object TempObject = Object;
-            Type TempObjectType = TempObject.GetType();
+            var TempObjectType = TempObject.GetType();
             PropertyInfo DestinationProperty = null;
             for (int x = 0; x < Properties.Length - 1; ++x)
             {
@@ -569,9 +569,9 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(Object != null, "Object");
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Property), "Property");
             Contract.Requires<ArgumentNullException>(Value != null, "Value");
-            string[] Properties = Property.Split(new string[] { "." }, StringSplitOptions.None);
+            var Properties = Property.Split(new string[] { "." }, StringSplitOptions.None);
             object TempObject = Object;
-            Type TempObjectType = TempObject.GetType();
+            var TempObjectType = TempObject.GetType();
             PropertyInfo DestinationProperty = null;
             for (int x = 0; x < Properties.Length - 1; ++x)
             {
@@ -602,11 +602,11 @@ namespace Utilities.DataTypes
                 throw new ArgumentException("Property is not of the type specified");
             if (!Property.DeclaringType.Is(typeof(ClassType)) && !typeof(ClassType).Is(Property.DeclaringType))
                 throw new ArgumentException("Property is not from the declaring class type specified");
-            ParameterExpression ObjectInstance = Expression.Parameter(Property.DeclaringType, "x");
-            MemberExpression PropertyGet = Expression.Property(ObjectInstance, Property);
+            var ObjectInstance = Expression.Parameter(Property.DeclaringType, "x");
+            var PropertyGet = Expression.Property(ObjectInstance, Property);
             if (Property.PropertyType != typeof(DataType))
             {
-                UnaryExpression Convert = Expression.Convert(PropertyGet, typeof(DataType));
+                var Convert = Expression.Convert(PropertyGet, typeof(DataType));
                 return Expression.Lambda<Func<ClassType, DataType>>(Convert, ObjectInstance);
             }
             return Expression.Lambda<Func<ClassType, DataType>>(PropertyGet, ObjectInstance);
@@ -665,14 +665,14 @@ namespace Utilities.DataTypes
         public static Expression<Action<ClassType, DataType>> PropertySetter<ClassType, DataType>(this LambdaExpression Property)//Expression<Func<ClassType, DataType>> Property)
         {
             Contract.Requires<ArgumentNullException>(Property != null, "Property");
-            string PropertyName = Property.PropertyName();
-            string[] SplitName = PropertyName.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
+            var PropertyName = Property.PropertyName();
+            var SplitName = PropertyName.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
             if (SplitName.Length == 0)
                 return null;
-            PropertyInfo PropertyInfo = typeof(ClassType).GetProperty(SplitName[0]);
-            ParameterExpression ObjectInstance = Expression.Parameter(PropertyInfo.DeclaringType, "x");
-            ParameterExpression PropertySet = Expression.Parameter(typeof(DataType), "y");
-            ConstantExpression DefaultConstant = Expression.Constant(((object)null).To(PropertyInfo.PropertyType, null), PropertyInfo.PropertyType);
+            var PropertyInfo = typeof(ClassType).GetProperty(SplitName[0]);
+            var ObjectInstance = Expression.Parameter(PropertyInfo.DeclaringType, "x");
+            var PropertySet = Expression.Parameter(typeof(DataType), "y");
+            var DefaultConstant = Expression.Constant(((object)null).To(PropertyInfo.PropertyType, null), PropertyInfo.PropertyType);
             MethodCallExpression SetterCall = null;
             MemberExpression PropertyGet = null;
             if (SplitName.Length > 1)
@@ -687,17 +687,17 @@ namespace Utilities.DataTypes
                 }
                 PropertyInfo = PropertyInfo.PropertyType.GetProperty(SplitName[SplitName.Length - 1]);
             }
-            MethodInfo SetMethod = PropertyInfo.GetSetMethod();
+            var SetMethod = PropertyInfo.GetSetMethod();
             if (SetMethod != null)
             {
                 if (PropertyInfo.PropertyType != typeof(DataType))
                 {
-                    MethodInfo ConversionMethod = typeof(TypeConversionExtensions).GetMethods().FirstOrDefault(x => x.ContainsGenericParameters
+                    var ConversionMethod = typeof(TypeConversionExtensions).GetMethods().FirstOrDefault(x => x.ContainsGenericParameters
                         && x.GetGenericArguments().Length == 2
                         && x.Name == "To"
                         && x.GetParameters().Length == 2);
                     ConversionMethod = ConversionMethod.MakeGenericMethod(typeof(DataType), PropertyInfo.PropertyType);
-                    MethodCallExpression Convert = Expression.Call(ConversionMethod, PropertySet, DefaultConstant);
+                    var Convert = Expression.Call(ConversionMethod, PropertySet, DefaultConstant);
                     SetterCall = PropertyGet == null ? Expression.Call(ObjectInstance, SetMethod, Convert) : Expression.Call(PropertyGet, SetMethod, Convert);
                     return Expression.Lambda<Action<ClassType, DataType>>(SetterCall, ObjectInstance, PropertySet);
                 }
@@ -749,7 +749,7 @@ namespace Utilities.DataTypes
         {
             if (ObjectType == null || string.IsNullOrEmpty(PropertyPath))
                 return null;
-            string[] SourceProperties = PropertyPath.Split(new string[] { "." }, StringSplitOptions.None);
+            var SourceProperties = PropertyPath.Split(new string[] { "." }, StringSplitOptions.None);
             PropertyInfo PropertyInfo = null;
             for (int x = 0; x < SourceProperties.Length; ++x)
             {
@@ -819,16 +819,16 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(Object != null, "Object");
             var TempValue = new StringBuilder();
             TempValue.Append(HTMLOutput ? "<table><thead><tr><th>Property Name</th><th>Property Value</th></tr></thead><tbody>" : "Property Name\t\t\t\tProperty Value");
-            Type ObjectType = Object.GetType();
+            var ObjectType = Object.GetType();
             foreach (PropertyInfo Property in ObjectType.GetProperties())
             {
                 TempValue.Append(HTMLOutput ? "<tr><td>" : System.Environment.NewLine).Append(Property.Name).Append(HTMLOutput ? "</td><td>" : "\t\t\t\t");
-                ParameterInfo[] Parameters = Property.GetIndexParameters();
+                var Parameters = Property.GetIndexParameters();
                 if (Property.CanRead && Parameters.Length == 0)
                 {
                     try
                     {
-                        object Value = Property.GetValue(Object, null);
+                        var Value = Property.GetValue(Object, null);
                         TempValue.Append(Value == null ? "null" : Value.ToString());
                     }
                     catch { }
@@ -850,7 +850,7 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(ObjectType != null, "ObjectType");
             var TempValue = new StringBuilder();
             TempValue.Append(HTMLOutput ? "<table><thead><tr><th>Property Name</th><th>Property Value</th></tr></thead><tbody>" : "Property Name\t\t\t\tProperty Value");
-            PropertyInfo[] Properties = ObjectType.GetProperties();
+            var Properties = ObjectType.GetProperties();
             foreach (PropertyInfo Property in Properties)
             {
                 TempValue.Append(HTMLOutput ? "<tr><td>" : System.Environment.NewLine).Append(Property.Name).Append(HTMLOutput ? "</td><td>" : "\t\t\t\t");

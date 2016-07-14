@@ -146,7 +146,7 @@ namespace Utilities.Random
             if (List == null)
                 return default(T);
             int x = 0;
-            int Position = Random.Next(0, List.Count());
+            var Position = Random.Next(0, List.Count());
             foreach (T Item in List)
             {
                 if (x == Position)

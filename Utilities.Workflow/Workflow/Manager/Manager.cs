@@ -44,7 +44,7 @@ namespace Utilities.Workflow.Manager
         {
             this.FileManager = FileManager;
             this.SerializationManager = SerializationManager;
-            IFile Workflows = FileManager.File("~/App_Data/Workflows.obj");
+            var Workflows = FileManager.File("~/App_Data/Workflows.obj");
             this.Workflows = Workflows.Exists ?
                 (Dictionary<string, IWorkflow>)SerializationManager.Deserialize(Workflows.ReadBinary(), typeof(Dictionary<string, IWorkflow>), SerializationType.Binary.ToString()) :
                 new Dictionary<string, IWorkflow>();
@@ -144,7 +144,7 @@ namespace Utilities.Workflow.Manager
         {
             if (FileManager != null && SerializationManager != null)
             {
-                IFile File = FileManager.File("~/App_Data/Workflows.obj");
+                var File = FileManager.File("~/App_Data/Workflows.obj");
                 if (File != null
                     && !File.Directory.FullName.Contains(System.Environment.GetFolderPath(Environment.SpecialFolder.SystemX86))
                     && !File.Directory.FullName.Contains(System.Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles))

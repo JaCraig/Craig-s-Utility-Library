@@ -157,7 +157,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Delete(IEnumerable<T> Objects)
         {
-            IBatch TempBatch = QueryProvider.Batch(Source);
+            var TempBatch = QueryProvider.Batch(Source);
             foreach (T Object in Objects)
             {
                 TempBatch.AddCommand(Delete(Object));
@@ -191,7 +191,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Insert(IEnumerable<T> Objects)
         {
-            IBatch TempBatch = QueryProvider.Batch(Source);
+            var TempBatch = QueryProvider.Batch(Source);
             foreach (T Object in Objects)
             {
                 TempBatch.AddCommand(Insert(Object));
@@ -208,14 +208,14 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>The batch with the appropriate commands</returns>
         public IBatch JoinsDelete<P>(IProperty<T, P> Property, T Object)
         {
-            IBatch ReturnValue = QueryProvider.Batch(Source);
+            var ReturnValue = QueryProvider.Batch(Source);
 
             if (Object == null)
                 return ReturnValue;
             var List = (P)Property.GetValue(Object);
             if (List == null)
                 return ReturnValue;
-            object CurrentID = Mapping.IDProperties.FirstOrDefault().GetValue(Object);
+            var CurrentID = Mapping.IDProperties.FirstOrDefault().GetValue(Object);
 
             IMapping ForeignMapping = Property.ForeignMapping;
             if (string.Compare(Mapping.TableName, ForeignMapping.TableName, StringComparison.Ordinal) == 0
@@ -248,7 +248,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>The batch with the appropriate commands</returns>
         public IBatch JoinsSave<P, ItemType>(IProperty<T, P> Property, T Object)
         {
-            IBatch ReturnValue = QueryProvider.Batch(Source);
+            var ReturnValue = QueryProvider.Batch(Source);
 
             if (Object == null)
                 return ReturnValue;
@@ -258,9 +258,9 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 if (Item == null)
                     return ReturnValue;
 
-                object CurrentID = ((IProperty<T>)Mapping.IDProperties.FirstOrDefault()).GetValue(Object);
+                var CurrentID = ((IProperty<T>)Mapping.IDProperties.FirstOrDefault()).GetValue(Object);
                 IMapping ForeignMapping = Property.ForeignMapping;
-                object ForeignID = ForeignMapping.IDProperties.FirstOrDefault().GetValue(Item);
+                var ForeignID = ForeignMapping.IDProperties.FirstOrDefault().GetValue(Item);
                 string Parameters = "";
                 object[] Values = new object[2];
                 if (string.Compare(Mapping.TableName, ForeignMapping.TableName, StringComparison.InvariantCulture) == 0)
@@ -294,9 +294,9 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             {
                 if (Item != null)
                 {
-                    object CurrentID = Mapping.IDProperties.FirstOrDefault().GetValue(Object);
+                    var CurrentID = Mapping.IDProperties.FirstOrDefault().GetValue(Object);
                     IMapping ForeignMapping = Property.ForeignMapping;
-                    object ForeignID = ForeignMapping.IDProperties.FirstOrDefault().GetValue(Item);
+                    var ForeignID = ForeignMapping.IDProperties.FirstOrDefault().GetValue(Item);
                     string Parameters = "";
                     object[] Values = new object[2];
                     if (string.Compare(Mapping.TableName, ForeignMapping.TableName, StringComparison.InvariantCulture) < 0)
@@ -377,7 +377,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         public IBatch Paged(int PageSize, int CurrentPage, string OrderBy, params IParameter[] Parameters)
         {
             string WhereCommand = "";
-            string FinalOrderBy = Mapping.IDProperties.ToString(x => x.Name);
+            var FinalOrderBy = Mapping.IDProperties.ToString(x => x.Name);
             if (!string.IsNullOrEmpty(OrderBy))
                 FinalOrderBy = OrderBy;
             int PageStart = CurrentPage * PageSize;
@@ -405,9 +405,9 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <param name="Object">Object to save</param>
         public IBatch Save<PrimaryKeyType>(T Object)
         {
-            IBatch TempBatch = QueryProvider.Batch(Source);
+            var TempBatch = QueryProvider.Batch(Source);
             IProperty<T> IDProperty = ((IProperty<T>)Mapping.IDProperties.FirstOrDefault());
-            PrimaryKeyType IDValue = IDProperty.GetValue(Object).To(default(PrimaryKeyType));
+            var IDValue = IDProperty.GetValue(Object).To(default(PrimaryKeyType));
 
             var Comparer = new GenericEqualityComparer<PrimaryKeyType>();
             IParameter Param1 = null;
@@ -654,7 +654,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Update(IEnumerable<T> Objects)
         {
-            IBatch TempBatch = QueryProvider.Batch(Source);
+            var TempBatch = QueryProvider.Batch(Source);
             foreach (T Object in Objects)
             {
                 TempBatch.AddCommand(Update(Object));

@@ -141,7 +141,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
         /// <returns>All items of the mapped type</returns>
         public IEnumerable<Dynamo> All(MappingHolder Mappings, params string[] EmbeddedProperties)
         {
-            IEnumerable<ClassType> Objects = AllFunc();
+            var Objects = AllFunc();
             if (Objects == null)
                 Objects = new List<ClassType>();
             var ReturnValue = new List<Dynamo>();
@@ -181,7 +181,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
         {
             if (string.IsNullOrEmpty(ID))
                 throw new ArgumentNullException(nameof(ID));
-            ClassType Object = AnyFunc(ID);
+            var Object = AnyFunc(ID);
             if (!CanGetFunc(Object))
                 return null;
             var TempItem = new Dynamo(Object);
@@ -239,7 +239,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
         {
             if (string.IsNullOrEmpty(ID))
                 throw new ArgumentNullException(nameof(ID));
-            ClassType DeleteValue = AnyFunc(ID);
+            var DeleteValue = AnyFunc(ID);
             if (CanDeleteFunc(DeleteValue))
                 return DeleteFunc(DeleteValue);
             return false;
@@ -257,10 +257,10 @@ namespace Ironman.Core.API.Manager.BaseClasses
         {
             if (string.IsNullOrEmpty(ID))
                 throw new ArgumentNullException(nameof(ID));
-            IAPIProperty PropertyObject = Properties.FirstOrDefault(x => string.Equals(x.Name, PropertyName, StringComparison.InvariantCultureIgnoreCase));
+            var PropertyObject = Properties.FirstOrDefault(x => string.Equals(x.Name, PropertyName, StringComparison.InvariantCultureIgnoreCase));
             if (PropertyObject == null)
                 return false;
-            ClassType Object = AnyFunc(ID);
+            var Object = AnyFunc(ID);
             if (!CanGetFunc(Object))
                 return false;
             return PropertyObject.DeleteValue(MappingHolder, Object, PropertyID);
@@ -278,10 +278,10 @@ namespace Ironman.Core.API.Manager.BaseClasses
         {
             if (string.IsNullOrEmpty(ID))
                 throw new ArgumentNullException(nameof(ID));
-            IAPIProperty PropertyObject = Properties.FirstOrDefault(x => string.Equals(x.Name, Property, StringComparison.InvariantCultureIgnoreCase));
+            var PropertyObject = Properties.FirstOrDefault(x => string.Equals(x.Name, Property, StringComparison.InvariantCultureIgnoreCase));
             if (PropertyObject == null)
                 return null;
-            ClassType Object = AnyFunc(ID);
+            var Object = AnyFunc(ID);
             if (!CanGetFunc(Object))
                 return null;
             return PropertyObject.GetValue(Mappings, Object);
@@ -350,7 +350,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
             string Splitter = "";
             foreach (string OrderByClause in OrderBy)
             {
-                string[] SplitValues = OrderByClause.Split(' ');
+                var SplitValues = OrderByClause.Split(' ');
                 if (SplitValues.Length > 0)
                 {
                     if (Properties.Where(x => x is IReference || x is IID).Any(x => string.Equals(x.Name, SplitValues[0], StringComparison.InvariantCulture)))
@@ -365,7 +365,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
                     }
                 }
             }
-            IEnumerable<ClassType> Objects = PagedFunc(PageSize, Page, OrderByClauseFinal);
+            var Objects = PagedFunc(PageSize, Page, OrderByClauseFinal);
             if (Objects == null)
                 Objects = new List<ClassType>();
             var ReturnValue = new List<Dynamo>();
@@ -414,7 +414,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
         {
             if (Object == null)
                 return false;
-            IAPIProperty IDProperty = Properties.FirstOrDefault(x => x is IID);
+            var IDProperty = Properties.FirstOrDefault(x => x is IID);
             if (IDProperty == null)
                 return false;
             object IDValue = Object[IDProperty.Name];
@@ -441,10 +441,10 @@ namespace Ironman.Core.API.Manager.BaseClasses
         {
             if (string.IsNullOrEmpty(ID))
                 throw new ArgumentNullException(nameof(ID));
-            IAPIProperty PropertyObject = Properties.FirstOrDefault(x => string.Equals(x.Name, PropertyName, StringComparison.InvariantCultureIgnoreCase));
+            var PropertyObject = Properties.FirstOrDefault(x => string.Equals(x.Name, PropertyName, StringComparison.InvariantCultureIgnoreCase));
             if (PropertyObject == null)
                 return false;
-            ClassType Object = AnyFunc(ID);
+            var Object = AnyFunc(ID);
             if (!CanGetFunc(Object))
                 return false;
             return PropertyObject.SaveValue(MappingHolder, Object, Models);

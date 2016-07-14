@@ -94,7 +94,7 @@ namespace Utilities.ORM.Manager
                 {
                     foreach (Dynamo Item in QueryProvider.Generate<ObjectType>(Source, Mapping, MapperProvider.GetStructure(Mapping.DatabaseConfigType)).All(Parameters).Execute()[0])
                     {
-                        IProperty IDProperty = Mapping.IDProperties.FirstOrDefault();
+                        var IDProperty = Mapping.IDProperties.FirstOrDefault();
                         CopyOrAdd(ReturnValue, IDProperty, Item);
                     }
                 }
@@ -150,13 +150,13 @@ namespace Utilities.ORM.Manager
             {
                 return GetCached<ObjectType>(ref ReturnValue, KeyName);
             }
-            string StringID = ID.ToString();
+            var StringID = ID.ToString();
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
                 if (Mapping != null)
                 {
-                    IProperty IDProperty = Mapping.IDProperties.FirstOrDefault();
+                    var IDProperty = Mapping.IDProperties.FirstOrDefault();
                     if (IDProperty != null)
                     {
                         Dynamo Value = typeof(IDType) == typeof(string) ?
@@ -184,8 +184,8 @@ namespace Utilities.ORM.Manager
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
                 if (Mapping != null)
                 {
-                    IGenerator<ObjectType> Generator = QueryProvider.Generate<ObjectType>(Source, MapperProvider[typeof(ObjectType), Source], MapperProvider.GetStructure(Mapping.DatabaseConfigType));
-                    IBatch TempBatch = QueryProvider.Batch(Source);
+                    var Generator = QueryProvider.Generate<ObjectType>(Source, MapperProvider[typeof(ObjectType), Source], MapperProvider.GetStructure(Mapping.DatabaseConfigType));
+                    var TempBatch = QueryProvider.Batch(Source);
                     CascadeDelete<ObjectType>(Object, Source, Mapping, TempBatch, new List<object>());
                     TempBatch.AddCommand(Generator.Delete(Object));
                     TempBatch.Execute();
@@ -211,14 +211,14 @@ namespace Utilities.ORM.Manager
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
                 if (Mapping != null)
                 {
-                    IProperty Property = Mapping.Properties.FirstOrDefault(x => x.Name == PropertyName);
+                    var Property = Mapping.Properties.FirstOrDefault(x => x.Name == PropertyName);
                     if (Property != null)
                     {
                         foreach (Dynamo Item in QueryProvider.Generate<ObjectType>(Source, Mapping, MapperProvider.GetStructure(Mapping.DatabaseConfigType))
                             .LoadProperty<DataType>(Object, Property)
                             .Execute()[0])
                         {
-                            IProperty IDProperty = Property.ForeignMapping.IDProperties.FirstOrDefault();
+                            var IDProperty = Property.ForeignMapping.IDProperties.FirstOrDefault();
                             CopyOrAdd(ReturnValue, IDProperty, Item);
                         }
                     }
@@ -235,7 +235,7 @@ namespace Utilities.ORM.Manager
                     IProperty ObjectProperty = ObjectMapping == null ? null : ObjectMapping.Properties.FirstOrDefault(x => x.Name == PropertyName);
                     if (ObjectProperty == null)
                     {
-                        IProperty IDProperty = Mapping.IDProperties.FirstOrDefault();
+                        var IDProperty = Mapping.IDProperties.FirstOrDefault();
                         IParameter Parameter = null;
                         int Counter = 0;
                         foreach (Dynamo Item in ReturnValue)
@@ -337,7 +337,7 @@ namespace Utilities.ORM.Manager
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
                 if (Mapping != null)
                 {
-                    IProperty IDProperty = Mapping.IDProperties.FirstOrDefault();
+                    var IDProperty = Mapping.IDProperties.FirstOrDefault();
                     if (IDProperty != null)
                     {
                         foreach (Dynamo Item in QueryProvider.Generate<ObjectType>(Source, Mapping, MapperProvider.GetStructure(Mapping.DatabaseConfigType))
@@ -368,8 +368,8 @@ namespace Utilities.ORM.Manager
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
                 if (Mapping != null)
                 {
-                    IGenerator<ObjectType> Generator = QueryProvider.Generate<ObjectType>(Source, MapperProvider[typeof(ObjectType), Source], MapperProvider.GetStructure(Mapping.DatabaseConfigType));
-                    IBatch TempBatch = QueryProvider.Batch(Source);
+                    var Generator = QueryProvider.Generate<ObjectType>(Source, MapperProvider[typeof(ObjectType), Source], MapperProvider.GetStructure(Mapping.DatabaseConfigType));
+                    var TempBatch = QueryProvider.Batch(Source);
                     CascadeSave<ObjectType>(Object, Source, Mapping, TempBatch, new List<object>());
                     TempBatch.Execute();
                     TempBatch = QueryProvider.Batch(Source);
@@ -414,8 +414,8 @@ namespace Utilities.ORM.Manager
                 return;
             if (ReturnValue == null)
                 ReturnValue = new List<Dynamo>();
-            object IDValue = IDProperty.GetValue(Item);
-            Dynamo Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
+            var IDValue = IDProperty.GetValue(Item);
+            var Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
             if (Value == null)
                 ReturnValue.Add(Item);
             else

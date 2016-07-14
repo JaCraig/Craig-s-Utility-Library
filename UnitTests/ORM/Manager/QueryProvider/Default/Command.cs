@@ -36,7 +36,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
             var Temp = new Utilities.ORM.Manager.QueryProvider.Default.Command(null, null, "SELECT * FROM A", CommandType.Text, "@", new object[] { 1, "ASDF", 2.0f, Guid.NewGuid() });
             Assert.Equal(CommandType.Text, Temp.CommandType);
             Assert.Equal(4, Temp.Parameters.Count);
-            IParameter Parameter = Temp.Parameters.ElementAt(0);
+            var Parameter = Temp.Parameters.ElementAt(0);
             Assert.Equal(DbType.Int32, Parameter.DatabaseType);
             Assert.Equal(ParameterDirection.Input, Parameter.Direction);
             Assert.Equal("0", Parameter.ID);

@@ -68,7 +68,7 @@ namespace Utilities.ORM
         public static IEnumerable<dynamic> All(string Command, CommandType Type, string ConnectionString, params object[] Parameters)
         {
             var TempParameters = Parameters as IParameter[];
-            IBatch TempBatch = Batch(ConnectionString);
+            var TempBatch = Batch(ConnectionString);
             if (TempParameters == null)
                 TempBatch.AddCommand(null, null, Command, Type, Parameters);
             else
@@ -156,10 +156,10 @@ namespace Utilities.ORM
         /// <returns>An appropriate batch object</returns>
         public static IBatch Batch(string ConnectionString)
         {
-            ISourceInfo Source = SourceManager.GetSource(ConnectionString);
+            var Source = SourceManager.GetSource(ConnectionString);
             if (Source == null)
                 throw new NullReferenceException("Source not found");
-            IBatch Batch = QueryManager.Batch(Source);
+            var Batch = QueryManager.Batch(Source);
             if (Batch == null)
                 throw new NullReferenceException("Batch could not be created");
             return Batch;

@@ -34,7 +34,7 @@ namespace Utilities.Tests.Workflow
         {
             using (Utilities.Workflow.Manager.Manager TempOperation = new Utilities.Workflow.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.FileSystem.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>()))
             {
-                IWorkflow<dynamic> Workflow = TempOperation.CreateWorkflow<dynamic>("ASDF");
+                var Workflow = TempOperation.CreateWorkflow<dynamic>("ASDF");
                 Assert.NotNull(Workflow);
                 Assert.Equal("ASDF", Workflow.Name);
                 Assert.Equal(typeof(object), Workflow.DataType);
@@ -47,7 +47,7 @@ namespace Utilities.Tests.Workflow
         {
             using (Utilities.Workflow.Manager.Manager TempOperation = new Utilities.Workflow.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.FileSystem.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>()))
             {
-                IWorkflow<dynamic> Workflow = TempOperation.CreateWorkflow<dynamic>("ASDF");
+                var Workflow = TempOperation.CreateWorkflow<dynamic>("ASDF");
                 Assert.NotNull(Workflow);
                 Assert.Equal("ASDF", Workflow.Name);
                 Assert.Equal(typeof(object), Workflow.DataType);
@@ -63,7 +63,7 @@ namespace Utilities.Tests.Workflow
         {
             using (Utilities.Workflow.Manager.Manager TempOperation = new Utilities.Workflow.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.FileSystem.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>()))
             {
-                IWorkflow<dynamic> Workflow = TempOperation.CreateWorkflow<dynamic>("ASDF");
+                var Workflow = TempOperation.CreateWorkflow<dynamic>("ASDF");
                 Assert.NotNull(Workflow);
                 Assert.Equal("ASDF", Workflow.Name);
                 Assert.Equal(typeof(object), Workflow.DataType);
@@ -72,7 +72,7 @@ namespace Utilities.Tests.Workflow
             Assert.True(new System.IO.FileInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/Workflows.obj").Exists);
             using (Utilities.Workflow.Manager.Manager TempOperation = new Utilities.Workflow.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.FileSystem.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>()))
             {
-                IWorkflow<dynamic> Workflow = TempOperation.CreateWorkflow<dynamic>("ASDF");
+                var Workflow = TempOperation.CreateWorkflow<dynamic>("ASDF");
                 Assert.Equal("ASDF", Workflow.Name);
                 Assert.Equal(typeof(object), Workflow.DataType);
                 Assert.Equal(1, Workflow.Start(1));
@@ -85,7 +85,7 @@ namespace Utilities.Tests.Workflow
         {
             using (Utilities.Workflow.Manager.Manager TempOperation = new Utilities.Workflow.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.FileSystem.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>()))
             {
-                IWorkflow<dynamic> Workflow = TempOperation.CreateWorkflow<dynamic>("ASDF")
+                var Workflow = TempOperation.CreateWorkflow<dynamic>("ASDF")
                     .Do(x => x + 1)
                     .Do(x => x + 1, new GenericConstraint<dynamic>(x => x > 0));
                 Assert.Equal("ASDF", Workflow.Name);
@@ -95,7 +95,7 @@ namespace Utilities.Tests.Workflow
             Assert.True(new System.IO.FileInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/Workflows.obj").Exists);
             using (Utilities.Workflow.Manager.Manager TempOperation = new Utilities.Workflow.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.FileSystem.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>()))
             {
-                IWorkflow<dynamic> Workflow = TempOperation.CreateWorkflow<dynamic>("ASDF");
+                var Workflow = TempOperation.CreateWorkflow<dynamic>("ASDF");
                 Assert.Equal("ASDF", Workflow.Name);
                 Assert.Equal(typeof(object), Workflow.DataType);
                 Assert.Equal(3, Workflow.Start(1));
@@ -107,7 +107,7 @@ namespace Utilities.Tests.Workflow
         {
             using (Utilities.Workflow.Manager.Manager TempOperation = new Utilities.Workflow.Manager.Manager(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.FileSystem.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>()))
             {
-                IWorkflow<dynamic> Workflow = TempOperation.CreateWorkflow<dynamic>("ASDF");
+                var Workflow = TempOperation.CreateWorkflow<dynamic>("ASDF");
                 Assert.NotNull(Workflow);
                 Assert.Equal("ASDF", Workflow.Name);
                 Assert.Equal(typeof(object), Workflow.DataType);

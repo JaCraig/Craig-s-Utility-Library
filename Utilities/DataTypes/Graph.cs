@@ -85,7 +85,7 @@ namespace Utilities.DataTypes
         /// <returns>The new vertex</returns>
         public Vertex<T> AddVertex(T data)
         {
-            Vertex<T> ReturnValue = new Vertex<T>(data, this);
+            var ReturnValue = new Vertex<T>(data, this);
             Vertices.Add(ReturnValue);
             return ReturnValue;
         }
@@ -96,7 +96,7 @@ namespace Utilities.DataTypes
         /// <returns>A copy of this graph</returns>
         public Graph<T> Copy()
         {
-            Graph<T> Result = new Graph<T>();
+            var Result = new Graph<T>();
             foreach (var Vertex in Vertices)
             {
                 Result.AddVertex(Vertex.Data);
@@ -196,7 +196,7 @@ namespace Utilities.DataTypes
         /// <returns>The new edge</returns>
         public Edge<T> AddOutgoingEdge(Vertex<T> sink)
         {
-            Edge<T> ReturnValue = new Edge<T>(this, sink);
+            var ReturnValue = new Edge<T>(this, sink);
             OutgoingEdges.Add(ReturnValue);
             sink.IncomingEdges.Add(ReturnValue);
             return ReturnValue;

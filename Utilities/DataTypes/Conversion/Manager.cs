@@ -81,7 +81,7 @@ namespace Utilities.DataTypes.Conversion
                         Activator.CreateInstance(ResultType) :
                         DefaultValue;
                 }
-                Type ObjectType = Item.GetType();
+                var ObjectType = Item.GetType();
                 if (ObjectType == typeof(DBNull))
                 {
                     return (DefaultValue == null && ResultType.IsValueType) ?
@@ -92,7 +92,7 @@ namespace Utilities.DataTypes.Conversion
                     return Item;
                 if (Item as IConvertible != null && !ObjectType.IsEnum && !ResultType.IsEnum)
                     return Convert.ChangeType(Item, ResultType, CultureInfo.InvariantCulture);
-                TypeConverter Converter = TypeDescriptor.GetConverter(Item);
+                var Converter = TypeDescriptor.GetConverter(Item);
                 if (Converter.CanConvertTo(ResultType))
                     return Converter.ConvertTo(Item, ResultType);
                 Converter = TypeDescriptor.GetConverter(ResultType);
@@ -107,7 +107,7 @@ namespace Utilities.DataTypes.Conversion
                 }
                 if (ResultType.IsClass)
                 {
-                    object ReturnValue = Activator.CreateInstance(ResultType);
+                    var ReturnValue = Activator.CreateInstance(ResultType);
                     var TempMapping = ObjectType.MapTo(ResultType);
                     if (TempMapping == null)
                         return ReturnValue;

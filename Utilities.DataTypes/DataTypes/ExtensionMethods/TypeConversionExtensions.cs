@@ -110,14 +110,14 @@ namespace Utilities.DataTypes
                 return new List<T>();
             Creator = Creator.Check(() => new T());
             Type TType = typeof(T);
-            PropertyInfo[] Properties = TType.GetProperties();
+            var Properties = TType.GetProperties();
             var Results = new List<T>();
             for (int x = 0; x < Data.Rows.Count; ++x)
             {
-                T RowObject = Creator();
+                var RowObject = Creator();
                 for (int y = 0; y < Data.Columns.Count; ++y)
                 {
-                    PropertyInfo Property = Properties.FirstOrDefault(z => z.Name == Data.Columns[y].ColumnName);
+                    var Property = Properties.FirstOrDefault(z => z.Name == Data.Columns[y].ColumnName);
                     if (Property != null)
                         Property.SetValue(RowObject, Data.Rows[x][Data.Columns[y]].To(Property.PropertyType, null), new object[] { });
                 }

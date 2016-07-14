@@ -80,7 +80,7 @@ namespace UnitTests.IO
         [Fact]
         public void ToFileFormat()
         {
-            Utilities.IO.FileFormats.Excel Docs = new Utilities.IO.FileInfo("../../Data/Testing/Test.xlsx").To();
+            var Docs = new Utilities.IO.FileInfo("../../Data/Testing/Test.xlsx").To();
             Assert.Equal(4, Docs.Count);
             Assert.Equal(3, Docs.ColumnNames.Count);
             Assert.Equal("Header 1", Docs.ColumnNames[0]);

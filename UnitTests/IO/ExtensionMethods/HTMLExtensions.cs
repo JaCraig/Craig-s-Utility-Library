@@ -29,8 +29,8 @@ namespace UnitTests.IO.ExtensionMethods
         [Fact]
         public void CSSMinify()
         {
-            string FileContent = new Utilities.IO.FileInfo(@"..\..\Data\Web\RandomCSS.css").Read();
-            string MinifiedFileContent = new Utilities.IO.FileInfo(@"..\..\Data\Web\RandomCSS.css").Minify(MinificationType.CSS);
+            var FileContent = new Utilities.IO.FileInfo(@"..\..\Data\Web\RandomCSS.css").Read();
+            var MinifiedFileContent = new Utilities.IO.FileInfo(@"..\..\Data\Web\RandomCSS.css").Minify(MinificationType.CSS);
             Assert.NotEqual(FileContent.Length, MinifiedFileContent.Length);
             Assert.True(FileContent.Length > MinifiedFileContent.Length);
         }
@@ -38,8 +38,8 @@ namespace UnitTests.IO.ExtensionMethods
         [Fact]
         public void HTMLMinify()
         {
-            string FileContent = new Utilities.IO.FileInfo(@"..\..\Data\Web\HanselmanSite.html").Read();
-            string MinifiedFileContent = new Utilities.IO.FileInfo(@"..\..\Data\Web\HanselmanSite.html").Minify(MinificationType.HTML);
+            var FileContent = new Utilities.IO.FileInfo(@"..\..\Data\Web\HanselmanSite.html").Read();
+            var MinifiedFileContent = new Utilities.IO.FileInfo(@"..\..\Data\Web\HanselmanSite.html").Minify(MinificationType.HTML);
             Assert.NotEqual(FileContent.Length, MinifiedFileContent.Length);
             Assert.True(FileContent.Length > MinifiedFileContent.Length);
         }
@@ -47,8 +47,8 @@ namespace UnitTests.IO.ExtensionMethods
         [Fact]
         public void JavaScriptMinify()
         {
-            string FileContent = new Utilities.IO.FileInfo(@"..\..\Data\Web\RandomJS.js").Read();
-            string MinifiedFileContent = new Utilities.IO.FileInfo(@"..\..\Data\Web\RandomJS.js").Minify(MinificationType.JavaScript);
+            var FileContent = new Utilities.IO.FileInfo(@"..\..\Data\Web\RandomJS.js").Read();
+            var MinifiedFileContent = new Utilities.IO.FileInfo(@"..\..\Data\Web\RandomJS.js").Minify(MinificationType.JavaScript);
             Assert.NotEqual(FileContent.Length, MinifiedFileContent.Length);
             Assert.True(FileContent.Length > MinifiedFileContent.Length);
         }

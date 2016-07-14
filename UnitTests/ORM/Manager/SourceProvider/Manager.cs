@@ -43,7 +43,7 @@ namespace UnitTests.ORM.Manager.SourceProvider
         public void GetSource()
         {
             var Temp = new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>());
-            ISourceInfo Source = Temp.GetSource("Temp");
+            var Source = Temp.GetSource("Temp");
             Assert.Equal("Temp", Source.Connection);
             Assert.Equal("Temp", Source.Name);
             Assert.Equal("@", Source.ParameterPrefix);
@@ -56,8 +56,8 @@ namespace UnitTests.ORM.Manager.SourceProvider
         public void GetSourceAgain()
         {
             var Temp = new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>());
-            ISourceInfo Source = Temp.GetSource("Temp");
-            ISourceInfo Source2 = Temp.GetSource("Temp");
+            var Source = Temp.GetSource("Temp");
+            var Source2 = Temp.GetSource("Temp");
             Assert.Equal(Source, Source2);
             Assert.Equal("Temp", Source.Connection);
             Assert.Equal("Temp", Source.Name);

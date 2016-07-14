@@ -30,7 +30,7 @@ namespace UnitTests.DataTypes
         [Fact]
         public void GetInformation()
         {
-            string Value = Process.GetProcesses().GetInformation();
+            var Value = Process.GetProcesses().GetInformation();
             Assert.NotNull(Value);
         }
     }

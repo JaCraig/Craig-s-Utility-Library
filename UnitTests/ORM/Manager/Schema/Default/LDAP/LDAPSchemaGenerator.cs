@@ -37,7 +37,7 @@ namespace UnitTests.ORM.Manager.Schema.Default.LDAP
         public void GenerateSchema()
         {
             var Temp = new Utilities.ORM.Manager.Schema.Default.LDAP.LDAPSchemaGenerator(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(), Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
-            ISource Source = Temp.GetSourceStructure(TestDatabaseSource);
+            var Source = Temp.GetSourceStructure(TestDatabaseSource);
             Assert.Null(Source);
         }
 

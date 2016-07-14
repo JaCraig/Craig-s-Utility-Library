@@ -60,7 +60,7 @@ namespace Ironman.Core.ActionFilters
                 return;
             if (!Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>().CanSerialize(Request.ContentType))
                 return;
-            string Body = Request.InputStream.ReadAll();
+            var Body = Request.InputStream.ReadAll();
             Request.InputStream.Seek(0, System.IO.SeekOrigin.Begin);
 
             if (!string.IsNullOrEmpty(Body))

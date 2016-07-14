@@ -238,9 +238,9 @@ namespace Utilities.IO.FileFormats.RSS
         {
             Contract.Requires<ArgumentNullException>(Document != null, "Document");
             Channels = Channels.Check(new List<Channel>());
-            XPathNavigator Navigator = Document.CreateNavigator();
+            var Navigator = Document.CreateNavigator();
             var NamespaceManager = new XmlNamespaceManager(Navigator.NameTable);
-            XPathNodeIterator Nodes = Navigator.Select("./channel", NamespaceManager);
+            var Nodes = Navigator.Select("./channel", NamespaceManager);
             foreach (XmlNode Element in Nodes)
             {
                 Channels.Add(new Channel((XmlElement)Element));

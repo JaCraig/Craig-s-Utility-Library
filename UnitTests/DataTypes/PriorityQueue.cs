@@ -38,7 +38,7 @@ namespace UnitTests.DataTypes
                 TestObject.Add(x, Value);
                 Assert.Equal(Value, TestObject.Peek());
             }
-            int HighestValue = TestObject.Peek();
+            var HighestValue = TestObject.Peek();
             for (int x = 9; x >= 0; --x)
             {
                 Value = Rand.Next();

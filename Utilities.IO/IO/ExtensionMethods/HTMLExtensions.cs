@@ -135,7 +135,7 @@ namespace Utilities.IO
         private static string Evaluate(Match Matcher)
         {
             Contract.Requires<ArgumentNullException>(Matcher != null, "Matcher");
-            string MyString = Matcher.ToString();
+            var MyString = Matcher.ToString();
             if (string.IsNullOrEmpty(MyString))
                 return "";
             MyString = Regex.Replace(MyString, @"\r\n\s*", "");
@@ -157,11 +157,11 @@ namespace Utilities.IO
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
-            string[] CodeLines = Input.Split(new string[] { System.Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries);
+            var CodeLines = Input.Split(new string[] { System.Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries);
             var Builder = new StringBuilder();
             foreach (string Line in CodeLines)
             {
-                string Temp = Line.Trim();
+                var Temp = Line.Trim();
                 if (Temp.Length > 0 && !Temp.StartsWith("//", StringComparison.InvariantCulture))
                     Builder.AppendLine(Temp);
             }

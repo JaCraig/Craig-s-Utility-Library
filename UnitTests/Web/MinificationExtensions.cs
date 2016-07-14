@@ -30,8 +30,8 @@ namespace UnitTests.Web.ExtensionMethods
         [Fact]
         public void CSSMinify()
         {
-            string FileContent = new FileInfo(@"..\..\Data\Web\RandomCSS.css").Read();
-            string MinifiedFileContent = new FileInfo(@"..\..\Data\Web\RandomCSS.css").Minify(MinificationType.CSS);
+            var FileContent = new FileInfo(@"..\..\Data\Web\RandomCSS.css").Read();
+            var MinifiedFileContent = new FileInfo(@"..\..\Data\Web\RandomCSS.css").Minify(MinificationType.CSS);
             Assert.NotEqual(FileContent.Length, MinifiedFileContent.Length);
             Assert.True(FileContent.Length > MinifiedFileContent.Length);
         }
@@ -39,8 +39,8 @@ namespace UnitTests.Web.ExtensionMethods
         [Fact]
         public void HTMLMinify()
         {
-            string FileContent = new FileInfo(@"..\..\Data\Web\HanselmanSite.html").Read();
-            string MinifiedFileContent = new FileInfo(@"..\..\Data\Web\HanselmanSite.html").Minify(MinificationType.HTML);
+            var FileContent = new FileInfo(@"..\..\Data\Web\HanselmanSite.html").Read();
+            var MinifiedFileContent = new FileInfo(@"..\..\Data\Web\HanselmanSite.html").Minify(MinificationType.HTML);
             Assert.NotEqual(FileContent.Length, MinifiedFileContent.Length);
             Assert.True(FileContent.Length > MinifiedFileContent.Length);
         }
@@ -48,8 +48,8 @@ namespace UnitTests.Web.ExtensionMethods
         [Fact]
         public void JavaScriptMinify()
         {
-            string FileContent = new FileInfo(@"..\..\Data\Web\RandomJS.js").Read();
-            string MinifiedFileContent = new FileInfo(@"..\..\Data\Web\RandomJS.js").Minify(MinificationType.JavaScript);
+            var FileContent = new FileInfo(@"..\..\Data\Web\RandomJS.js").Read();
+            var MinifiedFileContent = new FileInfo(@"..\..\Data\Web\RandomJS.js").Minify(MinificationType.JavaScript);
             Assert.NotEqual(FileContent.Length, MinifiedFileContent.Length);
             Assert.True(FileContent.Length > MinifiedFileContent.Length);
         }

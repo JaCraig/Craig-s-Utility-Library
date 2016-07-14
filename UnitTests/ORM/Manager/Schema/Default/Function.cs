@@ -31,7 +31,7 @@ namespace UnitTests.SQL.DataClasses
         public void Create()
         {
             var Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
-            Utilities.ORM.Manager.Schema.Interfaces.IFunction Function = Database.AddFunction("TestFunction", "Definition");
+            var Function = Database.AddFunction("TestFunction", "Definition");
             Assert.Equal(Function, Database.Functions.First());
             Assert.Equal("TestFunction", Function.Name);
             Assert.Equal("Definition", Function.Definition);

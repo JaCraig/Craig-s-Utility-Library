@@ -56,7 +56,7 @@ namespace Ironman.Core.Serialization
         /// </summary>
         public override void AddFactory()
         {
-            JsonValueProviderFactory TempProvider = ValueProviderFactories.Factories.OfType<JsonValueProviderFactory>().FirstOrDefault();
+            var TempProvider = ValueProviderFactories.Factories.OfType<JsonValueProviderFactory>().FirstOrDefault();
             if (TempProvider != null)
                 ValueProviderFactories.Factories.Remove(TempProvider);
             ValueProviderFactories.Factories.Add(this);
@@ -76,7 +76,7 @@ namespace Ironman.Core.Serialization
                 return null;
             if (!Manager.CanSerialize(Request.ContentType))
                 return null;
-            string Body = Request.InputStream.ReadAll();
+            var Body = Request.InputStream.ReadAll();
             Request.InputStream.Seek(0, System.IO.SeekOrigin.Begin);
             return string.IsNullOrEmpty(Body) ?
                 null :

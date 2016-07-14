@@ -31,8 +31,8 @@ namespace UnitTests.SQL.DataClasses
         public void Create()
         {
             var Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
-            Utilities.ORM.Manager.Schema.Interfaces.ITable Table = Database.AddTable("TestTable");
-            Utilities.ORM.Manager.Schema.Interfaces.ITrigger TempTrigger = Table.AddTrigger("Trigger", "Definition", TriggerType.Insert);
+            var Table = Database.AddTable("TestTable");
+            var TempTrigger = Table.AddTrigger("Trigger", "Definition", TriggerType.Insert);
             Assert.Equal(TempTrigger, Table.Triggers.First());
             Assert.Equal("Trigger", TempTrigger.Name);
             Assert.Equal("Definition", TempTrigger.Definition);

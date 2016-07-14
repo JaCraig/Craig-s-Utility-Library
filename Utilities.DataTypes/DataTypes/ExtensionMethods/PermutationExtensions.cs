@@ -45,7 +45,7 @@ namespace Utilities.DataTypes
             var Current = new System.Collections.Generic.List<T>();
             Current.AddRange(Input);
             var ReturnValue = new ListMapping<int, T>();
-            int Max = (Input.Count() - 1).Factorial();
+            var Max = (Input.Count() - 1).Factorial();
             int CurrentValue = 0;
             for (int x = 0; x < Input.Count(); ++x)
             {

@@ -57,7 +57,7 @@ namespace Utilities.Media.Procedural
                     float Value = Heights[x, y];
                     Value = (Value * 0.5f) + 0.5f;
                     Value *= 255;
-                    int RGBValue = ((int)Value).Clamp(255, 0);
+                    var RGBValue = ((int)Value).Clamp(255, 0);
                     ReturnValue.SetPixel(x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue));
                 }
             }
@@ -124,7 +124,7 @@ namespace Utilities.Media.Procedural
             }
             int M = (Y1 - Y2) / (X1 - X2);
             int B = Y1 - (M * X1);
-            int Side = Generator.Next(2);
+            var Side = Generator.Next(2);
             int Direction = 0;
             while (Direction == 0)
                 Direction = Generator.Next(-1, 2);

@@ -115,7 +115,7 @@ namespace Utilities.ORM.Aspect
             {
                 foreach (IMapping Mapping in Mapper[BaseType])
                 {
-                    IProperty Property = Mapping.Properties.FirstOrDefault(x => x.Name == Method.Name.Replace("get_", ""));
+                    var Property = Mapping.Properties.FirstOrDefault(x => x.Name == Method.Name.Replace("get_", ""));
                     if (Property != null)
                     {
                         if (Property is IManyToOne || Property is IMap)
@@ -194,7 +194,7 @@ public event PropertyChangedEventHandler PropertyChanged
             {
                 foreach (IMapping Mapping in Mapper[BaseType])
                 {
-                    IProperty Property = Mapping.Properties.FirstOrDefault(x => x.Name == Method.Name.Replace("set_", ""));
+                    var Property = Mapping.Properties.FirstOrDefault(x => x.Name == Method.Name.Replace("set_", ""));
                     if (Fields.Contains(Property))
                     {
                         Builder.AppendLineFormat("{0}=value;", Property.DerivedFieldName);

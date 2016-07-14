@@ -32,7 +32,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void AddAndReturnTest()
         {
-            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
+            var TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
             int Item = 7;
             Assert.Equal(Item, TestObject.AddAndReturn(Item));
         }
@@ -40,7 +40,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void AddIfTest()
         {
-            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
+            var TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
             Assert.False(TestObject.AddIf(x => x > 1, 1));
             Assert.True(TestObject.AddIf(x => x > 1, 7));
             Assert.True(TestObject.AddIf(x => x > 7, new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }));
@@ -50,7 +50,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void AddIfUniqueTest()
         {
-            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
+            var TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
             Assert.False(TestObject.AddIfUnique(1));
             Assert.True(TestObject.AddIfUnique(7));
             Assert.True(TestObject.AddIfUnique(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }));
@@ -65,8 +65,8 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void AddRange()
         {
-            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
-            List<int> Results = TestObject.Add(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).ToList();
+            var TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
+            var Results = TestObject.Add(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).ToList();
             Assert.Equal(14, Results.Count);
             Assert.Equal(14, TestObject.Count);
         }
@@ -88,14 +88,14 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             var Builder = new StringBuilder();
             int[] Temp = { 0, 0, 1, 2, 3 };
-            int[] Temp2 = Temp.For(0, Temp.Length - 1, (x, y) => x + y).ToArray();
+            var Temp2 = Temp.For(0, Temp.Length - 1, (x, y) => x + y).ToArray();
             Assert.Equal(new int[] { 0, 1, 3, 5, 7 }, Temp2);
         }
 
         [Fact]
         public void RemoveRange()
         {
-            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
+            var TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
             Assert.Equal(0, TestObject.Remove(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).Count);
         }
 
@@ -113,7 +113,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void RemoveTest()
         {
-            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
+            var TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
             TestObject = TestObject.Remove((x) => x % 2 == 0).ToList();
             Assert.Equal(3, TestObject.Count());
             foreach (int Item in TestObject)

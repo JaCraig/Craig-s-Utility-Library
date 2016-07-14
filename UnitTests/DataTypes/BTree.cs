@@ -46,7 +46,7 @@ namespace UnitTests.DataTypes
             var Rand = new System.Random();
             for (int x = 0; x < 10; ++x)
             {
-                int Value = Rand.Next();
+                var Value = Rand.Next();
                 Values.Add(Value);
                 Tree.Add(Value);
             }

@@ -43,7 +43,7 @@ namespace UnitTests.Random.ExtensionMethods
         public void ClassGenerator()
         {
             var Rand = new System.Random(1231415);
-            RandomTestClass Item = Rand.NextClass<RandomTestClass>();
+            var Item = Rand.NextClass<RandomTestClass>();
             Assert.Equal(202970450, Item.A);
             Assert.Equal("Lorem ipsum dolor sit amet. ", Item.B);
             Assert.Equal(System.Math.Round(0.9043f, 4), System.Math.Round(Item.C, 4));

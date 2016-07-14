@@ -176,19 +176,19 @@ namespace Utilities.IO.FileSystem.Default
             Request.Method = WebRequestMethods.Ftp.ListDirectory;
             SetupData(Request, null);
             SetupCredentials(Request);
-            string Data = SendRequest(Request);
-            string[] Folders = Data.Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            var Data = SendRequest(Request);
+            var Folders = Data.Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
             Request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
             SetupData(Request, null);
             SetupCredentials(Request);
             Data = SendRequest(Request);
-            string[] DetailedFolders = Data.Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            var DetailedFolders = Data.Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
             var Directories = new List<IDirectory>();
             foreach (string Folder in Folders)
             {
-                string DetailedFolder = DetailedFolders.FirstOrDefault(x => x.EndsWith(Folder, StringComparison.OrdinalIgnoreCase));
+                var DetailedFolder = DetailedFolders.FirstOrDefault(x => x.EndsWith(Folder, StringComparison.OrdinalIgnoreCase));
                 if (!string.IsNullOrEmpty(DetailedFolder))
                 {
                     if (DetailedFolder.StartsWith("d", StringComparison.OrdinalIgnoreCase) && !DetailedFolder.EndsWith(".", StringComparison.OrdinalIgnoreCase))
@@ -212,19 +212,19 @@ namespace Utilities.IO.FileSystem.Default
             Request.Method = WebRequestMethods.Ftp.ListDirectory;
             SetupData(Request, null);
             SetupCredentials(Request);
-            string Data = SendRequest(Request);
-            string[] Folders = Data.Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            var Data = SendRequest(Request);
+            var Folders = Data.Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
             Request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
             SetupData(Request, null);
             SetupCredentials(Request);
             Data = SendRequest(Request);
-            string[] DetailedFolders = Data.Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            var DetailedFolders = Data.Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
             var Directories = new List<IFile>();
             foreach (string Folder in Folders)
             {
-                string DetailedFolder = DetailedFolders.FirstOrDefault(x => x.EndsWith(Folder, StringComparison.OrdinalIgnoreCase));
+                var DetailedFolder = DetailedFolders.FirstOrDefault(x => x.EndsWith(Folder, StringComparison.OrdinalIgnoreCase));
                 if (!string.IsNullOrEmpty(DetailedFolder))
                 {
                     if (!DetailedFolder.StartsWith("d", StringComparison.OrdinalIgnoreCase))

@@ -50,7 +50,7 @@ namespace Utilities.Media.Procedural
             Contract.Requires<ArgumentException>(Width >= 0, "Width must be greater than or equal to 0");
             Contract.Requires<ArgumentException>(Height >= 0, "Height must be greater than or equal to 0");
             var ReturnValue = new SwiftBitmap(Width, Height);
-            List<Line> Lines = GenerateLines(Width, Height, NumberOfCracks, Iterations, MaxChange, MaxLength, Seed);
+            var Lines = GenerateLines(Width, Height, NumberOfCracks, Iterations, MaxChange, MaxLength, Seed);
             using (Graphics ReturnGraphic = Graphics.FromImage(ReturnValue.InternalBitmap))
             {
                 foreach (Line Line in Lines)

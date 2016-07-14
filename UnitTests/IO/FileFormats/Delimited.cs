@@ -103,7 +103,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void PipeToDataTable()
         {
-            DataTable TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38").ToDataTable();
+            var TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38").ToDataTable();
             Assert.Equal(2, TestObject.Rows.Count);
             Assert.Equal("Year", TestObject.Columns[0].ColumnName);
             Assert.Equal("Make", TestObject.Columns[1].ColumnName);
@@ -155,7 +155,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void TabToDataTable()
         {
-            DataTable TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("Year\tMake\tModel\tLength\r\n1997\tFord\tE350\t2.34\r\n2000\tMercury\tCougar\t2.38", "\t").ToDataTable();
+            var TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("Year\tMake\tModel\tLength\r\n1997\tFord\tE350\t2.34\r\n2000\tMercury\tCougar\t2.38", "\t").ToDataTable();
             Assert.Equal(2, TestObject.Rows.Count);
             Assert.Equal("Year", TestObject.Columns[0].ColumnName);
             Assert.Equal("Make", TestObject.Columns[1].ColumnName);
@@ -174,7 +174,7 @@ namespace UnitTests.IO.FileFormats
         [Fact]
         public void ToDataTable()
         {
-            DataTable TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38").ToDataTable();
+            var TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38").ToDataTable();
             Assert.Equal(2, TestObject.Rows.Count);
             Assert.Equal("Year", TestObject.Columns[0].ColumnName);
             Assert.Equal("Make", TestObject.Columns[1].ColumnName);

@@ -55,8 +55,8 @@ namespace Utilities.DataTypes.Comparison
             if (IEnumerablex != null && IEnumerabley != null)
             {
                 var Comparer = new GenericEqualityComparer<object>();
-                IEnumerator XEnumerator = IEnumerablex.GetEnumerator();
-                IEnumerator YEnumerator = IEnumerabley.GetEnumerator();
+                var XEnumerator = IEnumerablex.GetEnumerator();
+                var YEnumerator = IEnumerabley.GetEnumerator();
                 while (true)
                 {
                     bool XFinished = !XEnumerator.MoveNext();

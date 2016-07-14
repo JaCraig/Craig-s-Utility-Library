@@ -123,8 +123,8 @@ namespace Utilities.IO.FileFormats
         /// <param name="Sheet">Sheet to parse</param>
         protected void Parse(string FilePath, string Sheet)
         {
-            string ConnectionString = string.Format(CultureInfo.CurrentCulture, "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"Excel 12.0;HDR=YES;IMEX=1;\"", FilePath);
-            string Command = string.Format(CultureInfo.CurrentCulture, "select * from [{0}$]", Sheet);
+            var ConnectionString = string.Format(CultureInfo.CurrentCulture, "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"Excel 12.0;HDR=YES;IMEX=1;\"", FilePath);
+            var Command = string.Format(CultureInfo.CurrentCulture, "select * from [{0}$]", Sheet);
             using (var Adapter = new OleDbDataAdapter(Command, ConnectionString))
             {
                 using (var ds = new DataSet())

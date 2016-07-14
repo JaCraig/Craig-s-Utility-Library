@@ -119,7 +119,7 @@ namespace Utilities.IoC.Default
             Type Type = typeof(T2);
             Register<T1>(() =>
             {
-                ConstructorInfo Constructor = FindConstructor(Type);
+                var Constructor = FindConstructor(Type);
                 if (Constructor != null)
                 {
                     return (T1)Activator.CreateInstance(Type, GetParameters(Constructor).ToArray());
@@ -277,7 +277,7 @@ namespace Utilities.IoC.Default
         private ConstructorInfo FindConstructor(Type Type)
         {
             Contract.Requires<ArgumentNullException>(Type != null, "Type");
-            ConstructorInfo[] Constructors = Type.GetConstructors();
+            var Constructors = Type.GetConstructors();
             ConstructorInfo Constructor = null;
             foreach (ConstructorInfo TempConstructor in Constructors.OrderByDescending(x => x.GetParameters().Length))
             {
@@ -322,7 +322,7 @@ namespace Utilities.IoC.Default
             {
                 if (Parameter.ParameterType.GetInterfaces().Contains(typeof(IEnumerable)) && Parameter.ParameterType.IsGenericType)
                 {
-                    Type GenericParamType = Parameter.ParameterType.GetGenericArguments().First();
+                    var GenericParamType = Parameter.ParameterType.GetGenericArguments().First();
                     Params.Add(GenericResolveAllMethod.MakeGenericMethod(GenericParamType).Invoke(this, new object[] { }));
                 }
                 else

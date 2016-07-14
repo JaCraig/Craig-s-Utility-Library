@@ -49,7 +49,7 @@ namespace UnitTests.IO.FileSystem.Default
             var Temp2 = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test2");
             Temp.Create();
             Temp2.Create();
-            IDirectory Temp3 = Temp2.CopyTo(Temp);
+            var Temp3 = Temp2.CopyTo(Temp);
             Assert.True(Temp.Exists);
             Assert.True(Temp2.Exists);
             Assert.True(Temp3.Exists);

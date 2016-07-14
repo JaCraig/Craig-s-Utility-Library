@@ -51,10 +51,10 @@ namespace Utilities.IO.FileFormats.RSS
             : this()
         {
             Contract.Requires<ArgumentNullException>(Doc != null, "Doc");
-            XPathNavigator Element = Doc.CreateNavigator();
+            var Element = Doc.CreateNavigator();
             var NamespaceManager = new XmlNamespaceManager(Element.NameTable);
             NamespaceManager.AddNamespace("media", "http://search.yahoo.com/mrss/");
-            XPathNavigator Node = Element.SelectSingleNode("./title", NamespaceManager);
+            var Node = Element.SelectSingleNode("./title", NamespaceManager);
             if (Node != null)
             {
                 Title = Node.Value;
@@ -74,7 +74,7 @@ namespace Utilities.IO.FileFormats.RSS
             {
                 Author = Node.Value;
             }
-            XPathNodeIterator Nodes = Element.Select("./category", NamespaceManager);
+            var Nodes = Element.Select("./category", NamespaceManager);
             foreach (XmlNode TempNode in Nodes)
             {
                 Categories.Add(Utils.StripIllegalCharacters(TempNode.Value));
