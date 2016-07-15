@@ -41,7 +41,7 @@ namespace Utilities.ORM.Aspect
         /// <summary>
         /// Mapper
         /// </summary>
-        public static Utilities.ORM.Manager.Mapper.Manager Mapper { get; set; }
+        public static Manager.Mapper.Manager Mapper { get; set; }
 
         /// <summary>
         /// Assemblies using
@@ -82,7 +82,7 @@ namespace Utilities.ORM.Aspect
         public void Setup(object Object)
         {
             var TempObject = (IORMObject)Object;
-            TempObject.Session0 = new Utilities.ORM.Manager.Session();
+            TempObject.Session0 = new Manager.Session();
             TempObject.PropertiesChanged0 = new List<string>();
             TempObject.PropertyChanged += (object sender, PropertyChangedEventArgs e) =>
             {

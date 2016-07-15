@@ -77,7 +77,7 @@ namespace Utilities.ORM.Manager
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>All items that match the criteria</returns>
         public IEnumerable<ObjectType> All<ObjectType>(params IParameter[] Parameters)
-            where ObjectType : class,new()
+            where ObjectType : class
         {
             Parameters = Parameters.Check(new IParameter[] { });
             var ReturnValue = new List<Dynamo>();
@@ -92,7 +92,7 @@ namespace Utilities.ORM.Manager
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
                 if (Mapping != null)
                 {
-                    foreach (Dynamo Item in QueryProvider.Generate<ObjectType>(Source, Mapping).All(Parameters).Execute()[0])
+                    foreach (Dynamo Item in QueryProvider.Generate<ObjectType>(Source, Mapping, MapperProvider.GetStructure(Mapping.DatabaseConfigType)).All(Parameters).Execute()[0])
                     {
                         var IDProperty = Mapping.IDProperties.FirstOrDefault();
                         CopyOrAdd(ReturnValue, IDProperty, Item);
@@ -110,7 +110,7 @@ namespace Utilities.ORM.Manager
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>A single object matching the criteria</returns>
         public ObjectType Any<ObjectType>(params IParameter[] Parameters)
-            where ObjectType : class,new()
+            where ObjectType : class
         {
             Parameters = Parameters.Check(new IParameter[] { });
             Dynamo ReturnValue = null;
@@ -125,7 +125,7 @@ namespace Utilities.ORM.Manager
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
                 if (Mapping != null)
                 {
-                    Dynamo Value = QueryProvider.Generate<ObjectType>(Source, Mapping).Any(Parameters).Execute()[0].FirstOrDefault();
+                    Dynamo Value = QueryProvider.Generate<ObjectType>(Source, Mapping, MapperProvider.GetStructure(Mapping.DatabaseConfigType)).Any(Parameters).Execute()[0].FirstOrDefault();
                     ReturnValue = CopyOrAssign(ReturnValue, Value);
                 }
             }
@@ -141,7 +141,7 @@ namespace Utilities.ORM.Manager
         /// <param name="ID">ID of the object to load</param>
         /// <returns>A single object matching the ID</returns>
         public ObjectType Any<ObjectType, IDType>(IDType ID)
-            where ObjectType : class,new()
+            where ObjectType : class
             where IDType : IComparable
         {
             Dynamo ReturnValue = null;
@@ -160,8 +160,8 @@ namespace Utilities.ORM.Manager
                     if (IDProperty != null)
                     {
                         Dynamo Value = typeof(IDType) == typeof(string) ?
-                            QueryProvider.Generate<ObjectType>(Source, Mapping).Any(new StringEqualParameter(StringID, IDProperty.FieldName, StringID.Length, IDProperty.FieldName, Source.ParameterPrefix)).Execute()[0].FirstOrDefault() :
-                            QueryProvider.Generate<ObjectType>(Source, Mapping).Any(new EqualParameter<IDType>(ID, IDProperty.FieldName, IDProperty.FieldName, Source.ParameterPrefix)).Execute()[0].FirstOrDefault();
+                            QueryProvider.Generate<ObjectType>(Source, Mapping, MapperProvider.GetStructure(Mapping.DatabaseConfigType)).Any(new StringEqualParameter(StringID, IDProperty.FieldName, StringID.Length, IDProperty.FieldName, Source.ParameterPrefix)).Execute()[0].FirstOrDefault() :
+                            QueryProvider.Generate<ObjectType>(Source, Mapping, MapperProvider.GetStructure(Mapping.DatabaseConfigType)).Any(new EqualParameter<IDType>(ID, IDProperty.FieldName, IDProperty.FieldName, Source.ParameterPrefix)).Execute()[0].FirstOrDefault();
                         ReturnValue = CopyOrAssign(ReturnValue, Value);
                     }
                 }
@@ -176,7 +176,7 @@ namespace Utilities.ORM.Manager
         /// <typeparam name="ObjectType">Object type</typeparam>
         /// <param name="Object">Object to delete</param>
         public void Delete<ObjectType>(ObjectType Object)
-            where ObjectType : class,new()
+            where ObjectType : class
         {
             Cache.RemoveByTag(typeof(ObjectType).GetName());
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Writable).OrderBy(x => x.Order))
@@ -184,7 +184,7 @@ namespace Utilities.ORM.Manager
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
                 if (Mapping != null)
                 {
-                    var Generator = QueryProvider.Generate<ObjectType>(Source, MapperProvider[typeof(ObjectType), Source]);
+                    var Generator = QueryProvider.Generate<ObjectType>(Source, MapperProvider[typeof(ObjectType), Source], MapperProvider.GetStructure(Mapping.DatabaseConfigType));
                     var TempBatch = QueryProvider.Batch(Source);
                     CascadeDelete<ObjectType>(Object, Source, Mapping, TempBatch, new List<object>());
                     TempBatch.AddCommand(Generator.Delete(Object));
@@ -202,8 +202,8 @@ namespace Utilities.ORM.Manager
         /// <param name="PropertyName">Property name</param>
         /// <returns>The appropriate property value</returns>
         public IList<DataType> LoadProperties<ObjectType, DataType>(ObjectType Object, string PropertyName)
-            where ObjectType : class,new()
-            where DataType : class,new()
+            where ObjectType : class
+            where DataType : class
         {
             var ReturnValue = new System.Collections.Generic.List<Dynamo>();
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
@@ -214,7 +214,7 @@ namespace Utilities.ORM.Manager
                     var Property = Mapping.Properties.FirstOrDefault(x => x.Name == PropertyName);
                     if (Property != null)
                     {
-                        foreach (Dynamo Item in QueryProvider.Generate<ObjectType>(Source, Mapping)
+                        foreach (Dynamo Item in QueryProvider.Generate<ObjectType>(Source, Mapping, MapperProvider.GetStructure(Mapping.DatabaseConfigType))
                             .LoadProperty<DataType>(Object, Property)
                             .Execute()[0])
                         {
@@ -248,7 +248,7 @@ namespace Utilities.ORM.Manager
                         }
                         if (Parameter != null)
                         {
-                            foreach (Dynamo Item in QueryProvider.Generate<DataType>(Source, Mapping).All(Parameter).Execute()[0])
+                            foreach (Dynamo Item in QueryProvider.Generate<DataType>(Source, Mapping, MapperProvider.GetStructure(Mapping.DatabaseConfigType)).All(Parameter).Execute()[0])
                             {
                                 CopyOrAdd(ReturnValue, IDProperty, Item);
                             }
@@ -268,8 +268,8 @@ namespace Utilities.ORM.Manager
         /// <param name="PropertyName">Property name</param>
         /// <returns>The appropriate property value</returns>
         public DataType LoadProperty<ObjectType, DataType>(ObjectType Object, string PropertyName)
-            where ObjectType : class,new()
-            where DataType : class,new()
+            where ObjectType : class
+            where DataType : class
         {
             return LoadProperties<ObjectType, DataType>(Object, PropertyName).FirstOrDefault();
         }
@@ -282,7 +282,7 @@ namespace Utilities.ORM.Manager
         /// <typeparam name="ObjectType">Object type to get the page count of</typeparam>
         /// <returns>The number of pages that the table contains for the specified page size</returns>
         public int PageCount<ObjectType>(int PageSize = 25, params IParameter[] Parameters)
-            where ObjectType : class,new()
+            where ObjectType : class
         {
             Parameters = Parameters.Check(new IParameter[] { });
             string KeyName = typeof(ObjectType).GetName() + "_PageCount_" + PageSize.ToString(CultureInfo.InvariantCulture) + "_" + Parameters.ToString(x => x.ToString(), "_");
@@ -296,7 +296,7 @@ namespace Utilities.ORM.Manager
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
                 if (Mapping != null)
                 {
-                    int Count = QueryProvider.Generate<ObjectType>(Source, Mapping)
+                    int Count = QueryProvider.Generate<ObjectType>(Source, Mapping, MapperProvider.GetStructure(Mapping.DatabaseConfigType))
                         .PageCount(PageSize, Parameters)
                         .Execute()[0]
                         .FirstOrDefault()
@@ -322,7 +322,7 @@ namespace Utilities.ORM.Manager
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>A paged list of items that match the criteria</returns>
         public IEnumerable<ObjectType> Paged<ObjectType>(int PageSize = 25, int CurrentPage = 0, string OrderBy = "", params IParameter[] Parameters)
-            where ObjectType : class,new()
+            where ObjectType : class
         {
             Parameters = Parameters.Check(new IParameter[] { });
             string KeyName = typeof(ObjectType).GetName() + "_Paged_" + PageSize.ToString(CultureInfo.InvariantCulture) + "_" + CurrentPage.ToString(CultureInfo.InvariantCulture) + "_" + Parameters.ToString(x => x.ToString(), "_");
@@ -340,7 +340,7 @@ namespace Utilities.ORM.Manager
                     var IDProperty = Mapping.IDProperties.FirstOrDefault();
                     if (IDProperty != null)
                     {
-                        foreach (Dynamo Item in QueryProvider.Generate<ObjectType>(Source, Mapping)
+                        foreach (Dynamo Item in QueryProvider.Generate<ObjectType>(Source, Mapping, MapperProvider.GetStructure(Mapping.DatabaseConfigType))
                             .Paged(PageSize, CurrentPage, OrderBy, Parameters)
                             .Execute()[0])
                         {
@@ -360,7 +360,7 @@ namespace Utilities.ORM.Manager
         /// <typeparam name="PrimaryKeyType">Primary key type</typeparam>
         /// <param name="Object">Object to save</param>
         public void Save<ObjectType, PrimaryKeyType>(ObjectType Object)
-            where ObjectType : class,new()
+            where ObjectType : class
         {
             Cache.RemoveByTag(typeof(ObjectType).GetName());
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Writable).OrderBy(x => x.Order))
@@ -368,7 +368,7 @@ namespace Utilities.ORM.Manager
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
                 if (Mapping != null)
                 {
-                    var Generator = QueryProvider.Generate<ObjectType>(Source, MapperProvider[typeof(ObjectType), Source]);
+                    var Generator = QueryProvider.Generate<ObjectType>(Source, MapperProvider[typeof(ObjectType), Source], MapperProvider.GetStructure(Mapping.DatabaseConfigType));
                     var TempBatch = QueryProvider.Batch(Source);
                     CascadeSave<ObjectType>(Object, Source, Mapping, TempBatch, new List<object>());
                     TempBatch.Execute();
@@ -384,7 +384,7 @@ namespace Utilities.ORM.Manager
         }
 
         private static void CascadeDelete<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch, List<object> ObjectsSeen)
-            where ObjectType : class, new()
+            where ObjectType : class
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             Contract.Requires<ArgumentNullException>(Mapping.Properties != null, "Mapping.Properties");
@@ -395,7 +395,7 @@ namespace Utilities.ORM.Manager
         }
 
         private static void CascadeSave<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch, List<object> ObjectsSeen)
-            where ObjectType : class, new()
+            where ObjectType : class
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             Contract.Requires<ArgumentNullException>(Mapping.Properties != null, "Mapping.Properties");
@@ -433,7 +433,7 @@ namespace Utilities.ORM.Manager
         }
 
         private static void JoinsDelete<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch, List<object> ObjectsSeen)
-            where ObjectType : class, new()
+            where ObjectType : class
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             Contract.Requires<ArgumentNullException>(Mapping.Properties != null, "Mapping.Properties");
@@ -457,7 +457,7 @@ namespace Utilities.ORM.Manager
         }
 
         private static void JoinsSave<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch, List<object> ObjectsSeen)
-            where ObjectType : class, new()
+            where ObjectType : class
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             Contract.Requires<ArgumentNullException>(Mapping.Properties != null, "Mapping.Properties");
@@ -480,28 +480,28 @@ namespace Utilities.ORM.Manager
             }
         }
 
-        private ObjectType ConvertValue<ObjectType>(Dynamo ReturnValue) where ObjectType : class,new()
+        private ObjectType ConvertValue<ObjectType>(Dynamo ReturnValue) where ObjectType : class
         {
             if (ReturnValue == null)
                 return default(ObjectType);
             return ReturnValue.To<ObjectType>().Chain(x => { ((IORMObject)x).Session0 = this; });
         }
 
-        private IEnumerable<ObjectType> ConvertValues<ObjectType>(List<Dynamo> ReturnValue) where ObjectType : class, new()
+        private IEnumerable<ObjectType> ConvertValues<ObjectType>(List<Dynamo> ReturnValue) where ObjectType : class
         {
             if (ReturnValue == null)
                 ReturnValue = new List<Dynamo>();
             return ReturnValue.ForEachParallel(x => ConvertValue<ObjectType>(x));
         }
 
-        private ObjectType GetCached<ObjectType>(ref Dynamo ReturnValue, string KeyName) where ObjectType : class, new()
+        private ObjectType GetCached<ObjectType>(ref Dynamo ReturnValue, string KeyName) where ObjectType : class
         {
             Contract.Requires(this.Cache != null);
             ReturnValue = (Dynamo)Cache[KeyName];
             return ConvertValue<ObjectType>(ReturnValue);
         }
 
-        private IEnumerable<ObjectType> GetListCached<ObjectType>(ref List<Dynamo> ReturnValue, string KeyName) where ObjectType : class, new()
+        private IEnumerable<ObjectType> GetListCached<ObjectType>(ref List<Dynamo> ReturnValue, string KeyName) where ObjectType : class
         {
             Contract.Requires(this.Cache != null);
             ReturnValue = (List<Dynamo>)Cache[KeyName];

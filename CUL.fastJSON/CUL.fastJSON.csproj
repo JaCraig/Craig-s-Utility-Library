@@ -134,7 +134,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="fastjson, Version=2.1.0.0, Culture=neutral, PublicKeyToken=6b75a806b86095cd, processorArchitecture=MSIL">
-      <HintPath>..\packages\fastJSON.2.1.14.0\lib\net40\fastjson.dll</HintPath>
+      <HintPath>..\packages\fastJSON.2.1.16\lib\net40\fastjson.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -151,6 +151,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Key.snk" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -169,4 +170,3 @@
   </Target>
   -->
 </Project>
-

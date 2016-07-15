@@ -39,8 +39,8 @@ namespace Utilities.ORM.Manager.Mapper.Default
     /// <typeparam name="ClassType">Class type</typeparam>
     /// <typeparam name="DataType">Data type</typeparam>
     public class ICollectionManyToOne<ClassType, DataType> : PropertyBase<ClassType, ICollection<DataType>, ICollectionManyToOne<ClassType, DataType>>, ICollectionManyToOne
-        where ClassType : class,new()
-        where DataType : class,new()
+        where ClassType : class
+        where DataType : class
     {
         /// <summary>
         /// Constructor
@@ -64,9 +64,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <summary>
         /// Gets the name of the type.
         /// </summary>
-        /// <value>
-        /// The name of the type.
-        /// </value>
+        /// <value>The name of the type.</value>
         public override string TypeName
         {
             get { return typeof(ICollection<>).MakeGenericType(Type).GetName(); }
@@ -82,7 +80,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         public override IBatch CascadeDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             var Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
-            var MappingProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
+            var MappingProvider = IoC.Manager.Bootstrapper.Resolve<Manager>();
             IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
             var Batch = Provider.Batch(Source);
             var AspectObject = Object as IORMObject;
@@ -99,9 +97,9 @@ namespace Utilities.ORM.Manager.Mapper.Default
                 {
                     Batch.AddCommand(Property.CascadeDelete(Item, Source, ObjectsSeen.ToList()));
                 }
-                Batch.AddCommand(Provider.Generate<DataType>(Source, PropertyMapping).Delete(Item));
+                Batch.AddCommand(Provider.Generate<DataType>(Source, PropertyMapping, Structure).Delete(Item));
             }
-            Utilities.IoC.Manager.Bootstrapper.Resolve<DataTypes.Caching.Manager>().Cache().RemoveByTag(typeof(DataType).GetName());
+            IoC.Manager.Bootstrapper.Resolve<DataTypes.Caching.Manager>().Cache().RemoveByTag(typeof(DataType).GetName());
             return Batch;
         }
 
@@ -115,7 +113,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         public override IBatch CascadeJoinsDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             var Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
-            var MappingProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
+            var MappingProvider = IoC.Manager.Bootstrapper.Resolve<Manager>();
             IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
             var Batch = Provider.Batch(Source);
             var AspectObject = Object as IORMObject;
@@ -142,7 +140,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
                     }
                 }
             }
-            Batch.AddCommand(Provider.Generate<ClassType>(Source, Mapping).JoinsDelete(this, Object));
+            Batch.AddCommand(Provider.Generate<ClassType>(Source, Mapping, Structure).JoinsDelete(this, Object));
             return Batch;
         }
 
@@ -156,7 +154,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         public override IBatch CascadeJoinsSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             var Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
-            var MappingProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
+            var MappingProvider = IoC.Manager.Bootstrapper.Resolve<Manager>();
             IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
             var Batch = Provider.Batch(Source);
             var AspectObject = Object as IORMObject;
@@ -183,7 +181,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
                     }
                 }
             }
-            Batch.AddCommand(Provider.Generate<ClassType>(Source, Mapping).JoinsSave<ICollection<DataType>, DataType>(this, Object));
+            Batch.AddCommand(Provider.Generate<ClassType>(Source, Mapping, Structure).JoinsSave<ICollection<DataType>, DataType>(this, Object));
             return Batch;
         }
 
@@ -197,7 +195,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         public override IBatch CascadeSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             var Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
-            var MappingProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
+            var MappingProvider = IoC.Manager.Bootstrapper.Resolve<Manager>();
             IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
             var Batch = Provider.Batch(Source);
             var AspectObject = Object as IORMObject;
@@ -216,7 +214,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
                 }
                 Batch.AddCommand(((IProperty<DataType>)PropertyMapping.IDProperties.FirstOrDefault()).CascadeSave(Item, Source, ObjectsSeen.ToList()));
             }
-            Utilities.IoC.Manager.Bootstrapper.Resolve<DataTypes.Caching.Manager>().Cache().RemoveByTag(typeof(DataType).GetName());
+            IoC.Manager.Bootstrapper.Resolve<DataTypes.Caching.Manager>().Cache().RemoveByTag(typeof(DataType).GetName());
             return Batch;
         }
 
@@ -255,7 +253,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
                 return Provider.Batch(Source);
             if (AspectObject != null)
                 ObjectsSeen.Add(Mapping.IDProperties.FirstOrDefault().GetValue(Object));
-            return Provider.Generate<ClassType>(Source, Mapping).JoinsDelete(this, Object);
+            return Provider.Generate<ClassType>(Source, Mapping, Structure).JoinsDelete(this, Object);
         }
 
         /// <summary>
@@ -273,7 +271,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
                 return Provider.Batch(Source);
             if (AspectObject != null)
                 ObjectsSeen.Add(Mapping.IDProperties.FirstOrDefault().GetValue(Object));
-            return Provider.Generate<ClassType>(Source, Mapping).JoinsSave<ICollection<DataType>, DataType>(this, Object);
+            return Provider.Generate<ClassType>(Source, Mapping, Structure).JoinsSave<ICollection<DataType>, DataType>(this, Object);
         }
 
         /// <summary>
@@ -282,10 +280,11 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <param name="MappingProvider">Mapping provider</param>
         /// <param name="QueryProvider">Query provider</param>
         /// <param name="Source">Source info</param>
-        public override void Setup(ISourceInfo Source, Mapper.Manager MappingProvider, QueryProvider.Manager QueryProvider)
+        public override void Setup(ISourceInfo Source, Manager MappingProvider, QueryProvider.Manager QueryProvider)
         {
             ForeignMapping = MappingProvider[Type, Source];
-            QueryProvider.Generate<ClassType>(Source, Mapping).SetupLoadCommands(this);
+            Structure = MappingProvider.GetStructure(Mapping.DatabaseConfigType);
+            QueryProvider.Generate<ClassType>(Source, Mapping, Structure).SetupLoadCommands(this);
         }
     }
 }

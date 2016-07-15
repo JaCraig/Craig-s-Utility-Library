@@ -46,15 +46,10 @@ namespace Utilities.ORM
         /// </summary>
         protected ObjectBaseClass()
         {
-            this.Active = true;
-            this.DateCreated = DateTime.Now;
-            this.DateModified = DateTime.Now;
+            Active = true;
+            DateCreated = DateTime.Now;
+            DateModified = DateTime.Now;
         }
-
-        /// <summary>
-        /// Called prior to an object is loading
-        /// </summary>
-        public static EventHandler<LoadingEventArgs> Loading;
 
         /// <summary>
         /// Is the object active?
@@ -107,6 +102,11 @@ namespace Utilities.ORM
         public EventHandler<SavingEventArgs> Saving { get; set; }
 
         /// <summary>
+        /// Called prior to an object is loading
+        /// </summary>
+        public static EventHandler<LoadingEventArgs> Loading;
+
+        /// <summary>
         /// Loads the items based on type
         /// </summary>
         /// <param name="Params">Parameters used to specify what to load</param>
@@ -115,7 +115,7 @@ namespace Utilities.ORM
         {
             IEnumerable<ObjectType> instance = new List<ObjectType>();
             var E = new LoadingEventArgs();
-            ObjectBaseClass<ObjectType, IDType>.OnLoading(null, E);
+            OnLoading(null, E);
             if (!E.Stop)
             {
                 instance = QueryProvider.All<ObjectType>(Params);
@@ -213,7 +213,7 @@ namespace Utilities.ORM
         /// <returns>True if the first item is less than the second, false otherwise</returns>
         public static bool operator <(ObjectBaseClass<ObjectType, IDType> first, ObjectBaseClass<ObjectType, IDType> second)
         {
-            if (Object.ReferenceEquals(first, second))
+            if (ReferenceEquals(first, second))
                 return false;
             if ((object)first == null || (object)second == null)
                 return false;
@@ -228,7 +228,7 @@ namespace Utilities.ORM
         /// <returns>true if the first and second item are the same, false otherwise</returns>
         public static bool operator ==(ObjectBaseClass<ObjectType, IDType> first, ObjectBaseClass<ObjectType, IDType> second)
         {
-            if (Object.ReferenceEquals(first, second))
+            if (ReferenceEquals(first, second))
                 return true;
 
             if ((object)first == null || (object)second == null)
@@ -245,7 +245,7 @@ namespace Utilities.ORM
         /// <returns>True if the first item is greater than the second, false otherwise</returns>
         public static bool operator >(ObjectBaseClass<ObjectType, IDType> first, ObjectBaseClass<ObjectType, IDType> second)
         {
-            if (Object.ReferenceEquals(first, second))
+            if (ReferenceEquals(first, second))
                 return false;
             if ((object)first == null || (object)second == null)
                 return false;
@@ -329,7 +329,7 @@ namespace Utilities.ORM
             OnDeleting(E);
             if (!E.Stop)
             {
-                QueryProvider.Delete<ObjectType>((ObjectType)this);
+                QueryProvider.Delete((ObjectType)this);
                 var X = new DeletedEventArgs();
                 OnDeleted(X);
             }
@@ -342,9 +342,9 @@ namespace Utilities.ORM
         /// <returns>true if they are the same, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            if (obj == null || obj.GetType() != this.GetType())
+            if (obj == null || obj.GetType() != GetType())
                 return false;
-            return obj.GetHashCode() == this.GetHashCode();
+            return obj.GetHashCode() == GetHashCode();
         }
 
         /// <summary>
@@ -353,7 +353,7 @@ namespace Utilities.ORM
         /// <returns>the int hash of the item</returns>
         public override int GetHashCode()
         {
-            return this.ID.GetHashCode();
+            return ID.GetHashCode();
         }
 
         /// <summary>

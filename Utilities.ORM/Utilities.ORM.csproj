@@ -274,6 +274,7 @@
     <Compile Include="ORM\Manager\Mapper\Interfaces\ISingleMapping.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Key.snk" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -304,4 +305,3 @@
   </Target>
   -->
 </Project>
-

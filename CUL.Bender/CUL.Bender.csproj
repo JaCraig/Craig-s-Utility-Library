@@ -127,12 +127,12 @@
     <CodeContractsSkipAnalysisIfCannotConnectToCache>False</CodeContractsSkipAnalysisIfCannotConnectToCache>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Bender, Version=3.0.33.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Bender.3.0.33.0\lib\Bender.dll</HintPath>
+    <Reference Include="Bender, Version=3.0.50.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bender.3.0.50.0\lib\Bender.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Flexo, Version=1.0.22.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\flexo.1.0.22.0\lib\Flexo.dll</HintPath>
+    <Reference Include="Flexo, Version=1.0.24.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\flexo.1.0.24.0\lib\Flexo.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -149,6 +149,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -166,4 +167,3 @@
   </Target>
   -->
 </Project>
-

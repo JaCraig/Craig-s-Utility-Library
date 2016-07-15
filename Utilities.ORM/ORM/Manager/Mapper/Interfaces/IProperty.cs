@@ -38,7 +38,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
     /// <typeparam name="DataType">Data type</typeparam>
     /// <typeparam name="ReturnType">Return type</typeparam>
     public interface IProperty<ClassType, DataType, ReturnType> : IFluentInterface
-        where ClassType : class,new()
+        where ClassType : class
         where ReturnType : IProperty<ClassType, DataType, ReturnType>
     {
         /// <summary>
@@ -114,7 +114,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
     /// <typeparam name="ClassType">Class type</typeparam>
     /// <typeparam name="DataType"></typeparam>
     public interface IProperty<ClassType, DataType> : IProperty<ClassType>
-        where ClassType : class,new()
+        where ClassType : class
     {
         /// <summary>
         /// Compiled version of the expression
@@ -137,7 +137,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
     /// </summary>
     /// <typeparam name="ClassType">Class type</typeparam>
     public interface IProperty<ClassType> : IProperty
-        where ClassType : class,new()
+        where ClassType : class
     {
         /// <summary>
         /// Does a cascade delete of an object for this property
@@ -286,9 +286,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// <summary>
         /// Gets the name of the type.
         /// </summary>
-        /// <value>
-        /// The name of the type.
-        /// </value>
+        /// <value>The name of the type.</value>
         string TypeName { get; }
 
         /// <summary>

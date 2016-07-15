@@ -35,7 +35,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
     /// Property base class
     /// </summary>
     public abstract class PropertyBase<ClassType, DataType, ReturnType> : IProperty<ClassType, DataType, ReturnType>, IProperty<ClassType, DataType>
-        where ClassType : class,new()
+        where ClassType : class
         where ReturnType : IProperty<ClassType, DataType, ReturnType>
     {
         /// <summary>
@@ -43,17 +43,17 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// </summary>
         /// <param name="Expression">Expression used to point to the property</param>
         /// <param name="Mapping">Mapping the StringID is added to</param>
-        protected PropertyBase(Expression<Func<ClassType, DataType>> Expression, Utilities.ORM.Manager.Mapper.Interfaces.IMapping Mapping)
+        protected PropertyBase(Expression<Func<ClassType, DataType>> Expression, IMapping Mapping)
         {
             Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
             this.Expression = Expression;
-            this.Name = Expression.PropertyName();
-            this.Type = typeof(DataType);
-            this.DerivedFieldName = "_" + Name + "Derived";
+            Name = Expression.PropertyName();
+            Type = typeof(DataType);
+            DerivedFieldName = "_" + Name + "Derived";
             this.Mapping = Mapping;
-            this.CompiledExpression = this.Expression.Compile();
-            this.MaxLength = typeof(DataType) == typeof(string) ? 100 : 0;
-            this.DefaultValue = () => default(DataType);
+            CompiledExpression = this.Expression.Compile();
+            MaxLength = typeof(DataType) == typeof(string) ? 100 : 0;
+            DefaultValue = () => default(DataType);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <summary>
         /// Foreign mapping
         /// </summary>
-        public Utilities.ORM.Manager.Mapper.Interfaces.IMapping ForeignMapping { get; set; }
+        public IMapping ForeignMapping { get; set; }
 
         /// <summary>
         /// Index
@@ -114,7 +114,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <summary>
         /// Mapping
         /// </summary>
-        public Utilities.ORM.Manager.Mapper.Interfaces.IMapping Mapping { get; private set; }
+        public IMapping Mapping { get; private set; }
 
         /// <summary>
         /// Max length
@@ -132,6 +132,12 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         public bool NotNull { get; private set; }
 
         /// <summary>
+        /// Gets the structure.
+        /// </summary>
+        /// <value>The structure.</value>
+        public Graph<IMapping> Structure { get; protected set; }
+
+        /// <summary>
         /// Table name
         /// </summary>
         public string TableName { get; private set; }
@@ -144,9 +150,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <summary>
         /// Gets the name of the type.
         /// </summary>
-        /// <value>
-        /// The name of the type.
-        /// </value>
+        /// <value>The name of the type.</value>
         public abstract string TypeName { get; }
 
         /// <summary>
@@ -173,7 +177,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <returns>True if the first item is less than the second, false otherwise</returns>
         public static bool operator <(PropertyBase<ClassType, DataType, ReturnType> first, PropertyBase<ClassType, DataType, ReturnType> second)
         {
-            if (Object.ReferenceEquals(first, second))
+            if (ReferenceEquals(first, second))
                 return false;
             if ((object)first == null || (object)second == null)
                 return false;
@@ -188,7 +192,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <returns>true if the first and second item are the same, false otherwise</returns>
         public static bool operator ==(PropertyBase<ClassType, DataType, ReturnType> first, PropertyBase<ClassType, DataType, ReturnType> second)
         {
-            if (Object.ReferenceEquals(first, second))
+            if (ReferenceEquals(first, second))
                 return true;
 
             if ((object)first == null || (object)second == null)
@@ -205,7 +209,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <returns>True if the first item is greater than the second, false otherwise</returns>
         public static bool operator >(PropertyBase<ClassType, DataType, ReturnType> first, PropertyBase<ClassType, DataType, ReturnType> second)
         {
-            if (Object.ReferenceEquals(first, second))
+            if (ReferenceEquals(first, second))
                 return false;
             if ((object)first == null || (object)second == null)
                 return false;
@@ -313,7 +317,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <returns>The value of the property</returns>
         public object GetValue(Dynamo Object)
         {
-            return Object[this.Name];
+            return Object[Name];
         }
 
         /// <summary>
@@ -340,7 +344,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <returns>This</returns>
         public ReturnType SetAutoIncrement()
         {
-            this.AutoIncrement = true;
+            AutoIncrement = true;
             return (ReturnType)((IProperty<ClassType, DataType, ReturnType>)this);
         }
 
@@ -350,7 +354,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <returns>this</returns>
         public ReturnType SetCascade()
         {
-            this.Cascade = true;
+            Cascade = true;
             return (ReturnType)((IProperty<ClassType, DataType, ReturnType>)this);
         }
 
@@ -361,7 +365,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <returns>This IProperty object</returns>
         public ReturnType SetDefaultValue(Func<DataType> Value)
         {
-            this.DefaultValue = Value;
+            DefaultValue = Value;
             return (ReturnType)((IProperty<ClassType, DataType, ReturnType>)this);
         }
 
@@ -382,7 +386,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <returns>This</returns>
         public ReturnType SetIndex()
         {
-            this.Index = true;
+            Index = true;
             return (ReturnType)((IProperty<ClassType, DataType, ReturnType>)this);
         }
 
@@ -394,8 +398,8 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <returns>this</returns>
         public ReturnType SetLoadUsingCommand(string Command, CommandType CommandType)
         {
-            this.LoadCommand = Command;
-            this.LoadCommandType = CommandType;
+            LoadCommand = Command;
+            LoadCommandType = CommandType;
             return (ReturnType)((IProperty<ClassType, DataType, ReturnType>)this);
         }
 
@@ -416,7 +420,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <returns>this</returns>
         public ReturnType SetNotNull()
         {
-            this.NotNull = true;
+            NotNull = true;
             return (ReturnType)((IProperty<ClassType, DataType, ReturnType>)this);
         }
 
@@ -437,7 +441,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <returns>this</returns>
         public ReturnType SetUnique()
         {
-            this.Unique = true;
+            Unique = true;
             return (ReturnType)((IProperty<ClassType, DataType, ReturnType>)this);
         }
 
@@ -447,7 +451,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <param name="MappingProvider">Mapping provider</param>
         /// <param name="QueryProvider">Query provider</param>
         /// <param name="Source">Source info</param>
-        public abstract void Setup(ISourceInfo Source, Mapper.Manager MappingProvider, QueryProvider.Manager QueryProvider);
+        public abstract void Setup(ISourceInfo Source, Manager MappingProvider, QueryProvider.Manager QueryProvider);
 
         /// <summary>
         /// Gets the property as a string

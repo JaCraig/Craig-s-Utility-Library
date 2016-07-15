@@ -59,9 +59,10 @@ namespace Utilities.ORM.Manager
             this.SchemaProvider = SchemaProvider;
             this.SourceProvider = SourceProvider;
             SetupMappings(Databases);
+            SortMappings();
             foreach (IDatabase Database in Mappings.Keys.Where(x => x.Update))
             {
-                this.SchemaProvider.Setup(Mappings, QueryProvider, Database, SourceProvider.GetSource(Database.GetType()));
+                this.SchemaProvider.Setup(Mappings, QueryProvider, Database, SourceProvider.GetSource(Database.GetType()), MapperProvider.GetStructure(Database.GetType()));
             }
         }
 
@@ -99,6 +100,34 @@ namespace Utilities.ORM.Manager
             return "ORM Manager\r\n";
         }
 
+        private List<Vertex<IMapping>> FindStartingVertices(Graph<IMapping> graph)
+        {
+            return graph.Vertices.Where(x => x.IncomingEdges.Count == 0).ToList();
+        }
+
+        private IEnumerable<IMapping> KahnSort(Graph<IMapping> graph)
+        {
+            var ResultList = new List<IMapping>();
+            var StartingNodes = FindStartingVertices(graph);
+            while (StartingNodes.Count > 0)
+            {
+                var Vertex = StartingNodes.First();
+                StartingNodes.Remove(Vertex);
+                ResultList.AddIfUnique(Vertex.Data);
+                foreach (Edge<IMapping> Edge in Vertex.OutgoingEdges.ToList())
+                {
+                    Vertex<IMapping> Sink = Edge.Sink;
+                    Edge.Remove();
+                    if (Sink.IncomingEdges.Count == 0)
+                    {
+                        ResultList.AddIfUnique(Sink.Data);
+                        StartingNodes.AddIfUnique(Sink);
+                    }
+                }
+            }
+            return ResultList;
+        }
+
         private void SetupMappings(IEnumerable<IDatabase> Databases)
         {
             Contract.Requires<NullReferenceException>(MapperProvider != null, "MapperProvider");
@@ -112,6 +141,20 @@ namespace Utilities.ORM.Manager
                 foreach (IMapping Mapping in Mappings[Database])
                 {
                     Mapping.Setup(SourceProvider.GetSource(Database.GetType()), MapperProvider, QueryProvider);
+                }
+            }
+        }
+
+        private void SortMappings()
+        {
+            foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
+            {
+                var Order = 0;
+                var Graph = MapperProvider.GetStructure(Database.GetType());
+                foreach (var Mapping in KahnSort(Graph.Copy()).Reverse())
+                {
+                    Mapping.Order = Order;
+                    ++Order;
                 }
             }
         }

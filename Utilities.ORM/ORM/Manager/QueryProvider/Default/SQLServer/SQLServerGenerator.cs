@@ -39,7 +39,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
     /// </summary>
     /// <typeparam name="T">Class type</typeparam>
     public class SQLServerGenerator<T> : IGenerator<T>
-        where T : class,new()
+        where T : class
     {
         /// <summary>
         /// Constructor
@@ -47,11 +47,13 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <param name="QueryProvider">Query provider</param>
         /// <param name="Source">Source info</param>
         /// <param name="Mapping">Mapping info</param>
-        public SQLServerGenerator(SQLServerQueryProvider QueryProvider, ISourceInfo Source, IMapping Mapping)
+        /// <param name="Structure">The structure.</param>
+        public SQLServerGenerator(SQLServerQueryProvider QueryProvider, ISourceInfo Source, IMapping Mapping, Graph<IMapping> Structure)
         {
             this.QueryProvider = QueryProvider;
             this.Source = Source;
             this.Mapping = Mapping;
+            this.Structure = Structure;
         }
 
         /// <summary>
@@ -68,6 +70,12 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// Source used to connect
         /// </summary>
         protected ISourceInfo Source { get; private set; }
+
+        /// <summary>
+        /// Gets the structure.
+        /// </summary>
+        /// <value>The structure.</value>
+        protected Graph<IMapping> Structure { get; private set; }
 
         /// <summary>
         /// Generates a batch that will get all items for the given type the parameters specified
@@ -433,11 +441,12 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <param name="Mapping"></param>
         public void SetupCommands(IMapping<T> Mapping)
         {
-            SetupUpdate(Mapping);
-            SetupInsert(Mapping);
-            SetupDelete(Mapping);
-            SetupAllSelect(Mapping);
-            SetupAnySelect(Mapping);
+            var FinalNodes = FindChildren(Mapping, Structure.Copy());
+            SetupUpdate(Mapping, FinalNodes);
+            SetupInsert(Mapping, FinalNodes);
+            SetupDelete(Mapping, FinalNodes);
+            SetupAllSelect(Mapping, FinalNodes);
+            SetupAnySelect(Mapping, FinalNodes);
         }
 
         /// <summary>
@@ -445,7 +454,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// </summary>
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">Map property</param>
-        public void SetupLoadCommands<D>(Mapper.Default.Map<T, D> Property) where D : class, new()
+        public void SetupLoadCommands<D>(Mapper.Default.Map<T, D> Property) where D : class
         {
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
@@ -469,7 +478,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">IEnumerableManyToOne property</param>
         public void SetupLoadCommands<D>(Mapper.Default.IEnumerableManyToOne<T, D> Property)
-            where D : class, new()
+            where D : class
         {
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
@@ -493,7 +502,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">ListManyToOne property</param>
         public void SetupLoadCommands<D>(Mapper.Default.ListManyToOne<T, D> Property)
-                    where D : class, new()
+                    where D : class
         {
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
@@ -517,7 +526,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">ListManyToMany property</param>
         public void SetupLoadCommands<D>(Mapper.Default.ListManyToMany<T, D> Property)
-            where D : class, new()
+            where D : class
         {
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
@@ -541,7 +550,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">ManyToOne property</param>
         public void SetupLoadCommands<D>(Mapper.Default.ManyToOne<T, D> Property)
-            where D : class, new()
+            where D : class
         {
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
@@ -565,7 +574,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">ManyToMany property</param>
         public void SetupLoadCommands<D>(Mapper.Default.ManyToMany<T, D> Property)
-            where D : class, new()
+            where D : class
         {
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
@@ -589,7 +598,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">Map property</param>
         public void SetupLoadCommands<D>(Mapper.Default.IListManyToMany<T, D> Property)
-            where D : class, new()
+            where D : class
         {
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
@@ -612,7 +621,55 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// </summary>
         /// <typeparam name="D">Data type</typeparam>
         /// <param name="Property">Map property</param>
-        public void SetupLoadCommands<D>(Mapper.Default.IListManyToOne<T, D> Property) where D : class, new()
+        public void SetupLoadCommands<D>(Mapper.Default.IListManyToOne<T, D> Property) where D : class
+        {
+            if (string.IsNullOrEmpty(Property.LoadCommand))
+            {
+                IMapping ForeignMapping = Property.ForeignMapping;
+                Property.SetLoadUsingCommand(string.Format(CultureInfo.CurrentCulture, ForeignMapping.TableName == Mapping.TableName ?
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}2={1}.{3} WHERE {2}.{4}{5}=@0" :
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}={1}.{3} WHERE {2}.{4}{5}=@0",
+                    GetColumns(ForeignMapping),
+                    ForeignMapping.TableName,
+                    Property.TableName,
+                    ForeignMapping.IDProperties.FirstOrDefault().FieldName,
+                    Mapping.TableName,
+                    Mapping.IDProperties.FirstOrDefault().FieldName),
+                CommandType.Text);
+            }
+        }
+
+        /// <summary>
+        /// Sets up the default load command for a map property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">Map property</param>
+        public void SetupLoadCommands<D>(Mapper.Default.ICollectionManyToMany<T, D> Property)
+            where D : class
+        {
+            if (string.IsNullOrEmpty(Property.LoadCommand))
+            {
+                IMapping ForeignMapping = Property.ForeignMapping;
+                Property.SetLoadUsingCommand(string.Format(CultureInfo.CurrentCulture, ForeignMapping.TableName == Mapping.TableName ?
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}2={1}.{3} WHERE {2}.{4}{5}=@0" :
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}={1}.{3} WHERE {2}.{4}{5}=@0",
+                    GetColumns(ForeignMapping),
+                    ForeignMapping.TableName,
+                    Property.TableName,
+                    ForeignMapping.IDProperties.FirstOrDefault().FieldName,
+                    Mapping.TableName,
+                    Mapping.IDProperties.FirstOrDefault().FieldName),
+                CommandType.Text);
+            }
+        }
+
+        /// <summary>
+        /// Sets up the default load command for a map property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">Map property</param>
+        public void SetupLoadCommands<D>(Mapper.Default.ICollectionManyToOne<T, D> Property)
+            where D : class
         {
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
@@ -662,6 +719,29 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             return TempBatch;
         }
 
+        private static IEnumerable<IMapping> FindChildren(IMapping Mapping, Graph<IMapping> graph)
+        {
+            var ResultList = new List<IMapping>();
+            var StartingNodes = new Vertex<IMapping>[] { graph.Vertices.First(x => x.Data == Mapping) }.ToList();
+            while (StartingNodes.Count > 0)
+            {
+                var Vertex = StartingNodes.First();
+                StartingNodes.Remove(Vertex);
+                ResultList.AddIfUnique(Vertex.Data);
+                foreach (Edge<IMapping> Edge in Vertex.OutgoingEdges.ToList())
+                {
+                    Vertex<IMapping> Sink = Edge.Sink;
+                    Edge.Remove();
+                    if (Sink.IncomingEdges.Count == 0)
+                    {
+                        ResultList.AddIfUnique(Sink.Data);
+                        StartingNodes.AddIfUnique(Sink);
+                    }
+                }
+            }
+            return ResultList;
+        }
+
         private static string GetColumns(IMapping Mapping)
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
@@ -673,7 +753,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                           .ToString(x => x.TableName + "." + x.FieldName + " AS [" + x.Name + "]");
         }
 
-        private static void SetupAllSelect(IMapping<T> Mapping)
+        private static void SetupAllSelect(IMapping<T> Mapping, IEnumerable<IMapping> ParentMappings)
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             if (!string.IsNullOrEmpty(Mapping.SelectAllCommand))
@@ -685,7 +765,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 CommandType.Text);
         }
 
-        private static void SetupAnySelect(IMapping<T> Mapping)
+        private static void SetupAnySelect(IMapping<T> Mapping, IEnumerable<IMapping> ParentMappings)
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             if (!string.IsNullOrEmpty(Mapping.SelectAnyCommand))
@@ -697,7 +777,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 CommandType.Text);
         }
 
-        private static void SetupDelete(IMapping<T> Mapping)
+        private static void SetupDelete(IMapping<T> Mapping, IEnumerable<IMapping> ParentMappings)
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             if (!string.IsNullOrEmpty(Mapping.DeleteCommand))
@@ -718,11 +798,12 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 CommandType.Text);
         }
 
-        private static void SetupInsert(IMapping<T> Mapping)
+        private static void SetupInsert(IMapping Mapping, IEnumerable<IMapping> ParentMappings)
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             if (!string.IsNullOrEmpty(Mapping.InsertCommand))
                 return;
+
             string ParameterList = "";
             string ValueList = "";
             string Splitter = "";
@@ -756,7 +837,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 CommandType.Text);
         }
 
-        private static void SetupUpdate(IMapping<T> Mapping)
+        private static void SetupUpdate(IMapping<T> Mapping, IEnumerable<IMapping> ParentMappings)
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             if (!string.IsNullOrEmpty(Mapping.UpdateCommand))
@@ -788,54 +869,6 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                     ParameterList,
                     IDProperties),
                 CommandType.Text);
-        }
-
-        /// <summary>
-        /// Sets up the default load command for a map property
-        /// </summary>
-        /// <typeparam name="D">Data type</typeparam>
-        /// <param name="Property">Map property</param>
-        public void SetupLoadCommands<D>(Mapper.Default.ICollectionManyToMany<T, D> Property)
-            where D : class, new()
-        {
-            if (string.IsNullOrEmpty(Property.LoadCommand))
-            {
-                IMapping ForeignMapping = Property.ForeignMapping;
-                Property.SetLoadUsingCommand(string.Format(CultureInfo.CurrentCulture, ForeignMapping.TableName == Mapping.TableName ?
-                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}2={1}.{3} WHERE {2}.{4}{5}=@0" :
-                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}={1}.{3} WHERE {2}.{4}{5}=@0",
-                    GetColumns(ForeignMapping),
-                    ForeignMapping.TableName,
-                    Property.TableName,
-                    ForeignMapping.IDProperties.FirstOrDefault().FieldName,
-                    Mapping.TableName,
-                    Mapping.IDProperties.FirstOrDefault().FieldName),
-                CommandType.Text);
-            }
-        }
-
-        /// <summary>
-        /// Sets up the default load command for a map property
-        /// </summary>
-        /// <typeparam name="D">Data type</typeparam>
-        /// <param name="Property">Map property</param>
-        public void SetupLoadCommands<D>(Mapper.Default.ICollectionManyToOne<T, D> Property)
-            where D : class, new()
-        {
-            if (string.IsNullOrEmpty(Property.LoadCommand))
-            {
-                IMapping ForeignMapping = Property.ForeignMapping;
-                Property.SetLoadUsingCommand(string.Format(CultureInfo.CurrentCulture, ForeignMapping.TableName == Mapping.TableName ?
-                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}2={1}.{3} WHERE {2}.{4}{5}=@0" :
-                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}={1}.{3} WHERE {2}.{4}{5}=@0",
-                    GetColumns(ForeignMapping),
-                    ForeignMapping.TableName,
-                    Property.TableName,
-                    ForeignMapping.IDProperties.FirstOrDefault().FieldName,
-                    Mapping.TableName,
-                    Mapping.IDProperties.FirstOrDefault().FieldName),
-                CommandType.Text);
-            }
         }
     }
 }

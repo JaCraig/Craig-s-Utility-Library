@@ -19,6 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using Utilities.DataTypes;
 using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
@@ -47,8 +48,9 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <typeparam name="T">Class type to create the generator for</typeparam>
         /// <param name="Source">Source info</param>
         /// <param name="Mapping">Mapping info</param>
+        /// <param name="Structure">The structure.</param>
         /// <returns>Generator object</returns>
-        IGenerator<T> Generate<T>(ISourceInfo Source, IMapping Mapping)
-            where T : class,new();
+        IGenerator<T> Generate<T>(ISourceInfo Source, IMapping Mapping, Graph<IMapping> Structure)
+            where T : class;
     }
 }

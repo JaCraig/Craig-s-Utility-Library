@@ -159,6 +159,7 @@
     <Compile Include="Workflow\Workflows.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Key.snk" />
   </ItemGroup>
   <ItemGroup>

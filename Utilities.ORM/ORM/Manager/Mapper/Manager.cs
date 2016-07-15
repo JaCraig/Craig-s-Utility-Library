@@ -43,7 +43,9 @@ namespace Utilities.ORM.Manager.Mapper
         {
             Contract.Requires<ArgumentNullException>(Mappings != null, "Mappings");
             this.Mappings = new ListMapping<Type, IMapping>();
+            this.Structures = new Dictionary<Type, Graph<IMapping>>();
             Mappings.ForEach(x => this.Mappings.Add(x.ObjectType, x));
+            Mappings.GroupBy(x => x.DatabaseConfigType).ForEach(x => Structures.Add(x.Key, FindGraph(x)));
         }
 
         /// <summary>
@@ -52,19 +54,10 @@ namespace Utilities.ORM.Manager.Mapper
         protected ListMapping<Type, IMapping> Mappings { get; private set; }
 
         /// <summary>
-        /// Gets the mapping specified by the object type
+        /// Gets the structures.
         /// </summary>
-        /// <param name="Key">The object type</param>
-        /// <returns>The mapping specified</returns>
-        public IEnumerable<IMapping> this[Type Key] { get { return Mappings.GetValue(Key).Check(new ConcurrentBag<IMapping>()); } }
-
-        /// <summary>
-        /// Gets the mapping specified by the object type and source
-        /// </summary>
-        /// <param name="Key">The object type</param>
-        /// <param name="Source">Source information</param>
-        /// <returns>The mapping specified</returns>
-        public IMapping this[Type Key, ISourceInfo Source] { get { return this[Key].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType()); } }
+        /// <value>The structures.</value>
+        protected Dictionary<Type, Graph<IMapping>> Structures { get; private set; }
 
         /// <summary>
         /// Gets the enumerator for the mappings
@@ -80,6 +73,14 @@ namespace Utilities.ORM.Manager.Mapper
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the <see cref="Graph{IMapping}"/> with the specified key.
+        /// </summary>
+        /// <param name="Key">The key.</param>
+        /// <returns></returns>
+        /// <value>The <see cref="Graph{IMapping}"/>.</value>
+        public Graph<IMapping> GetStructure(Type Key) => Structures.GetValue(Key) ?? new Graph<IMapping>();
 
         /// <summary>
         /// Gets the enumerator for the mappings
@@ -104,5 +105,62 @@ namespace Utilities.ORM.Manager.Mapper
         {
             return "Mappers: " + Mappings.ToString(x => x.Value.OrderBy(y => y.ToString()).ToString(y => y.ToString())) + "\r\n";
         }
+
+        /// <summary>
+        /// Finds the graph.
+        /// </summary>
+        /// <param name="mappings">The mappings.</param>
+        /// <returns>The graph for the list of mappings</returns>
+        private Graph<IMapping> FindGraph(IEnumerable<IMapping> mappings)
+        {
+            var Graph = new Graph<IMapping>();
+            foreach (var Mapping in mappings)
+            {
+                Graph.AddVertex(Mapping);
+            }
+            foreach (var Mapping in mappings)
+            {
+                Type ObjectType = Mapping.ObjectType;
+                Type BaseType = ObjectType.BaseType;
+                while (BaseType != typeof(object)
+                    && BaseType != null)
+                {
+                    var BaseMapping = mappings.FirstOrDefault(x => x.ObjectType == BaseType);
+                    if (BaseMapping != null)
+                    {
+                        var SinkVertex = Graph.Vertices.First(x => x.Data == BaseMapping);
+                        var SourceVertex = Graph.Vertices.First(x => x.Data == Mapping);
+                        SourceVertex.AddOutgoingEdge(SinkVertex);
+                    }
+                    BaseType = BaseType.BaseType;
+                }
+                foreach (Type Interface in ObjectType.GetInterfaces())
+                {
+                    var BaseMapping = mappings.FirstOrDefault(x => x.ObjectType == Interface);
+                    if (BaseMapping != null)
+                    {
+                        var SinkVertex = Graph.Vertices.First(x => x.Data == BaseMapping);
+                        var SourceVertex = Graph.Vertices.First(x => x.Data == Mapping);
+                        SourceVertex.AddOutgoingEdge(SinkVertex);
+                    }
+                }
+            }
+            return Graph;
+        }
+
+        /// <summary>
+        /// Gets the mapping specified by the object type
+        /// </summary>
+        /// <param name="Key">The object type</param>
+        /// <returns>The mapping specified</returns>
+        public IEnumerable<IMapping> this[Type Key] { get { return Mappings.GetValue(Key) ?? new ConcurrentBag<IMapping>(); } }
+
+        /// <summary>
+        /// Gets the mapping specified by the object type and source
+        /// </summary>
+        /// <param name="Key">The object type</param>
+        /// <param name="Source">Source information</param>
+        /// <returns>The mapping specified</returns>
+        public IMapping this[Type Key, ISourceInfo Source] { get { return this[Key].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType()); } }
     }
 }

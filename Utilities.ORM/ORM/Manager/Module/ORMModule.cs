@@ -24,7 +24,6 @@ using Utilities.IoC.Interfaces;
 using Utilities.ORM.Aspect;
 using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.Mapper.Interfaces;
-using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Interfaces;
 
 namespace Utilities.ORM.Manager.Module
@@ -51,8 +50,8 @@ namespace Utilities.ORM.Manager.Module
             Bootstrapper.RegisterAll<IMapping>();
             Bootstrapper.Register(new Mapper.Manager(Bootstrapper.ResolveAll<IMapping>()));
 
-            Bootstrapper.RegisterAll<Utilities.ORM.Manager.QueryProvider.Interfaces.IQueryProvider>();
-            Bootstrapper.Register(new QueryProvider.Manager(Bootstrapper.ResolveAll<Utilities.ORM.Manager.QueryProvider.Interfaces.IQueryProvider>()));
+            Bootstrapper.RegisterAll<QueryProvider.Interfaces.IQueryProvider>();
+            Bootstrapper.Register(new QueryProvider.Manager(Bootstrapper.ResolveAll<QueryProvider.Interfaces.IQueryProvider>()));
 
             Bootstrapper.RegisterAll<IDatabase>();
             Bootstrapper.Register(new SourceProvider.Manager(Bootstrapper.ResolveAll<IDatabase>()));
@@ -67,7 +66,7 @@ namespace Utilities.ORM.Manager.Module
                 Bootstrapper.ResolveAll<IDatabase>()));
 
             ORMAspect.Mapper = Bootstrapper.Resolve<Mapper.Manager>();
-            Bootstrapper.Resolve<Utilities.DataTypes.AOP.Manager>().Setup(ORMAspect.Mapper.Select(x => x.ObjectType).ToArray());
+            Bootstrapper.Resolve<DataTypes.AOP.Manager>().Setup(ORMAspect.Mapper.Select(x => x.ObjectType).ToArray());
         }
     }
 }

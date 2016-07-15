@@ -47,7 +47,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         {
             this.SQLCommand = SQLCommand;
             this.CommandType = CommandType;
-            this.CallBack = CallBack.Check((x, y) => { });
+            this.CallBack = CallBack ?? ((x, y) => { });
             this.Object = Object;
             this.Parameters = Parameters.Check(new IParameter[0]);
             this.Finalizable = SQLCommand.Check("").ToUpperInvariant().Contains("SELECT");
@@ -67,7 +67,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
             this.SQLCommand = SQLCommand;
             this.CommandType = CommandType;
             this.Parameters = new List<IParameter>();
-            this.CallBack = CallBack.Check((x, y) => { });
+            this.CallBack = CallBack ?? ((x, y) => { });
             this.Object = Object;
             this.Finalizable = SQLCommand.Check("").ToUpperInvariant().Contains("SELECT");
             if (Parameters != null)

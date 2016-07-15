@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -45,14 +44,9 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <param name="Source">Source info</param>
         public DatabaseBatch(ISourceInfo Source)
         {
-            this.Commands = new List<Command>();
+            Commands = new List<Command>();
             this.Source = Source;
         }
-
-        /// <summary>
-        /// Used to parse SQL commands to find parameters (when batching)
-        /// </summary>
-        private static readonly Regex ParameterRegex = new Regex(@"[^@](?<ParamStart>[:@?])(?<ParamName>\w+)", RegexOptions.Compiled);
 
         /// <summary>
         /// Command count
@@ -68,6 +62,11 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// Connection string
         /// </summary>
         protected ISourceInfo Source { get; set; }
+
+        /// <summary>
+        /// Used to parse SQL commands to find parameters (when batching)
+        /// </summary>
+        private static readonly Regex ParameterRegex = new Regex(@"[^@](?<ParamStart>[:@?])(?<ParamName>\w+)", RegexOptions.Compiled);
 
         /// <summary>
         /// Adds a command to be batched
@@ -152,7 +151,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <returns></returns>
         public override string ToString()
         {
-            return Commands.ToString(x => x.ToString(), System.Environment.NewLine);
+            return Commands.ToString(x => x.ToString(), Environment.NewLine);
         }
 
         private static IList<dynamic> GetValues(DbDataReader TempReader)
@@ -178,7 +177,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
 
         private IList<IList<dynamic>> ExecuteCommands()
         {
-            Contract.Requires(this.Source != null);
+            Contract.Requires(Source != null);
             if (Commands == null)
                 return new List<IList<dynamic>>();
             var ReturnValue = new List<IList<dynamic>>();
@@ -216,7 +215,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
                                 if (ParameterTotal + Command.Parameters.Count > 2100)
                                     break;
                                 ParameterTotal += Command.Parameters.Count;
-                                if (Command.CommandType == System.Data.CommandType.Text)
+                                if (Command.CommandType == CommandType.Text)
                                 {
                                     FinalSQLCommand += string.IsNullOrEmpty(Command.SQLCommand) ?
                                                         "" :
@@ -225,7 +224,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
                                                             if (!x.Value.StartsWith("@@", StringComparison.Ordinal))
                                                                 return x.Value + "Command" + Count.ToString(CultureInfo.InvariantCulture);
                                                             return x.Value;
-                                                        }) + System.Environment.NewLine;
+                                                        }) + Environment.NewLine;
                                     foreach (IParameter Parameter in Command.Parameters)
                                     {
                                         FinalParameters.Add(Parameter.CreateCopy("Command" + Count.ToString(CultureInfo.InvariantCulture)));
@@ -233,7 +232,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
                                 }
                                 else
                                 {
-                                    FinalSQLCommand += Command.SQLCommand + System.Environment.NewLine;
+                                    FinalSQLCommand += Command.SQLCommand + Environment.NewLine;
                                     foreach (IParameter Parameter in Command.Parameters)
                                     {
                                         FinalParameters.Add(Parameter.CreateCopy(""));

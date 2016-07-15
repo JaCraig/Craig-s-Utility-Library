@@ -34,23 +34,6 @@ namespace Utilities.Web.Streams
     public class UglyStream : Stream
     {
         /// <summary>
-        /// Compression using
-        /// </summary>
-        private CompressionType Compression;
-
-        /// <summary>
-        /// Final output string
-        /// </summary>
-        private string FinalString;
-
-        /// <summary>
-        /// Stream using
-        /// </summary>
-        private Stream StreamUsing;
-
-        private MinificationType Type;
-
-        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="StreamUsing">The stream for the page</param>
@@ -109,6 +92,23 @@ namespace Utilities.Web.Streams
                 throw new NotImplementedException();
             }
         }
+
+        /// <summary>
+        /// Compression using
+        /// </summary>
+        private CompressionType Compression;
+
+        /// <summary>
+        /// Final output string
+        /// </summary>
+        private string FinalString;
+
+        /// <summary>
+        /// Stream using
+        /// </summary>
+        private Stream StreamUsing;
+
+        private MinificationType Type;
 
         /// <summary>
         /// Nothing to flush

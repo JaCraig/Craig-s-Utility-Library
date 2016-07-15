@@ -67,12 +67,13 @@ namespace Utilities.ORM.Manager.QueryProvider
         /// <typeparam name="T">Class type the generator uses</typeparam>
         /// <param name="Source">Source to use</param>
         /// <param name="Mapping">Mapping info</param>
+        /// <param name="Structure">The structure.</param>
         /// <returns>The generator object</returns>
-        public IGenerator<T> Generate<T>(ISourceInfo Source, IMapping Mapping)
-            where T : class,new()
+        public IGenerator<T> Generate<T>(ISourceInfo Source, IMapping Mapping, Graph<IMapping> Structure)
+            where T : class
         {
             Contract.Requires<ArgumentNullException>(Source != null, "Source");
-            return Providers.ContainsKey(Source.SourceType) ? Providers[Source.SourceType].Generate<T>(Source, Mapping) : null;
+            return Providers.ContainsKey(Source.SourceType) ? Providers[Source.SourceType].Generate<T>(Source, Mapping, Structure) : null;
         }
 
         /// <summary>

@@ -61,10 +61,6 @@ namespace Utilities.IoC
             }
         }
 
-        private static Manager _Instance = new Manager();
-
-        private static object Temp = 1;
-
         /// <summary>
         /// Gets the instance of the manager
         /// </summary>
@@ -90,6 +86,10 @@ namespace Utilities.IoC
         /// Bootstrapper object
         /// </summary>
         protected IBootstrapper InternalBootstrapper { get; private set; }
+
+        private static Manager _Instance = new Manager();
+
+        private static object Temp = 1;
 
         /// <summary>
         /// Disposes of the object
@@ -190,9 +190,13 @@ namespace Utilities.IoC
                                                       && !x.FullName.StartsWith("Microsoft.", StringComparison.InvariantCultureIgnoreCase)
                                                       && !Assemblies.Any(y => string.Equals(y.FullName, x.FullName, StringComparison.InvariantCultureIgnoreCase))))
             {
-                var TempAssembly = AppDomain.CurrentDomain.Load(Name);
-                Assemblies.Add(TempAssembly);
-                LoadAssemblies(Assemblies, TempAssembly.GetReferencedAssemblies());
+                try
+                {
+                    var TempAssembly = AppDomain.CurrentDomain.Load(Name);
+                    Assemblies.Add(TempAssembly);
+                    LoadAssemblies(Assemblies, TempAssembly.GetReferencedAssemblies());
+                }
+                catch { }
             }
         }
 
