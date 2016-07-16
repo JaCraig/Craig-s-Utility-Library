@@ -123,6 +123,8 @@ namespace Ironman.Core.Plugins
             Delete(new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/plugins/Loaded/"));
             new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/plugins/Loaded").Create();
             PluginList = PluginList.Load();
+            if (PluginList.Plugins == null)
+                PluginList.Plugins = new List<Plugin>();
             foreach (Plugin TempPlugin in PluginList.Plugins)
             {
                 TempPlugin.Initialize();

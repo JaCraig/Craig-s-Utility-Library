@@ -22,10 +22,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using Utilities.ORM.Interfaces;
-using Utilities.ORM.Manager.Schema.Default.Database;
-using Utilities.ORM.Manager.Schema.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
 using Xunit;
 
@@ -69,6 +66,12 @@ namespace UnitTests.ORM
                 Temp.AddCommand(null, null, CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE")
                         .AddCommand(null, null, CommandType.Text, "ALTER DATABASE TestDatabase SET ONLINE")
                         .AddCommand(null, null, CommandType.Text, "DROP DATABASE TestDatabase")
+                        .AddCommand(null, null, CommandType.Text, "ALTER DATABASE SessionTestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE")
+                        .AddCommand(null, null, CommandType.Text, "ALTER DATABASE SessionTestDatabase SET ONLINE")
+                        .AddCommand(null, null, CommandType.Text, "DROP DATABASE SessionTestDatabase")
+                        .AddCommand(null, null, CommandType.Text, "ALTER DATABASE SessionWithInterfaceTestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE")
+                        .AddCommand(null, null, CommandType.Text, "ALTER DATABASE SessionWithInterfaceTestDatabase SET ONLINE")
+                        .AddCommand(null, null, CommandType.Text, "DROP DATABASE SessionWithInterfaceTestDatabase")
                         .Execute();
             }
             catch { }
