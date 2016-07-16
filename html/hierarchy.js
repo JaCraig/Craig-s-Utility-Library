@@ -85,6 +85,7 @@ var hierarchy =
     [ "Dynamo", null, [
       [ "Utilities.DataTypes.Dynamo< T >", "class_utilities_1_1_data_types_1_1_dynamo.html", null ]
     ] ],
+    [ "Utilities.DataTypes.Edge< T >", "class_utilities_1_1_data_types_1_1_edge.html", null ],
     [ "Utilities.IO.FileFormats.RSS.Enclosure", "class_utilities_1_1_i_o_1_1_file_formats_1_1_r_s_s_1_1_enclosure.html", null ],
     [ "EventArgs", null, [
       [ "Utilities.DataTypes.EventArgs.BaseEventArgs", "class_utilities_1_1_data_types_1_1_event_args_1_1_base_event_args.html", [
@@ -312,6 +313,9 @@ var hierarchy =
       [ "Utilities.IO.FileSystem.Interfaces.IDirectory", "interface_utilities_1_1_i_o_1_1_file_system_1_1_interfaces_1_1_i_directory.html", null ],
       [ "Utilities.ORM.Manager.Mapper.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_manager.html", null ],
       [ "Utilities.ORM.Manager.SourceProvider.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_source_provider_1_1_manager.html", null ]
+    ] ],
+    [ "IEnumerable< Vertex< T >>", null, [
+      [ "Utilities.DataTypes.Graph< T >", "class_utilities_1_1_data_types_1_1_graph.html", null ]
     ] ],
     [ "IEqualityComparer", null, [
       [ "Utilities.DataTypes.Comparison.GenericEqualityComparer< T >", "class_utilities_1_1_data_types_1_1_comparison_1_1_generic_equality_comparer.html", null ],
@@ -624,15 +628,15 @@ var hierarchy =
     [ "Utilities.IO.Logging.BaseClasses.LogBase< DefaultLog >", "class_utilities_1_1_i_o_1_1_logging_1_1_base_classes_1_1_log_base.html", [
       [ "Utilities.IO.Logging.Default.DefaultLog", "class_utilities_1_1_i_o_1_1_logging_1_1_default_1_1_default_log.html", null ]
     ] ],
-    [ "Utilities.IO.Compression.Manager", "class_utilities_1_1_i_o_1_1_compression_1_1_manager.html", null ],
+    [ "Utilities.DataTypes.DataMapper.Manager", "class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html", null ],
+    [ "Utilities.IO.Encryption.Manager", "class_utilities_1_1_i_o_1_1_encryption_1_1_manager.html", null ],
     [ "Utilities.ORM.Manager.QueryProvider.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_manager.html", null ],
     [ "Utilities.ORM.Manager.Schema.Manager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_manager.html", null ],
-    [ "Utilities.IO.Serializers.Manager", "class_utilities_1_1_i_o_1_1_serializers_1_1_manager.html", null ],
     [ "Utilities.DataTypes.AOP.Manager", "class_utilities_1_1_data_types_1_1_a_o_p_1_1_manager.html", null ],
     [ "Utilities.DataTypes.Conversion.Manager", "class_utilities_1_1_data_types_1_1_conversion_1_1_manager.html", null ],
-    [ "Utilities.IO.Encryption.Manager", "class_utilities_1_1_i_o_1_1_encryption_1_1_manager.html", null ],
     [ "Utilities.IO.Messaging.Manager", "class_utilities_1_1_i_o_1_1_messaging_1_1_manager.html", null ],
-    [ "Utilities.DataTypes.DataMapper.Manager", "class_utilities_1_1_data_types_1_1_data_mapper_1_1_manager.html", null ],
+    [ "Utilities.IO.Compression.Manager", "class_utilities_1_1_i_o_1_1_compression_1_1_manager.html", null ],
+    [ "Utilities.IO.Serializers.Manager", "class_utilities_1_1_i_o_1_1_serializers_1_1_manager.html", null ],
     [ "Utilities.DataTypes.Matrix", "class_utilities_1_1_data_types_1_1_matrix.html", null ],
     [ "Utilities.DataTypes.AI.NaiveBayes< T >", "class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html", null ],
     [ "Utilities.ORM.Manager.ORMManager", "class_utilities_1_1_o_r_m_1_1_manager_1_1_o_r_m_manager.html", null ],
@@ -748,5 +752,6 @@ var hierarchy =
       [ "Utilities.Validation.NotEmptyAttribute", "class_utilities_1_1_validation_1_1_not_empty_attribute.html", null ],
       [ "Utilities.Validation.NotInRangeAttribute", "class_utilities_1_1_validation_1_1_not_in_range_attribute.html", null ]
     ] ],
-    [ "Utilities.DataTypes.Vector3", "class_utilities_1_1_data_types_1_1_vector3.html", null ]
+    [ "Utilities.DataTypes.Vector3", "class_utilities_1_1_data_types_1_1_vector3.html", null ],
+    [ "Utilities.DataTypes.Vertex< T >", "class_utilities_1_1_data_types_1_1_vertex.html", null ]
 ];

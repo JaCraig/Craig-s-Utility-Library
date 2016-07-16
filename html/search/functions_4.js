@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['edge',['Edge',['../class_utilities_1_1_data_types_1_1_edge.html#a3d1aa5af1f6804fb0162eb1dd71144da',1,'Utilities::DataTypes::Edge']]],
   ['emailaddressgenerator',['EmailAddressGenerator',['../class_utilities_1_1_random_1_1_contact_info_generators_1_1_email_address_generator.html#a868fad2490d79acf282d731325812d18',1,'Utilities::Random::ContactInfoGenerators::EmailAddressGenerator']]],
   ['emailmessage',['EmailMessage',['../class_utilities_1_1_i_o_1_1_email_message.html#a639974c0f4feb5fbdea351df5c15d429',1,'Utilities::IO::EmailMessage']]],
   ['emptyattribute',['EmptyAttribute',['../class_utilities_1_1_validation_1_1_empty_attribute.html#a6db6ca831ad014455e32fc8358682421',1,'Utilities::Validation::EmptyAttribute']]],

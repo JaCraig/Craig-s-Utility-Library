@@ -1,5 +1,13 @@
 var NAVTREEINDEX4 =
 {
+"class_utilities_1_1_configuration_1_1_manager_1_1_module_1_1_config_system_module.html#a7eaefd7739f90c2778834cc53aaa0838":[1,0,0,0,0,3,0,0],
+"class_utilities_1_1_configuration_1_1_manager_1_1_module_1_1_config_system_module.html#a916d0dccc6a3cec147eacb494f0c6d50":[1,0,0,0,0,3,0,1],
+"class_utilities_1_1_configuration_1_1_x_m_l_config.html":[1,0,0,0,3],
+"class_utilities_1_1_configuration_1_1_x_m_l_config.html#a052adbcee8967e89c09c57f364b3e7e6":[1,0,0,0,3,0],
+"class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html":[1,0,0,1,0,0],
+"class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html#a0eb31d216e5bc7d3c6a9f91913a4d5ac":[1,0,0,1,0,0,1],
+"class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html#a311ec3572d063fff4655386d151edb22":[1,0,0,1,0,0,12],
+"class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html#a417d9ade18a729a4e8b93bc21d0a76fc":[1,0,0,1,0,0,14],
 "class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html#a57ae43a2f4d65aef3753f89a03f61b84":[1,0,0,1,0,0,2],
 "class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html#a5e87ea51e1be7908db75d80b28880fa4":[1,0,0,1,0,0,6],
 "class_utilities_1_1_data_types_1_1_a_i_1_1_naive_bayes.html#a62ca1e3472d1fbbddf81bb285ea4557a":[1,0,0,1,0,0,7],
@@ -241,13 +249,5 @@ var NAVTREEINDEX4 =
 "class_utilities_1_1_data_types_1_1_conversion_1_1_manager.html":[1,0,0,1,5,2],
 "class_utilities_1_1_data_types_1_1_conversion_1_1_manager.html#a549773177b0a0b7e00625521561bb21b":[1,0,0,1,5,2,0],
 "class_utilities_1_1_data_types_1_1_conversion_1_1_manager.html#a77dc078b2ce65048ad73cadf3cdc1d21":[1,0,0,1,5,2,1],
-"class_utilities_1_1_data_types_1_1_conversion_1_1_module_1_1_conversion_module.html":[1,0,0,1,5,1,0],
-"class_utilities_1_1_data_types_1_1_conversion_1_1_module_1_1_conversion_module.html#a3e3e721beee0c44e47b49f404820f642":[1,0,0,1,5,1,0,0],
-"class_utilities_1_1_data_types_1_1_conversion_1_1_module_1_1_conversion_module.html#aa4fde85e2a51c20a581fe72fb90c5c12":[1,0,0,1,5,1,0,1],
-"class_utilities_1_1_data_types_1_1_data_mapper_1_1_base_classes_1_1_data_mapper_base.html":[1,0,0,1,6,0,0],
-"class_utilities_1_1_data_types_1_1_data_mapper_1_1_base_classes_1_1_data_mapper_base.html#a3a44a72704064e0b079e136b94e5d83f":[1,0,0,1,6,0,0,5],
-"class_utilities_1_1_data_types_1_1_data_mapper_1_1_base_classes_1_1_data_mapper_base.html#a43d44a68f97c8be9f9def1d0f7b73276":[1,0,0,1,6,0,0,0],
-"class_utilities_1_1_data_types_1_1_data_mapper_1_1_base_classes_1_1_data_mapper_base.html#aabb87b8f9a4950d994438db86e3e67d8":[1,0,0,1,6,0,0,7],
-"class_utilities_1_1_data_types_1_1_data_mapper_1_1_base_classes_1_1_data_mapper_base.html#ab2af1defcfb4452061d68ff2306f09b4":[1,0,0,1,6,0,0,2],
-"class_utilities_1_1_data_types_1_1_data_mapper_1_1_base_classes_1_1_data_mapper_base.html#ab9456def30831fc77e0587753c1008ab":[1,0,0,1,6,0,0,6]
+"class_utilities_1_1_data_types_1_1_conversion_1_1_module_1_1_conversion_module.html":[1,0,0,1,5,1,0]
 };

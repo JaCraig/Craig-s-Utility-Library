@@ -56,13 +56,14 @@ var searchData=
   ['originalvalue',['OriginalValue',['../class_utilities_1_1_data_types_1_1_change.html#a40ee4d2795fc140bb2e12da4d46d39fd',1,'Utilities::DataTypes::Change']]],
   ['ormaspect',['ORMAspect',['../class_utilities_1_1_o_r_m_1_1_aspect_1_1_o_r_m_aspect.html',1,'Utilities::ORM::Aspect']]],
   ['ormaspect_2ecs',['ORMAspect.cs',['../_o_r_m_aspect_8cs.html',1,'']]],
-  ['ormmanager',['ORMManager',['../class_utilities_1_1_o_r_m_1_1_manager_1_1_o_r_m_manager.html#a7dc3ac2aa2a72b9b573266c73e09d777',1,'Utilities::ORM::Manager::ORMManager']]],
   ['ormmanager',['ORMManager',['../class_utilities_1_1_o_r_m_1_1_manager_1_1_o_r_m_manager.html',1,'Utilities::ORM::Manager']]],
+  ['ormmanager',['ORMManager',['../class_utilities_1_1_o_r_m_1_1_manager_1_1_o_r_m_manager.html#a7dc3ac2aa2a72b9b573266c73e09d777',1,'Utilities::ORM::Manager::ORMManager']]],
   ['ormmanager_2ecs',['ORMManager.cs',['../_o_r_m_manager_8cs.html',1,'']]],
   ['ormmodule',['ORMModule',['../class_utilities_1_1_o_r_m_1_1_manager_1_1_module_1_1_o_r_m_module.html',1,'Utilities::ORM::Manager::Module']]],
   ['ormmodule_2ecs',['ORMModule.cs',['../_o_r_m_module_8cs.html',1,'']]],
-  ['orparameter',['OrParameter',['../class_utilities_1_1_o_r_m_1_1_parameters_1_1_or_parameter.html#aa356e6cc6a99a8758840ac6d0f700b95',1,'Utilities::ORM::Parameters::OrParameter']]],
   ['orparameter',['OrParameter',['../class_utilities_1_1_o_r_m_1_1_parameters_1_1_or_parameter.html',1,'Utilities::ORM::Parameters']]],
+  ['orparameter',['OrParameter',['../class_utilities_1_1_o_r_m_1_1_parameters_1_1_or_parameter.html#aa356e6cc6a99a8758840ac6d0f700b95',1,'Utilities::ORM::Parameters::OrParameter']]],
   ['orparameter_2ecs',['OrParameter.cs',['../_or_parameter_8cs.html',1,'']]],
+  ['outgoingedges',['OutgoingEdges',['../class_utilities_1_1_data_types_1_1_vertex.html#a5fe86be8f9b7df18e1cdd9289d303d5c',1,'Utilities::DataTypes::Vertex']]],
   ['overlap',['Overlap',['../class_utilities_1_1_data_types_1_1_date_span.html#aabad7caed84c8dca1ee04d0a9a00723d',1,'Utilities::DataTypes::DateSpan']]]
 ];

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['data',['Data',['../class_utilities_1_1_media_1_1_swift_bitmap.html#aee4cb77c5c788984bb644c39800aa281',1,'Utilities::Media::SwiftBitmap']]],
+  ['data',['Data',['../class_utilities_1_1_data_types_1_1_vertex.html#aabf2e78fffa773a3d6f5516155601123',1,'Utilities.DataTypes.Vertex.Data()'],['../class_utilities_1_1_media_1_1_swift_bitmap.html#aee4cb77c5c788984bb644c39800aa281',1,'Utilities.Media.SwiftBitmap.Data()']]],
   ['database',['Database',['../class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_database.html',1,'Utilities::ORM::Manager::Schema::Default::Database']]],
   ['database',['Database',['../interface_utilities_1_1_o_r_m_1_1_manager_1_1_source_provider_1_1_interfaces_1_1_i_source_info.html#ae384c8aaafdc8b3899a18c9b32bcfffd',1,'Utilities.ORM.Manager.SourceProvider.Interfaces.ISourceInfo.Database()'],['../class_utilities_1_1_o_r_m_1_1_manager_1_1_source_provider_1_1_source_info.html#a6eeb0031d137e15ec77071a8ef1bcabb',1,'Utilities.ORM.Manager.SourceProvider.SourceInfo.Database()'],['../class_utilities_1_1_o_r_m_1_1_manager_1_1_schema_1_1_default_1_1_database_1_1_database.html#a6a47faf5438ef106a174e5e11e5c7132',1,'Utilities.ORM.Manager.Schema.Default.Database.Database.Database()']]],
   ['database_2ecs',['Database.cs',['../_database_8cs.html',1,'']]],

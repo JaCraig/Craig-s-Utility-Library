@@ -9,6 +9,6 @@ var class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_collectio
     [ "GetParameter", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_collection_many_to_one.html#a60b88103609fed39893f8f6167f68bf2", null ],
     [ "JoinsDelete", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_collection_many_to_one.html#a2dbefa23bf6f34b84c5eef56ee898f7c", null ],
     [ "JoinsSave", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_collection_many_to_one.html#acb0db9f5af71874a38150727d2631aa6", null ],
-    [ "Setup", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_collection_many_to_one.html#a5ee4f02fc929a1bf110ccd563d2b92e4", null ],
+    [ "Setup", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_collection_many_to_one.html#a5f339c597587db3035e75f9819ebdce5", null ],
     [ "TypeName", "class_utilities_1_1_o_r_m_1_1_manager_1_1_mapper_1_1_default_1_1_i_collection_many_to_one.html#a9f48bc1bc8191c7af7f3bd7e7fa3886d", null ]
 ];

@@ -29,6 +29,11 @@ var dir_ca0426833ed64f488ae0419fd1a98fec =
     [ "Fraction.cs", "_fraction_8cs.html", [
       [ "Fraction", "class_utilities_1_1_data_types_1_1_fraction.html", "class_utilities_1_1_data_types_1_1_fraction" ]
     ] ],
+    [ "Graph.cs", "_graph_8cs.html", [
+      [ "Edge", "class_utilities_1_1_data_types_1_1_edge.html", "class_utilities_1_1_data_types_1_1_edge" ],
+      [ "Graph", "class_utilities_1_1_data_types_1_1_graph.html", "class_utilities_1_1_data_types_1_1_graph" ],
+      [ "Vertex", "class_utilities_1_1_data_types_1_1_vertex.html", "class_utilities_1_1_data_types_1_1_vertex" ]
+    ] ],
     [ "ListMapping.cs", "_list_mapping_8cs.html", [
       [ "ListMapping", "class_utilities_1_1_data_types_1_1_list_mapping.html", "class_utilities_1_1_data_types_1_1_list_mapping" ]
     ] ],

@@ -1,6 +1,6 @@
 var class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_s_q_l_server_1_1_s_q_l_server_generator =
 [
-    [ "SQLServerGenerator", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_s_q_l_server_1_1_s_q_l_server_generator.html#a79f60d19f429b79c57de2d99c8afa048", null ],
+    [ "SQLServerGenerator", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_s_q_l_server_1_1_s_q_l_server_generator.html#a1854bf3e90fba4c79515ca2e6bc4e831", null ],
     [ "All", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_s_q_l_server_1_1_s_q_l_server_generator.html#a93a3576ce675a506349fa3edfc2c875f", null ],
     [ "All", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_s_q_l_server_1_1_s_q_l_server_generator.html#a7402da40d886c0c72127f3a34601c7d0", null ],
     [ "Any", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_s_q_l_server_1_1_s_q_l_server_generator.html#a54c27d60aa277f91eb28376445f198bb", null ],
@@ -29,5 +29,6 @@ var class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_s_q
     [ "Update", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_s_q_l_server_1_1_s_q_l_server_generator.html#a3bd38d03c28da9887643ddeff1a91b4d", null ],
     [ "Mapping", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_s_q_l_server_1_1_s_q_l_server_generator.html#aff2e550c26226425b36d840a6f2a83b5", null ],
     [ "QueryProvider", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_s_q_l_server_1_1_s_q_l_server_generator.html#a8f8b28edc172502d17014bc17e3575df", null ],
-    [ "Source", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_s_q_l_server_1_1_s_q_l_server_generator.html#af77349411ce6a9741ea417d97a9ea361", null ]
+    [ "Source", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_s_q_l_server_1_1_s_q_l_server_generator.html#af77349411ce6a9741ea417d97a9ea361", null ],
+    [ "Structure", "class_utilities_1_1_o_r_m_1_1_manager_1_1_query_provider_1_1_default_1_1_s_q_l_server_1_1_s_q_l_server_generator.html#ad656c24d1fa4b0af6091f49c7a9436ff", null ]
 ];

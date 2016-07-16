@@ -15,7 +15,9 @@ var namespace_utilities_1_1_data_types =
     [ "Change", "class_utilities_1_1_data_types_1_1_change.html", "class_utilities_1_1_data_types_1_1_change" ],
     [ "DateSpan", "class_utilities_1_1_data_types_1_1_date_span.html", "class_utilities_1_1_data_types_1_1_date_span" ],
     [ "Dynamo", "class_utilities_1_1_data_types_1_1_dynamo.html", "class_utilities_1_1_data_types_1_1_dynamo" ],
+    [ "Edge", "class_utilities_1_1_data_types_1_1_edge.html", "class_utilities_1_1_data_types_1_1_edge" ],
     [ "Fraction", "class_utilities_1_1_data_types_1_1_fraction.html", "class_utilities_1_1_data_types_1_1_fraction" ],
+    [ "Graph", "class_utilities_1_1_data_types_1_1_graph.html", "class_utilities_1_1_data_types_1_1_graph" ],
     [ "ListMapping", "class_utilities_1_1_data_types_1_1_list_mapping.html", "class_utilities_1_1_data_types_1_1_list_mapping" ],
     [ "Matrix", "class_utilities_1_1_data_types_1_1_matrix.html", "class_utilities_1_1_data_types_1_1_matrix" ],
     [ "ObservableList", "class_utilities_1_1_data_types_1_1_observable_list.html", "class_utilities_1_1_data_types_1_1_observable_list" ],
@@ -28,5 +30,6 @@ var namespace_utilities_1_1_data_types =
     [ "TagDictionary", "class_utilities_1_1_data_types_1_1_tag_dictionary.html", "class_utilities_1_1_data_types_1_1_tag_dictionary" ],
     [ "TaskQueue", "class_utilities_1_1_data_types_1_1_task_queue.html", "class_utilities_1_1_data_types_1_1_task_queue" ],
     [ "TreeNode", "class_utilities_1_1_data_types_1_1_tree_node.html", "class_utilities_1_1_data_types_1_1_tree_node" ],
-    [ "Vector3", "class_utilities_1_1_data_types_1_1_vector3.html", "class_utilities_1_1_data_types_1_1_vector3" ]
+    [ "Vector3", "class_utilities_1_1_data_types_1_1_vector3.html", "class_utilities_1_1_data_types_1_1_vector3" ],
+    [ "Vertex", "class_utilities_1_1_data_types_1_1_vertex.html", "class_utilities_1_1_data_types_1_1_vertex" ]
 ];
