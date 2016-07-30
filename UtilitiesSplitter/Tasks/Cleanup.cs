@@ -34,7 +34,7 @@ namespace UtilitiesSplitter.Tasks
         /// </returns>
         public bool Run(bool PushToNuget)
         {
-            new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\Packages\\").Delete();
+            //new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\Packages\\").Delete();
             new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\lib").Delete();
             new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\tools").Delete();
             new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\content").Delete();
