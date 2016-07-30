@@ -72,6 +72,9 @@ namespace UnitTests.ORM
                         .AddCommand(null, null, CommandType.Text, "ALTER DATABASE SessionWithInterfaceTestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE")
                         .AddCommand(null, null, CommandType.Text, "ALTER DATABASE SessionWithInterfaceTestDatabase SET ONLINE")
                         .AddCommand(null, null, CommandType.Text, "DROP DATABASE SessionWithInterfaceTestDatabase")
+                        .AddCommand(null, null, CommandType.Text, "ALTER DATABASE SessionWithAbstractClassTestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE")
+                        .AddCommand(null, null, CommandType.Text, "ALTER DATABASE SessionWithAbstractClassTestDatabase SET ONLINE")
+                        .AddCommand(null, null, CommandType.Text, "DROP DATABASE SessionWithAbstractClassTestDatabase")
                         .Execute();
             }
             catch { }
