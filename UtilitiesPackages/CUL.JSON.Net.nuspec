@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CUL.JSON.Net</id>
-		<version>4.0.295</version>
+		<version>4.0.297</version>
 		<title>Craig's Utility Library JSON.Net Support</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -18,8 +18,8 @@
 			<reference file="CUL.JSON.Net.dll" />
 		</references>
 		<dependencies>
-            <dependency id="Newtonsoft.Json" version="[8.0.2]" />
-			<dependency id="CraigsUtilityLibrary" version="[4.0.295]" />
+            <dependency id="Newtonsoft.Json" version="[9.0.1]" />
+			<dependency id="CraigsUtilityLibrary" version="[4.0.297]" />
         </dependencies>
 	</metadata>
 	<files>

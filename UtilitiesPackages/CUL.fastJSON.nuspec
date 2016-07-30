@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CUL.fastJSON</id>
-		<version>4.0.295</version>
+		<version>4.0.297</version>
 		<title>Craig's Utility Library fastJSON Support</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -18,8 +18,8 @@
 			<reference file="CUL.fastJSON.dll" />
 		</references>
 		<dependencies>
-            <dependency id="fastJSON" version="[2.1.14.0]" />
-			<dependency id="CraigsUtilityLibrary" version="[4.0.295]" />
+            <dependency id="fastJSON" version="[2.1.17]" />
+			<dependency id="CraigsUtilityLibrary" version="[4.0.297]" />
         </dependencies>
 	</metadata>
 	<files>

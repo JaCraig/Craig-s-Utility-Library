@@ -33,7 +33,7 @@ namespace UtilitiesSplitter.Tasks
                 .ForEach(x =>
             {
                 new FileInfo("C:\\dev\\nuget\\nuget.exe")
-                    .Execute(new ProcessStartInfo { Arguments = "push \"" + x.FullName + "\"", CreateNoWindow = false })
+                    .Execute(new ProcessStartInfo { Arguments = "push \"" + x.FullName + "\" -Source https://www.nuget.org/api/v2/package", CreateNoWindow = false })
                     .WaitForExit();
             });
             return true;
