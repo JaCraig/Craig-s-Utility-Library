@@ -36,8 +36,8 @@
     <CodeAnalysisRuleSet>..\AnalyzerSet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Bender, Version=3.0.50.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Bender.3.0.50.0\lib\Bender.dll</HintPath>
+    <Reference Include="Bender, Version=3.0.54.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bender.3.0.54.0\lib\Bender.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Flexo, Version=1.0.24.0, Culture=neutral, processorArchitecture=MSIL">
