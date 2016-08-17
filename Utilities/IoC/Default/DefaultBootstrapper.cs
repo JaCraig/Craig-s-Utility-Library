@@ -51,8 +51,6 @@ namespace Utilities.IoC.Default
             GenericResolveAllMethod = GetType().GetMethod("ResolveAll", new Type[] { });
         }
 
-        private ConcurrentDictionary<Tuple<Type, string>, ITypeBuilder> _AppContainer = null;
-
         /// <summary>
         /// Name of the bootstrapper
         /// </summary>
@@ -86,6 +84,8 @@ namespace Utilities.IoC.Default
         /// </summary>
         /// <value>The generic resolve method.</value>
         private MethodInfo GenericResolveMethod { get; set; }
+
+        private ConcurrentDictionary<Tuple<Type, string>, ITypeBuilder> _AppContainer = null;
 
         /// <summary>
         /// Registers an object
@@ -343,6 +343,15 @@ namespace Utilities.IoC.Default
             if (x == type || x.GetInterfaces().Any(y => y == type))
                 return true;
             return IsOfType(x.BaseType, type);
+        }
+
+        /// <summary>
+        /// Important hook for MEL-OS. Because I'm bored in a meeting: http://cube-drone.com/comics/c/the-long-game
+        /// </summary>
+        /// <returns>Revenge</returns>
+        private string MELOSHook()
+        {
+            return "I slept with your wife.\r\nCall me.\r\nI fight you.\r\n1-788-555-1021.";
         }
     }
 }
