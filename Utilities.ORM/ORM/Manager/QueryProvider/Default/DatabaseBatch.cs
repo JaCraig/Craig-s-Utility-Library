@@ -206,6 +206,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
                         while (true)
                         {
                             var FinalParameters = new List<IParameter>();
+                            bool Finalizable = false;
                             string FinalSQLCommand = "";
                             int ParameterTotal = 0;
                             ExecutableCommand.Parameters.Clear();
@@ -215,6 +216,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
                                 if (ParameterTotal + Command.Parameters.Count > 2100)
                                     break;
                                 ParameterTotal += Command.Parameters.Count;
+                                Finalizable |= Commands[y].Finalizable;
                                 if (Command.CommandType == CommandType.Text)
                                 {
                                     FinalSQLCommand += string.IsNullOrEmpty(Command.SQLCommand) ?
@@ -246,10 +248,13 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
 
                             using (DbDataReader TempReader = ExecutableCommand.ExecuteReader())
                             {
-                                ReturnValue.Add(GetValues(TempReader));
-                                while (TempReader.NextResult())
+                                if (Finalizable)
                                 {
                                     ReturnValue.Add(GetValues(TempReader));
+                                    while (TempReader.NextResult())
+                                    {
+                                        ReturnValue.Add(GetValues(TempReader));
+                                    }
                                 }
                             }
                             if (Count >= CommandCount)

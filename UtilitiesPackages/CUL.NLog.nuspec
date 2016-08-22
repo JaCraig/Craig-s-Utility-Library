@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CUL.NLog</id>
-		<version>4.0.299</version>
+		<version>4.0.304</version>
 		<title>Craig's Utility Library NLog Support</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -18,8 +18,8 @@
 			<reference file="CUL.NLog.dll" />
 		</references>
 		<dependencies>
-            <dependency id="NLog" version="[4.3.5]" />
-			<dependency id="CraigsUtilityLibrary" version="[4.0.299]" />
+            <dependency id="NLog" version="[4.3.7]" />
+			<dependency id="CraigsUtilityLibrary" version="[4.0.304]" />
         </dependencies>
 	</metadata>
 	<files>
