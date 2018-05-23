@@ -1,6 +1,38 @@
-### Be the Batman of Programmers
+# Craig's Utility Library
 
-[![Join the chat at https://gitter.im/JaCraig/Craig-s-Utility-Library](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/JaCraig/Craig-s-Utility-Library?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+## Update on the library
+
+For those who have been following this repo and wondering what is going on as there haven't been a ton of updates, the project has morphed a bit. When .Net Core and .Net Standard came out the original idea was to just update this library. However it became apparent that doing that was going to be difficult because of how large this library is. On top of that, even with breaking up the project on namespace it was becoming difficult to manage. So I made the decision a while ago to break up the project and move the parts to their individual homes. On the plus side that means that if you were only using a portion of the library, these should be much smaller:
+
+* [Aspectus](https://github.com/JaCraig/Aspectus): AOP library. Primarily used by other libraries in the batch but can be used on its own.
+* [Big Book of Data Types](https://github.com/JaCraig/BigBookOfDataTypes): If you've primarily been using the Utilities.DataTypes namespace, this is what you want.
+* [FileCurator](https://github.com/JaCraig/FileCurator): This is the IO portion of the code base but expanded quite a bit. It allows for connecting to the local file storage, url, etc. as before but now has a series of file parsers built in.
+* [Corset](https://github.com/JaCraig/Corset): The compression portions of the library are here.
+* [Structure.Sketching](https://github.com/JaCraig/Structure.Sketching): This is the image processing portions of the library. I'm not thrilled at the current setup on this one. It was sort of my first foray into .Net Core and shows. Expect a rewrite at some point.
+* [Environs](https://github.com/JaCraig/Environs): LDAP, WMI, etc. found their home here.
+* [SerialBox](https://github.com/JaCraig/SerialBox): Serialization code for JSON, XML, etc.
+* [Canister](https://github.com/JaCraig/Canister): IoC/DI container. Pretty much all of the other libraries use this as a base. But if you've been using the IoC container in CUL then this will be fairly similar.
+* [Mirage](https://github.com/JaCraig/Mirage): Basically System.Random on steroids. I still have things to add but it does name generation, company generation, entire POCOs, etc. Good for filling a database with test data.
+* [SimpleMail](https://github.com/JaCraig/SimpleMail): Basically a wrapper around MailKit to simplify sending email messages.
+* [Valkyrie](https://github.com/JaCraig/Valkyrie): A library to help with data validation.
+* [Woodcutter](https://github.com/JaCraig/Woodcutter): This is the logging portion of the library. That said, I would recommend moving to [Serilog](https://github.com/serilog/serilog).
+* [SQLHelper](https://github.com/JaCraig/SQLHelper): If you've been using the SQLHelper in CUL, it's now here. It should run a bit better and now has async goodness built in.
+* [Inflatable](https://github.com/JaCraig/Inflatable): If you've been using the ORM in CUL, first I don't know why you did that to yourself. Second, this is the new/reworked version of the ORM. This one has a lot more features and does a much better job with batching inserts, updates, etc.
+
+And those are just the portions thus far. I still need to move out the encryption, web, etc. portions of the code. So more will be added but a few extra libraries have come about because of this move:
+
+* [Sundial](https://github.com/JaCraig/Sundial): This library existed before but it has been reworked to be .net standard and some improvements have been made.
+* [TaskMaster](https://github.com/JaCraig/TaskMaster): A library to help manage individual tasks. Think of it like a simple task scheduler.
+* [SQLParser](https://github.com/JaCraig/SQLParser): A parser for SQL. Currently it only supports TSQL but I plan to expand on this.
+* [Spidey](https://github.com/JaCraig/Spidey): A multithreaded web crawler.
+* [Holmes](https://github.com/JaCraig/Holmes): A basic library to help scan a database and return suggestions for improvement. Currently it just identifies recent expensive queries, missing indexes, overlapping indexes, and unused indexes. But you can plug in your own.
+* [Data.Modeler](https://github.com/JaCraig/Data.Modeler): I've had people in the past ask me to break out the database schema portion of the ORM, so here it is.
+
+So that's where we are. The code in CUL will continue to be here in this repo and Nuget will continue to house the DLLs. But at this point this library can be considered done.
+
+--------------------------------------------------
+
+### Be the Batman of Programmers
 
 Have you ever thought about why Batman is as effective as he is? I mean sure he's rich, in better shape than any of us will ever be, and is a master at martial arts, but what almost always wins the day for him is that utility belt. It's the never ending supply of gadgets and utilities that he can use in the appropriate situation that really saves the day. And Craig's Utility Library is the same for programmers.
 
